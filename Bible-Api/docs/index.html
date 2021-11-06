@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Welcome to Glitch!</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./client.js" defer></script>
+  </head>
+  <body>
+    <h1>New King James Version API</h1>
+    <div>
+      <p>
+        This web api is used to retrieve any verses from the New King James version of the Bible 
+        using the following format:
+      </p>
+      <code>[url]/api/get_verse/:book/:chapter/:verse(s)</code>
+      <p>
+        or for retrieving entire chapters:
+      </p>
+      <code>[url]/api/get_chapter/:book/:chapter(s)</code>
+      <p>for instance:</p>
+      <code>https://functional-pancreas.glitch.me/api/get_verse/John/3/16-18</code>
+    </div>
+  </body>
+</html>
