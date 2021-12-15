@@ -1,0 +1,25 @@
+{
+  "name": "cms_management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/boftwareteam/cms_management.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/boftwareteam/cms_management/issues"
+  },
+  "homepage": "https://bitbucket.org/boftwareteam/cms_management#readme",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "csv": "^5.5.3",
+    "csv-generate": "^3.4.3",
+    "fs": "^0.0.1-security"
+  }
+}
