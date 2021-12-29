@@ -17,9 +17,15 @@
   },
   "homepage": "https://bitbucket.org/boftwareteam/cms_management#readme",
   "dependencies": {
-    "axios": "^0.24.0",
     "csv": "^5.5.3",
     "csv-generate": "^3.4.3",
-    "fs": "^0.0.1-security"
+    "csv-parse": "^5.0.3",
+    "fs": "^0.0.1-security",
+    "typescript": "^4.5.4"
+  },
+  "fixtures": "ts-node fixtures/index",
+  "devDependencies": {
+    "@types/async-csv": "^2.1.1",
+    "@types/node": "^17.0.5"
   }
 }
