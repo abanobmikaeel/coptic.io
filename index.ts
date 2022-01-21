@@ -1,18 +1,36 @@
-import uniqueReadings from './resources/uniqueReadings.json'
-import dayReadings from './resources/dayReadings.json'
-import { transformReading } from './BibleMapper/index'
+import express from 'express'
+import routes from './routes/v1'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import error from './middlewares/error'
+import { stream } from './config/logger'
+import morgan from 'morgan'
 
-export const getByCopticDate = (dateString: string) => {
-	const [day, month] = dateString.split(' ')
-	const monthFound = dayReadings.find(
-		(dayReading) => dayReading.month === month
-	)
-	if (!monthFound) {
-		throw new Error('Month not found')
-	}
-	const readingID = monthFound?.readings[Number(day) - 1]
-	const reading = uniqueReadings.find((reading) => reading.id === readingID)
-	return transformReading(reading)
-}
+// Init express
+const app = express()
 
-console.log(JSON.stringify(getByCopticDate('10 Toba'), null, 2))
+app.use(morgan('combined', { stream }))
+
+// Parse body params and attache them to req.body
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// Enable CORS
+app.use(cors())
+
+// Mount api v1 routes
+app.use('/v1', routes)
+
+// if error is not an instanceOf APIError, convert it.
+app.use(error.converter)
+
+// catch 404 and forward to error handler
+app.use(error.notFound)
+
+// error handler, send stacktrace only during development
+app.use(error.handler)
+
+// Run server
+app.listen(3000, () => {
+	console.info('server is listening on port 3000')
+})

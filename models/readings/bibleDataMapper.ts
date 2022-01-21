@@ -1,11 +1,11 @@
-import * as bible from '../resources/bible.json'
+import * as bible from '../../resources/bible.json'
 import {
 	BibleBook,
 	BibleChapter,
 	BibleType,
 	BibleVerse,
 	Reading,
-} from '../types/interfaces'
+} from '../../interfaces'
 
 export const getBook = (bookName: string): BibleBook | undefined => {
 	const b: BibleType = bible

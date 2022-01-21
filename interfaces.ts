@@ -24,3 +24,12 @@ export interface Reading {
 		verses: BibleVerse[]
 	}[]
 }
+
+export interface CustomError {
+	message: string
+	errors?: Error[]
+	status?: number
+	isPublic?: boolean
+	isOperational?: boolean
+	stack?: any
+}
