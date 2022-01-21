@@ -7,7 +7,8 @@
 		"start": "cross-env NODE_ENV=production pm2 start index.ts",
 		"dev": "nodemon index.ts",
 		"test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --timeout 20000 --exit --recursive src/api/tests",
-		"test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit"
+		"test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit",
+		"postinstall": "pm2 install typescript"
 	},
 	"repository": {
 		"type": "git",
