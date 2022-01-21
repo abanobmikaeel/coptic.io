@@ -1,16 +1,19 @@
-import { Reading } from '../types/interfaces'
+import { Reading } from '../../interfaces'
 import {
 	getVerseRange,
 	getSingleVerse,
 	getSingleChapter,
 } from './verseTextTransformer'
+import dayReadings from '../../resources/dayReadings.json'
+import uniqueReadings from '../../resources/uniqueReadings.json'
 
 import {
 	verseRangePattern,
 	oneVersePattern,
 	oneChapterPattern,
-} from '../utils/regexPatterns'
+} from '../../utils/regexPatterns'
 
+import fromGregorian from '../../utils/copticDate'
 /**
  *
  * @param verseString 'a string for indexing a bible verse '
@@ -29,6 +32,7 @@ export const getReading = (verseString: string): Reading | null => {
 	}
 }
 
+// TODO: add ability to combine verses that have same bookName + chapter #
 export const parseReadingString = (verseString: string): Reading[] | null => {
 	if (verseString.includes(';')) {
 		let finalArr: Reading[] = []
@@ -70,3 +74,17 @@ export const transformReading = (record: any) => {
 		LGospel: parseReadingString(LGospel),
 	}
 }
+
+const getByCopticDate = (gregorianDate: Date) => {
+	const copticDate = fromGregorian(gregorianDate)
+	const monthFound = dayReadings[copticDate.month - 1]
+
+	if (!monthFound) {
+		throw new Error('Month not found')
+	}
+	const readingID = monthFound?.readings[Number(copticDate.day) - 1]
+	const reading = uniqueReadings.find((reading) => reading.id === readingID)
+	return transformReading(reading)
+}
+
+export default getByCopticDate

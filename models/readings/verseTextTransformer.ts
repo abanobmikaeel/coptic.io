@@ -1,12 +1,11 @@
-import { range } from '../utils'
+import { range } from '../../utils'
 import {
 	getBook,
 	getChapter,
 	getChapterAndOrVerse,
 	getVerse,
 } from './bibleDataMapper'
-
-import { BibleVerse, Reading } from '../types/interfaces'
+import { BibleVerse, Reading } from '../../interfaces'
 
 export const getSingleVerse = (verseString: string) => {
 	const verseArr = splitAtIndex(
