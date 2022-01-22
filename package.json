@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.ts",
 	"scripts": {
-		"start": "pm2 start ecosystem.config.js",
+		"start": "nodemon index.ts",
 		"dev": "nodemon index.ts",
 		"test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --timeout 20000 --exit --recursive src/api/tests",
 		"test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit",
