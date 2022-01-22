@@ -3,7 +3,7 @@ import routes from './routes/v1'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import error from './middlewares/error'
-import { stream } from './config/logger'
+import { stream, logger } from './config/logger'
 import morgan from 'morgan'
 import vars from './config/vars'
 
@@ -33,5 +33,5 @@ app.use(error.handler)
 
 // Run server
 app.listen(vars.port, () => {
-	console.info(`server is listening on port ${vars.port || 3000}`)
+	logger.info(`server is listening on port ${vars.port || 3000}`)
 })
