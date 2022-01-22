@@ -25,8 +25,10 @@ if (process.env.NODE_ENV !== 'production') {
 	)
 }
 
-export const stream = {
+const stream = {
 	write: (message: any) => {
 		logger.info(message)
 	},
 }
+
+export { logger, stream }
