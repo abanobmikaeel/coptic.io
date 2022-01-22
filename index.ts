@@ -32,6 +32,6 @@ app.use(error.notFound)
 app.use(error.handler)
 
 // Run server
-app.listen(PORT, () => {
+app.listen(vars.port, () => {
 	console.info(`server is listening on port ${vars.port || 3000}`)
 })
