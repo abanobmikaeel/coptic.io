@@ -4,10 +4,11 @@
 	"description": "",
 	"main": "index.ts",
 	"scripts": {
-		"start": "cross-env NODE_ENV=production pm2 start index.ts",
+		"start": "pm2 start ecosystem.config.js",
 		"dev": "nodemon index.ts",
 		"test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --timeout 20000 --exit --recursive src/api/tests",
-		"test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit"
+		"test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit",
+		"postinstall": "pm2 install typescript"
 	},
 	"repository": {
 		"type": "git",
@@ -23,14 +24,9 @@
 		"@types/joi": "^17.2.3",
 		"body-parser": "^1.19.1",
 		"cors": "^2.8.5",
-		"cross-env": "^7.0.3",
-		"csv": "^5.5.3",
-		"csv-generate": "^3.4.3",
-		"csv-parse": "^5.0.3",
 		"dotenv-safe": "^8.2.0",
 		"express": "^4.17.2",
 		"express-validation": "^3.0.8",
-		"fs": "^0.0.1-security",
 		"http-status": "^1.5.0",
 		"joi": "^17.5.0",
 		"morgan": "^1.10.0",
