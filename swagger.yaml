@@ -1,0 +1,94 @@
+swagger: '2.0'
+info:
+  description: ''
+  version: '1.0.0'
+  title: 'Coptic Day Readings Api'
+host: 'localhost:3000'
+basePath: '/v1'
+schemes:
+  - 'https'
+  - 'http'
+paths:
+  /hymns:
+    get:
+      tags:
+        - 'Readings'
+      summary: 'Get reading'
+      description: 'Provides the readings for today'
+      operationId: 'getReadings'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            type: 'object'
+            items:
+              $ref: '#/definitions/Readings'
+        '400':
+          description: 'Invalid status value'
+definitions:
+  Readings:
+    type: 'object'
+    properties:
+      Vpsalm:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Vespers psalm'
+      VGospel:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Vespers psalm'
+      MPsalm:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Matins Psalm'
+      MGospel:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Matins Gospel'
+      Pauline:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Pauline epistle of the day'
+      Catholic:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Catholic epistle of the day'
+      Acts:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Acts of the apostles'
+      LPsalm:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Liturgy Psalm'
+      LGospel:
+        allOf:
+          - $ref: '#/definitions/Reading'
+          - description: 'Liturgy Gospel'
+  Reading:
+    type: 'object'
+    properties:
+      bookName:
+        type: 'number'
+      chapters:
+        type: 'array'
+        items:
+          $ref: '#/definitions/Chapters'
+  Chapters:
+    type: 'object'
+    properties:
+      chapterNum:
+        type: 'number'
+      verses:
+        type: 'array'
+        items:
+          $ref: '#/definitions/Verse'
+  Verse:
+    type: 'object'
+    properties:
+      text:
+        type: 'string'
+      num:
+        type: 'number'
