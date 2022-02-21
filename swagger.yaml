@@ -1,94 +1,191 @@
-swagger: '2.0'
+openapi: 3.0.0
 info:
-  description: ''
+  description: 'An API for coptic calendar, daily readings and rites.'
   version: '1.0.0'
   title: 'Coptic Day Readings Api'
-host: 'localhost:3000'
-basePath: '/v1'
-schemes:
-  - 'https'
-  - 'http'
+servers:
+  - url: http://localhost:3000/v1
+    description: 'local server'
+  - url: https://coptic-calendar-api.herokuapp.com/v1
+    description: 'A dev server'
 paths:
-  /hymns:
+  /readings:
     get:
       tags:
         - 'Readings'
       summary: 'Get reading'
       description: 'Provides the readings for today'
       operationId: 'getReadings'
-      produces:
-        - 'application/json'
       responses:
         '200':
-          description: 'successful operation'
+          $ref: '#/components/responses/ReadingsResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /readings/{date}:
+    get:
+      tags:
+        - 'Readings'
+      summary: 'Get reading for date'
+      description: 'Provides the readings given a gregorian date'
+      operationId: 'getReadingsForDate'
+      parameters:
+        - $ref: '#/components/parameters/CopticDateParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/ReadingsResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /calendar:
+    get:
+      tags:
+        - 'Calendar'
+      summary: 'Get coptic date'
+      description: "Gets today's coptic date"
+      operationId: 'getDate'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDateResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
           schema:
-            type: 'object'
-            items:
-              $ref: '#/definitions/Readings'
-        '400':
-          description: 'Invalid status value'
-definitions:
-  Readings:
-    type: 'object'
-    properties:
-      Vpsalm:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Vespers psalm'
-      VGospel:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Vespers psalm'
-      MPsalm:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Matins Psalm'
-      MGospel:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Matins Gospel'
-      Pauline:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Pauline epistle of the day'
-      Catholic:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Catholic epistle of the day'
-      Acts:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Acts of the apostles'
-      LPsalm:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Liturgy Psalm'
-      LGospel:
-        allOf:
-          - $ref: '#/definitions/Reading'
-          - description: 'Liturgy Gospel'
-  Reading:
-    type: 'object'
-    properties:
-      bookName:
-        type: 'number'
-      chapters:
-        type: 'array'
-        items:
-          $ref: '#/definitions/Chapters'
-  Chapters:
-    type: 'object'
-    properties:
-      chapterNum:
-        type: 'number'
-      verses:
-        type: 'array'
-        items:
-          $ref: '#/definitions/Verse'
-  Verse:
-    type: 'object'
-    properties:
-      text:
-        type: 'string'
-      num:
-        type: 'number'
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ReadingsResponse:
+      description: 'Successfully returns readings'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Readings'
+          example:
+            VPsalm:
+              - bookName: Psalms,
+                chapters:
+                  - chapterNum: 132
+                    verses:
+                      - text: Let Your priests be clothed with righteousness, And let Your saints shout for joy.
+                        num: 9
+    GetDateResponse:
+      description: Successfully returns a coptic date object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CopticDate'
+          example:
+            fullDate: Amshir 13, 1738
+            day: 13
+            month: 6
+            year: 1738
+            monthName: Amshir
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+    Readings:
+      type: 'object'
+      properties:
+        Vpsalm:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Vespers psalm'
+        VGospel:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Vespers psalm'
+        MPsalm:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Matins Psalm'
+        MGospel:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Matins Gospel'
+        Pauline:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Pauline epistle of the day'
+        Catholic:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Catholic epistle of the day'
+        Acts:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Acts of the apostles'
+        LPsalm:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Liturgy Psalm'
+        LGospel:
+          allOf:
+            - $ref: '#/components/schemas/Reading'
+            - description: 'Liturgy Gospel'
+    Reading:
+      type: 'object'
+      properties:
+        bookName:
+          type: 'number'
+        chapters:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/Chapters'
+    Chapters:
+      type: 'object'
+      properties:
+        chapterNum:
+          type: 'number'
+        verses:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/Verse'
+    Verse:
+      type: 'object'
+      properties:
+        text:
+          type: 'string'
+        num:
+          type: 'number'
+    CopticDate:
+      type: 'object'
+      properties:
+        fullDate:
+          type: 'string'
+          example: 'Amshir 13, 1738'
+        day:
+          type: 'number'
+          example: '13'
+        month:
+          type: 'number'
+          example: '6'
+        year:
+          type: 'number'
+          example: '1738'
+        monthName:
+          type: 'string'
+          example: 'Amshir'
+  parameters:
+    CopticDateParam:
+      in: path
+      name: date
+      required: true
+      description: A gregorian date string in DD-mm-YYYY format
+      schema:
+        type: string
+        example: '12-3-2022'
