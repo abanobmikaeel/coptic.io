@@ -16,6 +16,8 @@ paths:
       summary: 'Get reading'
       description: 'Provides the readings for today'
       operationId: 'getReadings'
+      parameters:
+        - $ref: '#/components/parameters/DetailedParam'
       responses:
         '200':
           $ref: '#/components/responses/ReadingsResponse'
@@ -30,6 +32,7 @@ paths:
       operationId: 'getReadingsForDate'
       parameters:
         - $ref: '#/components/parameters/CopticDateParam'
+        - $ref: '#/components/parameters/DetailedParam'
       responses:
         '200':
           $ref: '#/components/responses/ReadingsResponse'
@@ -101,6 +104,9 @@ components:
     Readings:
       type: 'object'
       properties:
+        CopticDate:
+          oneOf:
+            - $ref: '#/components/schemas/CopticDate'
         Vpsalm:
           allOf:
             - $ref: '#/components/schemas/Reading'
@@ -185,7 +191,14 @@ components:
       in: path
       name: date
       required: true
-      description: A gregorian date string in DD-mm-YYYY format
+      description: A gregorian date
       schema:
         type: string
+        example: '12-3-2022'
+    DetailedParam:
+      in: query
+      name: detailed
+      description: if true sends text for readings, otherwise sends references only
+      schema:
+        type: boolean
         example: '12-3-2022'

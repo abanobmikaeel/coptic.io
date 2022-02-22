@@ -10,6 +10,7 @@ import YAML from 'yamljs'
 
 // Adding using require due to lack of declaration file
 const swaggerUi = require('swagger-ui-express')
+const boolParser = require('express-query-boolean')
 
 // Init express
 const app = express()
@@ -19,6 +20,7 @@ app.use(morgan('combined', { stream }))
 // Parse body params and attache them to req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(boolParser())
 
 // Enable CORS
 app.use(cors())
