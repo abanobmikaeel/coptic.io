@@ -6,6 +6,11 @@ import error from './middlewares/error'
 import { stream, logger } from './config/logger'
 import morgan from 'morgan'
 import vars from './config/vars'
+import YAML from 'yamljs'
+
+// Adding using require due to lack of declaration file
+const swaggerUi = require('swagger-ui-express')
+const boolParser = require('express-query-boolean')
 
 // Init express
 const app = express()
@@ -15,9 +20,14 @@ app.use(morgan('combined', { stream }))
 // Parse body params and attache them to req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(boolParser())
 
 // Enable CORS
 app.use(cors())
+
+// Docs
+const swaggerDocument = YAML.load('./swagger.yaml')
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Mount api v1 routes
 app.use('/v1', routes)

@@ -26,14 +26,17 @@
 		"cors": "^2.8.5",
 		"dotenv-safe": "^8.2.0",
 		"express": "^4.17.2",
+		"express-query-boolean": "^2.0.0",
 		"express-validation": "^3.0.8",
 		"http-status": "^1.5.0",
 		"joi": "^17.5.0",
 		"morgan": "^1.10.0",
 		"pm2": "^5.1.2",
+		"swagger-ui-express": "^4.3.0",
 		"ts-mocha": "^8.0.0",
 		"typescript": "^4.5.4",
-		"winston": "^3.4.0"
+		"winston": "^3.4.0",
+		"yamljs": "^0.3.0"
 	},
 	"fixtures": "ts-node fixtures/index",
 	"devDependencies": {
@@ -47,9 +50,10 @@
 		"@types/mocha": "^9.0.0",
 		"@types/morgan": "^1.9.3",
 		"@types/node": "^17.0.5",
+		"@types/yamljs": "^0.2.31",
 		"chai": "^4.3.4",
 		"mocha": "^8.0.0",
-		"ts-node": "^10.4.0",
-		"nodemon": "^2.0.15"
+		"nodemon": "^2.0.15",
+		"ts-node": "^10.4.0"
 	}
 }

@@ -49,7 +49,7 @@ export const parseReadingString = (verseString: string): Reading[] | null => {
 	}
 }
 
-export const transformReading = (record: any) => {
+export const transformReading = (record: any, copticDate: any) => {
 	const {
 		VPsalm,
 		VGospel,
@@ -63,6 +63,7 @@ export const transformReading = (record: any) => {
 	} = record
 
 	return {
+		copticDate,
 		VPsalm: parseReadingString(VPsalm),
 		VGospel: parseReadingString(VGospel),
 		MPsalm: parseReadingString(MPsalm),
@@ -75,7 +76,7 @@ export const transformReading = (record: any) => {
 	}
 }
 
-const getByCopticDate = (gregorianDate: Date) => {
+export const getByCopticDate = (gregorianDate: Date) => {
 	const copticDate = fromGregorian(gregorianDate)
 	const monthFound = dayReadings[copticDate.month - 1]
 
@@ -84,7 +85,49 @@ const getByCopticDate = (gregorianDate: Date) => {
 	}
 	const readingID = monthFound?.readings[Number(copticDate.day) - 1]
 	const reading = uniqueReadings.find((reading) => reading.id === readingID)
-	return transformReading(reading)
+	return transformReading(reading, copticDate)
 }
 
+export const getReferencesForDate = (gregorianDate: Date) => {
+	const copticDate = fromGregorian(gregorianDate)
+	const monthFound = dayReadings[copticDate.month - 1]
+
+	if (!monthFound) {
+		throw new Error('Month not found')
+	}
+	const readingID = monthFound?.readings[Number(copticDate.day) - 1]
+	const uniqueReading = uniqueReadings.find(
+		(reading) => reading.id === readingID
+	)
+	if (uniqueReading?.Day) {
+		uniqueReading!.Day = ''
+		const {
+			VPsalm,
+			VGospel,
+			MPsalm,
+			MGospel,
+			Pauline,
+			Catholic,
+			Acts,
+			LPsalm,
+			LGospel,
+		} = uniqueReading
+		return {
+			copticDate,
+			VPsalm,
+			VGospel,
+			MPsalm,
+			MGospel,
+			Pauline,
+			Catholic,
+			Acts,
+			LPsalm,
+			LGospel,
+		}
+	} else if (!monthFound) {
+		throw new Error('Reading not found')
+	} else {
+		throw new Error('An error has ocurred while fetching reference for date')
+	}
+}
 export default getByCopticDate
