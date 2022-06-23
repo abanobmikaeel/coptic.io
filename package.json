@@ -1,5 +1,5 @@
 {
-	"name": "cms_management",
+	"name": "coptic.io",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.ts",
@@ -12,14 +12,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@bitbucket.org/boftwareteam/cms_management.git"
+		"url": "git@github.com:abanobmikaeel/coptic.io.git"
 	},
-	"author": "",
-	"license": "ISC",
+	"author": "Abanob Mikaeel",
+	"license": "MIT",
 	"bugs": {
-		"url": "https://bitbucket.org/boftwareteam/cms_management/issues"
+		"url": "https://github.com/abanobmikaeel/coptic.io/issues"
 	},
-	"homepage": "https://bitbucket.org/boftwareteam/cms_management#readme",
+	"homepage": "https://github.com/abanobmikaeel/coptic.io/blob/main/README.md",
 	"dependencies": {
 		"@types/joi": "^17.2.3",
 		"body-parser": "^1.19.1",
