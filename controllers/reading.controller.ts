@@ -3,6 +3,7 @@ import {
 	getReadingsForCopticDate,
 	getReferencesForCopticDate,
 } from '../models/readings/calendar.model'
+import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import readingValidator from '../validations/reading.validation'
 
 // Gets todays readings
@@ -25,8 +26,8 @@ const getForDate = async (req: Request, res: Response) => {
 		const copticDate = Boolean(isDetailed)
 			? await getReadingsForCopticDate(parsedDate)
 			: await getReferencesForCopticDate(parsedDate)
-
-		return res.status(200).json(copticDate)
+		const celebrations = getStaticCelebrationsForDay(parsedDate)
+		return res.status(200).json({ copticDate, celebrations })
 	} else {
 		res.status(401).json({
 			error: 'incorrect date format',
