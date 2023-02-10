@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:3000/v1
     description: 'local server'
-  - url: https://coptic-calendar-api.herokuapp.com/v1
+  - url: https://monkfish-app-runcw.ondigitalocean.app/v1
     description: 'A dev server'
 paths:
   /readings:
