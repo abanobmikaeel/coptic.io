@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.ts",
 	"scripts": {
+		"preinstall": "npm run build-frontend",
 		"start": "ts-node --transpile-only ./index.ts",
 		"dev": "nodemon index.ts",
 		"build-frontend": "cd micro-frontend; npm i; npm run build",
