@@ -100,7 +100,6 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 		(reading) => reading.id === readingID
 	)
 	if (uniqueReading?.Day) {
-		uniqueReading!.Day = ''
 		const {
 			VPsalm,
 			VGospel,

@@ -12,8 +12,8 @@ const get = async (req: Request, res: Response) => {
 	const copticDate = Boolean(isDetailed)
 		? await getReadingsForCopticDate()
 		: await getReferencesForCopticDate()
-
-	return res.status(200).json(copticDate)
+	const celebrations = getStaticCelebrationsForDay(new Date())
+	return res.status(200).json({ copticDate, celebrations })
 }
 
 // Gets readings for a certain day

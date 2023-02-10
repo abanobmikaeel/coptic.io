@@ -10,13 +10,19 @@ const getStaticCelebrationsForDay = (date: Date) => {
 	}
 	const celebrationsFound = monthFound.daysWithCelebrations[day - 1]
 	// handle multiple celebrations
-	const celebrationData = []
+	const celebrationData: any[] = []
+	if (celebrationsFound === 0) {
+		return null
+	}
+
 	if (Array.isArray(celebrationsFound)) {
 		celebrationsFound.forEach((celeb) => {
-			celebrationData.push(celebrations.find((x) => x.id === celeb))
+			const celebFound = celebrations.find((x) => x.id === celeb)
+			celebrationData.push({ ...celebFound, isMoveable: false })
 		})
 	} else {
-		celebrationData.push(celebrations.find((x) => x.id === celebrationsFound))
+		const celebFound = celebrations.find((x) => x.id === celebrationsFound)
+		celebrationData.push({ ...celebFound, isMoveable: false })
 	}
 	return celebrationData
 }
