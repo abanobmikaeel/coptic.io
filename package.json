@@ -41,6 +41,7 @@
 		"swagger-ui-express": "^4.3.0",
 		"ts-mocha": "^8.0.0",
 		"winston": "^3.4.0",
+		"vite": "^3.2.1",
 		"yamljs": "^0.3.0"
 	},
 	"fixtures": "ts-node fixtures/index",
