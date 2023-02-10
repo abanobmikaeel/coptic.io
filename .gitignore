@@ -1,6 +1,7 @@
 # Node artifact files
 node_modules/
 dist/
+.cache
 
 # Compiled Java class files
 *.class

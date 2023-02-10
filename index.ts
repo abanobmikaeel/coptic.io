@@ -7,6 +7,8 @@ import { stream, logger } from './config/logger'
 import morgan from 'morgan'
 import vars from './config/vars'
 import YAML from 'yamljs'
+import serveStatic from 'serve-static'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 
 // Adding using require due to lack of declaration file
 const swaggerUi = require('swagger-ui-express')
@@ -15,6 +17,10 @@ const boolParser = require('express-query-boolean')
 // Init express
 const app = express()
 
+// Mount api v1 routes
+app.use('/v1', routes)
+
+// Logging
 app.use(morgan('combined', { stream }))
 
 // Parse body params and attache them to req.body
@@ -29,8 +35,22 @@ app.use(cors())
 const swaggerDocument = YAML.load('./swagger.yaml')
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-// Mount api v1 routes
-app.use('/v1', routes)
+// front-end assets
+// for dev use local proxy
+if (process.env.NODE_ENV === 'development') {
+	app.use(
+		'/',
+		createProxyMiddleware({
+			target: 'http://localhost:5174', // The URL of the React project
+			changeOrigin: true,
+			pathRewrite: {
+				'^/v1': '',
+			},
+		})
+	)
+} else {
+	app.use(serveStatic(__dirname + '/micro-frontend/dist'))
+}
 
 // if error is not an instanceOf APIError, convert it.
 app.use(error.converter)
