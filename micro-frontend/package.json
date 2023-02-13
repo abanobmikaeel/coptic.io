@@ -6,17 +6,17 @@
 	"scripts": {
 		"start": "vite",
 		"preview": "vite preview",
-		"build": "npm i; node node_modules/vite/bin/vite.js build"
+		"build": "vite build"
 	},
 	"dependencies": {
 		"bootstrap": "^5.2.3",
 		"react": "^18.2.0",
 		"react-bootstrap-icons": "^1.10.2",
-		"react-dom": "^18.2.0"
+		"react-dom": "^18.2.0",
+		"vite": "^3.2.1"
 	},
 	"devDependencies": {
-		"babel-preset-nano-react-app": "^0.1.0",
-		"vite": "^3.2.1"
+		"babel-preset-nano-react-app": "^0.1.0"
 	},
 	"babel": {
 		"presets": [
