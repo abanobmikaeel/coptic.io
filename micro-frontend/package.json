@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "vite",
 		"preview": "vite preview",
-		"build": "node node_modules/vite/bin/vite.js build"
+		"build": "npm i; node node_modules/vite/bin/vite.js build"
 	},
 	"dependencies": {
 		"bootstrap": "^5.2.3",
