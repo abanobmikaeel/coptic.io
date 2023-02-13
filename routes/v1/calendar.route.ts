@@ -3,7 +3,6 @@ import { CalendarController } from '../../controllers'
 
 const Router = express.Router()
 
-Router.route('/').get(CalendarController.get)
-Router.route('/:date').get(CalendarController.getDate)
+Router.route('/:date').get(CalendarController.get)
 
 export default Router

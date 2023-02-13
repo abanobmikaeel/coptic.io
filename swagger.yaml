@@ -9,27 +9,13 @@ servers:
   - url: https://monkfish-app-runcw.ondigitalocean.app/v1
     description: 'A dev server'
 paths:
-  /readings:
-    get:
-      tags:
-        - 'Readings'
-      summary: 'Get reading'
-      description: 'Provides the readings for today'
-      operationId: 'getReadings'
-      parameters:
-        - $ref: '#/components/parameters/DetailedParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/ReadingsResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
   /readings/{date}:
     get:
       tags:
         - 'Readings'
-      summary: 'Get reading for date'
-      description: 'Provides the readings given a gregorian date'
-      operationId: 'getReadingsForDate'
+      summary: 'Get reading for today or for a date'
+      description: 'Provides the readings for a specific day (defaults to today)'
+      operationId: 'getReadings'
       parameters:
         - $ref: '#/components/parameters/CopticDateParam'
         - $ref: '#/components/parameters/DetailedParam'

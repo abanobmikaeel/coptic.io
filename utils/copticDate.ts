@@ -20,11 +20,11 @@ const fromGregorian = (gregorianDate: Date) => {
 	const monthOnlyLongStr = monthOnlyLong.format(gregorianDate)
 
 	return {
-		fullDate: str.substring(0, str.length - 5),
+		dateString: str.substring(0, str.length - 5),
 		day: Number(dayOnly.format(gregorianDate)),
 		month: Number(monthOnly.format(gregorianDate)),
 		year: Number(yearStr.substring(0, yearStr.length - 5)),
-		monthName: monthOnlyLongStr,
+		monthString: monthOnlyLongStr,
 	}
 }
 

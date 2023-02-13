@@ -63,7 +63,6 @@ export const transformReading = (record: any, copticDate: any) => {
 	} = record
 
 	return {
-		copticDate,
 		VPsalm: parseReadingString(VPsalm),
 		VGospel: parseReadingString(VGospel),
 		MPsalm: parseReadingString(MPsalm),
@@ -112,16 +111,15 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 			LGospel,
 		} = uniqueReading
 		return {
-			copticDate,
-			VPsalm,
-			VGospel,
-			MPsalm,
-			MGospel,
-			Pauline,
-			Catholic,
-			Acts,
-			LPsalm,
-			LGospel,
+			vPsalm: VPsalm,
+			vGospel: VGospel,
+			mPsalm: MPsalm,
+			mGospel: MGospel,
+			pauline: Pauline,
+			catholic: Catholic,
+			acts: Acts,
+			lPsalm: LPsalm,
+			lGospel: LGospel,
 		}
 	} else if (!monthFound) {
 		throw new Error('Reading not found')
