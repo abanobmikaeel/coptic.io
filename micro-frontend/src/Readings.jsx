@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons'
 
@@ -26,6 +26,7 @@ export default function Readings(props) {
 		pauline,
 		vPsalm,
 		vGospel,
+		synxarium,
 	} = references
 
 	const data = [
@@ -84,6 +85,38 @@ export default function Readings(props) {
 			collapseData: vespersGospelText,
 		},
 	]
+
+	const SynxariumBlock = ({ synxarium: synxariumArr }) => {
+		const [open, setOpen] = useState(false)
+		return (
+			<>
+				<li className="list-group-item" onClick={() => setOpen(!open)}>
+					<div className="d-flex align-items-center">
+						Synxarium
+						{open ? (
+							<ChevronUp className="mx-2" size={20} />
+						) : (
+							<ChevronDown className="mx-2" size={20} />
+						)}
+					</div>
+				</li>
+				{/* iterate through books, then chapters, then verses */}
+				<div className={`collapse ${open ? 'show' : ''}`}>
+					{synxariumArr.map((synxObject, index) => {
+						return (
+							<div
+								key={`book-${synxObject.name}-${index}}`}
+								className="card card-body"
+							>
+								<a href={synxObject.url}>{synxObject.name}</a>
+							</div>
+						)
+					})}
+				</div>
+			</>
+		)
+	}
+
 	const ExpandableDropdown = (props) => {
 		const { collapseData, buttonData } = props
 		const { buttonName, buttonReference } = buttonData
@@ -154,6 +187,7 @@ export default function Readings(props) {
 						/>
 					)
 				})}
+				<SynxariumBlock synxarium={synxarium} />
 			</ul>
 		</>
 	)
