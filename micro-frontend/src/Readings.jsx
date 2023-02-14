@@ -32,57 +32,57 @@ export default function Readings(props) {
 	const data = [
 		{
 			id: '1',
-			buttonName: 'Acts of the Apostles (Praxis)',
-			buttonReference: acts,
-			collapseData: actsText,
-		},
-		{
-			id: '2',
-			buttonName: 'Catholic Epistle',
-			buttonReference: catholic,
-			collapseData: catholicText,
-		},
-		{
-			id: '3',
-			buttonName: 'Pauline',
-			buttonReference: pauline,
-			collapseData: paulineText,
-		},
-		{
-			id: '4',
-			buttonName: 'Liturgy Psalm',
-			buttonReference: lPsalm,
-			collapseData: liturgyPsalmText,
-		},
-		{
-			id: '5',
-			buttonName: 'Liturgy Gospel',
-			buttonReference: lGospel,
-			collapseData: liturgyGospelText,
-		},
-		{
-			id: '6',
-			buttonName: 'Matins Psalm',
-			buttonReference: mPsalm,
-			collapseData: matinsPsalmText,
-		},
-		{
-			id: '7',
-			buttonName: 'Matins Gospel',
-			buttonReference: mGospel,
-			collapseData: matinsGospelText,
-		},
-		{
-			id: '8',
 			buttonName: 'Vespers Psalm',
 			buttonReference: vPsalm,
 			collapseData: vespersPsalmText,
 		},
 		{
-			id: '9',
+			id: '2',
 			buttonName: 'Vespers Gospel',
 			buttonReference: vGospel,
 			collapseData: vespersGospelText,
+		},
+		{
+			id: '3',
+			buttonName: 'Matins Psalm',
+			buttonReference: mPsalm,
+			collapseData: matinsPsalmText,
+		},
+		{
+			id: '4',
+			buttonName: 'Matins Gospel',
+			buttonReference: mGospel,
+			collapseData: matinsGospelText,
+		},
+		{
+			id: '5',
+			buttonName: 'Pauline',
+			buttonReference: pauline,
+			collapseData: paulineText,
+		},
+		{
+			id: '6',
+			buttonName: 'Catholic Epistle',
+			buttonReference: catholic,
+			collapseData: catholicText,
+		},
+		{
+			id: '7',
+			buttonName: 'Acts of the Apostles (Praxis)',
+			buttonReference: acts,
+			collapseData: actsText,
+		},
+		{
+			id: '8',
+			buttonName: 'Liturgy Psalm',
+			buttonReference: lPsalm,
+			collapseData: liturgyPsalmText,
+		},
+		{
+			id: '9',
+			buttonName: 'Liturgy Gospel',
+			buttonReference: lGospel,
+			collapseData: liturgyGospelText,
 		},
 	]
 
@@ -175,19 +175,35 @@ export default function Readings(props) {
 			{/* TODO: turn date to a dropdown where users can change the date and the readings would update */}
 			<h2>The Readings for {fullDate.dateString}</h2>
 			<ul className="list-group">
-				{data.map(({ id, buttonName, buttonReference, collapseData }) => {
-					return (
-						<ExpandableDropdown
-							key={`reading-${id}`}
-							buttonData={{
-								buttonName,
-								buttonReference,
-							}}
-							collapseData={collapseData}
-						/>
-					)
-				})}
+				{data
+					.slice(0, 7)
+					.map(({ id, buttonName, buttonReference, collapseData }) => {
+						return (
+							<ExpandableDropdown
+								key={`reading-${id}`}
+								buttonData={{
+									buttonName,
+									buttonReference,
+								}}
+								collapseData={collapseData}
+							/>
+						)
+					})}
 				<SynxariumBlock synxarium={synxarium} />
+				{data
+					.slice(7, 8)
+					.map(({ id, buttonName, buttonReference, collapseData }) => {
+						return (
+							<ExpandableDropdown
+								key={`reading-${id}`}
+								buttonData={{
+									buttonName,
+									buttonReference,
+								}}
+								collapseData={collapseData}
+							/>
+						)
+					})}
 			</ul>
 		</>
 	)
