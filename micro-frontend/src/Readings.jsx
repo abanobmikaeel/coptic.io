@@ -191,7 +191,7 @@ export default function Readings(props) {
 					})}
 				<SynxariumBlock synxarium={synxarium} />
 				{data
-					.slice(7, 8)
+					.slice(7, 9)
 					.map(({ id, buttonName, buttonReference, collapseData }) => {
 						return (
 							<ExpandableDropdown
