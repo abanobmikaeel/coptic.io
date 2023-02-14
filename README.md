@@ -33,6 +33,14 @@ query{
     lGospel,
     copticDate {
       dateString
+      day
+      month
+      year
+      monthString
+    },
+    synxarium {
+      name,
+      url
     }
   }
 }

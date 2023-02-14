@@ -1,6 +1,10 @@
 const { buildSchema } = require('graphql')
 
 const schema = buildSchema(`
+  type SynxariumEntry {
+    url: String,
+    name: String
+  }
   type CopticDate {
     dateString: String,
 		day: Int,
@@ -19,7 +23,8 @@ const schema = buildSchema(`
     acts: String,
     lPsalm:  String,
     lGospel: String,
-    copticDate: CopticDate
+    copticDate: CopticDate,
+    synxarium: [SynxariumEntry]
   }
 
   type Query {

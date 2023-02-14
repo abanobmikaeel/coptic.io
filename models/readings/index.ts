@@ -6,7 +6,10 @@ import {
 } from './verseTextTransformer'
 import dayReadings from '../../resources/dayReadings.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
-
+const synxariumReadings: Record<
+	string,
+	any
+> = require('../../resources/synxarium.json')
 import {
 	verseRangePattern,
 	oneVersePattern,
@@ -98,6 +101,9 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 	const uniqueReading = uniqueReadings.find(
 		(reading) => reading.id === readingID
 	)
+	const synxarium =
+		synxariumReadings[copticDate.day + ' ' + copticDate.monthString]
+
 	if (uniqueReading?.Day) {
 		const {
 			VPsalm,
@@ -120,6 +126,7 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 			acts: Acts,
 			lPsalm: LPsalm,
 			lGospel: LGospel,
+			synxarium,
 		}
 	} else if (!monthFound) {
 		throw new Error('Reading not found')
