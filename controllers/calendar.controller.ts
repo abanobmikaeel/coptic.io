@@ -8,9 +8,10 @@ const get = async (req: Request, res: Response) => {
 }
 
 const getDate = async (req: Request, res: Response) => {
-	calendarValidator.calendar.validate(req.params)
-	const date = new Date(req.params.date)
-	const copticDate = await fromGregorian(date)
+	const { error, value } = calendarValidator.calendar.validate(req.params)
+	if (error) return res.status(400).json({ error: 'Incorrect date format' })
+
+	const copticDate = await fromGregorian(value.date)
 	return res.status(200).json(copticDate)
 }
 

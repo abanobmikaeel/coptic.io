@@ -1,4 +1,4 @@
-import getEaster from './getEaster'
+import getEaster from '../../utils/calculations/getEaster'
 
 describe('Easter calculation test', () => {
 	it('Returns the correct easter date', () => {
