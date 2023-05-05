@@ -4,38 +4,41 @@ import {
 	getReferencesForCopticDate,
 } from '../models/readings/calendar.model'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import fromGregorian from '../utils/copticDate'
 import readingValidator from '../validations/reading.validation'
 
-// Gets todays readings
+// Gets readings for a certain day, or today's date by default
 const get = async (req: Request, res: Response) => {
-	const isDetailed = req.query.detailed
-	const copticDate = Boolean(isDetailed)
-		? await getReadingsForCopticDate()
-		: await getReferencesForCopticDate()
-	const celebrations = getStaticCelebrationsForDay(new Date())
-	return res.status(200).json({ copticDate, celebrations })
-}
+	try {
+		readingValidator.getForDate.validate(req.params)
 
-// Gets readings for a certain day
-const getForDate = async (req: Request, res: Response) => {
-	readingValidator.getForDate.validate(req.params)
-	const isDetailed = req.query.detailed
-	const date = req.params.date
-	if (date) {
-		const parsedDate = new Date(String(date))
-		const copticDate = Boolean(isDetailed)
-			? await getReadingsForCopticDate(parsedDate)
-			: await getReferencesForCopticDate(parsedDate)
+		const isDetailed = req.query.detailed
+		// Default to today
+		let parsedDate = new Date()
+		if (req.params.date) {
+			parsedDate = new Date(String(req.params.date))
+		}
+		const copticDate = fromGregorian(parsedDate)
+		let data: any = {}
+
+		// Default to sending back references only
+		data.references = await getReferencesForCopticDate(parsedDate)
+
+		// If asked for detailed readings, provide the text
+		if (isDetailed === 'true') {
+			data.text = await getReadingsForCopticDate(parsedDate)
+		}
+
+		/// Add non moveable celebrations
 		const celebrations = getStaticCelebrationsForDay(parsedDate)
-		return res.status(200).json({ copticDate, celebrations })
-	} else {
+		return res.status(200).json({ ...data, celebrations, fullDate: copticDate })
+	} catch (e) {
 		res.status(401).json({
-			error: 'incorrect date format',
+			error: e,
 		})
 	}
 }
 
 export default {
 	get,
-	getForDate,
 }

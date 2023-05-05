@@ -3,6 +3,9 @@ node_modules/
 dist/
 .cache
 
+# hide dotenv
+.env 
+
 # Compiled Java class files
 *.class
 

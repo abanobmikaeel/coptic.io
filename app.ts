@@ -1,20 +1,42 @@
 import express from 'express'
 import routes from './routes/v1'
 import cors from 'cors'
+
+// Express middleware
 import bodyParser from 'body-parser'
 import error from './middlewares/error'
+
+// Logger
 import { stream } from './config/logger'
 import morgan from 'morgan'
-import YAML from 'yamljs'
+
+// Front-end hosting
 import serveStatic from 'serve-static'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
-// Adding using require due to lack of declaration file
+// GraphQL
+import { graphqlHTTP } from 'express-graphql'
+import schema from './graphql/schema'
+import resolvers from './resolvers'
+
+// Swagger for documentation
+import YAML from 'yamljs'
+
 const swaggerUi = require('swagger-ui-express')
 const boolParser = require('express-query-boolean')
 
 // Init express
 const app = express()
+
+app.use(
+	'/graphql',
+	graphqlHTTP({
+		schema,
+		graphiql: true,
+		rootValue: resolvers,
+		pretty: true,
+	})
+)
 
 // Mount api v1 routes
 app.use('/v1', routes)
