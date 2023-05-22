@@ -62,7 +62,7 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(
 		'/',
 		createProxyMiddleware({
-			target: 'http://localhost:5174', // The URL of the React project
+			target: 'http://localhost:5173', // The URL of the React project
 			changeOrigin: true,
 			pathRewrite: {
 				'^/v1': '',

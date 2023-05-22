@@ -189,7 +189,7 @@ export default function Readings(props) {
 							/>
 						)
 					})}
-				<SynxariumBlock synxarium={synxarium} />
+				{synxarium && <SynxariumBlock synxarium={synxarium} />}
 				{data
 					.slice(7, 9)
 					.map(({ id, buttonName, buttonReference, collapseData }) => {
