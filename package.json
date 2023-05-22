@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.ts",
 	"scripts": {
-		"start": "NODE_ENV=development ts-node --transpile-only ./index.ts",
+		"start": "ts-node --transpile-only ./index.ts",
 		"start:windows": "SET NODE_ENV=development ts-node --transpile-only ./index.ts",
 		"dev": "nodemon index.ts",
 		"build-frontend": "cd micro-frontend; npm i; npm run build",
