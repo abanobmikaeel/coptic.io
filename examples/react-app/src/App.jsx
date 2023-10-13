@@ -3,8 +3,6 @@ import useFetch from './hooks/useFetch'
 import Readings from './Readings'
 import Navbar from './Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import ReactGA from 'react-ga'
-ReactGA.initialize(import.meta.env.VITE_GA_TRACKING_ID)
 
 export default () => {
 	const { error, data } = useFetch('/v1/readings?detailed=true')
