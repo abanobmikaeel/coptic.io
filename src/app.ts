@@ -53,8 +53,8 @@ app.use(boolParser())
 app.use(cors())
 
 // Docs
-const swaggerDocument = YAML.load('./swagger.yaml')
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+// const swaggerDocument = YAML.load('./swagger.yaml')
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // front-end assets
 // for dev use local proxy

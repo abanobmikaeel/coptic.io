@@ -1,6 +1,6 @@
-import { logger } from './config/logger'
-import vars from './config/vars'
-import app from './app'
+import { logger } from './src/config/logger'
+import vars from './src/config/vars'
+import app from './src/app'
 
 // Run server
 app.listen(vars.port, () => {

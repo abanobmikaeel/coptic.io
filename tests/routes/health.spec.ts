@@ -1,6 +1,6 @@
 // Import your server and any necessary dependencies
 import request from 'supertest'
-import app from '../../app'
+import app from '../../src/app'
 import { Server } from 'http'
 
 describe('Test API routes', () => {

@@ -1,50 +1,17 @@
-COPTIC.IO
-An API for daily coptic readings according to the Katamaros
+# WELCOME TO COPTIC.IO
 
-The API currently offers a few key features:
+## Bringing a 2000+ Year old calendar to modern times. An API for daily coptic readings according to the Katamaros
+
+### Key Features
 
 Get the readings for a given coptic day
 Convert a gregorian date to a coptic date
 
 For roadmap visit github issues
 
-Usage
+### Usage
 
-- Register an API key on coptic.io
 - Start using the API according to api.coptic.io/docs
-
-## GraphQL
-
-GraphQL Queries can be sent to /graphql
-
-Example query
-
-```
-query{
-  getReferences(date: "02-12-2023") {
-    pauline,
-    catholic,
-    acts,
-    vPsalm,
-    vGospel,
-    mPsalm,
-    mGospel,
-    lPsalm,
-    lGospel,
-    copticDate {
-      dateString
-      day
-      month
-      year
-      monthString
-    },
-    synxarium {
-      name,
-      url
-    }
-  }
-}
-```
 
 Contributing
 Fork it!

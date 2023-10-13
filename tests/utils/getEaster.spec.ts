@@ -1,4 +1,4 @@
-import getEaster from '../../utils/calculations/getEaster'
+import getEaster from '../../src/utils/calculations/getEaster'
 
 describe('Easter calculation test', () => {
 	it('Returns the correct easter date', () => {
@@ -10,5 +10,7 @@ describe('Easter calculation test', () => {
 
 		expect(getEaster(2021)).toMatchObject({ day: 2, month: 5, year: 2021 })
 		expect(getEaster(2022)).toMatchObject({ day: 24, month: 4, year: 2022 })
+		expect(getEaster(2050)).toMatchObject({ day: 17, month: 4, year: 2050 })
+		expect(getEaster(2075)).toMatchObject({ day: 7, month: 4, year: 2075 })
 	})
 })

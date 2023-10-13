@@ -1,7 +1,7 @@
 import request from 'supertest'
-import app from '../../app'
-import fromGregorian from '../../utils/copticDate'
-import calendarValidator from '../../validations/calendar.validation'
+import app from '../../src/app'
+import fromGregorian from '../../src/utils/copticDate'
+import calendarValidator from '../../src/validations/calendar.validation'
 import { Server } from 'http'
 
 describe('Coptic Date API', () => {
@@ -30,8 +30,8 @@ describe('Coptic Date API', () => {
 			const response = await request(server).get(
 				`/v1/calendar/${gregorianDate}`
 			)
+			console.log(`/v1/calendar/${gregorianDate}`)
 			const copticDate = await fromGregorian(new Date(gregorianDate))
-
 			expect(response.status).toBe(200)
 			expect(response.body).toEqual(copticDate)
 		})

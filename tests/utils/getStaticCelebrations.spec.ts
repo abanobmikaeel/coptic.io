@@ -1,4 +1,4 @@
-import { getStaticCelebrationsForDay } from '../../utils/calculations/getStaticCelebrations'
+import { getStaticCelebrationsForDay } from '../../src/utils/calculations/getStaticCelebrations'
 
 describe('Get calendar date with celebration on it', () => {
 	it('Returns the correct celebration', () => {

@@ -1,4 +1,4 @@
-import app from './../app'
+import app from '../src/app'
 
 export default async function setup() {
 	// Do any necessary setup here

@@ -14,9 +14,8 @@ import {
 	verseRangePattern,
 	oneVersePattern,
 	oneChapterPattern,
-} from '../../utils/regexPatterns'
-
-import fromGregorian from '../../utils/copticDate'
+} from '../../../src/utils/regexPatterns'
+import fromGregorian from '../../../src/utils/copticDate'
 /**
  *
  * @param verseString 'a string for indexing a bible verse '

@@ -17,5 +17,5 @@ const getDate = async (req: Request, res: Response) => {
 
 export default {
 	get,
-	getDate
+	getDate,
 }
