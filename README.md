@@ -2,9 +2,7 @@
 
 ![alt text](https://upload.wikimedia.org/wikipedia/commons/7/71/Coptic_cross.svg)
 
-## Bringing a 2000+ year old calendar to modern times.
-
-An API for daily coptic readings according to the Katamaros
+Bringing a 1700+ year old calendar to modern times. An API for daily coptic readings according to the Katamaros
 
 ### Key Features
 
