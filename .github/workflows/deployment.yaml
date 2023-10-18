@@ -21,6 +21,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo NODE_ENV=development >> .env
+          echo PORT=3000 >> .env
+          cat .env
+
       - name: Run unit tests
         run: npm test
 
