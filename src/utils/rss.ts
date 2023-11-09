@@ -23,7 +23,7 @@ export const generateRSSFeed = (year: number) => {
 	const events = generateEvents(year)
 
 	// Add events to RSS and iCalendar feeds
-	return events.map((event: any) => {
+	return events.map((event: any): RSS.item => {
 		// Add to RSS feed
 		return {
 			title: event.title,

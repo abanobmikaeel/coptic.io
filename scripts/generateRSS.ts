@@ -22,11 +22,13 @@ export const generateAndWriteXMLFiles = async (): Promise<void> => {
 		// Generate individual RSS feeds for each year and add them to the combined feed
 		for (let year = currentYear; year < currentYear + numberOfYears; year++) {
 			const rssFeed = generateRSSFeed(year)
-			console.log(!!rssFeed)
-			combinedFeed.items = combinedFeed.items.concat(rssFeed)
+			rssFeed.forEach((item: any) => combinedFeed.item(item))
+			// combinedFeed.items = combinedFeed.items.concat(rssFeed)
 		}
 
-		console.log(combinedFeed)
+		console.log(combinedFeed.items)
+		const x = combinedFeed.xml({ indent: true })
+
 		// Write the combined RSS feed to a local XML file
 		await writeFile('./xml/rss.xml', combinedFeed.xml({ indent: true }), 'utf8')
 		console.log('Combined RSS feed generated and saved as rss.xml')
