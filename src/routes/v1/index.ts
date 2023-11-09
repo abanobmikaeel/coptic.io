@@ -2,6 +2,7 @@ import express from 'express'
 import calendarRoute from './calendar.route'
 import readingsRoute from './readings.route'
 import healthRoute from './health.route'
+import rssRoute from './rss.route'
 
 const Router = express.Router()
 
@@ -11,5 +12,6 @@ const Router = express.Router()
 Router.use('/calendar', calendarRoute)
 Router.use('/readings', readingsRoute)
 Router.use('/health', healthRoute)
+Router.use('/rss', rssRoute)
 
 export default Router
