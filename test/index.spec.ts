@@ -1,56 +1,56 @@
-import { getCopticDate, getReadings } from '../src';
+import { getCopticDate, getReadings } from '../src'
 
 describe('Get Coptic Date', () => {
-  it('Returns the correct coptic date', () => {
-    const todayDate = new Date('2023-11-19');
-    expect(getCopticDate(todayDate)).toMatchObject({
-      day: 8,
-      month: 3,
-      year: 1740,
-    });
-  });
+	it('Returns the correct coptic date', () => {
+		const todayDate = new Date('2023-11-19')
+		expect(getCopticDate(todayDate)).toMatchObject({
+			day: 8,
+			month: 3,
+			year: 1740,
+		})
+	})
 
-  it('Returns the correct coptic date after 6PM', () => {
-    const todayDateAfter6PM = new Date('2023-11-19T18:30:00'); // Adjust the time as needed
-    expect(getCopticDate(todayDateAfter6PM)).toMatchObject({
-      day: 9,
-      month: 3,
-      year: 1740,
-    });
-  });
-});
+	it('Returns the correct coptic date after 6PM', () => {
+		const todayDateAfter6PM = new Date('2023-11-19T18:30:00') // Adjust the time as needed
+		expect(getCopticDate(todayDateAfter6PM)).toMatchObject({
+			day: 9,
+			month: 3,
+			year: 1740,
+		})
+	})
+})
 
 describe('Get Coptic Reading Correctly', () => {
-  it('Returns the correct coptic reading for a date', () => {
-    const todayDate = new Date('2023-11-18T16:30:00');
-    const expectedObject = {
-      celebrations: null,
-      fullDate: {
-        dateString: 'Hator 8, 1740',
-        day: 8,
-        month: 3,
-        monthString: 'Hator',
-        year: 1740,
-      },
-      references: {
-        acts: 'Acts 11:2-14',
-        catholic: '1 Peter 3:15-22',
-        lGospel: 'John 1:43-51',
-        lPsalm: 'Psalms 80:1-3',
-        mGospel: 'John 12:26-36',
-        mPsalm: 'Psalms 33:6;Psalms 33:9',
-        pauline: 'Hebrews 12:21-13:2',
-        synxarium: [
-          {
-            name: 'The Commemoration of the Four Incorporeal Beasts',
-            url: 'https://www.copticchurch.net/synaxarium/3_8.html?lang=en#1',
-          },
-        ],
-      },
-    };
-    expect(getReadings(todayDate)).toMatchObject(expectedObject);
-  });
-});
+	it('Returns the correct coptic reading for a date', () => {
+		const todayDate = new Date('2023-11-18T16:30:00')
+		const expectedObject = {
+			celebrations: null,
+			fullDate: {
+				dateString: 'Hator 9, 1740',
+				day: 9,
+				month: 3,
+				monthString: 'Hator',
+				year: 1740,
+			},
+			references: {
+				acts: 'Acts 11:2-14',
+				catholic: '1 Peter 3:15-22',
+				lGospel: 'John 1:43-51',
+				lPsalm: 'Psalms 80:1-3',
+				mGospel: 'John 12:26-36',
+				mPsalm: 'Psalms 33:6;Psalms 33:9',
+				pauline: 'Hebrews 12:21-13:2',
+				synxarium: [
+					{
+						name: 'The Commemoration of the Four Incorporeal Beasts',
+						url: 'https://www.copticchurch.net/synaxarium/3_8.html?lang=en#1',
+					},
+				],
+			},
+		}
+		expect(getReadings(todayDate)).toMatchObject(expectedObject)
+	})
+})
 
 // describe('Get Coptic Reading with Text Correctly', () => {
 //   it('Returns the correct coptic reading with the full text correctly', () => {
