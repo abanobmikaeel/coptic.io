@@ -12,6 +12,7 @@ Bringing a 1700+ year old calendar to modern times. An API for daily coptic read
 - Convert a gregorian date to a coptic date
 
 ### Roadmap
+
 For roadmap visit github issues
 
 ### Install
@@ -23,7 +24,39 @@ npm install coptic-io
 ## Usage
 
 ```ts
-import { myPackage } from 'my-package-name';
+import { getCopticDate, getReadings } from '../src';
 
-myPackage('hello');
+getCopticDate();
+// {
+//   day: 8,
+//   month: 3,
+//   year: 1740,
+// }
+
+getReadings();
+// {
+//       celebrations: null,
+//       fullDate: {
+//         dateString: 'Hator 8, 1740',
+//         day: 8,
+//         month: 3,
+//         monthString: 'Hator',
+//         year: 1740,
+//       },
+//       references: {
+//         acts: 'Acts 11:2-14',
+//         catholic: '1 Peter 3:15-22',
+//         lGospel: 'John 1:43-51',
+//         lPsalm: 'Psalms 80:1-3',
+//         mGospel: 'John 12:26-36',
+//         mPsalm: 'Psalms 33:6;Psalms 33:9',
+//         pauline: 'Hebrews 12:21-13:2',
+//         synxarium: [
+//           {
+//             name: 'The Commemoration of the Four Incorporeal Beasts',
+//             url: 'https://www.copticchurch.net/synaxarium/3_8.html?lang=en#1',
+//           },
+//         ],
+//       },
+//     };
 ```

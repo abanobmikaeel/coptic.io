@@ -13,7 +13,8 @@
     "semantic-release": "semantic-release",
     "test:watch": "jest --watch",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "uglifyjs -o myfile.min.js myfile.js"
   },
   "repository": {
     "type": "git",
@@ -50,14 +51,11 @@
     "@typescript-eslint/parser": "^5.0.0",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "eslint": "^7.25.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-jest": "27.6.0",
+    "eslint-plugin-node": "^11.1.0",
     "husky": "^6.0.0",
     "jest": "^27.2.0",
     "lint-staged": "^13.2.1",
-    "prettier": "^2.2.1",
     "semantic-release": "^21.0.1",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
@@ -110,5 +108,8 @@
       "@semantic-release/npm",
       "@semantic-release/github"
     ]
+  },
+  "dependencies": {
+    "uglifyjs": "^2.4.11"
   }
 }

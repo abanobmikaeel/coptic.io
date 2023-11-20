@@ -1,4 +1,4 @@
-import { getCopticDate, getReadings, getReadingsWithText } from '../src';
+import { getCopticDate, getReadings } from '../src';
 
 describe('Get Coptic Date', () => {
   it('Returns the correct coptic date', () => {
@@ -45,7 +45,7 @@ describe('Get Coptic Reading Correctly', () => {
             name: 'The Commemoration of the Four Incorporeal Beasts',
             url: 'https://www.copticchurch.net/synaxarium/3_8.html?lang=en#1',
           },
-        ]
+        ],
       },
     };
     expect(getReadings(todayDate)).toMatchObject(expectedObject);
