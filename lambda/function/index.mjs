@@ -1,4 +1,4 @@
-const { LambdaClient, GetAccountSettingsCommand } = require('@aws-sdk/client-lambda');
+const { LambdaClient } = require('@aws-sdk/client-lambda');
 const { getReadings, getCopticDate, getReadingsWithText } = require('coptic-io')
 // Create client outside of handler to reuse
 const lambda = new LambdaClient();
