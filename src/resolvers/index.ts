@@ -1,4 +1,4 @@
-import { getReferencesForCopticDate } from '../models/readings/calendar.model'
+import { getReferencesForCopticDate } from '../models/calendar.model'
 import fromGregorian from '../utils/copticDate'
 
 export default {

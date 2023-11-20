@@ -1,0 +1,48 @@
+name: Deploy to AWS CodeDeploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - uses: shallwefootball/s3-upload-action@master
+        name: Upload to S3
+        id: S3
+        with:
+          aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: ${{ secrets.AWS_DEPLOYMENT_BUCKET_NAME }}
+          source_dir: 'static'
+
+      - name: Deploy to AWS CodeDeploy
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws deploy create-deployment --application-name coptic.io --deployment-group-name coptic-io-deployment-group --s3-location bundleType=zip,bucket=${{ secrets.AWS_DEPLOYMENT_BUCKET_NAME }},key=your-app.zip
+        env:
+          AWS_DEFAULT_REGION: us-east-1 # Modify with your desired AWS region
+

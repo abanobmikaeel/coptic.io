@@ -1,72 +1,114 @@
 {
-	"name": "coptic.io",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.ts",
-	"scripts": {
-		"start": "ts-node --transpile-only ./index.ts",
-		"start:windows": "SET NODE_ENV=development ts-node --transpile-only ./index.ts",
-		"dev": "nodemon index.ts",
-		"build-frontend": "cd micro-frontend; npm i; npm run build",
-		"test": "jest",
-		"test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit",
-		"postinstall": "pm2 install typescript"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:abanobmikaeel/coptic.io.git"
-	},
-	"author": "Abanob Mikaeel",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/abanobmikaeel/coptic.io/issues"
-	},
-	"homepage": "https://github.com/abanobmikaeel/coptic.io/blob/main/README.md",
-	"dependencies": {
-		"@babel/preset-env": "^7.20.2",
-		"@types/joi": "^17.2.3",
-		"babel-jest": "^29.3.1",
-		"body-parser": "^1.19.1",
-		"cors": "^2.8.5",
-		"dotenv-safe": "^8.2.0",
-		"express": "^4.17.2",
-		"express-graphql": "^0.12.0",
-		"express-query-boolean": "^2.0.0",
-		"express-validation": "^3.0.8",
-		"graphql": "^15.8.0",
-		"http-proxy-middleware": "^2.0.6",
-		"http-status": "^1.5.0",
-		"joi": "^17.5.0",
-		"morgan": "^1.10.0",
-		"pm2": "^5.1.2",
-		"serve-static": "^1.15.0",
-		"supertest": "^6.3.3",
-		"swagger-ui-express": "^4.3.0",
-		"ts-mocha": "^8.0.0",
-		"winston": "^3.4.0",
-		"yamljs": "^0.3.0"
-	},
-	"fixtures": "ts-node fixtures/index",
-	"devDependencies": {
-		"@types/async-csv": "^2.1.1",
-		"@types/body-parser": "^1.19.2",
-		"@types/chai": "^4.3.0",
-		"@types/cors": "^2.8.12",
-		"@types/dotenv-safe": "^8.1.2",
-		"@types/expect": "^24.3.0",
-		"@types/express": "^4.17.13",
-		"@types/jest": "^29.2.4",
-		"@types/mocha": "^9.0.0",
-		"@types/morgan": "^1.9.3",
-		"@types/node": "^17.0.5",
-		"@types/supertest": "^2.0.12",
-		"@types/yamljs": "^0.2.31",
-		"chai": "^4.3.4",
-		"jest": "^29.3.1",
-		"mocha": "^8.0.0",
-		"nodemon": "^2.0.15",
-		"ts-jest": "^29.0.3",
-		"ts-node": "^10.9.1",
-		"typescript": "^4.9.4"
-	}
+  "name": "typescript-npm-package-template",
+  "version": "0.0.0-development",
+  "description": "A template for creating npm packages using TypeScript and VSCode",
+  "main": "./lib/index.js",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "clean": "rm -rf ./lib/",
+    "cm": "cz",
+    "lint": "eslint ./src/ --fix",
+    "semantic-release": "semantic-release",
+    "test:watch": "jest --watch",
+    "test": "jest --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryansonshine/typescript-npm-package-template.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Abanob Mikaeel",
+    "email": "abanobmikaeel@gmail.com",
+    "url": "https://github.com/ryansonshine"
+  },
+  "engines": {
+    "node": ">=12.0"
+  },
+  "keywords": [
+    "boilerplate",
+    "template",
+    "typescript",
+    "vscode",
+    "jest",
+    "husky",
+    "commitizen",
+    "semantic-release",
+    "codecov"
+  ],
+  "bugs": {
+    "url": "https://github.com/ryansonshine/typescript-npm-package-template/issues"
+  },
+  "homepage": "https://github.com/ryansonshine/typescript-npm-package-template#readme",
+  "devDependencies": {
+    "@types/jest": "^27.5.2",
+    "@types/node": "^12.20.11",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
+    "jest": "^27.2.0",
+    "lint-staged": "^13.2.1",
+    "prettier": "^2.2.1",
+    "semantic-release": "^21.0.1",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.2.4"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --cache-location .eslintcache --fix"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "type": "build",
+              "scope": "deps",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "build",
+                "section": "Dependencies and Other Build Updates",
+                "hidden": false
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ]
+  }
 }
