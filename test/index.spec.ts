@@ -22,7 +22,7 @@ describe('Get Coptic Date', () => {
 
 describe('Get Coptic Reading Correctly', () => {
   it('Returns the correct coptic reading for a date', () => {
-    const todayDate = new Date('2023-11-19');
+    const todayDate = new Date('2023-11-18T16:30:00');
     const expectedObject = {
       celebrations: null,
       fullDate: {
@@ -32,12 +32,21 @@ describe('Get Coptic Reading Correctly', () => {
         monthString: 'Hator',
         year: 1740,
       },
-      references: [
-        {
-          name: 'The Commemoration of the Four Incorporeal Beasts',
-          url: 'https://www.copticchurch.net/synaxarium/3_8.html?lang=en#1',
-        },
-      ],
+      references: {
+        acts: 'Acts 11:2-14',
+        catholic: '1 Peter 3:15-22',
+        lGospel: 'John 1:43-51',
+        lPsalm: 'Psalms 80:1-3',
+        mGospel: 'John 12:26-36',
+        mPsalm: 'Psalms 33:6;Psalms 33:9',
+        pauline: 'Hebrews 12:21-13:2',
+        synxarium: [
+          {
+            name: 'The Commemoration of the Four Incorporeal Beasts',
+            url: 'https://www.copticchurch.net/synaxarium/3_8.html?lang=en#1',
+          },
+        ]
+      },
     };
     expect(getReadings(todayDate)).toMatchObject(expectedObject);
   });

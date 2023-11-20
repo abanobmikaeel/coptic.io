@@ -16,7 +16,7 @@ export const getReadings = (date?: Date) => {
   data.references = getReferencesForCopticDate(parsedDate)
 
   // TODO: only attach those readings to the synxarium object if we request the detailed obj.
-  data.references = data.references.synxarium.map((e: any) => { return { name: e.name, url: e.url } })
+  data.references.synxarium = data.references.synxarium.map((e: any) => { return { name: e.name, url: e.url } })
 
   /// Add non moveable celebrations
   const celebrations = getStaticCelebrationsForDay(parsedDate)
@@ -27,8 +27,6 @@ export const getReadingsWithText = (date?: Date) => {
   const parsedDate = date ?? new Date()
   const copticDate = fromGregorian(parsedDate)
   let data: any = {}
-
-  // Default to sending back references only
   data.references = getReferencesForCopticDate(parsedDate)
   data.text = getReadingsForCopticDate(parsedDate)
 
