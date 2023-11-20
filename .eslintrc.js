@@ -13,6 +13,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:prettier/recommended',
+    'plugin:jest/recommended', // Add this line to include Jest configuration
   ],
   rules: {
     'prettier/prettier': 'warn',

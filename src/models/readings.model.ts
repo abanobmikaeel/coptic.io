@@ -102,7 +102,6 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 	)
 	const synxarium =
 		synxariumReadings[copticDate.day + ' ' + copticDate.monthString]
-
 	if (uniqueReading?.Day) {
 		const {
 			VPsalm,

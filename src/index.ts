@@ -7,7 +7,7 @@ import { getStaticCelebrationsForDay } from './utils/calculations/getStaticCeleb
 import fromGregorian from './utils/copticDate'
 
 // Gets readings for a certain day, or today's date by default
-export const getReadings = (isDetailed: boolean, date?: Date) => {
+export const getReadings = (date?: Date) => {
   const parsedDate = date ?? new Date()
   const copticDate = fromGregorian(parsedDate)
   let data: any = {}
@@ -15,15 +15,24 @@ export const getReadings = (isDetailed: boolean, date?: Date) => {
   // Default to sending back references only
   data.references = getReferencesForCopticDate(parsedDate)
 
-  // If asked for detailed readings, provide the text
-  if (isDetailed) {
-    data.text = getReadingsForCopticDate(parsedDate)
-  }
-  
-  if(!isDetailed) {
-    data.references = data.references.synxarium.map((e: any) => e.name)
-  }
+  // TODO: only attach those readings to the synxarium object if we request the detailed obj.
+  data.references = data.references.synxarium.map((e: any) => { return { name: e.name, url: e.url } })
 
+  /// Add non moveable celebrations
+  const celebrations = getStaticCelebrationsForDay(parsedDate)
+  return { ...data, celebrations, fullDate: copticDate }
+}
+
+export const getReadingsWithText = (date?: Date) => {
+  const parsedDate = date ?? new Date()
+  const copticDate = fromGregorian(parsedDate)
+  let data: any = {}
+
+  // Default to sending back references only
+  data.references = getReferencesForCopticDate(parsedDate)
+  data.text = getReadingsForCopticDate(parsedDate)
+
+  console.log(data.text)
   /// Add non moveable celebrations
   const celebrations = getStaticCelebrationsForDay(parsedDate)
   return { ...data, celebrations, fullDate: copticDate }
