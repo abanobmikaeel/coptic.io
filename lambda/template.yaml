@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Lambda application that calls the Lambda API.
+
+Resources:
+  api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: api
+      TracingEnabled: true
+      OpenApiVersion: 3.0.2
+
+  function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: function/.
+      Description: Call the AWS Lambda API
+      Timeout: 10
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSLambda_ReadOnlyAccess
+        - AWSXrayWriteOnlyAccess
+      Tracing: Active
+      Events:
+        getRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref api
+            Path: /
+            Method: GET
+
+        getReadings:
+          Type: Api
+          Properties:
+            RestApiId: !Ref api
+            Path: /readings
+            Method: GET
+
+        getDetailedReadings:
+          Type: Api
+          Properties:
+            RestApiId: !Ref api
+            Path: /readings/{isDetailed}
+            Method: GET
+
+        getCalendar:
+          Type: Api
+          Properties:
+            RestApiId: !Ref api
+            Path: /calendar
+            Method: GET
