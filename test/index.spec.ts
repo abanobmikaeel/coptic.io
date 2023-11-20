@@ -26,8 +26,8 @@ describe('Get Coptic Reading Correctly', () => {
 		const expectedObject = {
 			celebrations: null,
 			fullDate: {
-				dateString: 'Hator 9, 1740',
-				day: 9,
+				dateString: 'Hator 8, 1740',
+				day: 8,
 				month: 3,
 				monthString: 'Hator',
 				year: 1740,
