@@ -1,38 +1,40 @@
-const { LambdaClient } = require('@aws-sdk/client-lambda');
-const { getReadings, getCopticDate, getReadingsWithText } = require('coptic-io')
+import { LambdaClient } from '@aws-sdk/client-lambda';
+import { getReadings, getCopticDate, getReadingsWithText } from 'coptic-io';
+
 // Create client outside of handler to reuse
 const lambda = new LambdaClient();
 
 // Handler for /readings
-exports.readingsHandler = async (event, context) => {
-	// Check if the query parameter isDetailed is true
-	const isDetailed = event.queryStringParameters && event.queryStringParameters.isDetailed === 'true';
+export const readingsHandler = async (event, context) => {
+    // Check if the query parameter isDetailed is true
+    const isDetailed =
+        event.queryStringParameters && event.queryStringParameters.isDetailed === 'true';
 
-	try {
-			let readings;
-			if (isDetailed) {
-					readings = getReadingsWithText();
-			} else {
-					readings = getReadings();
-			}
+    try {
+        let readings;
+        if (isDetailed) {
+            readings = getReadingsWithText();
+        } else {
+            readings = getReadings();
+        }
 
-			return formatResponse(serialize(readings));
-	} catch (error) {
-			return formatError(error);
-	}
+        return formatResponse(serialize(readings));
+    } catch (error) {
+        return formatError(error);
+    }
 };
 
 // Handler for /calendar
-exports.calendarHandler = async (event, context) => {
+export const calendarHandler = async (event, context) => {
     try {
-        const calendarData = getCopticDate()
+        const calendarData = getCopticDate();
         return formatResponse(serialize(calendarData));
     } catch (error) {
         return formatError(error);
     }
 };
 
-var formatResponse = function (body) {
+const formatResponse = function (body) {
     return {
         statusCode: 200,
         headers: {
@@ -46,7 +48,7 @@ var formatResponse = function (body) {
     };
 };
 
-var formatError = function (error) {
+const formatError = function (error) {
     return {
         statusCode: error.statusCode,
         headers: {
@@ -59,10 +61,10 @@ var formatError = function (error) {
 };
 
 // Use SDK client
-var getAccountSettings = function () {
+const getAccountSettings = function () {
     return lambda.getAccountSettings().promise();
 };
 
-var serialize = function (object) {
+const serialize = function (object) {
     return JSON.stringify(object, null, 2);
 };
