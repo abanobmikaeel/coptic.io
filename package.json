@@ -1,15 +1,14 @@
 {
-  "name": "typescript-npm-package-template",
-  "version": "0.0.0-development",
-  "description": "A template for creating npm packages using TypeScript and VSCode",
+  "name": "coptic-io",
+  "version": "1.0.1",
+  "description": "A Library to bring coptic calendar text to NPM",
   "main": "./lib/index.js",
   "files": [
-    "lib/**/*"
+    "src/**/*"
   ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "clean": "rm -rf ./lib/",
-    "cm": "cz",
     "lint": "eslint ./src/ --fix",
     "semantic-release": "semantic-release",
     "test:watch": "jest --watch",
