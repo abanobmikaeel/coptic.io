@@ -5,7 +5,7 @@ import Navbar from './Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default () => {
-	const { error, data } = useFetch('/v1/readings?detailed=true')
+	const { error, data } = useFetch('/api/readings?detailed=true')
 	return (
 		<>
 			<Navbar />

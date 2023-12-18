@@ -1,5 +1,5 @@
 import express from 'express'
-import { HealthController } from '../../controllers'
+import { HealthController } from '../controllers'
 
 const Router = express.Router()
 

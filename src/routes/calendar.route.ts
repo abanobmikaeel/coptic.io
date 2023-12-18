@@ -1,5 +1,5 @@
 import express from 'express'
-import { CalendarController } from '../../controllers'
+import { CalendarController } from '../controllers'
 
 const Router = express.Router()
 

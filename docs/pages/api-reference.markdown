@@ -9,7 +9,7 @@ nav_order: 3
 
 ## Readings
 
-### `GET /v1/readings`
+### `GET /api/readings`
 
 Retrieves Coptic liturgical readings and references for the current date.
 
@@ -54,7 +54,7 @@ const data = await response.json()
 
 ---
 
-### `GET /v1/readings/date=MM-dd-YYYY&detailed=false`
+### `GET /api/readings/date=MM-dd-YYYY&detailed=false`
 
 Retrieves Coptic liturgical readings and references for the specified date.
 

@@ -1,7 +1,7 @@
 import Joi from 'joi'
 
 export default {
-	// GET /v1/reading
+	// GET /api/reading
 	getForDate: Joi.object({
 		params: {
 			date: Joi.date().required(),

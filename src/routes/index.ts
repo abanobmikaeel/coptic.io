@@ -1,3 +1,15 @@
-import v1 from './v1'
+import express from 'express'
+import calendarRoute from './calendar.route'
+import readingsRoute from './readings.route'
+import healthRoute from './health.route'
 
-export default v1
+const Router = express.Router()
+
+/**
+ * Routes
+ */
+Router.use('/calendar', calendarRoute)
+Router.use('/readings', readingsRoute)
+Router.use('/health', healthRoute)
+
+export default Router

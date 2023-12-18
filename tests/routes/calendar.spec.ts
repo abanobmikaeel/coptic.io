@@ -14,9 +14,9 @@ describe('Coptic Date API', () => {
 	afterAll((done) => {
 		server.close(done)
 	})
-	describe('GET /v1/calendar', () => {
+	describe('GET /api/calendar', () => {
 		test('should return current coptic date', async () => {
-			const response = await request(server).get('/v1/calendar')
+			const response = await request(server).get('/api/calendar')
 			const copticDate = await fromGregorian(new Date())
 
 			expect(response.status).toBe(200)
@@ -24,20 +24,20 @@ describe('Coptic Date API', () => {
 		})
 	})
 
-	describe('GET /v1/calendar/:date', () => {
+	describe('GET /api/calendar/:date', () => {
 		test('should return coptic date for valid gregorian date', async () => {
 			const gregorianDate = '2023-05-04'
 			const response = await request(server).get(
-				`/v1/calendar/${gregorianDate}`
+				`/api/calendar/${gregorianDate}`
 			)
-			console.log(`/v1/calendar/${gregorianDate}`)
+			console.log(`/api/calendar/${gregorianDate}`)
 			const copticDate = await fromGregorian(new Date(gregorianDate))
 			expect(response.status).toBe(200)
 			expect(response.body).toEqual(copticDate)
 		})
 
 		test('should return 400 for invalid date parameter', async () => {
-			const response = await request(server).get(`/v1/calendar/invalid-date`)
+			const response = await request(server).get(`/api/calendar/invalid-date`)
 			expect(response.status).toBe(400)
 		})
 	})

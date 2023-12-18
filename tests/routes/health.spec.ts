@@ -15,7 +15,7 @@ describe('Test API routes', () => {
 		server.close(done)
 	})
 	it('should return a successful healthcheck response', async () => {
-		const res = await request(app).get('/v1/health')
+		const res = await request(app).get('/api/health')
 		expect(res.status).toEqual(200)
 		expect(res.body).toEqual({ success: true })
 	})

@@ -1,5 +1,5 @@
 import express from 'express'
-import routes from './routes/v1'
+import routes from './routes'
 import cors from 'cors'
 
 // Express middleware
@@ -20,9 +20,9 @@ import schema from './graphql/schema'
 import resolvers from './resolvers'
 
 // Swagger for documentation
-import YAML from 'yamljs'
+// import YAML from 'yamljs'
 
-const swaggerUi = require('swagger-ui-express')
+// const swaggerUi = require('swagger-ui-express')
 const boolParser = require('express-query-boolean')
 
 // Init express
@@ -38,8 +38,8 @@ app.use(
 	})
 )
 
-// Mount api v1 routes
-app.use('/v1', routes)
+// Mount api api routes
+app.use('/api', routes)
 
 // Logging
 app.use(morgan('combined', { stream }))
@@ -58,20 +58,20 @@ app.use(cors())
 
 // front-end assets
 // for dev use local proxy
-if (process.env.NODE_ENV === 'development') {
-	app.use(
-		'/',
-		createProxyMiddleware({
-			target: 'http://localhost:5173', // The URL of the React project
-			changeOrigin: true,
-			pathRewrite: {
-				'^/v1': '',
-			},
-		})
-	)
-} else {
-	app.use(serveStatic(__dirname + '/micro-frontend/dist'))
-}
+// if (process.env.NODE_ENV === 'development') {
+// 	app.use(
+// 		'/',
+// 		createProxyMiddleware({
+// 			target: 'http://localhost:5173', // The URL of the React project
+// 			changeOrigin: true,
+// 			pathRewrite: {
+// 				'^/api': '',
+// 			},
+// 		})
+// 	)
+// } else {
+// 	app.use(serveStatic(__dirname + '/micro-frontend/dist'))
+// }
 
 // if error is not an instanceOf APIError, convert it.
 app.use(error.converter)

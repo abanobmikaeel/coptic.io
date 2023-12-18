@@ -7,7 +7,7 @@ nav_order: 2
 
 # Getting Started
 
-Base URL: `https://coptic.io/v1`
+Base URL: `https://coptic.io/api`
 
 ## Get today's readings
 
@@ -16,17 +16,17 @@ Base URL: `https://coptic.io/v1`
 ### To get today's readings
 
 ```sh
-https://coptic.io/v1/readings
+https://coptic.io/api/readings
 ```
 
 ### To get a specific date's reading
 
 ```sh
-https://coptic.io/v1/readings/date=2023-10-12
+https://coptic.io/api/readings/date=2023-10-12
 ```
 
 ### To get the readings with all the verses in NKJV
 
 ```sh
-https://coptic.io/v1/readings/date=2023-10-05?detailed=true
+https://coptic.io/api/readings/date=2023-10-05?detailed=true
 ```

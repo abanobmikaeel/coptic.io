@@ -1,5 +1,5 @@
 import express from 'express'
-import { ReadingController } from '../../controllers'
+import { ReadingController } from '../controllers'
 
 const Router = express.Router()
 
