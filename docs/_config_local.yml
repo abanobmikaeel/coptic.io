@@ -1,0 +1,9 @@
+title: Coptic.io
+email: abanobmikaeel@gmails.com
+description: >-
+  Coptic.io Documentation Site
+baseurl: ''
+url: ''
+theme: just-the-docs
+plugins:
+  - jekyll-feed
