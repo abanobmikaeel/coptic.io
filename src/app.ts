@@ -11,8 +11,8 @@ import { stream } from './config/logger'
 import morgan from 'morgan'
 
 // Front-end hosting
-import serveStatic from 'serve-static'
-import { createProxyMiddleware } from 'http-proxy-middleware'
+// import serveStatic from 'serve-static'
+// import { createProxyMiddleware } from 'http-proxy-middleware'
 
 // GraphQL
 import { graphqlHTTP } from 'express-graphql'
@@ -39,7 +39,7 @@ app.use(
 )
 
 // Mount api api routes
-app.use('/api', routes)
+app.use(routes)
 
 // Logging
 app.use(morgan('combined', { stream }))
