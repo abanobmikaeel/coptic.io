@@ -2,17 +2,12 @@ import express from 'express'
 import routes from './routes'
 import cors from 'cors'
 
-// Express middleware
 import bodyParser from 'body-parser'
 import error from './middlewares/error'
 
 // Logger
 import { stream } from './config/logger'
 import morgan from 'morgan'
-
-// Front-end hosting
-// import serveStatic from 'serve-static'
-// import { createProxyMiddleware } from 'http-proxy-middleware'
 
 // GraphQL
 import { graphqlHTTP } from 'express-graphql'
@@ -27,6 +22,9 @@ const boolParser = require('express-query-boolean')
 
 // Init express
 const app = express()
+
+// Enable CORS
+app.use(cors())
 
 app.use(
 	'/graphql',
@@ -48,30 +46,6 @@ app.use(morgan('combined', { stream }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(boolParser())
-
-// Enable CORS
-app.use(cors())
-
-// Docs
-// const swaggerDocument = YAML.load('./swagger.yaml')
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
-// front-end assets
-// for dev use local proxy
-// if (process.env.NODE_ENV === 'development') {
-// 	app.use(
-// 		'/',
-// 		createProxyMiddleware({
-// 			target: 'http://localhost:5173', // The URL of the React project
-// 			changeOrigin: true,
-// 			pathRewrite: {
-// 				'^/api': '',
-// 			},
-// 		})
-// 	)
-// } else {
-// 	app.use(serveStatic(__dirname + '/micro-frontend/dist'))
-// }
 
 // if error is not an instanceOf APIError, convert it.
 app.use(error.converter)
