@@ -25,7 +25,7 @@ export default function Landing() {
 	const handleFetchReadings = () => fetchData('readings', setReadingsData)
 
 	return (
-		<>
+		<div className="container mx-auto px-4">
 			<section>
 				<div className="space-y-6">
 					<h2 className="text-2xl font-bold text-gray-200 mt-8 font-playfair">
@@ -140,6 +140,6 @@ export default function Landing() {
 				</button>
 				{readingsData && <CodeExample data={readingsData} />}
 			</section>
-		</>
+		</div>
 	)
 }
