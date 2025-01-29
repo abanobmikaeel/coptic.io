@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 
 // Lazy load components for better performance
 const Home = lazy(() => import('../pages/Landing'))
@@ -10,15 +10,15 @@ const NotFound = lazy(() => import('../pages/NotFound'))
 
 const AppRoutes = () => {
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/about" element={<Reference />} />
-				<Route path="/learn" element={<Learn />} />
-				<Route path="/examples" element={<Examples />} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
-		</Suspense>
+		// <Suspense fallback={<div>Loading...</div>}>
+		<Routes>
+			<Route path="/" element={<Home />} />
+			{/* <Route path="/about" element={<Reference />} />
+			<Route path="/learn" element={<Learn />} /> */}
+			<Route path="/examples" element={<Examples />} />
+			<Route path="*" element={<NotFound />} />
+		</Routes>
+		// </Suspense>/
 	)
 }
 

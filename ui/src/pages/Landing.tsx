@@ -2,14 +2,23 @@ export default function Landing() {
 	return (
 		<div className="container mx-auto px-4">
 			<section className="text-center">
-				<div className="space-y-6">
+				<div className="relative">
+					<div className="pt-8 relative">
+						<div className="absolute left-1/2 -translate-x-1/2 w-64 h-64 bg-blue-500/30 rounded-full blur-3xl top-12"></div>
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/7/71/Coptic_cross.svg"
+							alt="Coptic Cross"
+							className="relative mx-auto w-74 h-74"
+						/>
+					</div>
 					<h1 className="text-2xl font-bold text-gray-200 mt-8 font-playfair">
 						Modern Library for Coptic Data
 					</h1>
-					<h2 className="text-lg text-gray-400 font-inter">
+					<h2 className="text-lg text-gray-400 pt-2 font-inter">
 						coptic.io provides a simple and consistent toolset for fetching
 						Coptic readings and calendar details in &amp; Node.js.
 					</h2>
+					{/* </div> */}
 				</div>
 			</section>
 			<section>

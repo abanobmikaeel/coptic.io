@@ -26,23 +26,20 @@ const Navbar = () => {
 					/>
 				</div>
 				<div className="flex items-center gap-4 ml-4">
-					<Link
-						to="/learn"
-						className="text-white hover:text-gray-300 transition-colors"
-					>
-						Learn
+					{/* <Link to="/learn">
+						<p className="text-gray-300">Learn</p>
 					</Link>
 					<Link
 						to="/reference"
 						className="text-white hover:text-gray-300 transition-colors"
 					>
-						Reference
-					</Link>
+						<p className="text-gray-300">Reference</p>
+					</Link> */}
 					<Link
 						to="/examples"
 						className="text-white hover:text-gray-300 transition-colors"
 					>
-						Examples
+						<p className="text-gray-300">Examples</p>
 					</Link>
 					<button className="text-gray-400 hover:text-gray-300 transition-colors">
 						<svg
