@@ -25,7 +25,7 @@ const get = async (req: Request, res: Response) => {
 		const copticDate = fromGregorian(parsedDate)
 		return res.status(200).json({ ...data, celebrations, fullDate: copticDate })
 	} catch (e) {
-		res.status(401).json({
+		res.status(400).json({
 			error: e,
 		})
 	}
