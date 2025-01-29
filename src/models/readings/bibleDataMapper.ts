@@ -5,7 +5,7 @@ import {
 	BibleType,
 	BibleVerse,
 	Reading,
-} from '../../interfaces'
+} from '../../types'
 
 export const getBook = (bookName: string): BibleBook | undefined => {
 	const b: BibleType = bible

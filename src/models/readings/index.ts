@@ -1,4 +1,4 @@
-import { Reading } from '../../interfaces'
+import { Reading } from '../../types'
 import {
 	getVerseRange,
 	getSingleVerse,

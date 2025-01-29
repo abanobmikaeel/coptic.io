@@ -10,11 +10,8 @@ import { stream } from './config/logger'
 import morgan from 'morgan'
 
 // GraphQL
-import { graphqlHTTP } from 'express-graphql'
-import schema from './graphql/schema'
-
-// Swagger for documentation
-// import YAML from 'yamljs'
+// import { graphqlHTTP } from 'express-graphql'
+// import schema from './graphql/schema'
 
 // const swaggerUi = require('swagger-ui-express')
 const boolParser = require('express-query-boolean')

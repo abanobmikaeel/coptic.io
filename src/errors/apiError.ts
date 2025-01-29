@@ -1,7 +1,7 @@
 import httpStatus from 'http-status'
 import ExtendableError from './extandableError'
 
-import { CustomError } from '../interfaces'
+import { CustomError } from '../types'
 
 /**
  * Class representing an API error.

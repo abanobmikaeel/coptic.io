@@ -1,4 +1,4 @@
-import { CustomError } from '../interfaces'
+import { CustomError } from '../types'
 
 /**
  * @extends Error

@@ -5,7 +5,7 @@ import {
 	getChapterAndOrVerse,
 	getVerse,
 } from './bibleDataMapper'
-import { BibleVerse, Reading } from '../../interfaces'
+import { BibleVerse, Reading } from '../../types'
 
 export const getSingleVerse = (verseString: string) => {
 	const verseArr = splitAtIndex(
