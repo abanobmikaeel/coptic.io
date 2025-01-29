@@ -3,20 +3,26 @@ import CodeExample from '../components/CodeExample'
 
 export default function Landing() {
 	const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:3000'
-	const [calendarData, setCalendarData] = useState(null)
-	const [customCalendarData, setCustomCalendarData] = useState(null)
 
-	const handleFetchCalendar = async () => {
-		const response = await fetch(`${baseUrl}/calendar`)
-		const data = await response.json()
-		setCalendarData(data)
+	const [calendarTab, setCalendarTab] = useState<'today' | 'custom'>('today')
+	const [todayData, setTodayData] = useState(null)
+	const [customData, setCustomData] = useState(null)
+	const [readingsData, setReadingsData] = useState(null)
+
+	const fetchData = async (endpoint: string, setter: React.Dispatch<any>) => {
+		try {
+			const response = await fetch(`${baseUrl}/${endpoint}`)
+			const data = await response.json()
+			setter(data)
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
-	const handleFetchCustomCalendar = async () => {
-		const response = await fetch(`${baseUrl}/calendar/2023-05-04`)
-		const data = await response.json()
-		setCustomCalendarData(data)
-	}
+	const handleFetchToday = () => fetchData('calendar', setTodayData)
+	const handleFetchCustomDate = () =>
+		fetchData('calendar/2023-05-04', setCustomData)
+	const handleFetchReadings = () => fetchData('readings', setReadingsData)
 
 	return (
 		<>
@@ -68,41 +74,71 @@ export default function Landing() {
 				<div className="w-full h-px bg-gray-700 mb-12"></div>
 			</div>
 
-			<section>
-				<div className="space-y-6">
-					<h2>Examples</h2>
-					<div className="border-b border-gray-700 pb-6">
-						<h3 className="text-xl font-medium text-gray-200 mb-3">
-							Get Today's Coptic Date
-						</h3>
-
-						{/* <p className="mb-4">
-							<code className=" rounded px-2 py-1 text-sm text-gray-100">{`api/calendar`}</code>
-						</p> */}
-						<button
-							className="bg-blue-600 text-white px-4 py-2 rounded"
-							onClick={handleFetchCalendar}
-						>
-							Try it!
-						</button>
-
-						{calendarData && <CodeExample data={calendarData} />}
-					</div>
-				</div>
-
-				{/* Example 2 */}
-				<div className="border-b border-gray-700 pb-6">
-					<h3 className="text-xl font-medium text-gray-200 mb-3">
-						Get Coptic Date for 2023-05-04
-					</h3>
+			<section className="space-y-6">
+				<h2 className="text-2xl font-bold text-gray-200 mb-4">
+					Calendar Examples
+				</h2>
+				{/* Tabs */}
+				<div className="flex space-x-4">
 					<button
-						className="bg-blue-600 text-white px-4 py-2 rounded"
-						onClick={handleFetchCustomCalendar}
+						className={`${
+							calendarTab === 'today'
+								? 'bg-blue-600 text-white'
+								: 'bg-gray-700 text-gray-200'
+						} px-4 py-2 rounded`}
+						onClick={() => setCalendarTab('today')}
 					>
-						Try second call!
+						Today
 					</button>
-					{customCalendarData && <CodeExample data={customCalendarData} />}
+					<button
+						className={`${
+							calendarTab === 'custom'
+								? 'bg-blue-600 text-white'
+								: 'bg-gray-700 text-gray-200'
+						} px-4 py-2 rounded`}
+						onClick={() => setCalendarTab('custom')}
+					>
+						Custom Date
+					</button>
 				</div>
+
+				{/* Calendar Actions */}
+				{calendarTab === 'today' && (
+					<div>
+						<button
+							className="bg-blue-600 text-white px-4 py-2 rounded mr-4"
+							onClick={handleFetchToday}
+						>
+							Fetch Today's Date
+						</button>
+						{todayData && <CodeExample data={todayData} />}
+					</div>
+				)}
+				{calendarTab === 'custom' && (
+					<div>
+						<button
+							className="bg-blue-600 text-white px-4 py-2 rounded mr-4"
+							onClick={handleFetchCustomDate}
+						>
+							Fetch Custom Date
+						</button>
+						{customData && <CodeExample data={customData} />}
+					</div>
+				)}
+			</section>
+
+			{/* Readings Section */}
+			<section className="space-y-6">
+				<h2 className="text-2xl font-bold text-gray-200 mb-4">
+					Readings Example
+				</h2>
+				<button
+					className="bg-blue-600 text-white px-4 py-2 rounded mr-4"
+					onClick={handleFetchReadings}
+				>
+					Fetch Readings
+				</button>
+				{readingsData && <CodeExample data={readingsData} />}
 			</section>
 		</>
 	)
