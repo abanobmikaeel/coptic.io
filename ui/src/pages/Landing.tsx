@@ -1,45 +1,20 @@
-import { useState } from 'react'
-import CodeExample from '../components/CodeExample'
-
 export default function Landing() {
-	const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:3000'
-
-	const [calendarTab, setCalendarTab] = useState<'today' | 'custom'>('today')
-	const [todayData, setTodayData] = useState(null)
-	const [customData, setCustomData] = useState(null)
-	const [readingsData, setReadingsData] = useState(null)
-
-	const fetchData = async (endpoint: string, setter: React.Dispatch<any>) => {
-		try {
-			const response = await fetch(`${baseUrl}/${endpoint}`)
-			const data = await response.json()
-			setter(data)
-		} catch (error) {
-			console.error(error)
-		}
-	}
-
-	const handleFetchToday = () => fetchData('calendar', setTodayData)
-	const handleFetchCustomDate = () =>
-		fetchData('calendar/2023-05-04', setCustomData)
-	const handleFetchReadings = () => fetchData('readings', setReadingsData)
-
 	return (
 		<div className="container mx-auto px-4">
-			<section>
+			<section className="text-center">
 				<div className="space-y-6">
-					<h2 className="text-2xl font-bold text-gray-200 mt-8 font-playfair">
-						Modern Library for Coptic Metadata
-					</h2>
-					<h4 className="text-lg text-gray-400 font-inter">
+					<h1 className="text-2xl font-bold text-gray-200 mt-8 font-playfair">
+						Modern Library for Coptic Data
+					</h1>
+					<h2 className="text-lg text-gray-400 font-inter">
 						coptic.io provides a simple and consistent toolset for fetching
 						Coptic readings and calendar details in &amp; Node.js.
-					</h4>
+					</h2>
 				</div>
 			</section>
 			<section>
 				<div className="flex flex-col items-center space-y-8"></div>
-				<div className="pt-8">
+				<div className="pt-8 flex py-4 justify-center space-x-6">
 					<button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors outline outline-blue-400 outline-offset-2">
 						View Documentation
 					</button>
@@ -68,77 +43,6 @@ export default function Landing() {
 						<span>Join the Community</span>
 					</a>
 				</div>
-			</section>
-
-			<div className="pt-12 max-w-7xl mx-auto">
-				<div className="w-full h-px bg-gray-700 mb-12"></div>
-			</div>
-
-			<section className="space-y-6">
-				<h2 className="text-2xl font-bold text-gray-200 mb-4">
-					Calendar Examples
-				</h2>
-				{/* Tabs */}
-				<div className="flex space-x-4">
-					<button
-						className={`${
-							calendarTab === 'today'
-								? 'bg-blue-600 text-white'
-								: 'bg-gray-700 text-gray-200'
-						} px-4 py-2 rounded`}
-						onClick={() => setCalendarTab('today')}
-					>
-						Today
-					</button>
-					<button
-						className={`${
-							calendarTab === 'custom'
-								? 'bg-blue-600 text-white'
-								: 'bg-gray-700 text-gray-200'
-						} px-4 py-2 rounded`}
-						onClick={() => setCalendarTab('custom')}
-					>
-						Custom Date
-					</button>
-				</div>
-
-				{/* Calendar Actions */}
-				{calendarTab === 'today' && (
-					<div>
-						<button
-							className="bg-blue-600 text-white px-4 py-2 rounded mr-4"
-							onClick={handleFetchToday}
-						>
-							Fetch Today's Date
-						</button>
-						{todayData && <CodeExample data={todayData} />}
-					</div>
-				)}
-				{calendarTab === 'custom' && (
-					<div>
-						<button
-							className="bg-blue-600 text-white px-4 py-2 rounded mr-4"
-							onClick={handleFetchCustomDate}
-						>
-							Fetch Custom Date
-						</button>
-						{customData && <CodeExample data={customData} />}
-					</div>
-				)}
-			</section>
-
-			{/* Readings Section */}
-			<section className="space-y-6">
-				<h2 className="text-2xl font-bold text-gray-200 mb-4">
-					Readings Example
-				</h2>
-				<button
-					className="bg-blue-600 text-white px-4 py-2 rounded mr-4"
-					onClick={handleFetchReadings}
-				>
-					Fetch Readings
-				</button>
-				{readingsData && <CodeExample data={readingsData} />}
 			</section>
 		</div>
 	)

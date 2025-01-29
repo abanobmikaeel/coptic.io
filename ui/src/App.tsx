@@ -1,13 +1,17 @@
 import Navbar from './components/Navbar'
 import './App.css'
-import Landing from './pages/Landing'
 
+import AppRoutes from './components/Routes'
+
+import { BrowserRouter } from 'react-router-dom'
 function App() {
 	return (
-		<div className="min-h-screen">
-			<Navbar />
-			<Landing />
-		</div>
+		<BrowserRouter>
+			<div className="min-h-screen">
+				<Navbar />
+				<AppRoutes />
+			</div>
+		</BrowserRouter>
 	)
 }
 
