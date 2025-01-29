@@ -89,7 +89,10 @@ export const getByCopticDate = (gregorianDate: Date) => {
 	return transformReading(reading, copticDate)
 }
 
-export const getReferencesForDate = (gregorianDate: Date) => {
+export const getReferencesForDate = (
+	gregorianDate: Date,
+	isDetailed?: boolean
+) => {
 	const copticDate = fromGregorian(gregorianDate)
 	const monthFound = dayReadings[copticDate.month - 1]
 
@@ -102,6 +105,15 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 	)
 	const synxarium =
 		synxariumReadings[copticDate.day + ' ' + copticDate.monthString]
+
+	const synxariumWithoutText = synxarium.map((reading: any) => {
+		const { text, ...rest } = reading
+		return rest
+	})
+
+	if (!isDetailed) {
+		return getByCopticDate(gregorianDate)
+	}
 
 	if (uniqueReading?.Day) {
 		const {
@@ -125,7 +137,7 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 			acts: Acts,
 			lPsalm: LPsalm,
 			lGospel: LGospel,
-			synxarium,
+			synxarium: isDetailed ? synxarium : synxariumWithoutText,
 		}
 	} else if (!monthFound) {
 		throw new Error('Reading not found')
@@ -133,4 +145,5 @@ export const getReferencesForDate = (gregorianDate: Date) => {
 		throw new Error('An error has ocurred while fetching reference for date')
 	}
 }
-export default getByCopticDate
+// export default getByCopticDate
+//

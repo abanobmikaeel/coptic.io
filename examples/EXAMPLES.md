@@ -1,3 +1,0 @@
-### React App
-
-/react-app

@@ -12,7 +12,6 @@ import morgan from 'morgan'
 // GraphQL
 import { graphqlHTTP } from 'express-graphql'
 import schema from './graphql/schema'
-import resolvers from './resolvers'
 
 // Swagger for documentation
 // import YAML from 'yamljs'
@@ -26,18 +25,18 @@ const app = express()
 // Enable CORS
 app.use(cors())
 
-app.use(
-	'/graphql',
-	graphqlHTTP({
-		schema,
-		graphiql: true,
-		rootValue: resolvers,
-		pretty: true,
-	})
-)
+// app.use(
+// 	'/graphql',
+// 	graphqlHTTP({
+// 		schema,
+// 		graphiql: true,
+// 		// rootValue: resolvers,
+// 		pretty: true,
+// 	})
+// )
 
 // Mount api api routes
-app.use(routes)
+app.use('/api', routes)
 
 // Logging
 app.use(morgan('combined', { stream }))
