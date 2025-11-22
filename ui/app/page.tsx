@@ -4,6 +4,7 @@ import { getCalendarData, getTodayCelebrations, getUpcomingCelebrations } from "
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import SubscribeButton from "@/components/SubscribeButton";
 import DeveloperSection from "@/components/DeveloperSection";
+import UpcomingFeastsList from "@/components/UpcomingFeastsList";
 
 export const dynamic = 'force-dynamic';
 
@@ -60,7 +61,7 @@ export default async function Home() {
 
         // Second pass: filter events and add labels
         const seen = new Set<string>();
-        return allEvents.filter(event => {
+        const filtered = allEvents.filter(event => {
           if (event.type !== 'fast') {
             return true; // Keep all non-fast events
           }
@@ -89,7 +90,9 @@ export default async function Home() {
           }
 
           return false; // Skip middle days of fasts
-        }).slice(0, 5); // Show up to 5 events
+        });
+
+        return filtered; // Return all filtered events
       })()
     : [];
 
@@ -148,39 +151,7 @@ export default async function Home() {
           <Card>
             <CardHeader>Upcoming Feasts</CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {upcomingFeasts.length > 0 ? (
-                  upcomingFeasts.map((feast, idx) => {
-                    const formatType = (type: string) => {
-                      const typeMap: Record<string, string> = {
-                        'fast': 'Fast',
-                        'feast': 'Feast',
-                        'lordlyFeast': 'Lordly Feast',
-                        'majorFeast': 'Major Feast',
-                        'minorFeast': 'Minor Feast'
-                      };
-                      return typeMap[type] || type;
-                    };
-
-                    return (
-                      <div
-                        key={idx}
-                        className={idx > 0 ? "border-t border-gray-700 pt-3 flex justify-between items-center" : "flex justify-between items-center"}
-                      >
-                        <div>
-                          <p className="text-gray-300 font-medium">{feast.displayName || feast.name}</p>
-                          <p className="text-gray-500 text-sm">{formatType(feast.type)}</p>
-                        </div>
-                        <p className="text-blue-400 font-semibold">
-                          {new Date(feast.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                        </p>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <p className="text-gray-400 text-sm">No upcoming feasts</p>
-                )}
-              </div>
+              <UpcomingFeastsList feasts={upcomingFeasts} />
             </CardContent>
           </Card>
 
