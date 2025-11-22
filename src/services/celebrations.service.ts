@@ -1,13 +1,41 @@
 import { celebrations } from '../resources/nonMoveableCelebrations.json'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import {
+	getMoveableFeastsForDate,
+	getMoveableFeastsForYear,
+} from '../utils/calculations/getMoveableFeasts'
 import fromGregorian from '../utils/copticDate'
 
 export const getAllCelebrations = () => {
-	return celebrations
+	// Combine static celebrations with moveable feasts for current year
+	const currentYear = new Date().getFullYear()
+	const moveableFeasts = getMoveableFeastsForYear(currentYear)
+
+	// Convert moveable feasts to celebration format
+	const moveableCelebrations = moveableFeasts.map((feast) => ({
+		id: feast.id,
+		name: feast.name,
+		type: feast.type,
+		isMoveable: true,
+	}))
+
+	return [...celebrations, ...moveableCelebrations]
 }
 
 export const getCelebrationsForDate = (date: Date) => {
-	return getStaticCelebrationsForDay(date)
+	const staticCelebrations = getStaticCelebrationsForDay(date) || []
+	const moveableCelebrations = getMoveableFeastsForDate(date)
+
+	// Convert moveable feasts to celebration format
+	const moveableAsCelebrations = moveableCelebrations.map((feast) => ({
+		id: feast.id,
+		name: feast.name,
+		type: feast.type,
+		isMoveable: true,
+	}))
+
+	const allCelebrations = [...staticCelebrations, ...moveableAsCelebrations]
+	return allCelebrations.length > 0 ? allCelebrations : null
 }
 
 export const getUpcomingCelebrations = (days: number = 30) => {

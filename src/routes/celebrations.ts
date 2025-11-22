@@ -67,7 +67,15 @@ const getForDateRoute = createRoute({
 
 app.openapi(getForDateRoute, (c) => {
 	const { date } = c.req.valid('param')
-	const parsedDate = date ? new Date(date) : new Date()
+
+	// Parse date correctly to avoid timezone issues
+	let parsedDate: Date
+	if (date) {
+		const [year, month, day] = date.split('-').map(Number)
+		parsedDate = new Date(year, month - 1, day)
+	} else {
+		parsedDate = new Date()
+	}
 
 	if (isNaN(parsedDate.getTime())) {
 		return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)

@@ -1,7 +1,19 @@
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import { isInMoveableFast } from '../utils/calculations/getMoveableFeasts'
 import fromGregorian from '../utils/copticDate'
 
 export const getFastingForDate = (date: Date) => {
+	// Check for moveable fasting periods first
+	const moveableFast = isInMoveableFast(date)
+	if (moveableFast) {
+		return {
+			isFasting: true,
+			fastType: moveableFast.type,
+			description: moveableFast.name,
+		}
+	}
+
+	// Check for static fasting days
 	const celebrationsForDay = getStaticCelebrationsForDay(date)
 
 	if (!celebrationsForDay) {
@@ -41,6 +53,19 @@ export const getFastingCalendar = (year: number) => {
 		currentDate <= endDate;
 		currentDate.setDate(currentDate.getDate() + 1)
 	) {
+		// Check for moveable fasting periods first
+		const moveableFast = isInMoveableFast(currentDate)
+		if (moveableFast) {
+			fastingDays.push({
+				date: currentDate.toISOString().split('T')[0],
+				copticDate: fromGregorian(currentDate),
+				fastType: moveableFast.type,
+				description: moveableFast.name,
+			})
+			continue
+		}
+
+		// Check for static fasting days
 		const celebrationsForDay = getStaticCelebrationsForDay(currentDate)
 
 		if (celebrationsForDay) {
