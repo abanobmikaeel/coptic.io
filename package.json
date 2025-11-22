@@ -5,10 +5,11 @@
 	"type": "module",
 	"main": "dist/index.js",
 	"scripts": {
-		"dev": "tsx watch src/index.ts",
-		"build": "tsc",
-		"start": "node dist/index.js",
-		"test": "vitest"
+		"dev": "bun --watch src/index.ts",
+		"build": "echo 'No build needed - using Bun runtime'",
+		"start": "bun src/index.ts",
+		"test": "vitest",
+		"railway:start": "bun src/index.ts"
 	},
 	"repository": {
 		"type": "git",
