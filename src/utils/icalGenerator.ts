@@ -21,9 +21,10 @@ const formatICalDateTime = (date: Date): string => {
 
 /**
  * Escape special characters in iCal text
+ * Only escape backslashes, semicolons, and newlines (commas don't need escaping in SUMMARY)
  */
 const escapeICalText = (text: string): string => {
-	return text.replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n')
+	return text.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/\n/g, '\\n')
 }
 
 /**
@@ -93,16 +94,19 @@ export const generateYearCalendar = (year: number): string => {
 		)
 	})
 
-	// Add liturgical seasons
+	// Add liturgical seasons (only those that start within the year)
 	const seasons = getAllSeasonsForYear(year)
 	seasons.forEach((season) => {
-		// Create event for season start
-		ical += generateEvent(
-			`${season.name} begins`,
-			season.startDate,
-			season.description,
-			season.isFasting ? 'Fasting Period' : 'Liturgical Season'
-		)
+		const startDate = new Date(season.startDate)
+		// Only include seasons that start in the requested year
+		if (startDate.getFullYear() === year) {
+			ical += generateEvent(
+				`${season.name} begins`,
+				startDate,
+				season.description,
+				season.isFasting ? 'Fasting Period' : 'Liturgical Season'
+			)
+		}
 	})
 
 	// Add static celebrations throughout the year
@@ -167,15 +171,19 @@ export const generateMultiYearCalendar = (
 			)
 		})
 
-		// Add liturgical seasons
+		// Add liturgical seasons (only those that start within the year)
 		const seasons = getAllSeasonsForYear(year)
 		seasons.forEach((season) => {
-			ical += generateEvent(
-				`${season.name} begins`,
-				season.startDate,
-				season.description,
-				season.isFasting ? 'Fasting Period' : 'Liturgical Season'
-			)
+			const startDate = new Date(season.startDate)
+			// Only include seasons that start in the requested year
+			if (startDate.getFullYear() === year) {
+				ical += generateEvent(
+					`${season.name} begins`,
+					startDate,
+					season.description,
+					season.isFasting ? 'Fasting Period' : 'Liturgical Season'
+				)
+			}
 		})
 
 		// Add static celebrations
