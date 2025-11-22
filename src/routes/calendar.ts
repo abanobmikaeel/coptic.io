@@ -4,6 +4,33 @@ import { generateYearCalendar, generateMultiYearCalendar } from '../utils/icalGe
 
 const calendar = new Hono()
 
+// Get live iCal subscription feed (multi-year)
+// IMPORTANT: This must be defined BEFORE /ical/:year to avoid :year matching "subscribe"
+calendar.get('/ical/subscribe', async (c) => {
+	try {
+		const currentYear = new Date().getFullYear()
+		const startYear = currentYear - 1
+		const endYear = currentYear + 2 // Include previous year, current, and next 2 years
+
+		const icalContent = generateMultiYearCalendar(startYear, endYear)
+
+		c.header('Content-Type', 'text/calendar; charset=utf-8')
+		c.header('Content-Disposition', 'inline; filename="coptic-calendar-live.ics"')
+		c.header('Cache-Control', 'public, max-age=3600') // Cache for 1 hour
+		c.header('X-WR-CALNAME', 'Coptic Orthodox Calendar')
+
+		return c.body(icalContent)
+	} catch (error) {
+		console.error('Error generating iCal subscription:', error)
+		return c.json(
+			{
+				error: error instanceof Error ? error.message : 'Failed to generate iCal subscription',
+			},
+			500
+		)
+	}
+})
+
 // Get iCal feed for a specific year
 calendar.get('/ical/:year', async (c) => {
 	try {
@@ -26,32 +53,6 @@ calendar.get('/ical/:year', async (c) => {
 		return c.json(
 			{
 				error: error instanceof Error ? error.message : 'Failed to generate iCal',
-			},
-			500
-		)
-	}
-})
-
-// Get live iCal subscription feed (multi-year)
-calendar.get('/ical/subscribe', async (c) => {
-	try {
-		const currentYear = new Date().getFullYear()
-		const startYear = currentYear - 1
-		const endYear = currentYear + 2 // Include previous year, current, and next 2 years
-
-		const icalContent = generateMultiYearCalendar(startYear, endYear)
-
-		c.header('Content-Type', 'text/calendar; charset=utf-8')
-		c.header('Content-Disposition', 'inline; filename="coptic-calendar-live.ics"')
-		c.header('Cache-Control', 'public, max-age=3600') // Cache for 1 hour
-		c.header('X-WR-CALNAME', 'Coptic Orthodox Calendar')
-
-		return c.body(icalContent)
-	} catch (error) {
-		console.error('Error generating iCal subscription:', error)
-		return c.json(
-			{
-				error: error instanceof Error ? error.message : 'Failed to generate iCal subscription',
 			},
 			500
 		)
