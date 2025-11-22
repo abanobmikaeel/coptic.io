@@ -2,12 +2,12 @@ import { describe, it, expect } from 'vitest'
 import fromGregorian from './copticDate'
 
 describe('Coptic Date Conversion', () => {
-	it('should convert January 15, 2025 to Toba 6, 1741', () => {
-		const gregorianDate = new Date('2025-01-15')
+	it('should convert January 15, 2025 to Toba 7, 1741', () => {
+		const gregorianDate = new Date(2025, 0, 15)
 		const copticDate = fromGregorian(gregorianDate)
 
-		expect(copticDate.dateString).toBe('Toba 6, 1741')
-		expect(copticDate.day).toBe(6)
+		expect(copticDate.dateString).toBe('Toba 7, 1741')
+		expect(copticDate.day).toBe(7)
 		expect(copticDate.month).toBe(5)
 		expect(copticDate.year).toBe(1741)
 		expect(copticDate.monthString).toBe('Toba')

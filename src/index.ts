@@ -66,13 +66,16 @@ app.onError((err, c) => {
 
 const port = Number(process.env.PORT) || 3000
 
-console.log(`Server is running on port ${port}`)
-console.log(`GraphQL Playground: http://localhost:${port}/graphql`)
-console.log(`OpenAPI Spec: http://localhost:${port}/openapi.json`)
+// Only start server if not in test environment
+if (import.meta.env?.VITEST !== true && process.env.NODE_ENV !== 'test') {
+	console.log(`Server is running on port ${port}`)
+	console.log(`GraphQL Playground: http://localhost:${port}/graphql`)
+	console.log(`OpenAPI Spec: http://localhost:${port}/openapi.json`)
 
-serve({
-	fetch: app.fetch,
-	port,
-})
+	serve({
+		fetch: app.fetch,
+		port,
+	})
+}
 
 export default app

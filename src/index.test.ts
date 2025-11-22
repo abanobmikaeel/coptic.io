@@ -31,8 +31,8 @@ describe('API Endpoints', () => {
 			expect(res.status).toBe(200)
 
 			const json = await res.json()
-			expect(json.dateString).toBe('Toba 6, 1741')
-			expect(json.day).toBe(6)
+			expect(json.dateString).toBe('Toba 7, 1741')
+			expect(json.day).toBe(7)
 			expect(json.month).toBe(5)
 			expect(json.year).toBe(1741)
 			expect(json.monthString).toBe('Toba')
@@ -74,7 +74,8 @@ describe('API Endpoints', () => {
 			expect(json.reference).toHaveProperty('LPsalm')
 			expect(json.reference).toHaveProperty('LGospel')
 			expect(Array.isArray(json.Synxarium)).toBe(true)
-			expect(Array.isArray(json.celebrations)).toBe(true)
+			// celebrations can be null or array depending on if there are celebrations for this day
+			expect(json.celebrations === null || Array.isArray(json.celebrations)).toBe(true)
 		})
 
 		it('should return detailed readings when detailed=true', async () => {
