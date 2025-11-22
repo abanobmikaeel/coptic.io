@@ -17,4 +17,5 @@ ENV PORT=3000
 EXPOSE 3000
 
 # Run the app directly with bun
-CMD ["bun", "run", "src/index.ts"]
+# Note: Use "bun" not "bun run" to avoid Bun's auto-serve conflicting with our explicit serve() call
+CMD ["bun", "src/index.ts"]

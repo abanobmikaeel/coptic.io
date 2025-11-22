@@ -9,7 +9,6 @@ import fastingRoutes from './routes/fasting'
 import synaxariumRoutes from './routes/synaxarium'
 import seasonRoutes from './routes/season'
 import { yoga } from './graphql'
-import { serve } from '@hono/node-server'
 
 const app = new OpenAPIHono()
 
@@ -66,18 +65,9 @@ app.onError((err, c) => {
 	return c.json({ error: err.message }, 500)
 })
 
-const port = Number(process.env.PORT) || 3000
-
-// Only start server if not in test environment
-if (import.meta.env?.VITEST !== true && process.env.NODE_ENV !== 'test') {
-	console.log(`Server is running on port ${port}`)
-	console.log(`GraphQL Playground: http://localhost:${port}/graphql`)
-	console.log(`OpenAPI Spec: http://localhost:${port}/openapi.json`)
-
-	serve({
-		fetch: app.fetch,
-		port,
-	})
+// Export the app for Bun to auto-serve
+// Bun will automatically call Bun.serve() when running the file
+export default {
+	fetch: app.fetch,
+	port: Number(process.env.PORT) || 3000,
 }
-
-export default app
