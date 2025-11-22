@@ -21,8 +21,14 @@
 	},
 	"homepage": "https://github.com/abanobmikaeel/coptic.io/blob/main/README.md",
 	"dependencies": {
+		"@graphql-tools/schema": "^10.0.29",
+		"@hono/node-server": "^1.14.3",
+		"@hono/zod-openapi": "^1.1.5",
+		"@scalar/hono-api-reference": "^0.9.25",
+		"graphql": "^16.12.0",
+		"graphql-yoga": "^5.16.2",
 		"hono": "^4.7.10",
-		"@hono/node-server": "^1.14.3"
+		"zod": "^4.1.12"
 	},
 	"devDependencies": {
 		"@types/node": "^22.10.5",
