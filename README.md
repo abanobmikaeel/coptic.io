@@ -1,132 +1,95 @@
-# COPTIC.IO
+# Coptic.IO
 
-<p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Coptic_cross.svg" alt="Coptic Cross" width="300"/>
-</p>
+> A RESTful and GraphQL API for the Coptic Orthodox liturgical calendar, daily readings, and Synaxarium.
 
-Bringing a 1700+ year-old calendar to modern times. A fast, modern API for daily Coptic readings according to the Katameros.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+## Overview
+
+Coptic.IO provides programmatic access to the Coptic Orthodox Church's liturgical calendar, including daily scripture readings (Katameros), feast days, fasting periods, and saint commemorations (Synaxarium). The API supports both REST and GraphQL interfaces.
+
+**Live API**: `https://copticio-production.up.railway.app`
 
 ## Features
 
-- **Daily Coptic Readings** - Get detailed readings for any Coptic day
-- **Calendar Conversion** - Convert Gregorian dates to Coptic dates
-- **Celebrations & Feasts** - Browse all feasts and upcoming celebrations
-- **Fasting Calendar** - Check fasting days and get annual fasting calendars
-- **Synaxarium** - Search and browse saint commemorations
-- **OpenAPI Documentation** - Full API spec available at `/openapi.json`
-- **Fast & Modern** - Built with Hono for maximum performance
+- Daily scripture readings from the Katameros
+- Gregorian to Coptic calendar conversion
+- Liturgical feast days and celebrations
+- Fasting calendar with annual schedules
+- iCalendar (.ics) export for calendar subscriptions
+- Synaxarium search and retrieval
+- Liturgical season information
+- Both REST and GraphQL endpoints
 
-## API Endpoints
+## Quick Start
 
-### Health Check
 ```bash
-GET /health
+# Get today's readings
+curl https://copticio-production.up.railway.app/api/readings
+
+# Convert a date to Coptic calendar
+curl https://copticio-production.up.railway.app/api/calendar/2025-01-15
+
+# Check if a date is a fasting day
+curl https://copticio-production.up.railway.app/api/fasting/2025-03-15
+
+# Subscribe to iCalendar feed
+https://copticio-production.up.railway.app/api/calendar/ical/subscribe
 ```
+
+## REST API Reference
 
 ### Calendar
 
-#### Convert date to Coptic
-```bash
-GET /api/calendar/:date
-# Example: GET /api/calendar/2025-01-15
-```
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/calendar/:date?` | Convert Gregorian to Coptic date (defaults to today) |
+| `GET /api/calendar/ical/:year` | Get iCalendar feed for specific year |
+| `GET /api/calendar/ical/subscribe` | Get live multi-year iCalendar subscription |
 
 ### Readings
 
-#### Get daily readings
-```bash
-GET /api/readings/:date?detailed=true
-# Example: GET /api/readings/2025-01-15
-# Example: GET /api/readings/2025-01-15?detailed=true
-```
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/readings/:date?` | Get daily readings (defaults to today) |
+| `GET /api/readings/:date?detailed=true` | Get parsed readings with full text |
 
 ### Celebrations
 
-#### Get all celebrations
-```bash
-GET /api/celebrations
-```
-
-#### Get celebrations for a date
-```bash
-GET /api/celebrations/:date
-# Example: GET /api/celebrations/2025-01-07
-```
-
-#### Get upcoming celebrations
-```bash
-GET /api/celebrations/upcoming/list?days=30
-# Example: GET /api/celebrations/upcoming/list?days=7
-```
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/celebrations` | List all celebrations |
+| `GET /api/celebrations/:date` | Get celebrations for a specific date |
+| `GET /api/celebrations/upcoming/list?days=N` | Get upcoming celebrations (default: 30 days) |
 
 ### Fasting
 
-#### Check if date is fasting
-```bash
-GET /api/fasting/:date
-# Example: GET /api/fasting/2025-01-07
-```
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/fasting/:date` | Check if date is a fasting day |
+| `GET /api/fasting/calendar/:year` | Get annual fasting calendar |
 
-Response:
-```json
-{
-  "isFasting": true,
-  "fastType": "fast",
-  "description": "Advent Fast"
-}
-```
+### Seasons
 
-#### Get fasting calendar for year
-```bash
-GET /api/fasting/calendar/:year
-# Example: GET /api/fasting/calendar/2025
-```
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/season/:date?` | Get liturgical season for date |
+| `GET /api/season/year/:year` | Get all seasons for a year |
+| `GET /api/season/fasting/:year` | Get all fasting periods for a year |
 
 ### Synaxarium
 
-#### Get synaxarium for date
-```bash
-GET /api/synaxarium/:date?detailed=true
-# Example: GET /api/synaxarium/2025-01-15
-```
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/synaxarium/:date` | Get saint commemorations for date |
+| `GET /api/synaxarium/search/query?q=term` | Search Synaxarium entries |
 
-#### Search synaxarium
-```bash
-GET /api/synaxarium/search/query?q=Mary
-# Example: GET /api/synaxarium/search/query?q=Saint
-```
+## GraphQL API
 
-## Development
+Interactive playground available at `/graphql`
 
-```bash
-# Install dependencies
-npm install
+**Example query:**
 
-# Run dev server
-npm run dev
-
-# Run tests
-npm test
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
-```
-
-## API Documentation
-
-### REST API
-- **OpenAPI Spec**: `GET /openapi.json`
-- View the full OpenAPI 3.0 specification for detailed request/response schemas
-
-### GraphQL API
-- **GraphQL Playground**: `GET /graphql`
-- Interactive GraphQL playground with schema documentation
-- **Endpoint**: `POST /graphql`
-
-Example GraphQL query:
 ```graphql
 {
   copticDate(date: "2025-01-15") {
@@ -144,19 +107,50 @@ Example GraphQL query:
 }
 ```
 
+## Documentation
+
+- **OpenAPI Spec**: `/openapi.json`
+- **GraphQL Playground**: `/graphql`
+
+## Development
+
+### Prerequisites
+
+- Node.js 22+ or Bun 1.0+
+
+### Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Run tests
+npm test
+```
+
+### Docker
+
+```bash
+# Build image
+docker build -t coptic-api .
+
+# Run container
+docker run -p 3000:3000 coptic-api
+```
+
 ## Tech Stack
 
-- **Runtime**: Node.js 22+
-- **Framework**: Hono with OpenAPI
+- **Runtime**: Bun
+- **Framework**: Hono
 - **Language**: TypeScript
 - **Validation**: Zod
 - **Testing**: Vitest
-- **Hosting**: Railway
+- **GraphQL**: GraphQL Yoga
+- **Deployment**: Railway
 
 ## License
 
 MIT
-
-## Contributing
-
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
