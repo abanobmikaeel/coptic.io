@@ -1,4 +1,3 @@
-import { serve } from '@hono/node-server'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
@@ -70,9 +69,8 @@ console.log(`Server is running on port ${port}`)
 console.log(`GraphQL Playground: http://localhost:${port}/graphql`)
 console.log(`OpenAPI Spec: http://localhost:${port}/openapi.json`)
 
-serve({
-	fetch: app.fetch,
+// Use Bun's native server for better performance
+export default {
 	port,
-})
-
-export default app
+	fetch: app.fetch,
+}
