@@ -1,4 +1,3 @@
-import { serve } from '@hono/node-server'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
@@ -9,6 +8,7 @@ import celebrationsRoutes from './routes/celebrations'
 import fastingRoutes from './routes/fasting'
 import synaxariumRoutes from './routes/synaxarium'
 import { yoga } from './graphql'
+import { serve } from '@hono/node-server'
 
 const app = new OpenAPIHono()
 
