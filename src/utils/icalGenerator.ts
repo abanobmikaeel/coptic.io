@@ -110,9 +110,10 @@ export const generateYearCalendar = (year: number): string => {
 	})
 
 	// Add static celebrations throughout the year
-	// Loop through each day of the year
+	// Skip daily fast events since we already have "begins" events from seasons
 	const startDate = new Date(year, 0, 1)
 	const endDate = new Date(year, 11, 31)
+	const fastNames = new Set(['Advent Fast', 'Nativity Fast', 'Kiahk'])
 
 	for (
 		let date = new Date(startDate);
@@ -123,7 +124,7 @@ export const generateYearCalendar = (year: number): string => {
 
 		if (celebrations && Array.isArray(celebrations)) {
 			celebrations.forEach((celebration: any) => {
-				if (celebration && celebration.name) {
+				if (celebration && celebration.name && !fastNames.has(celebration.name)) {
 					ical += generateEvent(
 						celebration.name,
 						new Date(date),
@@ -187,8 +188,10 @@ export const generateMultiYearCalendar = (
 		})
 
 		// Add static celebrations
+		// Skip daily fast events since we already have "begins" events from seasons
 		const startDate = new Date(year, 0, 1)
 		const endDate = new Date(year, 11, 31)
+		const fastNames = new Set(['Advent Fast', 'Nativity Fast', 'Kiahk'])
 
 		for (
 			let date = new Date(startDate);
@@ -199,7 +202,7 @@ export const generateMultiYearCalendar = (
 
 			if (celebrations && Array.isArray(celebrations)) {
 				celebrations.forEach((celebration: any) => {
-					if (celebration && celebration.name) {
+					if (celebration && celebration.name && !fastNames.has(celebration.name)) {
 						ical += generateEvent(
 							celebration.name,
 							new Date(date),
