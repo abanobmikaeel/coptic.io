@@ -1,4 +1,5 @@
 import easterDate from './getEaster'
+import { addDays, normalizeDate } from '../dateUtils'
 
 /**
  * Calculates all moveable feasts based on the Coptic Orthodox Easter date
@@ -12,15 +13,6 @@ export interface MoveableFeast {
 	date: Date
 	isMoveable: boolean
 	daysFromEaster: number
-}
-
-/**
- * Add days to a date
- */
-const addDays = (date: Date, days: number): Date => {
-	const result = new Date(date)
-	result.setDate(result.getDate() + days)
-	return result
 }
 
 /**
@@ -126,13 +118,6 @@ export const getMoveableFeastsForYear = (
 			daysFromEaster: 50,
 		},
 	]
-}
-
-/**
- * Normalize date to local midnight to avoid timezone issues
- */
-const normalizeDate = (date: Date): Date => {
-	return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }
 
 /**

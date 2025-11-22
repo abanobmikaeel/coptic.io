@@ -7,6 +7,7 @@ import calendarRoutes from './routes/calendar'
 import celebrationsRoutes from './routes/celebrations'
 import fastingRoutes from './routes/fasting'
 import synaxariumRoutes from './routes/synaxarium'
+import seasonRoutes from './routes/season'
 import { yoga } from './graphql'
 import { serve } from '@hono/node-server'
 
@@ -52,6 +53,7 @@ app.route('/api/calendar', calendarRoutes)
 app.route('/api/celebrations', celebrationsRoutes)
 app.route('/api/fasting', fastingRoutes)
 app.route('/api/synaxarium', synaxariumRoutes)
+app.route('/api/season', seasonRoutes)
 
 // 404 handler
 app.notFound((c) => {
