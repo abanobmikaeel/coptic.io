@@ -6,16 +6,13 @@ import {
 } from './verseTextTransformer'
 import dayReadings from '../../resources/dayReadings.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
-const synxariumReadings: Record<
-	string,
-	any
-> = require('../../resources/synxarium.json')
+import synxariumReadings from '../../resources/synxarium.json'
 import {
 	verseRangePattern,
 	oneVersePattern,
 	oneChapterPattern,
-} from '../../../src/utils/regexPatterns'
-import fromGregorian from '../../../src/utils/copticDate'
+} from '../../utils/regexPatterns'
+import fromGregorian from '../../utils/copticDate'
 /**
  *
  * @param verseString 'a string for indexing a bible verse '
@@ -120,7 +117,7 @@ export const getByCopticDate = (
 		}
 
 		const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
-		const synxarium = synxariumReadings[synxariumKey]
+		const synxarium = (synxariumReadings as Record<string, any>)[synxariumKey]
 
 		if (!synxarium) {
 			throw new Error(`Synxarium not found for: ${synxariumKey}`)
