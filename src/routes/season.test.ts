@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import app from '../index'
+import { app } from '../index'
 
 describe('Season API Endpoints', () => {
 	describe('GET /api/season', () => {

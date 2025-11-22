@@ -65,8 +65,11 @@ app.onError((err, c) => {
 	return c.json({ error: err.message }, 500)
 })
 
-// Export the app for Bun to auto-serve
-// Bun will automatically call Bun.serve() when running the file
+// Export the app for tests
+export { app }
+
+// Export server config as default for Bun to auto-serve
+// Bun will automatically call Bun.serve() when running the file directly
 export default {
 	fetch: app.fetch,
 	port: Number(process.env.PORT) || 3000,
