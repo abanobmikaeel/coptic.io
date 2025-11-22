@@ -17,7 +17,8 @@ export async function getCalendarData(): Promise<CalendarData | null> {
 
 export async function getTodayCelebrations(): Promise<Celebration[] | null> {
   try {
-    const res = await fetch(`${API_BASE}/celebrations`, {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const res = await fetch(`${API_BASE}/celebrations/${today}`, {
       cache: 'no-store',
     });
     if (!res.ok) return null;
