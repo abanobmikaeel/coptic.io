@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import fromGregorian from '../utils/copticDate'
-import { generateYearCalendar, generateMultiYearCalendar } from '../utils/icalGenerator'
+import * as calendarService from '../services/calendar.service'
 import { parse, isValid } from 'date-fns'
 
 const calendar = new Hono()
@@ -9,11 +9,7 @@ const calendar = new Hono()
 // IMPORTANT: This must be defined BEFORE /ical/:year to avoid :year matching "subscribe"
 calendar.get('/ical/subscribe', async (c) => {
 	try {
-		const currentYear = new Date().getFullYear()
-		const startYear = currentYear - 1
-		const endYear = currentYear + 2 // Include previous year, current, and next 2 years
-
-		const icalContent = generateMultiYearCalendar(startYear, endYear)
+		const icalContent = calendarService.getSubscriptionCalendar()
 
 		c.header('Content-Type', 'text/calendar; charset=utf-8')
 		c.header('Content-Disposition', 'inline; filename="coptic-calendar-live.ics"')
@@ -38,11 +34,7 @@ calendar.get('/ical/:year', async (c) => {
 		const yearParam = c.req.param('year')
 		const year = parseInt(yearParam)
 
-		if (isNaN(year) || year < 1900 || year > 2199) {
-			return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
-		}
-
-		const icalContent = generateYearCalendar(year)
+		const icalContent = calendarService.getYearCalendar(year)
 
 		c.header('Content-Type', 'text/calendar; charset=utf-8')
 		c.header('Content-Disposition', `inline; filename="coptic-calendar-${year}.ics"`)

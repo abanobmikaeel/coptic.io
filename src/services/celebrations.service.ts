@@ -5,7 +5,7 @@ import {
 	getMoveableFeastsForYear,
 } from '../utils/calculations/getMoveableFeasts'
 import fromGregorian from '../utils/copticDate'
-import { format } from 'date-fns'
+import { format, addDays } from 'date-fns'
 
 export const getAllCelebrations = () => {
 	// Combine static celebrations with moveable feasts for current year
@@ -44,8 +44,7 @@ export const getUpcomingCelebrations = (days: number = 30) => {
 	const today = new Date()
 
 	for (let i = 0; i < days; i++) {
-		const currentDate = new Date(today)
-		currentDate.setDate(today.getDate() + i)
+		const currentDate = addDays(today, i)
 
 		const celebrationsForDay = getStaticCelebrationsForDay(currentDate)
 
