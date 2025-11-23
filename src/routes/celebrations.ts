@@ -1,10 +1,6 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import * as celebrationsService from '../services/celebrations.service'
-import {
-	CelebrationSchema,
-	UpcomingCelebrationSchema,
-	ErrorSchema,
-} from '../schemas'
+import { CelebrationSchema, UpcomingCelebrationSchema, ErrorSchema } from '../schemas'
 
 const app = new OpenAPIHono()
 
@@ -14,8 +10,7 @@ const getAllRoute = createRoute({
 	path: '/',
 	tags: ['Celebrations'],
 	summary: 'Get all celebrations',
-	description:
-		'Returns all feasts, fasts, and celebrations in the Coptic calendar',
+	description: 'Returns all feasts, fasts, and celebrations in the Coptic calendar',
 	responses: {
 		200: {
 			description: 'List of all celebrations',
@@ -39,7 +34,8 @@ const getForDateRoute = createRoute({
 	path: '/:date?',
 	tags: ['Celebrations'],
 	summary: 'Get celebrations for a specific date',
-	description: 'Returns all celebrations occurring on a specific Gregorian date. Defaults to today if no date provided.',
+	description:
+		'Returns all celebrations occurring on a specific Gregorian date. Defaults to today if no date provided.',
 	request: {
 		params: z.object({
 			date: z.string().optional().openapi({ example: '2025-01-07' }),

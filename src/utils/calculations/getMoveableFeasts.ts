@@ -18,9 +18,7 @@ export interface MoveableFeast {
 /**
  * Get all moveable feasts for a given year
  */
-export const getMoveableFeastsForYear = (
-	gregorianYear: number
-): MoveableFeast[] => {
+export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[] => {
 	const easter = easterDate(gregorianYear)
 	const easterDateObj = new Date(easter.year, easter.month - 1, easter.day)
 

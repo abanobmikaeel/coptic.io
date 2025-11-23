@@ -19,18 +19,12 @@ export const oneChapterPatternExact = new RegExp('^[0-9]* *[A-z]+ [0-9]+$')
 /**
  * Single verse, example: Psalms 119:96
  */
-export const oneVersePattern = concatRegexp(
-	oneChapterPattern,
-	new RegExp(':[0-9]+')
-)
+export const oneVersePattern = concatRegexp(oneChapterPattern, new RegExp(':[0-9]+'))
 
 /**
  * Verse range, example: Psalms 119:96-97
  */
-export const verseRangePattern = concatRegexp(
-	oneVersePattern,
-	new RegExp('-[0-9]')
-)
+export const verseRangePattern = concatRegexp(oneVersePattern, new RegExp('-[0-9]'))
 
 /**
  * Verse with commas,

@@ -1,17 +1,9 @@
 import { Reading } from '../../types'
-import {
-	getVerseRange,
-	getSingleVerse,
-	getSingleChapter,
-} from './verseTextTransformer'
+import { getVerseRange, getSingleVerse, getSingleChapter } from './verseTextTransformer'
 import dayReadings from '../../resources/dayReadings.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import synxariumReadings from '../../resources/synxarium.json'
-import {
-	verseRangePattern,
-	oneVersePattern,
-	oneChapterPattern,
-} from '../../utils/regexPatterns'
+import { verseRangePattern, oneVersePattern, oneChapterPattern } from '../../utils/regexPatterns'
 import fromGregorian from '../../utils/copticDate'
 /**
  *
@@ -32,9 +24,12 @@ export const getReading = (verseString: string): Reading | null => {
 }
 
 // TODO: add ability to combine verses that have same bookName + chapter #
-export const parseReadingString = (verseString: string): Reading[] | null => {
+export const parseReadingString = (verseString?: string): Reading[] | null => {
+	if (!verseString) {
+		return null
+	}
 	if (verseString.includes(';')) {
-		let finalArr: Reading[] = []
+		const finalArr: Reading[] = []
 		verseString.split(';').forEach((verse) => {
 			const currVerse = getReading(verse)
 			if (currVerse) {
@@ -48,18 +43,25 @@ export const parseReadingString = (verseString: string): Reading[] | null => {
 	}
 }
 
-export const transformReading = (record: any, copticDate: any) => {
-	const {
-		VPsalm,
-		VGospel,
-		MPsalm,
-		MGospel,
-		Pauline,
-		Catholic,
-		Acts,
-		LPsalm,
-		LGospel,
-	} = record
+type ReadingRecord = {
+	VPsalm?: string
+	VGospel?: string
+	MPsalm?: string
+	MGospel?: string
+	Pauline?: string
+	Catholic?: string
+	Acts?: string
+	LPsalm?: string
+	LGospel?: string
+}
+
+type SynaxariumEntry = {
+	_?: string
+	[key: string]: unknown
+}
+
+export const transformReading = (record: ReadingRecord) => {
+	const { VPsalm, VGospel, MPsalm, MGospel, Pauline, Catholic, Acts, LPsalm, LGospel } = record
 
 	return {
 		VPsalm: parseReadingString(VPsalm),
@@ -75,8 +77,8 @@ export const transformReading = (record: any, copticDate: any) => {
 }
 
 type ReadingResponse = {
-	reference?: any
-	Synxarium: any[]
+	reference?: unknown
+	Synxarium: SynaxariumEntry[]
 	VPsalm?: Reading[] | null
 	VGospel?: Reading[] | null
 	MPsalm?: Reading[] | null
@@ -88,10 +90,7 @@ type ReadingResponse = {
 	LGospel?: Reading[] | null
 }
 
-export const getByCopticDate = (
-	gregorianDate: Date,
-	isDetailed?: boolean
-): ReadingResponse => {
+export const getByCopticDate = (gregorianDate: Date, isDetailed?: boolean): ReadingResponse => {
 	try {
 		if (!gregorianDate || !(gregorianDate instanceof Date)) {
 			throw new Error('Invalid gregorian date provided')
@@ -117,14 +116,14 @@ export const getByCopticDate = (
 		}
 
 		const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
-		const synxarium = (synxariumReadings as Record<string, any>)[synxariumKey]
+		const synxarium = (synxariumReadings as Record<string, SynaxariumEntry[]>)[synxariumKey]
 
 		if (!synxarium) {
 			throw new Error(`Synxarium not found for: ${synxariumKey}`)
 		}
 
-		const synxariumWithoutText = synxarium.map((reading: any) => {
-			const { text, ...rest } = reading
+		const synxariumWithoutText = synxarium.map((reading: SynaxariumEntry) => {
+			const { _, ...rest } = reading
 			return rest
 		})
 		const synxariumText = isDetailed ? synxarium : synxariumWithoutText
@@ -133,7 +132,7 @@ export const getByCopticDate = (
 			return { reference: reading, Synxarium: synxariumText }
 		}
 
-		const detailedReadings = transformReading(reading, copticDate)
+		const detailedReadings = transformReading(reading)
 		return { ...detailedReadings, Synxarium: synxariumText }
 	} catch (error) {
 		console.error(

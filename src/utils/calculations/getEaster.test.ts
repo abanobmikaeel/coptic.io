@@ -24,8 +24,7 @@ describe('Easter Calculation', () => {
 		const easter2024 = getEaster(2024)
 		const easter2025 = getEaster(2025)
 		// Either month or day should be different
-		const isDifferent =
-			easter2024.month !== easter2025.month || easter2024.day !== easter2025.day
+		const isDifferent = easter2024.month !== easter2025.month || easter2024.day !== easter2025.day
 		expect(isDifferent).toBe(true)
 	})
 

@@ -26,7 +26,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Easter 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.easter)
-		const easter = feasts.find(f => f.name === 'Easter')
+		const easter = feasts.find((f) => f.name === 'Easter')
 
 		expect(easter).toBeDefined()
 		expect(easter?.date.getFullYear()).toBe(2025)
@@ -36,7 +36,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Fast of Nineveh 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.fastOfNineveh)
-		const nineveh = feasts.find(f => f.name === 'Fast of Nineveh')
+		const nineveh = feasts.find((f) => f.name === 'Fast of Nineveh')
 
 		expect(nineveh).toBeDefined()
 		expect(nineveh?.date.toDateString()).toBe(officialDates2025.fastOfNineveh.toDateString())
@@ -44,7 +44,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Great Lent 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.greatLent)
-		const greatLent = feasts.find(f => f.name === 'Great Lent')
+		const greatLent = feasts.find((f) => f.name === 'Great Lent')
 
 		expect(greatLent).toBeDefined()
 		expect(greatLent?.date.toDateString()).toBe(officialDates2025.greatLent.toDateString())
@@ -52,7 +52,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Palm Sunday 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.palmSunday)
-		const palmSunday = feasts.find(f => f.name === 'Palm Sunday')
+		const palmSunday = feasts.find((f) => f.name === 'Palm Sunday')
 
 		expect(palmSunday).toBeDefined()
 		expect(palmSunday?.date.toDateString()).toBe(officialDates2025.palmSunday.toDateString())
@@ -60,7 +60,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Holy Thursday 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.holyThursday)
-		const holyThursday = feasts.find(f => f.name === 'Holy Thursday')
+		const holyThursday = feasts.find((f) => f.name === 'Holy Thursday')
 
 		expect(holyThursday).toBeDefined()
 		expect(holyThursday?.date.toDateString()).toBe(officialDates2025.holyThursday.toDateString())
@@ -68,7 +68,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Good Friday 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.goodFriday)
-		const goodFriday = feasts.find(f => f.name === 'Good Friday')
+		const goodFriday = feasts.find((f) => f.name === 'Good Friday')
 
 		expect(goodFriday).toBeDefined()
 		expect(goodFriday?.date.toDateString()).toBe(officialDates2025.goodFriday.toDateString())
@@ -76,7 +76,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Thomas Sunday 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.thomasSunday)
-		const thomasSunday = feasts.find(f => f.name === 'Thomas Sunday')
+		const thomasSunday = feasts.find((f) => f.name === 'Thomas Sunday')
 
 		expect(thomasSunday).toBeDefined()
 		expect(thomasSunday?.date.toDateString()).toBe(officialDates2025.thomasSunday.toDateString())
@@ -84,7 +84,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Ascension 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.ascension)
-		const ascension = feasts.find(f => f.name === 'Ascension')
+		const ascension = feasts.find((f) => f.name === 'Ascension')
 
 		expect(ascension).toBeDefined()
 		expect(ascension?.date.toDateString()).toBe(officialDates2025.ascension.toDateString())
@@ -92,7 +92,7 @@ describe('Moveable Feasts - 2025 Official Calendar', () => {
 
 	it('should calculate Pentecost 2025 correctly', () => {
 		const feasts = getMoveableFeastsForDate(officialDates2025.pentecost)
-		const pentecost = feasts.find(f => f.name === 'Pentecost')
+		const pentecost = feasts.find((f) => f.name === 'Pentecost')
 
 		expect(pentecost).toBeDefined()
 		expect(pentecost?.date.toDateString()).toBe(officialDates2025.pentecost.toDateString())
@@ -114,9 +114,9 @@ describe('Moveable Feasts - Multi-Year Regression', () => {
 		// Test years from 1900-2199 (algorithm's valid range)
 		const testYears = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
 
-		testYears.forEach(year => {
+		testYears.forEach((year) => {
 			const feasts = getMoveableFeastsForYear(year)
-			const easter = feasts.find(f => f.name === 'Easter')
+			const easter = feasts.find((f) => f.name === 'Easter')
 
 			expect(easter).toBeDefined()
 			expect(easter?.date.getFullYear()).toBe(year)
@@ -127,14 +127,16 @@ describe('Moveable Feasts - Multi-Year Regression', () => {
 
 	it('should maintain correct day offsets from Easter for all feasts', () => {
 		const feasts = getMoveableFeastsForYear(2025)
-		const easter = feasts.find(f => f.name === 'Easter')
+		const easter = feasts.find((f) => f.name === 'Easter')
 
 		expect(easter).toBeDefined()
 		if (!easter) return
 
 		// Verify all other feasts maintain correct offset from Easter
-		feasts.forEach(feast => {
-			const daysDiff = Math.round((feast.date.getTime() - easter.date.getTime()) / (1000 * 60 * 60 * 24))
+		feasts.forEach((feast) => {
+			const daysDiff = Math.round(
+				(feast.date.getTime() - easter.date.getTime()) / (1000 * 60 * 60 * 24)
+			)
 			expect(daysDiff).toBe(feast.daysFromEaster)
 		})
 	})
@@ -142,10 +144,10 @@ describe('Moveable Feasts - Multi-Year Regression', () => {
 	it('should ensure Palm Sunday is always 7 days before Easter', () => {
 		const testYears = [2020, 2021, 2022, 2023, 2024, 2025]
 
-		testYears.forEach(year => {
+		testYears.forEach((year) => {
 			const feasts = getMoveableFeastsForYear(year)
-			const easter = feasts.find(f => f.name === 'Easter')
-			const palmSunday = feasts.find(f => f.name === 'Palm Sunday')
+			const easter = feasts.find((f) => f.name === 'Easter')
+			const palmSunday = feasts.find((f) => f.name === 'Palm Sunday')
 
 			expect(easter).toBeDefined()
 			expect(palmSunday).toBeDefined()
@@ -160,10 +162,10 @@ describe('Moveable Feasts - Multi-Year Regression', () => {
 	it('should ensure Pentecost is always 49 days after Easter', () => {
 		const testYears = [2020, 2021, 2022, 2023, 2024, 2025]
 
-		testYears.forEach(year => {
+		testYears.forEach((year) => {
 			const feasts = getMoveableFeastsForYear(year)
-			const easter = feasts.find(f => f.name === 'Easter')
-			const pentecost = feasts.find(f => f.name === 'Pentecost')
+			const easter = feasts.find((f) => f.name === 'Easter')
+			const pentecost = feasts.find((f) => f.name === 'Pentecost')
 
 			expect(easter).toBeDefined()
 			expect(pentecost).toBeDefined()
@@ -179,7 +181,7 @@ describe('Moveable Feasts - Multi-Year Regression', () => {
 describe('Moveable Feasts - Data Integrity', () => {
 	it('should have unique IDs for all moveable feasts', () => {
 		const feasts = getMoveableFeastsForYear(2025)
-		const ids = feasts.map(f => f.id)
+		const ids = feasts.map((f) => f.id)
 		const uniqueIds = new Set(ids)
 
 		expect(uniqueIds.size).toBe(ids.length)
@@ -188,7 +190,7 @@ describe('Moveable Feasts - Data Integrity', () => {
 	it('should mark all feasts as moveable', () => {
 		const feasts = getMoveableFeastsForYear(2025)
 
-		feasts.forEach(feast => {
+		feasts.forEach((feast) => {
 			expect(feast.isMoveable).toBe(true)
 		})
 	})
@@ -197,7 +199,7 @@ describe('Moveable Feasts - Data Integrity', () => {
 		const feasts = getMoveableFeastsForYear(2025)
 		const validTypes = ['majorFeast', 'minorFeast', 'fast']
 
-		feasts.forEach(feast => {
+		feasts.forEach((feast) => {
 			expect(validTypes).toContain(feast.type)
 		})
 	})

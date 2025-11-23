@@ -48,8 +48,7 @@ season.get('/:date?', async (c) => {
 		console.error('Error fetching liturgical season:', error)
 		return c.json(
 			{
-				error:
-					error instanceof Error ? error.message : 'Failed to fetch liturgical season',
+				error: error instanceof Error ? error.message : 'Failed to fetch liturgical season',
 			},
 			500
 		)
@@ -63,10 +62,7 @@ season.get('/year/:year', async (c) => {
 		const year = parseInt(yearParam)
 
 		if (isNaN(year) || year < 1900 || year > 2199) {
-			return c.json(
-				{ error: 'Invalid year. Must be between 1900 and 2199' },
-				400
-			)
+			return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
 		}
 
 		const seasons = getAllSeasonsForYear(year)
@@ -100,10 +96,7 @@ season.get('/fasting/:year', async (c) => {
 		const year = parseInt(yearParam)
 
 		if (isNaN(year) || year < 1900 || year > 2199) {
-			return c.json(
-				{ error: 'Invalid year. Must be between 1900 and 2199' },
-				400
-			)
+			return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
 		}
 
 		const fastingPeriods = getFastingPeriodsForYear(year)
@@ -122,8 +115,7 @@ season.get('/fasting/:year', async (c) => {
 		console.error('Error fetching fasting periods:', error)
 		return c.json(
 			{
-				error:
-					error instanceof Error ? error.message : 'Failed to fetch fasting periods',
+				error: error instanceof Error ? error.message : 'Failed to fetch fasting periods',
 			},
 			500
 		)

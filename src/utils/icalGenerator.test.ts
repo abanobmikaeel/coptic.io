@@ -100,8 +100,7 @@ describe('iCalendar Generator', () => {
 			const ical = generateMultiYearCalendar(2024, 2025)
 
 			// Count occurrences of 2024 Nativity Fast
-			const nativity2024Count = (ical.match(/20241125.*Nativity Fast begins/g) || [])
-				.length
+			const nativity2024Count = (ical.match(/20241125.*Nativity Fast begins/g) || []).length
 
 			// Should only appear once
 			expect(nativity2024Count).toBeLessThanOrEqual(1)

@@ -8,16 +8,13 @@ import * as synaxariumService from '../services/synaxarium.service'
 export const resolvers = {
 	Query: {
 		// Calendar
-		copticDate: (_: any, { date }: { date?: string }) => {
+		copticDate: (_: unknown, { date }: { date?: string }) => {
 			const parsedDate = date ? new Date(date) : new Date()
 			return fromGregorian(parsedDate)
 		},
 
 		// Readings
-		readings: async (
-			_: any,
-			{ date, detailed }: { date?: string; detailed?: boolean }
-		) => {
+		readings: async (_: unknown, { date, detailed }: { date?: string; detailed?: boolean }) => {
 			const parsedDate = date ? new Date(date) : new Date()
 			const data = await getByCopticDate(parsedDate, detailed || false)
 			const celebrations = getStaticCelebrationsForDay(parsedDate)
@@ -35,41 +32,32 @@ export const resolvers = {
 			return celebrationsService.getAllCelebrations()
 		},
 
-		celebrationsForDate: (_: any, { date }: { date?: string }) => {
+		celebrationsForDate: (_: unknown, { date }: { date?: string }) => {
 			const parsedDate = date ? new Date(date) : new Date()
 			return celebrationsService.getCelebrationsForDate(parsedDate)
 		},
 
-		upcomingCelebrations: (_: any, { days }: { days?: number }) => {
+		upcomingCelebrations: (_: unknown, { days }: { days?: number }) => {
 			return celebrationsService.getUpcomingCelebrations(days || 30)
 		},
 
 		// Fasting
-		fastingForDate: (_: any, { date }: { date?: string }) => {
+		fastingForDate: (_: unknown, { date }: { date?: string }) => {
 			const parsedDate = date ? new Date(date) : new Date()
 			return fastingService.getFastingForDate(parsedDate)
 		},
 
-		fastingCalendar: (_: any, { year }: { year: number }) => {
+		fastingCalendar: (_: unknown, { year }: { year: number }) => {
 			return fastingService.getFastingCalendar(year)
 		},
 
 		// Synaxarium
-		synaxariumForDate: (
-			_: any,
-			{ date, detailed }: { date?: string; detailed?: boolean }
-		) => {
+		synaxariumForDate: (_: unknown, { date, detailed }: { date?: string; detailed?: boolean }) => {
 			const parsedDate = date ? new Date(date) : new Date()
-			return synaxariumService.getSynaxariumForDate(
-				parsedDate,
-				detailed || false
-			)
+			return synaxariumService.getSynaxariumForDate(parsedDate, detailed || false)
 		},
 
-		searchSynaxarium: (
-			_: any,
-			{ query, limit }: { query: string; limit?: number }
-		) => {
+		searchSynaxarium: (_: unknown, { query, limit }: { query: string; limit?: number }) => {
 			return synaxariumService.searchSynaxarium(query, limit || 50)
 		},
 	},

@@ -14,7 +14,7 @@ describe('API Endpoints', () => {
 	})
 
 	describe('GET /api/calendar', () => {
-		it('should return today\'s Coptic date when no date provided', async () => {
+		it("should return today's Coptic date when no date provided", async () => {
 			const res = await app.request('/api/calendar')
 			expect(res.status).toBe(200)
 

@@ -31,5 +31,5 @@ export interface CustomError {
 	status?: number
 	isPublic?: boolean
 	isOperational?: boolean
-	stack?: any
+	stack?: unknown
 }

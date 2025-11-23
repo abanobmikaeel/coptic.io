@@ -169,8 +169,6 @@ export const isInFastingPeriod = (date: Date): boolean => {
 /**
  * Get all fasting periods for a year
  */
-export const getFastingPeriodsForYear = (
-	gregorianYear: number
-): LiturgicalSeason[] => {
+export const getFastingPeriodsForYear = (gregorianYear: number): LiturgicalSeason[] => {
 	return getAllSeasonsForYear(gregorianYear).filter((season) => season.isFasting)
 }

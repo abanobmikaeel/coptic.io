@@ -91,12 +91,7 @@ export const generateYearCalendar = (year: number): string => {
 	// Add moveable feasts
 	const moveableFeasts = getMoveableFeastsForYear(year)
 	moveableFeasts.forEach((feast) => {
-		ical += generateEvent(
-			feast.name,
-			feast.date,
-			`${feast.name} - ${feast.type}`,
-			'Moveable Feast'
-		)
+		ical += generateEvent(feast.name, feast.date, `${feast.name} - ${feast.type}`, 'Moveable Feast')
 	})
 
 	// Add liturgical seasons (only those that start within the year)
@@ -120,22 +115,13 @@ export const generateYearCalendar = (year: number): string => {
 	const endDate = new Date(year, 11, 31)
 	const fastNames = new Set(['Advent Fast', 'Nativity Fast', 'Kiahk'])
 
-	for (
-		let date = new Date(startDate);
-		date <= endDate;
-		date.setDate(date.getDate() + 1)
-	) {
+	for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
 		const celebrations = getStaticCelebrationsForDay(new Date(date))
 
 		if (celebrations && Array.isArray(celebrations)) {
 			celebrations.forEach((celebration: Celebration) => {
 				if (celebration && celebration.name && !fastNames.has(celebration.name)) {
-					ical += generateEvent(
-						celebration.name,
-						new Date(date),
-						celebration.story || '',
-						'Feast'
-					)
+					ical += generateEvent(celebration.name, new Date(date), celebration.story || '', 'Feast')
 				}
 			})
 		}
@@ -149,10 +135,7 @@ export const generateYearCalendar = (year: number): string => {
 /**
  * Generate multi-year iCal calendar (for subscriptions)
  */
-export const generateMultiYearCalendar = (
-	startYear: number,
-	endYear: number
-): string => {
+export const generateMultiYearCalendar = (startYear: number, endYear: number): string => {
 	let ical = 'BEGIN:VCALENDAR\r\n'
 	ical += 'VERSION:2.0\r\n'
 	ical += 'PRODID:-//Coptic.IO//Coptic Orthodox Calendar//EN\r\n'
@@ -198,11 +181,7 @@ export const generateMultiYearCalendar = (
 		const endDate = new Date(year, 11, 31)
 		const fastNames = new Set(['Advent Fast', 'Nativity Fast', 'Kiahk'])
 
-		for (
-			let date = new Date(startDate);
-			date <= endDate;
-			date.setDate(date.getDate() + 1)
-		) {
+		for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
 			const celebrations = getStaticCelebrationsForDay(new Date(date))
 
 			if (celebrations && Array.isArray(celebrations)) {

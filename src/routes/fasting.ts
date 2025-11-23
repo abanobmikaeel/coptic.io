@@ -10,7 +10,8 @@ const getForDateRoute = createRoute({
 	path: '/:date?',
 	tags: ['Fasting'],
 	summary: 'Check if a date is a fasting day',
-	description: 'Returns fasting information for a specific Gregorian date. Defaults to today if no date provided.',
+	description:
+		'Returns fasting information for a specific Gregorian date. Defaults to today if no date provided.',
 	request: {
 		params: z.object({
 			date: z.string().optional().openapi({ example: '2025-01-07' }),

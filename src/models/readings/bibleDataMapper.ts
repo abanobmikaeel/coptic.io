@@ -1,11 +1,5 @@
 import * as bible from '../../resources/bible.json'
-import {
-	BibleBook,
-	BibleChapter,
-	BibleType,
-	BibleVerse,
-	Reading,
-} from '../../types'
+import { BibleBook, BibleChapter, BibleType, BibleVerse, Reading } from '../../types'
 
 export const getBook = (bookName: string): BibleBook | undefined => {
 	const b: BibleType = bible
@@ -16,10 +10,7 @@ export const getChapter = (book: BibleBook, chapterNum: number) => {
 	return book.chapters.find((chapter) => chapter.num == chapterNum)
 }
 
-export const getVerse = (
-	chapter: BibleChapter,
-	verseNum: number
-): BibleVerse | undefined => {
+export const getVerse = (chapter: BibleChapter, verseNum: number): BibleVerse | undefined => {
 	return chapter.verses.find((currVerse) => currVerse.num === verseNum)
 }
 

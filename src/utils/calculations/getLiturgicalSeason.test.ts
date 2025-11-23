@@ -100,9 +100,7 @@ describe('Liturgical Season Detection', () => {
 			seasons.forEach((season) => {
 				expect(season.startDate).toBeInstanceOf(Date)
 				expect(season.endDate).toBeInstanceOf(Date)
-				expect(season.endDate.getTime()).toBeGreaterThanOrEqual(
-					season.startDate.getTime()
-				)
+				expect(season.endDate.getTime()).toBeGreaterThanOrEqual(season.startDate.getTime())
 			})
 		})
 	})

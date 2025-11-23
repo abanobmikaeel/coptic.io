@@ -17,11 +17,13 @@ export const CelebrationSchema = z.object({
 	month: z.string().optional(),
 })
 
-export const SynaxariumEntrySchema = z.object({
-	url: z.string(),
-	name: z.string(),
-	text: z.string().optional(),
-})
+export const SynaxariumEntrySchema = z
+	.object({
+		url: z.string().optional(),
+		name: z.string().optional(),
+		text: z.string().optional(),
+	})
+	.loose()
 
 export const ErrorSchema = z.object({
 	error: z.string(),
@@ -55,7 +57,7 @@ export const SynaxariumSearchResultSchema = z.object({
 		monthString: z.string(),
 	}),
 	entry: z.object({
-		url: z.string(),
-		name: z.string(),
+		url: z.string().optional(),
+		name: z.string().optional(),
 	}),
 })
