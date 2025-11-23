@@ -5,6 +5,7 @@ import {
 	isInFastingPeriod,
 	getFastingPeriodsForYear,
 } from '../utils/calculations/getLiturgicalSeason'
+import { format, parse, isValid } from 'date-fns'
 
 const season = new Hono()
 
@@ -16,9 +17,8 @@ season.get('/:date?', async (c) => {
 		// Default to today
 		let parsedDate = new Date()
 		if (dateParam) {
-			parsedDate = new Date(dateParam)
-			// Validate date
-			if (isNaN(parsedDate.getTime())) {
+			parsedDate = parse(dateParam, 'yyyy-MM-dd', new Date())
+			if (!isValid(parsedDate)) {
 				return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 			}
 		}
@@ -28,7 +28,7 @@ season.get('/:date?', async (c) => {
 
 		if (!season) {
 			return c.json({
-				date: parsedDate.toISOString().split('T')[0],
+				date: format(parsedDate, 'yyyy-MM-dd'),
 				season: 'Ordinary Time',
 				description: 'Regular liturgical time outside major seasons',
 				isFasting: false,
@@ -36,11 +36,11 @@ season.get('/:date?', async (c) => {
 		}
 
 		return c.json({
-			date: parsedDate.toISOString().split('T')[0],
+			date: format(parsedDate, 'yyyy-MM-dd'),
 			season: season.name,
 			description: season.description,
-			startDate: season.startDate.toISOString().split('T')[0],
-			endDate: season.endDate.toISOString().split('T')[0],
+			startDate: format(season.startDate, 'yyyy-MM-dd'),
+			endDate: format(season.endDate, 'yyyy-MM-dd'),
 			isFasting,
 			type: season.type,
 		})
@@ -72,8 +72,8 @@ season.get('/year/:year', async (c) => {
 			seasons: seasons.map((s) => ({
 				name: s.name,
 				description: s.description,
-				startDate: s.startDate.toISOString().split('T')[0],
-				endDate: s.endDate.toISOString().split('T')[0],
+				startDate: format(s.startDate, 'yyyy-MM-dd'),
+				endDate: format(s.endDate, 'yyyy-MM-dd'),
 				isFasting: s.isFasting,
 				type: s.type,
 			})),
@@ -106,8 +106,8 @@ season.get('/fasting/:year', async (c) => {
 			fastingPeriods: fastingPeriods.map((f) => ({
 				name: f.name,
 				description: f.description,
-				startDate: f.startDate.toISOString().split('T')[0],
-				endDate: f.endDate.toISOString().split('T')[0],
+				startDate: format(f.startDate, 'yyyy-MM-dd'),
+				endDate: format(f.endDate, 'yyyy-MM-dd'),
 				type: f.type,
 			})),
 		})

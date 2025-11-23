@@ -1,6 +1,7 @@
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import { isInMoveableFast } from '../utils/calculations/getMoveableFeasts'
 import fromGregorian from '../utils/copticDate'
+import { format } from 'date-fns'
 
 export const getFastingForDate = (date: Date) => {
 	// Check for moveable fasting periods first
@@ -65,13 +66,8 @@ export const getFastingCalendar = (year: number) => {
 		// Check for moveable fasting periods first
 		const moveableFast = isInMoveableFast(currentDate)
 		if (moveableFast) {
-			const dateString = currentDate.toISOString().split('T')[0]
-			if (!dateString) {
-				continue
-			}
-
 			fastingDays.push({
-				date: dateString,
+				date: format(currentDate, 'yyyy-MM-dd'),
 				copticDate: fromGregorian(currentDate),
 				fastType: moveableFast.type,
 				description: moveableFast.name,
@@ -89,13 +85,8 @@ export const getFastingCalendar = (year: number) => {
 
 			const firstFast = fastingCelebrations[0]
 			if (firstFast) {
-				const dateString = currentDate.toISOString().split('T')[0]
-				if (!dateString) {
-					continue
-				}
-
 				fastingDays.push({
-					date: dateString,
+					date: format(currentDate, 'yyyy-MM-dd'),
 					copticDate: fromGregorian(currentDate),
 					fastType: firstFast.type,
 					description: firstFast.name,

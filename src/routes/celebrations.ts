@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import * as celebrationsService from '../services/celebrations.service'
 import { CelebrationSchema, UpcomingCelebrationSchema, ErrorSchema } from '../schemas'
-import { parseDateString } from '../utils/parseDateString'
+import { parse, isValid } from 'date-fns'
 
 const app = new OpenAPIHono()
 
@@ -67,11 +67,10 @@ app.openapi(getForDateRoute, (c) => {
 
 	let parsedDate: Date
 	if (date) {
-		const parsed = parseDateString(date)
-		if (!parsed) {
+		parsedDate = parse(date, 'yyyy-MM-dd', new Date())
+		if (!isValid(parsedDate)) {
 			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 		}
-		parsedDate = parsed
 	} else {
 		parsedDate = new Date()
 	}
