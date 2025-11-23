@@ -8,6 +8,7 @@
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"strict": true,
+		"noImplicitAny": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"outDir": "./dist",
@@ -15,7 +16,14 @@
 		"declaration": true,
 		"sourceMap": true,
 		"noEmit": false,
-		"types": ["node"]
+		"types": ["node"],
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": false,
+		"noImplicitOverride": true
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]

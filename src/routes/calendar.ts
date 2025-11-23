@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import fromGregorian from '../utils/copticDate'
 import { generateYearCalendar, generateMultiYearCalendar } from '../utils/icalGenerator'
+import { parseDateString } from '../utils/parseDateString'
 
 const calendar = new Hono()
 
@@ -65,13 +66,15 @@ calendar.get('/:date?', async (c) => {
 		const dateParam = c.req.param('date')
 
 		// Default to today
-		let parsedDate = new Date()
+		let parsedDate: Date
 		if (dateParam) {
-			parsedDate = new Date(dateParam)
-			// Validate date
-			if (isNaN(parsedDate.getTime())) {
+			const parsed = parseDateString(dateParam)
+			if (!parsed) {
 				return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 			}
+			parsedDate = parsed
+		} else {
+			parsedDate = new Date()
 		}
 
 		const copticDate = fromGregorian(parsedDate)

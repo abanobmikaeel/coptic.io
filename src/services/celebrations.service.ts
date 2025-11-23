@@ -49,8 +49,13 @@ export const getUpcomingCelebrations = (days: number = 30) => {
 		const celebrationsForDay = getStaticCelebrationsForDay(currentDate)
 
 		if (celebrationsForDay && celebrationsForDay.length > 0) {
+			const dateString = currentDate.toISOString().split('T')[0]
+			if (!dateString) {
+				continue
+			}
+
 			upcoming.push({
-				date: currentDate.toISOString().split('T')[0],
+				date: dateString,
 				copticDate: fromGregorian(currentDate),
 				celebrations: celebrationsForDay,
 			})

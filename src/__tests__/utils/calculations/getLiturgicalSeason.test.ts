@@ -4,7 +4,7 @@ import {
 	getAllSeasonsForYear,
 	isInFastingPeriod,
 	getFastingPeriodsForYear,
-} from './getLiturgicalSeason'
+} from '../../../utils/calculations/getLiturgicalSeason'
 
 describe('Liturgical Season Detection', () => {
 	describe('getLiturgicalSeasonForDate', () => {

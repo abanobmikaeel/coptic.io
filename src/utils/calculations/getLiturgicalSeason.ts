@@ -155,7 +155,7 @@ export const getLiturgicalSeasonForDate = (date: Date): LiturgicalSeason | null 
 		return priorityA - priorityB
 	})
 
-	return matchingSeasons[0]
+	return matchingSeasons[0] ?? null
 }
 
 /**

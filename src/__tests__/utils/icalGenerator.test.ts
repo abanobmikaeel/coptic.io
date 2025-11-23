@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { generateYearCalendar, generateMultiYearCalendar } from './icalGenerator'
+import { generateYearCalendar, generateMultiYearCalendar } from '../../utils/icalGenerator'
 
 describe('iCalendar Generator', () => {
 	describe('generateYearCalendar', () => {

@@ -36,10 +36,19 @@ export const getFastingForDate = (date: Date) => {
 		}
 	}
 
+	const firstFast = fastingCelebrations[0]
+	if (!firstFast) {
+		return {
+			isFasting: false,
+			fastType: null,
+			description: null,
+		}
+	}
+
 	return {
 		isFasting: true,
-		fastType: fastingCelebrations[0].type,
-		description: fastingCelebrations[0].name,
+		fastType: firstFast.type,
+		description: firstFast.name,
 	}
 }
 
@@ -56,8 +65,13 @@ export const getFastingCalendar = (year: number) => {
 		// Check for moveable fasting periods first
 		const moveableFast = isInMoveableFast(currentDate)
 		if (moveableFast) {
+			const dateString = currentDate.toISOString().split('T')[0]
+			if (!dateString) {
+				continue
+			}
+
 			fastingDays.push({
-				date: currentDate.toISOString().split('T')[0],
+				date: dateString,
 				copticDate: fromGregorian(currentDate),
 				fastType: moveableFast.type,
 				description: moveableFast.name,
@@ -73,12 +87,18 @@ export const getFastingCalendar = (year: number) => {
 				celeb.type.toLowerCase().includes('fast')
 			)
 
-			if (fastingCelebrations.length > 0) {
+			const firstFast = fastingCelebrations[0]
+			if (firstFast) {
+				const dateString = currentDate.toISOString().split('T')[0]
+				if (!dateString) {
+					continue
+				}
+
 				fastingDays.push({
-					date: currentDate.toISOString().split('T')[0],
+					date: dateString,
 					copticDate: fromGregorian(currentDate),
-					fastType: fastingCelebrations[0].type,
-					description: fastingCelebrations[0].name,
+					fastType: firstFast.type,
+					description: firstFast.name,
 				})
 			}
 		}

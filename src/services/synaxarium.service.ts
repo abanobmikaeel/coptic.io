@@ -52,8 +52,14 @@ export const searchSynaxarium = (searchTerm: string, limit: number = 50): Search
 		([key, entries]) => {
 			entries.forEach((entry) => {
 				if (entry.name && entry.name.toLowerCase().includes(searchLower)) {
-					const [day, ...monthParts] = key.split(' ')
+					const parts = key.split(' ')
+					const day = parts[0]
+					const monthParts = parts.slice(1)
 					const monthString = monthParts.join(' ')
+
+					if (!day) {
+						return
+					}
 
 					results.push({
 						date: key,

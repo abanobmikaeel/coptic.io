@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import getEaster from './getEaster'
+import getEaster from '../../../utils/calculations/getEaster'
 
 describe('Easter Calculation', () => {
 	it('should calculate Easter correctly for 2024', () => {
