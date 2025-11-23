@@ -2,7 +2,15 @@ import { celebrations } from '../../resources/nonMoveableCelebrations.json'
 import dayCelebrations from '../../resources/dayReadings.json'
 import fromGregorian from '../copticDate'
 
-const getStaticCelebrationsForDay = (date: Date) => {
+export interface Celebration {
+	id: number
+	name: string
+	type: string
+	month?: string
+	isMoveable: boolean
+}
+
+const getStaticCelebrationsForDay = (date: Date): Celebration[] | null => {
 	const { month, day }: { month: number; day: number } = fromGregorian(date)
 	const monthFound = dayCelebrations[month - 1]
 	if (!monthFound) {
@@ -10,7 +18,7 @@ const getStaticCelebrationsForDay = (date: Date) => {
 	}
 	const celebrationsFound = monthFound.daysWithCelebrations[day - 1]
 	// handle multiple celebrations
-	const celebrationData: any[] = []
+	const celebrationData: Celebration[] = []
 	if (celebrationsFound === 0) {
 		return null
 	}
@@ -18,11 +26,15 @@ const getStaticCelebrationsForDay = (date: Date) => {
 	if (Array.isArray(celebrationsFound)) {
 		celebrationsFound.forEach((celeb) => {
 			const celebFound = celebrations.find((x) => x.id === celeb)
-			celebrationData.push({ ...celebFound, isMoveable: false })
+			if (celebFound) {
+				celebrationData.push({ ...celebFound, isMoveable: false })
+			}
 		})
 	} else {
 		const celebFound = celebrations.find((x) => x.id === celebrationsFound)
-		celebrationData.push({ ...celebFound, isMoveable: false })
+		if (celebFound) {
+			celebrationData.push({ ...celebFound, isMoveable: false })
+		}
 	}
 	return celebrationData
 }

@@ -2,6 +2,11 @@ import { getAllSeasonsForYear } from './calculations/getLiturgicalSeason'
 import { getMoveableFeastsForYear } from './calculations/getMoveableFeasts'
 import { getStaticCelebrationsForDay } from './calculations/getStaticCelebrations'
 
+interface Celebration {
+	name: string
+	story?: string
+}
+
 /**
  * Format date for iCal (YYYYMMDD format)
  */
@@ -123,7 +128,7 @@ export const generateYearCalendar = (year: number): string => {
 		const celebrations = getStaticCelebrationsForDay(new Date(date))
 
 		if (celebrations && Array.isArray(celebrations)) {
-			celebrations.forEach((celebration: any) => {
+			celebrations.forEach((celebration: Celebration) => {
 				if (celebration && celebration.name && !fastNames.has(celebration.name)) {
 					ical += generateEvent(
 						celebration.name,
@@ -201,7 +206,7 @@ export const generateMultiYearCalendar = (
 			const celebrations = getStaticCelebrationsForDay(new Date(date))
 
 			if (celebrations && Array.isArray(celebrations)) {
-				celebrations.forEach((celebration: any) => {
+				celebrations.forEach((celebration: Celebration) => {
 					if (celebration && celebration.name && !fastNames.has(celebration.name)) {
 						ical += generateEvent(
 							celebration.name,
