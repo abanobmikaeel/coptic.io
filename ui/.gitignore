@@ -36,6 +36,14 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local database schema
+schema.sql
+
+# infrastructure
+infra/
+*.tfstate*
+*.tfvars
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
