@@ -60,7 +60,7 @@ export default function DeveloperSection() {
       <div className="bg-gray-950/80 p-6 rounded-lg text-left font-mono text-sm overflow-x-auto border border-gray-800 mb-6">
         <pre className="text-gray-300">
           <code>{`// Fetch today's readings
-const res = await fetch('https://api.coptic.io/readings/today');
+const res = await fetch('https://copticio-production.up.railway.app/api/readings');
 const data = await res.json();`}</code>
         </pre>
       </div>

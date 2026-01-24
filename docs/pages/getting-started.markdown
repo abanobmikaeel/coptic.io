@@ -7,7 +7,7 @@ nav_order: 2
 
 # Getting Started
 
-Base URL: `https://coptic.io/api`
+Base URL: `https://copticio-production.up.railway.app/api`
 
 ## Get today's readings
 
@@ -16,17 +16,17 @@ Base URL: `https://coptic.io/api`
 ### To get today's readings
 
 ```sh
-https://coptic.io/api/readings
+https://copticio-production.up.railway.app/api/readings
 ```
 
 ### To get a specific date's reading
 
 ```sh
-https://coptic.io/api/readings/date=2023-10-12
+https://copticio-production.up.railway.app/api/readings/2023-10-12
 ```
 
 ### To get the readings with all the verses in NKJV
 
 ```sh
-https://coptic.io/api/readings/date=2023-10-05?detailed=true
+https://copticio-production.up.railway.app/api/readings/2023-10-05?detailed=true
 ```
