@@ -13,6 +13,7 @@ function SubscribeContent() {
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [patronSaint, setPatronSaint] = useState('');
+  const [timezone, setTimezone] = useState('America/New_York');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -20,12 +21,15 @@ function SubscribeContent() {
   useEffect(() => {
     const urlEmail = searchParams.get('email');
     const urlStep = searchParams.get('step');
+    const urlTz = searchParams.get('tz');
     if (urlEmail) {
       setEmail(urlEmail);
       if (urlStep === 'verify') {
         setStep('verify');
       }
     }
+    // Use URL timezone or detect from browser
+    setTimezone(urlTz || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York');
   }, [searchParams]);
 
   async function handleEmailSubmit(e: React.FormEvent) {
@@ -64,7 +68,7 @@ function SubscribeContent() {
       const res = await fetch('/api/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code, name, patronSaint }),
+        body: JSON.stringify({ email, code, name, patronSaint, timezone }),
       });
 
       const data = await res.json();

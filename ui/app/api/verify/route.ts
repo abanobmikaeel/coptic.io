@@ -18,7 +18,7 @@ interface Subscriber {
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, code, name, patronSaint } = await request.json();
+    const { email, code, name, patronSaint, timezone } = await request.json();
 
     if (!email || !code) {
       return NextResponse.json({ error: 'Email and code are required' }, { status: 400 });
@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
 
     const subscriberName = typeof name === 'string' ? name.trim() : null;
     const subscriberPatronSaint = typeof patronSaint === 'string' ? patronSaint.trim() : null;
+    const subscriberTimezone = typeof timezone === 'string' ? timezone : 'America/New_York';
 
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -49,16 +50,17 @@ export async function POST(request: NextRequest) {
 
     // Create or update subscriber
     const subscriber = await queryOne<Subscriber>(
-      `INSERT INTO subscribers (email, name, patron_saint, verified, token, updated_at)
-       VALUES ($1, $2, $3, TRUE, $4, NOW())
+      `INSERT INTO subscribers (email, name, patron_saint, timezone, verified, token, updated_at)
+       VALUES ($1, $2, $3, $4, TRUE, $5, NOW())
        ON CONFLICT (email) DO UPDATE SET
          name = COALESCE($2, subscribers.name),
          patron_saint = COALESCE($3, subscribers.patron_saint),
+         timezone = COALESCE($4, subscribers.timezone),
          verified = TRUE,
-         token = $4,
+         token = $5,
          updated_at = NOW()
        RETURNING id, email, token`,
-      [normalizedEmail, subscriberName, subscriberPatronSaint, token]
+      [normalizedEmail, subscriberName, subscriberPatronSaint, subscriberTimezone, token]
     );
 
     // Send welcome email

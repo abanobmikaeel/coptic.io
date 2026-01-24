@@ -34,7 +34,8 @@ export default function EmailSignup() {
       }
 
       // Redirect to subscribe page to complete verification
-      router.push(`/subscribe?email=${encodeURIComponent(email)}&step=verify`);
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
+      router.push(`/subscribe?email=${encodeURIComponent(email)}&step=verify&tz=${encodeURIComponent(tz)}`);
     } catch {
       setError('Something went wrong');
     } finally {
