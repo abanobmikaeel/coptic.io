@@ -1,5 +1,3 @@
-import Link from "next/link";
-import Image from "next/image";
 import { getCalendarData, getTodayCelebrations, getUpcomingCelebrations } from "@/lib/api";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import SubscribeButton from "@/components/SubscribeButton";
@@ -10,106 +8,101 @@ import { filterUpcomingFeasts } from "@/lib/filterUpcomingFeasts";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const [calendar, celebrations, upcoming] = await Promise.all([
-    getCalendarData(),
-    getTodayCelebrations(),
-    getUpcomingCelebrations(60),
-  ]);
+	const [calendar, celebrations, upcoming] = await Promise.all([
+		getCalendarData(),
+		getTodayCelebrations(),
+		getUpcomingCelebrations(60),
+	]);
 
-  const gregorianDate = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+	const gregorianDate = new Date().toLocaleDateString('en-US', {
+		weekday: 'long',
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	});
 
-  const copticDate = calendar?.dateString || 'Loading...';
-  const todayFeast = Array.isArray(celebrations) && celebrations.length > 0
-    ? celebrations[0]
-    : null;
+	const copticDate = calendar?.dateString || 'Loading...';
+	const todayFeast = Array.isArray(celebrations) && celebrations.length > 0
+		? celebrations[0]
+		: null;
 
-  // Filter upcoming feasts: for fasts, only show first and last day
-  const upcomingFeasts = Array.isArray(upcoming) ? filterUpcomingFeasts(upcoming) : [];
+	const upcomingFeasts = Array.isArray(upcoming) ? filterUpcomingFeasts(upcoming) : [];
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-1 container mx-auto px-4 py-12 max-w-6xl">
-        {/* Hero */}
-        <section className="text-center mb-12">
-          <div className="relative mb-8">
-            <div className="absolute left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -top-20" />
-            <div className="relative pt-6">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/7/71/Coptic_cross.svg"
-                alt="Coptic Cross"
-                className="mx-auto opacity-90"
-                width={120}
-                height={120}
-                priority
-              />
-            </div>
-          </div>
+	return (
+		<main className="min-h-screen relative overflow-hidden">
+			{/* Hero Section */}
+			<section className="relative pt-24 pb-12 px-6">
+				<div className="max-w-2xl mx-auto text-center">
+					<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[13px] text-gray-600 dark:text-gray-300 mb-6">
+						<span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+						Live API
+					</div>
+					<h1 className="text-4xl md:text-[44px] font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
+						The Coptic Orthodox<br />Liturgical Calendar
+					</h1>
+					<p className="text-[17px] text-gray-600 dark:text-gray-300 max-w-md mx-auto leading-relaxed">
+						Daily readings, feast days, fasting periods, and saint commemorations via a modern API.
+					</p>
+				</div>
+			</section>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 font-playfair">
-            Coptic Orthodox Calendar
-          </h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Stay connected with the liturgical life of the Church
-          </p>
-        </section>
+			{/* Today's Date Card */}
+			<section className="relative px-6 pb-6">
+				<div className="max-w-xl mx-auto">
+					<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 text-center shadow-sm dark:shadow-none">
+						<p className="text-[11px] text-gray-500 dark:text-gray-400 uppercase tracking-[0.15em] mb-4">Today</p>
+						<h2 className="text-2xl md:text-[32px] font-bold text-amber-600 dark:text-amber-500 mb-2">
+							{copticDate}
+						</h2>
+						<p className="text-[15px] text-gray-600 dark:text-gray-400">{gregorianDate}</p>
 
-        {/* Today Section */}
-        <section className="max-w-4xl mx-auto space-y-6 mb-12">
-          <div className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 p-8 rounded-2xl border border-gray-700">
-            <div className="text-center mb-6">
-              <p className="text-gray-400 text-sm mb-2 uppercase tracking-wide">Today</p>
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 font-playfair">
-                {gregorianDate}
-              </h2>
-              <p className="text-lg text-blue-300">{copticDate}</p>
-            </div>
+						{todayFeast && (
+							<div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+								<p className="text-[11px] text-gray-500 dark:text-gray-400 uppercase tracking-[0.15em] mb-2">Feast</p>
+								<p className="text-gray-900 dark:text-white text-[17px]">{todayFeast.name}</p>
+							</div>
+						)}
+					</div>
+				</div>
+			</section>
 
-            {todayFeast && (
-              <Card>
-                <CardHeader>Today&apos;s Feast</CardHeader>
-                <CardContent>
-                  <p className="text-gray-300 font-medium text-xl">{todayFeast.name}</p>
-                  {todayFeast.story && (
-                    <p className="text-gray-500 text-sm mt-1">{todayFeast.story}</p>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-          </div>
+			{/* Main Content */}
+			<section className="relative px-6 pb-16">
+				<div className="max-w-xl mx-auto space-y-5">
+					{/* Upcoming Feasts */}
+					<Card>
+						<CardHeader>Upcoming Feasts</CardHeader>
+						<CardContent>
+							<UpcomingFeastsList feasts={upcomingFeasts} />
+						</CardContent>
+					</Card>
 
-          {/* Upcoming Feasts */}
-          <Card>
-            <CardHeader>Upcoming Feasts</CardHeader>
-            <CardContent>
-              <UpcomingFeastsList feasts={upcomingFeasts} />
-            </CardContent>
-          </Card>
+					{/* Subscribe */}
+					<div className="py-6">
+						<SubscribeButton />
+					</div>
 
-          <SubscribeButton />
-        </section>
+					{/* Developer Section */}
+					<DeveloperSection />
+				</div>
+			</section>
 
-        {/* Developer Section */}
-        <section className="max-w-4xl mx-auto mb-12">
-          <DeveloperSection />
-        </section>
-
-        <section className="max-w-2xl mx-auto text-center">
-          <Link href="/examples" className="text-blue-400 hover:text-blue-300 transition-colors font-medium">
-            View Examples →
-          </Link>
-        </section>
-      </main>
-
-      <footer className="border-t border-gray-800 py-8">
-        <div className="container mx-auto px-4 text-center text-gray-500 text-sm">
-          <p>Built with dedication for the Coptic Orthodox community</p>
-        </div>
-      </footer>
-    </div>
-  );
+			{/* Footer */}
+			<footer className="relative border-t border-gray-200 dark:border-gray-800 py-8 px-6">
+				<div className="max-w-xl mx-auto flex items-center justify-between">
+					<p className="text-gray-500 dark:text-gray-400 text-[13px]">
+						Built for the Coptic community
+					</p>
+					<a
+						href="https://copticio-production.up.railway.app/api/readings"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-[13px] transition-colors"
+					>
+						API Status
+					</a>
+				</div>
+			</footer>
+		</main>
+	);
 }
