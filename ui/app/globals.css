@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
 	--background: #f9fafb;
 	--foreground: #111827;
@@ -16,12 +18,6 @@ html.dark {
 	--muted: #9ca3af;
 }
 
-@theme inline {
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--font-sans: var(--font-inter);
-	--font-serif: var(--font-playfair);
-}
 
 * {
 	box-sizing: border-box;
@@ -32,8 +28,6 @@ html {
 }
 
 body {
-	background: var(--background);
-	color: var(--foreground);
 	font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

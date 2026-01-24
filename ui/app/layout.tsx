@@ -27,9 +27,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${inter.variable} ${playfair.variable} antialiased min-h-screen`}>
+			<body className={`${inter.variable} ${playfair.variable} antialiased`}>
 				<ThemeProvider>
-					<div className="min-h-screen">
+					<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 						<Navbar />
 						{children}
 					</div>
