@@ -3,71 +3,82 @@
 import { useState } from 'react';
 
 interface Feast {
-  name: string;
-  type: string;
-  date: string;
-  displayName?: string;
+	name: string;
+	type: string;
+	date: string;
+	displayName?: string;
 }
 
 interface UpcomingFeastsListProps {
-  feasts: Feast[];
+	feasts: Feast[];
 }
 
 export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) {
-  const [visibleCount, setVisibleCount] = useState(7);
+	const [visibleCount, setVisibleCount] = useState(5);
 
-  const formatType = (type: string) => {
-    const typeMap: Record<string, string> = {
-      'fast': 'Fast',
-      'feast': 'Feast',
-      'lordlyFeast': 'Lordly Feast',
-      'majorFeast': 'Major Feast',
-      'minorFeast': 'Minor Feast'
-    };
-    return typeMap[type] || type;
-  };
+	const getTypeColor = (type: string) => {
+		switch (type) {
+			case 'lordlyFeast':
+			case 'majorFeast':
+				return 'text-amber-600 dark:text-amber-500';
+			case 'fast':
+				return 'text-purple-600 dark:text-purple-400';
+			default:
+				return 'text-gray-500 dark:text-gray-400';
+		}
+	};
 
-  const visibleFeasts = feasts.slice(0, visibleCount);
-  const hasMore = visibleCount < feasts.length;
+	const formatType = (type: string) => {
+		const typeMap: Record<string, string> = {
+			'fast': 'Fast',
+			'feast': 'Feast',
+			'lordlyFeast': 'Lordly Feast',
+			'majorFeast': 'Major Feast',
+			'minorFeast': 'Minor Feast'
+		};
+		return typeMap[type] || type;
+	};
 
-  return (
-    <>
-      {visibleFeasts.length > 0 ? (
-        <>
-          <div
-            className="max-h-[400px] overflow-y-auto space-y-3 pr-2"
-            style={{
-              scrollbarWidth: 'thin',
-              scrollbarColor: '#374151 #1f2937'
-            }}
-          >
-            {visibleFeasts.map((feast, idx) => (
-              <div
-                key={idx}
-                className={idx > 0 ? "border-t border-gray-700/50 pt-4 pb-3 flex justify-between items-start gap-4" : "pb-3 flex justify-between items-start gap-4"}
-              >
-                <div className="flex-1">
-                  <p className="text-gray-200 font-medium mb-1">{feast.displayName || feast.name}</p>
-                  <p className="text-gray-500 text-sm">{formatType(feast.type)}</p>
-                </div>
-                <p className="text-blue-400 font-semibold whitespace-nowrap text-sm">
-                  {new Date(feast.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}
-                </p>
-              </div>
-            ))}
-          </div>
-          {hasMore && (
-            <button
-              onClick={() => setVisibleCount(prev => prev + 7)}
-              className="w-full mt-4 py-2 px-4 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg transition-colors text-sm font-medium"
-            >
-              Show More
-            </button>
-          )}
-        </>
-      ) : (
-        <p className="text-gray-400 text-sm">No upcoming feasts</p>
-      )}
-    </>
-  );
+	const visibleFeasts = feasts.slice(0, visibleCount);
+	const hasMore = visibleCount < feasts.length;
+
+	if (visibleFeasts.length === 0) {
+		return <p className="text-gray-500 dark:text-gray-400 text-sm">No upcoming feasts</p>;
+	}
+
+	return (
+		<div className="space-y-1">
+			{visibleFeasts.map((feast, idx) => (
+				<div
+					key={idx}
+					className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800 last:border-0"
+				>
+					<div className="flex-1 min-w-0">
+						<p className="text-gray-900 dark:text-white font-medium truncate">
+							{feast.displayName || feast.name}
+						</p>
+						<p className={`text-xs ${getTypeColor(feast.type)}`}>
+							{formatType(feast.type)}
+						</p>
+					</div>
+					<p className="text-gray-500 dark:text-gray-400 text-sm ml-4 whitespace-nowrap">
+						{new Date(feast.date).toLocaleDateString('en-US', {
+							month: 'short',
+							day: 'numeric',
+							timeZone: 'UTC'
+						})}
+					</p>
+				</div>
+			))}
+
+			{hasMore && (
+				<button
+					onClick={() => setVisibleCount(prev => prev + 5)}
+					className="w-full mt-3 py-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors"
+				>
+					Show more
+				</button>
+			)}
+		</div>
+	);
 }
