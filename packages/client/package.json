@@ -1,0 +1,48 @@
+{
+	"name": "@coptic/client",
+	"version": "0.1.0",
+	"description": "Coptic.io API client - Thin wrapper for the Coptic API",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"lint": "biome lint src",
+		"lint:fix": "biome lint --write src",
+		"check": "biome check src",
+		"check:fix": "biome check --write src",
+		"typecheck": "tsc --noEmit",
+		"prepublishOnly": "pnpm run build"
+	},
+	"dependencies": {
+		"@coptic/core": "workspace:*"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.10.5",
+		"typescript": "^5.7.3"
+	},
+	"keywords": [
+		"coptic",
+		"orthodox",
+		"api",
+		"client"
+	],
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:abanobmikaeel/coptic.io.git",
+		"directory": "packages/client"
+	}
+}

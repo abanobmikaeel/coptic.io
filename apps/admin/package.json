@@ -1,0 +1,33 @@
+{
+	"name": "@coptic/admin",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev -p 3002",
+		"build": "next build",
+		"start": "next start",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint --write .",
+		"check": "biome check .",
+		"check:fix": "biome check --write .",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@coptic/core": "workspace:*",
+		"next": "^16.1.4",
+		"next-themes": "^0.4.6",
+		"pg": "^8.13.0",
+		"react": "19.2.1",
+		"react-dom": "19.2.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@tailwindcss/postcss": "^4.1.17",
+		"@types/node": "^24.10.1",
+		"@types/pg": "^8.11.10",
+		"@types/react": "^19.2.7",
+		"@types/react-dom": "^19.2.3",
+		"tailwindcss": "^4.1.17",
+		"typescript": "^5.9.3"
+	}
+}

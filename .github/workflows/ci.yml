@@ -14,41 +14,51 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: '22'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: pnpm install
 
-      - name: Run ESLint
-        run: bun run lint
+      - name: Build packages
+        run: pnpm build:packages
 
-      - name: Check Prettier formatting
-        run: bun run format:check
-
-      - name: Run tests
-        run: bun test
+      - name: Lint
+        run: pnpm check
 
       - name: Type check
-        run: bun run build
+        run: pnpm typecheck
 
-  docker-build:
+      - name: Run tests
+        run: pnpm --filter @coptic/api test run
+
+  build-web:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          context: .
-          push: false
-          tags: coptic-io:test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build packages
+        run: pnpm build:packages
+
+      - name: Build web app
+        run: pnpm --filter @coptic/web build

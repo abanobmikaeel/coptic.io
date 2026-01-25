@@ -1,0 +1,63 @@
+{
+	"name": "@coptic/core",
+	"version": "0.1.0",
+	"description": "Coptic Orthodox Church - Core types and liturgical logic",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./types": {
+			"types": "./dist/types/index.d.ts",
+			"import": "./dist/types/index.js"
+		},
+		"./calendar": {
+			"types": "./dist/calendar/index.d.ts",
+			"import": "./dist/calendar/index.js"
+		},
+		"./liturgy": {
+			"types": "./dist/liturgy/index.d.ts",
+			"import": "./dist/liturgy/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"lint": "biome lint src",
+		"lint:fix": "biome lint --write src",
+		"check": "biome check src",
+		"check:fix": "biome check --write src",
+		"typecheck": "tsc --noEmit",
+		"prepublishOnly": "pnpm run build"
+	},
+	"dependencies": {
+		"date-fns": "^4.1.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.10.5",
+		"typescript": "^5.7.3"
+	},
+	"keywords": [
+		"coptic",
+		"orthodox",
+		"christian",
+		"calendar",
+		"liturgy",
+		"readings",
+		"synaxarium"
+	],
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:abanobmikaeel/coptic.io.git",
+		"directory": "packages/core"
+	}
+}

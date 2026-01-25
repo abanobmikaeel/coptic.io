@@ -11,8 +11,6 @@
 		"noImplicitAny": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"outDir": "./dist",
-		"rootDir": "./src",
 		"declaration": true,
 		"sourceMap": true,
 		"noEmit": false,
@@ -25,6 +23,5 @@
 		"exactOptionalPropertyTypes": false,
 		"noImplicitOverride": true
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+	"exclude": ["node_modules", "dist", "apps", "packages"]
 }
