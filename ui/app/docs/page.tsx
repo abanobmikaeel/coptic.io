@@ -1,5 +1,16 @@
 import { API_BASE_URL } from '@/config'
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+	title: 'API Documentation',
+	description:
+		'Complete REST and GraphQL API documentation for the Coptic Calendar. Access calendar conversions, daily readings, fasting status, celebrations, and synaxarium data.',
+	openGraph: {
+		title: 'API Documentation | Coptic Calendar',
+		description: 'Complete REST and GraphQL API documentation for the Coptic Calendar.',
+	},
+}
 
 interface Endpoint {
 	method: string

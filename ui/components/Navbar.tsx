@@ -9,7 +9,7 @@ export default function Navbar() {
 				<Link href="/" className="flex items-center gap-2.5 group">
 					<CopticCross size={22} />
 					<span className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">
-						Coptic Calendar
+						Coptic IO
 					</span>
 				</Link>
 
