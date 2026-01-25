@@ -1,121 +1,78 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { CardSkeleton } from '@/components/ui/Skeleton';
+import { CheckIcon } from '@/components/ui/Icons';
+import { DEFAULT_TIMEZONE } from '@/constants';
+import { useFetch } from '@/lib/hooks';
 
 type Step = 'email' | 'verify' | 'success';
 
 function SubscribeContent() {
   const searchParams = useSearchParams();
-  const [step, setStep] = useState<Step>('email');
-  const [email, setEmail] = useState('');
+
+  // Initialize state from URL params
+  const urlEmail = searchParams.get('email');
+  const urlStep = searchParams.get('step');
+  const urlTz = searchParams.get('tz');
+
+  const [step, setStep] = useState<Step>(() =>
+    urlEmail && urlStep === 'verify' ? 'verify' : 'email'
+  );
+  const [email, setEmail] = useState(() => urlEmail || '');
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [patronSaint, setPatronSaint] = useState('');
-  const [timezone, setTimezone] = useState('America/New_York');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [timezone] = useState(() =>
+    urlTz || (typeof window !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : DEFAULT_TIMEZONE)
+  );
 
-  // Handle redirect from homepage with email pre-filled
-  useEffect(() => {
-    const urlEmail = searchParams.get('email');
-    const urlStep = searchParams.get('step');
-    const urlTz = searchParams.get('tz');
-    if (urlEmail) {
-      setEmail(urlEmail);
-      if (urlStep === 'verify') {
-        setStep('verify');
-      }
-    }
-    // Use URL timezone or detect from browser
-    setTimezone(urlTz || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York');
-  }, [searchParams]);
+  const subscribeFetch = useFetch();
+  const verifyFetch = useFetch<{ token?: string }>();
 
   async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Failed to send verification code');
-        return;
-      }
-
+    const result = await subscribeFetch.execute('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    if (result) {
       setStep('verify');
-    } catch {
-      setError('Failed to send verification code');
-    } finally {
-      setLoading(false);
     }
   }
 
   async function handleCodeSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code, name, patronSaint, timezone }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Failed to verify code');
-        return;
+    const result = await verifyFetch.execute('/api/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, code, name, patronSaint, timezone }),
+    });
+    if (result) {
+      if (result.token) {
+        localStorage.setItem('subscriberToken', result.token);
       }
-
-      // Store token for preference management
-      if (data.token) {
-        localStorage.setItem('subscriberToken', data.token);
-      }
-
       setStep('success');
-    } catch {
-      setError('Failed to verify code');
-    } finally {
-      setLoading(false);
     }
   }
 
   async function handleResendCode() {
-    setError('');
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Failed to resend code');
-        return;
-      }
-
-      setCode('');
-    } catch {
-      setError('Failed to resend code');
-    } finally {
-      setLoading(false);
-    }
+    await subscribeFetch.execute('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    setCode('');
   }
+
+  const loading = subscribeFetch.loading || verifyFetch.loading;
+  const error = subscribeFetch.error || verifyFetch.error;
 
   return (
     <main className="min-h-screen relative overflow-hidden">
@@ -135,27 +92,23 @@ function SubscribeContent() {
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Email address
                   </label>
-                  <input
+                  <Input
                     type="email"
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
+                    error={!!error}
                   />
 
                   {error && (
                     <p className="mt-3 text-sm text-red-600 dark:text-red-400">{error}</p>
                   )}
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="mt-4 w-full bg-amber-600 hover:bg-amber-500 disabled:bg-amber-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
-                  >
-                    {loading ? 'Sending...' : 'Continue'}
-                  </button>
+                  <Button type="submit" loading={loading} className="mt-4 w-full">
+                    Continue
+                  </Button>
                 </form>
               </>
             )}
@@ -174,7 +127,7 @@ function SubscribeContent() {
                     <label htmlFor="code" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Verification code
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="code"
                       value={code}
@@ -182,7 +135,8 @@ function SubscribeContent() {
                       placeholder="000000"
                       required
                       maxLength={6}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-center text-2xl tracking-widest font-mono"
+                      className="text-center text-2xl tracking-widest font-mono"
+                      error={!!error}
                     />
                   </div>
 
@@ -190,13 +144,12 @@ function SubscribeContent() {
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Your name <span className="text-gray-400 font-normal">(optional)</span>
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Mina"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
                     />
                   </div>
 
@@ -204,13 +157,12 @@ function SubscribeContent() {
                     <label htmlFor="patronSaint" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Patron saint <span className="text-gray-400 font-normal">(optional)</span>
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="patronSaint"
                       value={patronSaint}
                       onChange={(e) => setPatronSaint(e.target.value)}
                       placeholder="e.g. St. Mary, St. George"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
                     />
                   </div>
 
@@ -218,29 +170,18 @@ function SubscribeContent() {
                     <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
                   )}
 
-                  <button
-                    type="submit"
-                    disabled={loading || code.length !== 6}
-                    className="w-full bg-amber-600 hover:bg-amber-500 disabled:bg-amber-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
-                  >
-                    {loading ? 'Verifying...' : 'Subscribe'}
-                  </button>
+                  <Button type="submit" loading={loading} disabled={code.length !== 6} className="w-full">
+                    Subscribe
+                  </Button>
                 </form>
 
                 <div className="mt-4 flex items-center justify-between text-sm">
-                  <button
-                    onClick={() => setStep('email')}
-                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                  >
+                  <Button variant="ghost" onClick={() => setStep('email')} className="py-2">
                     Change email
-                  </button>
-                  <button
-                    onClick={handleResendCode}
-                    disabled={loading}
-                    className="text-amber-600 hover:text-amber-500 transition-colors"
-                  >
+                  </Button>
+                  <Button variant="ghost" onClick={handleResendCode} disabled={loading} className="py-2 text-amber-600 hover:text-amber-500">
                     Resend code
-                  </button>
+                  </Button>
                 </div>
               </>
             )}
@@ -248,29 +189,27 @@ function SubscribeContent() {
             {step === 'success' && (
               <div className="text-center py-4">
                 <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+                  <CheckIcon className="w-8 h-8 text-green-600 dark:text-green-400" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  You're subscribed!
+                  You&apos;re subscribed!
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Check your inbox for a welcome email. You'll start receiving daily readings and feast reminders.
+                  Check your inbox for a welcome email. You&apos;ll start receiving daily readings and feast reminders.
                 </p>
                 <div className="space-y-3">
-                  <a
+                  <Link
                     href="/preferences"
-                    className="block w-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                    className="block w-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-colors text-center"
                   >
                     Manage preferences
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/"
-                    className="block w-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium py-2 transition-colors"
+                    className="block w-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium py-2 transition-colors text-center"
                   >
                     Return home
-                  </a>
+                  </Link>
                 </div>
               </div>
             )}
@@ -287,13 +226,7 @@ export default function SubscribePage() {
       <main className="min-h-screen relative overflow-hidden">
         <section className="relative pt-24 pb-12 px-6">
           <div className="max-w-md mx-auto">
-            <Card>
-              <div className="animate-pulse">
-                <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-6"></div>
-                <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              </div>
-            </Card>
+            <CardSkeleton />
           </div>
         </section>
       </main>

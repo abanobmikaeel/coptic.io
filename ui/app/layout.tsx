@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Noto_Sans_Coptic } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -7,12 +7,21 @@ import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
 	variable: "--font-inter",
-	subsets: ["latin"]
+	subsets: ["latin"],
+	display: "swap",
 });
 
 const playfair = Playfair_Display({
 	variable: "--font-playfair",
-	subsets: ["latin"]
+	subsets: ["latin"],
+	display: "swap",
+});
+
+const notoSansCoptic = Noto_Sans_Coptic({
+	variable: "--font-coptic",
+	weight: "400",
+	subsets: ["coptic"],
+	display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +34,17 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const apiDomain = process.env.NEXT_PUBLIC_API_URL
+		? new URL(process.env.NEXT_PUBLIC_API_URL).origin
+		: 'https://copticio-production.up.railway.app';
+
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${inter.variable} ${playfair.variable} antialiased`}>
+			<head>
+				<link rel="preconnect" href={apiDomain} />
+				<link rel="dns-prefetch" href={apiDomain} />
+			</head>
+			<body className={`${inter.variable} ${playfair.variable} ${notoSansCoptic.variable} antialiased`}>
 				<ThemeProvider>
 					<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 						<Navbar />

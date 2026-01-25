@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { formatDateShortUTC } from '@/lib/utils';
 
 interface Feast {
 	name: string;
@@ -62,11 +63,7 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 						</p>
 					</div>
 					<p className="text-gray-500 dark:text-gray-400 text-sm ml-4 whitespace-nowrap">
-						{new Date(feast.date).toLocaleDateString('en-US', {
-							month: 'short',
-							day: 'numeric',
-							timeZone: 'UTC'
-						})}
+						{formatDateShortUTC(new Date(feast.date))}
 					</p>
 				</div>
 			))}

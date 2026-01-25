@@ -5,6 +5,28 @@ import { parse, isValid } from 'date-fns'
 
 const calendar = new Hono()
 
+// Get calendar month with all data (Coptic dates + fasting)
+// Returns everything needed to render a calendar month view
+calendar.get('/month/:year/:month', async (c) => {
+	try {
+		const yearParam = c.req.param('year')
+		const monthParam = c.req.param('month')
+		const year = parseInt(yearParam)
+		const month = parseInt(monthParam)
+
+		const data = calendarService.getCalendarMonth(year, month)
+		return c.json(data)
+	} catch (error) {
+		console.error('Error getting calendar month:', error)
+		return c.json(
+			{
+				error: error instanceof Error ? error.message : 'Failed to get calendar month',
+			},
+			400
+		)
+	}
+})
+
 // Get live iCal subscription feed (multi-year)
 // IMPORTANT: This must be defined BEFORE /ical/:year to avoid :year matching "subscribe"
 calendar.get('/ical/subscribe', async (c) => {

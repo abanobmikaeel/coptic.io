@@ -87,9 +87,37 @@ export const typeDefs = /* GraphQL */ `
 		entry: SynaxariumEntry!
 	}
 
+	type CalendarDayFasting {
+		isFasting: Boolean!
+		fastType: String
+		description: String
+	}
+
+	type CalendarDay {
+		gregorianDate: String!
+		copticDate: CopticDate!
+		fasting: CalendarDayFasting!
+	}
+
+	type CopticMonthInfo {
+		month: Int!
+		monthString: String!
+		year: Int!
+		startDay: Int!
+	}
+
+	type CalendarMonth {
+		year: Int!
+		month: Int!
+		monthName: String!
+		days: [CalendarDay!]!
+		copticMonths: [CopticMonthInfo!]!
+	}
+
 	type Query {
 		# Calendar
 		copticDate(date: String): CopticDate!
+		calendarMonth(year: Int!, month: Int!): CalendarMonth!
 
 		# Readings
 		readings(date: String, detailed: Boolean): Reading!

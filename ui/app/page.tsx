@@ -4,6 +4,9 @@ import UpcomingFeastsList from "@/components/UpcomingFeastsList";
 import EmailSignup from "@/components/EmailSignup";
 import DeveloperSection from "@/components/DeveloperSection";
 import { filterUpcomingFeasts } from "@/lib/filterUpcomingFeasts";
+import { ICAL_SUBSCRIBE_URL } from "@/config";
+import { formatGregorianDate } from "@/lib/utils";
+import { ChevronRightIcon, CalendarIcon } from "@/components/ui/Icons";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -15,12 +18,7 @@ export default async function Home() {
 		getUpcomingCelebrations(60),
 	]);
 
-	const gregorianDate = new Date().toLocaleDateString('en-US', {
-		weekday: 'long',
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric'
-	});
+	const gregorianDate = formatGregorianDate(new Date());
 
 	const copticDate = calendar?.dateString || 'Loading...';
 	const todayFeast = Array.isArray(celebrations) && celebrations.length > 0
@@ -33,7 +31,7 @@ export default async function Home() {
 		<main className="min-h-screen relative overflow-hidden">
 			{/* Hero Section */}
 			<section className="relative pt-20 pb-8 px-6">
-				<div className="max-w-3xl mx-auto text-center">
+				<div className="max-w-4xl mx-auto text-center">
 					<h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
 						Stay Connected to<br />Your Faith
 					</h1>
@@ -52,7 +50,7 @@ export default async function Home() {
 
 			{/* Today's Date Card */}
 			<section className="relative px-6 pb-6">
-				<div className="max-w-2xl mx-auto">
+				<div className="max-w-4xl mx-auto">
 					<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 text-center shadow-sm dark:shadow-none">
 						<p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">Today</p>
 						<h2 className="text-2xl md:text-3xl font-bold text-amber-600 dark:text-amber-500 mb-2">
@@ -72,9 +70,7 @@ export default async function Home() {
 							className="inline-flex items-center gap-2 mt-6 text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 font-medium transition-colors"
 						>
 							View today&apos;s readings
-							<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-							</svg>
+							<ChevronRightIcon className="w-4 h-4" />
 						</Link>
 					</div>
 				</div>
@@ -82,7 +78,7 @@ export default async function Home() {
 
 			{/* Upcoming Feasts */}
 			<section className="relative px-6 pb-12">
-				<div className="max-w-2xl mx-auto">
+				<div className="max-w-4xl mx-auto">
 					<Card>
 						<CardHeader>Upcoming Feasts</CardHeader>
 						<CardContent>
@@ -94,17 +90,15 @@ export default async function Home() {
 
 			{/* Calendar Sync Option */}
 			<section className="relative px-6 pb-16">
-				<div className="max-w-2xl mx-auto text-center">
+				<div className="max-w-4xl mx-auto text-center">
 					<p className="text-gray-500 dark:text-gray-400 text-sm mb-3">
 						Prefer calendar sync?
 					</p>
 					<a
-						href="webcal://copticio-production.up.railway.app/api/calendar/ical/subscribe"
+						href={ICAL_SUBSCRIBE_URL}
 						className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
 					>
-						<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-						</svg>
+						<CalendarIcon />
 						Add to Apple, Google, or Outlook Calendar
 					</a>
 				</div>
@@ -112,14 +106,14 @@ export default async function Home() {
 
 			{/* Developer Section */}
 			<section className="relative px-6 pb-16">
-				<div className="max-w-2xl mx-auto">
+				<div className="max-w-4xl mx-auto">
 					<DeveloperSection />
 				</div>
 			</section>
 
 			{/* Footer */}
 			<footer className="relative border-t border-gray-200 dark:border-gray-800 py-8 px-6">
-				<div className="max-w-2xl mx-auto flex items-center justify-center">
+				<div className="max-w-4xl mx-auto flex items-center justify-center">
 					<p className="text-gray-500 dark:text-gray-400 text-sm">
 						Built for the Coptic community
 					</p>
