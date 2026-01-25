@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import { Card, CardHeader, CardContent } from '@/components/ui/Card';
-import { SynaxariumSection } from '@/components/SynaxariumSection';
-import { API_BASE_URL } from '@/config';
-import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils';
-import { ChevronLeftIcon } from '@/components/ui/Icons';
-import type { Reading, ReadingsData } from '@/lib/types';
+import { SynaxariumSection } from '@/components/SynaxariumSection'
+import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import { ChevronLeftIcon } from '@/components/ui/Icons'
+import { API_BASE_URL } from '@/config'
+import type { Reading, ReadingsData } from '@/lib/types'
+import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils'
+import Link from 'next/link'
 
 const sectionLabels: Record<string, { title: string; subtitle: string }> = {
 	VPsalm: { title: 'Vespers Psalm', subtitle: 'Evening Prayer' },
@@ -16,24 +16,27 @@ const sectionLabels: Record<string, { title: string; subtitle: string }> = {
 	Acts: { title: 'Acts of the Apostles', subtitle: 'Liturgy of the Word' },
 	LPsalm: { title: 'Liturgy Psalm', subtitle: 'Liturgy of the Word' },
 	LGospel: { title: 'Liturgy Gospel', subtitle: 'Liturgy of the Word' },
-};
+}
 
 async function getReadings(date?: string): Promise<ReadingsData | null> {
 	try {
 		const endpoint = date
 			? `${API_BASE_URL}/readings/${date}?detailed=true`
-			: `${API_BASE_URL}/readings?detailed=true`;
+			: `${API_BASE_URL}/readings?detailed=true`
 		const res = await fetch(endpoint, {
 			cache: 'no-store',
-		});
-		if (!res.ok) return null;
-		return res.json();
+		})
+		if (!res.ok) return null
+		return res.json()
 	} catch {
-		return null;
+		return null
 	}
 }
 
-function ReadingSection({ readings, label }: { readings: Reading[]; label: { title: string; subtitle: string } }) {
+function ReadingSection({
+	readings,
+	label,
+}: { readings: Reading[]; label: { title: string; subtitle: string } }) {
 	return (
 		<div className="mb-8">
 			<div className="mb-4">
@@ -51,7 +54,9 @@ function ReadingSection({ readings, label }: { readings: Reading[]; label: { tit
 							<div className="space-y-3">
 								{chapter.verses.map((verse) => (
 									<p key={verse.num} className="text-gray-700 dark:text-gray-300 leading-relaxed">
-										<span className="text-gray-400 dark:text-gray-600 text-sm mr-2">{verse.num}</span>
+										<span className="text-gray-400 dark:text-gray-600 text-sm mr-2">
+											{verse.num}
+										</span>
 										{verse.text}
 									</p>
 								))}
@@ -61,23 +66,23 @@ function ReadingSection({ readings, label }: { readings: Reading[]; label: { tit
 				</div>
 			))}
 		</div>
-	);
+	)
 }
 
 export default async function ReadingsPage({
 	searchParams,
 }: {
-	searchParams: Promise<{ date?: string }>;
+	searchParams: Promise<{ date?: string }>
 }) {
-	const { date } = await searchParams;
-	const readings = await getReadings(date);
+	const { date } = await searchParams
+	const readings = await getReadings(date)
 
-	const displayDate = date ? parseDateString(date) : new Date();
-	const gregorianDate = formatGregorianDate(displayDate);
-	const isToday = !date || date === getTodayDateString();
+	const displayDate = date ? parseDateString(date) : new Date()
+	const gregorianDate = formatGregorianDate(displayDate)
+	const isToday = !date || date === getTodayDateString()
 
-	const sections = ['Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel'] as const;
-	const vespersMatins = ['VPsalm', 'VGospel', 'MPsalm', 'MGospel'] as const;
+	const sections = ['Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel'] as const
+	const vespersMatins = ['VPsalm', 'VGospel', 'MPsalm', 'MGospel'] as const
 
 	return (
 		<main className="min-h-screen relative">
@@ -93,7 +98,9 @@ export default async function ReadingsPage({
 					</h1>
 					<p className="text-gray-600 dark:text-gray-400 mb-1">{gregorianDate}</p>
 					{readings?.fullDate && (
-						<p className="text-amber-600 dark:text-amber-500 font-medium">{readings.fullDate.dateString}</p>
+						<p className="text-amber-600 dark:text-amber-500 font-medium">
+							{readings.fullDate.dateString}
+						</p>
 					)}
 					{!isToday && (
 						<Link
@@ -125,15 +132,9 @@ export default async function ReadingsPage({
 							<CardHeader>Liturgy Readings</CardHeader>
 							<CardContent>
 								{sections.map((key) => {
-									const data = readings[key];
-									if (!data || data.length === 0) return null;
-									return (
-										<ReadingSection
-											key={key}
-											readings={data}
-											label={sectionLabels[key]}
-										/>
-									);
+									const data = readings[key]
+									if (!data || data.length === 0) return null
+									return <ReadingSection key={key} readings={data} label={sectionLabels[key]} />
 								})}
 							</CardContent>
 						</Card>
@@ -143,15 +144,9 @@ export default async function ReadingsPage({
 							<CardHeader>Vespers & Matins</CardHeader>
 							<CardContent>
 								{vespersMatins.map((key) => {
-									const data = readings[key];
-									if (!data || data.length === 0) return null;
-									return (
-										<ReadingSection
-											key={key}
-											readings={data}
-											label={sectionLabels[key]}
-										/>
-									);
+									const data = readings[key]
+									if (!data || data.length === 0) return null
+									return <ReadingSection key={key} readings={data} label={sectionLabels[key]} />
 								})}
 							</CardContent>
 						</Card>
@@ -165,5 +160,5 @@ export default async function ReadingsPage({
 				</section>
 			)}
 		</main>
-	);
+	)
 }

@@ -1,92 +1,92 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { API_BASE_URL } from '@/config';
+import { API_BASE_URL } from '@/config'
+import { useState } from 'react'
 
 interface Example {
-	title: string;
-	description: string;
-	endpoint: string;
-	code: string;
+	title: string
+	description: string
+	endpoint: string
+	code: string
 }
 
 const examples: Example[] = [
 	{
 		title: "Today's Readings",
-		description: "Get the daily scripture readings from the Katameros",
-		endpoint: "/readings",
+		description: 'Get the daily scripture readings from the Katameros',
+		endpoint: '/readings',
 		code: `const response = await fetch(
   '${API_BASE_URL}/readings'
 );
-const readings = await response.json();`
+const readings = await response.json();`,
 	},
 	{
-		title: "Coptic Date",
-		description: "Convert any Gregorian date to the Coptic calendar",
-		endpoint: "/calendar/2025-04-20",
+		title: 'Coptic Date',
+		description: 'Convert any Gregorian date to the Coptic calendar',
+		endpoint: '/calendar/2025-04-20',
 		code: `const response = await fetch(
   '${API_BASE_URL}/calendar/2025-04-20'
 );
 const copticDate = await response.json();
-// { day: 12, month: 8, year: 1741, ... }`
+// { day: 12, month: 8, year: 1741, ... }`,
 	},
 	{
-		title: "Fasting Status",
-		description: "Check if a specific date is a fasting day",
-		endpoint: "/fasting/2025-03-15",
+		title: 'Fasting Status',
+		description: 'Check if a specific date is a fasting day',
+		endpoint: '/fasting/2025-03-15',
 		code: `const response = await fetch(
   '${API_BASE_URL}/fasting/2025-03-15'
 );
 const fasting = await response.json();
-// { isFasting: true, fastType: "Great Lent" }`
+// { isFasting: true, fastType: "Great Lent" }`,
 	},
 	{
-		title: "Upcoming Celebrations",
-		description: "Get feast days for the next N days",
-		endpoint: "/celebrations/upcoming/list?days=30",
+		title: 'Upcoming Celebrations',
+		description: 'Get feast days for the next N days',
+		endpoint: '/celebrations/upcoming/list?days=30',
 		code: `const response = await fetch(
   '${API_BASE_URL}/celebrations/upcoming/list?days=30'
 );
-const celebrations = await response.json();`
+const celebrations = await response.json();`,
 	},
 	{
-		title: "Synaxarium Search",
-		description: "Search saint commemorations by name",
-		endpoint: "/synaxarium/search/query?q=mary",
+		title: 'Synaxarium Search',
+		description: 'Search saint commemorations by name',
+		endpoint: '/synaxarium/search/query?q=mary',
 		code: `const response = await fetch(
   '${API_BASE_URL}/synaxarium/search/query?q=mary'
 );
-const saints = await response.json();`
+const saints = await response.json();`,
 	},
 	{
-		title: "Liturgical Season",
-		description: "Get the current liturgical season",
-		endpoint: "/season",
+		title: 'Liturgical Season',
+		description: 'Get the current liturgical season',
+		endpoint: '/season',
 		code: `const response = await fetch(
   '${API_BASE_URL}/season'
 );
 const season = await response.json();
-// { name: "Pentecost", ... }`
+// { name: "Pentecost", ... }`,
 	},
-];
+]
 
 export default function ExamplesPage() {
-	const [activeExample, setActiveExample] = useState(0);
-	const [response, setResponse] = useState<string | null>(null);
-	const [loading, setLoading] = useState(false);
+	const [activeExample, setActiveExample] = useState(0)
+	const [response, setResponse] = useState<string | null>(null)
+	const [loading, setLoading] = useState(false)
 
 	const runExample = async () => {
-		setLoading(true);
-		setResponse(null);
+		setLoading(true)
+		setResponse(null)
 		try {
-			const res = await fetch(`${API_BASE_URL}${examples[activeExample].endpoint}`);
-			const data = await res.json();
-			setResponse(JSON.stringify(data, null, 2));
+			const res = await fetch(`${API_BASE_URL}${examples[activeExample].endpoint}`)
+			const data = await res.json()
+			setResponse(JSON.stringify(data, null, 2))
 		} catch (err) {
-			setResponse(`Error: ${err}`);
+			setResponse(`Error: ${err}`)
 		}
-		setLoading(false);
-	};
+		setLoading(false)
+	}
 
 	return (
 		<main className="min-h-screen relative">
@@ -98,7 +98,9 @@ export default function ExamplesPage() {
 			<section className="relative pt-20 pb-8 px-6">
 				<div className="max-w-4xl mx-auto">
 					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">API Examples</h1>
-					<p className="text-gray-600 dark:text-gray-400">Interactive examples to explore the Coptic Calendar API</p>
+					<p className="text-gray-600 dark:text-gray-400">
+						Interactive examples to explore the Coptic Calendar API
+					</p>
 				</div>
 			</section>
 
@@ -109,10 +111,11 @@ export default function ExamplesPage() {
 						<div className="space-y-1">
 							{examples.map((example, idx) => (
 								<button
+									type="button"
 									key={idx}
 									onClick={() => {
-										setActiveExample(idx);
-										setResponse(null);
+										setActiveExample(idx)
+										setResponse(null)
 									}}
 									className={`w-full text-left px-4 py-3 rounded-xl transition-colors ${
 										activeExample === idx
@@ -121,7 +124,9 @@ export default function ExamplesPage() {
 									}`}
 								>
 									<p className="font-medium text-[14px]">{example.title}</p>
-									<p className="text-[12px] text-gray-500 dark:text-gray-500 mt-0.5">{example.description}</p>
+									<p className="text-[12px] text-gray-500 dark:text-gray-500 mt-0.5">
+										{example.description}
+									</p>
 								</button>
 							))}
 						</div>
@@ -153,6 +158,7 @@ export default function ExamplesPage() {
 
 							{/* Try it */}
 							<button
+								type="button"
 								onClick={runExample}
 								disabled={loading}
 								className="w-full bg-amber-700 hover:bg-amber-600 disabled:bg-amber-600/50 text-white font-medium py-3 px-5 rounded-xl transition-colors text-[14px]"
@@ -164,7 +170,9 @@ export default function ExamplesPage() {
 							{response && (
 								<div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
 									<div className="px-4 py-3 border-b border-gray-800">
-										<span className="text-[11px] text-gray-500 uppercase tracking-wider">Response</span>
+										<span className="text-[11px] text-gray-500 uppercase tracking-wider">
+											Response
+										</span>
 									</div>
 									<pre className="p-4 text-[12px] font-mono text-gray-300 overflow-x-auto max-h-[400px] overflow-y-auto">
 										<code>{response}</code>
@@ -176,5 +184,5 @@ export default function ExamplesPage() {
 				</div>
 			</section>
 		</main>
-	);
+	)
 }

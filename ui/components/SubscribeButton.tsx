@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { ICAL_SUBSCRIBE_URL } from '@/config';
-import { CalendarIcon, MailIcon } from '@/components/ui/Icons';
+import { CalendarIcon, MailIcon } from '@/components/ui/Icons'
+import { ICAL_SUBSCRIBE_URL } from '@/config'
+import Link from 'next/link'
 
 export default function SubscribeButton() {
 	return (
@@ -25,5 +25,5 @@ export default function SubscribeButton() {
 				Subscribe via calendar app or receive daily email readings
 			</p>
 		</div>
-	);
+	)
 }

@@ -1,4 +1,4 @@
-import { CardSkeleton } from '@/components/ui/Skeleton';
+import { CardSkeleton } from '@/components/ui/Skeleton'
 
 export default function SubscribeLoading() {
 	return (
@@ -9,5 +9,5 @@ export default function SubscribeLoading() {
 				</div>
 			</section>
 		</main>
-	);
+	)
 }

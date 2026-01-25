@@ -1,14 +1,14 @@
-import { generateYearCalendar, generateMultiYearCalendar } from '../utils/icalGenerator'
-import fromGregorian from '../utils/copticDate'
-import { getFastingForDate } from './fasting.service'
 import { format, getDaysInMonth } from 'date-fns'
-import type { CalendarMonth, CalendarDay, CopticMonthInfo } from '../types'
+import type { CalendarDay, CalendarMonth, CopticMonthInfo } from '../types'
+import fromGregorian from '../utils/copticDate'
+import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
+import { getFastingForDate } from './fasting.service'
 
 export const getCalendarMonth = (year: number, month: number): CalendarMonth => {
-	if (isNaN(year) || year < 1900 || year > 2199) {
+	if (Number.isNaN(year) || year < 1900 || year > 2199) {
 		throw new Error('Invalid year. Must be between 1900 and 2199')
 	}
-	if (isNaN(month) || month < 1 || month > 12) {
+	if (Number.isNaN(month) || month < 1 || month > 12) {
 		throw new Error('Invalid month. Must be between 1 and 12')
 	}
 
@@ -53,7 +53,7 @@ export const getSubscriptionCalendar = () => {
 }
 
 export const getYearCalendar = (year: number) => {
-	if (isNaN(year) || year < 1900 || year > 2199) {
+	if (Number.isNaN(year) || year < 1900 || year > 2199) {
 		throw new Error('Invalid year. Must be between 1900 and 2199')
 	}
 

@@ -1,5 +1,5 @@
-import { celebrations } from '../../resources/nonMoveableCelebrations.json'
 import dayCelebrations from '../../resources/dayReadings.json'
+import { celebrations } from '../../resources/nonMoveableCelebrations.json'
 import fromGregorian from '../copticDate'
 
 export interface Celebration {

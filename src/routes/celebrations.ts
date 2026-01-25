@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { isValid, parse } from 'date-fns'
+import { CelebrationSchema, ErrorSchema, UpcomingCelebrationSchema } from '../schemas'
 import * as celebrationsService from '../services/celebrations.service'
-import { CelebrationSchema, UpcomingCelebrationSchema, ErrorSchema } from '../schemas'
-import { parse, isValid } from 'date-fns'
 
 const app = new OpenAPIHono()
 
@@ -105,7 +105,7 @@ const getUpcomingRoute = createRoute({
 
 app.openapi(getUpcomingRoute, (c) => {
 	const { days } = c.req.valid('query')
-	const daysNum = parseInt(days || '30')
+	const daysNum = Number.parseInt(days || '30')
 	const upcoming = celebrationsService.getUpcomingCelebrations(daysNum)
 	return c.json(upcoming, 200)
 })

@@ -1,6 +1,6 @@
 interface CopticCrossProps {
-	className?: string;
-	size?: number;
+	className?: string
+	size?: number
 }
 
 export default function CopticCross({ className = '', size = 20 }: CopticCrossProps) {
@@ -11,6 +11,7 @@ export default function CopticCross({ className = '', size = 20 }: CopticCrossPr
 			viewBox="0 0 24 24"
 			fill="none"
 			className={className}
+			aria-hidden="true"
 		>
 			{/* Coptic cross with trefoil ends and center circle */}
 			<defs>
@@ -41,5 +42,5 @@ export default function CopticCross({ className = '', size = 20 }: CopticCrossPr
 			{/* Bottom trefoil */}
 			<circle cx="12" cy="20.5" r="2" fill="url(#crossGradient)" />
 		</svg>
-	);
+	)
 }

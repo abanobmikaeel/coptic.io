@@ -1,7 +1,7 @@
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import { addDays, format, isAfter } from 'date-fns'
 import { isInMoveableFast } from '../utils/calculations/getMoveableFeasts'
+import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import fromGregorian from '../utils/copticDate'
-import { format, addDays, isAfter } from 'date-fns'
 
 export const getFastingForDate = (date: Date) => {
 	// Check for moveable fasting periods first
@@ -26,7 +26,7 @@ export const getFastingForDate = (date: Date) => {
 	}
 
 	const fastingCelebrations = celebrationsForDay.filter((celeb) =>
-		celeb.type.toLowerCase().includes('fast')
+		celeb.type.toLowerCase().includes('fast'),
 	)
 
 	if (fastingCelebrations.length === 0) {
@@ -78,7 +78,7 @@ export const getFastingCalendar = (year: number) => {
 
 		if (celebrationsForDay) {
 			const fastingCelebrations = celebrationsForDay.filter((celeb) =>
-				celeb.type.toLowerCase().includes('fast')
+				celeb.type.toLowerCase().includes('fast'),
 			)
 
 			const firstFast = fastingCelebrations[0]

@@ -1,50 +1,50 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { formatDateShortUTC } from '@/lib/utils';
+import { formatDateShortUTC } from '@/lib/utils'
+import { useState } from 'react'
 
 interface Feast {
-	name: string;
-	type: string;
-	date: string;
-	displayName?: string;
+	name: string
+	type: string
+	date: string
+	displayName?: string
 }
 
 interface UpcomingFeastsListProps {
-	feasts: Feast[];
+	feasts: Feast[]
 }
 
 export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) {
-	const [visibleCount, setVisibleCount] = useState(5);
+	const [visibleCount, setVisibleCount] = useState(5)
 
 	const getTypeColor = (type: string) => {
 		switch (type) {
 			case 'lordlyFeast':
 			case 'majorFeast':
-				return 'text-amber-600 dark:text-amber-500';
+				return 'text-amber-600 dark:text-amber-500'
 			case 'fast':
-				return 'text-purple-600 dark:text-purple-400';
+				return 'text-purple-600 dark:text-purple-400'
 			default:
-				return 'text-gray-500 dark:text-gray-400';
+				return 'text-gray-500 dark:text-gray-400'
 		}
-	};
+	}
 
 	const formatType = (type: string) => {
 		const typeMap: Record<string, string> = {
-			'fast': 'Fast',
-			'feast': 'Feast',
-			'lordlyFeast': 'Lordly Feast',
-			'majorFeast': 'Major Feast',
-			'minorFeast': 'Minor Feast'
-		};
-		return typeMap[type] || type;
-	};
+			fast: 'Fast',
+			feast: 'Feast',
+			lordlyFeast: 'Lordly Feast',
+			majorFeast: 'Major Feast',
+			minorFeast: 'Minor Feast',
+		}
+		return typeMap[type] || type
+	}
 
-	const visibleFeasts = feasts.slice(0, visibleCount);
-	const hasMore = visibleCount < feasts.length;
+	const visibleFeasts = feasts.slice(0, visibleCount)
+	const hasMore = visibleCount < feasts.length
 
 	if (visibleFeasts.length === 0) {
-		return <p className="text-gray-500 dark:text-gray-400 text-sm">No upcoming feasts</p>;
+		return <p className="text-gray-500 dark:text-gray-400 text-sm">No upcoming feasts</p>
 	}
 
 	return (
@@ -58,9 +58,7 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 						<p className="text-gray-900 dark:text-white font-medium truncate">
 							{feast.displayName || feast.name}
 						</p>
-						<p className={`text-xs ${getTypeColor(feast.type)}`}>
-							{formatType(feast.type)}
-						</p>
+						<p className={`text-xs ${getTypeColor(feast.type)}`}>{formatType(feast.type)}</p>
 					</div>
 					<p className="text-gray-500 dark:text-gray-400 text-sm ml-4 whitespace-nowrap">
 						{formatDateShortUTC(new Date(feast.date))}
@@ -70,12 +68,13 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 
 			{hasMore && (
 				<button
-					onClick={() => setVisibleCount(prev => prev + 5)}
+					type="button"
+					onClick={() => setVisibleCount((prev) => prev + 5)}
 					className="w-full mt-3 py-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors"
 				>
 					Show more
 				</button>
 			)}
 		</div>
-	);
+	)
 }

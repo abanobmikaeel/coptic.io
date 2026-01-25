@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { getSubscriptionCalendar, getYearCalendar } from '../../services/calendar.service'
 
 describe('Calendar Service', () => {
@@ -67,7 +67,9 @@ describe('Calendar Service', () => {
 		})
 
 		it('should throw error for NaN year', () => {
-			expect(() => getYearCalendar(NaN)).toThrow('Invalid year. Must be between 1900 and 2199')
+			expect(() => getYearCalendar(Number.NaN)).toThrow(
+				'Invalid year. Must be between 1900 and 2199',
+			)
 		})
 
 		it('should accept year 1900', () => {

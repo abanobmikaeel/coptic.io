@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { getMoveableFeastsForYear } from '../../../utils/calculations/getMoveableFeasts'
+import { describe, expect, it } from 'vitest'
 import getEaster from '../../../utils/calculations/getEaster'
+import { getMoveableFeastsForYear } from '../../../utils/calculations/getMoveableFeasts'
 import fromGregorian from '../../../utils/copticDate'
 
 /**
@@ -238,7 +238,7 @@ describe('Fasting Periods - Date Ranges', () => {
 
 		if (easter && greatLent) {
 			const diff = Math.round(
-				(easter.date.getTime() - greatLent.date.getTime()) / (1000 * 60 * 60 * 24)
+				(easter.date.getTime() - greatLent.date.getTime()) / (1000 * 60 * 60 * 24),
 			)
 			expect(diff).toBe(55)
 		}

@@ -1,4 +1,4 @@
-import { CardSkeleton } from '@/components/ui/Skeleton';
+import { CardSkeleton } from '@/components/ui/Skeleton'
 
 export default function PreferencesLoading() {
 	return (
@@ -9,5 +9,5 @@ export default function PreferencesLoading() {
 				</div>
 			</section>
 		</main>
-	);
+	)
 }

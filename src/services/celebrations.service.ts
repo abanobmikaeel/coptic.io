@@ -1,11 +1,11 @@
+import { addDays, format } from 'date-fns'
 import { celebrations } from '../resources/nonMoveableCelebrations.json'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import {
 	getMoveableFeastsForDate,
 	getMoveableFeastsForYear,
 } from '../utils/calculations/getMoveableFeasts'
+import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import fromGregorian from '../utils/copticDate'
-import { format, addDays } from 'date-fns'
 
 export const getAllCelebrations = () => {
 	// Combine static celebrations with moveable feasts for current year
@@ -39,7 +39,7 @@ export const getCelebrationsForDate = (date: Date) => {
 	return allCelebrations.length > 0 ? allCelebrations : null
 }
 
-export const getUpcomingCelebrations = (days: number = 30) => {
+export const getUpcomingCelebrations = (days = 30) => {
 	const upcoming = []
 	const today = new Date()
 

@@ -2,13 +2,13 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
-import readingsRoutes from './routes/readings'
+import { yoga } from './graphql'
 import calendarRoutes from './routes/calendar'
 import celebrationsRoutes from './routes/celebrations'
 import fastingRoutes from './routes/fasting'
-import synaxariumRoutes from './routes/synaxarium'
+import readingsRoutes from './routes/readings'
 import seasonRoutes from './routes/season'
-import { yoga } from './graphql'
+import synaxariumRoutes from './routes/synaxarium'
 
 const app = new OpenAPIHono()
 

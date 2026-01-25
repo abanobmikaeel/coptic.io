@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { app } from '../../index'
 
 describe('Season API Endpoints', () => {

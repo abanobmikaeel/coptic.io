@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
-	getLiturgicalSeasonForDate,
 	getAllSeasonsForYear,
-	isInFastingPeriod,
 	getFastingPeriodsForYear,
+	getLiturgicalSeasonForDate,
+	isInFastingPeriod,
 } from '../../../utils/calculations/getLiturgicalSeason'
 
 describe('Liturgical Season Detection', () => {

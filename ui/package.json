@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "typecheck": "tsc --noEmit",
+    "ci": "bun run typecheck && bun run check && bun run build"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.700.0",
@@ -18,13 +23,12 @@
     "react-dom": "19.2.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24.10.1",
     "@types/pg": "^8.11.10",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "eslint": "^9.39.1",
-    "eslint-config-next": "16.0.7",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
   },

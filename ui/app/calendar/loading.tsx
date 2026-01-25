@@ -31,12 +31,15 @@ export default function CalendarLoading() {
 						</div>
 						<div className="grid grid-cols-7 gap-3">
 							{Array.from({ length: 35 }).map((_, i) => (
-								<div key={i} className="aspect-square bg-gray-100 dark:bg-gray-800/50 rounded-xl animate-pulse" />
+								<div
+									key={i}
+									className="aspect-square bg-gray-100 dark:bg-gray-800/50 rounded-xl animate-pulse"
+								/>
 							))}
 						</div>
 					</div>
 				</div>
 			</section>
 		</main>
-	);
+	)
 }

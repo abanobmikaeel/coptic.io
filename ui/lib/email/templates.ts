@@ -1,9 +1,9 @@
-const BASE_STYLES = `font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;`;
-const HEADING_STYLES = `color: #d97706; margin-bottom: 24px;`;
-const TEXT_STYLES = `color: #374151; line-height: 1.6;`;
-const MUTED_STYLES = `color: #6b7280; font-size: 14px;`;
-const LINK_STYLES = `color: #d97706;`;
-const FOOTER_STYLES = `color: #9ca3af; font-size: 12px;`;
+const BASE_STYLES = `font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;`
+const HEADING_STYLES = 'color: #d97706; margin-bottom: 24px;'
+const TEXT_STYLES = 'color: #374151; line-height: 1.6;'
+const MUTED_STYLES = 'color: #6b7280; font-size: 14px;'
+const LINK_STYLES = 'color: #d97706;'
+const FOOTER_STYLES = 'color: #9ca3af; font-size: 12px;'
 
 export function otpEmailHtml(code: string): string {
 	return `
@@ -16,14 +16,18 @@ export function otpEmailHtml(code: string): string {
 			<p style="${MUTED_STYLES}">This code expires in 10 minutes.</p>
 			<p style="${MUTED_STYLES} margin-top: 24px;">If you didn't request this, you can safely ignore this email.</p>
 		</div>
-	`;
+	`
 }
 
 export function otpEmailText(code: string): string {
-	return `Your Coptic.io verification code is: ${code}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, you can safely ignore this email.`;
+	return `Your Coptic.io verification code is: ${code}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, you can safely ignore this email.`
 }
 
-export function welcomeEmailHtml(greeting: string, preferencesUrl: string, unsubscribeUrl: string): string {
+export function welcomeEmailHtml(
+	greeting: string,
+	preferencesUrl: string,
+	unsubscribeUrl: string,
+): string {
 	return `
 		<div style="${BASE_STYLES}">
 			<h2 style="${HEADING_STYLES}">${greeting}</h2>
@@ -40,9 +44,13 @@ export function welcomeEmailHtml(greeting: string, preferencesUrl: string, unsub
 				<a href="${unsubscribeUrl}" style="${FOOTER_STYLES}">Unsubscribe</a>
 			</p>
 		</div>
-	`;
+	`
 }
 
-export function welcomeEmailText(greeting: string, preferencesUrl: string, unsubscribeUrl: string): string {
-	return `${greeting}\n\nThank you for subscribing! You'll now receive:\n- Daily scripture readings from the Coptic Orthodox lectionary\n- Reminders for upcoming feast days and celebrations\n\nManage your preferences: ${preferencesUrl}\n\nUnsubscribe: ${unsubscribeUrl}`;
+export function welcomeEmailText(
+	greeting: string,
+	preferencesUrl: string,
+	unsubscribeUrl: string,
+): string {
+	return `${greeting}\n\nThank you for subscribing! You'll now receive:\n- Daily scripture readings from the Coptic Orthodox lectionary\n- Reminders for upcoming feast days and celebrations\n\nManage your preferences: ${preferencesUrl}\n\nUnsubscribe: ${unsubscribeUrl}`
 }

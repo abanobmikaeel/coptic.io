@@ -1,6 +1,6 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { ErrorSchema, SynaxariumEntrySchema, SynaxariumSearchResultSchema } from '../schemas'
 import * as synaxariumService from '../services/synaxarium.service'
-import { SynaxariumEntrySchema, SynaxariumSearchResultSchema, ErrorSchema } from '../schemas'
 
 const app = new OpenAPIHono()
 
@@ -53,7 +53,7 @@ app.openapi(getForDateRoute, (c) => {
 	const { detailed } = c.req.valid('query')
 
 	const parsedDate = date ? new Date(date) : new Date()
-	if (isNaN(parsedDate.getTime())) {
+	if (Number.isNaN(parsedDate.getTime())) {
 		return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 	}
 

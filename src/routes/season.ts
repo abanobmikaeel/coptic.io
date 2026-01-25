@@ -1,11 +1,11 @@
+import { format, isValid, parse } from 'date-fns'
 import { Hono } from 'hono'
 import {
-	getLiturgicalSeasonForDate,
 	getAllSeasonsForYear,
-	isInFastingPeriod,
 	getFastingPeriodsForYear,
+	getLiturgicalSeasonForDate,
+	isInFastingPeriod,
 } from '../utils/calculations/getLiturgicalSeason'
-import { format, parse, isValid } from 'date-fns'
 
 const season = new Hono()
 
@@ -50,7 +50,7 @@ season.get('/:date?', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to fetch liturgical season',
 			},
-			500
+			500,
 		)
 	}
 })
@@ -59,9 +59,9 @@ season.get('/:date?', async (c) => {
 season.get('/year/:year', async (c) => {
 	try {
 		const yearParam = c.req.param('year')
-		const year = parseInt(yearParam)
+		const year = Number.parseInt(yearParam)
 
-		if (isNaN(year) || year < 1900 || year > 2199) {
+		if (Number.isNaN(year) || year < 1900 || year > 2199) {
 			return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
 		}
 
@@ -84,7 +84,7 @@ season.get('/year/:year', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to fetch seasons',
 			},
-			500
+			500,
 		)
 	}
 })
@@ -93,9 +93,9 @@ season.get('/year/:year', async (c) => {
 season.get('/fasting/:year', async (c) => {
 	try {
 		const yearParam = c.req.param('year')
-		const year = parseInt(yearParam)
+		const year = Number.parseInt(yearParam)
 
-		if (isNaN(year) || year < 1900 || year > 2199) {
+		if (Number.isNaN(year) || year < 1900 || year > 2199) {
 			return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
 		}
 
@@ -117,7 +117,7 @@ season.get('/fasting/:year', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to fetch fasting periods',
 			},
-			500
+			500,
 		)
 	}
 })

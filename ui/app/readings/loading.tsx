@@ -1,4 +1,4 @@
-import { CardSkeleton } from '@/components/ui/Skeleton';
+import { CardSkeleton } from '@/components/ui/Skeleton'
 
 export default function ReadingsLoading() {
 	return (
@@ -17,5 +17,5 @@ export default function ReadingsLoading() {
 				</div>
 			</section>
 		</main>
-	);
+	)
 }

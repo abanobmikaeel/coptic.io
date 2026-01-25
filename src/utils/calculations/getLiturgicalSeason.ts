@@ -1,6 +1,6 @@
+import { addDays, normalizeDate } from '../dateUtils'
 import easterDate from './getEaster'
 import { getMoveableFeastsForYear } from './getMoveableFeasts'
-import { addDays, normalizeDate } from '../dateUtils'
 
 export interface LiturgicalSeason {
 	name: string
