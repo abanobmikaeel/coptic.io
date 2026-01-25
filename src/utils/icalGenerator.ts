@@ -21,7 +21,7 @@ const formatICalDate = (date: Date): string => {
  * Format datetime for iCal (YYYYMMDDTHHmmssZ format)
  */
 const formatICalDateTime = (date: Date): string => {
-	return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+	return `${date.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`
 }
 
 /**
@@ -48,7 +48,7 @@ const generateEvent = (
 	summary: string,
 	date: Date,
 	description?: string,
-	eventType?: string
+	eventType?: string,
 ): string => {
 	const uid = generateEventId(eventType || 'event', date, summary)
 	const dtstart = formatICalDate(date)
@@ -104,7 +104,7 @@ export const generateYearCalendar = (year: number): string => {
 				`${season.name} begins`,
 				startDate,
 				season.description,
-				season.isFasting ? 'Fasting Period' : 'Liturgical Season'
+				season.isFasting ? 'Fasting Period' : 'Liturgical Season',
 			)
 		}
 	})
@@ -120,7 +120,7 @@ export const generateYearCalendar = (year: number): string => {
 
 		if (celebrations && Array.isArray(celebrations)) {
 			celebrations.forEach((celebration: Celebration) => {
-				if (celebration && celebration.name && !fastNames.has(celebration.name)) {
+				if (celebration?.name && !fastNames.has(celebration.name)) {
 					ical += generateEvent(celebration.name, new Date(date), celebration.story || '', 'Feast')
 				}
 			})
@@ -156,7 +156,7 @@ export const generateMultiYearCalendar = (startYear: number, endYear: number): s
 				feast.name,
 				feast.date,
 				`${feast.name} - ${feast.type}`,
-				'Moveable Feast'
+				'Moveable Feast',
 			)
 		})
 
@@ -170,7 +170,7 @@ export const generateMultiYearCalendar = (startYear: number, endYear: number): s
 					`${season.name} begins`,
 					startDate,
 					season.description,
-					season.isFasting ? 'Fasting Period' : 'Liturgical Season'
+					season.isFasting ? 'Fasting Period' : 'Liturgical Season',
 				)
 			}
 		})
@@ -186,12 +186,12 @@ export const generateMultiYearCalendar = (startYear: number, endYear: number): s
 
 			if (celebrations && Array.isArray(celebrations)) {
 				celebrations.forEach((celebration: Celebration) => {
-					if (celebration && celebration.name && !fastNames.has(celebration.name)) {
+					if (celebration?.name && !fastNames.has(celebration.name)) {
 						ical += generateEvent(
 							celebration.name,
 							new Date(date),
 							celebration.story || '',
-							'Feast'
+							'Feast',
 						)
 					}
 				})

@@ -1,6 +1,6 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { ErrorSchema, FastingDaySchema, FastingResponseSchema } from '../schemas'
 import * as fastingService from '../services/fasting.service'
-import { FastingResponseSchema, FastingDaySchema, ErrorSchema } from '../schemas'
 
 const app = new OpenAPIHono()
 
@@ -41,7 +41,7 @@ app.openapi(getForDateRoute, (c) => {
 	const { date } = c.req.valid('param')
 	const parsedDate = date ? new Date(date) : new Date()
 
-	if (isNaN(parsedDate.getTime())) {
+	if (Number.isNaN(parsedDate.getTime())) {
 		return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 	}
 
@@ -83,9 +83,9 @@ const getCalendarRoute = createRoute({
 
 app.openapi(getCalendarRoute, (c) => {
 	const { year } = c.req.valid('param')
-	const yearNum = parseInt(year)
+	const yearNum = Number.parseInt(year)
 
-	if (isNaN(yearNum) || yearNum < 1900 || yearNum > 2100) {
+	if (Number.isNaN(yearNum) || yearNum < 1900 || yearNum > 2100) {
 		return c.json({ error: 'Invalid year. Must be between 1900-2100' }, 400)
 	}
 

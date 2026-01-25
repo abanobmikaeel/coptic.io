@@ -1,10 +1,10 @@
-import { Reading } from '../../types'
-import { getVerseRange, getSingleVerse, getSingleChapter } from './verseTextTransformer'
 import dayReadings from '../../resources/dayReadings.json'
-import uniqueReadings from '../../resources/uniqueReadings.json'
 import synxariumReadings from '../../resources/synxarium.json'
-import { verseRangePattern, oneVersePattern, oneChapterPattern } from '../../utils/regexPatterns'
+import uniqueReadings from '../../resources/uniqueReadings.json'
+import type { Reading } from '../../types'
 import fromGregorian from '../../utils/copticDate'
+import { oneChapterPattern, oneVersePattern, verseRangePattern } from '../../utils/regexPatterns'
+import { getSingleChapter, getSingleVerse, getVerseRange } from './verseTextTransformer'
 /**
  *
  * @param verseString 'a string for indexing a bible verse '
@@ -37,10 +37,9 @@ export const parseReadingString = (verseString?: string): Reading[] | null => {
 			}
 		})
 		return finalArr
-	} else {
-		const foundReading = getReading(verseString)
-		return foundReading ? [foundReading] : null
 	}
+	const foundReading = getReading(verseString)
+	return foundReading ? [foundReading] : null
 }
 
 type ReadingRecord = {
@@ -123,7 +122,7 @@ export const getByCopticDate = (gregorianDate: Date, isDetailed?: boolean): Read
 		}
 
 		const synxariumWithoutText = synxarium.map((reading: SynaxariumEntry) => {
-			const { _, ...rest } = reading
+			const { _: _unused, text: _text, ...rest } = reading
 			return rest
 		})
 		const synxariumText = isDetailed ? synxarium : synxariumWithoutText
@@ -137,7 +136,7 @@ export const getByCopticDate = (gregorianDate: Date, isDetailed?: boolean): Read
 	} catch (error) {
 		console.error(
 			'[getByCopticDate] Error:',
-			error instanceof Error ? error.message : 'Unknown error'
+			error instanceof Error ? error.message : 'Unknown error',
 		)
 		throw error
 	}

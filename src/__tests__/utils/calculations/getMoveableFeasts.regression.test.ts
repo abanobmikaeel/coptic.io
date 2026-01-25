@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
-	getMoveableFeastsForYear,
 	getMoveableFeastsForDate,
+	getMoveableFeastsForYear,
 } from '../../../utils/calculations/getMoveableFeasts'
 
 /**
@@ -138,7 +138,7 @@ describe('Moveable Feasts - Multi-Year Regression', () => {
 		// Verify all other feasts maintain correct offset from Easter
 		feasts.forEach((feast) => {
 			const daysDiff = Math.round(
-				(feast.date.getTime() - easter.date.getTime()) / (1000 * 60 * 60 * 24)
+				(feast.date.getTime() - easter.date.getTime()) / (1000 * 60 * 60 * 24),
 			)
 			expect(daysDiff).toBe(feast.daysFromEaster)
 		})

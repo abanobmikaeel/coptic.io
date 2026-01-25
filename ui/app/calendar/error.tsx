@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button'
 
 export default function CalendarError({
 	reset,
 }: {
-	error: Error & { digest?: string };
-	reset: () => void;
+	error: Error & { digest?: string }
+	reset: () => void
 }) {
 	return (
 		<main className="min-h-screen relative">
@@ -27,12 +27,10 @@ export default function CalendarError({
 						<p className="text-gray-500 dark:text-gray-400 mb-4">
 							Unable to load calendar data. Please try again.
 						</p>
-						<Button onClick={reset}>
-							Retry
-						</Button>
+						<Button onClick={reset}>Retry</Button>
 					</div>
 				</div>
 			</section>
 		</main>
-	);
+	)
 }

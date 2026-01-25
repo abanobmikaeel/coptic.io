@@ -1,2 +1,2 @@
-export { useFetch } from './useFetch';
-export { useSubscriberToken } from './useSubscriberToken';
+export { useFetch } from './useFetch'
+export { useSubscriberToken } from './useSubscriberToken'

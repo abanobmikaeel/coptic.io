@@ -22,10 +22,7 @@ type SearchResult = {
 	}
 }
 
-export const getSynaxariumForDate = (
-	date: Date,
-	includeText: boolean = false
-): SynaxariumEntry[] | null => {
+export const getSynaxariumForDate = (date: Date, includeText = false): SynaxariumEntry[] | null => {
 	const copticDate = fromGregorian(date)
 	const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
 	const synxarium = (synaxariumReadings as Record<string, SynaxariumEntry[]>)[synxariumKey]
@@ -36,7 +33,7 @@ export const getSynaxariumForDate = (
 
 	if (!includeText) {
 		return synxarium.map((reading: SynaxariumEntry) => {
-			const { _, ...rest } = reading
+			const { _: _unused, text: _text, ...rest } = reading
 			return rest
 		})
 	}
@@ -44,14 +41,14 @@ export const getSynaxariumForDate = (
 	return synxarium
 }
 
-export const searchSynaxarium = (searchTerm: string, limit: number = 50): SearchResult[] => {
+export const searchSynaxarium = (searchTerm: string, limit = 50): SearchResult[] => {
 	const results: SearchResult[] = []
 	const searchLower = searchTerm.toLowerCase()
 
 	Object.entries(synaxariumReadings as Record<string, SynaxariumEntry[]>).forEach(
 		([key, entries]) => {
 			entries.forEach((entry) => {
-				if (entry.name && entry.name.toLowerCase().includes(searchLower)) {
+				if (entry.name?.toLowerCase().includes(searchLower)) {
 					const parts = key.split(' ')
 					const day = parts[0]
 					const monthParts = parts.slice(1)
@@ -65,7 +62,7 @@ export const searchSynaxarium = (searchTerm: string, limit: number = 50): Search
 						date: key,
 						copticDate: {
 							dateString: key,
-							day: parseInt(day),
+							day: Number.parseInt(day),
 							monthString,
 						},
 						entry: {
@@ -75,7 +72,7 @@ export const searchSynaxarium = (searchTerm: string, limit: number = 50): Search
 					})
 				}
 			})
-		}
+		},
 	)
 
 	return results.slice(0, limit)

@@ -1,10 +1,10 @@
-import fromGregorian from '../utils/copticDate'
 import { getByCopticDate } from '../models/readings'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import * as calendarService from '../services/calendar.service'
 import * as celebrationsService from '../services/celebrations.service'
 import * as fastingService from '../services/fasting.service'
 import * as synaxariumService from '../services/synaxarium.service'
-import * as calendarService from '../services/calendar.service'
+import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import fromGregorian from '../utils/copticDate'
 
 export const resolvers = {
 	Query: {

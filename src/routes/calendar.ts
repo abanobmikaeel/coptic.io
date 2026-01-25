@@ -1,7 +1,7 @@
+import { isValid, parse } from 'date-fns'
 import { Hono } from 'hono'
-import fromGregorian from '../utils/copticDate'
 import * as calendarService from '../services/calendar.service'
-import { parse, isValid } from 'date-fns'
+import fromGregorian from '../utils/copticDate'
 
 const calendar = new Hono()
 
@@ -11,8 +11,8 @@ calendar.get('/month/:year/:month', async (c) => {
 	try {
 		const yearParam = c.req.param('year')
 		const monthParam = c.req.param('month')
-		const year = parseInt(yearParam)
-		const month = parseInt(monthParam)
+		const year = Number.parseInt(yearParam)
+		const month = Number.parseInt(monthParam)
 
 		const data = calendarService.getCalendarMonth(year, month)
 		return c.json(data)
@@ -22,7 +22,7 @@ calendar.get('/month/:year/:month', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to get calendar month',
 			},
-			400
+			400,
 		)
 	}
 })
@@ -45,7 +45,7 @@ calendar.get('/ical/subscribe', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to generate iCal subscription',
 			},
-			500
+			500,
 		)
 	}
 })
@@ -54,7 +54,7 @@ calendar.get('/ical/subscribe', async (c) => {
 calendar.get('/ical/:year', async (c) => {
 	try {
 		const yearParam = c.req.param('year')
-		const year = parseInt(yearParam)
+		const year = Number.parseInt(yearParam)
 
 		const icalContent = calendarService.getYearCalendar(year)
 
@@ -69,7 +69,7 @@ calendar.get('/ical/:year', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to generate iCal',
 			},
-			500
+			500,
 		)
 	}
 })
@@ -98,7 +98,7 @@ calendar.get('/:date?', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to convert date',
 			},
-			500
+			500,
 		)
 	}
 })

@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
+	multiChapterRange,
 	oneChapterPattern,
 	oneChapterPatternExact,
 	oneVersePattern,
 	verseRangePattern,
 	verseWithCommas,
-	multiChapterRange,
 } from '../../utils/regexPatterns'
 
 describe('Regex Patterns', () => {

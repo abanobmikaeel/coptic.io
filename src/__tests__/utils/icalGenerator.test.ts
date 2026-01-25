@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { generateYearCalendar, generateMultiYearCalendar } from '../../utils/icalGenerator'
+import { describe, expect, it } from 'vitest'
+import { generateMultiYearCalendar, generateYearCalendar } from '../../utils/icalGenerator'
 
 describe('iCalendar Generator', () => {
 	describe('generateYearCalendar', () => {
@@ -132,7 +132,7 @@ describe('iCalendar Generator', () => {
 
 			// Moveable feasts should have the Moveable Feast category
 			const moveableFeastEvents = ical.match(
-				/BEGIN:VEVENT[\s\S]*?CATEGORIES:Moveable Feast[\s\S]*?END:VEVENT/g
+				/BEGIN:VEVENT[\s\S]*?CATEGORIES:Moveable Feast[\s\S]*?END:VEVENT/g,
 			)
 
 			expect(moveableFeastEvents).toBeTruthy()

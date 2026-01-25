@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { API_BASE_URL } from "@/config";
-import { CalendarIcon, BookIcon, CodeIcon, GitHubIcon } from "@/components/ui/Icons";
+import { BookIcon, CalendarIcon, CodeIcon, GitHubIcon } from '@/components/ui/Icons'
+import { API_BASE_URL } from '@/config'
+import Link from 'next/link'
 
 export default function DeveloperSection() {
 	return (
@@ -24,18 +24,18 @@ export default function DeveloperSection() {
 				<pre className="text-sm font-mono">
 					<code>
 						<span className="text-gray-400">{"// Get today's readings"}</span>
-						{"\n"}
+						{'\n'}
 						<span className="text-purple-400">const</span>
 						<span className="text-gray-300"> response </span>
 						<span className="text-purple-400">=</span>
 						<span className="text-purple-400"> await </span>
 						<span className="text-blue-400">fetch</span>
 						<span className="text-gray-300">(</span>
-						{"\n"}
-						<span className="text-green-400">  &apos;{API_BASE_URL}/readings&apos;</span>
-						{"\n"}
+						{'\n'}
+						<span className="text-green-400"> &apos;{API_BASE_URL}/readings&apos;</span>
+						{'\n'}
 						<span className="text-gray-300">);</span>
-						{"\n\n"}
+						{'\n\n'}
 						<span className="text-purple-400">const</span>
 						<span className="text-gray-300"> readings </span>
 						<span className="text-purple-400">=</span>
@@ -93,5 +93,5 @@ export default function DeveloperSection() {
 				</a>
 			</div>
 		</div>
-	);
+	)
 }

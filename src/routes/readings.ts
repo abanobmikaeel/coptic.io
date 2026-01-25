@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
-import fromGregorian from '../utils/copticDate'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import { getByCopticDate } from '../models/readings'
+import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import fromGregorian from '../utils/copticDate'
 
 const readings = new Hono()
 
@@ -16,7 +16,7 @@ readings.get('/:date?', async (c) => {
 		if (dateParam) {
 			parsedDate = new Date(dateParam)
 			// Validate date
-			if (isNaN(parsedDate.getTime())) {
+			if (Number.isNaN(parsedDate.getTime())) {
 				return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 			}
 		}
@@ -39,7 +39,7 @@ readings.get('/:date?', async (c) => {
 			{
 				error: error instanceof Error ? error.message : 'Failed to fetch readings',
 			},
-			500
+			500,
 		)
 	}
 })

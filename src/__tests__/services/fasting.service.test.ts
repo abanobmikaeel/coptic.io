@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { getFastingForDate, getFastingCalendar } from '../../services/fasting.service'
 import { parse } from 'date-fns'
+import { describe, expect, it } from 'vitest'
+import { getFastingCalendar, getFastingForDate } from '../../services/fasting.service'
 
 describe('Fasting Service', () => {
 	describe('getFastingForDate', () => {

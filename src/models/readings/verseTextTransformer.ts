@@ -1,12 +1,12 @@
 import { range } from '../../../src/utils'
+import type { BibleVerse, Reading } from '../../types'
 import { getBook, getChapter, getChapterAndOrVerse, getVerse } from './bibleDataMapper'
-import { BibleVerse, Reading } from '../../types'
 
 export const getSingleVerse = (verseString: string) => {
 	const verseArr = splitAtIndex(
 		verseString,
 		verseString.lastIndexOf(' '),
-		verseString.lastIndexOf(':')
+		verseString.lastIndexOf(':'),
 	)
 
 	return getChapterAndOrVerse(verseArr.bookName, verseArr.chapterNum, verseArr?.startingVerseNum)
@@ -17,7 +17,7 @@ export const getVerseRange = (verseString: string): Reading => {
 		verseString,
 		verseString.lastIndexOf(' '),
 		verseString.lastIndexOf(':'),
-		verseString.lastIndexOf('-')
+		verseString.lastIndexOf('-'),
 	)
 
 	const { bookName, chapterNum, startingVerseNum, endVerseNum } = verseArr
@@ -54,14 +54,14 @@ export const splitAtIndex = (
 	value: string,
 	index: number,
 	startVerse?: number,
-	endVerse?: number
+	endVerse?: number,
 ) => {
 	const bookName = value.substring(0, index)
 	const chapterNum = startVerse
 		? value.substring(index, startVerse).replace(' ', '')
 		: value.substring(index)
-	let startingVerseNum
-	let endVerseNum = null
+	let startingVerseNum: string | undefined
+	let endVerseNum: string | null = null
 
 	if (startVerse && endVerse) {
 		startingVerseNum = value.substring(startVerse).replace(':', '').split('-')[0]

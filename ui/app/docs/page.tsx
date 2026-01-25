@@ -1,17 +1,17 @@
-import Link from 'next/link';
-import { API_BASE_URL } from '@/config';
+import { API_BASE_URL } from '@/config'
+import Link from 'next/link'
 
 interface Endpoint {
-	method: string;
-	path: string;
-	description: string;
-	params?: string;
+	method: string
+	path: string
+	description: string
+	params?: string
 }
 
 interface EndpointGroup {
-	title: string;
-	description: string;
-	endpoints: Endpoint[];
+	title: string
+	description: string
+	endpoints: Endpoint[]
 }
 
 const endpointGroups: EndpointGroup[] = [
@@ -20,36 +20,67 @@ const endpointGroups: EndpointGroup[] = [
 		description: 'Convert dates between Gregorian and Coptic calendars',
 		endpoints: [
 			{ method: 'GET', path: '/calendar', description: "Get today's Coptic date" },
-			{ method: 'GET', path: '/calendar/:date', description: 'Convert a specific date to Coptic', params: 'date: YYYY-MM-DD' },
+			{
+				method: 'GET',
+				path: '/calendar/:date',
+				description: 'Convert a specific date to Coptic',
+				params: 'date: YYYY-MM-DD',
+			},
 			{ method: 'GET', path: '/calendar/ical/:year', description: 'Get iCalendar feed for a year' },
-			{ method: 'GET', path: '/calendar/ical/subscribe', description: 'Subscribe to live iCal feed' },
-		]
+			{
+				method: 'GET',
+				path: '/calendar/ical/subscribe',
+				description: 'Subscribe to live iCal feed',
+			},
+		],
 	},
 	{
 		title: 'Readings',
 		description: 'Daily scripture readings from the Katameros',
 		endpoints: [
 			{ method: 'GET', path: '/readings', description: "Get today's readings" },
-			{ method: 'GET', path: '/readings/:date', description: 'Get readings for a specific date', params: 'date: YYYY-MM-DD' },
-			{ method: 'GET', path: '/readings/:date?detailed=true', description: 'Get readings with full verse text' },
-		]
+			{
+				method: 'GET',
+				path: '/readings/:date',
+				description: 'Get readings for a specific date',
+				params: 'date: YYYY-MM-DD',
+			},
+			{
+				method: 'GET',
+				path: '/readings/:date?detailed=true',
+				description: 'Get readings with full verse text',
+			},
+		],
 	},
 	{
 		title: 'Celebrations',
 		description: 'Feast days and celebrations',
 		endpoints: [
 			{ method: 'GET', path: '/celebrations', description: 'List all celebrations' },
-			{ method: 'GET', path: '/celebrations/:date', description: 'Get celebrations for a specific date' },
-			{ method: 'GET', path: '/celebrations/upcoming/list', description: 'Get upcoming celebrations', params: 'days: number (default: 30)' },
-		]
+			{
+				method: 'GET',
+				path: '/celebrations/:date',
+				description: 'Get celebrations for a specific date',
+			},
+			{
+				method: 'GET',
+				path: '/celebrations/upcoming/list',
+				description: 'Get upcoming celebrations',
+				params: 'days: number (default: 30)',
+			},
+		],
 	},
 	{
 		title: 'Fasting',
 		description: 'Fasting periods and status',
 		endpoints: [
 			{ method: 'GET', path: '/fasting/:date', description: 'Check if a date is a fasting day' },
-			{ method: 'GET', path: '/fasting/calendar/:year', description: 'Get full year fasting calendar' },
-		]
+			{
+				method: 'GET',
+				path: '/fasting/calendar/:year',
+				description: 'Get full year fasting calendar',
+			},
+		],
 	},
 	{
 		title: 'Seasons',
@@ -58,17 +89,22 @@ const endpointGroups: EndpointGroup[] = [
 			{ method: 'GET', path: '/season', description: "Get today's liturgical season" },
 			{ method: 'GET', path: '/season/:date', description: 'Get season for a specific date' },
 			{ method: 'GET', path: '/season/year/:year', description: 'Get all seasons for a year' },
-		]
+		],
 	},
 	{
 		title: 'Synaxarium',
 		description: 'Saint commemorations',
 		endpoints: [
 			{ method: 'GET', path: '/synaxarium/:date', description: 'Get saints for a specific date' },
-			{ method: 'GET', path: '/synaxarium/search/query', description: 'Search saints by name', params: 'q: search term' },
-		]
+			{
+				method: 'GET',
+				path: '/synaxarium/search/query',
+				description: 'Search saints by name',
+				params: 'q: search term',
+			},
+		],
 	},
-];
+]
 
 export default function DocsPage() {
 	return (
@@ -80,7 +116,9 @@ export default function DocsPage() {
 
 			<section className="relative pt-20 pb-8 px-6">
 				<div className="max-w-5xl mx-auto">
-					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">API Documentation</h1>
+					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+						API Documentation
+					</h1>
 					<p className="text-gray-600 dark:text-gray-400 mb-6">
 						The Coptic Calendar API provides access to liturgical data via REST and GraphQL.
 					</p>
@@ -106,24 +144,37 @@ export default function DocsPage() {
 			<section className="relative px-6 pb-16">
 				<div className="max-w-5xl mx-auto space-y-8">
 					{endpointGroups.map((group, idx) => (
-						<div key={idx} className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm dark:shadow-none">
+						<div
+							key={idx}
+							className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm dark:shadow-none"
+						>
 							<div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
-								<h2 className="text-lg font-semibold text-gray-900 dark:text-white">{group.title}</h2>
+								<h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+									{group.title}
+								</h2>
 								<p className="text-[13px] text-gray-500">{group.description}</p>
 							</div>
 							<div className="divide-y divide-gray-100 dark:divide-gray-800">
 								{group.endpoints.map((endpoint, eidx) => (
-									<div key={eidx} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+									<div
+										key={eidx}
+										className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+									>
 										<div className="flex items-start gap-3">
 											<span className="text-[11px] font-mono bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 px-2 py-0.5 rounded">
 												{endpoint.method}
 											</span>
 											<div className="flex-1 min-w-0">
-												<code className="text-[13px] text-gray-900 dark:text-white font-mono">{endpoint.path}</code>
+												<code className="text-[13px] text-gray-900 dark:text-white font-mono">
+													{endpoint.path}
+												</code>
 												<p className="text-[13px] text-gray-500 mt-1">{endpoint.description}</p>
 												{endpoint.params && (
 													<p className="text-[12px] text-gray-500 mt-1">
-														Params: <code className="text-gray-600 dark:text-gray-400">{endpoint.params}</code>
+														Params:{' '}
+														<code className="text-gray-600 dark:text-gray-400">
+															{endpoint.params}
+														</code>
 													</p>
 												)}
 											</div>
@@ -154,5 +205,5 @@ export default function DocsPage() {
 				</div>
 			</section>
 		</main>
-	);
+	)
 }

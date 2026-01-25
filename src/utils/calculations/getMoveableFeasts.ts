@@ -1,5 +1,5 @@
-import easterDate from './getEaster'
 import { addDays, normalizeDate } from '../dateUtils'
+import easterDate from './getEaster'
 
 /**
  * Calculates all moveable feasts based on the Coptic Orthodox Easter date
