@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+	--background: #f9fafb;
+	--foreground: #111827;
+	--card: #ffffff;
+	--card-border: #e5e7eb;
+	--muted: #6b7280;
+}
+
+html.dark {
+	--background: #030712;
+	--foreground: #f9fafb;
+	--card: #111827;
+	--card-border: #1f2937;
+	--muted: #9ca3af;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	color-scheme: light dark;
+}
+
+body {
+	font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle gradient background */
+.bg-gradient-radial {
+	background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(217, 119, 6, 0.04), transparent);
+}
+
+.dark .bg-gradient-radial {
+	background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(217, 119, 6, 0.08), transparent);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+/* Selection */
+::selection {
+	background: rgba(217, 119, 6, 0.3);
+	color: inherit;
+}

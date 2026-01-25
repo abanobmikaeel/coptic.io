@@ -1,24 +1,27 @@
 {
 	"name": "coptic.io",
 	"version": "2.0.0",
-	"description": "Coptic API - Daily readings according to the Katameros",
+	"private": true,
+	"description": "Coptic.io Monorepo - Coptic Orthodox Church API and applications",
 	"type": "module",
-	"main": "dist/index.js",
 	"scripts": {
-		"dev": "bun --watch src/index.ts",
-		"build": "echo 'No build needed - using Bun runtime'",
-		"start": "bun src/index.ts",
-		"test": "vitest",
-		"test:coverage": "vitest --coverage",
-		"railway:start": "bun src/index.ts",
-		"lint": "biome lint src",
-		"lint:fix": "biome lint --write src",
-		"format": "biome format --write src",
-		"format:check": "biome format src",
-		"check": "biome check src",
-		"check:fix": "biome check --write src",
-		"typecheck": "tsc --noEmit",
-		"ci": "bun run typecheck && bun run check && bun run test"
+		"dev": "pnpm --filter @coptic/api dev",
+		"dev:web": "pnpm --filter @coptic/web dev",
+		"dev:admin": "pnpm --filter @coptic/admin dev",
+		"build": "pnpm -r build",
+		"build:packages": "pnpm --filter '@coptic/*' --filter '!@coptic/api' --filter '!@coptic/web' --filter '!@coptic/admin' build",
+		"test": "pnpm -r test",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint --write .",
+		"check": "biome check .",
+		"check:fix": "biome check --write .",
+		"typecheck": "pnpm -r typecheck",
+		"ci": "pnpm -r ci",
+		"clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
+		"prepare": "pnpm build:packages",
+		"changeset": "changeset",
+		"version": "changeset version",
+		"release": "pnpm build:packages && changeset publish"
 	},
 	"repository": {
 		"type": "git",
@@ -30,23 +33,13 @@
 		"url": "https://github.com/abanobmikaeel/coptic.io/issues"
 	},
 	"homepage": "https://github.com/abanobmikaeel/coptic.io/blob/main/README.md",
-	"dependencies": {
-		"@graphql-tools/schema": "^10.0.29",
-		"@hono/node-server": "^1.14.3",
-		"@hono/zod-openapi": "^1.1.5",
-		"@scalar/hono-api-reference": "^0.9.25",
-		"date-fns": "^4.1.0",
-		"graphql": "^16.12.0",
-		"graphql-yoga": "^5.16.2",
-		"hono": "^4.7.10",
-		"zod": "^4.1.12"
-	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
-		"@types/node": "^22.10.5",
-		"@vitest/coverage-v8": "3.2.4",
-		"tsx": "^4.19.2",
-		"typescript": "^5.7.3",
-		"vitest": "^3.0.7"
+		"@changesets/cli": "^2.27.0",
+		"typescript": "^5.7.3"
+	},
+	"packageManager": "pnpm@9.15.0",
+	"engines": {
+		"node": ">=20"
 	}
 }

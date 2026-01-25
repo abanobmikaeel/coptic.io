@@ -7,3 +7,9 @@ dist
 scripts
 .vscode
 .DS_Store
+.changeset
+.github
+
+# Web apps not needed in API container
+apps/web
+apps/admin
