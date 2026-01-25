@@ -103,6 +103,7 @@ export interface Reading {
 export interface SynaxariumEntry {
   name: string;
   url: string;
+  text?: string;
 }
 
 export interface ReadingsData {
