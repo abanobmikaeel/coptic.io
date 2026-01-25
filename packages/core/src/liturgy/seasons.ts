@@ -1,6 +1,6 @@
 import { addDays, startOfDay } from 'date-fns'
-import { getEasterDate } from '../calendar/pascha'
 import { getMoveableFeastsForYear } from '../calendar/moveable'
+import { getEasterDate } from '../calendar/pascha'
 
 /**
  * A liturgical season in the Coptic calendar

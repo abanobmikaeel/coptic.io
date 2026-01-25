@@ -38,7 +38,7 @@ export default function OpenGraphImage() {
 						borderRadius: 24,
 					}}
 				>
-					<svg viewBox="0 0 100 100" width="90" height="90">
+					<svg viewBox="0 0 100 100" width="90" height="90" role="img" aria-label="Coptic Calendar">
 						<g
 							transform="translate(50, 52)"
 							fill="none"

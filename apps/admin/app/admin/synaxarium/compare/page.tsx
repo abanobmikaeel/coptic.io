@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { COPTIC_MONTHS } from '@coptic/core'
+import { useState } from 'react'
 
 export default function CompareSourcesPage() {
 	const [selectedMonth, setSelectedMonth] = useState<string>(COPTIC_MONTHS[0])
@@ -11,18 +11,17 @@ export default function CompareSourcesPage() {
 
 	return (
 		<div>
-			<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-				Compare Sources
-			</h1>
+			<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Compare Sources</h1>
 
 			{/* Controls */}
 			<div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
 				<div className="flex flex-wrap gap-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label htmlFor="compare-month" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 							Coptic Month
 						</label>
 						<select
+							id="compare-month"
 							value={selectedMonth}
 							onChange={(e) => setSelectedMonth(e.target.value)}
 							className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -35,10 +34,11 @@ export default function CompareSourcesPage() {
 						</select>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label htmlFor="compare-day" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 							Day
 						</label>
 						<select
+							id="compare-day"
 							value={selectedDay}
 							onChange={(e) => setSelectedDay(Number(e.target.value))}
 							className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -51,10 +51,11 @@ export default function CompareSourcesPage() {
 						</select>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label htmlFor="left-source" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 							Left Source
 						</label>
 						<select
+							id="left-source"
 							value={leftSource}
 							onChange={(e) => setLeftSource(e.target.value)}
 							className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -65,10 +66,11 @@ export default function CompareSourcesPage() {
 						</select>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label htmlFor="right-source" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 							Right Source
 						</label>
 						<select
+							id="right-source"
 							value={rightSource}
 							onChange={(e) => setRightSource(e.target.value)}
 							className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -102,12 +104,10 @@ function SourcePanel({ source, date }: { source: string; date: string }) {
 			<div className="p-4 space-y-4">
 				{/* Placeholder content */}
 				<div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-					<h3 className="font-medium text-gray-900 dark:text-white mb-2">
-						Feast of El-Nayrouz
-					</h3>
+					<h3 className="font-medium text-gray-900 dark:text-white mb-2">Feast of El-Nayrouz</h3>
 					<p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-4">
-						Today is the beginning of the blessed Coptic year. It is necessary to keep
-						it a holy day with full purity and chastity...
+						Today is the beginning of the blessed Coptic year. It is necessary to keep it a holy day
+						with full purity and chastity...
 					</p>
 					<div className="mt-3 flex gap-2">
 						<button

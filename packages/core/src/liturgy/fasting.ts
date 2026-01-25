@@ -1,5 +1,5 @@
-import type { FastingInfo } from '../types/synaxarium'
 import { isInMoveableFast } from '../calendar/moveable'
+import type { FastingInfo } from '../types/synaxarium'
 
 /**
  * Get fasting information for a specific date
@@ -13,7 +13,7 @@ import { isInMoveableFast } from '../calendar/moveable'
  */
 export const getFastingForDate = (
 	date: Date,
-	staticCelebrations?: Array<{ type: string; name: string }>
+	staticCelebrations?: Array<{ type: string; name: string }>,
 ): FastingInfo => {
 	// Check for moveable fasting periods first
 	const moveableFast = isInMoveableFast(date)
@@ -28,7 +28,7 @@ export const getFastingForDate = (
 	// Check for static fasting days if provided
 	if (staticCelebrations) {
 		const fastingCelebrations = staticCelebrations.filter((celeb) =>
-			celeb.type.toLowerCase().includes('fast')
+			celeb.type.toLowerCase().includes('fast'),
 		)
 
 		const firstFast = fastingCelebrations[0]

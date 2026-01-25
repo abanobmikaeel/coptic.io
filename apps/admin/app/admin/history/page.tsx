@@ -1,9 +1,7 @@
 export default function HistoryPage() {
 	return (
 		<div>
-			<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-				Edit History
-			</h1>
+			<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Edit History</h1>
 
 			<div className="bg-white dark:bg-gray-800 rounded-lg shadow">
 				<table className="w-full">
@@ -28,9 +26,7 @@ export default function HistoryPage() {
 					</thead>
 					<tbody className="divide-y divide-gray-200 dark:divide-gray-700">
 						<tr>
-							<td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-								No edits yet
-							</td>
+							<td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">No edits yet</td>
 						</tr>
 					</tbody>
 				</table>

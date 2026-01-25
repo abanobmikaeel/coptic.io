@@ -1,10 +1,10 @@
 import type {
+	CalendarMonth,
 	CopticDate,
 	DailyReadings,
 	FastingInfo,
-	SynaxariumEntry,
-	CalendarMonth,
 	LiturgicalSeason,
+	SynaxariumEntry,
 } from '@coptic/core'
 
 /**
@@ -127,10 +127,7 @@ export class CopticClient {
 			})
 
 			if (!response.ok) {
-				throw new CopticApiError(
-					`API request failed: ${response.statusText}`,
-					response.status
-				)
+				throw new CopticApiError(`API request failed: ${response.statusText}`, response.status)
 			}
 
 			return (await response.json()) as T
@@ -177,7 +174,10 @@ class ReadingsEndpoint {
 	/**
 	 * Get readings for a specific date
 	 */
-	async forDate(date: Date | string, options: Omit<ReadingsOptions, 'date'> = {}): Promise<DailyReadings> {
+	async forDate(
+		date: Date | string,
+		options: Omit<ReadingsOptions, 'date'> = {},
+	): Promise<DailyReadings> {
 		const dateStr = date instanceof Date ? formatDate(date) : date
 		const lang = options.language ?? this.client.getDefaultLanguage()
 		return this.client.fetch<DailyReadings>(`/api/readings/${dateStr}`, { lang })
@@ -202,7 +202,7 @@ class SynaxariumEndpoint {
 	 */
 	async forDate(
 		date: Date | string,
-		options: Omit<SynaxariumOptions, 'date'> = {}
+		options: Omit<SynaxariumOptions, 'date'> = {},
 	): Promise<SynaxariumEntry[]> {
 		const dateStr = date instanceof Date ? formatDate(date) : date
 		const params: Record<string, string> = {}

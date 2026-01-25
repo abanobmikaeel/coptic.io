@@ -33,7 +33,7 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 		id: number,
 		name: string,
 		type: FeastType,
-		daysFromEaster: number
+		daysFromEaster: number,
 	): MoveableFeast => ({
 		id,
 		name,

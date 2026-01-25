@@ -12,9 +12,7 @@ interface OfficialDate {
 }
 
 async function fetchOfficialData(year: number): Promise<OfficialDate[]> {
-	const response = await fetch(
-		`https://www.copticchurch.net/calendar/feasts/${year}`
-	)
+	const response = await fetch(`https://www.copticchurch.net/calendar/feasts/${year}`)
 	const html = await response.text()
 
 	const dates: OfficialDate[] = []
@@ -107,22 +105,19 @@ async function validateYear(year: number): Promise<{
 		const calculated = calculatedFeasts.find((f) => f.name === official.name)
 
 		if (!calculated) {
-			console.log(
-				`  ⚠️  ${official.name}: Not found in calculated feasts`
-			)
+			console.log(`  ⚠️  ${official.name}: Not found in calculated feasts`)
 			continue
 		}
 
 		const officialDate = parseOfficialDate(official.date, year)
-		const match =
-			formatDate(officialDate) === formatDate(calculated.date)
+		const match = formatDate(officialDate) === formatDate(calculated.date)
 
 		if (match) {
 			results.matches++
 			console.log(`  ✅ ${official.name}: ${official.date}`)
 		} else {
 			console.log(
-				`  ❌ ${official.name}: Official=${official.date}, Calculated=${formatDate(calculated.date)}`
+				`  ❌ ${official.name}: Official=${official.date}, Calculated=${formatDate(calculated.date)}`,
 			)
 			results.mismatches.push({
 				name: official.name,
@@ -137,14 +132,12 @@ async function validateYear(year: number): Promise<{
 }
 
 async function main() {
-	const yearsToValidate = [
-		2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030,
-	]
+	const yearsToValidate = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
 
+	console.log('🔍 Validating moveable feast calculations against CopticChurch.net\n')
 	console.log(
-		'🔍 Validating moveable feast calculations against CopticChurch.net\n'
+		`Testing ${yearsToValidate.length} years: ${yearsToValidate[0]}-${yearsToValidate[yearsToValidate.length - 1]}`,
 	)
-	console.log(`Testing ${yearsToValidate.length} years: ${yearsToValidate[0]}-${yearsToValidate[yearsToValidate.length - 1]}`)
 
 	const allResults = []
 
@@ -162,18 +155,13 @@ async function main() {
 	console.log('='.repeat(60))
 
 	const totalMatches = allResults.reduce((sum, r) => sum + r.matches, 0)
-	const totalMismatches = allResults.reduce(
-		(sum, r) => sum + r.mismatches.length,
-		0
-	)
+	const totalMismatches = allResults.reduce((sum, r) => sum + r.mismatches.length, 0)
 	const totalTests = totalMatches + totalMismatches
 
 	console.log(`\nTotal Tests: ${totalTests}`)
 	console.log(`✅ Matches: ${totalMatches}`)
 	console.log(`❌ Mismatches: ${totalMismatches}`)
-	console.log(
-		`📊 Accuracy: ${((totalMatches / totalTests) * 100).toFixed(2)}%`
-	)
+	console.log(`📊 Accuracy: ${((totalMatches / totalTests) * 100).toFixed(2)}%`)
 
 	if (totalMismatches > 0) {
 		console.log('\n⚠️  MISMATCHES FOUND:')
@@ -181,9 +169,7 @@ async function main() {
 			if (result.mismatches.length > 0) {
 				console.log(`\n${result.year}:`)
 				result.mismatches.forEach((m) => {
-					console.log(
-						`  ${m.name}: ${m.official} (official) vs ${m.calculated} (calculated)`
-					)
+					console.log(`  ${m.name}: ${m.official} (official) vs ${m.calculated} (calculated)`)
 				})
 			}
 		})

@@ -1,6 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from 'vitest'
 import { app } from '../../index'
+
+// API response types (dates serialized as strings)
+interface SeasonResponse {
+	name: string
+	description: string
+	startDate: string
+	endDate: string
+	isFasting: boolean
+	type: string
+}
+
+interface FastingPeriodResponse {
+	name: string
+	description: string
+	startDate: string
+	endDate: string
+	type: string
+}
 
 describe('Season API Endpoints', () => {
 	describe('GET /api/season', () => {
@@ -79,7 +96,7 @@ describe('Season API Endpoints', () => {
 			expect(json.seasons.length).toBeGreaterThan(0)
 
 			// Check that all seasons have required properties
-			json.seasons.forEach((season: any) => {
+			json.seasons.forEach((season: SeasonResponse) => {
 				expect(season).toHaveProperty('name')
 				expect(season).toHaveProperty('description')
 				expect(season).toHaveProperty('startDate')
@@ -94,7 +111,7 @@ describe('Season API Endpoints', () => {
 			expect(res.status).toBe(200)
 
 			const json = await res.json()
-			const seasonNames = json.seasons.map((s: any) => s.name)
+			const seasonNames = json.seasons.map((s: SeasonResponse) => s.name)
 
 			expect(seasonNames).toContain('Great Lent')
 			expect(seasonNames).toContain('Holy Week')
@@ -132,7 +149,7 @@ describe('Season API Endpoints', () => {
 			expect(json.fastingPeriods.length).toBeGreaterThan(0)
 
 			// All periods should be fasting periods
-			json.fastingPeriods.forEach((period: any) => {
+			json.fastingPeriods.forEach((period: FastingPeriodResponse) => {
 				expect(period).toHaveProperty('name')
 				expect(period).toHaveProperty('description')
 				expect(period).toHaveProperty('startDate')
@@ -146,7 +163,7 @@ describe('Season API Endpoints', () => {
 			expect(res.status).toBe(200)
 
 			const json = await res.json()
-			const fastNames = json.fastingPeriods.map((f: any) => f.name)
+			const fastNames = json.fastingPeriods.map((f: FastingPeriodResponse) => f.name)
 
 			expect(fastNames).toContain('Great Lent')
 			expect(fastNames).toContain('Holy Week')

@@ -1,5 +1,5 @@
+import { gregorianToCoptic, isInMoveableFast } from '@coptic/core'
 import { addDays, format, isAfter } from 'date-fns'
-import { isInMoveableFast, gregorianToCoptic } from '@coptic/core'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 
 export const getFastingForDate = (date: Date) => {

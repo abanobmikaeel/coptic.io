@@ -1,4 +1,4 @@
-import { gregorianToCoptic, type SynaxariumEntry, type SynaxariumSynaxariumSearchResult } from '@coptic/core'
+import { type SynaxariumEntry, gregorianToCoptic } from '@coptic/core'
 import synaxariumReadings from '../resources/synxarium.json'
 
 export const getSynaxariumForDate = (date: Date, includeText = false): SynaxariumEntry[] | null => {

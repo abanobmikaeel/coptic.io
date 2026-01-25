@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { COPTIC_MONTHS } from '@coptic/core'
+import { useState } from 'react'
 
 export default function SynaxariumBrowser() {
 	const [selectedMonth, setSelectedMonth] = useState<string>(COPTIC_MONTHS[0])
@@ -11,9 +11,7 @@ export default function SynaxariumBrowser() {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-6">
-				<h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-					Synaxarium Browser
-				</h1>
+				<h1 className="text-2xl font-bold text-gray-900 dark:text-white">Synaxarium Browser</h1>
 				<select
 					value={language}
 					onChange={(e) => setLanguage(e.target.value)}
@@ -28,10 +26,11 @@ export default function SynaxariumBrowser() {
 			<div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
 				<div className="flex flex-wrap gap-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label htmlFor="coptic-month" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 							Coptic Month
 						</label>
 						<select
+							id="coptic-month"
 							value={selectedMonth}
 							onChange={(e) => setSelectedMonth(e.target.value)}
 							className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -44,10 +43,11 @@ export default function SynaxariumBrowser() {
 						</select>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label htmlFor="coptic-day" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 							Day
 						</label>
 						<select
+							id="coptic-day"
 							value={selectedDay}
 							onChange={(e) => setSelectedDay(Number(e.target.value))}
 							className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -112,13 +112,9 @@ function SynaxariumEntry({
 			<div className="flex items-start justify-between">
 				<div className="flex-1">
 					<h3 className="font-medium text-gray-900 dark:text-white">{name}</h3>
-					<p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-						Source: {source}
-					</p>
+					<p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Source: {source}</p>
 				</div>
-				<span
-					className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[status]}`}
-				>
+				<span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[status]}`}>
 					{status}
 				</span>
 			</div>

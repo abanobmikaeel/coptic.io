@@ -1,5 +1,5 @@
-import { addDays, format } from 'date-fns'
 import { getMoveableFeastsForDate, getMoveableFeastsForYear, gregorianToCoptic } from '@coptic/core'
+import { addDays, format } from 'date-fns'
 import { celebrations } from '../resources/nonMoveableCelebrations.json'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 

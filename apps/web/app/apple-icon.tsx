@@ -22,6 +22,8 @@ export default function AppleIcon() {
 				width="140"
 				height="140"
 				style={{ display: 'flex' }}
+				role="img"
+				aria-label="Coptic Calendar"
 			>
 				<g
 					transform="translate(50, 52)"

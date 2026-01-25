@@ -18,9 +18,7 @@ export default function RootLayout({
 					{/* Sidebar */}
 					<aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
 						<div className="p-4 border-b border-gray-200 dark:border-gray-700">
-							<h1 className="text-xl font-bold text-gray-900 dark:text-white">
-								Coptic.io Admin
-							</h1>
+							<h1 className="text-xl font-bold text-gray-900 dark:text-white">Coptic.io Admin</h1>
 						</div>
 						<nav className="p-4">
 							<ul className="space-y-2">

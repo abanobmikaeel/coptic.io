@@ -5,13 +5,7 @@ interface CopticCrossProps {
 
 export default function CopticCross({ className = '', size = 20 }: CopticCrossProps) {
 	return (
-		<svg
-			width={size}
-			height={size}
-			viewBox="0 0 100 100"
-			className={className}
-			aria-hidden="true"
-		>
+		<svg width={size} height={size} viewBox="0 0 100 100" className={className} aria-hidden="true">
 			<rect width="100" height="100" rx="18" fill="#d97706" />
 
 			{/* Calendar with connected pins */}

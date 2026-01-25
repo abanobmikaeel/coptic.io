@@ -1,5 +1,10 @@
+import {
+	type CalendarDay,
+	type CalendarMonth,
+	type CopticMonthInfo,
+	gregorianToCoptic,
+} from '@coptic/core'
 import { format, getDaysInMonth } from 'date-fns'
-import { gregorianToCoptic, type CalendarDay, type CalendarMonth, type CopticMonthInfo } from '@coptic/core'
 import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
 import { getFastingForDate } from './fasting.service'
 

@@ -30,9 +30,7 @@ export default function TranslationsPage() {
 					</thead>
 					<tbody className="divide-y divide-gray-200 dark:divide-gray-700">
 						<tr>
-							<td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-								1 Tout
-							</td>
+							<td className="px-4 py-3 text-sm text-gray-900 dark:text-white">1 Tout</td>
 							<td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
 								Feast of El-Nayrouz
 							</td>
@@ -42,9 +40,7 @@ export default function TranslationsPage() {
 								</span>
 							</td>
 							<td className="px-4 py-3">
-								<button className="text-sm text-blue-600 hover:underline">
-									Add Translation
-								</button>
+								<button type="button" className="text-sm text-blue-600 hover:underline">Add Translation</button>
 							</td>
 						</tr>
 					</tbody>

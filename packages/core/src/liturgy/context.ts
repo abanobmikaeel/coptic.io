@@ -1,9 +1,9 @@
+import { gregorianToCoptic } from '../calendar/conversion'
+import { type MoveableFeast, getMoveableFeastsForDate } from '../calendar/moveable'
 import type { CopticDate } from '../types/date'
 import type { FastingInfo } from '../types/synaxarium'
-import { gregorianToCoptic } from '../calendar/conversion'
-import { getMoveableFeastsForDate, type MoveableFeast } from '../calendar/moveable'
-import { getLiturgicalSeasonForDate, type LiturgicalSeason } from './seasons'
-import { getFastingForDate, type FastingLevel, getFastingLevel } from './fasting'
+import { type FastingLevel, getFastingForDate, getFastingLevel } from './fasting'
+import { type LiturgicalSeason, getLiturgicalSeasonForDate } from './seasons'
 
 /**
  * Complete liturgical context for a given date
@@ -39,7 +39,7 @@ export interface LiturgicalContext {
  */
 export const getLiturgicalContext = (
 	date: Date,
-	staticCelebrations?: Array<{ type: string; name: string }>
+	staticCelebrations?: Array<{ type: string; name: string }>,
 ): LiturgicalContext => {
 	return {
 		gregorianDate: date,

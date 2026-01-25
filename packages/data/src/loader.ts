@@ -32,7 +32,7 @@ export interface RawBibleData {
  */
 export const loadSynaxarium = async (
 	_language: SupportedLanguage,
-	_source: SynaxariumSource = 'canonical'
+	_source: SynaxariumSource = 'canonical',
 ): Promise<RawSynaxariumData> => {
 	const data = await import('./en/synaxarium/canonical.json')
 	return data.default as RawSynaxariumData
@@ -52,7 +52,7 @@ export const loadBible = async (_language: SupportedLanguage): Promise<RawBibleD
 export const getSynaxariumForDate = async (
 	dateKey: string,
 	language: SupportedLanguage = 'en',
-	source: SynaxariumSource = 'canonical'
+	source: SynaxariumSource = 'canonical',
 ): Promise<SynaxariumEntry[]> => {
 	const data = await loadSynaxarium(language, source)
 	return data[dateKey] ?? []
@@ -64,7 +64,7 @@ export const getSynaxariumForDate = async (
 export const searchSynaxarium = async (
 	query: string,
 	language: SupportedLanguage = 'en',
-	limit = 50
+	limit = 50,
 ): Promise<{ date: string; entry: SynaxariumEntry }[]> => {
 	const data = await loadSynaxarium(language)
 	const results: { date: string; entry: SynaxariumEntry }[] = []
