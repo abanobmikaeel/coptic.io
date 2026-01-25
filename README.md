@@ -2,6 +2,7 @@
 
 > A RESTful and GraphQL API for the Coptic Orthodox liturgical calendar, daily readings, and Synaxarium.
 
+[![CI](https://github.com/abanobmikaeel/coptic.io/actions/workflows/ci.yml/badge.svg)](https://github.com/abanobmikaeel/coptic.io/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
