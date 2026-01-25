@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardContent } from '@/components/ui/Card';
+import { SynaxariumSection } from '@/components/SynaxariumSection';
 import { API_BASE_URL } from '@/config';
 import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils';
 import { ChevronLeftIcon } from '@/components/ui/Icons';
@@ -114,20 +115,7 @@ export default async function ReadingsPage({
 							<Card className="mb-6">
 								<CardHeader>Synaxarium</CardHeader>
 								<CardContent>
-									<ul className="space-y-2">
-										{readings.Synxarium.map((entry, idx) => (
-											<li key={idx}>
-												<a
-													href={entry.url}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-500 transition-colors"
-												>
-													{entry.name}
-												</a>
-											</li>
-										))}
-									</ul>
+									<SynaxariumSection entries={readings.Synxarium} />
 								</CardContent>
 							</Card>
 						)}
