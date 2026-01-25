@@ -1,4 +1,16 @@
 import { SynaxariumSection } from '@/components/SynaxariumSection'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'Daily Readings',
+	description:
+		'Daily scripture readings from the Coptic Orthodox Katameros including Pauline Epistles, Catholic Epistles, Acts, Psalms, and Gospel readings.',
+	openGraph: {
+		title: 'Daily Readings | Coptic Calendar',
+		description:
+			'Daily scripture readings from the Coptic Orthodox Katameros including Pauline Epistles, Catholic Epistles, Acts, Psalms, and Gospel readings.',
+	},
+}
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { ChevronLeftIcon } from '@/components/ui/Icons'
 import { API_BASE_URL } from '@/config'

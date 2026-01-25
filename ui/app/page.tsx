@@ -1,4 +1,16 @@
 import DeveloperSection from '@/components/DeveloperSection'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'Coptic Calendar - Daily Readings & Feast Days',
+	description:
+		'Stay connected to your faith with daily scripture readings and feast day reminders from the Coptic Orthodox calendar, delivered to your inbox.',
+	openGraph: {
+		title: 'Coptic Calendar - Daily Readings & Feast Days',
+		description:
+			'Stay connected to your faith with daily scripture readings and feast day reminders from the Coptic Orthodox calendar.',
+	},
+}
 import EmailSignup from '@/components/EmailSignup'
 import UpcomingFeastsList from '@/components/UpcomingFeastsList'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'

@@ -24,10 +24,57 @@ const notoSansCoptic = Noto_Sans_Coptic({
 	display: 'swap',
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://coptic.io'
+
 export const metadata: Metadata = {
-	title: 'Coptic Calendar - Daily Readings & Feast Days',
+	metadataBase: new URL(siteUrl),
+	title: {
+		default: 'Coptic Calendar - Daily Readings & Feast Days',
+		template: '%s | Coptic Calendar',
+	},
 	description:
-		'Access the Coptic Orthodox liturgical calendar, daily scripture readings, feast days, and fasting periods through our modern API.',
+		'Access the Coptic Orthodox liturgical calendar, daily scripture readings, feast days, and fasting periods. Subscribe for daily email reminders.',
+	keywords: [
+		'Coptic calendar',
+		'Coptic Orthodox',
+		'daily readings',
+		'Katameros',
+		'feast days',
+		'fasting calendar',
+		'synaxarium',
+		'liturgical calendar',
+	],
+	authors: [{ name: 'Coptic.io' }],
+	creator: 'Coptic.io',
+	openGraph: {
+		type: 'website',
+		locale: 'en_US',
+		url: siteUrl,
+		siteName: 'Coptic Calendar',
+		title: 'Coptic Calendar - Daily Readings & Feast Days',
+		description:
+			'Access the Coptic Orthodox liturgical calendar, daily scripture readings, feast days, and fasting periods.',
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: 'Coptic Calendar - Daily Readings & Feast Days',
+		description:
+			'Access the Coptic Orthodox liturgical calendar, daily scripture readings, feast days, and fasting periods.',
+	},
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+			'max-video-preview': -1,
+			'max-image-preview': 'large',
+			'max-snippet': -1,
+		},
+	},
+	alternates: {
+		canonical: siteUrl,
+	},
 }
 
 export default function RootLayout({
