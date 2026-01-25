@@ -60,3 +60,5 @@ vendor/
 
 .env
 coverage/
+scripts/scrape-synaxarium.ts
+src/resources/synxarium-scraped.json
