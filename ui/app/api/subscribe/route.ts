@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query, queryOne } from '@/lib/db';
 import { sendOTPEmail, generateOTP } from '@/lib/email';
-
-interface Subscriber {
-  id: string;
-  email: string;
-  verified: boolean;
-}
+import { isValidEmail } from '@/lib/utils';
+import type { Subscriber } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,8 +12,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
 

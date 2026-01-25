@@ -1,6 +1,5 @@
 import Link from 'next/link';
-
-const API_BASE = 'https://copticio-production.up.railway.app/api';
+import { API_BASE_URL } from '@/config';
 
 interface Endpoint {
 	method: string;
@@ -80,7 +79,7 @@ export default function DocsPage() {
 			</div>
 
 			<section className="relative pt-20 pb-8 px-6">
-				<div className="max-w-3xl mx-auto">
+				<div className="max-w-5xl mx-auto">
 					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">API Documentation</h1>
 					<p className="text-gray-600 dark:text-gray-400 mb-6">
 						The Coptic Calendar API provides access to liturgical data via REST and GraphQL.
@@ -89,10 +88,10 @@ export default function DocsPage() {
 					<div className="flex gap-3 mb-8">
 						<div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-4 py-2">
 							<p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1">Base URL</p>
-							<code className="text-amber-600 dark:text-amber-500 text-[13px]">{API_BASE}</code>
+							<code className="text-amber-600 dark:text-amber-500 text-[13px]">{API_BASE_URL}</code>
 						</div>
 						<a
-							href={`${API_BASE.replace('/api', '')}/graphql`}
+							href={`${API_BASE_URL.replace('/api', '')}/graphql`}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-4 py-2 hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
@@ -105,7 +104,7 @@ export default function DocsPage() {
 			</section>
 
 			<section className="relative px-6 pb-16">
-				<div className="max-w-3xl mx-auto space-y-8">
+				<div className="max-w-5xl mx-auto space-y-8">
 					{endpointGroups.map((group, idx) => (
 						<div key={idx} className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm dark:shadow-none">
 							<div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
@@ -144,7 +143,7 @@ export default function DocsPage() {
 							Try interactive examples →
 						</Link>
 						<a
-							href={`${API_BASE.replace('/api', '')}/openapi.json`}
+							href={`${API_BASE_URL.replace('/api', '')}/openapi.json`}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-gray-600 dark:text-gray-500 hover:text-gray-800 dark:hover:text-gray-400 text-[14px] transition-colors"

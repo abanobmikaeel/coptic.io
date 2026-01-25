@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import CopticCross from './CopticCross'
 import ThemeToggle from './ThemeToggle'
@@ -7,7 +5,7 @@ import ThemeToggle from './ThemeToggle'
 export default function Navbar() {
 	return (
 		<nav className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl">
-			<div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+			<div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
 				<Link href="/" className="flex items-center gap-2.5 group">
 					<CopticCross size={22} />
 					<span className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">
@@ -30,7 +28,7 @@ export default function Navbar() {
 					</Link>
 					<Link
 						href="/subscribe"
-						className="text-[13px] bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded-lg transition-colors"
+						className="text-[13px] bg-amber-700 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-lg transition-colors"
 					>
 						Subscribe
 					</Link>

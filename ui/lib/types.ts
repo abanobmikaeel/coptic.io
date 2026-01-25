@@ -1,3 +1,4 @@
+// Calendar Types
 export interface CopticDate {
   dateString: string;
   day: number;
@@ -34,4 +35,95 @@ export interface UpcomingCelebration {
   date: string;
   copticDate: CopticDate;
   celebrations: Celebration[];
+}
+
+export interface FastingInfo {
+  isFasting: boolean;
+  fastType: string | null;
+  description: string | null;
+}
+
+export interface CalendarDay {
+  gregorianDate: string;
+  copticDate: CopticDate;
+  fasting: FastingInfo;
+}
+
+export interface CopticMonthInfo {
+  month: number;
+  monthString: string;
+  year: number;
+  startDay: number;
+}
+
+export interface CalendarMonth {
+  year: number;
+  month: number;
+  monthName: string;
+  days: CalendarDay[];
+  copticMonths: CopticMonthInfo[];
+}
+
+// Subscriber Types
+export interface Subscriber {
+  id: string;
+  email: string;
+  verified: boolean;
+  name?: string | null;
+  patronSaint?: string | null;
+  dailyReadings?: boolean;
+  feastReminders?: boolean;
+  token?: string;
+}
+
+export interface SubscriberPreferences {
+  email: string;
+  name: string | null;
+  patronSaint: string | null;
+  dailyReadings: boolean;
+  feastReminders: boolean;
+}
+
+// Readings Types
+export interface Verse {
+  text: string;
+  num: number;
+}
+
+export interface Chapter {
+  chapterNum: number;
+  verses: Verse[];
+}
+
+export interface Reading {
+  bookName: string;
+  chapters: Chapter[];
+}
+
+export interface SynaxariumEntry {
+  name: string;
+  url: string;
+}
+
+export interface ReadingsData {
+  VPsalm?: Reading[];
+  VGospel?: Reading[];
+  MPsalm?: Reading[];
+  MGospel?: Reading[];
+  Pauline?: Reading[];
+  Catholic?: Reading[];
+  Acts?: Reading[];
+  LPsalm?: Reading[];
+  LGospel?: Reading[];
+  Synxarium?: SynaxariumEntry[];
+  fullDate?: CopticDate;
+}
+
+// API Response Types
+export interface ApiError {
+  error: string;
+}
+
+export interface ApiSuccess {
+  message: string;
 }

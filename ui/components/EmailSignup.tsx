@@ -1,66 +1,46 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { DEFAULT_TIMEZONE } from '@/constants';
+import { useFetch } from '@/lib/hooks';
 
 export default function EmailSignup() {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const router = useRouter();
+  const { loading, error, execute } = useFetch();
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError('');
-    setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
 
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
+    const result = await execute('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          // Already subscribed
-          setError('This email is already subscribed');
-        } else {
-          setError(data.error || 'Something went wrong');
-        }
-        return;
-      }
-
-      // Redirect to subscribe page to complete verification
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
+    if (result) {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || DEFAULT_TIMEZONE;
       router.push(`/subscribe?email=${encodeURIComponent(email)}&step=verify&tz=${encodeURIComponent(tz)}`);
-    } catch {
-      setError('Something went wrong');
-    } finally {
-      setLoading(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
       <div className="flex flex-col sm:flex-row gap-3">
-        <input
+        <Input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
           placeholder="Enter your email"
           required
-          className="flex-1 px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
+          error={!!error}
+          className="flex-1 rounded-xl"
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-amber-600 hover:bg-amber-500 disabled:bg-amber-400 text-white font-medium py-3 px-6 rounded-xl transition-colors whitespace-nowrap"
-        >
-          {loading ? 'Sending...' : 'Get Daily Readings'}
-        </button>
+        <Button type="submit" loading={loading} className="px-6 rounded-xl whitespace-nowrap">
+          Get Daily Readings
+        </Button>
       </div>
       {error && (
         <p className="mt-2 text-sm text-red-600 dark:text-red-400 text-center">{error}</p>

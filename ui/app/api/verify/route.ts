@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query, queryOne } from '@/lib/db';
 import { sendWelcomeEmail, generateToken } from '@/lib/email';
+import { DEFAULT_TIMEZONE } from '@/constants';
+import type { Subscriber } from '@/lib/types';
 
 interface OTPCode {
   id: string;
@@ -8,12 +10,6 @@ interface OTPCode {
   code: string;
   expires_at: Date;
   used: boolean;
-}
-
-interface Subscriber {
-  id: string;
-  email: string;
-  token: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -26,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const subscriberName = typeof name === 'string' ? name.trim() : null;
     const subscriberPatronSaint = typeof patronSaint === 'string' ? patronSaint.trim() : null;
-    const subscriberTimezone = typeof timezone === 'string' ? timezone : 'America/New_York';
+    const subscriberTimezone = typeof timezone === 'string' ? timezone : DEFAULT_TIMEZONE;
 
     const normalizedEmail = email.toLowerCase().trim();
 

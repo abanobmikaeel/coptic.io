@@ -1,46 +1,9 @@
+import Link from 'next/link';
 import { Card, CardHeader, CardContent } from '@/components/ui/Card';
-
-const API_BASE = 'https://copticio-production.up.railway.app/api';
-
-interface Verse {
-	text: string;
-	num: number;
-}
-
-interface Chapter {
-	chapterNum: number;
-	verses: Verse[];
-}
-
-interface Reading {
-	bookName: string;
-	chapters: Chapter[];
-}
-
-interface SynaxariumEntry {
-	name: string;
-	url: string;
-}
-
-interface ReadingsData {
-	VPsalm?: Reading[];
-	VGospel?: Reading[];
-	MPsalm?: Reading[];
-	MGospel?: Reading[];
-	Pauline?: Reading[];
-	Catholic?: Reading[];
-	Acts?: Reading[];
-	LPsalm?: Reading[];
-	LGospel?: Reading[];
-	Synxarium?: SynaxariumEntry[];
-	fullDate?: {
-		dateString: string;
-		day: number;
-		month: number;
-		year: number;
-		monthString: string;
-	};
-}
+import { API_BASE_URL } from '@/config';
+import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils';
+import { ChevronLeftIcon } from '@/components/ui/Icons';
+import type { Reading, ReadingsData } from '@/lib/types';
 
 const sectionLabels: Record<string, { title: string; subtitle: string }> = {
 	VPsalm: { title: 'Vespers Psalm', subtitle: 'Evening Prayer' },
@@ -54,9 +17,12 @@ const sectionLabels: Record<string, { title: string; subtitle: string }> = {
 	LGospel: { title: 'Liturgy Gospel', subtitle: 'Liturgy of the Word' },
 };
 
-async function getReadings(): Promise<ReadingsData | null> {
+async function getReadings(date?: string): Promise<ReadingsData | null> {
 	try {
-		const res = await fetch(`${API_BASE}/readings?detailed=true`, {
+		const endpoint = date
+			? `${API_BASE_URL}/readings/${date}?detailed=true`
+			: `${API_BASE_URL}/readings?detailed=true`;
+		const res = await fetch(endpoint, {
 			cache: 'no-store',
 		});
 		if (!res.ok) return null;
@@ -97,15 +63,17 @@ function ReadingSection({ readings, label }: { readings: Reading[]; label: { tit
 	);
 }
 
-export default async function ReadingsPage() {
-	const readings = await getReadings();
+export default async function ReadingsPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ date?: string }>;
+}) {
+	const { date } = await searchParams;
+	const readings = await getReadings(date);
 
-	const gregorianDate = new Date().toLocaleDateString('en-US', {
-		weekday: 'long',
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	});
+	const displayDate = date ? parseDateString(date) : new Date();
+	const gregorianDate = formatGregorianDate(displayDate);
+	const isToday = !date || date === getTodayDateString();
 
 	const sections = ['Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel'] as const;
 	const vespersMatins = ['VPsalm', 'VGospel', 'MPsalm', 'MGospel'] as const;
@@ -118,18 +86,29 @@ export default async function ReadingsPage() {
 			</div>
 
 			<section className="relative pt-20 pb-8 px-6">
-				<div className="max-w-2xl mx-auto text-center">
-					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Daily Readings</h1>
+				<div className="max-w-4xl mx-auto text-center">
+					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+						{isToday ? 'Daily Readings' : 'Readings'}
+					</h1>
 					<p className="text-gray-600 dark:text-gray-400 mb-1">{gregorianDate}</p>
 					{readings?.fullDate && (
 						<p className="text-amber-600 dark:text-amber-500 font-medium">{readings.fullDate.dateString}</p>
+					)}
+					{!isToday && (
+						<Link
+							href="/readings"
+							className="inline-flex items-center gap-1 mt-3 text-sm text-gray-500 hover:text-amber-600 dark:hover:text-amber-500 transition-colors"
+						>
+							<ChevronLeftIcon className="w-4 h-4" />
+							Back to today
+						</Link>
 					)}
 				</div>
 			</section>
 
 			{readings ? (
 				<section className="relative px-6 pb-16">
-					<div className="max-w-2xl mx-auto">
+					<div className="max-w-4xl mx-auto">
 						{/* Synaxarium */}
 						{readings.Synxarium && readings.Synxarium.length > 0 && (
 							<Card className="mb-6">
@@ -192,7 +171,7 @@ export default async function ReadingsPage() {
 				</section>
 			) : (
 				<section className="relative px-6 pb-16">
-					<div className="max-w-2xl mx-auto text-center">
+					<div className="max-w-4xl mx-auto text-center">
 						<p className="text-gray-500">Unable to load readings. Please try again later.</p>
 					</div>
 				</section>

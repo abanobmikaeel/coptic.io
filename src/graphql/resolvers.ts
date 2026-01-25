@@ -4,6 +4,7 @@ import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCele
 import * as celebrationsService from '../services/celebrations.service'
 import * as fastingService from '../services/fasting.service'
 import * as synaxariumService from '../services/synaxarium.service'
+import * as calendarService from '../services/calendar.service'
 
 export const resolvers = {
 	Query: {
@@ -11,6 +12,10 @@ export const resolvers = {
 		copticDate: (_: unknown, { date }: { date?: string }) => {
 			const parsedDate = date ? new Date(date) : new Date()
 			return fromGregorian(parsedDate)
+		},
+
+		calendarMonth: (_: unknown, { year, month }: { year: number; month: number }) => {
+			return calendarService.getCalendarMonth(year, month)
 		},
 
 		// Readings

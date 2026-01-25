@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
-const API_BASE = 'https://copticio-production.up.railway.app/api';
+import { API_BASE_URL } from '@/config';
 
 interface Example {
 	title: string;
@@ -17,7 +16,7 @@ const examples: Example[] = [
 		description: "Get the daily scripture readings from the Katameros",
 		endpoint: "/readings",
 		code: `const response = await fetch(
-  '${API_BASE}/readings'
+  '${API_BASE_URL}/readings'
 );
 const readings = await response.json();`
 	},
@@ -26,7 +25,7 @@ const readings = await response.json();`
 		description: "Convert any Gregorian date to the Coptic calendar",
 		endpoint: "/calendar/2025-04-20",
 		code: `const response = await fetch(
-  '${API_BASE}/calendar/2025-04-20'
+  '${API_BASE_URL}/calendar/2025-04-20'
 );
 const copticDate = await response.json();
 // { day: 12, month: 8, year: 1741, ... }`
@@ -36,7 +35,7 @@ const copticDate = await response.json();
 		description: "Check if a specific date is a fasting day",
 		endpoint: "/fasting/2025-03-15",
 		code: `const response = await fetch(
-  '${API_BASE}/fasting/2025-03-15'
+  '${API_BASE_URL}/fasting/2025-03-15'
 );
 const fasting = await response.json();
 // { isFasting: true, fastType: "Great Lent" }`
@@ -46,7 +45,7 @@ const fasting = await response.json();
 		description: "Get feast days for the next N days",
 		endpoint: "/celebrations/upcoming/list?days=30",
 		code: `const response = await fetch(
-  '${API_BASE}/celebrations/upcoming/list?days=30'
+  '${API_BASE_URL}/celebrations/upcoming/list?days=30'
 );
 const celebrations = await response.json();`
 	},
@@ -55,7 +54,7 @@ const celebrations = await response.json();`
 		description: "Search saint commemorations by name",
 		endpoint: "/synaxarium/search/query?q=mary",
 		code: `const response = await fetch(
-  '${API_BASE}/synaxarium/search/query?q=mary'
+  '${API_BASE_URL}/synaxarium/search/query?q=mary'
 );
 const saints = await response.json();`
 	},
@@ -64,7 +63,7 @@ const saints = await response.json();`
 		description: "Get the current liturgical season",
 		endpoint: "/season",
 		code: `const response = await fetch(
-  '${API_BASE}/season'
+  '${API_BASE_URL}/season'
 );
 const season = await response.json();
 // { name: "Pentecost", ... }`
@@ -80,7 +79,7 @@ export default function ExamplesPage() {
 		setLoading(true);
 		setResponse(null);
 		try {
-			const res = await fetch(`${API_BASE}${examples[activeExample].endpoint}`);
+			const res = await fetch(`${API_BASE_URL}${examples[activeExample].endpoint}`);
 			const data = await res.json();
 			setResponse(JSON.stringify(data, null, 2));
 		} catch (err) {
@@ -156,7 +155,7 @@ export default function ExamplesPage() {
 							<button
 								onClick={runExample}
 								disabled={loading}
-								className="w-full bg-amber-600 hover:bg-amber-500 disabled:bg-amber-600/50 text-white font-medium py-3 px-5 rounded-xl transition-colors text-[14px]"
+								className="w-full bg-amber-700 hover:bg-amber-600 disabled:bg-amber-600/50 text-white font-medium py-3 px-5 rounded-xl transition-colors text-[14px]"
 							>
 								{loading ? 'Loading...' : 'Try it'}
 							</button>
