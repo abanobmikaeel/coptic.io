@@ -123,7 +123,7 @@ export const getByCopticDate = (gregorianDate: Date, isDetailed?: boolean): Read
 		}
 
 		const synxariumWithoutText = synxarium.map((reading: SynaxariumEntry) => {
-			const { _, ...rest } = reading
+			const { _: _unused, text: _text, ...rest } = reading
 			return rest
 		})
 		const synxariumText = isDetailed ? synxarium : synxariumWithoutText
