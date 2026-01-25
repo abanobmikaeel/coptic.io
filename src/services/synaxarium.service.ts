@@ -36,7 +36,7 @@ export const getSynaxariumForDate = (
 
 	if (!includeText) {
 		return synxarium.map((reading: SynaxariumEntry) => {
-			const { _, ...rest } = reading
+			const { _: _unused, text: _text, ...rest } = reading
 			return rest
 		})
 	}
