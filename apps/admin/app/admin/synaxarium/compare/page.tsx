@@ -17,7 +17,10 @@ export default function CompareSourcesPage() {
 			<div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
 				<div className="flex flex-wrap gap-4">
 					<div>
-						<label htmlFor="compare-month" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label
+							htmlFor="compare-month"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>
 							Coptic Month
 						</label>
 						<select
@@ -34,7 +37,10 @@ export default function CompareSourcesPage() {
 						</select>
 					</div>
 					<div>
-						<label htmlFor="compare-day" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label
+							htmlFor="compare-day"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>
 							Day
 						</label>
 						<select
@@ -51,7 +57,10 @@ export default function CompareSourcesPage() {
 						</select>
 					</div>
 					<div>
-						<label htmlFor="left-source" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label
+							htmlFor="left-source"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>
 							Left Source
 						</label>
 						<select
@@ -66,7 +75,10 @@ export default function CompareSourcesPage() {
 						</select>
 					</div>
 					<div>
-						<label htmlFor="right-source" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label
+							htmlFor="right-source"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>
 							Right Source
 						</label>
 						<select

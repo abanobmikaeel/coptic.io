@@ -40,7 +40,9 @@ export default function TranslationsPage() {
 								</span>
 							</td>
 							<td className="px-4 py-3">
-								<button type="button" className="text-sm text-blue-600 hover:underline">Add Translation</button>
+								<button type="button" className="text-sm text-blue-600 hover:underline">
+									Add Translation
+								</button>
 							</td>
 						</tr>
 					</tbody>

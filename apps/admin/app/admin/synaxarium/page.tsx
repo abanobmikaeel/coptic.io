@@ -26,7 +26,10 @@ export default function SynaxariumBrowser() {
 			<div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
 				<div className="flex flex-wrap gap-4">
 					<div>
-						<label htmlFor="coptic-month" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label
+							htmlFor="coptic-month"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>
 							Coptic Month
 						</label>
 						<select
@@ -43,7 +46,10 @@ export default function SynaxariumBrowser() {
 						</select>
 					</div>
 					<div>
-						<label htmlFor="coptic-day" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+						<label
+							htmlFor="coptic-day"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>
 							Day
 						</label>
 						<select

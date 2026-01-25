@@ -150,7 +150,7 @@ async function main() {
 	}
 
 	// Summary
-	console.log('\n' + '='.repeat(60))
+	console.log(`\n${'='.repeat(60)}`)
 	console.log('VALIDATION SUMMARY')
 	console.log('='.repeat(60))
 
