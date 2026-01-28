@@ -181,6 +181,129 @@ describe('Moveable Feasts - Multi-Year Regression', () => {
 	})
 })
 
+describe('Moveable Feasts - 2026-2034 Integration Tests', () => {
+	/**
+	 * Coptic Orthodox Easter dates for 2026-2034
+	 * Source: Computus algorithm for Eastern Orthodox churches
+	 * These follow Julian calendar Easter, which differs from Western Easter
+	 *
+	 * Official reference: https://www.copticchurch.net/calendar/feasts/[YEAR]
+	 */
+	const easterDates: Record<number, { month: number; day: number }> = {
+		2026: { month: 3, day: 12 }, // April 12, 2026
+		2027: { month: 4, day: 2 }, // May 2, 2027
+		2028: { month: 3, day: 16 }, // April 16, 2028
+		2029: { month: 3, day: 8 }, // April 8, 2029
+		2030: { month: 3, day: 28 }, // April 28, 2030
+		2031: { month: 3, day: 13 }, // April 13, 2031
+		2032: { month: 4, day: 2 }, // May 2, 2032
+		2033: { month: 3, day: 24 }, // April 24, 2033
+		2034: { month: 3, day: 9 }, // April 9, 2034
+	}
+
+	it.each(Object.entries(easterDates))(
+		'should calculate Easter %s correctly',
+		(yearStr, expected) => {
+			const year = parseInt(yearStr, 10)
+			const feasts = getMoveableFeastsForYear(year)
+			const easter = feasts.find((f) => f.name === 'Easter')
+
+			expect(easter).toBeDefined()
+			expect(easter?.date.getFullYear()).toBe(year)
+			expect(easter?.date.getMonth()).toBe(expected.month)
+			expect(easter?.date.getDate()).toBe(expected.day)
+		},
+	)
+
+	it.each(Object.entries(easterDates))(
+		'should calculate Palm Sunday %s correctly (7 days before Easter)',
+		(yearStr, expected) => {
+			const year = parseInt(yearStr, 10)
+			const feasts = getMoveableFeastsForYear(year)
+			const easter = feasts.find((f) => f.name === 'Easter')
+			const palmSunday = feasts.find((f) => f.name === 'Palm Sunday')
+
+			expect(palmSunday).toBeDefined()
+			expect(palmSunday?.daysFromEaster).toBe(-7)
+
+			if (easter && palmSunday) {
+				const daysDiff =
+					(easter.date.getTime() - palmSunday.date.getTime()) / (1000 * 60 * 60 * 24)
+				expect(daysDiff).toBe(7)
+			}
+		},
+	)
+
+	it.each(Object.entries(easterDates))(
+		'should calculate Pentecost %s correctly (49 days after Easter)',
+		(yearStr, expected) => {
+			const year = parseInt(yearStr, 10)
+			const feasts = getMoveableFeastsForYear(year)
+			const easter = feasts.find((f) => f.name === 'Easter')
+			const pentecost = feasts.find((f) => f.name === 'Pentecost')
+
+			expect(pentecost).toBeDefined()
+			expect(pentecost?.daysFromEaster).toBe(49)
+
+			if (easter && pentecost) {
+				const daysDiff =
+					(pentecost.date.getTime() - easter.date.getTime()) / (1000 * 60 * 60 * 24)
+				expect(daysDiff).toBe(49)
+			}
+		},
+	)
+
+	it.each(Object.entries(easterDates))(
+		'should return all 10 moveable feasts for %s',
+		(yearStr) => {
+			const year = parseInt(yearStr, 10)
+			const feasts = getMoveableFeastsForYear(year)
+			expect(feasts.length).toBe(10)
+
+			// Verify all expected feasts are present
+			const expectedFeasts = [
+				'Fast of Nineveh',
+				'Great Lent',
+				'Palm Sunday',
+				'Holy Thursday',
+				'Good Friday',
+				'Easter',
+				'Thomas Sunday',
+				'Ascension',
+				'Pentecost',
+				"Apostles' Fast",
+			]
+
+			expectedFeasts.forEach((feastName) => {
+				expect(feasts.find((f) => f.name === feastName)).toBeDefined()
+			})
+		},
+	)
+
+	it('should maintain all feast offsets consistently across 2026-2034', () => {
+		const expectedOffsets: Record<string, number> = {
+			'Fast of Nineveh': -69,
+			'Great Lent': -55,
+			'Palm Sunday': -7,
+			'Holy Thursday': -3,
+			'Good Friday': -2,
+			Easter: 0,
+			'Thomas Sunday': 7,
+			Ascension: 39,
+			Pentecost: 49,
+			"Apostles' Fast": 50,
+		}
+
+		for (let year = 2026; year <= 2034; year++) {
+			const feasts = getMoveableFeastsForYear(year)
+
+			feasts.forEach((feast) => {
+				expect(feast.daysFromEaster).toBe(expectedOffsets[feast.name])
+			})
+		}
+	})
+})
+
 describe('Moveable Feasts - Data Integrity', () => {
 	it('should have unique IDs for all moveable feasts', () => {
 		const feasts = getMoveableFeastsForYear(2025)

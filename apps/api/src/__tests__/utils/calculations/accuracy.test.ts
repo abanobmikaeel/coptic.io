@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import getEaster from '../../../utils/calculations/getEaster'
+import { getAllSeasonsForYear } from '../../../utils/calculations/getLiturgicalSeason'
 import { getMoveableFeastsForYear } from '../../../utils/calculations/getMoveableFeasts'
+import { getStaticCelebrationsForDay } from '../../../utils/calculations/getStaticCelebrations'
 import fromGregorian from '../../../utils/copticDate'
 
 /**
@@ -195,25 +197,55 @@ describe('Moveable Feasts - Multi-Year Exact Dates', () => {
 	})
 })
 
-describe('Fixed Feasts - Gregorian Dates', () => {
+describe('Fixed Feasts - Gregorian Lookup', () => {
 	/**
-	 * Fixed feasts always fall on the same Gregorian date
-	 * (adjusted for Julian calendar offset of 13 days)
+	 * Fixed feasts verified via getStaticCelebrationsForDay()
+	 * Source: https://st-takla.org/faith/en/terms/feasts.html
 	 */
-	const fixedFeasts = [
-		{ name: 'Coptic Christmas', month: 1, day: 7 },
-		{ name: 'Epiphany (Theophany)', month: 1, day: 19 },
-		{ name: 'Annunciation', month: 4, day: 7 },
-		{ name: 'Nayrouz (Coptic New Year)', month: 9, day: 11 }, // or 12 in leap year
-		{ name: 'Feast of the Cross', month: 9, day: 27 },
-		{ name: 'Entrance of Virgin Mary to Temple', month: 12, day: 3 },
-	]
 
-	fixedFeasts.forEach(({ name, month, day }) => {
-		it(`${name} should always be ${month}/${day}`, () => {
-			// This test documents expected fixed feast dates
-			// Implementation should return these dates for any year
-			expect(true).toBe(true) // Placeholder - add actual feast lookup when available
+	it('January 7 should return Nativity Feast', () => {
+		const celebrations = getStaticCelebrationsForDay(new Date(2025, 0, 7))
+		expect(celebrations).not.toBeNull()
+		expect(celebrations?.some((c) => c.name.includes('Nativity'))).toBe(true)
+	})
+
+	it('January 19 should return Theophany Feast', () => {
+		const celebrations = getStaticCelebrationsForDay(new Date(2025, 0, 19))
+		expect(celebrations).not.toBeNull()
+		expect(celebrations?.some((c) => c.name.includes('Theophany'))).toBe(true)
+	})
+
+	it('September 11 should return Nayrouz', () => {
+		const celebrations = getStaticCelebrationsForDay(new Date(2024, 8, 11))
+		expect(celebrations).not.toBeNull()
+		expect(celebrations?.some((c) => c.name.includes('Nayrouz'))).toBe(true)
+	})
+
+	it('September 27 should return Feast of the Cross', () => {
+		const celebrations = getStaticCelebrationsForDay(new Date(2024, 8, 27))
+		expect(celebrations).not.toBeNull()
+		expect(celebrations?.some((c) => c.name.includes('Cross'))).toBe(true)
+	})
+
+	it('April 7 should return Annunciation', () => {
+		const celebrations = getStaticCelebrationsForDay(new Date(2025, 3, 7))
+		expect(celebrations).not.toBeNull()
+		expect(celebrations?.some((c) => c.name.includes('Annunciation'))).toBe(true)
+	})
+
+	it('all fixed feast lookups should be non-moveable', () => {
+		const feastDates = [
+			new Date(2025, 0, 7), // Nativity
+			new Date(2025, 0, 19), // Theophany
+			new Date(2024, 8, 11), // Nayrouz
+			new Date(2024, 8, 27), // Cross
+		]
+
+		feastDates.forEach((date) => {
+			const celebrations = getStaticCelebrationsForDay(date)
+			celebrations?.forEach((c) => {
+				expect(c.isMoveable).toBe(false)
+			})
 		})
 	})
 })
@@ -250,5 +282,205 @@ describe('Fasting Periods - Date Ranges', () => {
 
 		expect(nineveh?.date.getMonth()).toBe(1) // February
 		expect(nineveh?.date.getDate()).toBe(10)
+	})
+})
+
+describe('Fixed Feasts - Coptic Date Mapping', () => {
+	/**
+	 * Verify fixed feasts fall on the correct Coptic calendar dates
+	 * Source: https://st-takla.org/faith/en/terms/feasts.html
+	 *
+	 * Major Fixed: Annunciation (29 Baramhat), Nativity (29 Kiahk), Theophany (11 Toba)
+	 * Minor Fixed: Circumcision (6 Toba), Entry into Temple (8 Amshir),
+	 *              Flight to Egypt (24 Bashans), Cana (13 Toba), Transfiguration (13 Mesra)
+	 */
+	const fixedFeastCopticDates = [
+		// Major Fixed Feasts
+		{ name: 'Nativity', gregMonth: 1, gregDay: 7, copticMonth: 'Kiahk', copticDay: 29 },
+		{ name: 'Theophany', gregMonth: 1, gregDay: 19, copticMonth: 'Toba', copticDay: 11 },
+		{ name: 'Annunciation', gregMonth: 4, gregDay: 7, copticMonth: 'Baramhat', copticDay: 29 },
+		// Minor Fixed Feasts
+		{ name: 'Circumcision', gregMonth: 1, gregDay: 14, copticMonth: 'Toba', copticDay: 6 },
+		{ name: 'Entry into Temple', gregMonth: 2, gregDay: 15, copticMonth: 'Amshir', copticDay: 8 },
+		{ name: 'Cana', gregMonth: 1, gregDay: 21, copticMonth: 'Toba', copticDay: 13 },
+		{ name: 'Transfiguration', gregMonth: 8, gregDay: 19, copticMonth: 'Mesra', copticDay: 13 },
+		// Other notable fixed dates
+		{ name: 'Nayrouz', gregMonth: 9, gregDay: 11, copticMonth: 'Tout', copticDay: 1 },
+		{ name: 'Feast of the Cross', gregMonth: 9, gregDay: 27, copticMonth: 'Tout', copticDay: 17 },
+	]
+
+	fixedFeastCopticDates.forEach(({ name, gregMonth, gregDay, copticMonth, copticDay }) => {
+		it(`${name} (${gregMonth}/${gregDay}) should be ${copticMonth} ${copticDay}`, () => {
+			// Use 2025 for non-leap year (2024 for Sep dates since those are AM 1741 Tout)
+			const year = gregMonth >= 9 ? 2024 : 2025
+			const date = new Date(year, gregMonth - 1, gregDay)
+			const coptic = fromGregorian(date)
+
+			expect(coptic.monthString).toBe(copticMonth)
+			expect(coptic.day).toBe(copticDay)
+		})
+	})
+})
+
+describe('Coptic Date Conversion - Month Boundaries', () => {
+	/**
+	 * Verify conversions at Coptic month boundaries
+	 * Each Coptic month (1-12) has exactly 30 days, Nasie has 5 (or 6 in leap year)
+	 */
+
+	it('should convert all 13 Coptic month names correctly', () => {
+		// First day of each Coptic month in AM 1741 (Gregorian dates)
+		// Computed from Tout 1 = Sept 11, 2024, each month = 30 days
+		// Month names as returned by Intl.DateTimeFormat('en-u-ca-coptic')
+		// Note: some differ from dayReadings.json transliterations
+		// (e.g. Intl: Hator vs data: Hatoor, Intl: Paona vs data: Baona)
+		const monthFirstDays: Array<{ month: string; greg: [number, number, number] }> = [
+			{ month: 'Tout', greg: [2024, 8, 11] }, // Sept 11
+			{ month: 'Baba', greg: [2024, 9, 11] }, // Oct 11
+			{ month: 'Hator', greg: [2024, 10, 10] }, // Nov 10
+			{ month: 'Kiahk', greg: [2024, 11, 10] }, // Dec 10
+			{ month: 'Toba', greg: [2025, 0, 9] }, // Jan 9
+			{ month: 'Amshir', greg: [2025, 1, 8] }, // Feb 8
+			{ month: 'Baramhat', greg: [2025, 2, 10] }, // Mar 10
+			{ month: 'Baramouda', greg: [2025, 3, 9] }, // Apr 9
+			{ month: 'Bashans', greg: [2025, 4, 9] }, // May 9
+			{ month: 'Paona', greg: [2025, 5, 8] }, // Jun 8
+			{ month: 'Epep', greg: [2025, 6, 8] }, // Jul 8
+			{ month: 'Mesra', greg: [2025, 7, 7] }, // Aug 7
+			{ month: 'Nasie', greg: [2025, 8, 6] }, // Sept 6
+		]
+
+		monthFirstDays.forEach(({ month, greg }) => {
+			const date = new Date(greg[0], greg[1], greg[2])
+			const coptic = fromGregorian(date)
+			expect(coptic.monthString).toBe(month)
+			expect(coptic.day).toBe(1)
+		})
+	})
+
+	it('Tout 30 should be the day before Baba 1', () => {
+		// Tout 30 = Sept 11 + 29 days = Oct 10, 2024
+		const tout30 = fromGregorian(new Date(2024, 9, 10))
+		expect(tout30.monthString).toBe('Tout')
+		expect(tout30.day).toBe(30)
+
+		// Baba 1 = Oct 11, 2024
+		const baba1 = fromGregorian(new Date(2024, 9, 11))
+		expect(baba1.monthString).toBe('Baba')
+		expect(baba1.day).toBe(1)
+	})
+
+	it('Nasie should have 5 or 6 days depending on Coptic leap year', () => {
+		// Nasie starts after Mesra 30
+		// In non-leap year (2025): Nasie has 5 days (Sept 6-10, 2025)
+		const nasie1 = fromGregorian(new Date(2025, 8, 6))
+		expect(nasie1.monthString).toBe('Nasie')
+		expect(nasie1.day).toBe(1)
+
+		const nasie5 = fromGregorian(new Date(2025, 8, 10))
+		expect(nasie5.monthString).toBe('Nasie')
+		expect(nasie5.day).toBe(5)
+
+		// Next day should be Tout 1 of the new year
+		const newYear = fromGregorian(new Date(2025, 8, 11))
+		expect(newYear.monthString).toBe('Tout')
+		expect(newYear.day).toBe(1)
+	})
+
+	it('Coptic year should transition correctly at Nayrouz', () => {
+		// Nasie 5, 1741 = Sept 10, 2025
+		const lastDay = fromGregorian(new Date(2025, 8, 10))
+		expect(lastDay.year).toBe(1741)
+
+		// Tout 1, 1742 = Sept 11, 2025
+		const firstDay = fromGregorian(new Date(2025, 8, 11))
+		expect(firstDay.year).toBe(1742)
+		expect(firstDay.monthString).toBe('Tout')
+		expect(firstDay.day).toBe(1)
+	})
+})
+
+describe('Liturgical Season Durations', () => {
+	/**
+	 * Verify exact period lengths for liturgical seasons
+	 * Source: Coptic Orthodox Church tradition
+	 */
+	const daysBetween = (a: Date, b: Date) =>
+		Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24))
+
+	const testYears = [2025, 2026, 2027]
+
+	testYears.forEach((year) => {
+		describe(`${year}`, () => {
+			const seasons = getAllSeasonsForYear(year)
+			const feasts = getMoveableFeastsForYear(year)
+
+			it('Great Lent should be 55 days (start to Easter eve)', () => {
+				const greatLent = seasons.find((s) => s.name === 'Great Lent')
+				expect(greatLent).toBeDefined()
+				if (greatLent) {
+					// Great Lent start to end (day before Easter) inclusive = 55 days
+					const duration = daysBetween(greatLent.startDate, greatLent.endDate) + 1
+					expect(duration).toBe(55)
+				}
+			})
+
+			it('Holy Week should be 7 days (Palm Sunday to Holy Saturday)', () => {
+				const holyWeek = seasons.find((s) => s.name === 'Holy Week')
+				expect(holyWeek).toBeDefined()
+				if (holyWeek) {
+					const duration = daysBetween(holyWeek.startDate, holyWeek.endDate) + 1
+					expect(duration).toBe(7)
+				}
+			})
+
+			it('Paschal Season should be 50 days (Easter to Pentecost)', () => {
+				const paschal = seasons.find(
+					(s) => s.name === 'Paschal Season' && s.startDate.getFullYear() === year,
+				)
+				expect(paschal).toBeDefined()
+				if (paschal) {
+					const duration = daysBetween(paschal.startDate, paschal.endDate) + 1
+					expect(duration).toBe(50)
+				}
+			})
+
+			it('Fast of Nineveh should be 3 days', () => {
+				const nineveh = seasons.find((s) => s.name === 'Fast of Nineveh')
+				expect(nineveh).toBeDefined()
+				if (nineveh) {
+					const duration = daysBetween(nineveh.startDate, nineveh.endDate) + 1
+					expect(duration).toBe(3)
+				}
+			})
+
+			it("Apostles' Fast should always end on July 12", () => {
+				const apostles = seasons.find((s) => s.name === "Apostles' Fast")
+				expect(apostles).toBeDefined()
+				if (apostles) {
+					expect(apostles.endDate.getMonth()).toBe(6) // July (0-indexed)
+					expect(apostles.endDate.getDate()).toBe(12)
+				}
+			})
+
+			it('Paschal Season should NOT be a fasting period', () => {
+				const paschal = seasons.find(
+					(s) => s.name === 'Paschal Season' && s.startDate.getFullYear() === year,
+				)
+				expect(paschal?.isFasting).toBe(false)
+			})
+		})
+	})
+
+	it('Nativity Fast should be 43 days (Nov 25 to Jan 6)', () => {
+		const seasons = getAllSeasonsForYear(2025)
+		const nativity = seasons.find(
+			(s) => s.name === 'Nativity Fast' && s.startDate.getFullYear() === 2025,
+		)
+		expect(nativity).toBeDefined()
+		if (nativity) {
+			const duration = daysBetween(nativity.startDate, nativity.endDate) + 1
+			expect(duration).toBe(43)
+		}
 	})
 })

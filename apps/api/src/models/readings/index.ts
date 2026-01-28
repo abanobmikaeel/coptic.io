@@ -5,6 +5,12 @@ import type { Reading } from '../../types'
 import fromGregorian from '../../utils/copticDate'
 import { oneChapterPattern, oneVersePattern, verseRangePattern } from '../../utils/regexPatterns'
 import { getSingleChapter, getSingleVerse, getVerseRange } from './verseTextTransformer'
+
+// Build indexed Map at module load for O(1) lookup by reading ID
+const readingsById = new Map<number, (typeof uniqueReadings)[number]>()
+for (const reading of uniqueReadings) {
+	readingsById.set(reading.id, reading)
+}
 /**
  *
  * @param verseString 'a string for indexing a bible verse '
@@ -109,7 +115,7 @@ export const getByCopticDate = (gregorianDate: Date, isDetailed?: boolean): Read
 			throw new Error(`No reading found for day: ${copticDate.day}`)
 		}
 
-		const reading = uniqueReadings.find((reading) => reading.id === readingID)
+		const reading = readingsById.get(readingID)
 		if (!reading) {
 			throw new Error(`Reading not found for ID: ${readingID}`)
 		}

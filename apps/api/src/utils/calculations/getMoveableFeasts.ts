@@ -2,8 +2,25 @@ import { addDays, normalizeDate } from '../dateUtils'
 import easterDate from './getEaster'
 
 /**
- * Calculates all moveable feasts based on the Coptic Orthodox Easter date
- * Source: CopticChurch.net official calendar
+ * Calculates Easter-dependent liturgical events for the Coptic Orthodox Church
+ *
+ * Sources:
+ * - Official calendar: https://www.copticchurch.net/calendar/feasts/[YEAR]
+ * - Feast classifications: https://st-takla.org/faith/en/terms/feasts.html
+ * - Easter algorithm: Computus for Eastern Orthodox (Julian calendar based)
+ *
+ * Major Moveable Feasts (4 of the 7 Major Feasts):
+ * - Palm Sunday, Easter, Ascension, Pentecost
+ *
+ * Minor Moveable Feasts (2 of the 7 Minor Feasts):
+ * - Covenant Thursday, Thomas Sunday
+ *
+ * Fasting Periods (Easter-dependent, not classified as feasts):
+ * - Fast of Nineveh, Great Lent, Good Friday, Apostles' Fast
+ *
+ * Fixed-date feasts (NOT included here):
+ * - Major (3): Annunciation, Nativity, Theophany
+ * - Minor (5): Circumcision, Entry into Temple, Flight to Egypt, Cana, Transfiguration
  */
 
 export interface MoveableFeast {

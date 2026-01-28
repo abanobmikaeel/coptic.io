@@ -1,6 +1,6 @@
 import { range } from '../../../src/utils'
 import type { BibleVerse, Reading } from '../../types'
-import { getBook, getChapter, getChapterAndOrVerse, getVerse } from './bibleDataMapper'
+import { getBook, getChapter, getChapterAndOrVerse, getVerseByBookChapter } from './bibleDataMapper'
 
 export const getSingleVerse = (verseString: string) => {
 	const verseArr = splitAtIndex(
@@ -23,11 +23,11 @@ export const getVerseRange = (verseString: string): Reading => {
 	const { bookName, chapterNum, startingVerseNum, endVerseNum } = verseArr
 	const verses: BibleVerse[] = []
 	const book = getBook(bookName)
-	const chapter = book && getChapter(book, chapterNum)
 
-	if (chapter) {
+	if (book) {
+		// Use O(1) Map lookup for each verse instead of .find()
 		range(startingVerseNum, endVerseNum).forEach((currVerse) => {
-			const verseFound = getVerse(chapter, currVerse)
+			const verseFound = getVerseByBookChapter(bookName, chapterNum, currVerse)
 			if (verseFound) {
 				verses.push(verseFound)
 			}

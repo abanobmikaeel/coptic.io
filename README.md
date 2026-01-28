@@ -117,6 +117,34 @@ pnpm version
 pnpm release
 ```
 
+## Data Sources
+
+| Data | Source | Notes |
+|------|--------|-------|
+| **Easter Calculation** | Computus algorithm for Eastern Orthodox Easter | Valid for years 1900-2199 |
+| **Moveable Feasts** | [CopticChurch.net Calendar](https://www.copticchurch.net/calendar/feasts/) | Validated against official dates |
+| **Feast Classifications** | [St-Takla.org](https://st-takla.org/faith/en/terms/feasts.html) | 7 Major + 7 Minor Lord's Feasts |
+| **Synaxarium** | [CopticChurch.net Synaxarium](https://www.copticchurch.net/synaxarium/) | Daily saints commemorations |
+| **Bible Text** | New King James Version (NKJV) | Scripture readings |
+| **Daily Readings** | Coptic Katameros | Traditional lectionary cycle |
+| **Fasting Calendar** | Coptic Orthodox Church tradition | Major and minor fasting periods |
+
+### Feast Classifications
+
+**7 Major Lord's Feasts:**
+- *Fixed:* Annunciation (29 Baramhat), Nativity (29 Kiahk), Theophany (11 Tobe)
+- *Moveable:* Palm Sunday, Resurrection, Ascension, Pentecost
+
+**7 Minor Lord's Feasts:**
+- *Fixed:* Circumcision (6 Tobe), Entry into Temple (8 Amshir), Flight to Egypt (24 Bashans), Cana (13 Tobe), Transfiguration (13 Mesori)
+- *Moveable:* Covenant Thursday, Thomas Sunday
+
+*Note: Feast of the Cross is a separate feast (not among the 14 Lord's Feasts).
+
+### Validation
+
+Moveable feast calculations are validated against official CopticChurch.net data using `scripts/validate-against-official.ts`.
+
 ## License
 
 MIT

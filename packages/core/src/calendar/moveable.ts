@@ -18,13 +18,23 @@ const normalizeDate = (date: Date): Date => {
 }
 
 /**
- * Get all moveable feasts for a given year
+ * Get all Easter-dependent liturgical events for a given year
  *
- * Moveable feasts are calculated based on the date of Easter.
- * This includes major events like Palm Sunday, Pentecost, and fasting periods.
+ * Sources:
+ * - Official calendar: https://www.copticchurch.net/calendar/feasts/[YEAR]
+ * - Feast classifications: https://st-takla.org/faith/en/terms/feasts.html
+ * - Easter algorithm: Computus for Eastern Orthodox (Julian calendar based)
+ *
+ * Major Moveable Feasts (4 of 7): Palm Sunday, Easter, Ascension, Pentecost
+ * Minor Moveable Feasts (2 of 7): Covenant Thursday, Thomas Sunday
+ * Fasting Periods (not classified as feasts): Fast of Nineveh, Great Lent, Good Friday, Apostles' Fast
+ *
+ * Fixed-date feasts (not included here):
+ * - Major (3): Annunciation, Nativity, Theophany
+ * - Minor (5): Circumcision, Entry into Temple, Flight to Egypt, Cana, Transfiguration
  *
  * @param gregorianYear - The year to calculate feasts for
- * @returns Array of moveable feasts in chronological order
+ * @returns Array of Easter-dependent events in chronological order
  */
 export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[] => {
 	const easterDateObj = getEasterDate(gregorianYear)
