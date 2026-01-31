@@ -269,9 +269,7 @@ describe('Date Edge Cases', () => {
 	describe('Moveable Feast Date Stability', () => {
 		it('should calculate same feast dates regardless of input time', () => {
 			const results = [2025, 2025, 2025].map((year) => getMoveableFeastsForYear(year))
-			const easterDates = results.map(
-				(r) => r.find((f) => f.name === 'Easter')?.date.getTime(),
-			)
+			const easterDates = results.map((r) => r.find((f) => f.name === 'Easter')?.date.getTime())
 
 			// All should be identical
 			expect(new Set(easterDates).size).toBe(1)
