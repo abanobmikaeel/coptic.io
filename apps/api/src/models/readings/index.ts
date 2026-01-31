@@ -1,8 +1,8 @@
+import { gregorianToCoptic } from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
 import synxariumReadings from '../../resources/synxarium.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import type { Reading } from '../../types'
-import { gregorianToCoptic } from '@coptic/core'
 import { oneChapterPattern, oneVersePattern, verseRangePattern } from '../../utils/regexPatterns'
 import { getSingleChapter, getSingleVerse, getVerseRange } from './verseTextTransformer'
 

@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest'
 import {
 	getAllSeasonsForYear,
 	getFastingPeriodsForYear,
 	getLiturgicalSeasonForDate,
 	isInFastingPeriod,
 } from '@coptic/core'
+import { describe, expect, it } from 'vitest'
 
 describe('Liturgical Season Detection', () => {
 	describe('getLiturgicalSeasonForDate', () => {

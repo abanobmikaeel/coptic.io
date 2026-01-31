@@ -98,7 +98,11 @@ function jdToCoptic(jd: number): { year: number; month: number; day: number } {
  * @returns The corresponding Coptic date
  */
 export const gregorianToCoptic = (gregorianDate: Date): CopticDate => {
-	const jd = gregorianToJD(gregorianDate.getFullYear(), gregorianDate.getMonth() + 1, gregorianDate.getDate())
+	const jd = gregorianToJD(
+		gregorianDate.getFullYear(),
+		gregorianDate.getMonth() + 1,
+		gregorianDate.getDate(),
+	)
 	const { year, month, day } = jdToCoptic(jd)
 	const monthString = COPTIC_MONTHS[month - 1]
 

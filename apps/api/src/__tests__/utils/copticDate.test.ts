@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { gregorianToCoptic } from '@coptic/core'
+import { describe, expect, it } from 'vitest'
 
 describe('Coptic Date Conversion', () => {
 	it('should convert January 15, 2025 to Toba 7, 1741', () => {

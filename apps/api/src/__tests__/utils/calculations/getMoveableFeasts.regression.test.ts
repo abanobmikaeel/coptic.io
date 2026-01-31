@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { getMoveableFeastsForDate, getMoveableFeastsForYear } from '@coptic/core'
+import { describe, expect, it } from 'vitest'
 
 /**
  * Regression tests for moveable feasts against official Coptic Orthodox Church calendars
@@ -224,8 +224,7 @@ describe('Moveable Feasts - 2026-2034 Integration Tests', () => {
 			expect(palmSunday?.daysFromEaster).toBe(-7)
 
 			if (easter && palmSunday) {
-				const daysDiff =
-					(easter.date.getTime() - palmSunday.date.getTime()) / (1000 * 60 * 60 * 24)
+				const daysDiff = (easter.date.getTime() - palmSunday.date.getTime()) / (1000 * 60 * 60 * 24)
 				expect(daysDiff).toBe(7)
 			}
 		},
@@ -243,39 +242,35 @@ describe('Moveable Feasts - 2026-2034 Integration Tests', () => {
 			expect(pentecost?.daysFromEaster).toBe(49)
 
 			if (easter && pentecost) {
-				const daysDiff =
-					(pentecost.date.getTime() - easter.date.getTime()) / (1000 * 60 * 60 * 24)
+				const daysDiff = (pentecost.date.getTime() - easter.date.getTime()) / (1000 * 60 * 60 * 24)
 				expect(daysDiff).toBe(49)
 			}
 		},
 	)
 
-	it.each(Object.entries(easterDates))(
-		'should return all 10 moveable feasts for %s',
-		(yearStr) => {
-			const year = parseInt(yearStr, 10)
-			const feasts = getMoveableFeastsForYear(year)
-			expect(feasts.length).toBe(10)
+	it.each(Object.entries(easterDates))('should return all 10 moveable feasts for %s', (yearStr) => {
+		const year = parseInt(yearStr, 10)
+		const feasts = getMoveableFeastsForYear(year)
+		expect(feasts.length).toBe(10)
 
-			// Verify all expected feasts are present
-			const expectedFeasts = [
-				'Fast of Nineveh',
-				'Great Lent',
-				'Palm Sunday',
-				'Holy Thursday',
-				'Good Friday',
-				'Easter',
-				'Thomas Sunday',
-				'Ascension',
-				'Pentecost',
-				"Apostles' Fast",
-			]
+		// Verify all expected feasts are present
+		const expectedFeasts = [
+			'Fast of Nineveh',
+			'Great Lent',
+			'Palm Sunday',
+			'Holy Thursday',
+			'Good Friday',
+			'Easter',
+			'Thomas Sunday',
+			'Ascension',
+			'Pentecost',
+			"Apostles' Fast",
+		]
 
-			expectedFeasts.forEach((feastName) => {
-				expect(feasts.find((f) => f.name === feastName)).toBeDefined()
-			})
-		},
-	)
+		expectedFeasts.forEach((feastName) => {
+			expect(feasts.find((f) => f.name === feastName)).toBeDefined()
+		})
+	})
 
 	it('should maintain all feast offsets consistently across 2026-2034', () => {
 		const expectedOffsets: Record<string, number> = {

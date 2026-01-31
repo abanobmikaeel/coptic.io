@@ -1,6 +1,6 @@
+import { gregorianToCoptic } from '@coptic/core'
 import dayCelebrations from '../../resources/dayReadings.json'
 import { celebrations } from '../../resources/nonMoveableCelebrations.json'
-import { gregorianToCoptic } from '@coptic/core'
 
 export interface Celebration {
 	id: number

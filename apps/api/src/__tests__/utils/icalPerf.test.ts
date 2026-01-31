@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { generateYearCalendar, generateMultiYearCalendar } from '../../utils/icalGenerator'
+import { generateMultiYearCalendar, generateYearCalendar } from '../../utils/icalGenerator'
 
 describe('iCal Performance', () => {
 	it('measures single year generation time', () => {
@@ -59,7 +59,9 @@ describe('iCal Performance', () => {
 
 	it('measures cached vs uncached performance', async () => {
 		// Import the service to test caching
-		const { getYearCalendar, getSubscriptionCalendar } = await import('../../services/calendar.service')
+		const { getYearCalendar, getSubscriptionCalendar } = await import(
+			'../../services/calendar.service'
+		)
 
 		// First call (uncached)
 		const uncachedStart = performance.now()

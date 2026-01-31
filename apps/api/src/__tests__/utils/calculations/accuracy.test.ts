@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest'
 import {
 	calculateEaster,
 	getAllSeasonsForYear,
 	getMoveableFeastsForYear,
 	gregorianToCoptic,
 } from '@coptic/core'
+import { describe, expect, it } from 'vitest'
 import { getStaticCelebrationsForDay } from '../../../utils/calculations/getStaticCelebrations'
 
 /**

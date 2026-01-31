@@ -2,12 +2,7 @@ import { getAllSeasonsForYear, getMoveableFeastsForYear } from '@coptic/core'
 import { getStaticCelebrationsForDay } from './calculations/getStaticCelebrations'
 
 // Celebrations that span multiple consecutive days - only show "begins" marker
-const MULTI_DAY_CELEBRATIONS = new Set([
-	'St. Mary Fast',
-	'Advent Fast',
-	'Nativity Fast',
-	'Kiahk',
-])
+const MULTI_DAY_CELEBRATIONS = new Set(['St. Mary Fast', 'Advent Fast', 'Nativity Fast', 'Kiahk'])
 
 // Fasts already covered by liturgical seasons (avoid duplicates)
 const SEASON_COVERED_FASTS = new Set([
@@ -110,8 +105,16 @@ const getConsolidatedCelebrations = (
 
 				if (MULTI_DAY_CELEBRATIONS.has(celebration.name)) {
 					// Multi-day celebration - only add "begins" on first day
-					if (!previousDayCelebrations.has(celebration.name) && !addedMultiDay.has(celebration.name)) {
-						result.push({ name: celebration.name, date: currentDate, story: celebration.story, marker: 'begins' })
+					if (
+						!previousDayCelebrations.has(celebration.name) &&
+						!addedMultiDay.has(celebration.name)
+					) {
+						result.push({
+							name: celebration.name,
+							date: currentDate,
+							story: celebration.story,
+							marker: 'begins',
+						})
 						addedMultiDay.add(celebration.name)
 					}
 				} else {
@@ -175,7 +178,9 @@ export const generateYearCalendar = (year: number): string => {
 	// Add static celebrations (consolidated for multi-day celebrations)
 	const celebrations = getConsolidatedCelebrations(year)
 	for (const celebration of celebrations) {
-		const summary = celebration.marker ? `${celebration.name} ${celebration.marker}` : celebration.name
+		const summary = celebration.marker
+			? `${celebration.name} ${celebration.marker}`
+			: celebration.name
 		pushEvent(lines, summary, celebration.date, celebration.story || '', 'Feast')
 	}
 
@@ -227,7 +232,9 @@ export const generateMultiYearCalendar = (startYear: number, endYear: number): s
 		// Add static celebrations (consolidated for multi-day celebrations)
 		const celebrations = getConsolidatedCelebrations(year)
 		for (const celebration of celebrations) {
-			const summary = celebration.marker ? `${celebration.name} ${celebration.marker}` : celebration.name
+			const summary = celebration.marker
+				? `${celebration.name} ${celebration.marker}`
+				: celebration.name
 			pushEvent(lines, summary, celebration.date, celebration.story || '', 'Feast')
 		}
 	}
