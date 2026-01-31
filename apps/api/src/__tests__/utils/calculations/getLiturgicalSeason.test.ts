@@ -4,7 +4,7 @@ import {
 	getFastingPeriodsForYear,
 	getLiturgicalSeasonForDate,
 	isInFastingPeriod,
-} from '../../../utils/calculations/getLiturgicalSeason'
+} from '@coptic/core'
 
 describe('Liturgical Season Detection', () => {
 	describe('getLiturgicalSeasonForDate', () => {

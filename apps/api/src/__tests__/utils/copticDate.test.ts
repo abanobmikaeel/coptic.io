@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import fromGregorian from '../../utils/copticDate'
+import { gregorianToCoptic } from '@coptic/core'
 
 describe('Coptic Date Conversion', () => {
 	it('should convert January 15, 2025 to Toba 7, 1741', () => {
 		const gregorianDate = new Date(2025, 0, 15)
-		const copticDate = fromGregorian(gregorianDate)
+		const copticDate = gregorianToCoptic(gregorianDate)
 
 		expect(copticDate.dateString).toBe('Toba 7, 1741')
 		expect(copticDate.day).toBe(7)
@@ -15,7 +15,7 @@ describe('Coptic Date Conversion', () => {
 
 	it('should convert December 25, 2024 to Coptic date', () => {
 		const gregorianDate = new Date('2024-12-25')
-		const copticDate = fromGregorian(gregorianDate)
+		const copticDate = gregorianToCoptic(gregorianDate)
 
 		// Just verify it returns valid Coptic date structure
 		expect(copticDate.month).toBe(4) // Kiahk
@@ -28,7 +28,7 @@ describe('Coptic Date Conversion', () => {
 	it('should convert dates around Coptic New Year', () => {
 		// Coptic New Year is typically around September 11/12
 		const gregorianDate = new Date('2024-09-11')
-		const copticDate = fromGregorian(gregorianDate)
+		const copticDate = gregorianToCoptic(gregorianDate)
 
 		// Should be in Nasie (month 13) or Tout (month 1)
 		expect(copticDate.month).toBeLessThanOrEqual(13)
@@ -37,7 +37,7 @@ describe('Coptic Date Conversion', () => {
 
 	it('should return valid Coptic date for any Gregorian date', () => {
 		const gregorianDate = new Date('2023-03-15')
-		const copticDate = fromGregorian(gregorianDate)
+		const copticDate = gregorianToCoptic(gregorianDate)
 
 		expect(copticDate).toHaveProperty('dateString')
 		expect(copticDate).toHaveProperty('day')
@@ -52,8 +52,8 @@ describe('Coptic Date Conversion', () => {
 	})
 
 	it('should handle leap years correctly', () => {
-		const date1 = fromGregorian(new Date('2024-02-29')) // Leap year
-		const date2 = fromGregorian(new Date('2023-02-28')) // Non-leap year
+		const date1 = gregorianToCoptic(new Date('2024-02-29')) // Leap year
+		const date2 = gregorianToCoptic(new Date('2023-02-28')) // Non-leap year
 
 		expect(date1).toHaveProperty('dateString')
 		expect(date2).toHaveProperty('dateString')

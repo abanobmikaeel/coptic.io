@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-	getMoveableFeastsForDate,
-	getMoveableFeastsForYear,
-} from '../../../utils/calculations/getMoveableFeasts'
+import { getMoveableFeastsForDate, getMoveableFeastsForYear } from '@coptic/core'
 
 /**
  * Regression tests for moveable feasts against official Coptic Orthodox Church calendars

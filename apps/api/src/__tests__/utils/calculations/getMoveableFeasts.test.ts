@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-	getMoveableFeastsForDate,
-	getMoveableFeastsForYear,
-} from '../../../utils/calculations/getMoveableFeasts'
+import { getMoveableFeastsForDate, getMoveableFeastsForYear } from '@coptic/core'
 
 describe('Moveable Feasts', () => {
 	it('should calculate Easter 2025 correctly', () => {

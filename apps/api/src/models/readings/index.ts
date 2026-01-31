@@ -2,7 +2,7 @@ import dayReadings from '../../resources/dayReadings.json'
 import synxariumReadings from '../../resources/synxarium.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import type { Reading } from '../../types'
-import fromGregorian from '../../utils/copticDate'
+import { gregorianToCoptic } from '@coptic/core'
 import { oneChapterPattern, oneVersePattern, verseRangePattern } from '../../utils/regexPatterns'
 import { getSingleChapter, getSingleVerse, getVerseRange } from './verseTextTransformer'
 
@@ -101,7 +101,7 @@ export const getByCopticDate = (gregorianDate: Date, isDetailed?: boolean): Read
 			throw new Error('Invalid gregorian date provided')
 		}
 
-		const copticDate = fromGregorian(gregorianDate)
+		const copticDate = gregorianToCoptic(gregorianDate)
 		const monthFound = dayReadings[copticDate.month - 1]
 
 		if (!monthFound) {

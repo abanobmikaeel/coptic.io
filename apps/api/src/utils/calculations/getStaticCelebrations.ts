@@ -1,6 +1,6 @@
 import dayCelebrations from '../../resources/dayReadings.json'
 import { celebrations } from '../../resources/nonMoveableCelebrations.json'
-import fromGregorian from '../copticDate'
+import { gregorianToCoptic } from '@coptic/core'
 
 export interface Celebration {
 	id: number
@@ -14,7 +14,7 @@ export interface Celebration {
 const celebrationsById = new Map(celebrations.map((c) => [c.id, c]))
 
 const getStaticCelebrationsForDay = (date: Date): Celebration[] | null => {
-	const { month, day }: { month: number; day: number } = fromGregorian(date)
+	const { month, day }: { month: number; day: number } = gregorianToCoptic(date)
 	const monthFound = dayCelebrations[month - 1]
 	if (!monthFound) {
 		throw new Error('Month not found')
