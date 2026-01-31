@@ -12,10 +12,15 @@ export const metadata: Metadata = {
 	},
 }
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { ChevronLeftIcon } from '@/components/ui/Icons'
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { API_BASE_URL } from '@/config'
 import type { Reading, ReadingsData } from '@/lib/types'
-import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils'
+import {
+	addDaysToDateString,
+	formatGregorianDate,
+	getTodayDateString,
+	parseDateString,
+} from '@/lib/utils'
 import Link from 'next/link'
 
 const sectionLabels: Record<string, { title: string; subtitle: string }> = {
@@ -89,9 +94,13 @@ export default async function ReadingsPage({
 	const { date } = await searchParams
 	const readings = await getReadings(date)
 
-	const displayDate = date ? parseDateString(date) : new Date()
+	const currentDateString = date || getTodayDateString()
+	const displayDate = parseDateString(currentDateString)
 	const gregorianDate = formatGregorianDate(displayDate)
 	const isToday = !date || date === getTodayDateString()
+
+	const prevDate = addDaysToDateString(currentDateString, -1)
+	const nextDate = addDaysToDateString(currentDateString, 1)
 
 	const sections = ['Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel'] as const
 	const vespersMatins = ['VPsalm', 'VGospel', 'MPsalm', 'MGospel'] as const
@@ -104,24 +113,52 @@ export default async function ReadingsPage({
 			</div>
 
 			<section className="relative pt-20 pb-8 px-6">
-				<div className="max-w-4xl mx-auto text-center">
-					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-						{isToday ? 'Daily Readings' : 'Readings'}
+				<div className="max-w-4xl mx-auto">
+					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+						{isToday ? "Today's Readings" : 'Readings'}
 					</h1>
-					<p className="text-gray-600 dark:text-gray-400 mb-1">{gregorianDate}</p>
-					{readings?.fullDate && (
-						<p className="text-amber-600 dark:text-amber-500 font-medium">
-							{readings.fullDate.dateString}
-						</p>
-					)}
-					{!isToday && (
+
+					{/* Date Navigation */}
+					<div className="flex items-center justify-between mb-4">
 						<Link
-							href="/readings"
-							className="inline-flex items-center gap-1 mt-3 text-sm text-gray-500 hover:text-amber-600 dark:hover:text-amber-500 transition-colors"
+							href={`/readings?date=${prevDate}`}
+							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+							aria-label="Previous day"
 						>
-							<ChevronLeftIcon className="w-4 h-4" />
-							Back to today
+							<ChevronLeftIcon />
 						</Link>
+
+						<div className="text-center">
+							<p className="text-lg font-semibold text-gray-900 dark:text-white">{gregorianDate}</p>
+							{readings?.fullDate && (
+								<p className="text-sm text-amber-600 dark:text-amber-500">
+									{readings.fullDate.dateString}
+								</p>
+							)}
+							{isToday && !readings?.fullDate && (
+								<p className="text-sm text-amber-600 dark:text-amber-500">Today</p>
+							)}
+						</div>
+
+						<Link
+							href={`/readings?date=${nextDate}`}
+							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+							aria-label="Next day"
+						>
+							<ChevronRightIcon />
+						</Link>
+					</div>
+
+					{!isToday && (
+						<div className="text-center mt-2">
+							<Link
+								href="/readings"
+								className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-amber-600 dark:hover:text-amber-500 transition-colors"
+							>
+								<ChevronLeftIcon className="w-4 h-4" />
+								Back to today
+							</Link>
+						</div>
 					)}
 				</div>
 			</section>

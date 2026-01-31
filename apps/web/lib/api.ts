@@ -24,3 +24,15 @@ export const getUpcomingCelebrations = (days = 60) =>
 
 export const getCalendarMonth = (year: number, month: number) =>
 	fetchApi<CalendarMonth>(`/calendar/month/${year}/${month}`)
+
+// Synaxarium
+import type { SynaxariumEntry, SynaxariumSearchResult } from './types'
+
+export const searchSynaxarium = (query: string) =>
+	fetchApi<SynaxariumSearchResult[]>(`/synaxarium/search/query?q=${encodeURIComponent(query)}`)
+
+export const getSynaxariumByDate = (date: string, detailed = true) =>
+	fetchApi<SynaxariumEntry[]>(`/synaxarium/${date}${detailed ? '?detailed=true' : ''}`)
+
+export const getSynaxariumByCopticDate = (copticDate: string, detailed = true) =>
+	fetchApi<SynaxariumEntry[]>(`/synaxarium/coptic/${encodeURIComponent(copticDate)}${detailed ? '?detailed=true' : ''}`)
