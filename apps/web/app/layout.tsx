@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Noto_Sans_Coptic, Playfair_Display } from 'next/font/google'
+import { Amiri, Inter, Literata, Noto_Sans_Coptic } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
@@ -11,8 +11,9 @@ const inter = Inter({
 	display: 'swap',
 })
 
-const playfair = Playfair_Display({
-	variable: '--font-playfair',
+// Literata - Google's reading font, similar to Kindle's Bookerly
+const literata = Literata({
+	variable: '--font-serif',
 	subsets: ['latin'],
 	display: 'swap',
 })
@@ -21,6 +22,13 @@ const notoSansCoptic = Noto_Sans_Coptic({
 	variable: '--font-coptic',
 	weight: '400',
 	subsets: ['coptic'],
+	display: 'swap',
+})
+
+const amiri = Amiri({
+	variable: '--font-arabic',
+	weight: ['400', '700'],
+	subsets: ['arabic'],
 	display: 'swap',
 })
 
@@ -93,7 +101,7 @@ export default function RootLayout({
 				<link rel="dns-prefetch" href={apiDomain} />
 			</head>
 			<body
-				className={`${inter.variable} ${playfair.variable} ${notoSansCoptic.variable} antialiased`}
+				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased`}
 			>
 				<ThemeProvider>
 					<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">

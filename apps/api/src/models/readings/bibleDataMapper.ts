@@ -1,51 +1,83 @@
-import * as bible from '../../resources/bible.json'
-import type { BibleBook, BibleChapter, BibleType, BibleVerse, Reading } from '../../types'
+import * as bibleEn from '../../resources/bible.json'
+import * as bibleAr from '../../resources/bible-ar.json'
+import type {
+	BibleBook,
+	BibleChapter,
+	BibleTranslation,
+	BibleType,
+	BibleVerse,
+	Reading,
+} from '../../types'
 
 // Build indexed maps at module load for O(1) lookups
-const b: BibleType = bible
+// Separate indexes for each translation
+type TranslationIndex = {
+	booksByName: Map<string, BibleBook>
+	chaptersByBook: Map<string, Map<number, BibleChapter>>
+	versesByChapter: Map<string, Map<number, Map<number, BibleVerse>>>
+}
 
-// Map: bookName -> BibleBook
-const booksByName = new Map<string, BibleBook>()
-// Map: bookName -> Map<chapterNum, BibleChapter>
-const chaptersByBook = new Map<string, Map<number, BibleChapter>>()
-// Map: bookName -> Map<chapterNum, Map<verseNum, BibleVerse>>
-const versesByChapter = new Map<string, Map<number, Map<number, BibleVerse>>>()
+const translationIndexes = new Map<BibleTranslation, TranslationIndex>()
 
-// Initialize all indexes
-for (const book of b.books) {
-	booksByName.set(book.name, book)
+function buildIndex(bible: BibleType): TranslationIndex {
+	const booksByName = new Map<string, BibleBook>()
+	const chaptersByBook = new Map<string, Map<number, BibleChapter>>()
+	const versesByChapter = new Map<string, Map<number, Map<number, BibleVerse>>>()
 
-	const chapterMap = new Map<number, BibleChapter>()
-	const verseMap = new Map<number, Map<number, BibleVerse>>()
+	for (const book of bible.books) {
+		booksByName.set(book.name, book)
 
-	for (const chapter of book.chapters) {
-		chapterMap.set(chapter.num, chapter)
+		const chapterMap = new Map<number, BibleChapter>()
+		const verseMap = new Map<number, Map<number, BibleVerse>>()
 
-		const versesInChapter = new Map<number, BibleVerse>()
-		for (const verse of chapter.verses) {
-			versesInChapter.set(verse.num, verse)
+		for (const chapter of book.chapters) {
+			chapterMap.set(chapter.num, chapter)
+
+			const versesInChapter = new Map<number, BibleVerse>()
+			for (const verse of chapter.verses) {
+				versesInChapter.set(verse.num, verse)
+			}
+			verseMap.set(chapter.num, versesInChapter)
 		}
-		verseMap.set(chapter.num, versesInChapter)
+
+		chaptersByBook.set(book.name, chapterMap)
+		versesByChapter.set(book.name, verseMap)
 	}
 
-	chaptersByBook.set(book.name, chapterMap)
-	versesByChapter.set(book.name, verseMap)
+	return { booksByName, chaptersByBook, versesByChapter }
 }
 
-export const getBook = (bookName: string): BibleBook | undefined => {
-	return booksByName.get(bookName)
+// Initialize indexes for both translations
+translationIndexes.set('en', buildIndex(bibleEn as BibleType))
+translationIndexes.set('ar', buildIndex(bibleAr as BibleType))
+
+function getIndex(translation: BibleTranslation = 'en'): TranslationIndex {
+	const index = translationIndexes.get(translation)
+	if (!index) {
+		throw new Error(`Unknown translation: ${translation}`)
+	}
+	return index
 }
 
-export const getChapter = (book: BibleBook, chapterNum: number): BibleChapter | undefined => {
-	return chaptersByBook.get(book.name)?.get(chapterNum)
+export const getBook = (bookName: string, translation: BibleTranslation = 'en'): BibleBook | undefined => {
+	return getIndex(translation).booksByName.get(bookName)
+}
+
+export const getChapter = (
+	book: BibleBook,
+	chapterNum: number,
+	translation: BibleTranslation = 'en',
+): BibleChapter | undefined => {
+	return getIndex(translation).chaptersByBook.get(book.name)?.get(chapterNum)
 }
 
 // O(1) chapter lookup by book name
 export const getChapterByBookName = (
 	bookName: string,
 	chapterNum: number,
+	translation: BibleTranslation = 'en',
 ): BibleChapter | undefined => {
-	return chaptersByBook.get(bookName)?.get(chapterNum)
+	return getIndex(translation).chaptersByBook.get(bookName)?.get(chapterNum)
 }
 
 export const getVerse = (chapter: BibleChapter, verseNum: number): BibleVerse | undefined => {
@@ -61,17 +93,19 @@ export const getVerseByBookChapter = (
 	bookName: string,
 	chapterNum: number,
 	verseNum: number,
+	translation: BibleTranslation = 'en',
 ): BibleVerse | undefined => {
-	return versesByChapter.get(bookName)?.get(chapterNum)?.get(verseNum)
+	return getIndex(translation).versesByChapter.get(bookName)?.get(chapterNum)?.get(verseNum)
 }
 
 export const getChapterAndOrVerse = (
 	bookName: string,
 	chapterNum: number,
 	verseNum?: number,
+	translation: BibleTranslation = 'en',
 ): Reading => {
-	const book = getBook(bookName)
-	const chapter = book && getChapter(book, chapterNum)
+	const book = getBook(bookName, translation)
+	const chapter = book && getChapter(book, chapterNum, translation)
 	let verses: BibleVerse[] = []
 
 	if (verseNum) {

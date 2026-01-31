@@ -1,6 +1,7 @@
 import { gregorianToCoptic } from '@coptic/core'
 import { Hono } from 'hono'
 import { getByCopticDate } from '../models/readings'
+import type { BibleTranslation } from '../types'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 
 const readings = new Hono()
@@ -10,6 +11,10 @@ readings.get('/:date?', async (c) => {
 	try {
 		const dateParam = c.req.param('date')
 		const isDetailed = c.req.query('detailed') === 'true'
+		const langParam = c.req.query('lang')
+
+		// Validate and default language to English
+		const translation: BibleTranslation = langParam === 'ar' ? 'ar' : 'en'
 
 		// Default to today
 		let parsedDate = new Date()
@@ -22,7 +27,7 @@ readings.get('/:date?', async (c) => {
 		}
 
 		// Get readings
-		const data = await getByCopticDate(parsedDate, isDetailed)
+		const data = await getByCopticDate(parsedDate, isDetailed, translation)
 
 		// Add celebrations and coptic date
 		const celebrations = getStaticCelebrationsForDay(parsedDate)

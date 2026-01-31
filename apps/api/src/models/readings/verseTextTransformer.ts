@@ -1,5 +1,5 @@
 import { range } from '../../../src/utils'
-import type { BibleVerse, Reading } from '../../types'
+import type { BibleTranslation, BibleVerse, Reading } from '../../types'
 import {
 	getBook,
 	getChapterAndOrVerse,
@@ -7,17 +7,17 @@ import {
 	getVerseByBookChapter,
 } from './bibleDataMapper'
 
-export const getSingleVerse = (verseString: string) => {
+export const getSingleVerse = (verseString: string, translation: BibleTranslation = 'en') => {
 	const verseArr = splitAtIndex(
 		verseString,
 		verseString.lastIndexOf(' '),
 		verseString.lastIndexOf(':'),
 	)
 
-	return getChapterAndOrVerse(verseArr.bookName, verseArr.chapterNum, verseArr?.startingVerseNum)
+	return getChapterAndOrVerse(verseArr.bookName, verseArr.chapterNum, verseArr?.startingVerseNum, translation)
 }
 
-export const getVerseRange = (verseString: string): Reading => {
+export const getVerseRange = (verseString: string, translation: BibleTranslation = 'en'): Reading => {
 	const verseArr = splitAtIndex(
 		verseString,
 		verseString.lastIndexOf(' '),
@@ -27,12 +27,12 @@ export const getVerseRange = (verseString: string): Reading => {
 
 	const { bookName, chapterNum, startingVerseNum, endVerseNum } = verseArr
 	const verses: BibleVerse[] = []
-	const book = getBook(bookName)
+	const book = getBook(bookName, translation)
 
 	if (book) {
 		// Use O(1) Map lookup for each verse instead of .find()
 		range(startingVerseNum, endVerseNum).forEach((currVerse) => {
-			const verseFound = getVerseByBookChapter(bookName, chapterNum, currVerse)
+			const verseFound = getVerseByBookChapter(bookName, chapterNum, currVerse, translation)
 			if (verseFound) {
 				verses.push(verseFound)
 			}
@@ -50,16 +50,16 @@ export const getVerseRange = (verseString: string): Reading => {
 	}
 }
 
-export const getSingleChapter = (verseString: string) => {
+export const getSingleChapter = (verseString: string, translation: BibleTranslation = 'en') => {
 	const verseArr = splitAtIndex(verseString, verseString.lastIndexOf(' '))
-	return getChapterAndOrVerse(verseArr.bookName, Number(verseArr.chapterNum))
+	return getChapterAndOrVerse(verseArr.bookName, Number(verseArr.chapterNum), undefined, translation)
 }
 
 /**
  * Handles multi-chapter ranges like "Acts 15:36-16:5" or "2 Peter 1:19-2:8"
  * Optimized to use direct chapter lookups instead of iterating verse numbers
  */
-export const getMultiChapterRange = (verseString: string): Reading => {
+export const getMultiChapterRange = (verseString: string, translation: BibleTranslation = 'en'): Reading => {
 	// Pattern: "Book Chapter:Verse-Chapter:Verse"
 	// Example: "Acts 15:36-16:5" or "2 Peter 1:19-2:8"
 	const lastSpace = verseString.lastIndexOf(' ')
@@ -85,7 +85,7 @@ export const getMultiChapterRange = (verseString: string): Reading => {
 
 	for (let chapterNum = startChapter; chapterNum <= endChapter; chapterNum++) {
 		// O(1) lookup via pre-built map
-		const chapter = getChapterByBookName(bookName, chapterNum)
+		const chapter = getChapterByBookName(bookName, chapterNum, translation)
 		if (!chapter) continue
 
 		let verses: BibleVerse[]

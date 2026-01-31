@@ -73,3 +73,24 @@ body {
 	background: rgba(217, 119, 6, 0.3);
 	color: inherit;
 }
+
+/* Literata serif font for comfortable reading (like Kindle's Bookerly) */
+.font-serif-reading {
+	font-family: var(--font-serif), Georgia, serif;
+}
+
+/* Arabic font class - optimized for readability */
+.font-arabic {
+	font-family: var(--font-arabic), 'Amiri', 'Traditional Arabic', serif;
+	word-spacing: 0.05em;
+	letter-spacing: 0.01em;
+}
+
+/* RTL text alignment adjustments */
+[dir="rtl"] .text-left {
+	text-align: right;
+}
+
+[dir="rtl"] .text-right {
+	text-align: left;
+}

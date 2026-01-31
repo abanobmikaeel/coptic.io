@@ -1,3 +1,5 @@
+export type BibleTranslation = 'en' | 'ar'
+
 export interface BibleVerse {
 	text: string
 	num: number
