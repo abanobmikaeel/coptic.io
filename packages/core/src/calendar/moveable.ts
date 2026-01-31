@@ -1,5 +1,5 @@
 import type { Feast, FeastType } from '../types/feast'
-import { addDays, isSameDay, MS_PER_DAY, toMidnight } from '../utils/date'
+import { addDays, isSameDay, toMidnight } from '../utils/date'
 import { getEasterDate } from './pascha'
 
 /**
@@ -99,6 +99,9 @@ export const getMoveableFeastsForDate = (date: Date): MoveableFeast[] => {
 /**
  * Check if a date falls within a moveable fasting period
  *
+ * Uses calendar arithmetic (addDays) instead of millisecond math to correctly
+ * handle DST transitions and leap years.
+ *
  * @param date - The date to check
  * @returns The fasting period info if in a fast, null otherwise
  */
@@ -107,11 +110,12 @@ export const isInMoveableFast = (date: Date): MoveableFeast | null => {
 	const allFeasts = getMoveableFeastsForYear(year)
 	const dateMs = toMidnight(date)
 
-	// Great Lent: 55 days before Easter to Easter eve
+	// Great Lent: 55 days before Easter to Easter eve (exclusive of Easter day)
 	const greatLent = allFeasts.find((f) => f.name === 'Great Lent')
 	if (greatLent) {
 		const lentStartMs = toMidnight(greatLent.date)
-		const lentEndMs = lentStartMs + 55 * MS_PER_DAY // Easter Sunday
+		// Use addDays for DST-safe end date calculation
+		const lentEndMs = toMidnight(addDays(greatLent.date, 55)) // Easter Sunday
 		if (dateMs >= lentStartMs && dateMs < lentEndMs) {
 			return greatLent
 		}
@@ -121,7 +125,8 @@ export const isInMoveableFast = (date: Date): MoveableFeast | null => {
 	const nineveh = allFeasts.find((f) => f.name === 'Fast of Nineveh')
 	if (nineveh) {
 		const ninevehStartMs = toMidnight(nineveh.date)
-		const ninevehEndMs = ninevehStartMs + 3 * MS_PER_DAY
+		// Use addDays for DST-safe end date calculation
+		const ninevehEndMs = toMidnight(addDays(nineveh.date, 3))
 		if (dateMs >= ninevehStartMs && dateMs < ninevehEndMs) {
 			return nineveh
 		}

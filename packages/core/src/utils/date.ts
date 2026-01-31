@@ -2,10 +2,13 @@
 export const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 /**
- * Add days to a date using simple arithmetic (replaces date-fns addDays)
+ * Add days to a date using calendar arithmetic (DST-safe)
+ * Uses setDate() which correctly handles DST transitions where days may be 23 or 25 hours
  */
 export const addDays = (date: Date, days: number): Date => {
-	return new Date(date.getTime() + days * MS_PER_DAY)
+	const result = new Date(date)
+	result.setDate(result.getDate() + days)
+	return result
 }
 
 /**

@@ -20,3 +20,6 @@ export * from './calendar'
 
 // Liturgy utilities
 export * from './liturgy'
+
+// Date utilities
+export * from './utils/date'

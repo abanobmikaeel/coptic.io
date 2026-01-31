@@ -35,6 +35,7 @@
 		"check": "biome check src",
 		"check:fix": "biome check --write src",
 		"typecheck": "tsc --noEmit",
+		"test": "vitest",
 		"bench": "vitest bench",
 		"prepublishOnly": "pnpm run build"
 	},
