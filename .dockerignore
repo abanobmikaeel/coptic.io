@@ -1,15 +1,23 @@
-node_modules
-dist
+# Git
 .git
-.env
-*.test.ts
-*.spec.ts
-scripts
-.vscode
-.DS_Store
-.changeset
-.github
+.gitignore
 
-# Web apps not needed in API container
+# Tests and benchmarks
+**/__tests__
+**/__benchmarks__
+
+# Development files
+*.md
+!packages/data/**/*.md
+.vscode
+.github
+.changeset
+infra
+
+# Apps we dont need
 apps/web
 apps/admin
+
+# OS files
+.DS_Store
+Thumbs.db
