@@ -47,9 +47,7 @@ export function CollapsibleReading({
 							{label.title}
 						</h3>
 						<p className="text-sm text-gray-500 dark:text-gray-500">{label.subtitle}</p>
-						<p className="text-sm text-amber-600 dark:text-amber-500 mt-1 truncate">
-							{reference}
-						</p>
+						<p className="text-sm text-amber-600 dark:text-amber-500 mt-1 truncate">{reference}</p>
 					</div>
 					<div className="flex-shrink-0 mt-1">
 						<span
@@ -65,6 +63,7 @@ export function CollapsibleReading({
 								strokeWidth="2"
 								strokeLinecap="round"
 								strokeLinejoin="round"
+								aria-hidden="true"
 							>
 								<path d="m6 9 6 6 6-6" />
 							</svg>

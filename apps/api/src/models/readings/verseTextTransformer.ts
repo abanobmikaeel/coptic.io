@@ -14,10 +14,18 @@ export const getSingleVerse = (verseString: string, translation: BibleTranslatio
 		verseString.lastIndexOf(':'),
 	)
 
-	return getChapterAndOrVerse(verseArr.bookName, verseArr.chapterNum, verseArr?.startingVerseNum, translation)
+	return getChapterAndOrVerse(
+		verseArr.bookName,
+		verseArr.chapterNum,
+		verseArr?.startingVerseNum,
+		translation,
+	)
 }
 
-export const getVerseRange = (verseString: string, translation: BibleTranslation = 'en'): Reading => {
+export const getVerseRange = (
+	verseString: string,
+	translation: BibleTranslation = 'en',
+): Reading => {
 	const verseArr = splitAtIndex(
 		verseString,
 		verseString.lastIndexOf(' '),
@@ -52,14 +60,22 @@ export const getVerseRange = (verseString: string, translation: BibleTranslation
 
 export const getSingleChapter = (verseString: string, translation: BibleTranslation = 'en') => {
 	const verseArr = splitAtIndex(verseString, verseString.lastIndexOf(' '))
-	return getChapterAndOrVerse(verseArr.bookName, Number(verseArr.chapterNum), undefined, translation)
+	return getChapterAndOrVerse(
+		verseArr.bookName,
+		Number(verseArr.chapterNum),
+		undefined,
+		translation,
+	)
 }
 
 /**
  * Handles multi-chapter ranges like "Acts 15:36-16:5" or "2 Peter 1:19-2:8"
  * Optimized to use direct chapter lookups instead of iterating verse numbers
  */
-export const getMultiChapterRange = (verseString: string, translation: BibleTranslation = 'en'): Reading => {
+export const getMultiChapterRange = (
+	verseString: string,
+	translation: BibleTranslation = 'en',
+): Reading => {
 	// Pattern: "Book Chapter:Verse-Chapter:Verse"
 	// Example: "Acts 15:36-16:5" or "2 Peter 1:19-2:8"
 	const lastSpace = verseString.lastIndexOf(' ')

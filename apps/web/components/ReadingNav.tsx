@@ -10,8 +10,6 @@ const readingOrder = [
 	{ key: 'LGospel', label: 'Gospel' },
 ] as const
 
-type ReadingKey = (typeof readingOrder)[number]['key']
-
 export function ReadingNav({ readings }: { readings: ReadingsData }) {
 	const availableReadings = readingOrder.filter((r) => {
 		const data = readings[r.key as keyof ReadingsData]

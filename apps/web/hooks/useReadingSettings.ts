@@ -76,7 +76,8 @@ export function useReadingSettings(): {
 			if (prefs.lang && prefs.lang !== 'en') params.set('lang', prefs.lang)
 			if (prefs.font && prefs.font !== 'sans') params.set('font', prefs.font)
 			if (prefs.spacing && prefs.spacing !== 'normal') params.set('spacing', prefs.spacing)
-			if (prefs.wordSpacing && prefs.wordSpacing !== 'normal') params.set('wordSpacing', prefs.wordSpacing)
+			if (prefs.wordSpacing && prefs.wordSpacing !== 'normal')
+				params.set('wordSpacing', prefs.wordSpacing)
 			const effectiveTheme = isAuto ? systemTheme : prefs.theme
 			if (effectiveTheme && effectiveTheme !== 'light') params.set('theme', effectiveTheme)
 			if (prefs.width && prefs.width !== 'normal') params.set('width', prefs.width)

@@ -26,7 +26,10 @@ for (const reading of uniqueReadings) {
  * @param verseString 'a string for indexing a bible verse '
  * @returns null if bad format
  */
-export const getReading = (verseString: string, translation: BibleTranslation = 'en'): Reading | null => {
+export const getReading = (
+	verseString: string,
+	translation: BibleTranslation = 'en',
+): Reading | null => {
 	switch (true) {
 		// Check multi-chapter range first (more specific pattern)
 		case multiChapterRange.test(verseString):
@@ -43,7 +46,10 @@ export const getReading = (verseString: string, translation: BibleTranslation = 
 }
 
 // TODO: add ability to combine verses that have same bookName + chapter #
-export const parseReadingString = (verseString?: string, translation: BibleTranslation = 'en'): Reading[] | null => {
+export const parseReadingString = (
+	verseString?: string,
+	translation: BibleTranslation = 'en',
+): Reading[] | null => {
 	if (!verseString) {
 		return null
 	}

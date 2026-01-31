@@ -37,6 +37,7 @@ export function BackToTop() {
 				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				aria-hidden="true"
 			>
 				<path d="m18 15-6-6-6 6" />
 			</svg>

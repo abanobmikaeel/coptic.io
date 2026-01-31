@@ -11,7 +11,16 @@ import {
 } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
 import { useState } from 'react'
-import type { FontFamily, FontWeight, LineSpacing, ReadingTheme, ReadingWidth, TextSize, ViewMode, WordSpacing } from './DisplaySettings'
+import type {
+	FontFamily,
+	FontWeight,
+	LineSpacing,
+	ReadingTheme,
+	ReadingWidth,
+	TextSize,
+	ViewMode,
+	WordSpacing,
+} from './DisplaySettings'
 
 interface ScriptureReadingProps {
 	readings: Reading[]
@@ -69,7 +78,6 @@ export function ScriptureReading({
 
 	return (
 		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-12' : 'mb-4'}`}>
-
 			{/* Clickable header */}
 			<button
 				type="button"
@@ -81,12 +89,16 @@ export function ScriptureReading({
 						className={`py-4 pl-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
 					>
 						{service && (
-							<p className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}>
+							<p
+								className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}
+							>
 								{service}
 							</p>
 						)}
 						<div className="flex items-center gap-3">
-							<h2 className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}>
+							<h2
+								className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+							>
 								{title}
 							</h2>
 							{/* Collapse indicator */}
@@ -103,7 +115,11 @@ export function ScriptureReading({
 								<path d="m6 9 6 6 6-6" />
 							</svg>
 						</div>
-						<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}>{reference}</p>
+						<p
+							className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}
+						>
+							{reference}
+						</p>
 					</div>
 				</div>
 			</button>
@@ -132,7 +148,9 @@ export function ScriptureReading({
 											{chapter.verses.map((verse, vidx) => (
 												<span key={verse.num}>
 													{showVerses && (
-														<sup className={`${sizes.verseNum} font-normal ${themeClasses.accent[theme]} ${isRtl ? 'ml-1.5' : 'mr-1'}`}>
+														<sup
+															className={`${sizes.verseNum} font-normal ${themeClasses.accent[theme]} ${isRtl ? 'ml-1.5' : 'mr-1'}`}
+														>
 															{verse.num}
 														</sup>
 													)}
@@ -152,7 +170,9 @@ export function ScriptureReading({
 													className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${vidx === 0 && !isRtl ? 'first-letter-large' : ''}`}
 												>
 													{showVerses && (
-														<span className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-3' : 'mr-2'}`}>
+														<span
+															className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-3' : 'mr-2'}`}
+														>
 															{verse.num}
 														</span>
 													)}

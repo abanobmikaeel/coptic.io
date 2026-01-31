@@ -1,5 +1,5 @@
-import * as bibleEn from '../../resources/bible.json'
 import * as bibleAr from '../../resources/bible-ar.json'
+import * as bibleEn from '../../resources/bible.json'
 import type {
 	BibleBook,
 	BibleChapter,
@@ -59,7 +59,10 @@ function getIndex(translation: BibleTranslation = 'en'): TranslationIndex {
 	return index
 }
 
-export const getBook = (bookName: string, translation: BibleTranslation = 'en'): BibleBook | undefined => {
+export const getBook = (
+	bookName: string,
+	translation: BibleTranslation = 'en',
+): BibleBook | undefined => {
 	return getIndex(translation).booksByName.get(bookName)
 }
 

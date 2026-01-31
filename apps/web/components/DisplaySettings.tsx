@@ -38,12 +38,18 @@ export function DisplaySettings() {
 				aria-label="Reading settings"
 			>
 				<div className="flex items-center gap-2">
-					<span className={`text-lg font-serif ${isOpen ? 'text-white' : 'text-amber-600 dark:text-amber-400'}`}>Aa</span>
+					<span
+						className={`text-lg font-serif ${isOpen ? 'text-white' : 'text-amber-600 dark:text-amber-400'}`}
+					>
+						Aa
+					</span>
 					<ChevronIcon isOpen={isOpen} />
 				</div>
 			</button>
 
-			{isOpen && <SettingsPanel settings={settings} actions={actions} onClose={() => setIsOpen(false)} />}
+			{isOpen && (
+				<SettingsPanel settings={settings} actions={actions} onClose={() => setIsOpen(false)} />
+			)}
 		</div>
 	)
 }

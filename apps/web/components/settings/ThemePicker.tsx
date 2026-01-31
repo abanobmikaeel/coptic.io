@@ -22,7 +22,10 @@ export function ThemePicker({ value, isAuto, onChange }: ThemePickerProps) {
 				aria-label="Auto theme (follows system)"
 			>
 				<div className="absolute inset-0 bg-white" />
-				<div className="absolute inset-0 bg-gray-900" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
+				<div
+					className="absolute inset-0 bg-gray-900"
+					style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}
+				/>
 			</button>
 
 			{/* Light */}

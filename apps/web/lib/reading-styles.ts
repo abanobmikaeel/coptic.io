@@ -1,4 +1,12 @@
-import type { FontFamily, FontWeight, LineSpacing, ReadingTheme, ReadingWidth, TextSize, WordSpacing } from '@/components/DisplaySettings'
+import type {
+	FontFamily,
+	FontWeight,
+	LineSpacing,
+	ReadingTheme,
+	ReadingWidth,
+	TextSize,
+	WordSpacing,
+} from '@/components/DisplaySettings'
 
 // Text sizes - generous for comfortable reading, especially on podium/lectern use
 export const getTextSizeClasses = (size: TextSize, isRtl: boolean) => {

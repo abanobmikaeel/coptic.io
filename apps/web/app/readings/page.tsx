@@ -49,7 +49,17 @@ const sectionLabels: Record<string, string> = {
 }
 
 // All reading sections in display order
-const readingSections = ['Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel', 'VPsalm', 'VGospel', 'MPsalm', 'MGospel'] as const
+const readingSections = [
+	'Pauline',
+	'Catholic',
+	'Acts',
+	'LPsalm',
+	'LGospel',
+	'VPsalm',
+	'VGospel',
+	'MPsalm',
+	'MGospel',
+] as const
 type ReadingSection = (typeof readingSections)[number]
 
 async function getReadings(date?: string, lang?: string): Promise<ReadingsData | null> {
@@ -58,7 +68,9 @@ async function getReadings(date?: string, lang?: string): Promise<ReadingsData |
 		if (lang && lang !== 'en') {
 			params.set('lang', lang)
 		}
-		const endpoint = date ? `${API_BASE_URL}/readings/${date}?${params}` : `${API_BASE_URL}/readings?${params}`
+		const endpoint = date
+			? `${API_BASE_URL}/readings/${date}?${params}`
+			: `${API_BASE_URL}/readings?${params}`
 		const res = await fetch(endpoint, { cache: 'no-store' })
 		if (!res.ok) return null
 		return res.json()
@@ -130,11 +142,22 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	const renderSection = (key: ReadingSection, service?: string) => {
 		const data = readings?.[key]
 		if (!data?.length) return null
-		return <ScriptureReading key={key} id={`reading-${key}`} readings={data} title={sectionLabels[key]} service={service} {...scriptureProps} />
+		return (
+			<ScriptureReading
+				key={key}
+				id={`reading-${key}`}
+				readings={data}
+				title={sectionLabels[key]}
+				service={service}
+				{...scriptureProps}
+			/>
+		)
 	}
 
 	return (
-		<main className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}>
+		<main
+			className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}
+		>
 			{/* Progress indicator */}
 			<Suspense fallback={null}>
 				<ReadingProgress />
@@ -147,11 +170,21 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				<div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-center relative">
 					{/* Date navigation - centered */}
 					<div className="flex items-center gap-3">
-						<Suspense fallback={<span className="text-xl font-semibold">{readings?.fullDate?.dateString || gregorianDate}</span>}>
+						<Suspense
+							fallback={
+								<span className="text-xl font-semibold">
+									{readings?.fullDate?.dateString || gregorianDate}
+								</span>
+							}
+						>
 							<DateNavigation theme={theme}>
 								<div className="text-center">
-									<h1 className="text-xl font-bold">{readings?.fullDate?.dateString || gregorianDate}</h1>
-									<p className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}>
+									<h1 className="text-xl font-bold">
+										{readings?.fullDate?.dateString || gregorianDate}
+									</h1>
+									<p
+										className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
+									>
 										{readings?.fullDate ? gregorianDate : ''}
 									</p>
 								</div>
@@ -180,7 +213,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				<div className="px-6 pt-10 pb-24">
 					{(() => {
 						const ServiceDivider = () => (
-							<div className={`max-w-2xl mx-auto px-4 my-8`}>
+							<div className={'max-w-2xl mx-auto px-4 my-8'}>
 								<div className={`border-t ${themeClasses.border[theme]}`} />
 							</div>
 						)
@@ -194,7 +227,15 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 								{renderSection('Pauline', 'Liturgy')}
 								{renderSection('Catholic', 'Liturgy')}
 								{renderSection('Acts', 'Liturgy')}
-								{readings.Synxarium?.length ? <SynaxariumReading entries={readings.Synxarium} textSize={textSize} theme={theme} width={width} service="Liturgy" /> : null}
+								{readings.Synxarium?.length ? (
+									<SynaxariumReading
+										entries={readings.Synxarium}
+										textSize={textSize}
+										theme={theme}
+										width={width}
+										service="Liturgy"
+									/>
+								) : null}
 								{renderSection('LPsalm', 'Liturgy')}
 								{renderSection('LGospel', 'Liturgy')}
 
@@ -221,7 +262,9 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				</div>
 			) : (
 				<section className="px-6 py-24 text-center">
-					<p className={theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500'}>Unable to load readings. Please try again later.</p>
+					<p className={theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500'}>
+						Unable to load readings. Please try again later.
+					</p>
 				</section>
 			)}
 

@@ -18,12 +18,22 @@ interface SynaxariumSectionProps {
 	theme?: ReadingTheme
 }
 
-export function SynaxariumSection({ entries, textSize = 'md', theme = 'light' }: SynaxariumSectionProps) {
+export function SynaxariumSection({
+	entries,
+	textSize = 'md',
+	theme = 'light',
+}: SynaxariumSectionProps) {
 	const [expanded, setExpanded] = useState<number | null>(null)
 	const sizes = textSizeClasses[textSize]
 
-	const bodyClass = theme === 'sepia' ? 'text-[#6b5a45]' : theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-	const borderClass = theme === 'sepia' ? 'border-[#d4c9b8]' : theme === 'dark' ? 'border-gray-800' : 'border-gray-100'
+	const bodyClass =
+		theme === 'sepia' ? 'text-[#6b5a45]' : theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+	const borderClass =
+		theme === 'sepia'
+			? 'border-[#d4c9b8]'
+			: theme === 'dark'
+				? 'border-gray-800'
+				: 'border-gray-100'
 	const accentClass = theme === 'sepia' ? 'text-amber-700' : 'text-amber-600 dark:text-amber-500'
 
 	return (
@@ -40,16 +50,25 @@ export function SynaxariumSection({ entries, textSize = 'md', theme = 'light' }:
 								expanded === idx ? 'rotate-90' : ''
 							}`}
 						/>
-						<span className={`${sizes.title} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}>
+						<span
+							className={`${sizes.title} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+						>
 							{entry.name}
 						</span>
 					</button>
 
 					{expanded === idx && entry.text && (
-						<div className={`mt-4 ml-8 ${sizes.body} ${bodyClass} whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200`}>
+						<div
+							className={`mt-4 ml-8 ${sizes.body} ${bodyClass} whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200`}
+						>
 							{entry.text}
 							{entry.url && (
-								<a href={entry.url} target="_blank" rel="noopener noreferrer" className={`block mt-4 ${accentClass} hover:underline text-sm`}>
+								<a
+									href={entry.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									className={`block mt-4 ${accentClass} hover:underline text-sm`}
+								>
 									Read on copticchurch.net
 								</a>
 							)}

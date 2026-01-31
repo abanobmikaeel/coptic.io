@@ -1,11 +1,17 @@
 'use client'
 
 import type { ReadingSettings, ReadingSettingsActions } from '@/hooks/useReadingSettings'
-import { LineSpacingCompactIcon, LineSpacingNormalIcon, LineSpacingRelaxedIcon, WidthIcon, WordSpacingIcon } from './icons'
 import { SegmentedButtons } from './SegmentedButtons'
 import { SettingSection } from './SettingSection'
 import { ThemePicker } from './ThemePicker'
 import { ToggleSwitch } from './ToggleSwitch'
+import {
+	LineSpacingCompactIcon,
+	LineSpacingNormalIcon,
+	LineSpacingRelaxedIcon,
+	WidthIcon,
+	WordSpacingIcon,
+} from './icons'
 
 interface SettingsPanelProps {
 	settings: ReadingSettings
@@ -14,7 +20,19 @@ interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps) {
-	const { translation, fontFamily, textSize, weight, lineSpacing, wordSpacing, width, viewMode, showVerses, theme, isAutoTheme } = settings
+	const {
+		translation,
+		fontFamily,
+		textSize,
+		weight,
+		lineSpacing,
+		wordSpacing,
+		width,
+		viewMode,
+		showVerses,
+		theme,
+		isAutoTheme,
+	} = settings
 
 	return (
 		<>
@@ -68,7 +86,10 @@ export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps
 									value: 'serif',
 									icon: (
 										<div className="flex flex-col items-center gap-1 py-0.5">
-											<span className="text-2xl" style={{ fontFamily: 'var(--font-serif), Georgia, serif' }}>
+											<span
+												className="text-2xl"
+												style={{ fontFamily: 'var(--font-serif), Georgia, serif' }}
+											>
 												Ag
 											</span>
 											<span className="text-[10px] uppercase tracking-wide">Serif</span>
@@ -163,7 +184,11 @@ export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps
 				<div className="border-t border-gray-100 dark:border-gray-800 my-4" />
 
 				{/* Verse Numbers Toggle */}
-				<ToggleSwitch label="Verse Numbers" checked={showVerses} onChange={() => actions.setShowVerses(!showVerses)} />
+				<ToggleSwitch
+					label="Verse Numbers"
+					checked={showVerses}
+					onChange={() => actions.setShowVerses(!showVerses)}
+				/>
 			</div>
 		</>
 	)

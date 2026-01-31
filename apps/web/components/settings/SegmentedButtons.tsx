@@ -16,9 +16,15 @@ interface SegmentedButtonsProps<T extends string> {
 
 const baseButtonClass = 'flex-1 py-2.5 rounded-lg transition-all duration-200'
 const activeClass = 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-const inactiveClass = 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+const inactiveClass =
+	'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
 
-export function SegmentedButtons<T extends string>({ options, value, onChange, className = '' }: SegmentedButtonsProps<T>) {
+export function SegmentedButtons<T extends string>({
+	options,
+	value,
+	onChange,
+	className = '',
+}: SegmentedButtonsProps<T>) {
 	return (
 		<div className={`flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1 ${className}`}>
 			{options.map((option) => (
