@@ -1,5 +1,5 @@
-import { addDays, startOfDay } from 'date-fns'
 import type { Feast, FeastType } from '../types/feast'
+import { addDays, isSameDay, MS_PER_DAY, toMidnight } from '../utils/date'
 import { getEasterDate } from './pascha'
 
 /**
@@ -11,11 +11,9 @@ export interface MoveableFeast extends Feast {
 }
 
 /**
- * Normalize a date to midnight to avoid timezone issues
+ * Cache for moveable feasts per year (avoid recalculating)
  */
-const normalizeDate = (date: Date): Date => {
-	return startOfDay(date)
-}
+const feastCache = new Map<number, MoveableFeast[]>()
 
 /**
  * Get all Easter-dependent liturgical events for a given year
@@ -37,6 +35,10 @@ const normalizeDate = (date: Date): Date => {
  * @returns Array of Easter-dependent events in chronological order
  */
 export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[] => {
+	// Check cache first
+	const cached = feastCache.get(gregorianYear)
+	if (cached) return cached
+
 	const easterDateObj = getEasterDate(gregorianYear)
 
 	const createFeast = (
@@ -53,7 +55,7 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 		daysFromEaster,
 	})
 
-	return [
+	const feasts = [
 		// Fast of Nineveh (3 days) - 69 days before Easter
 		createFeast(1002, 'Fast of Nineveh', 'fast', -69),
 		// Great Lent starts 55 days before Easter
@@ -75,6 +77,10 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 		// Apostles' Fast starts the day after Pentecost
 		createFeast(1010, "Apostles' Fast", 'fast', 50),
 	]
+
+	// Cache for future lookups
+	feastCache.set(gregorianYear, feasts)
+	return feasts
 }
 
 /**
@@ -86,16 +92,8 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 export const getMoveableFeastsForDate = (date: Date): MoveableFeast[] => {
 	const year = date.getFullYear()
 	const allFeasts = getMoveableFeastsForYear(year)
-	const normalizedInput = normalizeDate(date)
 
-	return allFeasts.filter((feast) => {
-		const normalizedFeast = normalizeDate(feast.date)
-		return (
-			normalizedFeast.getFullYear() === normalizedInput.getFullYear() &&
-			normalizedFeast.getMonth() === normalizedInput.getMonth() &&
-			normalizedFeast.getDate() === normalizedInput.getDate()
-		)
-	})
+	return allFeasts.filter((feast) => isSameDay(feast.date, date))
 }
 
 /**
@@ -107,14 +105,14 @@ export const getMoveableFeastsForDate = (date: Date): MoveableFeast[] => {
 export const isInMoveableFast = (date: Date): MoveableFeast | null => {
 	const year = date.getFullYear()
 	const allFeasts = getMoveableFeastsForYear(year)
-	const normalizedDate = normalizeDate(date)
+	const dateMs = toMidnight(date)
 
-	// Great Lent: 55 days before Easter
+	// Great Lent: 55 days before Easter to Easter eve
 	const greatLent = allFeasts.find((f) => f.name === 'Great Lent')
 	if (greatLent) {
-		const lentStart = normalizeDate(greatLent.date)
-		const lentEnd = normalizeDate(addDays(greatLent.date, 55)) // Easter Sunday
-		if (normalizedDate >= lentStart && normalizedDate < lentEnd) {
+		const lentStartMs = toMidnight(greatLent.date)
+		const lentEndMs = lentStartMs + 55 * MS_PER_DAY // Easter Sunday
+		if (dateMs >= lentStartMs && dateMs < lentEndMs) {
 			return greatLent
 		}
 	}
@@ -122,9 +120,9 @@ export const isInMoveableFast = (date: Date): MoveableFeast | null => {
 	// Fast of Nineveh: 3 days
 	const nineveh = allFeasts.find((f) => f.name === 'Fast of Nineveh')
 	if (nineveh) {
-		const ninevehStart = normalizeDate(nineveh.date)
-		const ninevehEnd = normalizeDate(addDays(nineveh.date, 3))
-		if (normalizedDate >= ninevehStart && normalizedDate < ninevehEnd) {
+		const ninevehStartMs = toMidnight(nineveh.date)
+		const ninevehEndMs = ninevehStartMs + 3 * MS_PER_DAY
+		if (dateMs >= ninevehStartMs && dateMs < ninevehEndMs) {
 			return nineveh
 		}
 	}
@@ -132,9 +130,9 @@ export const isInMoveableFast = (date: Date): MoveableFeast | null => {
 	// Apostles' Fast: from day after Pentecost to July 12
 	const apostlesFast = allFeasts.find((f) => f.name === "Apostles' Fast")
 	if (apostlesFast) {
-		const apostlesStart = normalizeDate(apostlesFast.date)
-		const apostlesEnd = normalizeDate(new Date(year, 6, 12)) // July 12
-		if (normalizedDate >= apostlesStart && normalizedDate <= apostlesEnd) {
+		const apostlesStartMs = toMidnight(apostlesFast.date)
+		const apostlesEndMs = toMidnight(new Date(year, 6, 12)) // July 12
+		if (dateMs >= apostlesStartMs && dateMs <= apostlesEndMs) {
 			return apostlesFast
 		}
 	}

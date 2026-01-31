@@ -1,6 +1,6 @@
-import { addDays, startOfDay } from 'date-fns'
 import { getMoveableFeastsForYear } from '../calendar/moveable'
 import { getEasterDate } from '../calendar/pascha'
+import { addDays, toMidnight } from '../utils/date'
 
 /**
  * A liturgical season in the Coptic calendar
@@ -18,13 +18,6 @@ export interface LiturgicalSeason {
 	isFasting: boolean
 	/** Whether the season dates are moveable (based on Easter) */
 	type: 'moveable' | 'fixed'
-}
-
-/**
- * Normalize a date to midnight
- */
-const normalizeDate = (date: Date): Date => {
-	return startOfDay(date)
 }
 
 /**
@@ -146,6 +139,37 @@ const SEASON_PRIORITY: Record<string, number> = {
 }
 
 /**
+ * Internal season with pre-computed timestamps for fast comparisons
+ */
+interface CachedSeason {
+	season: LiturgicalSeason
+	startTs: number
+	endTs: number
+	priority: number
+}
+
+// Cache for seasons with pre-computed timestamps, keyed by year
+const seasonsCache = new Map<number, CachedSeason[]>()
+
+/**
+ * Get cached seasons with pre-computed timestamps for a year
+ */
+const getCachedSeasonsForYear = (year: number): CachedSeason[] => {
+	let cached = seasonsCache.get(year)
+	if (!cached) {
+		const seasons = getAllSeasonsForYear(year)
+		cached = seasons.map((season) => ({
+			season,
+			startTs: toMidnight(season.startDate),
+			endTs: toMidnight(season.endDate),
+			priority: SEASON_PRIORITY[season.name] ?? 999,
+		}))
+		seasonsCache.set(year, cached)
+	}
+	return cached
+}
+
+/**
  * Get the current liturgical season for a specific date
  *
  * If multiple seasons overlap, returns the highest priority one.
@@ -154,35 +178,42 @@ const SEASON_PRIORITY: Record<string, number> = {
  * @returns The current liturgical season or null if not in a special season
  */
 export const getLiturgicalSeasonForDate = (date: Date): LiturgicalSeason | null => {
-	const normalizedDate = normalizeDate(date)
+	const dateTs = toMidnight(date)
 	const year = date.getFullYear()
 
 	// Get seasons from current year and adjacent years to handle year boundaries
-	const allSeasons = [
-		...getAllSeasonsForYear(year - 1),
-		...getAllSeasonsForYear(year),
-		...getAllSeasonsForYear(year + 1),
-	]
+	const prevYear = getCachedSeasonsForYear(year - 1)
+	const currYear = getCachedSeasonsForYear(year)
+	const nextYear = getCachedSeasonsForYear(year + 1)
 
-	// Find all seasons that contain this date
-	const matchingSeasons = allSeasons.filter((season) => {
-		const normalizedStart = normalizeDate(season.startDate)
-		const normalizedEnd = normalizeDate(season.endDate)
-		return normalizedDate >= normalizedStart && normalizedDate <= normalizedEnd
-	})
+	// Find the highest priority matching season
+	let bestMatch: CachedSeason | null = null
 
-	if (matchingSeasons.length === 0) {
-		return null
+	for (const cached of prevYear) {
+		if (dateTs >= cached.startTs && dateTs <= cached.endTs) {
+			if (!bestMatch || cached.priority < bestMatch.priority) {
+				bestMatch = cached
+			}
+		}
 	}
 
-	// Sort by priority and return the highest priority season
-	matchingSeasons.sort((a, b) => {
-		const priorityA = SEASON_PRIORITY[a.name] ?? 999
-		const priorityB = SEASON_PRIORITY[b.name] ?? 999
-		return priorityA - priorityB
-	})
+	for (const cached of currYear) {
+		if (dateTs >= cached.startTs && dateTs <= cached.endTs) {
+			if (!bestMatch || cached.priority < bestMatch.priority) {
+				bestMatch = cached
+			}
+		}
+	}
 
-	return matchingSeasons[0] ?? null
+	for (const cached of nextYear) {
+		if (dateTs >= cached.startTs && dateTs <= cached.endTs) {
+			if (!bestMatch || cached.priority < bestMatch.priority) {
+				bestMatch = cached
+			}
+		}
+	}
+
+	return bestMatch?.season ?? null
 }
 
 /**

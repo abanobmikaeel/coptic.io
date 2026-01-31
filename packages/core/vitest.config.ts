@@ -8,10 +8,5 @@ export default defineConfig({
 		testTimeout: 10000,
 		hookTimeout: 10000,
 		teardownTimeout: 5000,
-		coverage: {
-			provider: 'v8',
-			reporter: ['text', 'json', 'html'],
-			exclude: ['dist', '*.config.*', 'coverage'],
-		},
 	},
 })
