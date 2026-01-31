@@ -214,7 +214,7 @@ describe('Moveable Feasts - 2026-2034 Integration Tests', () => {
 
 	it.each(Object.entries(easterDates))(
 		'should calculate Palm Sunday %s correctly (7 days before Easter)',
-		(yearStr, expected) => {
+		(yearStr, _expected) => {
 			const year = parseInt(yearStr, 10)
 			const feasts = getMoveableFeastsForYear(year)
 			const easter = feasts.find((f) => f.name === 'Easter')
@@ -232,7 +232,7 @@ describe('Moveable Feasts - 2026-2034 Integration Tests', () => {
 
 	it.each(Object.entries(easterDates))(
 		'should calculate Pentecost %s correctly (49 days after Easter)',
-		(yearStr, expected) => {
+		(yearStr, _expected) => {
 			const year = parseInt(yearStr, 10)
 			const feasts = getMoveableFeastsForYear(year)
 			const easter = feasts.find((f) => f.name === 'Easter')

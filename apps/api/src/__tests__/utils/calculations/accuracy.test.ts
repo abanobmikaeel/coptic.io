@@ -415,7 +415,7 @@ describe('Liturgical Season Durations', () => {
 	testYears.forEach((year) => {
 		describe(`${year}`, () => {
 			const seasons = getAllSeasonsForYear(year)
-			const feasts = getMoveableFeastsForYear(year)
+			const _feasts = getMoveableFeastsForYear(year)
 
 			it('Great Lent should be 55 days (start to Easter eve)', () => {
 				const greatLent = seasons.find((s) => s.name === 'Great Lent')

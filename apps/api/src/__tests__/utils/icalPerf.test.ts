@@ -8,7 +8,7 @@ describe('iCal Performance', () => {
 
 		for (let i = 0; i < iterations; i++) {
 			const start = performance.now()
-			const cal = generateYearCalendar(2026)
+			const _cal = generateYearCalendar(2026)
 			const end = performance.now()
 			times.push(end - start)
 		}
@@ -18,7 +18,7 @@ describe('iCal Performance', () => {
 		const max = Math.max(...times)
 		const size = new Blob([generateYearCalendar(2026)]).size
 
-		console.log('\n' + '='.repeat(60))
+		console.log(`\n${'='.repeat(60)}`)
 		console.log('SINGLE YEAR CALENDAR (2026)')
 		console.log('='.repeat(60))
 		console.log(`  Iterations:  ${iterations}`)
@@ -26,7 +26,7 @@ describe('iCal Performance', () => {
 		console.log(`  Min:         ${min.toFixed(2)}ms`)
 		console.log(`  Max:         ${max.toFixed(2)}ms`)
 		console.log(`  File size:   ${(size / 1024).toFixed(1)}KB`)
-		console.log('='.repeat(60) + '\n')
+		console.log(`${'='.repeat(60)}\n`)
 	})
 
 	it('measures multi-year subscription generation time', () => {
@@ -36,7 +36,7 @@ describe('iCal Performance', () => {
 
 		for (let i = 0; i < iterations; i++) {
 			const start = performance.now()
-			const cal = generateMultiYearCalendar(currentYear - 1, currentYear + 2)
+			const _cal = generateMultiYearCalendar(currentYear - 1, currentYear + 2)
 			const end = performance.now()
 			times.push(end - start)
 		}
@@ -46,7 +46,7 @@ describe('iCal Performance', () => {
 		const max = Math.max(...times)
 		const size = new Blob([generateMultiYearCalendar(currentYear - 1, currentYear + 2)]).size
 
-		console.log('\n' + '='.repeat(60))
+		console.log(`\n${'='.repeat(60)}`)
 		console.log('MULTI-YEAR SUBSCRIPTION (4 years)')
 		console.log('='.repeat(60))
 		console.log(`  Iterations:  ${iterations}`)
@@ -54,12 +54,12 @@ describe('iCal Performance', () => {
 		console.log(`  Min:         ${min.toFixed(2)}ms`)
 		console.log(`  Max:         ${max.toFixed(2)}ms`)
 		console.log(`  File size:   ${(size / 1024).toFixed(1)}KB`)
-		console.log('='.repeat(60) + '\n')
+		console.log(`${'='.repeat(60)}\n`)
 	})
 
 	it('measures cached vs uncached performance', async () => {
 		// Import the service to test caching
-		const { getYearCalendar, getSubscriptionCalendar } = await import(
+		const { getSubscriptionCalendar } = await import(
 			'../../services/calendar.service'
 		)
 
@@ -73,12 +73,12 @@ describe('iCal Performance', () => {
 		getSubscriptionCalendar()
 		const cachedTime = performance.now() - cachedStart
 
-		console.log('\n' + '='.repeat(60))
+		console.log(`\n${'='.repeat(60)}`)
 		console.log('CACHE PERFORMANCE')
 		console.log('='.repeat(60))
 		console.log(`  First call (generate):  ${uncachedTime.toFixed(2)}ms`)
 		console.log(`  Second call (cached):   ${cachedTime.toFixed(2)}ms`)
 		console.log(`  Speedup:                ${(uncachedTime / cachedTime).toFixed(0)}x faster`)
-		console.log('='.repeat(60) + '\n')
+		console.log(`${'='.repeat(60)}\n`)
 	})
 })

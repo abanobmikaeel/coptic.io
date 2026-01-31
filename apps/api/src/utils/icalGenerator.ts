@@ -186,7 +186,7 @@ export const generateYearCalendar = (year: number): string => {
 
 	lines.push('END:VCALENDAR')
 
-	return lines.join('\r\n') + '\r\n'
+	return `${lines.join('\r\n')}\r\n`
 }
 
 /**
@@ -241,5 +241,5 @@ export const generateMultiYearCalendar = (startYear: number, endYear: number): s
 
 	lines.push('END:VCALENDAR')
 
-	return lines.join('\r\n') + '\r\n'
+	return `${lines.join('\r\n')}\r\n`
 }
