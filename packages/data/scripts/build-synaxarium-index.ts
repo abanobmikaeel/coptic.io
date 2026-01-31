@@ -78,7 +78,9 @@ function buildIndex(): SynaxariumIndex {
 		}
 	}
 
-	console.log(`Indexed ${entries.length} entries with ${Object.keys(wordIndex).length} unique words`)
+	console.log(
+		`Indexed ${entries.length} entries with ${Object.keys(wordIndex).length} unique words`,
+	)
 
 	return {
 		entries,
