@@ -1,6 +1,11 @@
 import { range } from '../../../src/utils'
 import type { BibleVerse, Reading } from '../../types'
-import { getBook, getChapterAndOrVerse, getVerseByBookChapter } from './bibleDataMapper'
+import {
+	getBook,
+	getChapterAndOrVerse,
+	getChapterByBookName,
+	getVerseByBookChapter,
+} from './bibleDataMapper'
 
 export const getSingleVerse = (verseString: string) => {
 	const verseArr = splitAtIndex(
@@ -48,6 +53,63 @@ export const getVerseRange = (verseString: string): Reading => {
 export const getSingleChapter = (verseString: string) => {
 	const verseArr = splitAtIndex(verseString, verseString.lastIndexOf(' '))
 	return getChapterAndOrVerse(verseArr.bookName, Number(verseArr.chapterNum))
+}
+
+/**
+ * Handles multi-chapter ranges like "Acts 15:36-16:5" or "2 Peter 1:19-2:8"
+ * Optimized to use direct chapter lookups instead of iterating verse numbers
+ */
+export const getMultiChapterRange = (verseString: string): Reading => {
+	// Pattern: "Book Chapter:Verse-Chapter:Verse"
+	// Example: "Acts 15:36-16:5" or "2 Peter 1:19-2:8"
+	const lastSpace = verseString.lastIndexOf(' ')
+	const bookName = verseString.substring(0, lastSpace)
+	const rangeStr = verseString.substring(lastSpace + 1) // "15:36-16:5"
+
+	const parts = rangeStr.split('-') // ["15:36", "16:5"]
+	const startPart = parts[0] ?? ''
+	const endPart = parts[1] ?? ''
+	const startSplit = startPart.split(':')
+	const endSplit = endPart.split(':')
+	const startChapterStr = startSplit[0] ?? ''
+	const startVerseStr = startSplit[1] ?? ''
+	const endChapterStr = endSplit[0] ?? ''
+	const endVerseStr = endSplit[1] ?? ''
+
+	const startChapter = Number(startChapterStr)
+	const startVerse = Number(startVerseStr)
+	const endChapter = Number(endChapterStr)
+	const endVerse = Number(endVerseStr)
+
+	const chapters: { chapterNum: number; verses: BibleVerse[] }[] = []
+
+	for (let chapterNum = startChapter; chapterNum <= endChapter; chapterNum++) {
+		// O(1) lookup via pre-built map
+		const chapter = getChapterByBookName(bookName, chapterNum)
+		if (!chapter) continue
+
+		let verses: BibleVerse[]
+
+		if (chapterNum === startChapter && chapterNum === endChapter) {
+			// Same chapter: filter verses in range
+			verses = chapter.verses.filter((v) => v.num >= startVerse && v.num <= endVerse)
+		} else if (chapterNum === startChapter) {
+			// First chapter: from startVerse to end
+			verses = chapter.verses.filter((v) => v.num >= startVerse)
+		} else if (chapterNum === endChapter) {
+			// Last chapter: from start to endVerse
+			verses = chapter.verses.filter((v) => v.num <= endVerse)
+		} else {
+			// Middle chapter: all verses
+			verses = chapter.verses
+		}
+
+		if (verses.length > 0) {
+			chapters.push({ chapterNum, verses })
+		}
+	}
+
+	return { bookName, chapters }
 }
 
 export const splitAtIndex = (

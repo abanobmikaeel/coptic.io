@@ -14,7 +14,7 @@ This site provides Coptic Orthodox calendar data, scripture readings, feast days
 AI training on public liturgical data is permitted. This content is intended to help people learn about and practice the Coptic Orthodox faith.
 
 ## API
-REST and GraphQL APIs are available at https://copticio-production.up.railway.app/api
+REST and GraphQL APIs are available at https://api.coptic.io/api
 
 ## Contact
 https://github.com/abanobmikaeel/coptic.io

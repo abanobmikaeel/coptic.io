@@ -66,6 +66,13 @@ describe('Regex Patterns', () => {
 		it('should not match single verse without range', () => {
 			expect(verseRangePattern.test('Psalms 119:96')).toBe(false)
 		})
+
+		it('should NOT match multi-chapter ranges (regression test)', () => {
+			// BUG FIX: Previously matched these loosely, causing parsing errors
+			expect(verseRangePattern.test('Acts 15:36-16:5')).toBe(false)
+			expect(verseRangePattern.test('2 Peter 1:19-2:8')).toBe(false)
+			expect(verseRangePattern.test('Matthew 4:23-5:16')).toBe(false)
+		})
 	})
 
 	describe('verseWithCommas', () => {
@@ -84,6 +91,8 @@ describe('Regex Patterns', () => {
 		it('should match multi-chapter ranges', () => {
 			expect(multiChapterRange.test('2 Peter 1:19-2:8')).toBe(true)
 			expect(multiChapterRange.test('Matthew 1:1-2:5')).toBe(true)
+			expect(multiChapterRange.test('Acts 15:36-16:5')).toBe(true)
+			expect(multiChapterRange.test('Matthew 4:23-5:16')).toBe(true)
 		})
 
 		it('should not match single chapter ranges', () => {
@@ -92,6 +101,10 @@ describe('Regex Patterns', () => {
 
 		it('should not match single verses', () => {
 			expect(multiChapterRange.test('Psalms 119:96')).toBe(false)
+		})
+
+		it('should not match chapter-only references', () => {
+			expect(multiChapterRange.test('Psalms 119')).toBe(false)
 		})
 	})
 })

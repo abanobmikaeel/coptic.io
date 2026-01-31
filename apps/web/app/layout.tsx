@@ -84,7 +84,7 @@ export default function RootLayout({
 }>) {
 	const apiDomain = process.env.NEXT_PUBLIC_API_URL
 		? new URL(process.env.NEXT_PUBLIC_API_URL).origin
-		: 'https://copticio-production.up.railway.app'
+		: 'https://api.coptic.io'
 
 	return (
 		<html lang="en" suppressHydrationWarning>

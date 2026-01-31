@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Fetch today's readings from the API
-		const baseUrl = process.env.RAILWAY_API_URL || 'https://copticio-production.up.railway.app'
+		const baseUrl = process.env.API_URL || 'https://api.coptic.io'
 		const [calendarRes, readingsRes] = await Promise.all([
 			fetch(`${baseUrl}/api/calendar`),
 			fetch(`${baseUrl}/api/readings`),

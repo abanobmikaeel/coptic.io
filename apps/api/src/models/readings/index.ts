@@ -3,8 +3,18 @@ import dayReadings from '../../resources/dayReadings.json'
 import synxariumReadings from '../../resources/synxarium.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import type { Reading } from '../../types'
-import { oneChapterPattern, oneVersePattern, verseRangePattern } from '../../utils/regexPatterns'
-import { getSingleChapter, getSingleVerse, getVerseRange } from './verseTextTransformer'
+import {
+	multiChapterRange,
+	oneChapterPattern,
+	oneVersePattern,
+	verseRangePattern,
+} from '../../utils/regexPatterns'
+import {
+	getMultiChapterRange,
+	getSingleChapter,
+	getSingleVerse,
+	getVerseRange,
+} from './verseTextTransformer'
 
 // Build indexed Map at module load for O(1) lookup by reading ID
 const readingsById = new Map<number, (typeof uniqueReadings)[number]>()
@@ -18,6 +28,9 @@ for (const reading of uniqueReadings) {
  */
 export const getReading = (verseString: string): Reading | null => {
 	switch (true) {
+		// Check multi-chapter range first (more specific pattern)
+		case multiChapterRange.test(verseString):
+			return getMultiChapterRange(verseString)
 		case verseRangePattern.test(verseString):
 			return getVerseRange(verseString)
 		case oneVersePattern.test(verseString):
