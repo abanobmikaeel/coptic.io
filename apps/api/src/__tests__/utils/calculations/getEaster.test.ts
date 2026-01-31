@@ -1,5 +1,5 @@
+import { calculateEaster as getEaster } from '@coptic/core'
 import { describe, expect, it } from 'vitest'
-import getEaster from '../../../utils/calculations/getEaster'
 
 describe('Easter Calculation', () => {
 	it('should calculate Easter correctly for 2024', () => {

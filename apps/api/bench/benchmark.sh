@@ -1,63 +1,96 @@
 #!/bin/bash
 
-echo "🔥 Coptic.IO API Performance Benchmarks"
-echo "========================================"
-echo ""
+# Configuration
+BASE_URL="${BASE_URL:-http://localhost:3000}"
+DURATION="${DURATION:-10}"
+CONNECTIONS="${CONNECTIONS:-10}"
+OUTPUT_FILE="${OUTPUT_FILE:-}"
 
-BASE_URL="http://localhost:3001"
+AUTOCANNON="$(dirname "$0")/../node_modules/.bin/autocannon"
 
-# Test 1: Health Check
-echo "📊 Test 1: Health Check (warmup)"
-curl -s -o /dev/null -w "Time: %{time_total}s | Status: %{http_code}\n" $BASE_URL/health
-echo ""
+# Check if server is running
+if ! curl -s "$BASE_URL/health" > /dev/null 2>&1; then
+  echo "❌ Server not responding at $BASE_URL"
+  echo "   Start it with: pnpm --filter @coptic/api dev"
+  exit 1
+fi
 
-# Test 2: Simple endpoint - Health (100 requests)
-echo "📊 Test 2: Health Endpoint - 100 concurrent requests"
-echo "Running ab benchmark..."
-ab -n 100 -c 10 -q $BASE_URL/health 2>&1 | grep -E "Requests per second|Time per request|Transfer rate"
-echo ""
+# Warmup
+echo "Warming up..." >&2
+curl -s "$BASE_URL/health" > /dev/null
+curl -s "$BASE_URL/api/celebrations/2025-04-20" > /dev/null
+sleep 1
 
-# Test 3: Celebrations endpoint
-echo "📊 Test 3: Celebrations Endpoint - Single request latency"
-curl -s -o /dev/null -w "Time: %{time_total}s | Status: %{http_code}\n" "$BASE_URL/api/celebrations/2025-04-20"
-echo ""
+echo "" >&2
+echo "Running benchmarks (${DURATION}s per endpoint, ${CONNECTIONS} connections)..." >&2
+echo "" >&2
 
-# Test 4: Celebrations - 100 requests
-echo "📊 Test 4: Celebrations Endpoint - 100 concurrent requests"
-ab -n 100 -c 10 -q "$BASE_URL/api/celebrations/2025-04-20" 2>&1 | grep -E "Requests per second|Time per request|Transfer rate"
-echo ""
+# Start output
+{
+  echo "# Coptic.IO API Benchmarks - $(date +%Y-%m-%d)"
+  echo ""
+  echo "## Configuration"
+  echo "- Duration: ${DURATION}s per endpoint"
+  echo "- Connections: ${CONNECTIONS} concurrent"
+  echo "- Node: $(node -v 2>/dev/null || echo 'unknown')"
+  echo ""
+  echo "## Results"
+  echo ""
+} > /tmp/bench_output.md
 
-# Test 5: Fasting endpoint
-echo "📊 Test 5: Fasting Endpoint - Single request latency"
-curl -s -o /dev/null -w "Time: %{time_total}s | Status: %{http_code}\n" "$BASE_URL/api/fasting/2025-02-24"
-echo ""
+run_bench() {
+  local name=$1
+  local url=$2
+  local method=${3:-GET}
+  local body=${4:-}
 
-# Test 6: Fasting - 100 requests
-echo "📊 Test 6: Fasting Endpoint - 100 concurrent requests"
-ab -n 100 -c 10 -q "$BASE_URL/api/fasting/2025-02-24" 2>&1 | grep -E "Requests per second|Time per request|Transfer rate"
-echo ""
+  echo "  $name..." >&2
 
-# Test 7: Readings endpoint (more complex)
-echo "📊 Test 7: Readings Endpoint - Single request latency"
-curl -s -o /dev/null -w "Time: %{time_total}s | Status: %{http_code}\n" "$BASE_URL/api/readings/2025-04-20"
-echo ""
+  {
+    echo "### $name"
+    echo '```'
+    if [ -n "$body" ]; then
+      $AUTOCANNON -c $CONNECTIONS -d $DURATION -m $method \
+        -H "Content-Type: application/json" -b "$body" "$url" 2>&1 | \
+        grep -E "Latency|Req/Sec|Bytes/Sec|requests in|errors"
+    else
+      $AUTOCANNON -c $CONNECTIONS -d $DURATION "$url" 2>&1 | \
+        grep -E "Latency|Req/Sec|Bytes/Sec|requests in|errors"
+    fi
+    echo '```'
+    echo ""
+  } >> /tmp/bench_output.md
+}
 
-# Test 8: Readings - 50 requests (more complex endpoint)
-echo "📊 Test 8: Readings Endpoint - 50 concurrent requests"
-ab -n 50 -c 5 -q "$BASE_URL/api/readings/2025-04-20" 2>&1 | grep -E "Requests per second|Time per request|Transfer rate"
-echo ""
+run_bench "Health" "$BASE_URL/health"
+run_bench "Celebrations" "$BASE_URL/api/celebrations/2025-04-20"
+run_bench "Fasting" "$BASE_URL/api/fasting/2025-02-24"
+run_bench "Readings" "$BASE_URL/api/readings/2025-04-20"
+run_bench "Synaxarium Search" "$BASE_URL/api/synaxarium/search?q=mary"
+run_bench "Calendar Month" "$BASE_URL/api/calendar/month/2025/3"
+run_bench "GraphQL" "$BASE_URL/graphql" "POST" '{"query":"{ celebrations(date: \"2025-04-20\") { name type } }"}'
 
-# Test 9: GraphQL query
-echo "📊 Test 9: GraphQL Endpoint - Single request latency"
-curl -s -o /dev/null -w "Time: %{time_total}s | Status: %{http_code}\n" \
-  -X POST "$BASE_URL/graphql" \
-  -H "Content-Type: application/json" \
-  -d '{"query":"{ celebrations(date: \"2025-04-20\") { name type } }"}'
-echo ""
+# Memory
+{
+  echo "## Resource Usage"
+  pid=$(lsof -ti :${BASE_URL##*:} 2>/dev/null | head -1)
+  if [ -n "$pid" ]; then
+    rss_kb=$(ps -o rss= -p "$pid" 2>/dev/null | tr -d ' ')
+    if [ -n "$rss_kb" ]; then
+      rss_mb=$(echo "scale=1; $rss_kb / 1024" | bc)
+      echo "- Memory (RSS): ${rss_mb} MB"
+    fi
+  fi
+  echo ""
+} >> /tmp/bench_output.md
 
-# Memory usage
-echo "📊 Container Resource Usage:"
-docker stats coptic-bench --no-stream --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}"
-echo ""
+if [ -n "$OUTPUT_FILE" ]; then
+  mv /tmp/bench_output.md "$OUTPUT_FILE"
+  echo "" >&2
+  echo "Results saved to $OUTPUT_FILE" >&2
+else
+  cat /tmp/bench_output.md
+  rm /tmp/bench_output.md
+fi
 
-echo "✅ Benchmark complete!"
+echo "✅ Benchmark complete!" >&2

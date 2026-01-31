@@ -27,6 +27,28 @@ calendar.get('/month/:year/:month', async (c) => {
 	}
 })
 
+// Get subscription info with webcal:// URL (for UI to display)
+calendar.get('/ical/info', async (c) => {
+	const host = c.req.header('host') || 'copticio-production.up.railway.app'
+	const protocol = host.includes('localhost') ? 'http' : 'https'
+	const webcalUrl = `webcal://${host}/api/calendar/ical/subscribe`
+	const httpsUrl = `${protocol}://${host}/api/calendar/ical/subscribe`
+
+	return c.json({
+		webcalUrl,
+		httpsUrl,
+		instructions: {
+			title: 'Subscribe to Coptic Orthodox Calendar',
+			steps: [
+				'Click the subscribe button or copy the calendar URL',
+				'Your calendar app will open and ask to add the calendar',
+				'Confirm to subscribe — events will sync automatically',
+			],
+			note: 'Do NOT import the .ics file directly. Subscribe to get automatic updates for feasts and fasting periods.',
+		},
+	})
+})
+
 // Get live iCal subscription feed (multi-year)
 // IMPORTANT: This must be defined BEFORE /ical/:year to avoid :year matching "subscribe"
 calendar.get('/ical/subscribe', async (c) => {
@@ -34,7 +56,7 @@ calendar.get('/ical/subscribe', async (c) => {
 		const icalContent = calendarService.getSubscriptionCalendar()
 
 		c.header('Content-Type', 'text/calendar; charset=utf-8')
-		c.header('Content-Disposition', 'inline; filename="coptic-calendar-live.ics"')
+		c.header('Content-Disposition', 'inline; filename="coptic-calendar-subscription.ics"')
 		c.header('Cache-Control', 'public, max-age=3600') // Cache for 1 hour
 		c.header('X-WR-CALNAME', 'Coptic Orthodox Calendar')
 

@@ -25,12 +25,14 @@
 	],
 	"scripts": {
 		"build": "tsc",
+		"build:index": "tsx scripts/build-synaxarium-index.ts",
 		"dev": "tsc --watch",
 		"lint": "biome lint src",
 		"lint:fix": "biome lint --write src",
 		"check": "biome check src",
 		"check:fix": "biome check --write src",
 		"typecheck": "tsc --noEmit",
+		"bench": "vitest bench",
 		"prepublishOnly": "pnpm run build"
 	},
 	"dependencies": {
@@ -39,7 +41,9 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.5",
-		"typescript": "^5.7.3"
+		"tsx": "^4.19.0",
+		"typescript": "^5.7.3",
+		"vitest": "^4.0.18"
 	},
 	"keywords": [
 		"coptic",

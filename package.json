@@ -11,6 +11,7 @@
 		"build": "pnpm -r build",
 		"build:packages": "pnpm --filter '@coptic/*' --filter '!@coptic/api' --filter '!@coptic/web' --filter '!@coptic/admin' build",
 		"test": "pnpm -r test",
+		"bench": "pnpm --filter @coptic/core --filter @coptic/data bench",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint --write .",
 		"check": "biome check .",

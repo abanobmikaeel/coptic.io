@@ -16,7 +16,7 @@
   "dependencies": {
     "@aws-sdk/client-ses": "^3.700.0",
     "@vercel/analytics": "^1.6.1",
-    "next": "^16.1.4",
+    "next": "^16.1.6",
     "next-themes": "^0.4.6",
     "pg": "^8.13.0",
     "react": "19.2.1",

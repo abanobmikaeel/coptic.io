@@ -1,9 +1,11 @@
+import {
+	calculateEaster,
+	getAllSeasonsForYear,
+	getMoveableFeastsForYear,
+	gregorianToCoptic,
+} from '@coptic/core'
 import { describe, expect, it } from 'vitest'
-import getEaster from '../../../utils/calculations/getEaster'
-import { getAllSeasonsForYear } from '../../../utils/calculations/getLiturgicalSeason'
-import { getMoveableFeastsForYear } from '../../../utils/calculations/getMoveableFeasts'
 import { getStaticCelebrationsForDay } from '../../../utils/calculations/getStaticCelebrations'
-import fromGregorian from '../../../utils/copticDate'
 
 /**
  * ACCURACY TESTS - North Star for Coptic Calendar
@@ -40,7 +42,7 @@ describe('Easter (Pascha) - Exact Dates', () => {
 
 	knownEasterDates.forEach(({ year, month, day }) => {
 		it(`Easter ${year} should be ${month}/${day}/${year}`, () => {
-			const easter = getEaster(year)
+			const easter = calculateEaster(year)
 			expect(easter.year).toBe(year)
 			expect(easter.month).toBe(month)
 			expect(easter.day).toBe(day)
@@ -105,7 +107,7 @@ describe('Coptic Date Conversion - Exact Dates', () => {
 
 		it(`${gregStr} should be ${copticStr}`, () => {
 			const date = new Date(gregorian.year, gregorian.month - 1, gregorian.day)
-			const result = fromGregorian(date)
+			const result = gregorianToCoptic(date)
 
 			expect(result.day).toBe(coptic.day)
 			expect(result.month).toBe(coptic.month)
@@ -314,7 +316,7 @@ describe('Fixed Feasts - Coptic Date Mapping', () => {
 			// Use 2025 for non-leap year (2024 for Sep dates since those are AM 1741 Tout)
 			const year = gregMonth >= 9 ? 2024 : 2025
 			const date = new Date(year, gregMonth - 1, gregDay)
-			const coptic = fromGregorian(date)
+			const coptic = gregorianToCoptic(date)
 
 			expect(coptic.monthString).toBe(copticMonth)
 			expect(coptic.day).toBe(copticDay)
@@ -352,7 +354,7 @@ describe('Coptic Date Conversion - Month Boundaries', () => {
 
 		monthFirstDays.forEach(({ month, greg }) => {
 			const date = new Date(greg[0], greg[1], greg[2])
-			const coptic = fromGregorian(date)
+			const coptic = gregorianToCoptic(date)
 			expect(coptic.monthString).toBe(month)
 			expect(coptic.day).toBe(1)
 		})
@@ -360,12 +362,12 @@ describe('Coptic Date Conversion - Month Boundaries', () => {
 
 	it('Tout 30 should be the day before Baba 1', () => {
 		// Tout 30 = Sept 11 + 29 days = Oct 10, 2024
-		const tout30 = fromGregorian(new Date(2024, 9, 10))
+		const tout30 = gregorianToCoptic(new Date(2024, 9, 10))
 		expect(tout30.monthString).toBe('Tout')
 		expect(tout30.day).toBe(30)
 
 		// Baba 1 = Oct 11, 2024
-		const baba1 = fromGregorian(new Date(2024, 9, 11))
+		const baba1 = gregorianToCoptic(new Date(2024, 9, 11))
 		expect(baba1.monthString).toBe('Baba')
 		expect(baba1.day).toBe(1)
 	})
@@ -373,27 +375,27 @@ describe('Coptic Date Conversion - Month Boundaries', () => {
 	it('Nasie should have 5 or 6 days depending on Coptic leap year', () => {
 		// Nasie starts after Mesra 30
 		// In non-leap year (2025): Nasie has 5 days (Sept 6-10, 2025)
-		const nasie1 = fromGregorian(new Date(2025, 8, 6))
+		const nasie1 = gregorianToCoptic(new Date(2025, 8, 6))
 		expect(nasie1.monthString).toBe('Nasie')
 		expect(nasie1.day).toBe(1)
 
-		const nasie5 = fromGregorian(new Date(2025, 8, 10))
+		const nasie5 = gregorianToCoptic(new Date(2025, 8, 10))
 		expect(nasie5.monthString).toBe('Nasie')
 		expect(nasie5.day).toBe(5)
 
 		// Next day should be Tout 1 of the new year
-		const newYear = fromGregorian(new Date(2025, 8, 11))
+		const newYear = gregorianToCoptic(new Date(2025, 8, 11))
 		expect(newYear.monthString).toBe('Tout')
 		expect(newYear.day).toBe(1)
 	})
 
 	it('Coptic year should transition correctly at Nayrouz', () => {
 		// Nasie 5, 1741 = Sept 10, 2025
-		const lastDay = fromGregorian(new Date(2025, 8, 10))
+		const lastDay = gregorianToCoptic(new Date(2025, 8, 10))
 		expect(lastDay.year).toBe(1741)
 
 		// Tout 1, 1742 = Sept 11, 2025
-		const firstDay = fromGregorian(new Date(2025, 8, 11))
+		const firstDay = gregorianToCoptic(new Date(2025, 8, 11))
 		expect(firstDay.year).toBe(1742)
 		expect(firstDay.monthString).toBe('Tout')
 		expect(firstDay.day).toBe(1)
@@ -413,7 +415,7 @@ describe('Liturgical Season Durations', () => {
 	testYears.forEach((year) => {
 		describe(`${year}`, () => {
 			const seasons = getAllSeasonsForYear(year)
-			const feasts = getMoveableFeastsForYear(year)
+			const _feasts = getMoveableFeastsForYear(year)
 
 			it('Great Lent should be 55 days (start to Easter eve)', () => {
 				const greatLent = seasons.find((s) => s.name === 'Great Lent')

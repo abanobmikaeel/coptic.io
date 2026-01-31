@@ -1,8 +1,19 @@
-import { gregorianToCoptic, isInMoveableFast } from '@coptic/core'
+import { type CopticDate, gregorianToCoptic, isInMoveableFast } from '@coptic/core'
 import { addDays, format, isAfter } from 'date-fns'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import { getStaticCelebrationsForCopticDay } from '../utils/calculations/getStaticCelebrations'
 
-export const getFastingForDate = (date: Date) => {
+type FastingResult = {
+	isFasting: boolean
+	fastType: string | null
+	description: string | null
+}
+
+const NO_FASTING: FastingResult = { isFasting: false, fastType: null, description: null }
+
+/**
+ * Get fasting info using pre-computed Coptic date (avoids redundant conversion)
+ */
+export const getFastingForCopticDate = (date: Date, copticDate: CopticDate): FastingResult => {
 	// Check for moveable fasting periods first
 	const moveableFast = isInMoveableFast(date)
 	if (moveableFast) {
@@ -13,43 +24,26 @@ export const getFastingForDate = (date: Date) => {
 		}
 	}
 
-	// Check for static fasting days
-	const celebrationsForDay = getStaticCelebrationsForDay(date)
+	// Check for static fasting days using pre-computed Coptic date
+	const celebrationsForDay = getStaticCelebrationsForCopticDay(copticDate.month, copticDate.day)
+	if (!celebrationsForDay) return NO_FASTING
 
-	if (!celebrationsForDay) {
-		return {
-			isFasting: false,
-			fastType: null,
-			description: null,
-		}
-	}
-
-	const fastingCelebrations = celebrationsForDay.filter((celeb) =>
-		celeb.type.toLowerCase().includes('fast'),
-	)
-
-	if (fastingCelebrations.length === 0) {
-		return {
-			isFasting: false,
-			fastType: null,
-			description: null,
-		}
-	}
-
-	const firstFast = fastingCelebrations[0]
-	if (!firstFast) {
-		return {
-			isFasting: false,
-			fastType: null,
-			description: null,
-		}
-	}
+	const firstFast = celebrationsForDay.find((c) => c.type.toLowerCase().includes('fast'))
+	if (!firstFast) return NO_FASTING
 
 	return {
 		isFasting: true,
 		fastType: firstFast.type,
 		description: firstFast.name,
 	}
+}
+
+/**
+ * Get fasting info for a Gregorian date (convenience wrapper)
+ */
+export const getFastingForDate = (date: Date): FastingResult => {
+	const copticDate = gregorianToCoptic(date)
+	return getFastingForCopticDate(date, copticDate)
 }
 
 export const getFastingCalendar = (year: number) => {
@@ -59,12 +53,15 @@ export const getFastingCalendar = (year: number) => {
 
 	let currentDate = startDate
 	while (!isAfter(currentDate, endDate)) {
+		// Compute Coptic date once per day
+		const copticDate = gregorianToCoptic(currentDate)
+
 		// Check for moveable fasting periods first
 		const moveableFast = isInMoveableFast(currentDate)
 		if (moveableFast) {
 			fastingDays.push({
 				date: format(currentDate, 'yyyy-MM-dd'),
-				copticDate: gregorianToCoptic(currentDate),
+				copticDate,
 				fastType: moveableFast.type,
 				description: moveableFast.name,
 			})
@@ -72,19 +69,15 @@ export const getFastingCalendar = (year: number) => {
 			continue
 		}
 
-		// Check for static fasting days
-		const celebrationsForDay = getStaticCelebrationsForDay(currentDate)
+		// Check for static fasting days using pre-computed Coptic date
+		const celebrationsForDay = getStaticCelebrationsForCopticDay(copticDate.month, copticDate.day)
 
 		if (celebrationsForDay) {
-			const fastingCelebrations = celebrationsForDay.filter((celeb) =>
-				celeb.type.toLowerCase().includes('fast'),
-			)
-
-			const firstFast = fastingCelebrations[0]
+			const firstFast = celebrationsForDay.find((c) => c.type.toLowerCase().includes('fast'))
 			if (firstFast) {
 				fastingDays.push({
 					date: format(currentDate, 'yyyy-MM-dd'),
-					copticDate: gregorianToCoptic(currentDate),
+					copticDate,
 					fastType: firstFast.type,
 					description: firstFast.name,
 				})

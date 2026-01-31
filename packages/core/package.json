@@ -35,15 +35,16 @@
 		"check": "biome check src",
 		"check:fix": "biome check --write src",
 		"typecheck": "tsc --noEmit",
+		"test": "vitest",
+		"bench": "vitest bench",
 		"prepublishOnly": "pnpm run build"
 	},
-	"dependencies": {
-		"date-fns": "^4.1.0"
-	},
 	"devDependencies": {
+		"date-fns": "^4.1.0",
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.5",
-		"typescript": "^5.7.3"
+		"typescript": "^5.7.3",
+		"vitest": "^3.2.4"
 	},
 	"keywords": [
 		"coptic",
