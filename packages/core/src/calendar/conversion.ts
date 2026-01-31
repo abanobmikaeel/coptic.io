@@ -10,7 +10,7 @@ import type { CopticDate } from '../types/date'
  * and string parsing. Uses integer arithmetic only.
  */
 
-// Month names matching Intl.DateTimeFormat('en-u-ca-coptic')
+// Month names matching synxarium.json data
 const COPTIC_MONTHS = [
 	'Tout',
 	'Baba',
@@ -20,9 +20,9 @@ const COPTIC_MONTHS = [
 	'Amshir',
 	'Baramhat',
 	'Baramouda',
-	'Bashans',
+	'Bashons',
 	'Paona',
-	'Epep',
+	'Abib',
 	'Mesra',
 	'Nasie',
 ] as const

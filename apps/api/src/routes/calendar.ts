@@ -29,7 +29,7 @@ calendar.get('/month/:year/:month', async (c) => {
 
 // Get subscription info with webcal:// URL (for UI to display)
 calendar.get('/ical/info', async (c) => {
-	const host = c.req.header('host') || 'copticio-production.up.railway.app'
+	const host = c.req.header('host') || 'api.coptic.io'
 	const protocol = host.includes('localhost') ? 'http' : 'https'
 	const webcalUrl = `webcal://${host}/api/calendar/ical/subscribe`
 	const httpsUrl = `${protocol}://${host}/api/calendar/ical/subscribe`

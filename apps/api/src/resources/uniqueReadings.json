@@ -908,5 +908,18 @@
 		"LPsalm": "Psalms 78:70-72",
 		"LGospel": "Matthew 22:35-46",
 		"id": 70
+	},
+	{
+		"Day": "2 Amshir",
+		"VPsalm": "Psalms 32:11;Psalms 32:6",
+		"VGospel": "Luke 22:24-30",
+		"MPsalm": "Psalms 33:1;Psalms 33:12",
+		"MGospel": "Matthew 25:14-23",
+		"Pauline": "Hebrews 13:7-25",
+		"Catholic": "1 Peter 5:1-14",
+		"Acts": "Acts 15:12-21",
+		"LPsalm": "Psalms 132:9-10;Psalms 132:1-2",
+		"LGospel": "Matthew 9:33-41",
+		"id": 71
 	}
 ]

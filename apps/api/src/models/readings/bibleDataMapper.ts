@@ -40,6 +40,14 @@ export const getChapter = (book: BibleBook, chapterNum: number): BibleChapter | 
 	return chaptersByBook.get(book.name)?.get(chapterNum)
 }
 
+// O(1) chapter lookup by book name
+export const getChapterByBookName = (
+	bookName: string,
+	chapterNum: number,
+): BibleChapter | undefined => {
+	return chaptersByBook.get(bookName)?.get(chapterNum)
+}
+
 export const getVerse = (chapter: BibleChapter, verseNum: number): BibleVerse | undefined => {
 	// Need to find the book this chapter belongs to
 	// For efficiency, we accept the chapter object but need book context
