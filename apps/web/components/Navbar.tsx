@@ -21,6 +21,12 @@ export default function Navbar() {
 						Readings
 					</Link>
 					<Link
+						href="/synaxarium"
+						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+					>
+						Synaxarium
+					</Link>
+					<Link
 						href="/calendar"
 						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
 					>

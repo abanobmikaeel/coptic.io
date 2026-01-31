@@ -48,6 +48,26 @@ export const getSynaxariumForDate = (date: Date, includeText = false): Synaxariu
 	return synxarium
 }
 
+export const getSynaxariumByCopticDate = (
+	copticDateKey: string,
+	includeText = false,
+): SynaxariumEntry[] | null => {
+	const synxarium = (synaxariumCanonical as Record<string, SynaxariumEntry[]>)[copticDateKey]
+
+	if (!synxarium) {
+		return null
+	}
+
+	if (!includeText) {
+		return synxarium.map((reading: SynaxariumEntry) => {
+			const { text: _text, ...rest } = reading
+			return rest
+		})
+	}
+
+	return synxarium
+}
+
 export const searchSynaxarium = (searchTerm: string, limit = 50): SynaxariumSearchResult[] => {
 	const searchLower = searchTerm.toLowerCase().trim()
 	if (!searchLower) return []

@@ -123,6 +123,20 @@ export interface ReadingsData {
 	fullDate?: CopticDate
 }
 
+// Synaxarium Search Types
+export interface SynaxariumSearchResult {
+	date: string
+	copticDate: {
+		dateString: string
+		day: number
+		monthString: string
+	}
+	entry: {
+		url?: string
+		name?: string
+	}
+}
+
 // API Response Types
 export interface ApiError {
 	error: string
