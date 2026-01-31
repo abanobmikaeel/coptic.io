@@ -1,4 +1,5 @@
 import { BackToTop } from '@/components/BackToTop'
+import { DateNavigation } from '@/components/DateNavigation'
 import {
 	DisplaySettings,
 	type FontFamily,
@@ -8,6 +9,7 @@ import {
 	type ReadingWidth,
 	type TextSize,
 	type ViewMode,
+	type WordSpacing,
 } from '@/components/DisplaySettings'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
@@ -75,6 +77,7 @@ interface ReadingsPageProps {
 		size?: string
 		font?: string
 		spacing?: string
+		wordSpacing?: string
 		theme?: string
 		width?: string
 		weight?: string
@@ -91,6 +94,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	const textSize: TextSize = (params.size as TextSize) || 'md'
 	const fontFamily: FontFamily = (params.font as FontFamily) || 'sans'
 	const lineSpacing: LineSpacing = (params.spacing as LineSpacing) || 'normal'
+	const wordSpacing: WordSpacing = (params.wordSpacing as WordSpacing) || 'normal'
 	const theme: ReadingTheme = (params.theme as ReadingTheme) || 'light'
 	const width: ReadingWidth = (params.width as ReadingWidth) || 'normal'
 	const fontWeight: FontWeight = (params.weight as FontWeight) || 'normal'
@@ -109,11 +113,6 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	}
 	const backToTodayQuery = backToTodayParams.toString()
 
-	// Count total readings for progress
-	const totalReadings = readings
-		? readingSections.filter((key) => readings[key]?.length).length + (readings.Synxarium?.length ? 1 : 0)
-		: 0
-
 	// Common props for all ScriptureReading components
 	const scriptureProps = {
 		isRtl,
@@ -122,6 +121,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		textSize,
 		fontFamily,
 		lineSpacing,
+		wordSpacing,
 		theme,
 		width,
 		weight: fontWeight,
@@ -138,7 +138,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		<main className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}>
 			{/* Progress indicator */}
 			<Suspense fallback={null}>
-				<ReadingProgress totalSections={totalReadings} />
+				<ReadingProgress />
 			</Suspense>
 
 			{/* Sticky controls bar */}
@@ -161,7 +161,11 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 						{isToday ? "Today's Readings" : 'Daily Readings'}
 					</p>
 
-					<h1 className="text-3xl md:text-4xl font-bold mb-2">{readings?.fullDate?.dateString || gregorianDate}</h1>
+					<Suspense fallback={<h1 className="text-3xl md:text-4xl font-bold mb-2">{readings?.fullDate?.dateString || gregorianDate}</h1>}>
+						<DateNavigation currentDate={params.date} theme={theme}>
+							<h1 className="text-3xl md:text-4xl font-bold">{readings?.fullDate?.dateString || gregorianDate}</h1>
+						</DateNavigation>
+					</Suspense>
 
 					<p className={`text-sm ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}>
 						{readings?.fullDate ? gregorianDate : ''}
@@ -187,7 +191,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 					{renderSection('Acts')}
 
 					{/* Synaxarium */}
-					{readings.Synxarium?.length ? <SynaxariumReading entries={readings.Synxarium} textSize={textSize} theme={theme} /> : null}
+					{readings.Synxarium?.length ? <SynaxariumReading entries={readings.Synxarium} textSize={textSize} theme={theme} width={width} /> : null}
 
 					{/* Liturgy readings */}
 					{renderSection('LPsalm')}

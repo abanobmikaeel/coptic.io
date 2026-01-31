@@ -11,6 +11,7 @@ import {
 	type TextSize,
 	type ThemePreference,
 	type ViewMode,
+	type WordSpacing,
 	getSystemTheme,
 	loadPreferences,
 	savePreferences,
@@ -25,6 +26,7 @@ export interface ReadingSettings {
 	translation: BibleTranslation
 	fontFamily: FontFamily
 	lineSpacing: LineSpacing
+	wordSpacing: WordSpacing
 	theme: ReadingTheme
 	width: ReadingWidth
 	weight: FontWeight
@@ -38,6 +40,7 @@ export interface ReadingSettingsActions {
 	setTranslation: (lang: BibleTranslation) => void
 	setFontFamily: (font: FontFamily) => void
 	setLineSpacing: (spacing: LineSpacing) => void
+	setWordSpacing: (spacing: WordSpacing) => void
 	setTheme: (theme: ThemePreference) => void
 	setWidth: (width: ReadingWidth) => void
 	setWeight: (weight: FontWeight) => void
@@ -73,6 +76,7 @@ export function useReadingSettings(): {
 			if (prefs.lang && prefs.lang !== 'en') params.set('lang', prefs.lang)
 			if (prefs.font && prefs.font !== 'sans') params.set('font', prefs.font)
 			if (prefs.spacing && prefs.spacing !== 'normal') params.set('spacing', prefs.spacing)
+			if (prefs.wordSpacing && prefs.wordSpacing !== 'normal') params.set('wordSpacing', prefs.wordSpacing)
 			const effectiveTheme = isAuto ? systemTheme : prefs.theme
 			if (effectiveTheme && effectiveTheme !== 'light') params.set('theme', effectiveTheme)
 			if (prefs.width && prefs.width !== 'normal') params.set('width', prefs.width)
@@ -114,6 +118,7 @@ export function useReadingSettings(): {
 		translation: (searchParams.get('lang') as BibleTranslation) || 'en',
 		fontFamily: (searchParams.get('font') as FontFamily) || 'sans',
 		lineSpacing: (searchParams.get('spacing') as LineSpacing) || 'normal',
+		wordSpacing: (searchParams.get('wordSpacing') as WordSpacing) || 'normal',
 		theme: (searchParams.get('theme') as ReadingTheme) || 'light',
 		width: (searchParams.get('width') as ReadingWidth) || 'normal',
 		weight: (searchParams.get('weight') as FontWeight) || 'normal',
@@ -151,6 +156,7 @@ export function useReadingSettings(): {
 		setTranslation: (lang) => updateParam('lang', lang === 'en' ? null : lang),
 		setFontFamily: (font) => updateParam('font', font === 'sans' ? null : font),
 		setLineSpacing: (spacing) => updateParam('spacing', spacing === 'normal' ? null : spacing),
+		setWordSpacing: (spacing) => updateParam('wordSpacing', spacing === 'normal' ? null : spacing),
 		setWidth: (w) => updateParam('width', w === 'normal' ? null : w),
 		setWeight: (w) => updateParam('weight', w === 'normal' ? null : w),
 		setTheme: (t) => {

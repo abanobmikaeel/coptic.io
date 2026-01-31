@@ -4,6 +4,7 @@ export type ViewMode = 'verse' | 'continuous'
 export type BibleTranslation = 'en' | 'ar'
 export type FontFamily = 'sans' | 'serif'
 export type LineSpacing = 'compact' | 'normal' | 'relaxed'
+export type WordSpacing = 'compact' | 'normal' | 'relaxed'
 export type ReadingTheme = 'light' | 'sepia' | 'dark'
 export type ThemePreference = ReadingTheme | 'auto'
 export type ReadingWidth = 'narrow' | 'normal' | 'wide'
@@ -17,6 +18,7 @@ export interface ReadingPreferences {
 	lang?: BibleTranslation
 	font?: FontFamily
 	spacing?: LineSpacing
+	wordSpacing?: WordSpacing
 	theme?: ThemePreference
 	width?: ReadingWidth
 	weight?: FontWeight

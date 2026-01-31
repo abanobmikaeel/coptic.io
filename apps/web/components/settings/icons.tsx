@@ -24,6 +24,17 @@ export const WidthIcon = ({ width }: { width: number }) => (
 	</div>
 )
 
+// Word spacing icons
+export const WordSpacingIcon = ({ gap }: { gap: 'compact' | 'normal' | 'relaxed' }) => {
+	const gapClass = { compact: 'gap-0', normal: 'gap-1', relaxed: 'gap-2' }[gap]
+	return (
+		<div className={`flex justify-center items-center ${gapClass} text-xs font-medium`}>
+			<span>A</span>
+			<span>B</span>
+		</div>
+	)
+}
+
 // Chevron icon
 export const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
 	<svg

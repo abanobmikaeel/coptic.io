@@ -1,36 +1,36 @@
-import type { FontFamily, FontWeight, LineSpacing, ReadingTheme, ReadingWidth, TextSize } from '@/components/DisplaySettings'
+import type { FontFamily, FontWeight, LineSpacing, ReadingTheme, ReadingWidth, TextSize, WordSpacing } from '@/components/DisplaySettings'
 
-// Text sizes - more dramatic jumps, Arabic gets larger sizes for readability
+// Text sizes - generous for comfortable reading, especially on podium/lectern use
 export const getTextSizeClasses = (size: TextSize, isRtl: boolean) => {
 	if (isRtl) {
-		// Arabic needs larger sizes - Bible.com uses ~24px base
+		// Arabic needs larger sizes for readability
 		return {
-			sm: { chapter: 'text-lg', verse: 'text-xl', verseNum: 'text-xs' },
-			md: { chapter: 'text-xl', verse: 'text-2xl', verseNum: 'text-sm' },
-			lg: { chapter: 'text-2xl', verse: 'text-4xl', verseNum: 'text-base' },
+			sm: { chapter: 'text-xl', verse: 'text-2xl', verseNum: 'text-sm' },
+			md: { chapter: 'text-2xl', verse: 'text-3xl', verseNum: 'text-base' },
+			lg: { chapter: 'text-3xl', verse: 'text-4xl', verseNum: 'text-lg' },
 		}[size]
 	}
-	// English - more noticeable jumps (sm: 16px, md: 18px, lg: 24px)
+	// English - comfortable reading sizes (sm: 18px, md: 24px, lg: 30px)
 	return {
-		sm: { chapter: 'text-xs', verse: 'text-base', verseNum: 'text-[10px]' },
-		md: { chapter: 'text-sm', verse: 'text-lg', verseNum: 'text-xs' },
-		lg: { chapter: 'text-base', verse: 'text-2xl', verseNum: 'text-sm' },
+		sm: { chapter: 'text-sm', verse: 'text-lg', verseNum: 'text-xs' },
+		md: { chapter: 'text-base', verse: 'text-2xl', verseNum: 'text-sm' },
+		lg: { chapter: 'text-lg', verse: 'text-3xl', verseNum: 'text-base' },
 	}[size]
 }
 
-// Line height classes - more generous defaults for comfortable reading
+// Line height classes - generous for comfortable reading and podium use
 export const getLineHeightClass = (spacing: LineSpacing, isRtl: boolean) => {
 	if (isRtl) {
 		return {
-			compact: 'leading-loose',
-			normal: 'leading-[2.25]',
-			relaxed: 'leading-[2.75]',
+			compact: 'leading-[2]',
+			normal: 'leading-[2.5]',
+			relaxed: 'leading-[3]',
 		}[spacing]
 	}
 	return {
-		compact: 'leading-relaxed',
-		normal: 'leading-loose',
-		relaxed: 'leading-[2.25]',
+		compact: 'leading-loose',
+		normal: 'leading-[2]',
+		relaxed: 'leading-[2.5]',
 	}[spacing]
 }
 
@@ -38,6 +38,17 @@ export const getLineHeightClass = (spacing: LineSpacing, isRtl: boolean) => {
 export const getFontClass = (fontFamily: FontFamily, isRtl: boolean) => {
 	if (isRtl) return 'font-arabic'
 	return fontFamily === 'serif' ? 'font-serif-reading' : ''
+}
+
+// Word spacing classes (English only)
+export const getWordSpacingClass = (wordSpacing: WordSpacing, isRtl: boolean) => {
+	if (isRtl) return '' // Arabic has its own spacing
+	const classes: Record<WordSpacing, string> = {
+		compact: 'word-spacing-compact',
+		normal: 'word-spacing-normal',
+		relaxed: 'word-spacing-relaxed',
+	}
+	return classes[wordSpacing]
 }
 
 // Font weight classes - Arabic uses different weight values for Amiri font

@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReadingSettings, ReadingSettingsActions } from '@/hooks/useReadingSettings'
-import { LineSpacingCompactIcon, LineSpacingNormalIcon, LineSpacingRelaxedIcon, WidthIcon } from './icons'
+import { LineSpacingCompactIcon, LineSpacingNormalIcon, LineSpacingRelaxedIcon, WidthIcon, WordSpacingIcon } from './icons'
 import { SegmentedButtons } from './SegmentedButtons'
 import { SettingSection } from './SettingSection'
 import { ThemePicker } from './ThemePicker'
@@ -14,7 +14,7 @@ interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps) {
-	const { translation, fontFamily, textSize, weight, lineSpacing, width, viewMode, showVerses, theme, isAutoTheme } = settings
+	const { translation, fontFamily, textSize, weight, lineSpacing, wordSpacing, width, viewMode, showVerses, theme, isAutoTheme } = settings
 
 	return (
 		<>
@@ -35,8 +35,8 @@ export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps
 					<ThemePicker value={theme} isAuto={isAutoTheme} onChange={actions.setTheme} />
 				</SettingSection>
 
-				{/* Language */}
-				<SettingSection label="Language">
+				{/* Reading Language */}
+				<SettingSection label="Reading Language">
 					<SegmentedButtons
 						value={translation}
 						onChange={actions.setTranslation}
@@ -118,6 +118,21 @@ export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps
 						]}
 					/>
 				</SettingSection>
+
+				{/* Word Spacing - only for English */}
+				{translation === 'en' && (
+					<SettingSection label="Word Spacing">
+						<SegmentedButtons
+							value={wordSpacing}
+							onChange={actions.setWordSpacing}
+							options={[
+								{ value: 'compact', icon: <WordSpacingIcon gap="compact" /> },
+								{ value: 'normal', icon: <WordSpacingIcon gap="normal" /> },
+								{ value: 'relaxed', icon: <WordSpacingIcon gap="relaxed" /> },
+							]}
+						/>
+					</SettingSection>
+				)}
 
 				{/* Reading Width */}
 				<SettingSection label="Reading Width">

@@ -74,6 +74,19 @@ body {
 	color: inherit;
 }
 
+/* Word spacing options for English reading */
+.word-spacing-compact {
+	word-spacing: 0;
+}
+
+.word-spacing-normal {
+	word-spacing: 0.08em;
+}
+
+.word-spacing-relaxed {
+	word-spacing: 0.16em;
+}
+
 /* Literata serif font for comfortable reading (like Kindle's Bookerly) */
 .font-serif-reading {
 	font-family: var(--font-serif), Georgia, serif;

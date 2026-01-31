@@ -1,4 +1,4 @@
-export { ChevronIcon, LineSpacingCompactIcon, LineSpacingNormalIcon, LineSpacingRelaxedIcon, WidthIcon } from './icons'
+export { ChevronIcon, LineSpacingCompactIcon, LineSpacingNormalIcon, LineSpacingRelaxedIcon, WidthIcon, WordSpacingIcon } from './icons'
 export { SegmentedButtons } from './SegmentedButtons'
 export { SettingSection } from './SettingSection'
 export { SettingsPanel } from './SettingsPanel'

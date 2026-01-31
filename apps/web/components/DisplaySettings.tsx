@@ -15,6 +15,7 @@ export type {
 	TextSize,
 	ThemePreference,
 	ViewMode,
+	WordSpacing,
 } from '@/lib/reading-preferences'
 
 export function DisplaySettings() {

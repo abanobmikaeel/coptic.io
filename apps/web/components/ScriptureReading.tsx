@@ -6,11 +6,12 @@ import {
 	getTextSizeClasses,
 	getWeightClass,
 	getWidthClass,
+	getWordSpacingClass,
 	themeClasses,
 } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
 import { useState } from 'react'
-import type { FontFamily, FontWeight, LineSpacing, ReadingTheme, ReadingWidth, TextSize, ViewMode } from './DisplaySettings'
+import type { FontFamily, FontWeight, LineSpacing, ReadingTheme, ReadingWidth, TextSize, ViewMode, WordSpacing } from './DisplaySettings'
 
 interface ScriptureReadingProps {
 	readings: Reading[]
@@ -22,6 +23,7 @@ interface ScriptureReadingProps {
 	textSize?: TextSize
 	fontFamily?: FontFamily
 	lineSpacing?: LineSpacing
+	wordSpacing?: WordSpacing
 	theme?: ReadingTheme
 	width?: ReadingWidth
 	weight?: FontWeight
@@ -37,6 +39,7 @@ export function ScriptureReading({
 	textSize = 'md',
 	fontFamily = 'sans',
 	lineSpacing = 'normal',
+	wordSpacing = 'normal',
 	theme = 'light',
 	width = 'normal',
 	weight = 'normal',
@@ -48,6 +51,7 @@ export function ScriptureReading({
 	const fontClass = getFontClass(fontFamily, isRtl)
 	const weightClass = getWeightClass(weight, isRtl)
 	const widthClass = getWidthClass(width)
+	const wordSpacingClass = getWordSpacingClass(wordSpacing, isRtl)
 
 	const reference = readings
 		.map((reading) =>
@@ -62,7 +66,10 @@ export function ScriptureReading({
 		.join('; ')
 
 	return (
-		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-12' : 'mb-4'}`}>
+		<article id={id} className={`scroll-mt-24 pt-8 first:pt-0 ${isOpen ? 'mb-16' : 'mb-6'}`}>
+			{/* Section divider */}
+			<div className={`${widthClass} mx-auto mb-6 border-t ${themeClasses.border[theme]} first:hidden`} />
+
 			{/* Clickable header */}
 			<button
 				type="button"
@@ -70,16 +77,16 @@ export function ScriptureReading({
 				className="w-full group cursor-pointer"
 			>
 				<div
-					className={`${widthClass} mx-auto px-4 py-3 rounded-xl transition-colors ${
+					className={`${widthClass} mx-auto px-4 py-4 rounded-xl transition-colors ${
 						isOpen ? 'bg-transparent' : themeClasses.collapsedBg[theme]
 					}`}
 				>
 					<div className="flex items-center justify-between gap-4">
 						<div className="flex-1 text-left">
-							<h2 className={`text-lg font-semibold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}>
+							<h2 className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}>
 								{title}
 							</h2>
-							<p className={`text-sm ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600'}`}>{reference}</p>
+							<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600'}`}>{reference}</p>
 						</div>
 
 						{/* Expand/Collapse button */}
@@ -128,7 +135,7 @@ export function ScriptureReading({
 									{/* Verses */}
 									{viewMode === 'continuous' ? (
 										<p
-											className={`${fontClass} ${weightClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''}`}
+											className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''}`}
 											dir={isRtl ? 'rtl' : 'ltr'}
 										>
 											{chapter.verses.map((verse, vidx) => (
@@ -149,7 +156,7 @@ export function ScriptureReading({
 											dir={isRtl ? 'rtl' : 'ltr'}
 										>
 											{chapter.verses.map((verse) => (
-												<p key={verse.num} className={`${fontClass} ${weightClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]}`}>
+												<p key={verse.num} className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]}`}>
 													{showVerses && (
 														<span className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-3' : 'mr-2'}`}>
 															{verse.num}
