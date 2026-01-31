@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh root@46.225.53.142 'systemctl daemon-reload && systemctl restart webhook && systemctl status webhook')",
+      "Bash(ssh root@46.225.53.142:*)",
+      "Bash(git -C \"/Users/user/Projects/Inactive Projects/coptic.io\" diff --cached --name-status)"
+    ]
+  }
+}
