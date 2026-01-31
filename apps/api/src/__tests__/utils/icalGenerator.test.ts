@@ -127,16 +127,18 @@ describe('iCalendar Generator', () => {
 	})
 
 	describe('Event categorization', () => {
-		it('should categorize moveable feasts correctly', () => {
+		it('should categorize feasts correctly', () => {
 			const ical = generateYearCalendar(2025)
 
-			// Moveable feasts should have the Moveable Feast category
-			const moveableFeastEvents = ical.match(
-				/BEGIN:VEVENT[\s\S]*?CATEGORIES:Moveable Feast[\s\S]*?END:VEVENT/g,
-			)
+			// All feasts (moveable and static) use the Feast category
+			const feastEvents = ical.match(/BEGIN:VEVENT[\s\S]*?CATEGORIES:Feast[\s\S]*?END:VEVENT/g)
 
-			expect(moveableFeastEvents).toBeTruthy()
-			expect(moveableFeastEvents!.length).toBeGreaterThan(0)
+			expect(feastEvents).toBeTruthy()
+			expect(feastEvents!.length).toBeGreaterThan(0)
+
+			// Should include moveable feasts like Easter, Palm Sunday
+			expect(ical).toContain('SUMMARY:Easter')
+			expect(ical).toContain('SUMMARY:Palm Sunday')
 		})
 
 		it('should categorize fasting periods correctly', () => {
@@ -144,13 +146,17 @@ describe('iCalendar Generator', () => {
 
 			// Fasting periods should have the Fasting Period category
 			expect(ical).toContain('CATEGORIES:Fasting Period')
+			// Should have "begins" markers for fasting seasons
+			expect(ical).toContain('Great Lent begins')
 		})
 
-		it('should categorize static feasts correctly', () => {
+		it('should not duplicate fasting periods', () => {
 			const ical = generateYearCalendar(2025)
 
-			// Static celebrations should have the Feast category
-			expect(ical).toContain('CATEGORIES:Feast')
+			// Fasting periods should only appear once (as "begins" markers from seasons)
+			// not as both moveable feasts AND season markers
+			const greatLentMatches = ical.match(/Great Lent/g)
+			expect(greatLentMatches?.length).toBe(1) // Only "Great Lent begins"
 		})
 	})
 

@@ -10,6 +10,9 @@ export interface Celebration {
 	isMoveable: boolean
 }
 
+// Map for O(1) lookups
+const celebrationsById = new Map(celebrations.map((c) => [c.id, c]))
+
 const getStaticCelebrationsForDay = (date: Date): Celebration[] | null => {
 	const { month, day }: { month: number; day: number } = fromGregorian(date)
 	const monthFound = dayCelebrations[month - 1]
@@ -17,25 +20,20 @@ const getStaticCelebrationsForDay = (date: Date): Celebration[] | null => {
 		throw new Error('Month not found')
 	}
 	const celebrationsFound = monthFound.daysWithCelebrations[day - 1]
-	// handle multiple celebrations
-	const celebrationData: Celebration[] = []
 	if (celebrationsFound === 0) {
 		return null
 	}
 
-	if (Array.isArray(celebrationsFound)) {
-		celebrationsFound.forEach((celeb) => {
-			const celebFound = celebrations.find((x) => x.id === celeb)
-			if (celebFound) {
-				celebrationData.push({ ...celebFound, isMoveable: false })
-			}
-		})
-	} else {
-		const celebFound = celebrations.find((x) => x.id === celebrationsFound)
+	const celebrationData: Celebration[] = []
+	const ids = Array.isArray(celebrationsFound) ? celebrationsFound : [celebrationsFound]
+
+	for (const id of ids) {
+		const celebFound = celebrationsById.get(id)
 		if (celebFound) {
 			celebrationData.push({ ...celebFound, isMoveable: false })
 		}
 	}
+
 	return celebrationData
 }
 

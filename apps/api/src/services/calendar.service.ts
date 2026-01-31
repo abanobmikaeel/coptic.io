@@ -8,6 +8,10 @@ import { format, getDaysInMonth } from 'date-fns'
 import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
 import { getFastingForDate } from './fasting.service'
 
+// In-memory cache for generated iCal calendars (24-hour TTL)
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000
+const calendarCache = new Map<string, { data: string; expires: number }>()
+
 export const getCalendarMonth = (year: number, month: number): CalendarMonth => {
 	if (Number.isNaN(year) || year < 1900 || year > 2199) {
 		throw new Error('Invalid year. Must be between 1900 and 2199')
@@ -50,10 +54,21 @@ export const getCalendarMonth = (year: number, month: number): CalendarMonth => 
 
 export const getSubscriptionCalendar = () => {
 	const currentYear = new Date().getFullYear()
+	const cacheKey = `subscription-${currentYear}`
+
+	// Check cache
+	const cached = calendarCache.get(cacheKey)
+	if (cached && cached.expires > Date.now()) {
+		return cached.data
+	}
+
+	// Generate and cache
 	const startYear = currentYear - 1
 	const endYear = currentYear + 2
+	const data = generateMultiYearCalendar(startYear, endYear)
 
-	return generateMultiYearCalendar(startYear, endYear)
+	calendarCache.set(cacheKey, { data, expires: Date.now() + CACHE_TTL_MS })
+	return data
 }
 
 export const getYearCalendar = (year: number) => {
@@ -61,5 +76,16 @@ export const getYearCalendar = (year: number) => {
 		throw new Error('Invalid year. Must be between 1900 and 2199')
 	}
 
-	return generateYearCalendar(year)
+	const cacheKey = `year-${year}`
+
+	// Check cache
+	const cached = calendarCache.get(cacheKey)
+	if (cached && cached.expires > Date.now()) {
+		return cached.data
+	}
+
+	// Generate and cache
+	const data = generateYearCalendar(year)
+	calendarCache.set(cacheKey, { data, expires: Date.now() + CACHE_TTL_MS })
+	return data
 }
