@@ -45,3 +45,9 @@ export function getTodayDateString(): string {
 export function parseDateString(dateString: string): Date {
 	return new Date(`${dateString}T00:00:00`)
 }
+
+export function addDaysToDateString(dateString: string, days: number): string {
+	const d = new Date(`${dateString}T00:00:00`)
+	d.setDate(d.getDate() + days)
+	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}

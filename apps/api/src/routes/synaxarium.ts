@@ -66,6 +66,57 @@ app.openapi(getForDateRoute, (c) => {
 	return c.json(synaxarium, 200)
 })
 
+// GET /api/synaxarium/coptic/:copticDate
+const getForCopticDateRoute = createRoute({
+	method: 'get',
+	path: '/coptic/:copticDate',
+	tags: ['Synaxarium'],
+	summary: 'Get Synaxarium entries for a Coptic date',
+	description: 'Returns all saint commemorations for a specific Coptic date (e.g., "7 Hator")',
+	request: {
+		params: z.object({
+			copticDate: z.string().openapi({ example: '7 Hator' }),
+		}),
+		query: z.object({
+			detailed: z.string().optional().openapi({ example: 'true' }),
+		}),
+	},
+	responses: {
+		200: {
+			description: 'Synaxarium entries for the Coptic date',
+			content: {
+				'application/json': {
+					schema: z.array(SynaxariumEntrySchema),
+				},
+			},
+		},
+		404: {
+			description: 'No synaxarium found for Coptic date',
+			content: {
+				'application/json': {
+					schema: ErrorSchema,
+				},
+			},
+		},
+	},
+})
+
+app.openapi(getForCopticDateRoute, (c) => {
+	const { copticDate } = c.req.valid('param')
+	const { detailed } = c.req.valid('query')
+
+	// Decode URL-encoded Coptic date (e.g., "7%20Hator" -> "7 Hator")
+	const decodedDate = decodeURIComponent(copticDate).replace(/-/g, ' ')
+
+	const synaxarium = synaxariumService.getSynaxariumByCopticDate(decodedDate, detailed === 'true')
+
+	if (!synaxarium) {
+		return c.json({ error: 'No synaxarium found for this Coptic date' }, 404)
+	}
+
+	return c.json(synaxarium, 200)
+})
+
 // GET /api/synaxarium/search/query
 const searchRoute = createRoute({
 	method: 'get',
