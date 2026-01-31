@@ -6,7 +6,7 @@ import {
 } from '@coptic/core'
 import { format, getDaysInMonth } from 'date-fns'
 import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
-import { getFastingForDate } from './fasting.service'
+import { getFastingForCopticDate } from './fasting.service'
 
 // In-memory cache for generated iCal calendars (24-hour TTL)
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000
@@ -28,7 +28,7 @@ export const getCalendarMonth = (year: number, month: number): CalendarMonth => 
 	for (let day = 1; day <= numDays; day++) {
 		const date = new Date(year, month - 1, day)
 		const copticDate = gregorianToCoptic(date)
-		const fasting = getFastingForDate(date)
+		const fasting = getFastingForCopticDate(date, copticDate)
 
 		days.push({ gregorianDate: format(date, 'yyyy-MM-dd'), copticDate, fasting })
 

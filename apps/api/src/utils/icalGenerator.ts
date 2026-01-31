@@ -84,8 +84,8 @@ const pushEvent = (
  */
 const getConsolidatedCelebrations = (
 	year: number,
-): Array<{ name: string; date: Date; story?: string; marker?: 'begins' }> => {
-	const result: Array<{ name: string; date: Date; story?: string; marker?: 'begins' }> = []
+): Array<{ name: string; date: Date; marker?: 'begins' }> => {
+	const result: Array<{ name: string; date: Date; marker?: 'begins' }> = []
 	const startDate = new Date(year, 0, 1)
 	const endDate = new Date(year, 11, 31)
 
@@ -112,14 +112,13 @@ const getConsolidatedCelebrations = (
 						result.push({
 							name: celebration.name,
 							date: currentDate,
-							story: celebration.story,
 							marker: 'begins',
 						})
 						addedMultiDay.add(celebration.name)
 					}
 				} else {
 					// Single-day celebration - add directly
-					result.push({ name: celebration.name, date: currentDate, story: celebration.story })
+					result.push({ name: celebration.name, date: currentDate })
 				}
 			}
 		}
@@ -181,7 +180,7 @@ export const generateYearCalendar = (year: number): string => {
 		const summary = celebration.marker
 			? `${celebration.name} ${celebration.marker}`
 			: celebration.name
-		pushEvent(lines, summary, celebration.date, celebration.story || '', 'Feast')
+		pushEvent(lines, summary, celebration.date, celebration.name, 'Feast')
 	}
 
 	lines.push('END:VCALENDAR')
@@ -235,7 +234,7 @@ export const generateMultiYearCalendar = (startYear: number, endYear: number): s
 			const summary = celebration.marker
 				? `${celebration.name} ${celebration.marker}`
 				: celebration.name
-			pushEvent(lines, summary, celebration.date, celebration.story || '', 'Feast')
+			pushEvent(lines, summary, celebration.date, celebration.name, 'Feast')
 		}
 	}
 
