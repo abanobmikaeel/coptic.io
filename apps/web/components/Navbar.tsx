@@ -4,7 +4,7 @@ import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
 	return (
-		<nav className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl">
+		<nav className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl">
 			<div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
 				<Link href="/" className="flex items-center gap-2.5 group">
 					<CopticCross size={22} />

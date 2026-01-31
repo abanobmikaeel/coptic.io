@@ -15,7 +15,6 @@ import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
 import { ScriptureReading } from '@/components/ScriptureReading'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
-import { ChevronLeftIcon } from '@/components/ui/Icons'
 import { API_BASE_URL } from '@/config'
 import { themeClasses } from '@/lib/reading-styles'
 import type { ReadingsData } from '@/lib/types'
@@ -128,10 +127,10 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	}
 
 	// Render a scripture section if it has data
-	const renderSection = (key: ReadingSection) => {
+	const renderSection = (key: ReadingSection, service?: string) => {
 		const data = readings?.[key]
 		if (!data?.length) return null
-		return <ScriptureReading key={key} id={`reading-${key}`} readings={data} title={sectionLabels[key]} {...scriptureProps} />
+		return <ScriptureReading key={key} id={`reading-${key}`} readings={data} title={sectionLabels[key]} service={service} {...scriptureProps} />
 	}
 
 	return (
@@ -141,67 +140,84 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				<ReadingProgress />
 			</Suspense>
 
-			{/* Sticky controls bar */}
+			{/* Sticky header bar with date and settings */}
 			<div
 				className={`sticky top-14 z-30 ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border-b ${themeClasses.border[theme]}`}
 			>
-				<div className="max-w-2xl mx-auto px-6 py-2 flex items-center justify-end">
-					<Suspense fallback={null}>
-						<DisplaySettings />
-					</Suspense>
+				<div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-center relative">
+					{/* Date navigation - centered */}
+					<div className="flex items-center gap-3">
+						<Suspense fallback={<span className="text-xl font-semibold">{readings?.fullDate?.dateString || gregorianDate}</span>}>
+							<DateNavigation theme={theme}>
+								<div className="text-center">
+									<h1 className="text-xl font-bold">{readings?.fullDate?.dateString || gregorianDate}</h1>
+									<p className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}>
+										{readings?.fullDate ? gregorianDate : ''}
+									</p>
+								</div>
+							</DateNavigation>
+						</Suspense>
+						{!isToday && (
+							<Link
+								href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
+								className={`text-xs px-2 py-1 rounded-full ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
+							>
+								Today
+							</Link>
+						)}
+					</div>
+
+					{/* Display settings - absolute right */}
+					<div className="absolute right-6">
+						<Suspense fallback={null}>
+							<DisplaySettings />
+						</Suspense>
+					</div>
 				</div>
 			</div>
 
-			{/* Header */}
-			<header className="pt-10 pb-10 px-6 text-center">
-				<div className="max-w-2xl mx-auto">
-					<p
-						className={`text-xs font-medium tracking-widest uppercase mb-3 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600 dark:text-amber-500'}`}
-					>
-						{isToday ? "Today's Readings" : 'Daily Readings'}
-					</p>
-
-					<Suspense fallback={<h1 className="text-3xl md:text-4xl font-bold mb-2">{readings?.fullDate?.dateString || gregorianDate}</h1>}>
-						<DateNavigation currentDate={params.date} theme={theme}>
-							<h1 className="text-3xl md:text-4xl font-bold">{readings?.fullDate?.dateString || gregorianDate}</h1>
-						</DateNavigation>
-					</Suspense>
-
-					<p className={`text-sm ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}>
-						{readings?.fullDate ? gregorianDate : ''}
-					</p>
-
-					{!isToday && (
-						<Link
-							href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
-							className={`inline-flex items-center gap-1 mt-3 text-sm hover:underline ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600 dark:text-amber-500'}`}
-						>
-							<ChevronLeftIcon className="w-4 h-4" />
-							Back to today
-						</Link>
-					)}
-				</div>
-			</header>
-
 			{readings ? (
-				<div className="px-6 pb-24">
-					{/* Pauline, Catholic, Acts */}
-					{renderSection('Pauline')}
-					{renderSection('Catholic')}
-					{renderSection('Acts')}
+				<div className="px-6 pt-10 pb-24">
+					{(() => {
+						const ServiceDivider = () => (
+							<div className={`max-w-2xl mx-auto px-4 my-8`}>
+								<div className={`border-t ${themeClasses.border[theme]}`} />
+							</div>
+						)
 
-					{/* Synaxarium */}
-					{readings.Synxarium?.length ? <SynaxariumReading entries={readings.Synxarium} textSize={textSize} theme={theme} width={width} /> : null}
+						const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
+						const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
 
-					{/* Liturgy readings */}
-					{renderSection('LPsalm')}
-					{renderSection('LGospel')}
+						return (
+							<>
+								{/* LITURGY */}
+								{renderSection('Pauline', 'Liturgy')}
+								{renderSection('Catholic', 'Liturgy')}
+								{renderSection('Acts', 'Liturgy')}
+								{readings.Synxarium?.length ? <SynaxariumReading entries={readings.Synxarium} textSize={textSize} theme={theme} width={width} service="Liturgy" /> : null}
+								{renderSection('LPsalm', 'Liturgy')}
+								{renderSection('LGospel', 'Liturgy')}
 
-					{/* Vespers & Matins */}
-					{renderSection('VPsalm')}
-					{renderSection('VGospel')}
-					{renderSection('MPsalm')}
-					{renderSection('MGospel')}
+								{/* VESPERS */}
+								{hasVespers && (
+									<>
+										<ServiceDivider />
+										{renderSection('VPsalm', 'Vespers')}
+										{renderSection('VGospel', 'Vespers')}
+									</>
+								)}
+
+								{/* MATINS */}
+								{hasMatins && (
+									<>
+										<ServiceDivider />
+										{renderSection('MPsalm', 'Matins')}
+										{renderSection('MGospel', 'Matins')}
+									</>
+								)}
+							</>
+						)
+					})()}
 				</div>
 			) : (
 				<section className="px-6 py-24 text-center">

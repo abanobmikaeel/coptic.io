@@ -11,59 +11,49 @@ interface SynaxariumReadingProps {
 	textSize: TextSize
 	theme?: ReadingTheme
 	width?: ReadingWidth
+	service?: string
 }
 
-export function SynaxariumReading({ entries, textSize, theme = 'light', width = 'normal' }: SynaxariumReadingProps) {
+export function SynaxariumReading({ entries, textSize, theme = 'light', width = 'normal', service }: SynaxariumReadingProps) {
 	const [isOpen, setIsOpen] = useState(true)
 	const count = entries.length
 	const widthClass = getWidthClass(width)
 
 	return (
-		<article id="reading-Synaxarium" className={`scroll-mt-24 pt-8 ${isOpen ? 'mb-16' : 'mb-6'}`}>
-			{/* Section divider */}
-			<div className={`${widthClass} mx-auto mb-6 border-t ${themeClasses.border[theme]}`} />
+		<article id="reading-Synaxarium" className={`scroll-mt-24 ${isOpen ? 'mb-12' : 'mb-4'}`}>
 
 			{/* Clickable header */}
 			<button type="button" onClick={() => setIsOpen(!isOpen)} className="w-full group cursor-pointer">
-				<div
-					className={`${widthClass} mx-auto px-4 py-4 rounded-xl transition-colors ${
-						isOpen ? 'bg-transparent' : themeClasses.collapsedBg[theme]
-					}`}
-				>
-					<div className="flex items-center justify-between gap-4">
-						<div className="flex-1 text-left">
+				<div className={`${widthClass} mx-auto px-4`}>
+					<div
+						className={`py-4 pl-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
+					>
+						{service && (
+							<p className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}>
+								{service}
+							</p>
+						)}
+						<div className="flex items-center gap-3">
 							<h2 className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}>
 								Synaxarium
 							</h2>
-							<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600'}`}>
-								{count} {count === 1 ? 'commemoration' : 'commemorations'}
-							</p>
-						</div>
-
-						{/* Expand/Collapse button */}
-						<div
-							className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
-								isOpen
-									? `${themeClasses.muted[theme]} group-hover:text-amber-600`
-									: theme === 'sepia'
-										? 'bg-amber-100 text-amber-800'
-										: 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300'
-							}`}
-						>
-							<span>{isOpen ? 'Collapse' : 'Expand'}</span>
+							{/* Collapse indicator */}
 							<svg
-								width="14"
-								height="14"
+								width="16"
+								height="16"
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
 								strokeWidth="2"
-								className={`transition-transform ${isOpen ? '' : '-rotate-90'}`}
+								className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? '' : '-rotate-90'} opacity-0 group-hover:opacity-100`}
 								aria-hidden="true"
 							>
 								<path d="m6 9 6 6 6-6" />
 							</svg>
 						</div>
+						<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}>
+							{count} {count === 1 ? 'commemoration' : 'commemorations'}
+						</p>
 					</div>
 				</div>
 			</button>

@@ -7,13 +7,15 @@ import { useSearchParams } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 interface DateNavigationProps {
-	currentDate?: string
 	theme?: 'light' | 'sepia' | 'dark'
 	children?: ReactNode
 }
 
-export function DateNavigation({ currentDate, theme = 'light', children }: DateNavigationProps) {
+export function DateNavigation({ theme = 'light', children }: DateNavigationProps) {
 	const searchParams = useSearchParams()
+
+	// Read current date from URL params (client-side source of truth)
+	const currentDate = searchParams.get('date') || undefined
 
 	const buildUrl = (targetDate: string) => {
 		const params = new URLSearchParams(searchParams.toString())
@@ -38,7 +40,7 @@ export function DateNavigation({ currentDate, theme = 'light', children }: DateN
 			: 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
 
 	return (
-		<div className="flex items-center justify-center gap-3 mb-2">
+		<div className="flex items-center justify-center gap-3">
 			<Link
 				href={buildUrl(prevDate)}
 				className={`p-2 rounded-full transition-colors ${buttonClass}`}

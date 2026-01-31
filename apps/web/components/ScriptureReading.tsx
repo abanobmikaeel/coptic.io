@@ -27,6 +27,7 @@ interface ScriptureReadingProps {
 	theme?: ReadingTheme
 	width?: ReadingWidth
 	weight?: FontWeight
+	service?: string
 }
 
 export function ScriptureReading({
@@ -43,6 +44,7 @@ export function ScriptureReading({
 	theme = 'light',
 	width = 'normal',
 	weight = 'normal',
+	service,
 }: ScriptureReadingProps) {
 	const [isOpen, setIsOpen] = useState(true)
 
@@ -66,9 +68,7 @@ export function ScriptureReading({
 		.join('; ')
 
 	return (
-		<article id={id} className={`scroll-mt-24 pt-8 first:pt-0 ${isOpen ? 'mb-16' : 'mb-6'}`}>
-			{/* Section divider */}
-			<div className={`${widthClass} mx-auto mb-6 border-t ${themeClasses.border[theme]} first:hidden`} />
+		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-12' : 'mb-4'}`}>
 
 			{/* Clickable header */}
 			<button
@@ -76,43 +76,34 @@ export function ScriptureReading({
 				onClick={() => setIsOpen(!isOpen)}
 				className="w-full group cursor-pointer"
 			>
-				<div
-					className={`${widthClass} mx-auto px-4 py-4 rounded-xl transition-colors ${
-						isOpen ? 'bg-transparent' : themeClasses.collapsedBg[theme]
-					}`}
-				>
-					<div className="flex items-center justify-between gap-4">
-						<div className="flex-1 text-left">
+				<div className={`${widthClass} mx-auto px-4`}>
+					<div
+						className={`py-4 pl-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
+					>
+						{service && (
+							<p className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}>
+								{service}
+							</p>
+						)}
+						<div className="flex items-center gap-3">
 							<h2 className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}>
 								{title}
 							</h2>
-							<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600'}`}>{reference}</p>
-						</div>
-
-						{/* Expand/Collapse button */}
-						<div
-							className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
-								isOpen
-									? `${themeClasses.muted[theme]} group-hover:text-amber-600`
-									: theme === 'sepia'
-										? 'bg-amber-100 text-amber-800'
-										: 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300'
-							}`}
-						>
-							<span>{isOpen ? 'Collapse' : 'Expand'}</span>
+							{/* Collapse indicator */}
 							<svg
-								width="14"
-								height="14"
+								width="16"
+								height="16"
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
 								strokeWidth="2"
-								className={`transition-transform ${isOpen ? '' : '-rotate-90'}`}
+								className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? '' : '-rotate-90'} opacity-0 group-hover:opacity-100`}
 								aria-hidden="true"
 							>
 								<path d="m6 9 6 6 6-6" />
 							</svg>
 						</div>
+						<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}>{reference}</p>
 					</div>
 				</div>
 			</button>
@@ -126,7 +117,7 @@ export function ScriptureReading({
 								<div key={cidx} className="mb-8">
 									{/* Chapter heading */}
 									<h3
-										className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} mb-6 ${isRtl ? 'font-arabic' : 'uppercase'}`}
+										className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} mb-10 ${isRtl ? 'font-arabic' : 'uppercase'}`}
 										dir={isRtl ? 'rtl' : 'ltr'}
 									>
 										{reading.bookName} {chapter.chapterNum}
@@ -135,7 +126,7 @@ export function ScriptureReading({
 									{/* Verses */}
 									{viewMode === 'continuous' ? (
 										<p
-											className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''}`}
+											className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : 'first-letter-large'}`}
 											dir={isRtl ? 'rtl' : 'ltr'}
 										>
 											{chapter.verses.map((verse, vidx) => (
@@ -155,8 +146,11 @@ export function ScriptureReading({
 											className={`${isRtl ? 'space-y-6' : 'space-y-4'} ${isRtl ? 'text-right' : ''}`}
 											dir={isRtl ? 'rtl' : 'ltr'}
 										>
-											{chapter.verses.map((verse) => (
-												<p key={verse.num} className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]}`}>
+											{chapter.verses.map((verse, vidx) => (
+												<p
+													key={verse.num}
+													className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${vidx === 0 && !isRtl ? 'first-letter-large' : ''}`}
+												>
 													{showVerses && (
 														<span className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-3' : 'mr-2'}`}>
 															{verse.num}

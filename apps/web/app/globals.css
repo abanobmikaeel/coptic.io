@@ -87,6 +87,12 @@ body {
 	word-spacing: 0.16em;
 }
 
+/* Subtle enlarged first letter (not floated) */
+.first-letter-large::first-letter {
+	font-size: 1.15em;
+	font-weight: 600;
+}
+
 /* Literata serif font for comfortable reading (like Kindle's Bookerly) */
 .font-serif-reading {
 	font-family: var(--font-serif), Georgia, serif;

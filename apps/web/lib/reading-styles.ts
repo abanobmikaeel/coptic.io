@@ -126,4 +126,18 @@ export const themeClasses = {
 		sepia: 'bg-[#ebe4d6] hover:bg-[#e0d7c5]',
 		dark: 'bg-gray-800/50 hover:bg-gray-800',
 	} as Record<ReadingTheme, string>,
+
+	// Subtle background for section headers to indicate interactivity
+	headerBg: {
+		light: 'bg-gray-50/50 hover:bg-gray-100/70',
+		sepia: 'bg-[#f0ebe1]/50 hover:bg-[#ebe4d6]/70',
+		dark: 'bg-gray-800/30 hover:bg-gray-800/50',
+	} as Record<ReadingTheme, string>,
+
+	// Card background - always visible
+	cardBg: {
+		light: 'bg-gray-50/70 hover:bg-gray-100/80',
+		sepia: 'bg-[#ebe4d6]/50 hover:bg-[#e5dccb]/70',
+		dark: 'bg-gray-800/40 hover:bg-gray-800/60',
+	} as Record<ReadingTheme, string>,
 }
