@@ -73,3 +73,43 @@ body {
 	background: rgba(217, 119, 6, 0.3);
 	color: inherit;
 }
+
+/* Word spacing options for English reading */
+.word-spacing-compact {
+	word-spacing: 0;
+}
+
+.word-spacing-normal {
+	word-spacing: 0.08em;
+}
+
+.word-spacing-relaxed {
+	word-spacing: 0.16em;
+}
+
+/* Subtle enlarged first letter (not floated) */
+.first-letter-large::first-letter {
+	font-size: 1.15em;
+	font-weight: 600;
+}
+
+/* Literata serif font for comfortable reading (like Kindle's Bookerly) */
+.font-serif-reading {
+	font-family: var(--font-serif), Georgia, serif;
+}
+
+/* Arabic font class - optimized for readability */
+.font-arabic {
+	font-family: var(--font-arabic), "Amiri", "Traditional Arabic", serif;
+	word-spacing: 0.05em;
+	letter-spacing: 0.01em;
+}
+
+/* RTL text alignment adjustments */
+[dir="rtl"] .text-left {
+	text-align: right;
+}
+
+[dir="rtl"] .text-right {
+	text-align: left;
+}

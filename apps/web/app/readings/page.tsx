@@ -1,5 +1,27 @@
-import { SynaxariumSection } from '@/components/SynaxariumSection'
+import { BackToTop } from '@/components/BackToTop'
+import { DateNavigation } from '@/components/DateNavigation'
+import {
+	DisplaySettings,
+	type FontFamily,
+	type FontWeight,
+	type LineSpacing,
+	type ReadingTheme,
+	type ReadingWidth,
+	type TextSize,
+	type ViewMode,
+	type WordSpacing,
+} from '@/components/DisplaySettings'
+import { ReadingProgress } from '@/components/ReadingProgress'
+import { ReadingTimeline } from '@/components/ReadingTimeline'
+import { ScriptureReading } from '@/components/ScriptureReading'
+import { SynaxariumReading } from '@/components/SynaxariumReading'
+import { API_BASE_URL } from '@/config'
+import { themeClasses } from '@/lib/reading-styles'
+import type { ReadingsData } from '@/lib/types'
+import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
 	title: 'Daily Readings',
@@ -11,38 +33,45 @@ export const metadata: Metadata = {
 			'Daily scripture readings from the Coptic Orthodox Katameros including Pauline Epistles, Catholic Epistles, Acts, Psalms, and Gospel readings.',
 	},
 }
-import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
-import { API_BASE_URL } from '@/config'
-import type { Reading, ReadingsData } from '@/lib/types'
-import {
-	addDaysToDateString,
-	formatGregorianDate,
-	getTodayDateString,
-	parseDateString,
-} from '@/lib/utils'
-import Link from 'next/link'
 
-const sectionLabels: Record<string, { title: string; subtitle: string }> = {
-	VPsalm: { title: 'Vespers Psalm', subtitle: 'Evening Prayer' },
-	VGospel: { title: 'Vespers Gospel', subtitle: 'Evening Prayer' },
-	MPsalm: { title: 'Matins Psalm', subtitle: 'Morning Prayer' },
-	MGospel: { title: 'Matins Gospel', subtitle: 'Morning Prayer' },
-	Pauline: { title: 'Pauline Epistle', subtitle: 'Liturgy of the Word' },
-	Catholic: { title: 'Catholic Epistle', subtitle: 'Liturgy of the Word' },
-	Acts: { title: 'Acts of the Apostles', subtitle: 'Liturgy of the Word' },
-	LPsalm: { title: 'Liturgy Psalm', subtitle: 'Liturgy of the Word' },
-	LGospel: { title: 'Liturgy Gospel', subtitle: 'Liturgy of the Word' },
+type BibleTranslation = 'en' | 'ar'
+
+const sectionLabels: Record<string, string> = {
+	VPsalm: 'Vespers Psalm',
+	VGospel: 'Vespers Gospel',
+	MPsalm: 'Matins Psalm',
+	MGospel: 'Matins Gospel',
+	Pauline: 'Pauline Epistle',
+	Catholic: 'Catholic Epistle',
+	Acts: 'Acts of the Apostles',
+	LPsalm: 'Psalm',
+	LGospel: 'Gospel',
 }
 
-async function getReadings(date?: string): Promise<ReadingsData | null> {
+// All reading sections in display order
+const readingSections = [
+	'Pauline',
+	'Catholic',
+	'Acts',
+	'LPsalm',
+	'LGospel',
+	'VPsalm',
+	'VGospel',
+	'MPsalm',
+	'MGospel',
+] as const
+type ReadingSection = (typeof readingSections)[number]
+
+async function getReadings(date?: string, lang?: string): Promise<ReadingsData | null> {
 	try {
+		const params = new URLSearchParams({ detailed: 'true' })
+		if (lang && lang !== 'en') {
+			params.set('lang', lang)
+		}
 		const endpoint = date
-			? `${API_BASE_URL}/readings/${date}?detailed=true`
-			: `${API_BASE_URL}/readings?detailed=true`
-		const res = await fetch(endpoint, {
-			cache: 'no-store',
-		})
+			? `${API_BASE_URL}/readings/${date}?${params}`
+			: `${API_BASE_URL}/readings?${params}`
+		const res = await fetch(endpoint, { cache: 'no-store' })
 		if (!res.ok) return null
 		return res.json()
 	} catch {
@@ -50,164 +79,200 @@ async function getReadings(date?: string): Promise<ReadingsData | null> {
 	}
 }
 
-function ReadingSection({
-	readings,
-	label,
-}: { readings: Reading[]; label: { title: string; subtitle: string } }) {
-	return (
-		<div className="mb-8">
-			<div className="mb-4">
-				<h3 className="text-lg font-semibold text-gray-900 dark:text-white">{label.title}</h3>
-				<p className="text-sm text-gray-500 dark:text-gray-500">{label.subtitle}</p>
-			</div>
-			{readings.map((reading, idx) => (
-				<div key={idx} className="mb-4">
-					{reading.chapters.map((chapter, cidx) => (
-						<div key={cidx}>
-							<p className="text-sm font-medium text-amber-600 dark:text-amber-500 mb-3">
-								{reading.bookName} {chapter.chapterNum}:{chapter.verses[0]?.num}
-								{chapter.verses.length > 1 && `-${chapter.verses[chapter.verses.length - 1]?.num}`}
-							</p>
-							<div className="space-y-3">
-								{chapter.verses.map((verse) => (
-									<p key={verse.num} className="text-gray-700 dark:text-gray-300 leading-relaxed">
-										<span className="text-gray-400 dark:text-gray-600 text-sm mr-2">
-											{verse.num}
-										</span>
-										{verse.text}
-									</p>
-								))}
-							</div>
-						</div>
-					))}
-				</div>
-			))}
-		</div>
-	)
+interface ReadingsPageProps {
+	searchParams: Promise<{
+		date?: string
+		lang?: string
+		view?: string
+		verses?: string
+		size?: string
+		font?: string
+		spacing?: string
+		wordSpacing?: string
+		theme?: string
+		width?: string
+		weight?: string
+	}>
 }
 
-export default async function ReadingsPage({
-	searchParams,
-}: {
-	searchParams: Promise<{ date?: string }>
-}) {
-	const { date } = await searchParams
-	const readings = await getReadings(date)
+export default async function ReadingsPage({ searchParams }: ReadingsPageProps) {
+	const params = await searchParams
 
-	const currentDateString = date || getTodayDateString()
-	const displayDate = parseDateString(currentDateString)
+	// Parse display settings from URL
+	const translation: BibleTranslation = params.lang === 'ar' ? 'ar' : 'en'
+	const viewMode: ViewMode = params.view === 'continuous' ? 'continuous' : 'verse'
+	const showVerses = params.verses !== 'hide'
+	const textSize: TextSize = (params.size as TextSize) || 'md'
+	const fontFamily: FontFamily = (params.font as FontFamily) || 'sans'
+	const lineSpacing: LineSpacing = (params.spacing as LineSpacing) || 'normal'
+	const wordSpacing: WordSpacing = (params.wordSpacing as WordSpacing) || 'normal'
+	const theme: ReadingTheme = (params.theme as ReadingTheme) || 'light'
+	const width: ReadingWidth = (params.width as ReadingWidth) || 'normal'
+	const fontWeight: FontWeight = (params.weight as FontWeight) || 'normal'
+	const isRtl = translation === 'ar'
+
+	const readings = await getReadings(params.date, params.lang)
+
+	const displayDate = params.date ? parseDateString(params.date) : new Date()
 	const gregorianDate = formatGregorianDate(displayDate)
-	const isToday = !date || date === getTodayDateString()
+	const isToday = !params.date || params.date === getTodayDateString()
 
-	const prevDate = addDaysToDateString(currentDateString, -1)
-	const nextDate = addDaysToDateString(currentDateString, 1)
+	// Preserve settings when navigating back to today
+	const backToTodayParams = new URLSearchParams()
+	for (const [key, value] of Object.entries(params)) {
+		if (key !== 'date' && value) backToTodayParams.set(key, value)
+	}
+	const backToTodayQuery = backToTodayParams.toString()
 
-	const sections = ['Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel'] as const
-	const vespersMatins = ['VPsalm', 'VGospel', 'MPsalm', 'MGospel'] as const
+	// Common props for all ScriptureReading components
+	const scriptureProps = {
+		isRtl,
+		viewMode,
+		showVerses,
+		textSize,
+		fontFamily,
+		lineSpacing,
+		wordSpacing,
+		theme,
+		width,
+		weight: fontWeight,
+	}
+
+	// Render a scripture section if it has data
+	const renderSection = (key: ReadingSection, service?: string) => {
+		const data = readings?.[key]
+		if (!data?.length) return null
+		return (
+			<ScriptureReading
+				key={key}
+				id={`reading-${key}`}
+				readings={data}
+				title={sectionLabels[key]}
+				service={service}
+				{...scriptureProps}
+			/>
+		)
+	}
 
 	return (
-		<main className="min-h-screen relative">
-			{/* Background */}
-			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
-				<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
+		<main
+			className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}
+		>
+			{/* Progress indicator */}
+			<Suspense fallback={null}>
+				<ReadingProgress />
+			</Suspense>
+
+			{/* Sticky header bar with date and settings */}
+			<div
+				className={`sticky top-14 z-30 ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border-b ${themeClasses.border[theme]}`}
+			>
+				<div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-center relative">
+					{/* Date navigation - centered */}
+					<div className="flex items-center gap-3">
+						<Suspense
+							fallback={
+								<span className="text-xl font-semibold">
+									{readings?.fullDate?.dateString || gregorianDate}
+								</span>
+							}
+						>
+							<DateNavigation theme={theme}>
+								<div className="text-center">
+									<h1 className="text-xl font-bold">
+										{readings?.fullDate?.dateString || gregorianDate}
+									</h1>
+									<p
+										className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
+									>
+										{readings?.fullDate ? gregorianDate : ''}
+									</p>
+								</div>
+							</DateNavigation>
+						</Suspense>
+						{!isToday && (
+							<Link
+								href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
+								className={`text-xs px-2 py-1 rounded-full ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
+							>
+								Today
+							</Link>
+						)}
+					</div>
+
+					{/* Display settings - absolute right */}
+					<div className="absolute right-6">
+						<Suspense fallback={null}>
+							<DisplaySettings />
+						</Suspense>
+					</div>
+				</div>
 			</div>
 
-			<section className="relative pt-20 pb-8 px-6">
-				<div className="max-w-4xl mx-auto">
-					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-						{isToday ? "Today's Readings" : 'Readings'}
-					</h1>
-
-					{/* Date Navigation */}
-					<div className="flex items-center justify-between mb-4">
-						<Link
-							href={`/readings?date=${prevDate}`}
-							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-							aria-label="Previous day"
-						>
-							<ChevronLeftIcon />
-						</Link>
-
-						<div className="text-center">
-							<p className="text-lg font-semibold text-gray-900 dark:text-white">{gregorianDate}</p>
-							{readings?.fullDate && (
-								<p className="text-sm text-amber-600 dark:text-amber-500">
-									{readings.fullDate.dateString}
-								</p>
-							)}
-							{isToday && !readings?.fullDate && (
-								<p className="text-sm text-amber-600 dark:text-amber-500">Today</p>
-							)}
-						</div>
-
-						<Link
-							href={`/readings?date=${nextDate}`}
-							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-							aria-label="Next day"
-						>
-							<ChevronRightIcon />
-						</Link>
-					</div>
-
-					{!isToday && (
-						<div className="text-center mt-2">
-							<Link
-								href="/readings"
-								className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-amber-600 dark:hover:text-amber-500 transition-colors"
-							>
-								<ChevronLeftIcon className="w-4 h-4" />
-								Back to today
-							</Link>
-						</div>
-					)}
-				</div>
-			</section>
-
 			{readings ? (
-				<section className="relative px-6 pb-16">
-					<div className="max-w-4xl mx-auto">
-						{/* Synaxarium */}
-						{readings.Synxarium && readings.Synxarium.length > 0 && (
-							<Card className="mb-6">
-								<CardHeader>Synaxarium</CardHeader>
-								<CardContent>
-									<SynaxariumSection entries={readings.Synxarium} />
-								</CardContent>
-							</Card>
-						)}
+				<div className="px-6 pt-10 pb-24">
+					{(() => {
+						const ServiceDivider = () => (
+							<div className={'max-w-2xl mx-auto px-4 my-8'}>
+								<div className={`border-t ${themeClasses.border[theme]}`} />
+							</div>
+						)
 
-						{/* Liturgy Readings */}
-						<Card className="mb-6">
-							<CardHeader>Liturgy Readings</CardHeader>
-							<CardContent>
-								{sections.map((key) => {
-									const data = readings[key]
-									if (!data || data.length === 0) return null
-									return <ReadingSection key={key} readings={data} label={sectionLabels[key]} />
-								})}
-							</CardContent>
-						</Card>
+						const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
+						const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
 
-						{/* Vespers & Matins */}
-						<Card>
-							<CardHeader>Vespers & Matins</CardHeader>
-							<CardContent>
-								{vespersMatins.map((key) => {
-									const data = readings[key]
-									if (!data || data.length === 0) return null
-									return <ReadingSection key={key} readings={data} label={sectionLabels[key]} />
-								})}
-							</CardContent>
-						</Card>
-					</div>
-				</section>
+						return (
+							<>
+								{/* LITURGY */}
+								{renderSection('Pauline', 'Liturgy')}
+								{renderSection('Catholic', 'Liturgy')}
+								{renderSection('Acts', 'Liturgy')}
+								{readings.Synxarium?.length ? (
+									<SynaxariumReading
+										entries={readings.Synxarium}
+										textSize={textSize}
+										theme={theme}
+										width={width}
+										service="Liturgy"
+									/>
+								) : null}
+								{renderSection('LPsalm', 'Liturgy')}
+								{renderSection('LGospel', 'Liturgy')}
+
+								{/* VESPERS */}
+								{hasVespers && (
+									<>
+										<ServiceDivider />
+										{renderSection('VPsalm', 'Vespers')}
+										{renderSection('VGospel', 'Vespers')}
+									</>
+								)}
+
+								{/* MATINS */}
+								{hasMatins && (
+									<>
+										<ServiceDivider />
+										{renderSection('MPsalm', 'Matins')}
+										{renderSection('MGospel', 'Matins')}
+									</>
+								)}
+							</>
+						)
+					})()}
+				</div>
 			) : (
-				<section className="relative px-6 pb-16">
-					<div className="max-w-4xl mx-auto text-center">
-						<p className="text-gray-500">Unable to load readings. Please try again later.</p>
-					</div>
+				<section className="px-6 py-24 text-center">
+					<p className={theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500'}>
+						Unable to load readings. Please try again later.
+					</p>
 				</section>
 			)}
+
+			{/* Timeline navigation */}
+			{readings && <ReadingTimeline readings={readings} />}
+
+			{/* Back to top */}
+			<BackToTop />
 		</main>
 	)
 }

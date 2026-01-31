@@ -1,3 +1,6 @@
+// Bible Translation Types
+export type BibleTranslation = 'en' | 'ar'
+
 // Calendar Types
 export interface CopticDate {
 	dateString: string
