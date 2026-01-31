@@ -65,3 +65,6 @@ src/resources/synxarium-scraped.json
 
 # Infrastructure (separate private repo)
 /infra/
+
+# Claude Code
+.claude/
