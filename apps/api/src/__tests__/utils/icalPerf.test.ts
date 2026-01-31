@@ -59,9 +59,7 @@ describe('iCal Performance', () => {
 
 	it('measures cached vs uncached performance', async () => {
 		// Import the service to test caching
-		const { getSubscriptionCalendar } = await import(
-			'../../services/calendar.service'
-		)
+		const { getSubscriptionCalendar } = await import('../../services/calendar.service')
 
 		// First call (uncached)
 		const uncachedStart = performance.now()
