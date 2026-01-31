@@ -35,4 +35,6 @@ export const getSynaxariumByDate = (date: string, detailed = true) =>
 	fetchApi<SynaxariumEntry[]>(`/synaxarium/${date}${detailed ? '?detailed=true' : ''}`)
 
 export const getSynaxariumByCopticDate = (copticDate: string, detailed = true) =>
-	fetchApi<SynaxariumEntry[]>(`/synaxarium/coptic/${encodeURIComponent(copticDate)}${detailed ? '?detailed=true' : ''}`)
+	fetchApi<SynaxariumEntry[]>(
+		`/synaxarium/coptic/${encodeURIComponent(copticDate)}${detailed ? '?detailed=true' : ''}`,
+	)
