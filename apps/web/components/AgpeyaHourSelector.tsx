@@ -288,7 +288,9 @@ export function AgpeyaHourSelector({
 								<button
 									key={hour.id}
 									type="button"
-									onClick={() => handleHourChange(hour.id, hour.id === 'midnight' ? '1' : undefined)}
+									onClick={() =>
+										handleHourChange(hour.id, hour.id === 'midnight' ? '1' : undefined)
+									}
 									className={`
 										w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors
 										${isActive ? `${styles.activeBg} ${styles.activeText}` : `${styles.itemText} ${styles.itemHover}`}

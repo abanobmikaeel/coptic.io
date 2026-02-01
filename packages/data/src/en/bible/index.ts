@@ -56,20 +56,13 @@ export function getBook(bookName: string): BibleBook | null {
 	const normalizedName = bookName.toLowerCase().trim()
 	const canonicalName = BOOK_ALIASES[normalizedName] || bookName
 
-	return (
-		data.books.find(
-			(book) => book.name.toLowerCase() === canonicalName.toLowerCase()
-		) || null
-	)
+	return data.books.find((book) => book.name.toLowerCase() === canonicalName.toLowerCase()) || null
 }
 
 /**
  * Get a specific chapter from a book
  */
-export function getChapter(
-	bookName: string,
-	chapterNum: number
-): BibleChapter | null {
+export function getChapter(bookName: string, chapterNum: number): BibleChapter | null {
 	const book = getBook(bookName)
 	if (!book) return null
 
@@ -83,7 +76,7 @@ export function getVerses(
 	bookName: string,
 	chapterNum: number,
 	startVerse?: number,
-	endVerse?: number
+	endVerse?: number,
 ): BibleVerse[] {
 	const chapter = getChapter(bookName, chapterNum)
 	if (!chapter) return []
@@ -104,10 +97,7 @@ export function getVerses(
 /**
  * Get the total number of verses in a chapter
  */
-export function getChapterVerseCount(
-	bookName: string,
-	chapterNum: number
-): number {
+export function getChapterVerseCount(bookName: string, chapterNum: number): number {
 	const chapter = getChapter(bookName, chapterNum)
 	return chapter?.verses.length || 0
 }

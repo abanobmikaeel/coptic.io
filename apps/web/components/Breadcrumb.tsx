@@ -144,7 +144,9 @@ export function Breadcrumb({ items, theme = 'light', dropdown }: BreadcrumbProps
 							>
 								{currentOption.label}
 								{currentOption.badge && (
-									<span className={`ml-1 px-1.5 py-0.5 text-[10px] font-medium rounded ${ds.badge}`}>
+									<span
+										className={`ml-1 px-1.5 py-0.5 text-[10px] font-medium rounded ${ds.badge}`}
+									>
 										{currentOption.badge}
 									</span>
 								)}
@@ -202,7 +204,9 @@ export function Breadcrumb({ items, theme = 'light', dropdown }: BreadcrumbProps
 															{option.label}
 														</span>
 														{option.badge && !isActive && (
-															<span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${ds.badge}`}>
+															<span
+																className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${ds.badge}`}
+															>
 																{option.badge}
 															</span>
 														)}

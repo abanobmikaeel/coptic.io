@@ -83,7 +83,7 @@ function getVersesFromChapter(
 	chapterNum: number,
 	startVerse?: number,
 	endVerse?: number,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): BibleVerse[] {
 	const chapter = getChapterByBookName(bookName, chapterNum, translation)
 	if (!chapter) {
@@ -108,7 +108,7 @@ function getVersesFromChapter(
  */
 export function resolvePsalm(
 	ref: PsalmReference,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedPsalm | null {
 	const masoreticNum = lxxToMasoretic(ref.psalmNumber)
 
@@ -117,13 +117,11 @@ export function resolvePsalm(
 		masoreticNum,
 		ref.startVerse,
 		ref.endVerse,
-		translation
+		translation,
 	)
 
 	if (verses.length === 0) {
-		console.warn(
-			`No verses found for Psalm ${ref.psalmNumber} (LXX) / ${masoreticNum} (Masoretic)`
-		)
+		console.warn(`No verses found for Psalm ${ref.psalmNumber} (LXX) / ${masoreticNum} (Masoretic)`)
 		return null
 	}
 
@@ -147,7 +145,7 @@ export function resolvePsalm(
  */
 export function resolvePsalms(
 	refs: PsalmReference[],
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedPsalm[] {
 	const results: ResolvedPsalm[] = []
 
@@ -166,20 +164,18 @@ export function resolvePsalms(
  */
 export function resolveGospel(
 	ref: GospelReference,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedGospel | null {
 	const verses = getVersesFromChapter(
 		ref.book,
 		ref.chapter,
 		ref.startVerse,
 		ref.endVerse,
-		translation
+		translation,
 	)
 
 	if (verses.length === 0) {
-		console.warn(
-			`No verses found for ${ref.book} ${ref.chapter}:${ref.startVerse}-${ref.endVerse}`
-		)
+		console.warn(`No verses found for ${ref.book} ${ref.chapter}:${ref.startVerse}-${ref.endVerse}`)
 		return null
 	}
 
@@ -216,7 +212,7 @@ export interface AgpeyaGospelRef {
  */
 export function resolveAgpeyaPsalms(
 	refs: AgpeyaPsalmRef[],
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedPsalm[] {
 	return resolvePsalms(
 		refs.map((ref) => ({
@@ -225,7 +221,7 @@ export function resolveAgpeyaPsalms(
 			startVerse: ref.startVerse,
 			endVerse: ref.endVerse,
 		})),
-		translation
+		translation,
 	)
 }
 
@@ -234,7 +230,7 @@ export function resolveAgpeyaPsalms(
  */
 export function resolveAgpeyaGospel(
 	ref: AgpeyaGospelRef,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedGospel | null {
 	return resolveGospel(ref, translation)
 }

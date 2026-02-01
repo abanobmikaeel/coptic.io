@@ -3,11 +3,15 @@
 import {
 	AGPEYA_HOURS,
 	type AgpeyaHour,
-	type MidnightWatch,
 	MIDNIGHT_WATCHES,
+	type MidnightWatch,
 	getCurrentHour,
 } from '@/components/AgpeyaHourSelector'
-import { type AgpeyaHourData, type AgpeyaMidnightData, AgpeyaPrayer } from '@/components/AgpeyaPrayer'
+import {
+	type AgpeyaHourData,
+	type AgpeyaMidnightData,
+	AgpeyaPrayer,
+} from '@/components/AgpeyaPrayer'
 import { AgpeyaProgress } from '@/components/AgpeyaProgress'
 import { BackToTop } from '@/components/BackToTop'
 import { Breadcrumb } from '@/components/Breadcrumb'

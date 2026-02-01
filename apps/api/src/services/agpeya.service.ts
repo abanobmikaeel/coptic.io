@@ -1,6 +1,6 @@
 import {
-	type AgpeyaHourId,
 	type AgpeyaHourData,
+	type AgpeyaHourId,
 	type AgpeyaMidnightHour,
 	type AgpeyaWatch,
 	type MidnightWatchId,
@@ -8,13 +8,13 @@ import {
 	getAgpeyaHourIds,
 	isMidnightHour,
 } from '@coptic/data/en'
-import {
-	resolveAgpeyaPsalms,
-	resolveAgpeyaGospel,
-	type ResolvedPsalm,
-	type ResolvedGospel,
-} from './psalm-resolver'
 import type { BibleTranslation } from '../types'
+import {
+	type ResolvedGospel,
+	type ResolvedPsalm,
+	resolveAgpeyaGospel,
+	resolveAgpeyaPsalms,
+} from './psalm-resolver'
 
 export type {
 	AgpeyaHour,
@@ -80,7 +80,7 @@ export interface ResolvedMidnightHour {
  */
 function resolveHour(
 	hourData: AgpeyaHourData,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedAgpeyaHour {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = hourData.introductoryPsalm
@@ -114,12 +114,10 @@ function resolveHour(
  */
 function resolveWatch(
 	watch: AgpeyaWatch,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedAgpeyaWatch {
 	const psalms = resolveAgpeyaPsalms(watch.psalmRefs || [], translation)
-	const gospel = watch.gospelRef
-		? resolveAgpeyaGospel(watch.gospelRef, translation)
-		: undefined
+	const gospel = watch.gospelRef ? resolveAgpeyaGospel(watch.gospelRef, translation) : undefined
 
 	return {
 		id: watch.id,
@@ -139,16 +137,14 @@ function resolveWatch(
  */
 function resolveMidnightHour(
 	midnightData: AgpeyaMidnightHour,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedMidnightHour {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = midnightData.introductoryPsalm
 		? resolveAgpeyaPsalms([midnightData.introductoryPsalm], translation)[0]
 		: undefined
 
-	const watches = midnightData.watches.map((watch) =>
-		resolveWatch(watch, translation)
-	)
+	const watches = midnightData.watches.map((watch) => resolveWatch(watch, translation))
 
 	return {
 		id: 'midnight',
@@ -169,7 +165,7 @@ function resolveMidnightHour(
  */
 export function getAgpeyaHour(
 	hourId: AgpeyaHourId,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedAgpeyaHour | ResolvedMidnightHour | null {
 	const hourData = getAgpeyaHourData(hourId)
 	if (!hourData) return null
@@ -186,7 +182,7 @@ export function getAgpeyaHour(
  */
 export function getMidnightWatch(
 	watchId: MidnightWatchId,
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): ResolvedAgpeyaWatch | null {
 	const midnightData = getAgpeyaHourData('midnight') as AgpeyaMidnightHour
 	if (!midnightData) return null
@@ -202,7 +198,7 @@ export function getMidnightWatch(
  * Get all Agpeya hours with resolved content
  */
 export function getAllHours(
-	translation: BibleTranslation = 'en'
+	translation: BibleTranslation = 'en',
 ): (ResolvedAgpeyaHour | ResolvedMidnightHour)[] {
 	const hourIds = getAgpeyaHourIds()
 	const resolved: (ResolvedAgpeyaHour | ResolvedMidnightHour)[] = []

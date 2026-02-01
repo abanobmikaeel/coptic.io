@@ -1,9 +1,5 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
-import {
-	AgpeyaAnyHourSchema,
-	AgpeyaWatchSchema,
-	ErrorSchema,
-} from '../schemas'
+import { AgpeyaAnyHourSchema, AgpeyaWatchSchema, ErrorSchema } from '../schemas'
 import * as agpeyaService from '../services/agpeya.service'
 
 const app = new OpenAPIHono()

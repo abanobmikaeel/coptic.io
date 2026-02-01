@@ -1,14 +1,7 @@
 import agpeyaData from './agpeya.json'
 import commonPrayers from './common.json'
 
-export type AgpeyaHourId =
-	| 'prime'
-	| 'terce'
-	| 'sext'
-	| 'none'
-	| 'vespers'
-	| 'compline'
-	| 'midnight'
+export type AgpeyaHourId = 'prime' | 'terce' | 'sext' | 'none' | 'vespers' | 'compline' | 'midnight'
 
 export type MidnightWatchId = '1' | '2' | '3'
 
@@ -145,14 +138,16 @@ export interface AgpeyaData {
 
 // Type guard for midnight hour
 export function isMidnightHour(
-	hour: AgpeyaHour | AgpeyaHourData | AgpeyaMidnightHour
+	hour: AgpeyaHour | AgpeyaHourData | AgpeyaMidnightHour,
 ): hour is AgpeyaMidnightHour {
 	return hour.id === 'midnight' && 'watches' in hour
 }
 
 const data = agpeyaData as unknown as AgpeyaDataStored
 
-export function getAgpeyaHourData(hourId: AgpeyaHourId): AgpeyaHourData | AgpeyaMidnightHour | null {
+export function getAgpeyaHourData(
+	hourId: AgpeyaHourId,
+): AgpeyaHourData | AgpeyaMidnightHour | null {
 	if (hourId === 'midnight') {
 		return data.midnight
 	}
