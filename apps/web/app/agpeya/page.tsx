@@ -2,10 +2,11 @@
 
 import {
 	type AgpeyaHour,
+	type MidnightWatch,
 	AgpeyaHourSelector,
 	getCurrentHour,
 } from '@/components/AgpeyaHourSelector'
-import { type AgpeyaHourData, AgpeyaPrayer } from '@/components/AgpeyaPrayer'
+import { type AgpeyaHourData, type AgpeyaMidnightData, AgpeyaPrayer } from '@/components/AgpeyaPrayer'
 import { AgpeyaProgress } from '@/components/AgpeyaProgress'
 import { BackToTop } from '@/components/BackToTop'
 import { Breadcrumb } from '@/components/Breadcrumb'
@@ -107,7 +108,7 @@ function AgpeyaSkeleton({ theme }: { theme: 'light' | 'sepia' | 'dark' }) {
 function AgpeyaContent() {
 	const searchParams = useSearchParams()
 	const { settings, mounted } = useReadingSettings()
-	const [hourData, setHourData] = useState<AgpeyaHourData | null>(null)
+	const [hourData, setHourData] = useState<AgpeyaHourData | AgpeyaMidnightData | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 	const [recommendedHour, setRecommendedHour] = useState<AgpeyaHour>('prime')
@@ -117,9 +118,11 @@ function AgpeyaContent() {
 		setRecommendedHour(getCurrentHour())
 	}, [])
 
-	// Determine current hour from URL or auto-detect
+	// Determine current hour and watch from URL or auto-detect
 	const hourParam = searchParams.get('hour') as AgpeyaHour | null
+	const watchParam = searchParams.get('watch') as MidnightWatch | null
 	const currentHour = hourParam || recommendedHour
+	const currentWatch: MidnightWatch = watchParam || '1'
 
 	const theme = settings.theme || 'light'
 	const isRtl = settings.translation === 'ar'
@@ -172,6 +175,7 @@ function AgpeyaContent() {
 						<Suspense fallback={null}>
 							<AgpeyaHourSelector
 								currentHour={currentHour}
+								currentWatch={currentHour === 'midnight' ? currentWatch : undefined}
 								recommendedHour={recommendedHour}
 								theme={effectiveTheme}
 							/>
@@ -200,6 +204,7 @@ function AgpeyaContent() {
 				) : hourData ? (
 					<AgpeyaPrayer
 						hour={hourData}
+						currentWatch={currentHour === 'midnight' ? currentWatch : undefined}
 						isRtl={isRtl}
 						textSize={settings.textSize}
 						fontFamily={settings.fontFamily}
@@ -213,7 +218,16 @@ function AgpeyaContent() {
 
 			{/* Progress navigation */}
 			{hourData && (
-				<AgpeyaProgress theme={effectiveTheme} psalmsCount={hourData.psalms?.length || 0} />
+				<AgpeyaProgress
+					theme={effectiveTheme}
+					psalmsCount={
+						'watches' in hourData && hourData.watches
+							? hourData.watches[parseInt(currentWatch, 10) - 1]?.psalms?.length || 0
+							: 'psalms' in hourData
+								? hourData.psalms?.length || 0
+								: 0
+					}
+				/>
 			)}
 
 			{/* Back to top - hidden on mobile since we have progress nav */}

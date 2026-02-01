@@ -10,7 +10,9 @@ interface Section {
 }
 
 const SECTIONS: Section[] = [
-	{ id: 'opening', label: 'Opening', shortLabel: 'Opening' },
+	{ id: 'introduction', label: 'Introduction', shortLabel: 'Intro' },
+	{ id: 'thanksgiving', label: 'Thanksgiving', shortLabel: 'Thanks' },
+	{ id: 'introductory-psalm', label: 'Psalm 50', shortLabel: 'Ps 50' },
 	{ id: 'psalms', label: 'Psalms', shortLabel: 'Psalms' },
 	{ id: 'gospel', label: 'Gospel', shortLabel: 'Gospel' },
 	{ id: 'litanies', label: 'Litanies', shortLabel: 'Litanies' },
@@ -23,7 +25,7 @@ interface AgpeyaProgressProps {
 }
 
 export function AgpeyaProgress({ theme = 'light', psalmsCount = 0 }: AgpeyaProgressProps) {
-	const [activeSection, setActiveSection] = useState<SectionId>('opening')
+	const [activeSection, setActiveSection] = useState<SectionId>('introduction')
 	const [isVisible, setIsVisible] = useState(true)
 	const [lastScrollY, setLastScrollY] = useState(0)
 

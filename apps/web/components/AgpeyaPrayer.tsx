@@ -17,6 +17,7 @@ import type {
 	TextSize,
 	WordSpacing,
 } from './DisplaySettings'
+import type { MidnightWatch } from './AgpeyaHourSelector'
 
 // Types matching the new structured data format
 export interface AgpeyaVerse {
@@ -48,6 +49,19 @@ export interface AgpeyaLitany {
 	content: string[]
 }
 
+// Watch data for midnight prayers
+export interface AgpeyaWatchData {
+	id: string
+	name: string
+	theme: string
+	opening?: AgpeyaPrayerSection
+	psalms: AgpeyaPsalm[]
+	gospel?: AgpeyaGospel
+	litanies?: AgpeyaLitany
+	closing?: AgpeyaPrayerSection
+}
+
+// Standard hour data
 export interface AgpeyaHourData {
 	id: string
 	name: string
@@ -56,6 +70,8 @@ export interface AgpeyaHourData {
 	introduction?: string
 	opening: AgpeyaPrayerSection
 	thanksgiving?: AgpeyaPrayerSection
+	introductoryPsalm?: AgpeyaPsalm // Psalm 50 (51)
+	psalmsIntro?: string // "From the Psalms of our father David..."
 	psalms: AgpeyaPsalm[]
 	alleluia?: AgpeyaPrayerSection
 	gospel: AgpeyaGospel
@@ -65,11 +81,42 @@ export interface AgpeyaHourData {
 	closing: AgpeyaPrayerSection
 }
 
+// Midnight hour data with watches
+export interface AgpeyaMidnightData {
+	id: 'midnight'
+	name: string
+	englishName: string
+	traditionalTime: string
+	introduction?: string
+	opening: AgpeyaPrayerSection
+	thanksgiving?: AgpeyaPrayerSection
+	introductoryPsalm?: AgpeyaPsalm // Psalm 50 (51)
+	watches: AgpeyaWatchData[]
+	closing: AgpeyaPrayerSection
+}
+
+// Type guard for midnight data
+export function isMidnightData(
+	data: AgpeyaHourData | AgpeyaMidnightData
+): data is AgpeyaMidnightData {
+	return data.id === 'midnight' && 'watches' in data
+}
+
 // Section IDs for navigation
-export type SectionId = 'opening' | 'psalms' | 'gospel' | 'litanies' | 'closing'
+export type SectionId =
+	| 'introduction'
+	| 'thanksgiving'
+	| 'introductory-psalm'
+	| 'psalms'
+	| 'alleluia'
+	| 'gospel'
+	| 'litanies'
+	| 'lords-prayer'
+	| 'closing'
 
 interface AgpeyaPrayerProps {
-	hour: AgpeyaHourData
+	hour: AgpeyaHourData | AgpeyaMidnightData
+	currentWatch?: MidnightWatch
 	isRtl: boolean
 	textSize?: TextSize
 	fontFamily?: FontFamily
@@ -81,6 +128,7 @@ interface AgpeyaPrayerProps {
 
 export function AgpeyaPrayer({
 	hour,
+	currentWatch,
 	isRtl,
 	textSize = 'md',
 	fontFamily = 'sans',
@@ -97,6 +145,157 @@ export function AgpeyaPrayer({
 
 	const textStyles = `${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''}`
 
+	// Handle midnight prayers with watches
+	if (isMidnightData(hour)) {
+		const watchIndex = currentWatch ? parseInt(currentWatch, 10) - 1 : 0
+		const watch = hour.watches[watchIndex]
+
+		if (!watch) {
+			return <div>Watch not found</div>
+		}
+
+		return (
+			<div>
+				{/* Hour title */}
+				<div className="mb-8">
+					<h1 className={`text-2xl font-bold ${themeClasses.textHeading[theme]}`}>
+						{hour.name} - {watch.name}
+					</h1>
+					<p className={`text-sm ${themeClasses.muted[theme]}`}>{watch.theme}</p>
+					{hour.introduction && (
+						<p className={`text-sm italic ${themeClasses.muted[theme]} mt-3`}>
+							{hour.introduction}
+						</p>
+					)}
+				</div>
+
+				{/* Watch content */}
+				<div className="space-y-8">
+					{/* Introduction/Opening */}
+					<section id="section-introduction" className="scroll-mt-32">
+						<InlinePrayer content={hour.opening.content} textStyles={textStyles} isRtl={isRtl} />
+						{watch.opening && (
+							<div className="mt-4">
+								<InlinePrayer
+									content={watch.opening.content}
+									textStyles={textStyles}
+									isRtl={isRtl}
+								/>
+							</div>
+						)}
+					</section>
+
+					{/* Thanksgiving (shared across watches) */}
+					{hour.thanksgiving && (
+						<section id="section-thanksgiving" className="scroll-mt-32">
+							<CollapsibleSection
+								title={hour.thanksgiving.title || 'Thanksgiving'}
+								theme={theme}
+								defaultOpen
+							>
+								<InlinePrayer
+									content={hour.thanksgiving.content}
+									textStyles={textStyles}
+									isRtl={isRtl}
+								/>
+							</CollapsibleSection>
+						</section>
+					)}
+
+					{/* Introductory Psalm 50 (51) - shared across watches */}
+					{hour.introductoryPsalm && (
+						<section id="section-introductory-psalm" className="scroll-mt-32">
+							<CollapsibleSection
+								title={hour.introductoryPsalm.title || 'Psalm 50'}
+								subtitle={hour.introductoryPsalm.reference}
+								theme={theme}
+								defaultOpen
+							>
+								<PsalmContent
+									psalm={hour.introductoryPsalm}
+									textStyles={textStyles}
+									sizes={sizes}
+									theme={theme}
+									isRtl={isRtl}
+								/>
+							</CollapsibleSection>
+						</section>
+					)}
+
+					{/* Psalms */}
+					<section id="section-psalms" className="scroll-mt-32">
+						<CollapsibleSection
+							title="Psalms"
+							subtitle={`(${watch.psalms.length})`}
+							theme={theme}
+							defaultOpen
+						>
+							<div className="space-y-6">
+								{watch.psalms.map((psalm, idx) => (
+									<PsalmContent
+										key={idx}
+										psalm={psalm}
+										textStyles={textStyles}
+										sizes={sizes}
+										theme={theme}
+										isRtl={isRtl}
+									/>
+								))}
+							</div>
+						</CollapsibleSection>
+					</section>
+
+					{/* Gospel */}
+					{watch.gospel && (
+						<section id="section-gospel" className="scroll-mt-32">
+							<CollapsibleSection
+								title="Gospel"
+								subtitle={watch.gospel.reference}
+								theme={theme}
+								defaultOpen
+							>
+								<GospelContent
+									gospel={watch.gospel}
+									textStyles={textStyles}
+									sizes={sizes}
+									theme={theme}
+									isRtl={isRtl}
+								/>
+							</CollapsibleSection>
+						</section>
+					)}
+
+					{/* Litanies */}
+					{watch.litanies && (
+						<section id="section-litanies" className="scroll-mt-32">
+							<CollapsibleSection title="Litanies" theme={theme} defaultOpen>
+								<InlinePrayer
+									content={watch.litanies.content}
+									textStyles={textStyles}
+									isRtl={isRtl}
+								/>
+							</CollapsibleSection>
+						</section>
+					)}
+
+					{/* Watch closing */}
+					{watch.closing && (
+						<section id="section-closing" className="scroll-mt-32">
+							<CollapsibleSection title="Closing Prayer" theme={theme} defaultOpen>
+								<InlinePrayer
+									content={watch.closing.content}
+									textStyles={textStyles}
+									isRtl={isRtl}
+								/>
+							</CollapsibleSection>
+						</section>
+					)}
+				</div>
+			</div>
+		)
+	}
+
+	// Standard hour rendering
 	return (
 		<div>
 			{/* Hour title */}
@@ -110,31 +309,61 @@ export function AgpeyaPrayer({
 
 			{/* Prayer content */}
 			<div className="space-y-8">
-				{/* Opening - inline (no header) */}
-				<section id="section-opening" className="scroll-mt-32">
+				{/* Introduction/Opening - inline (no header) */}
+				<section id="section-introduction" className="scroll-mt-32">
 					<InlinePrayer content={hour.opening.content} textStyles={textStyles} isRtl={isRtl} />
 				</section>
 
 				{/* Thanksgiving (if exists and not inline) */}
 				{hour.thanksgiving && !hour.thanksgiving.inline && (
-					<CollapsibleSection
-						title={hour.thanksgiving.title || 'Thanksgiving'}
-						theme={theme}
-						defaultOpen
-					>
-						<InlinePrayer
-							content={hour.thanksgiving.content}
-							textStyles={textStyles}
-							isRtl={isRtl}
-						/>
-					</CollapsibleSection>
+					<section id="section-thanksgiving" className="scroll-mt-32">
+						<CollapsibleSection
+							title={hour.thanksgiving.title || 'Thanksgiving'}
+							theme={theme}
+							defaultOpen
+						>
+							<InlinePrayer
+								content={hour.thanksgiving.content}
+								textStyles={textStyles}
+								isRtl={isRtl}
+							/>
+						</CollapsibleSection>
+					</section>
 				)}
 				{hour.thanksgiving?.inline && (
-					<InlinePrayer content={hour.thanksgiving.content} textStyles={textStyles} isRtl={isRtl} />
+					<section id="section-thanksgiving" className="scroll-mt-32">
+						<InlinePrayer content={hour.thanksgiving.content} textStyles={textStyles} isRtl={isRtl} />
+					</section>
+				)}
+
+				{/* Introductory Psalm 50 (51) - prayed at every hour */}
+				{hour.introductoryPsalm && (
+					<section id="section-introductory-psalm" className="scroll-mt-32">
+						<CollapsibleSection
+							title={hour.introductoryPsalm.title || 'Psalm 50'}
+							subtitle={hour.introductoryPsalm.reference}
+							theme={theme}
+							defaultOpen
+						>
+							<PsalmContent
+								psalm={hour.introductoryPsalm}
+								textStyles={textStyles}
+								sizes={sizes}
+								theme={theme}
+								isRtl={isRtl}
+							/>
+						</CollapsibleSection>
+					</section>
 				)}
 
 				{/* Psalms - grouped under single collapsible header */}
 				<section id="section-psalms" className="scroll-mt-32">
+					{/* Psalms intro rubric */}
+					{hour.psalmsIntro && (
+						<p className={`text-sm italic mb-4 ${themeClasses.muted[theme]}`}>
+							{hour.psalmsIntro}
+						</p>
+					)}
 					<CollapsibleSection
 						title="Psalms"
 						subtitle={`(${hour.psalms.length})`}
@@ -158,7 +387,9 @@ export function AgpeyaPrayer({
 
 				{/* Alleluia - inline (no header) */}
 				{hour.alleluia && (
-					<InlinePrayer content={hour.alleluia.content} textStyles={textStyles} isRtl={isRtl} />
+					<section id="section-alleluia" className="scroll-mt-32">
+						<InlinePrayer content={hour.alleluia.content} textStyles={textStyles} isRtl={isRtl} />
+					</section>
 				)}
 
 				{/* Gospel - major section with collapsible header */}
@@ -188,7 +419,9 @@ export function AgpeyaPrayer({
 
 				{/* Lord's Prayer - inline (no header) */}
 				{hour.lordsPrayer && (
-					<InlinePrayer content={hour.lordsPrayer.content} textStyles={textStyles} isRtl={isRtl} />
+					<section id="section-lords-prayer" className="scroll-mt-32">
+						<InlinePrayer content={hour.lordsPrayer.content} textStyles={textStyles} isRtl={isRtl} />
+					</section>
 				)}
 
 				{/* Thanksgiving After (if exists and not inline) */}

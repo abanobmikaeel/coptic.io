@@ -62,7 +62,7 @@ export const SynaxariumSearchResultSchema = z.object({
 	}),
 })
 
-// Agpeya schemas - new structured format
+// Agpeya schemas - new structured format with watches support
 export const AgpeyaVerseSchema = z.object({
 	num: z.number(),
 	text: z.string(),
@@ -92,6 +92,19 @@ export const AgpeyaLitanySchema = z.object({
 	content: z.array(z.string()),
 })
 
+// Watch schema for midnight prayers
+export const AgpeyaWatchSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	theme: z.string(),
+	opening: AgpeyaPrayerSectionSchema.optional(),
+	psalms: z.array(AgpeyaPsalmSchema),
+	gospel: AgpeyaGospelSchema.optional(),
+	litanies: AgpeyaLitanySchema.optional(),
+	closing: AgpeyaPrayerSectionSchema.optional(),
+})
+
+// Standard hour schema (non-midnight)
 export const AgpeyaHourSchema = z.object({
 	id: z.string(),
 	name: z.string(),
@@ -108,3 +121,18 @@ export const AgpeyaHourSchema = z.object({
 	thanksgivingAfter: AgpeyaPrayerSectionSchema.optional(),
 	closing: AgpeyaPrayerSectionSchema,
 })
+
+// Midnight hour schema with watches
+export const AgpeyaMidnightHourSchema = z.object({
+	id: z.literal('midnight'),
+	name: z.string(),
+	englishName: z.string(),
+	traditionalTime: z.string(),
+	introduction: z.string().optional(),
+	opening: AgpeyaPrayerSectionSchema,
+	watches: z.array(AgpeyaWatchSchema),
+	closing: AgpeyaPrayerSectionSchema,
+})
+
+// Union schema for any hour type
+export const AgpeyaAnyHourSchema = z.union([AgpeyaHourSchema, AgpeyaMidnightHourSchema])

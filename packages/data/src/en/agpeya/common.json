@@ -1,0 +1,133 @@
+{
+  "openingInvocation": {
+    "id": "opening-invocation",
+    "title": "Opening Invocation",
+    "inline": true,
+    "content": [
+      "In the Name of the Father, and of the Son, and of the Holy Spirit, One God. Amen."
+    ]
+  },
+  "heavenlyKing": {
+    "id": "heavenly-king",
+    "title": "O Heavenly King",
+    "inline": true,
+    "content": [
+      "O Heavenly King, the Comforter, the Spirit of Truth, Who art everywhere present and fillest all things, Treasury of good things, and Giver of life: Come and abide in us, and cleanse us from every stain, and save our souls, O Good One."
+    ]
+  },
+  "thanksgivingPrayer": {
+    "id": "thanksgiving-prayer",
+    "title": "Thanksgiving Prayer",
+    "inline": false,
+    "content": [
+      "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us to Him, had compassion on us, supported us, and has brought us to this hour. Let us also ask Him, the Lord our God, the Pantocrator, to guard us in all peace this holy day and all the days of our life.",
+      "O Master, Lord, God the Pantocrator, the Father of our Lord, God, and Savior, Jesus Christ, we thank You for every condition, concerning every condition, and in every condition. For You have covered us, helped us, guarded us, accepted us to You, had compassion on us, supported us, and brought us to this hour.",
+      "Therefore, we ask and entreat Your goodness, O Lover of Mankind. Grant us to complete this holy day, and all the days of our life, in all peace in Your fear. All envy, all temptation, all the work of Satan, the counsel of wicked men and the rising up of enemies, hidden and manifest, take them away from us and from all Your people and from this holy place that is Yours. But those things which are good and profitable do provide for us. For it is You who have given us the authority to trample on serpents and scorpions, and upon all the power of the enemy.",
+      "And lead us not into temptation, but deliver us from the evil one, by the grace, compassion and love-of-mankind, of Your only-begotten Son, our Lord, God and Savior, Jesus Christ. Through whom the glory, the honor, the dominion, and the adoration are due unto You, with Him, and the Holy Spirit, the Life-Giver, who is of one essence with You, now and at all times, and unto the age of all ages. Amen."
+    ]
+  },
+  "lordsPrayer": {
+    "id": "lords-prayer",
+    "title": "The Lord's Prayer",
+    "inline": true,
+    "content": [
+      "Our Father who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done on earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from the evil one, in Christ Jesus our Lord. For Thine is the kingdom, the power, and the glory, forever. Amen."
+    ]
+  },
+  "alleluia": {
+    "id": "alleluia",
+    "title": "Alleluia",
+    "inline": true,
+    "content": [
+      "Alleluia. Glory to God. Alleluia. Glory to God. Alleluia, alleluia, alleluia. Glory to God, our hope; O Lord, glory to You."
+    ]
+  },
+  "holyGod": {
+    "id": "holy-god",
+    "title": "Holy God (Trisagion)",
+    "inline": true,
+    "content": [
+      "Holy God, Holy Mighty, Holy Immortal, who was born of the Virgin, have mercy upon us.",
+      "Holy God, Holy Mighty, Holy Immortal, who was crucified for us, have mercy upon us.",
+      "Holy God, Holy Mighty, Holy Immortal, who rose from the dead and ascended into the heavens, have mercy upon us.",
+      "Glory to the Father, and to the Son, and to the Holy Spirit, now and forever, and unto the ages of ages. Amen.",
+      "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
+      "Lord, forgive us our sins. Lord, forgive us our iniquities. Lord, forgive us our trespasses.",
+      "Lord, visit the sick of Your people, heal them for the sake of Your holy name. Our fathers and brothers who have fallen asleep, O Lord, repose their souls.",
+      "O You who are without sin, Lord have mercy upon us. O You who are without sin, Lord help us and receive our supplications.",
+      "For Yours is the glory, the dominion, and the triple holiness. Lord have mercy, Lord have mercy, Lord bless. Amen."
+    ]
+  },
+  "kyrie41": {
+    "id": "kyrie-41",
+    "title": "Lord Have Mercy (41 times)",
+    "inline": true,
+    "rubric": "Say \"Lord have mercy\" 41 times",
+    "content": [
+      "Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy.",
+      "Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy.",
+      "Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy.",
+      "Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy.",
+      "Lord have mercy."
+    ]
+  },
+  "absolution": {
+    "id": "absolution",
+    "title": "Prayer of Absolution",
+    "inline": false,
+    "content": [
+      "Have mercy on us, O God, the Father Almighty. O Holy Trinity, have mercy on us. Lord, God of hosts, be with us. For there is no helper for us in our tribulations and afflictions but You.",
+      "Absolve, remit, and forgive us, O God, our transgressions which we have committed willingly and unwillingly, knowingly and unknowingly, hidden and manifest. O Lord, forgive us, for Your holy name's sake that is called upon us. Let it be according to Your mercy, O Lord, and not according to our sins.",
+      "Lord have mercy. Lord have mercy. Lord have mercy.",
+      "Lord bless. Amen.",
+      "Bless me. Forgive me. Amen."
+    ]
+  },
+  "gospelIntro": {
+    "id": "gospel-intro",
+    "title": "Gospel Introduction",
+    "inline": true,
+    "content": [
+      "Glory to You, O our God.",
+      "Holy, holy, holy. A reading from the Gospel according to our teacher Saint {{evangelist}} the Evangelist. May his blessings be with us all. Amen."
+    ]
+  },
+  "gospelConclusion": {
+    "id": "gospel-conclusion",
+    "title": "Gospel Conclusion",
+    "inline": true,
+    "content": [
+      "Glory to God forever. Amen."
+    ]
+  },
+  "morningThanksgiving": {
+    "id": "morning-thanksgiving",
+    "title": "Morning Thanksgiving Prayer",
+    "inline": false,
+    "content": [
+      "We thank You, O Good One, the Lover of mankind, the Benefactor of our souls; for You have made us worthy to pass another night and brought us to the beginning of another day.",
+      "Therefore we ask You, O Lord, grant us to pass this day without sin and all the days of our lives in all peace.",
+      "Save us from all temptations and deliver us from all evil, by the grace, compassion, and love of mankind of Your Only-Begotten Son, our Lord, God, and Savior Jesus Christ. Through whom glory, honor, and dominion are due to You, with Him and the Holy Spirit, the Life-Giver, who is of one essence with You, now and at all times, and unto the ages of ages. Amen."
+    ]
+  },
+  "eveningThanksgiving": {
+    "id": "evening-thanksgiving",
+    "title": "Evening Thanksgiving Prayer",
+    "inline": false,
+    "content": [
+      "We thank You, O unseen and invisible King, who by Your immeasurable power have fashioned all things, and by the multitude of Your mercy have brought all things from non-existence into existence.",
+      "Look down from heaven, O Lord, upon those who have bowed down their heads to You. For they have not bowed down to flesh and blood but to You, the fearful God.",
+      "Therefore, O Master, make smooth and profitable to us all that lies before us, whether for the soul or for the body.",
+      "For You are a merciful and compassionate God, and to You we send up the glory, the honor, and the adoration, to the Father, and to the Son, and to the Holy Spirit, now and at all times, and unto the ages of ages. Amen."
+    ]
+  },
+  "closingIntercession": {
+    "id": "closing-intercession",
+    "title": "Closing Intercession",
+    "inline": false,
+    "content": [
+      "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins.",
+      "We worship You, O Christ, with Your good Father and the Holy Spirit, for You have come and saved us."
+    ]
+  }
+}
