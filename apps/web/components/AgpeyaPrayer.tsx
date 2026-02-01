@@ -504,10 +504,7 @@ function CollapsibleSection({
 				className="w-full group cursor-pointer"
 			>
 				<div
-					className={`
-						flex items-center justify-between py-3 border-b transition-all
-						${themeClasses.border[theme]}
-					`}
+					className={`flex items-center justify-between py-4 pl-4 pr-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
 				>
 					<div className="text-left">
 						<h2
@@ -515,7 +512,7 @@ function CollapsibleSection({
 						>
 							{title}
 							{subtitle && (
-								<span className={'ml-2 text-sm font-normal normal-case tracking-normal'}>
+								<span className="ml-2 text-sm font-normal normal-case tracking-normal">
 									{subtitle}
 								</span>
 							)}
@@ -528,7 +525,7 @@ function CollapsibleSection({
 						fill="none"
 						stroke="currentColor"
 						strokeWidth="2"
-						className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? '' : '-rotate-90'}`}
+						className={`${themeClasses.muted[theme]} transition-transform flex-shrink-0 ${isOpen ? '' : '-rotate-90'}`}
 						aria-hidden="true"
 					>
 						<path d="m6 9 6 6 6-6" />
