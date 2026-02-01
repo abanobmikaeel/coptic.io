@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import CopticCross from './CopticCross'
+import { SearchButton } from './SearchButton'
 import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
@@ -13,22 +14,23 @@ export default function Navbar() {
 					</span>
 				</Link>
 
-				<div className="flex items-center gap-5">
+				<div className="flex items-center gap-4">
+					<SearchButton />
 					<Link
 						href="/readings"
-						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						className="hidden sm:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
 					>
 						Readings
 					</Link>
 					<Link
 						href="/synaxarium"
-						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						className="hidden sm:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
 					>
 						Synaxarium
 					</Link>
 					<Link
 						href="/calendar"
-						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						className="hidden sm:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
 					>
 						Calendar
 					</Link>

@@ -7,6 +7,7 @@ import calendarRoutes from './routes/calendar'
 import celebrationsRoutes from './routes/celebrations'
 import fastingRoutes from './routes/fasting'
 import readingsRoutes from './routes/readings'
+import searchRoutes from './routes/search'
 import seasonRoutes from './routes/season'
 import synaxariumRoutes from './routes/synaxarium'
 
@@ -51,6 +52,7 @@ app.route('/api/readings', readingsRoutes)
 app.route('/api/calendar', calendarRoutes)
 app.route('/api/celebrations', celebrationsRoutes)
 app.route('/api/fasting', fastingRoutes)
+app.route('/api/search', searchRoutes)
 app.route('/api/synaxarium', synaxariumRoutes)
 app.route('/api/season', seasonRoutes)
 

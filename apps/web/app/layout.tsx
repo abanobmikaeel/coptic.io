@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Amiri, Inter, Literata, Noto_Sans_Coptic } from 'next/font/google'
 import './globals.css'
+import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Analytics } from '@vercel/analytics/next'
@@ -104,10 +105,12 @@ export default function RootLayout({
 				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased`}
 			>
 				<ThemeProvider>
-					<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-						<Navbar />
-						{children}
-					</div>
+					<CommandPaletteProvider>
+						<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+							<Navbar />
+							{children}
+						</div>
+					</CommandPaletteProvider>
 				</ThemeProvider>
 				<Analytics />
 			</body>
