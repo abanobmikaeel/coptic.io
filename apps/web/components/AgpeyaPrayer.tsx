@@ -1,0 +1,421 @@
+'use client'
+
+import {
+	getFontClass,
+	getLineHeightClass,
+	getTextSizeClasses,
+	getWeightClass,
+	getWordSpacingClass,
+	themeClasses,
+} from '@/lib/reading-styles'
+import { useState } from 'react'
+import type {
+	FontFamily,
+	FontWeight,
+	LineSpacing,
+	ReadingTheme,
+	TextSize,
+	WordSpacing,
+} from './DisplaySettings'
+
+// Types matching the new structured data format
+export interface AgpeyaVerse {
+	num: number
+	text: string
+}
+
+export interface AgpeyaPsalm {
+	title: string
+	reference: string
+	rubric?: string
+	verses: AgpeyaVerse[]
+}
+
+export interface AgpeyaGospel {
+	reference: string
+	rubric?: string
+	verses: AgpeyaVerse[]
+}
+
+export interface AgpeyaPrayerSection {
+	title?: string
+	content: string[]
+	inline?: boolean
+}
+
+export interface AgpeyaLitany {
+	title?: string
+	content: string[]
+}
+
+export interface AgpeyaHourData {
+	id: string
+	name: string
+	englishName: string
+	traditionalTime: string
+	introduction?: string
+	opening: AgpeyaPrayerSection
+	thanksgiving?: AgpeyaPrayerSection
+	psalms: AgpeyaPsalm[]
+	alleluia?: AgpeyaPrayerSection
+	gospel: AgpeyaGospel
+	litanies: AgpeyaLitany
+	lordsPrayer?: AgpeyaPrayerSection
+	thanksgivingAfter?: AgpeyaPrayerSection
+	closing: AgpeyaPrayerSection
+}
+
+// Section IDs for navigation
+export type SectionId = 'opening' | 'psalms' | 'gospel' | 'litanies' | 'closing'
+
+interface AgpeyaPrayerProps {
+	hour: AgpeyaHourData
+	isRtl: boolean
+	textSize?: TextSize
+	fontFamily?: FontFamily
+	lineSpacing?: LineSpacing
+	wordSpacing?: WordSpacing
+	theme?: ReadingTheme
+	weight?: FontWeight
+}
+
+export function AgpeyaPrayer({
+	hour,
+	isRtl,
+	textSize = 'md',
+	fontFamily = 'sans',
+	lineSpacing = 'normal',
+	wordSpacing = 'normal',
+	theme = 'light',
+	weight = 'normal',
+}: AgpeyaPrayerProps) {
+	const sizes = getTextSizeClasses(textSize, isRtl)
+	const lineHeight = getLineHeightClass(lineSpacing, isRtl)
+	const fontClass = getFontClass(fontFamily, isRtl)
+	const weightClass = getWeightClass(weight, isRtl)
+	const wordSpacingClass = getWordSpacingClass(wordSpacing, isRtl)
+
+	const textStyles = `${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''}`
+
+	return (
+		<div>
+			{/* Hour title */}
+			<div className="mb-8">
+				<h1 className={`text-2xl font-bold ${themeClasses.textHeading[theme]}`}>{hour.name}</h1>
+				<p className={`text-sm ${themeClasses.muted[theme]}`}>{hour.englishName}</p>
+				{hour.introduction && (
+					<p className={`text-sm italic ${themeClasses.muted[theme]} mt-3`}>{hour.introduction}</p>
+				)}
+			</div>
+
+			{/* Prayer content */}
+			<div className="space-y-8">
+				{/* Opening - inline (no header) */}
+				<section id="section-opening" className="scroll-mt-32">
+					<InlinePrayer content={hour.opening.content} textStyles={textStyles} isRtl={isRtl} />
+				</section>
+
+				{/* Thanksgiving (if exists and not inline) */}
+				{hour.thanksgiving && !hour.thanksgiving.inline && (
+					<CollapsibleSection
+						title={hour.thanksgiving.title || 'Thanksgiving'}
+						theme={theme}
+						defaultOpen
+					>
+						<InlinePrayer
+							content={hour.thanksgiving.content}
+							textStyles={textStyles}
+							isRtl={isRtl}
+						/>
+					</CollapsibleSection>
+				)}
+				{hour.thanksgiving?.inline && (
+					<InlinePrayer content={hour.thanksgiving.content} textStyles={textStyles} isRtl={isRtl} />
+				)}
+
+				{/* Psalms - grouped under single collapsible header */}
+				<section id="section-psalms" className="scroll-mt-32">
+					<CollapsibleSection
+						title="Psalms"
+						subtitle={`(${hour.psalms.length})`}
+						theme={theme}
+						defaultOpen
+					>
+						<div className="space-y-6">
+							{hour.psalms.map((psalm, idx) => (
+								<PsalmContent
+									key={idx}
+									psalm={psalm}
+									textStyles={textStyles}
+									sizes={sizes}
+									theme={theme}
+									isRtl={isRtl}
+								/>
+							))}
+						</div>
+					</CollapsibleSection>
+				</section>
+
+				{/* Alleluia - inline (no header) */}
+				{hour.alleluia && (
+					<InlinePrayer content={hour.alleluia.content} textStyles={textStyles} isRtl={isRtl} />
+				)}
+
+				{/* Gospel - major section with collapsible header */}
+				<section id="section-gospel" className="scroll-mt-32">
+					<CollapsibleSection
+						title="Gospel"
+						subtitle={hour.gospel.reference}
+						theme={theme}
+						defaultOpen
+					>
+						<GospelContent
+							gospel={hour.gospel}
+							textStyles={textStyles}
+							sizes={sizes}
+							theme={theme}
+							isRtl={isRtl}
+						/>
+					</CollapsibleSection>
+				</section>
+
+				{/* Litanies - major section with collapsible header */}
+				<section id="section-litanies" className="scroll-mt-32">
+					<CollapsibleSection title="Litanies" theme={theme} defaultOpen>
+						<InlinePrayer content={hour.litanies.content} textStyles={textStyles} isRtl={isRtl} />
+					</CollapsibleSection>
+				</section>
+
+				{/* Lord's Prayer - inline (no header) */}
+				{hour.lordsPrayer && (
+					<InlinePrayer content={hour.lordsPrayer.content} textStyles={textStyles} isRtl={isRtl} />
+				)}
+
+				{/* Thanksgiving After (if exists and not inline) */}
+				{hour.thanksgivingAfter && !hour.thanksgivingAfter.inline && (
+					<CollapsibleSection
+						title={hour.thanksgivingAfter.title || 'Prayer of Thanksgiving'}
+						theme={theme}
+						defaultOpen
+					>
+						<InlinePrayer
+							content={hour.thanksgivingAfter.content}
+							textStyles={textStyles}
+							isRtl={isRtl}
+						/>
+					</CollapsibleSection>
+				)}
+				{hour.thanksgivingAfter?.inline && (
+					<InlinePrayer
+						content={hour.thanksgivingAfter.content}
+						textStyles={textStyles}
+						isRtl={isRtl}
+					/>
+				)}
+
+				{/* Closing Prayer */}
+				<section id="section-closing" className="scroll-mt-32">
+					{hour.closing.inline ? (
+						<InlinePrayer content={hour.closing.content} textStyles={textStyles} isRtl={isRtl} />
+					) : (
+						<CollapsibleSection title="Closing Prayer" theme={theme} defaultOpen>
+							<InlinePrayer content={hour.closing.content} textStyles={textStyles} isRtl={isRtl} />
+						</CollapsibleSection>
+					)}
+				</section>
+			</div>
+		</div>
+	)
+}
+
+// Inline prayer content - flows naturally without any header
+function InlinePrayer({
+	content,
+	textStyles,
+	isRtl,
+}: {
+	content: string[]
+	textStyles: string
+	isRtl: boolean
+}) {
+	return (
+		<div className={`space-y-4 ${textStyles}`} dir={isRtl ? 'rtl' : 'ltr'}>
+			{content.map((paragraph, idx) => (
+				<p key={idx}>{paragraph}</p>
+			))}
+		</div>
+	)
+}
+
+// Collapsible section for major content (Psalms, Gospel, Litanies)
+function CollapsibleSection({
+	title,
+	subtitle,
+	theme = 'light',
+	defaultOpen = true,
+	children,
+}: {
+	title: string
+	subtitle?: string
+	theme?: ReadingTheme
+	defaultOpen?: boolean
+	children: React.ReactNode
+}) {
+	const [isOpen, setIsOpen] = useState(defaultOpen)
+
+	return (
+		<article>
+			<button
+				type="button"
+				onClick={() => setIsOpen(!isOpen)}
+				className="w-full group cursor-pointer"
+			>
+				<div
+					className={`
+						flex items-center justify-between py-3 border-b transition-all
+						${themeClasses.border[theme]}
+					`}
+				>
+					<div className="text-left">
+						<h2
+							className={`text-base font-semibold uppercase tracking-wide ${themeClasses.muted[theme]}`}
+						>
+							{title}
+							{subtitle && (
+								<span className={'ml-2 text-sm font-normal normal-case tracking-normal'}>
+									{subtitle}
+								</span>
+							)}
+						</h2>
+					</div>
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? '' : '-rotate-90'}`}
+						aria-hidden="true"
+					>
+						<path d="m6 9 6 6 6-6" />
+					</svg>
+				</div>
+			</button>
+
+			{isOpen && <div className="mt-6">{children}</div>}
+		</article>
+	)
+}
+
+// Psalm content with title and verses - individually collapsible
+function PsalmContent({
+	psalm,
+	textStyles,
+	sizes,
+	theme,
+	isRtl,
+	defaultOpen = true,
+}: {
+	psalm: AgpeyaPsalm
+	textStyles: string
+	sizes: ReturnType<typeof getTextSizeClasses>
+	theme: ReadingTheme
+	isRtl: boolean
+	defaultOpen?: boolean
+}) {
+	const [isOpen, setIsOpen] = useState(defaultOpen)
+
+	return (
+		<div dir={isRtl ? 'rtl' : 'ltr'}>
+			{/* Psalm header - clickable to collapse */}
+			<button
+				type="button"
+				onClick={() => setIsOpen(!isOpen)}
+				className={'w-full text-left flex items-center justify-between group cursor-pointer py-2'}
+			>
+				<div>
+					<span className={`font-medium ${themeClasses.text[theme]}`}>{psalm.title}</span>
+					<span className={`text-sm ${themeClasses.muted[theme]} ml-2`}>{psalm.reference}</span>
+					{psalm.rubric && (
+						<span className={`text-sm italic ${themeClasses.muted[theme]} ml-2`}>
+							— {psalm.rubric}
+						</span>
+					)}
+				</div>
+				<svg
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2"
+					className={`${themeClasses.muted[theme]} transition-transform flex-shrink-0 ml-4 ${isOpen ? '' : '-rotate-90'}`}
+					aria-hidden="true"
+				>
+					<path d="m6 9 6 6 6-6" />
+				</svg>
+			</button>
+
+			{/* Verses - collapsible */}
+			{isOpen && (
+				<div
+					className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
+					dir={isRtl ? 'rtl' : 'ltr'}
+				>
+					{psalm.verses.map((verse) => (
+						<p key={verse.num}>
+							<span
+								className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}
+							>
+								{verse.num}
+							</span>
+							{verse.text}
+						</p>
+					))}
+				</div>
+			)}
+		</div>
+	)
+}
+
+// Gospel content with rubric and verses
+function GospelContent({
+	gospel,
+	textStyles,
+	sizes,
+	theme,
+	isRtl,
+}: {
+	gospel: AgpeyaGospel
+	textStyles: string
+	sizes: ReturnType<typeof getTextSizeClasses>
+	theme: ReadingTheme
+	isRtl: boolean
+}) {
+	return (
+		<div dir={isRtl ? 'rtl' : 'ltr'}>
+			{/* Rubric */}
+			{gospel.rubric && (
+				<p className={`text-sm italic mb-6 ${themeClasses.muted[theme]}`}>{gospel.rubric}</p>
+			)}
+
+			{/* Verses */}
+			<div
+				className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
+				dir={isRtl ? 'rtl' : 'ltr'}
+			>
+				{gospel.verses.map((verse) => (
+					<p key={verse.num}>
+						<span
+							className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}
+						>
+							{verse.num}
+						</span>
+						{verse.text}
+					</p>
+				))}
+			</div>
+		</div>
+	)
+}

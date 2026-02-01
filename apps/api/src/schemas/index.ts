@@ -61,3 +61,50 @@ export const SynaxariumSearchResultSchema = z.object({
 		name: z.string().optional(),
 	}),
 })
+
+// Agpeya schemas - new structured format
+export const AgpeyaVerseSchema = z.object({
+	num: z.number(),
+	text: z.string(),
+})
+
+export const AgpeyaPsalmSchema = z.object({
+	title: z.string(),
+	reference: z.string(),
+	rubric: z.string().optional(),
+	verses: z.array(AgpeyaVerseSchema),
+})
+
+export const AgpeyaGospelSchema = z.object({
+	reference: z.string(),
+	rubric: z.string().optional(),
+	verses: z.array(AgpeyaVerseSchema),
+})
+
+export const AgpeyaPrayerSectionSchema = z.object({
+	title: z.string().optional(),
+	content: z.array(z.string()),
+	inline: z.boolean().optional(),
+})
+
+export const AgpeyaLitanySchema = z.object({
+	title: z.string().optional(),
+	content: z.array(z.string()),
+})
+
+export const AgpeyaHourSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	englishName: z.string(),
+	traditionalTime: z.string(),
+	introduction: z.string().optional(),
+	opening: AgpeyaPrayerSectionSchema,
+	thanksgiving: AgpeyaPrayerSectionSchema.optional(),
+	psalms: z.array(AgpeyaPsalmSchema),
+	alleluia: AgpeyaPrayerSectionSchema.optional(),
+	gospel: AgpeyaGospelSchema,
+	litanies: AgpeyaLitanySchema,
+	lordsPrayer: AgpeyaPrayerSectionSchema.optional(),
+	thanksgivingAfter: AgpeyaPrayerSectionSchema.optional(),
+	closing: AgpeyaPrayerSectionSchema,
+})

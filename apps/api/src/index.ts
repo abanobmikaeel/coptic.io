@@ -3,6 +3,7 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
 import { yoga } from './graphql'
+import agpeyaRoutes from './routes/agpeya'
 import calendarRoutes from './routes/calendar'
 import celebrationsRoutes from './routes/celebrations'
 import fastingRoutes from './routes/fasting'
@@ -47,6 +48,7 @@ app.get('/health', (c) => {
 })
 
 // REST Routes
+app.route('/api/agpeya', agpeyaRoutes)
 app.route('/api/readings', readingsRoutes)
 app.route('/api/calendar', calendarRoutes)
 app.route('/api/celebrations', celebrationsRoutes)

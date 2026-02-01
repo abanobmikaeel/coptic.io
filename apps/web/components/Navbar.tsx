@@ -1,6 +1,25 @@
 import Link from 'next/link'
 import CopticCross from './CopticCross'
+import { NavDropdown } from './NavDropdown'
 import ThemeToggle from './ThemeToggle'
+
+const readMenuItems = [
+	{
+		label: 'Katamaros',
+		description: 'Daily Lectionary',
+		href: '/readings',
+	},
+	{
+		label: 'Agpeya',
+		description: 'Prayer Hours',
+		href: '/agpeya',
+	},
+	{
+		label: 'Synaxarium',
+		description: 'Lives of Saints',
+		href: '/synaxarium',
+	},
+]
 
 export default function Navbar() {
 	return (
@@ -14,18 +33,7 @@ export default function Navbar() {
 				</Link>
 
 				<div className="flex items-center gap-5">
-					<Link
-						href="/readings"
-						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-					>
-						Readings
-					</Link>
-					<Link
-						href="/synaxarium"
-						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-					>
-						Synaxarium
-					</Link>
+					<NavDropdown label="Read" items={readMenuItems} />
 					<Link
 						href="/calendar"
 						className="text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
