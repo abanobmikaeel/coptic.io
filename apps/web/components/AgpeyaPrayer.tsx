@@ -8,13 +8,14 @@ import {
 	getWordSpacingClass,
 	themeClasses,
 } from '@/lib/reading-styles'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type {
 	FontFamily,
 	FontWeight,
 	LineSpacing,
 	ReadingTheme,
 	TextSize,
+	ViewMode,
 	WordSpacing,
 } from './DisplaySettings'
 import type { MidnightWatch } from './AgpeyaHourSelector'
@@ -73,7 +74,6 @@ export interface AgpeyaHourData {
 	introductoryPsalm?: AgpeyaPsalm // Psalm 50 (51)
 	psalmsIntro?: string // "From the Psalms of our father David..."
 	psalms: AgpeyaPsalm[]
-	alleluia?: AgpeyaPrayerSection
 	gospel: AgpeyaGospel
 	litanies: AgpeyaLitany
 	lordsPrayer?: AgpeyaPrayerSection
@@ -108,7 +108,6 @@ export type SectionId =
 	| 'thanksgiving'
 	| 'introductory-psalm'
 	| 'psalms'
-	| 'alleluia'
 	| 'gospel'
 	| 'litanies'
 	| 'lords-prayer'
@@ -124,6 +123,8 @@ interface AgpeyaPrayerProps {
 	wordSpacing?: WordSpacing
 	theme?: ReadingTheme
 	weight?: FontWeight
+	viewMode?: ViewMode
+	allCollapsed?: boolean
 }
 
 export function AgpeyaPrayer({
@@ -136,6 +137,8 @@ export function AgpeyaPrayer({
 	wordSpacing = 'normal',
 	theme = 'light',
 	weight = 'normal',
+	viewMode = 'verse',
+	allCollapsed = false,
 }: AgpeyaPrayerProps) {
 	const sizes = getTextSizeClasses(textSize, isRtl)
 	const lineHeight = getLineHeightClass(lineSpacing, isRtl)
@@ -211,13 +214,36 @@ export function AgpeyaPrayer({
 								theme={theme}
 								defaultOpen
 							>
-								<PsalmContent
-									psalm={hour.introductoryPsalm}
-									textStyles={textStyles}
-									sizes={sizes}
-									theme={theme}
-									isRtl={isRtl}
-								/>
+								{viewMode === 'continuous' ? (
+									<p
+										className={`${textStyles} ${isRtl ? 'text-right' : ''}`}
+										dir={isRtl ? 'rtl' : 'ltr'}
+									>
+										{hour.introductoryPsalm.verses.map((verse, idx) => (
+											<span key={verse.num}>
+												<sup className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal ${isRtl ? 'ml-1' : 'mr-1'}`}>
+													{verse.num}
+												</sup>
+												{verse.text}
+												{idx < hour.introductoryPsalm!.verses.length - 1 && ' '}
+											</span>
+										))}
+									</p>
+								) : (
+									<div
+										className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
+										dir={isRtl ? 'rtl' : 'ltr'}
+									>
+										{hour.introductoryPsalm.verses.map((verse) => (
+											<p key={verse.num}>
+												<span className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}>
+													{verse.num}
+												</span>
+												{verse.text}
+											</p>
+										))}
+									</div>
+								)}
 							</CollapsibleSection>
 						</section>
 					)}
@@ -229,6 +255,7 @@ export function AgpeyaPrayer({
 							subtitle={`(${watch.psalms.length})`}
 							theme={theme}
 							defaultOpen
+							forceCollapsed={allCollapsed}
 						>
 							<div className="space-y-6">
 								{watch.psalms.map((psalm, idx) => (
@@ -239,6 +266,7 @@ export function AgpeyaPrayer({
 										sizes={sizes}
 										theme={theme}
 										isRtl={isRtl}
+										viewMode={viewMode}
 									/>
 								))}
 							</div>
@@ -260,6 +288,7 @@ export function AgpeyaPrayer({
 									sizes={sizes}
 									theme={theme}
 									isRtl={isRtl}
+									viewMode={viewMode}
 								/>
 							</CollapsibleSection>
 						</section>
@@ -268,7 +297,7 @@ export function AgpeyaPrayer({
 					{/* Litanies */}
 					{watch.litanies && (
 						<section id="section-litanies" className="scroll-mt-32">
-							<CollapsibleSection title="Litanies" theme={theme} defaultOpen>
+							<CollapsibleSection title="Litanies" theme={theme} defaultOpen forceCollapsed={allCollapsed}>
 								<InlinePrayer
 									content={watch.litanies.content}
 									textStyles={textStyles}
@@ -281,7 +310,7 @@ export function AgpeyaPrayer({
 					{/* Watch closing */}
 					{watch.closing && (
 						<section id="section-closing" className="scroll-mt-32">
-							<CollapsibleSection title="Closing Prayer" theme={theme} defaultOpen>
+							<CollapsibleSection title="Closing Prayer" theme={theme} defaultOpen forceCollapsed={allCollapsed}>
 								<InlinePrayer
 									content={watch.closing.content}
 									textStyles={textStyles}
@@ -321,6 +350,7 @@ export function AgpeyaPrayer({
 							title={hour.thanksgiving.title || 'Thanksgiving'}
 							theme={theme}
 							defaultOpen
+							forceCollapsed={allCollapsed}
 						>
 							<InlinePrayer
 								content={hour.thanksgiving.content}
@@ -344,14 +374,38 @@ export function AgpeyaPrayer({
 							subtitle={hour.introductoryPsalm.reference}
 							theme={theme}
 							defaultOpen
+							forceCollapsed={allCollapsed}
 						>
-							<PsalmContent
-								psalm={hour.introductoryPsalm}
-								textStyles={textStyles}
-								sizes={sizes}
-								theme={theme}
-								isRtl={isRtl}
-							/>
+							{viewMode === 'continuous' ? (
+								<p
+									className={`${textStyles} ${isRtl ? 'text-right' : ''}`}
+									dir={isRtl ? 'rtl' : 'ltr'}
+								>
+									{hour.introductoryPsalm.verses.map((verse, idx) => (
+										<span key={verse.num}>
+											<sup className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal ${isRtl ? 'ml-1' : 'mr-1'}`}>
+												{verse.num}
+											</sup>
+											{verse.text}
+											{idx < hour.introductoryPsalm!.verses.length - 1 && ' '}
+										</span>
+									))}
+								</p>
+							) : (
+								<div
+									className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
+									dir={isRtl ? 'rtl' : 'ltr'}
+								>
+									{hour.introductoryPsalm.verses.map((verse) => (
+										<p key={verse.num}>
+											<span className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}>
+												{verse.num}
+											</span>
+											{verse.text}
+										</p>
+									))}
+								</div>
+							)}
 						</CollapsibleSection>
 					</section>
 				)}
@@ -369,6 +423,7 @@ export function AgpeyaPrayer({
 						subtitle={`(${hour.psalms.length})`}
 						theme={theme}
 						defaultOpen
+						forceCollapsed={allCollapsed}
 					>
 						<div className="space-y-6">
 							{hour.psalms.map((psalm, idx) => (
@@ -379,18 +434,12 @@ export function AgpeyaPrayer({
 									sizes={sizes}
 									theme={theme}
 									isRtl={isRtl}
+									viewMode={viewMode}
 								/>
 							))}
 						</div>
 					</CollapsibleSection>
 				</section>
-
-				{/* Alleluia - inline (no header) */}
-				{hour.alleluia && (
-					<section id="section-alleluia" className="scroll-mt-32">
-						<InlinePrayer content={hour.alleluia.content} textStyles={textStyles} isRtl={isRtl} />
-					</section>
-				)}
 
 				{/* Gospel - major section with collapsible header */}
 				<section id="section-gospel" className="scroll-mt-32">
@@ -399,6 +448,7 @@ export function AgpeyaPrayer({
 						subtitle={hour.gospel.reference}
 						theme={theme}
 						defaultOpen
+						forceCollapsed={allCollapsed}
 					>
 						<GospelContent
 							gospel={hour.gospel}
@@ -406,13 +456,14 @@ export function AgpeyaPrayer({
 							sizes={sizes}
 							theme={theme}
 							isRtl={isRtl}
+							viewMode={viewMode}
 						/>
 					</CollapsibleSection>
 				</section>
 
 				{/* Litanies - major section with collapsible header */}
 				<section id="section-litanies" className="scroll-mt-32">
-					<CollapsibleSection title="Litanies" theme={theme} defaultOpen>
+					<CollapsibleSection title="Litanies" theme={theme} defaultOpen forceCollapsed={allCollapsed}>
 						<InlinePrayer content={hour.litanies.content} textStyles={textStyles} isRtl={isRtl} />
 					</CollapsibleSection>
 				</section>
@@ -430,6 +481,7 @@ export function AgpeyaPrayer({
 						title={hour.thanksgivingAfter.title || 'Prayer of Thanksgiving'}
 						theme={theme}
 						defaultOpen
+						forceCollapsed={allCollapsed}
 					>
 						<InlinePrayer
 							content={hour.thanksgivingAfter.content}
@@ -451,7 +503,7 @@ export function AgpeyaPrayer({
 					{hour.closing.inline ? (
 						<InlinePrayer content={hour.closing.content} textStyles={textStyles} isRtl={isRtl} />
 					) : (
-						<CollapsibleSection title="Closing Prayer" theme={theme} defaultOpen>
+						<CollapsibleSection title="Closing Prayer" theme={theme} defaultOpen forceCollapsed={allCollapsed}>
 							<InlinePrayer content={hour.closing.content} textStyles={textStyles} isRtl={isRtl} />
 						</CollapsibleSection>
 					)}
@@ -486,15 +538,24 @@ function CollapsibleSection({
 	subtitle,
 	theme = 'light',
 	defaultOpen = true,
+	forceCollapsed,
 	children,
 }: {
 	title: string
 	subtitle?: string
 	theme?: ReadingTheme
 	defaultOpen?: boolean
+	forceCollapsed?: boolean
 	children: React.ReactNode
 }) {
 	const [isOpen, setIsOpen] = useState(defaultOpen)
+
+	// Sync with forceCollapsed when it changes
+	useEffect(() => {
+		if (forceCollapsed !== undefined) {
+			setIsOpen(!forceCollapsed)
+		}
+	}, [forceCollapsed])
 
 	return (
 		<article>
@@ -512,7 +573,7 @@ function CollapsibleSection({
 						>
 							{title}
 							{subtitle && (
-								<span className="ml-2 text-sm font-normal normal-case tracking-normal">
+								<span className={`ml-2 text-sm font-normal normal-case tracking-normal ${themeClasses.muted[theme]}`}>
 									{subtitle}
 								</span>
 							)}
@@ -546,6 +607,7 @@ function PsalmContent({
 	theme,
 	isRtl,
 	defaultOpen = true,
+	viewMode = 'verse',
 }: {
 	psalm: AgpeyaPsalm
 	textStyles: string
@@ -553,6 +615,7 @@ function PsalmContent({
 	theme: ReadingTheme
 	isRtl: boolean
 	defaultOpen?: boolean
+	viewMode?: ViewMode
 }) {
 	const [isOpen, setIsOpen] = useState(defaultOpen)
 
@@ -589,21 +652,40 @@ function PsalmContent({
 
 			{/* Verses - collapsible */}
 			{isOpen && (
-				<div
-					className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
-					dir={isRtl ? 'rtl' : 'ltr'}
-				>
-					{psalm.verses.map((verse) => (
-						<p key={verse.num}>
-							<span
-								className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}
-							>
-								{verse.num}
+				viewMode === 'continuous' ? (
+					<p
+						className={`${textStyles} ${isRtl ? 'text-right' : ''}`}
+						dir={isRtl ? 'rtl' : 'ltr'}
+					>
+						{psalm.verses.map((verse, idx) => (
+							<span key={verse.num}>
+								<sup
+									className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal ${isRtl ? 'ml-1' : 'mr-1'}`}
+								>
+									{verse.num}
+								</sup>
+								{verse.text}
+								{idx < psalm.verses.length - 1 && ' '}
 							</span>
-							{verse.text}
-						</p>
-					))}
-				</div>
+						))}
+					</p>
+				) : (
+					<div
+						className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
+						dir={isRtl ? 'rtl' : 'ltr'}
+					>
+						{psalm.verses.map((verse) => (
+							<p key={verse.num}>
+								<span
+									className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}
+								>
+									{verse.num}
+								</span>
+								{verse.text}
+							</p>
+						))}
+					</div>
+				)
 			)}
 		</div>
 	)
@@ -616,12 +698,14 @@ function GospelContent({
 	sizes,
 	theme,
 	isRtl,
+	viewMode = 'verse',
 }: {
 	gospel: AgpeyaGospel
 	textStyles: string
 	sizes: ReturnType<typeof getTextSizeClasses>
 	theme: ReadingTheme
 	isRtl: boolean
+	viewMode?: ViewMode
 }) {
 	return (
 		<div dir={isRtl ? 'rtl' : 'ltr'}>
@@ -631,21 +715,40 @@ function GospelContent({
 			)}
 
 			{/* Verses */}
-			<div
-				className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
-				dir={isRtl ? 'rtl' : 'ltr'}
-			>
-				{gospel.verses.map((verse) => (
-					<p key={verse.num}>
-						<span
-							className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}
-						>
-							{verse.num}
+			{viewMode === 'continuous' ? (
+				<p
+					className={`${textStyles} ${isRtl ? 'text-right' : ''}`}
+					dir={isRtl ? 'rtl' : 'ltr'}
+				>
+					{gospel.verses.map((verse, idx) => (
+						<span key={verse.num}>
+							<sup
+								className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal ${isRtl ? 'ml-1' : 'mr-1'}`}
+							>
+								{verse.num}
+							</sup>
+							{verse.text}
+							{idx < gospel.verses.length - 1 && ' '}
 						</span>
-						{verse.text}
-					</p>
-				))}
-			</div>
+					))}
+				</p>
+			) : (
+				<div
+					className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
+					dir={isRtl ? 'rtl' : 'ltr'}
+				>
+					{gospel.verses.map((verse) => (
+						<p key={verse.num}>
+							<span
+								className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-2' : 'mr-2'}`}
+							>
+								{verse.num}
+							</span>
+							{verse.text}
+						</p>
+					))}
+				</div>
+			)}
 		</div>
 	)
 }

@@ -114,7 +114,6 @@ export const AgpeyaHourSchema = z.object({
 	opening: AgpeyaPrayerSectionSchema,
 	thanksgiving: AgpeyaPrayerSectionSchema.optional(),
 	psalms: z.array(AgpeyaPsalmSchema),
-	alleluia: AgpeyaPrayerSectionSchema.optional(),
 	gospel: AgpeyaGospelSchema,
 	litanies: AgpeyaLitanySchema,
 	lordsPrayer: AgpeyaPrayerSectionSchema.optional(),

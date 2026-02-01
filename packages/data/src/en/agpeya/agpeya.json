@@ -4,7 +4,6 @@
     "thanksgivingPrayer": "common.json#thanksgivingPrayer",
     "psalm50": "common.json#psalm50",
     "lordsPrayer": "common.json#lordsPrayer",
-    "alleluia": "common.json#alleluia",
     "holyGod": "common.json#holyGod",
     "kyrie41": "common.json#kyrie41",
     "absolution": "common.json#absolution"
@@ -60,15 +59,6 @@
         { "psalmNumber": 112, "title": "Psalm 112" },
         { "psalmNumber": 142, "title": "Psalm 142" }
       ],
-      "alleluia": {
-        "inline": true,
-        "content": [
-          "Alleluia. Glory be to God.",
-          "Alleluia. Glory be to God.",
-          "Alleluia, alleluia, alleluia. Glory be to God.",
-          "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
-        ]
-      },
       "gospelRef": {
         "book": "John",
         "chapter": 1,
@@ -142,14 +132,6 @@
         { "psalmNumber": 45, "title": "Psalm 45" },
         { "psalmNumber": 46, "title": "Psalm 46" }
       ],
-      "alleluia": {
-        "inline": true,
-        "content": [
-          "Alleluia. Glory be to God.",
-          "Alleluia. Glory be to God.",
-          "Alleluia, alleluia, alleluia. Glory be to God."
-        ]
-      },
       "gospelRef": {
         "book": "John",
         "chapter": 14,
@@ -219,14 +201,6 @@
         { "psalmNumber": 90, "title": "Psalm 90" },
         { "psalmNumber": 92, "title": "Psalm 92" }
       ],
-      "alleluia": {
-        "inline": true,
-        "content": [
-          "Alleluia. Glory be to God.",
-          "Alleluia. Glory be to God.",
-          "Alleluia, alleluia, alleluia. Glory be to God."
-        ]
-      },
       "gospelRef": {
         "book": "Matthew",
         "chapter": 5,
@@ -290,14 +264,6 @@
         { "psalmNumber": 114, "title": "Psalm 114" },
         { "psalmNumber": 115, "title": "Psalm 115" }
       ],
-      "alleluia": {
-        "inline": true,
-        "content": [
-          "Alleluia. Glory be to God.",
-          "Alleluia. Glory be to God.",
-          "Alleluia, alleluia, alleluia. Glory be to God."
-        ]
-      },
       "gospelRef": {
         "book": "Luke",
         "chapter": 9,
@@ -361,14 +327,6 @@
         { "psalmNumber": 127, "title": "Psalm 127" },
         { "psalmNumber": 128, "title": "Psalm 128" }
       ],
-      "alleluia": {
-        "inline": true,
-        "content": [
-          "Alleluia. Glory be to God.",
-          "Alleluia. Glory be to God.",
-          "Alleluia, alleluia, alleluia. Glory be to God."
-        ]
-      },
       "gospelRef": {
         "book": "Luke",
         "chapter": 4,
@@ -432,14 +390,6 @@
         { "psalmNumber": 146, "title": "Psalm 146" },
         { "psalmNumber": 147, "title": "Psalm 147" }
       ],
-      "alleluia": {
-        "inline": true,
-        "content": [
-          "Alleluia. Glory be to God.",
-          "Alleluia. Glory be to God.",
-          "Alleluia, alleluia, alleluia. Glory be to God."
-        ]
-      },
       "gospelRef": {
         "book": "Luke",
         "chapter": 2,

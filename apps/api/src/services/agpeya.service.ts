@@ -41,7 +41,6 @@ export interface ResolvedAgpeyaHour {
 	introductoryPsalm?: ResolvedPsalm // Psalm 50 (51)
 	psalmsIntro?: string // "From the Psalms of our father David..."
 	psalms: ResolvedPsalm[]
-	alleluia?: { content: string[]; inline?: boolean }
 	gospel: ResolvedGospel
 	litanies: { title?: string; content: string[] }
 	lordsPrayer?: { title?: string; content: string[]; inline?: boolean }
@@ -102,7 +101,6 @@ function resolveHour(
 		introductoryPsalm,
 		psalmsIntro: hourData.psalmsIntro,
 		psalms,
-		alleluia: hourData.alleluia,
 		gospel: gospel || { reference: '', verses: [] },
 		litanies: hourData.litanies,
 		lordsPrayer: hourData.lordsPrayer,

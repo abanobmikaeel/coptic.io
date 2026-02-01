@@ -106,7 +106,6 @@ export interface AgpeyaHourData {
 	psalmsIntro?: string // "From the Psalms of our father David..."
 	psalmRefs: AgpeyaPsalmRef[] // References to psalms
 	psalms?: AgpeyaPsalm[] // Populated at runtime by API
-	alleluia?: AgpeyaPrayerSection
 	gospelRef: AgpeyaGospelRef
 	gospel?: AgpeyaGospel // Populated at runtime by API
 	litanies: AgpeyaLitany
@@ -125,7 +124,6 @@ export interface AgpeyaHour {
 	opening: AgpeyaPrayerSection
 	thanksgiving?: AgpeyaPrayerSection
 	psalms: AgpeyaPsalm[]
-	alleluia?: AgpeyaPrayerSection
 	gospel: AgpeyaGospel
 	litanies: AgpeyaLitany
 	lordsPrayer?: AgpeyaPrayerSection

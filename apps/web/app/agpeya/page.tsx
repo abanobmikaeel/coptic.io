@@ -1,9 +1,10 @@
 'use client'
 
 import {
+	AGPEYA_HOURS,
 	type AgpeyaHour,
 	type MidnightWatch,
-	AgpeyaHourSelector,
+	MIDNIGHT_WATCHES,
 	getCurrentHour,
 } from '@/components/AgpeyaHourSelector'
 import { type AgpeyaHourData, type AgpeyaMidnightData, AgpeyaPrayer } from '@/components/AgpeyaPrayer'
@@ -14,8 +15,8 @@ import { DisplaySettings } from '@/components/DisplaySettings'
 import { API_BASE_URL } from '@/config'
 import { useReadingSettings } from '@/hooks/useReadingSettings'
 import { getWidthClass, themeClasses } from '@/lib/reading-styles'
-import { useSearchParams } from 'next/navigation'
-import { Suspense, useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 
 function AgpeyaSkeleton({ theme }: { theme: 'light' | 'sepia' | 'dark' }) {
 	const shimmer =
@@ -106,12 +107,14 @@ function AgpeyaSkeleton({ theme }: { theme: 'light' | 'sepia' | 'dark' }) {
 }
 
 function AgpeyaContent() {
+	const router = useRouter()
 	const searchParams = useSearchParams()
 	const { settings, mounted } = useReadingSettings()
 	const [hourData, setHourData] = useState<AgpeyaHourData | AgpeyaMidnightData | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 	const [recommendedHour, setRecommendedHour] = useState<AgpeyaHour>('prime')
+	const [allCollapsed, setAllCollapsed] = useState(false)
 
 	// Auto-detect recommended hour based on local time (runs client-side only)
 	useEffect(() => {
@@ -126,6 +129,29 @@ function AgpeyaContent() {
 
 	const theme = settings.theme || 'light'
 	const isRtl = settings.translation === 'ar'
+
+	// Handle hour change from breadcrumb dropdown
+	const handleHourChange = useCallback(
+		(hourId: string) => {
+			const params = new URLSearchParams(searchParams.toString())
+			params.set('hour', hourId)
+			if (hourId === 'midnight') {
+				params.set('watch', '1')
+			} else {
+				params.delete('watch')
+			}
+			router.push(`/agpeya?${params.toString()}`)
+		},
+		[router, searchParams],
+	)
+
+	// Build dropdown options for breadcrumb
+	const hourOptions = AGPEYA_HOURS.map((hour) => ({
+		id: hour.id,
+		label: hour.name,
+		sublabel: `${hour.englishName} · ${hour.traditionalTime}`,
+		badge: hour.id === recommendedHour ? 'NOW' : undefined,
+	}))
 
 	// Fetch hour data
 	useEffect(() => {
@@ -158,31 +184,59 @@ function AgpeyaContent() {
 		<main
 			className={`min-h-screen ${themeClasses.bg[effectiveTheme]} ${themeClasses.textHeading[effectiveTheme]} transition-colors duration-300`}
 		>
-			{/* Header */}
-			<section className="relative pt-20 pb-4 px-6">
-				<div className="max-w-4xl mx-auto">
-					<Breadcrumb items={[{ label: 'Agpeya' }]} />
-				</div>
-			</section>
-
-			{/* Sticky header with hour selector and settings */}
+			{/* Sticky header with breadcrumb and settings */}
 			<div
 				className={`sticky top-14 z-30 ${themeClasses.bgTranslucent[effectiveTheme]} backdrop-blur-sm border-b ${themeClasses.border[effectiveTheme]}`}
 			>
 				<div className="max-w-4xl mx-auto px-6 py-3">
 					<div className="flex items-center justify-between gap-4">
-						{/* Hour selector (collapsed dropdown) */}
-						<Suspense fallback={null}>
-							<AgpeyaHourSelector
-								currentHour={currentHour}
-								currentWatch={currentHour === 'midnight' ? currentWatch : undefined}
-								recommendedHour={recommendedHour}
+						{/* Breadcrumb with hour selector dropdown */}
+						<div className="flex items-center gap-2">
+							<Breadcrumb
+								items={[{ label: 'Agpeya', href: '/agpeya' }]}
 								theme={effectiveTheme}
+								dropdown={{
+									current: currentHour,
+									options: hourOptions,
+									onSelect: handleHourChange,
+								}}
 							/>
-						</Suspense>
+							{/* Watch selector for midnight */}
+							{currentHour === 'midnight' && (
+								<div className="flex items-center gap-1 ml-2">
+									{MIDNIGHT_WATCHES.map((watch) => (
+										<button
+											key={watch.id}
+											type="button"
+											onClick={() => {
+												const params = new URLSearchParams(searchParams.toString())
+												params.set('hour', 'midnight')
+												params.set('watch', watch.id)
+												router.push(`/agpeya?${params.toString()}`)
+											}}
+											className={`px-2 py-1 text-xs rounded transition-colors ${
+												currentWatch === watch.id
+													? `${themeClasses.accent[effectiveTheme]} font-medium`
+													: `${themeClasses.muted[effectiveTheme]} hover:text-amber-600`
+											}`}
+											title={watch.theme}
+										>
+											W{watch.id}
+										</button>
+									))}
+								</div>
+							)}
+						</div>
 
-						{/* Display settings */}
-						<div className="flex-shrink-0">
+						{/* Collapse toggle and Display settings */}
+						<div className="flex items-center gap-3 flex-shrink-0">
+							<button
+								type="button"
+								onClick={() => setAllCollapsed(!allCollapsed)}
+								className={`text-xs transition-colors hover:text-amber-600 ${themeClasses.muted[effectiveTheme]}`}
+							>
+								{allCollapsed ? 'Expand All' : 'Collapse All'}
+							</button>
 							<Suspense fallback={null}>
 								<DisplaySettings />
 							</Suspense>
@@ -212,6 +266,8 @@ function AgpeyaContent() {
 						wordSpacing={settings.wordSpacing}
 						theme={effectiveTheme}
 						weight={settings.weight}
+						viewMode={settings.viewMode}
+						allCollapsed={allCollapsed}
 					/>
 				) : null}
 			</div>
@@ -242,7 +298,7 @@ function AgpeyaFallback() {
 	return (
 		<main className="min-h-screen bg-white dark:bg-gray-900">
 			{/* Header */}
-			<section className="relative pt-20 pb-4 px-6">
+			<section className="relative pt-4 pb-2 px-6">
 				<div className="max-w-4xl mx-auto">
 					<div className="h-4 w-16 bg-gray-200 dark:bg-gray-800 rounded animate-pulse" />
 				</div>
