@@ -210,7 +210,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 			</div>
 
 			{readings ? (
-				<div className="px-6 pt-10 pb-24">
+				<div className="px-6 pt-10 pb-32 lg:pb-24">
 					{(() => {
 						const ServiceDivider = () => (
 							<div className={'max-w-2xl mx-auto px-4 my-8'}>
@@ -262,7 +262,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				</div>
 			) : (
 				<section className="px-6 py-24 text-center">
-					<p className={theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500'}>
+					<p className={theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}>
 						Unable to load readings. Please try again later.
 					</p>
 				</section>

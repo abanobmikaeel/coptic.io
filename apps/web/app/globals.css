@@ -22,8 +22,22 @@ html.dark {
 	box-sizing: border-box;
 }
 
+/* Prevent horizontal overflow and overscroll bounce on mobile */
+html,
+body {
+	overflow-x: hidden;
+	overscroll-behavior: none;
+}
+
 html {
-	color-scheme: light dark;
+	/* Default to light, blocking script overrides before paint */
+	color-scheme: light;
+	background-color: #f9fafb;
+}
+
+html.dark {
+	color-scheme: dark;
+	background-color: #030712;
 }
 
 body {

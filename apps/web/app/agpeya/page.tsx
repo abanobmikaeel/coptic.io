@@ -116,6 +116,7 @@ function AgpeyaContent() {
 	const { settings, mounted } = useReadingSettings()
 	const [hourData, setHourData] = useState<AgpeyaHourData | AgpeyaMidnightData | null>(null)
 	const [loading, setLoading] = useState(true)
+	const [showSkeleton, setShowSkeleton] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 	const [recommendedHour, setRecommendedHour] = useState<AgpeyaHour>('prime')
 	const [allCollapsed, setAllCollapsed] = useState(false)
@@ -157,11 +158,17 @@ function AgpeyaContent() {
 		badge: hour.id === recommendedHour ? 'NOW' : undefined,
 	}))
 
-	// Fetch hour data
+	// Fetch hour data with delayed skeleton (only show if loading > 150ms)
 	useEffect(() => {
+		let skeletonTimeout: NodeJS.Timeout | null = null
+
 		async function fetchHourData() {
 			setLoading(true)
+			setShowSkeleton(false)
 			setError(null)
+
+			// Only show skeleton if loading takes more than 150ms
+			skeletonTimeout = setTimeout(() => setShowSkeleton(true), 200)
 
 			try {
 				const response = await fetch(`${API_BASE_URL}/agpeya/${currentHour}`)
@@ -175,10 +182,16 @@ function AgpeyaContent() {
 				setError('Unable to load prayer content. Please try again later.')
 			}
 
+			if (skeletonTimeout) clearTimeout(skeletonTimeout)
 			setLoading(false)
+			setShowSkeleton(false)
 		}
 
 		fetchHourData()
+
+		return () => {
+			if (skeletonTimeout) clearTimeout(skeletonTimeout)
+		}
 	}, [currentHour])
 
 	// Show skeleton during SSR/hydration - use light theme as default
@@ -253,12 +266,12 @@ function AgpeyaContent() {
 			<div
 				className={`${getWidthClass(settings.width || 'normal')} mx-auto px-6 pt-8 pb-32 lg:pb-24`}
 			>
-				{!mounted || loading ? (
-					<AgpeyaSkeleton theme={effectiveTheme} />
-				) : error ? (
+				{error ? (
 					<section className="py-24 text-center">
 						<p className={themeClasses.muted[effectiveTheme]}>{error}</p>
 					</section>
+				) : loading && showSkeleton ? (
+					<AgpeyaSkeleton theme={effectiveTheme} />
 				) : hourData ? (
 					<AgpeyaPrayer
 						hour={hourData}
