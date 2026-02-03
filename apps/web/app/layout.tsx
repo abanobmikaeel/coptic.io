@@ -1,9 +1,11 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Amiri, Inter, Literata, Noto_Sans_Coptic } from 'next/font/google'
 import './globals.css'
 import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { BottomTabs } from '@/components/navigation/BottomTabs'
+import { NavigationProvider } from '@/contexts/NavigationContext'
 import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({
@@ -86,6 +88,17 @@ export const metadata: Metadata = {
 	},
 }
 
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	maximumScale: 1,
+	userScalable: false,
+	themeColor: [
+		{ media: '(prefers-color-scheme: light)', color: '#ffffff' },
+		{ media: '(prefers-color-scheme: dark)', color: '#030712' },
+	],
+}
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -102,14 +115,17 @@ export default function RootLayout({
 				<link rel="dns-prefetch" href={apiDomain} />
 			</head>
 			<body
-				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased`}
+				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased overflow-x-hidden`}
 			>
 				<ThemeProvider>
 					<CommandPaletteProvider>
-						<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-							<Navbar />
-							{children}
-						</div>
+						<NavigationProvider>
+							<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+								<Navbar />
+								{children}
+								<BottomTabs />
+							</div>
+						</NavigationProvider>
 					</CommandPaletteProvider>
 				</ThemeProvider>
 				<Analytics />

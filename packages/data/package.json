@@ -14,6 +14,10 @@
 			"types": "./dist/en/index.d.ts",
 			"import": "./dist/en/index.js"
 		},
+		"./en/bible": {
+			"types": "./dist/en/bible/index.d.ts",
+			"import": "./dist/en/bible/index.js"
+		},
 		"./ar": {
 			"types": "./dist/ar/index.d.ts",
 			"import": "./dist/ar/index.js"

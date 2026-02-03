@@ -65,15 +65,11 @@ export function useCommandPalette() {
 	const abortControllerRef = useRef<AbortController | null>(null)
 	const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-	// Flatten results for keyboard navigation
+	// Flatten results for keyboard navigation (excludes Bible - no dedicated reading page)
 	const flattenedResults = useCallback((): SearchResultItem[] => {
 		if (!results) return []
 
 		const items: SearchResultItem[] = []
-
-		results.bible.forEach((item) => {
-			items.push({ ...item, category: 'bible' })
-		})
 
 		results.synaxarium.forEach((item) => {
 			items.push({ ...item, category: 'synaxarium' })

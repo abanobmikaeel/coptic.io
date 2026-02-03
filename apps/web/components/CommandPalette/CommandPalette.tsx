@@ -13,7 +13,13 @@ import {
 // Icons for different result types
 function BibleIcon() {
 	return (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -26,7 +32,13 @@ function BibleIcon() {
 
 function SaintIcon() {
 	return (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -39,7 +51,13 @@ function SaintIcon() {
 
 function PrayerIcon() {
 	return (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -52,7 +70,13 @@ function PrayerIcon() {
 
 function SearchIcon() {
 	return (
-		<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className="w-5 h-5"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -65,7 +89,7 @@ function SearchIcon() {
 
 function LoadingSpinner() {
 	return (
-		<svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24">
+		<svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
 			<circle
 				className="opacity-25"
 				cx="12"
@@ -220,7 +244,6 @@ export function CommandPalette() {
 		results,
 		isLoading,
 		selectedIndex,
-		setSelectedIndex,
 		flattenedResults,
 		navigateToResult,
 		error,
@@ -276,7 +299,7 @@ export function CommandPalette() {
 							type="text"
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
-							placeholder="Search Bible, Synaxarium, Agpeya..."
+							placeholder="Search Synaxarium, Agpeya..."
 							className="flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none text-base"
 						/>
 						<kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded">
@@ -294,7 +317,7 @@ export function CommandPalette() {
 							<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
 								<p>Type to search across all content</p>
 								<p className="text-sm mt-2">
-									Try &quot;John 3:16&quot;, &quot;St. Mark&quot;, or &quot;Prime&quot;
+									Try &quot;St. Mark&quot;, &quot;Prime&quot;, or &quot;Martyrs&quot;
 								</p>
 							</div>
 						)}
@@ -307,28 +330,11 @@ export function CommandPalette() {
 
 						{hasResults && (
 							<>
-								{results.bible.length > 0 && (
-									<>
-										<CategoryHeader title="Bible" />
-										{results.bible.map((item, i) => {
-											const globalIndex = i
-											return (
-												<ResultItem
-													key={`bible-${item.url}`}
-													item={{ ...item, category: 'bible' }}
-													isSelected={selectedIndex === globalIndex}
-													onClick={() => navigateToResult({ ...item, category: 'bible' })}
-												/>
-											)
-										})}
-									</>
-								)}
-
 								{results.synaxarium.length > 0 && (
 									<>
 										<CategoryHeader title="Synaxarium" />
 										{results.synaxarium.map((item, i) => {
-											const globalIndex = results.bible.length + i
+											const globalIndex = i
 											return (
 												<ResultItem
 													key={`synax-${item.url}`}
@@ -345,7 +351,7 @@ export function CommandPalette() {
 									<>
 										<CategoryHeader title="Agpeya" />
 										{results.agpeya.map((item, i) => {
-											const globalIndex = results.bible.length + results.synaxarium.length + i
+											const globalIndex = results.synaxarium.length + i
 											return (
 												<ResultItem
 													key={`agpeya-${item.id}`}

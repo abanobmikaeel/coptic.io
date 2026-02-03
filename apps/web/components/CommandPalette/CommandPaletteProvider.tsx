@@ -1,16 +1,16 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import { createPortal } from 'react-dom'
 import { API_BASE_URL } from '@/config'
+import { useRouter } from 'next/navigation'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import type {
-	SearchResults,
+	AgpeyaSearchResult,
+	BibleSearchResult,
 	SearchResponse,
 	SearchResultItem,
-	BibleSearchResult,
+	SearchResults,
 	SynaxariumSearchResult,
-	AgpeyaSearchResult,
 } from './useCommandPalette'
 
 interface CommandPaletteContextType {
@@ -32,7 +32,13 @@ export function useCommandPaletteContext() {
 // Icons
 function SearchIcon({ className }: { className?: string }) {
 	return (
-		<svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className={className}
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -45,7 +51,7 @@ function SearchIcon({ className }: { className?: string }) {
 
 function LoadingSpinner({ className }: { className?: string }) {
 	return (
-		<svg className={`animate-spin ${className}`} viewBox="0 0 24 24">
+		<svg className={`animate-spin ${className}`} viewBox="0 0 24 24" aria-hidden="true">
 			<circle
 				className="opacity-25"
 				cx="12"
@@ -66,7 +72,13 @@ function LoadingSpinner({ className }: { className?: string }) {
 
 function BibleIcon() {
 	return (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -79,7 +91,13 @@ function BibleIcon() {
 
 function SaintIcon() {
 	return (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -92,7 +110,13 @@ function SaintIcon() {
 
 function PrayerIcon() {
 	return (
-		<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<svg
+			className="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -128,11 +152,10 @@ function CommandPaletteModal({
 		setMounted(true)
 	}, [])
 
-	// Flatten results for navigation
+	// Flatten results for navigation (excludes Bible - no dedicated reading page)
 	const flattenedResults = useCallback((): SearchResultItem[] => {
 		if (!results) return []
 		const items: SearchResultItem[] = []
-		results.bible.forEach((item) => items.push({ ...item, category: 'bible' }))
 		results.synaxarium.forEach((item) => items.push({ ...item, category: 'synaxarium' }))
 		results.agpeya.forEach((item) => items.push({ ...item, category: 'agpeya' }))
 		return items
@@ -281,11 +304,13 @@ function CommandPaletteModal({
 		}
 	}
 
-	const getTitle = (item: SearchResultItem) => {
+	const _getTitle = (item: SearchResultItem) => {
 		switch (item.category) {
 			case 'bible': {
 				const bible = item as BibleSearchResult & { category: 'bible' }
-				return bible.verse ? `${bible.book} ${bible.chapter}:${bible.verse}` : `${bible.book} ${bible.chapter}`
+				return bible.verse
+					? `${bible.book} ${bible.chapter}:${bible.verse}`
+					: `${bible.book} ${bible.chapter}`
 			}
 			case 'synaxarium':
 				return (item as SynaxariumSearchResult & { category: 'synaxarium' }).name
@@ -294,7 +319,7 @@ function CommandPaletteModal({
 		}
 	}
 
-	const getSubtitle = (item: SearchResultItem) => {
+	const _getSubtitle = (item: SearchResultItem) => {
 		switch (item.category) {
 			case 'bible':
 				return (item as BibleSearchResult & { category: 'bible' }).text
@@ -302,7 +327,9 @@ function CommandPaletteModal({
 				return (item as SynaxariumSearchResult & { category: 'synaxarium' }).copticDate
 			case 'agpeya': {
 				const agpeya = item as AgpeyaSearchResult & { category: 'agpeya' }
-				return agpeya.traditionalTime ? `${agpeya.englishName} - ${agpeya.traditionalTime}` : agpeya.englishName
+				return agpeya.traditionalTime
+					? `${agpeya.englishName} - ${agpeya.traditionalTime}`
+					: agpeya.englishName
 			}
 		}
 	}
@@ -324,6 +351,10 @@ function CommandPaletteModal({
 			<div
 				className="absolute inset-0 bg-black/50 backdrop-blur-sm"
 				onClick={close}
+				onKeyDown={(e) => e.key === 'Escape' && close()}
+				role="button"
+				tabIndex={-1}
+				aria-label="Close search"
 			/>
 
 			{/* Modal */}
@@ -332,14 +363,18 @@ function CommandPaletteModal({
 					{/* Search input */}
 					<div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
 						<span className="text-gray-400 dark:text-gray-500">
-							{isLoading ? <LoadingSpinner className="w-5 h-5" /> : <SearchIcon className="w-5 h-5" />}
+							{isLoading ? (
+								<LoadingSpinner className="w-5 h-5" />
+							) : (
+								<SearchIcon className="w-5 h-5" />
+							)}
 						</span>
 						<input
 							ref={inputRef}
 							type="text"
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
-							placeholder="Search Bible, Synaxarium, Agpeya..."
+							placeholder="Search Synaxarium, Agpeya..."
 							className="flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none text-base"
 						/>
 						<kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded">
@@ -357,7 +392,7 @@ function CommandPaletteModal({
 							<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
 								<p>Type to search across all content</p>
 								<p className="text-sm mt-2">
-									Try &quot;John 3:16&quot;, &quot;St. Mark&quot;, or &quot;Prime&quot;
+									Try &quot;St. Mark&quot;, &quot;Prime&quot;, or &quot;Martyrs&quot;
 								</p>
 							</div>
 						)}
@@ -370,48 +405,13 @@ function CommandPaletteModal({
 
 						{hasResults && (
 							<>
-								{results.bible.length > 0 && (
-									<div>
-										<div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
-											Bible
-										</div>
-										{results.bible.map((item, i) => (
-											<button
-												key={`bible-${item.url}`}
-												type="button"
-												onClick={() => navigateToResult({ ...item, category: 'bible' })}
-												className={`w-full px-4 py-3 flex items-start gap-3 text-left transition-colors ${
-													selectedIndex === i
-														? 'bg-amber-50 dark:bg-amber-900/20'
-														: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
-												}`}
-											>
-												<span className={`mt-0.5 ${selectedIndex === i ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}>
-													{getIcon('bible')}
-												</span>
-												<div className="flex-1 min-w-0">
-													<div className="flex items-center gap-2">
-														<span className={`font-medium truncate ${selectedIndex === i ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}>
-															{getTitle({ ...item, category: 'bible' })}
-														</span>
-														<span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-															{getCategoryLabel('bible')}
-														</span>
-													</div>
-													<p className="text-sm text-gray-500 dark:text-gray-400 truncate">{item.text}</p>
-												</div>
-											</button>
-										))}
-									</div>
-								)}
-
 								{results.synaxarium.length > 0 && (
 									<div>
 										<div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
 											Synaxarium
 										</div>
 										{results.synaxarium.map((item, i) => {
-											const globalIndex = results.bible.length + i
+											const globalIndex = i
 											return (
 												<button
 													key={`synax-${item.url}`}
@@ -423,19 +423,25 @@ function CommandPaletteModal({
 															: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
 													}`}
 												>
-													<span className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}>
+													<span
+														className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}
+													>
 														{getIcon('synaxarium')}
 													</span>
 													<div className="flex-1 min-w-0">
 														<div className="flex items-center gap-2">
-															<span className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}>
+															<span
+																className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}
+															>
 																{item.name}
 															</span>
 															<span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
 																{getCategoryLabel('synaxarium')}
 															</span>
 														</div>
-														<p className="text-sm text-gray-500 dark:text-gray-400 truncate">{item.copticDate}</p>
+														<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+															{item.copticDate}
+														</p>
 													</div>
 												</button>
 											)
@@ -449,7 +455,7 @@ function CommandPaletteModal({
 											Agpeya
 										</div>
 										{results.agpeya.map((item, i) => {
-											const globalIndex = results.bible.length + results.synaxarium.length + i
+											const globalIndex = results.synaxarium.length + i
 											return (
 												<button
 													key={`agpeya-${item.id}`}
@@ -461,12 +467,16 @@ function CommandPaletteModal({
 															: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
 													}`}
 												>
-													<span className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}>
+													<span
+														className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}
+													>
 														{getIcon('agpeya')}
 													</span>
 													<div className="flex-1 min-w-0">
 														<div className="flex items-center gap-2">
-															<span className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}>
+															<span
+																className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}
+															>
 																{item.name}
 															</span>
 															<span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
@@ -474,7 +484,9 @@ function CommandPaletteModal({
 															</span>
 														</div>
 														<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-															{item.traditionalTime ? `${item.englishName} - ${item.traditionalTime}` : item.englishName}
+															{item.traditionalTime
+																? `${item.englishName} - ${item.traditionalTime}`
+																: item.englishName}
 														</p>
 													</div>
 												</button>
@@ -491,16 +503,22 @@ function CommandPaletteModal({
 						<div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
 							<div className="flex items-center gap-3">
 								<span className="flex items-center gap-1">
-									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">↑↓</kbd>
+									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+										↑↓
+									</kbd>
 									<span>Navigate</span>
 								</span>
 								<span className="flex items-center gap-1">
-									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">↵</kbd>
+									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+										↵
+									</kbd>
 									<span>Select</span>
 								</span>
 							</div>
 							<span className="flex items-center gap-1">
-								<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">⌘K</kbd>
+								<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+									⌘K
+								</kbd>
 								<span>Toggle</span>
 							</span>
 						</div>

@@ -86,65 +86,66 @@ export const getWidthClass = (width: ReadingWidth) => {
 }
 
 // Theme classes
+// Note: 'light' theme uses dark: variants to respect system dark mode preference
 export const themeClasses = {
 	bg: {
-		light: 'bg-white',
+		light: 'bg-gray-50 dark:bg-gray-900',
 		sepia: 'bg-[#f5f0e6]',
 		dark: 'bg-gray-900',
 	} as Record<ReadingTheme, string>,
 
 	bgTranslucent: {
-		light: 'bg-white/95',
+		light: 'bg-gray-50/95 dark:bg-gray-900/95',
 		sepia: 'bg-[#f5f0e6]/95',
 		dark: 'bg-gray-900/95',
 	} as Record<ReadingTheme, string>,
 
 	text: {
-		light: 'text-gray-800',
+		light: 'text-gray-800 dark:text-gray-200',
 		sepia: 'text-[#5c4b37]',
 		dark: 'text-gray-200',
 	} as Record<ReadingTheme, string>,
 
 	textHeading: {
-		light: 'text-gray-900',
+		light: 'text-gray-900 dark:text-gray-100',
 		sepia: 'text-[#5c4b37]',
 		dark: 'text-gray-100',
 	} as Record<ReadingTheme, string>,
 
 	muted: {
-		light: 'text-gray-400',
+		light: 'text-gray-400 dark:text-gray-500',
 		sepia: 'text-[#a08c72]',
 		dark: 'text-gray-500',
 	} as Record<ReadingTheme, string>,
 
 	accent: {
-		light: 'text-amber-600/70',
+		light: 'text-amber-600/70 dark:text-amber-500/70',
 		sepia: 'text-amber-700/70',
 		dark: 'text-amber-500/70',
 	} as Record<ReadingTheme, string>,
 
 	border: {
-		light: 'border-gray-200/50',
+		light: 'border-gray-200/50 dark:border-gray-800',
 		sepia: 'border-[#d4c9b8]',
 		dark: 'border-gray-800',
 	} as Record<ReadingTheme, string>,
 
 	collapsedBg: {
-		light: 'bg-gray-100 hover:bg-gray-200',
+		light: 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-800/50 dark:hover:bg-gray-800',
 		sepia: 'bg-[#ebe4d6] hover:bg-[#e0d7c5]',
 		dark: 'bg-gray-800/50 hover:bg-gray-800',
 	} as Record<ReadingTheme, string>,
 
 	// Subtle background for section headers to indicate interactivity
 	headerBg: {
-		light: 'bg-gray-50/50 hover:bg-gray-100/70',
+		light: 'bg-gray-50/50 hover:bg-gray-100/70 dark:bg-gray-800/30 dark:hover:bg-gray-800/50',
 		sepia: 'bg-[#f0ebe1]/50 hover:bg-[#ebe4d6]/70',
 		dark: 'bg-gray-800/30 hover:bg-gray-800/50',
 	} as Record<ReadingTheme, string>,
 
 	// Card background - always visible
 	cardBg: {
-		light: 'bg-gray-50/70 hover:bg-gray-100/80',
+		light: 'bg-gray-50/70 hover:bg-gray-100/80 dark:bg-gray-800/40 dark:hover:bg-gray-800/60',
 		sepia: 'bg-[#ebe4d6]/50 hover:bg-[#e5dccb]/70',
 		dark: 'bg-gray-800/40 hover:bg-gray-800/60',
 	} as Record<ReadingTheme, string>,

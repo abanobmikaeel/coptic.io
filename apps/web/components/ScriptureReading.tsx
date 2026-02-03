@@ -86,7 +86,7 @@ export function ScriptureReading({
 			>
 				<div className={`${widthClass} mx-auto px-4`}>
 					<div
-						className={`py-4 pl-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
+						className={`py-4 pl-4 pr-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
 					>
 						{service && (
 							<p
@@ -95,31 +95,32 @@ export function ScriptureReading({
 								{service}
 							</p>
 						)}
-						<div className="flex items-center gap-3">
-							<h2
-								className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
-							>
-								{title}
-							</h2>
-							{/* Collapse indicator */}
+						<div className="flex items-center justify-between">
+							<div>
+								<h2
+									className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+								>
+									{title}
+								</h2>
+								<p
+									className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}
+								>
+									{reference}
+								</p>
+							</div>
 							<svg
-								width="16"
-								height="16"
+								width="20"
+								height="20"
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
 								strokeWidth="2"
-								className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? '' : '-rotate-90'} opacity-0 group-hover:opacity-100`}
+								className={`${themeClasses.muted[theme]} transition-transform flex-shrink-0 ${isOpen ? '' : '-rotate-90'}`}
 								aria-hidden="true"
 							>
 								<path d="m6 9 6 6 6-6" />
 							</svg>
 						</div>
-						<p
-							className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}
-						>
-							{reference}
-						</p>
 					</div>
 				</div>
 			</button>

@@ -1,0 +1,565 @@
+{
+  "common": {
+    "openingInvocation": "common.json#openingInvocation",
+    "thanksgivingPrayer": "common.json#thanksgivingPrayer",
+    "psalm50": "common.json#psalm50",
+    "lordsPrayer": "common.json#lordsPrayer",
+    "holyGod": "common.json#holyGod",
+    "kyrie41": "common.json#kyrie41",
+    "absolution": "common.json#absolution"
+  },
+  "hours": {
+    "prime": {
+      "id": "prime",
+      "name": "Prime",
+      "englishName": "Morning Prayer (First Hour)",
+      "traditionalTime": "6:00 AM",
+      "introduction": "We pray the First Hour at sunrise, commemorating the Resurrection of our Lord Jesus Christ. At this hour, Christ rose from the dead and appeared to the women at the tomb.",
+      "opening": {
+        "inline": true,
+        "content": [
+          "In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+          "Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+          "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+        ]
+      },
+      "thanksgiving": {
+        "title": "Thanksgiving Prayer",
+        "inline": false,
+        "content": [
+          "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us unto Him, spared us, supported us, and brought us to this hour. Let us also ask Him, the Lord our God, the Almighty, to guard us in all peace this holy day and all the days of our life.",
+          "O Master, Lord, God the Almighty, the Father of our Lord, God and Savior, Jesus Christ, we thank You for every condition, concerning every condition, and in every condition, for You have covered us, helped us, guarded us, accepted us unto You, spared us, supported us, and brought us to this hour.",
+          "Therefore, we ask and entreat Your goodness, O Lover of mankind, grant us to complete this holy day, and all the days of our life, in all peace with Your fear. All envy, all temptation, all the work of Satan, the counsel of wicked men and the rising up of enemies, hidden and manifest, take them away from us, and from all Your people, and from this holy place that is Yours. But those things which are good and profitable do provide for us; for it is You Who have given us the authority to tread on serpents and scorpions, and upon all the power of the enemy. And lead us not into temptation, but deliver us from evil, by the grace, compassion and love of mankind, of Your Only-Begotten Son, our Lord, God and Savior, Jesus Christ, through Whom the glory, the honor, the dominion, and the adoration are due unto You, with Him, and the Holy Spirit, the Life-Giver, Who is of one essence with You, now and at all times, and unto the ages of ages. Amen."
+        ]
+      },
+      "introductoryPsalm": {
+        "psalmNumber": 50,
+        "title": "Psalm 50",
+        "rubric": "A Psalm of David when Nathan the prophet came to him after he had gone in to Bathsheba"
+      },
+      "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+      "psalmRefs": [
+        { "psalmNumber": 1, "title": "Psalm 1" },
+        { "psalmNumber": 2, "title": "Psalm 2" },
+        { "psalmNumber": 3, "title": "Psalm 3" },
+        { "psalmNumber": 4, "title": "Psalm 4" },
+        { "psalmNumber": 5, "title": "Psalm 5" },
+        { "psalmNumber": 6, "title": "Psalm 6" },
+        { "psalmNumber": 8, "title": "Psalm 8" },
+        { "psalmNumber": 11, "title": "Psalm 11" },
+        { "psalmNumber": 12, "title": "Psalm 12" },
+        { "psalmNumber": 14, "title": "Psalm 14" },
+        { "psalmNumber": 15, "title": "Psalm 15" },
+        { "psalmNumber": 18, "title": "Psalm 18" },
+        { "psalmNumber": 24, "title": "Psalm 24" },
+        { "psalmNumber": 26, "title": "Psalm 26" },
+        { "psalmNumber": 62, "title": "Psalm 62" },
+        { "psalmNumber": 66, "title": "Psalm 66" },
+        { "psalmNumber": 69, "title": "Psalm 69" },
+        { "psalmNumber": 112, "title": "Psalm 112" },
+        { "psalmNumber": 142, "title": "Psalm 142" }
+      ],
+      "gospelRef": {
+        "book": "John",
+        "chapter": 1,
+        "startVerse": 1,
+        "endVerse": 17,
+        "rubric": "Glory to You, O our God. Holy, holy, holy. A psalm of David. A reading from the Gospel according to our teacher Saint John the Evangelist. May his blessings be with us all. Amen."
+      },
+      "litanies": {
+        "title": "Litanies",
+        "content": [
+          "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+          "A crown of blessing is the First Hour, which You grant to us, O Christ our God, for the forgiveness of our sins. Lord have mercy.",
+          "O Lord, Who at the First Hour did send Your Holy Spirit upon Your apostles, take not that Spirit from us, O Good One, but renew Him within us. Lord have mercy.",
+          "Create in me a clean heart, O God, and renew a steadfast spirit within me. Cast me not away from Your presence, and take not Your Holy Spirit from me.",
+          "Blessed is the Lord God, for He has visited and redeemed His people. Lord have mercy."
+        ]
+      },
+      "lordsPrayer": {
+        "title": "The Lord's Prayer",
+        "inline": true,
+        "content": [
+          "Our Father Who art in heaven, hallowed be Thy Name. Thy kingdom come. Thy will be done on earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from the evil one. In Christ Jesus our Lord. For Thine is the kingdom, the power and the glory, forever. Amen."
+        ]
+      },
+      "closing": {
+        "title": "Concluding Prayer",
+        "inline": false,
+        "content": [
+          "O Lord, Who at the First Hour did send Your Holy Spirit upon Your apostles: take not that Spirit from us, O Good One, but renew Him within us, day by day.",
+          "O Christ, the True Light, Who enlightens and sanctifies every man that comes into the world, let the light of Your countenance shine upon us, that in it we may see the Unapproachable Light. Direct our steps in the way of Your commandments, through the intercessions of Your all-pure Mother, and of all Your saints. Amen."
+        ]
+      }
+    },
+    "terce": {
+      "id": "terce",
+      "name": "Terce",
+      "englishName": "Third Hour",
+      "traditionalTime": "9:00 AM",
+      "introduction": "We pray the Third Hour commemorating the descent of the Holy Spirit upon the apostles at Pentecost, and the trial of our Lord before Pilate.",
+      "opening": {
+        "inline": true,
+        "content": [
+          "In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+          "Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+          "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+        ]
+      },
+      "thanksgiving": {
+        "title": "Thanksgiving Prayer",
+        "inline": false,
+        "content": [
+          "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us unto Him, spared us, supported us, and brought us to this hour."
+        ]
+      },
+      "introductoryPsalm": {
+        "psalmNumber": 50,
+        "title": "Psalm 50"
+      },
+      "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+      "psalmRefs": [
+        { "psalmNumber": 19, "title": "Psalm 19" },
+        { "psalmNumber": 22, "title": "Psalm 22" },
+        { "psalmNumber": 23, "title": "Psalm 23" },
+        { "psalmNumber": 25, "title": "Psalm 25" },
+        { "psalmNumber": 28, "title": "Psalm 28" },
+        { "psalmNumber": 29, "title": "Psalm 29" },
+        { "psalmNumber": 33, "title": "Psalm 33" },
+        { "psalmNumber": 40, "title": "Psalm 40" },
+        { "psalmNumber": 42, "title": "Psalm 42" },
+        { "psalmNumber": 44, "title": "Psalm 44" },
+        { "psalmNumber": 45, "title": "Psalm 45" },
+        { "psalmNumber": 46, "title": "Psalm 46" }
+      ],
+      "gospelRef": {
+        "book": "John",
+        "chapter": 14,
+        "startVerse": 26,
+        "endVerse": 31,
+        "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint John the Evangelist. May his blessings be with us all. Amen."
+      },
+      "gospelRef2": {
+        "book": "John",
+        "chapter": 15,
+        "startVerse": 1,
+        "endVerse": 3
+      },
+      "litanies": {
+        "content": [
+          "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+          "O Lord, Who at the Third Hour did send Your Holy Spirit upon Your apostles: take not that Spirit from us, O Good One, but renew Him within us. Lord have mercy.",
+          "Create in me a clean heart, O God, and renew a steadfast spirit within me. Cast me not away from Your presence, and take not Your Holy Spirit from me. Lord have mercy.",
+          "O Lord, Who at the Third Hour was led to be crucified for our salvation: mortify our carnal desires and deliver us from evil. Lord have mercy."
+        ]
+      },
+      "closing": {
+        "inline": false,
+        "content": [
+          "O Lord, Who at the Third Hour did send Your Holy Spirit upon Your apostles: take not that Spirit from us, O Good One, but renew Him within us. Create in me a clean heart, O God, and renew a steadfast spirit within me. Cast me not away from Your presence, and take not Your Holy Spirit from me.",
+          "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+        ]
+      }
+    },
+    "sext": {
+      "id": "sext",
+      "name": "Sext",
+      "englishName": "Sixth Hour",
+      "traditionalTime": "12:00 PM",
+      "introduction": "We pray the Sixth Hour commemorating the Crucifixion of our Lord Jesus Christ. At this hour, darkness covered the whole earth.",
+      "opening": {
+        "inline": true,
+        "content": [
+          "In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+          "Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+          "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+        ]
+      },
+      "thanksgiving": {
+        "title": "Thanksgiving Prayer",
+        "inline": false,
+        "content": [
+          "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us unto Him, spared us, supported us, and brought us to this hour."
+        ]
+      },
+      "introductoryPsalm": {
+        "psalmNumber": 50,
+        "title": "Psalm 50"
+      },
+      "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+      "psalmRefs": [
+        { "psalmNumber": 53, "title": "Psalm 53" },
+        { "psalmNumber": 56, "title": "Psalm 56" },
+        { "psalmNumber": 60, "title": "Psalm 60" },
+        { "psalmNumber": 62, "title": "Psalm 62" },
+        { "psalmNumber": 66, "title": "Psalm 66" },
+        { "psalmNumber": 69, "title": "Psalm 69" },
+        { "psalmNumber": 83, "title": "Psalm 83" },
+        { "psalmNumber": 84, "title": "Psalm 84" },
+        { "psalmNumber": 85, "title": "Psalm 85" },
+        { "psalmNumber": 86, "title": "Psalm 86" },
+        { "psalmNumber": 90, "title": "Psalm 90" },
+        { "psalmNumber": 92, "title": "Psalm 92" }
+      ],
+      "gospelRef": {
+        "book": "Matthew",
+        "chapter": 5,
+        "startVerse": 1,
+        "endVerse": 16,
+        "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Matthew the Evangelist. May his blessings be with us all. Amen."
+      },
+      "litanies": {
+        "content": [
+          "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+          "O Lord, Who at the Sixth Hour was crucified for our salvation upon the Cross, and did rend the handwriting of our sins: tear away, O Lord, the veil which covers our hearts, that we may worship You in fear and trembling. Lord have mercy.",
+          "Quickly let Your tender mercies overtake us, O Lord. Lord have mercy.",
+          "O God, through a fountain of tears grant us the cleansing from the depth of our hearts, that we may see You, to Whom it is granted to see You on high. Lord have mercy."
+        ]
+      },
+      "closing": {
+        "inline": false,
+        "content": [
+          "O Lord, Who at the Sixth Hour was crucified for our salvation: tear away the veil which covers our hearts, that we may worship You in fear and trembling. Forgive us our sins, and have mercy upon us.",
+          "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+        ]
+      }
+    },
+    "none": {
+      "id": "none",
+      "name": "None",
+      "englishName": "Ninth Hour",
+      "traditionalTime": "3:00 PM",
+      "introduction": "We pray the Ninth Hour commemorating the death of our Lord Jesus Christ on the Cross. At this hour, Christ gave up His spirit.",
+      "opening": {
+        "inline": true,
+        "content": [
+          "In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+          "Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+          "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+        ]
+      },
+      "thanksgiving": {
+        "title": "Thanksgiving Prayer",
+        "inline": false,
+        "content": [
+          "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us unto Him, spared us, supported us, and brought us to this hour."
+        ]
+      },
+      "introductoryPsalm": {
+        "psalmNumber": 50,
+        "title": "Psalm 50"
+      },
+      "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+      "psalmRefs": [
+        { "psalmNumber": 95, "title": "Psalm 95" },
+        { "psalmNumber": 96, "title": "Psalm 96" },
+        { "psalmNumber": 97, "title": "Psalm 97" },
+        { "psalmNumber": 98, "title": "Psalm 98" },
+        { "psalmNumber": 99, "title": "Psalm 99" },
+        { "psalmNumber": 100, "title": "Psalm 100" },
+        { "psalmNumber": 109, "title": "Psalm 109" },
+        { "psalmNumber": 110, "title": "Psalm 110" },
+        { "psalmNumber": 111, "title": "Psalm 111" },
+        { "psalmNumber": 112, "title": "Psalm 112" },
+        { "psalmNumber": 114, "title": "Psalm 114" },
+        { "psalmNumber": 115, "title": "Psalm 115" }
+      ],
+      "gospelRef": {
+        "book": "Luke",
+        "chapter": 9,
+        "startVerse": 10,
+        "endVerse": 17,
+        "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+      },
+      "litanies": {
+        "content": [
+          "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+          "O Lord, Who at the Ninth Hour did taste death in the flesh for us: mortify our carnal desires and deliver us from evil. Lord have mercy.",
+          "We have sinned, we have committed iniquity, we have acted wickedly; have mercy upon us and forgive us. Lord have mercy.",
+          "O God, through a fountain of tears grant us the cleansing from the depth of our hearts, that we may see You, to Whom it is granted to see You on high. Lord have mercy."
+        ]
+      },
+      "closing": {
+        "inline": false,
+        "content": [
+          "O Lord, Who at the Ninth Hour did taste death in the flesh for our sake: mortify our carnal desires and save our souls.",
+          "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+        ]
+      }
+    },
+    "vespers": {
+      "id": "vespers",
+      "name": "Vespers",
+      "englishName": "Eleventh Hour",
+      "traditionalTime": "6:00 PM",
+      "introduction": "We pray the Eleventh Hour commemorating the taking down of our Lord from the Cross and His burial.",
+      "opening": {
+        "inline": true,
+        "content": [
+          "In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+          "Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+          "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+        ]
+      },
+      "thanksgiving": {
+        "title": "Thanksgiving Prayer",
+        "inline": false,
+        "content": [
+          "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us unto Him, spared us, supported us, and brought us to this hour."
+        ]
+      },
+      "introductoryPsalm": {
+        "psalmNumber": 50,
+        "title": "Psalm 50"
+      },
+      "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+      "psalmRefs": [
+        { "psalmNumber": 116, "title": "Psalm 116" },
+        { "psalmNumber": 117, "title": "Psalm 117" },
+        { "psalmNumber": 119, "title": "Psalm 119" },
+        { "psalmNumber": 120, "title": "Psalm 120" },
+        { "psalmNumber": 121, "title": "Psalm 121" },
+        { "psalmNumber": 122, "title": "Psalm 122" },
+        { "psalmNumber": 123, "title": "Psalm 123" },
+        { "psalmNumber": 124, "title": "Psalm 124" },
+        { "psalmNumber": 125, "title": "Psalm 125" },
+        { "psalmNumber": 126, "title": "Psalm 126" },
+        { "psalmNumber": 127, "title": "Psalm 127" },
+        { "psalmNumber": 128, "title": "Psalm 128" }
+      ],
+      "gospelRef": {
+        "book": "Luke",
+        "chapter": 4,
+        "startVerse": 38,
+        "endVerse": 41,
+        "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+      },
+      "litanies": {
+        "content": [
+          "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+          "O Lord, Who at the Eleventh Hour was taken down from the Cross: take away our sins from us. Lord have mercy.",
+          "We have sinned and committed iniquity, we have acted wickedly; have mercy upon us and forgive us. Lord have mercy.",
+          "O Lord, as the sun sets and the daylight fades, we praise and glorify You, for You have brought us to the evening time. Lord have mercy."
+        ]
+      },
+      "closing": {
+        "inline": false,
+        "content": [
+          "O Lord, Who at the Eleventh Hour was taken down from the Cross by Joseph and Nicodemus: take away our sins from us and have mercy upon us.",
+          "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+        ]
+      }
+    },
+    "compline": {
+      "id": "compline",
+      "name": "Compline",
+      "englishName": "Twelfth Hour",
+      "traditionalTime": "9:00 PM",
+      "introduction": "We pray the Twelfth Hour commemorating the burial of our Lord Jesus Christ, and we remember the end of life and the Final Judgment.",
+      "opening": {
+        "inline": true,
+        "content": [
+          "In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+          "Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+          "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+        ]
+      },
+      "thanksgiving": {
+        "title": "Thanksgiving Prayer",
+        "inline": false,
+        "content": [
+          "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us unto Him, spared us, supported us, and brought us to this hour."
+        ]
+      },
+      "introductoryPsalm": {
+        "psalmNumber": 50,
+        "title": "Psalm 50"
+      },
+      "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+      "psalmRefs": [
+        { "psalmNumber": 129, "title": "Psalm 129" },
+        { "psalmNumber": 130, "title": "Psalm 130" },
+        { "psalmNumber": 131, "title": "Psalm 131" },
+        { "psalmNumber": 132, "title": "Psalm 132" },
+        { "psalmNumber": 133, "title": "Psalm 133" },
+        { "psalmNumber": 136, "title": "Psalm 136" },
+        { "psalmNumber": 137, "title": "Psalm 137" },
+        { "psalmNumber": 140, "title": "Psalm 140" },
+        { "psalmNumber": 141, "title": "Psalm 141" },
+        { "psalmNumber": 145, "title": "Psalm 145" },
+        { "psalmNumber": 146, "title": "Psalm 146" },
+        { "psalmNumber": 147, "title": "Psalm 147" }
+      ],
+      "gospelRef": {
+        "book": "Luke",
+        "chapter": 2,
+        "startVerse": 25,
+        "endVerse": 32,
+        "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+      },
+      "litanies": {
+        "content": [
+          "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+          "O Lord, Who at the Twelfth Hour was laid in the tomb: grant that we may be buried with You and rise with You. Lord have mercy.",
+          "We have sinned, we have committed iniquity, we have acted wickedly; have mercy upon us and forgive us. Lord have mercy.",
+          "Grant us, O Lord, before the end comes, true repentance and the forgiveness of our sins. Lord have mercy."
+        ]
+      },
+      "closing": {
+        "inline": false,
+        "content": [
+          "O Lord, as I lie down to sleep, grant me peaceful rest and awaken me again to glorify You. Be with me through the night and protect me from all harm.",
+          "Lord, now let Your servant depart in peace, according to Your word, for my eyes have seen Your salvation, which You have prepared before the face of all peoples, a light to bring revelation to the Gentiles, and the glory of Your people Israel.",
+          "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+        ]
+      }
+    }
+  },
+  "midnight": {
+    "id": "midnight",
+    "name": "Midnight",
+    "englishName": "Three Watches",
+    "traditionalTime": "12:00 AM",
+    "introduction": "We pray the Midnight Prayer commemorating the Second Coming of our Lord and the resurrection of the dead. We watch and pray as we await the Bridegroom.",
+    "opening": {
+      "inline": true,
+      "content": [
+        "In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+        "Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+        "Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+      ]
+    },
+    "thanksgiving": {
+      "title": "Thanksgiving Prayer",
+      "inline": false,
+      "content": [
+        "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God and Savior, Jesus Christ, for He has covered us, helped us, guarded us, accepted us unto Him, spared us, supported us, and brought us to this hour."
+      ]
+    },
+    "introductoryPsalm": {
+      "psalmNumber": 50,
+      "title": "Psalm 50"
+    },
+    "watches": [
+      {
+        "id": "midnight-1",
+        "name": "First Watch",
+        "theme": "Watchfulness and Vigilance",
+        "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+        "psalmRefs": [
+          { "psalmNumber": 3, "title": "Psalm 3" },
+          { "psalmNumber": 6, "title": "Psalm 6" },
+          { "psalmNumber": 12, "title": "Psalm 12" },
+          { "psalmNumber": 69, "title": "Psalm 69" },
+          { "psalmNumber": 85, "title": "Psalm 85" },
+          { "psalmNumber": 90, "title": "Psalm 90" },
+          { "psalmNumber": 116, "title": "Psalm 116" },
+          { "psalmNumber": 117, "title": "Psalm 117" },
+          { "psalmNumber": 118, "title": "Psalm 118", "note": "The Great Psalm - all 22 stanzas" }
+        ],
+        "gospelRef": {
+          "book": "Matthew",
+          "chapter": 25,
+          "startVerse": 1,
+          "endVerse": 13,
+          "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Matthew the Evangelist. May his blessings be with us all. Amen."
+        },
+        "litanies": {
+          "content": [
+            "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+            "Behold, the Bridegroom comes at midnight, and blessed is that servant whom He shall find watching. Lord have mercy.",
+            "Make us worthy, O Lord, to watch with the wise virgins, awaiting Your coming with lamps trimmed and burning. Lord have mercy."
+          ]
+        },
+        "closing": {
+          "content": [
+            "In the middle of the night I rise to give thanks to You, because of Your righteous judgments. Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins."
+          ]
+        }
+      },
+      {
+        "id": "midnight-2",
+        "name": "Second Watch",
+        "theme": "Repentance and Tears",
+        "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+        "psalmRefs": [
+          { "psalmNumber": 119, "title": "Psalm 119" },
+          { "psalmNumber": 120, "title": "Psalm 120" },
+          { "psalmNumber": 121, "title": "Psalm 121" },
+          { "psalmNumber": 122, "title": "Psalm 122" },
+          { "psalmNumber": 123, "title": "Psalm 123" },
+          { "psalmNumber": 124, "title": "Psalm 124" },
+          { "psalmNumber": 125, "title": "Psalm 125" },
+          { "psalmNumber": 126, "title": "Psalm 126" },
+          { "psalmNumber": 127, "title": "Psalm 127" },
+          { "psalmNumber": 128, "title": "Psalm 128" },
+          { "psalmNumber": 129, "title": "Psalm 129" }
+        ],
+        "gospelRef": {
+          "book": "Luke",
+          "chapter": 7,
+          "startVerse": 36,
+          "endVerse": 50,
+          "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+        },
+        "litanies": {
+          "content": [
+            "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+            "Grant us, O Lord, tears of repentance, like the sinful woman who washed Your feet with her tears. Lord have mercy.",
+            "Her sins, which were many, were forgiven her, for she loved much. Grant us also this love and forgiveness. Lord have mercy."
+          ]
+        },
+        "closing": {
+          "content": [
+            "I have sinned, O my Lord, I have sinned, and I know my iniquities. But I ask and beseech You: have compassion on me, and forgive me. Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins."
+          ]
+        }
+      },
+      {
+        "id": "midnight-3",
+        "name": "Third Watch",
+        "theme": "Judgment and Hope",
+        "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+        "psalmRefs": [
+          { "psalmNumber": 130, "title": "Psalm 130" },
+          { "psalmNumber": 131, "title": "Psalm 131" },
+          { "psalmNumber": 132, "title": "Psalm 132" },
+          { "psalmNumber": 133, "title": "Psalm 133" },
+          { "psalmNumber": 136, "title": "Psalm 136" },
+          { "psalmNumber": 137, "title": "Psalm 137" },
+          { "psalmNumber": 140, "title": "Psalm 140" },
+          { "psalmNumber": 141, "title": "Psalm 141" },
+          { "psalmNumber": 145, "title": "Psalm 145" },
+          { "psalmNumber": 146, "title": "Psalm 146" },
+          { "psalmNumber": 147, "title": "Psalm 147" }
+        ],
+        "gospelRef": {
+          "book": "Luke",
+          "chapter": 12,
+          "startVerse": 32,
+          "endVerse": 46,
+          "rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+        },
+        "litanies": {
+          "content": [
+            "We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+            "Blessed are those servants whom the Master finds watching when He comes. Lord have mercy.",
+            "Be ready, for the Son of Man is coming at an hour you do not expect. Lord have mercy."
+          ]
+        },
+        "closing": {
+          "content": [
+            "Lord, now let Your servant depart in peace, according to Your word, for my eyes have seen Your salvation.",
+            "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+          ]
+        }
+      }
+    ],
+    "closing": {
+      "inline": false,
+      "content": [
+        "O Lord, Who shall rise at the resurrection of all men, grant us a portion with the righteous in Your kingdom. Through the intercessions of the Theotokos and all Your saints. Amen."
+      ]
+    }
+  }
+}
