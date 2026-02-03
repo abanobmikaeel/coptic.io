@@ -1,48 +1,7 @@
 'use client'
 
-import type { ReadingsData } from '@/lib/types'
+import type { AvailableSections, ReadingSize } from '@/lib/reading-sections'
 import { useCallback, useEffect, useState } from 'react'
-
-// Simplified mobile readings - just the main ones
-const mobileReadings = [
-	{ key: 'Pauline', short: 'Pa', label: 'Pauline' },
-	{ key: 'Catholic', short: 'Ca', label: 'Catholic' },
-	{ key: 'Acts', short: 'Ac', label: 'Acts' },
-	{ key: 'Synaxarium', short: 'Sx', label: 'Synax' },
-	{ key: 'LPsalm', short: 'Ps', label: 'Psalm' },
-	{ key: 'LGospel', short: 'Go', label: 'Gospel' },
-] as const
-
-// Grouped readings with importance levels (desktop)
-const readingGroups = [
-	{
-		label: 'Liturgy',
-		readings: [
-			{ key: 'Pauline', short: 'Pa', label: 'Pauline Epistle', size: 'md' },
-			{ key: 'Catholic', short: 'Ca', label: 'Catholic Epistle', size: 'md' },
-			{ key: 'Acts', short: 'Ac', label: 'Acts', size: 'md' },
-			{ key: 'Synaxarium', short: 'Sx', label: 'Synaxarium', size: 'sm' },
-			{ key: 'LPsalm', short: 'Ps', label: 'Psalm', size: 'sm' },
-			{ key: 'LGospel', short: 'Go', label: 'Gospel', size: 'lg' },
-		],
-	},
-	{
-		label: 'Vespers',
-		readings: [
-			{ key: 'VPsalm', short: 'Ps', label: 'Psalm', size: 'sm' },
-			{ key: 'VGospel', short: 'Go', label: 'Gospel', size: 'lg' },
-		],
-	},
-	{
-		label: 'Matins',
-		readings: [
-			{ key: 'MPsalm', short: 'Ps', label: 'Psalm', size: 'sm' },
-			{ key: 'MGospel', short: 'Go', label: 'Gospel', size: 'lg' },
-		],
-	},
-] as const
-
-type ReadingSize = 'sm' | 'md' | 'lg'
 
 const sizeClasses: Record<ReadingSize, { normal: string; active: string }> = {
 	sm: { normal: 'w-5 h-5 text-[9px]', active: 'w-6 h-6 text-[10px]' },
@@ -50,54 +9,27 @@ const sizeClasses: Record<ReadingSize, { normal: string; active: string }> = {
 	lg: { normal: 'w-9 h-9 text-xs', active: 'w-10 h-10 text-xs' },
 }
 
-export function ReadingTimeline({ readings }: { readings: ReadingsData }) {
+interface ReadingTimelineProps {
+	sections: AvailableSections
+}
+
+export function ReadingTimeline({ sections }: ReadingTimelineProps) {
+	const { groups, allReadings, mobileReadings } = sections
 	const [activeSection, setActiveSection] = useState<string | null>(null)
-
-	// Filter groups to only include available readings
-	const availableGroups = readingGroups
-		.map((group) => ({
-			...group,
-			readings: group.readings.filter((r) => {
-				// Synaxarium uses different key in data
-				const dataKey = r.key === 'Synaxarium' ? 'Synxarium' : r.key
-				const data = readings[dataKey as keyof ReadingsData]
-				return data && Array.isArray(data) && data.length > 0
-			}),
-		}))
-		.filter((group) => group.readings.length > 0)
-
-	// Flat list for scroll detection
-	const allReadings = availableGroups.flatMap((g) => g.readings)
-
-	// Mobile readings - filter to only available ones
-	const availableMobileReadings = mobileReadings.filter((r) => {
-		const dataKey = r.key === 'Synaxarium' ? 'Synxarium' : r.key
-		const data = readings[dataKey as keyof ReadingsData]
-		return data && Array.isArray(data) && data.length > 0
-	})
 
 	useEffect(() => {
 		const handleScroll = () => {
 			const scrollY = window.scrollY
-
-			// Track active section
-			const sections = allReadings
-				.map((r) => ({
-					key: r.key,
-					element: document.getElementById(`reading-${r.key}`),
-				}))
-				.filter((s) => s.element !== null)
-
 			const viewportMiddle = scrollY + window.innerHeight / 3
 
 			let current: string | null = null
-			for (const section of sections) {
-				if (section.element) {
-					const rect = section.element.getBoundingClientRect()
+			for (const r of allReadings) {
+				const element = document.getElementById(`reading-${r.key}`)
+				if (element) {
+					const rect = element.getBoundingClientRect()
 					const absoluteTop = rect.top + scrollY
-
 					if (absoluteTop <= viewportMiddle) {
-						current = section.key
+						current = r.key
 					}
 				}
 			}
@@ -120,39 +52,40 @@ export function ReadingTimeline({ readings }: { readings: ReadingsData }) {
 		}
 	}, [])
 
-	if (availableGroups.length === 0) return null
+	if (groups.length === 0) return null
 
 	const activeIndex = activeSection ? allReadings.findIndex((r) => r.key === activeSection) : -1
 	const mobileActiveIndex = activeSection
-		? availableMobileReadings.findIndex((r) => r.key === activeSection)
+		? mobileReadings.findIndex((r) => r.key === activeSection)
 		: -1
 
 	return (
 		<>
-			{/* Mobile bottom bar - always visible */}
+			{/* Mobile bottom bar */}
 			<nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40" aria-label="Reading navigation">
 				<div className="bg-gray-50/95 dark:bg-gray-900/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 safe-area-pb">
 					<div className="flex items-center justify-around px-1 py-2">
-						{availableMobileReadings.map((r) => {
+						{mobileReadings.map((r, idx) => {
 							const isActive = activeSection === r.key
-							const isPast =
-								mobileActiveIndex > availableMobileReadings.findIndex((ar) => ar.key === r.key)
+							const isPast = mobileActiveIndex > idx
 
 							return (
 								<button
 									key={r.key}
 									type="button"
 									onClick={() => scrollToReading(r.key)}
-									className={`
-										flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all min-w-0
-										${isActive ? 'text-amber-600 dark:text-amber-400' : 'text-gray-500 dark:text-gray-400'}
-									`}
+									className={`flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all min-w-0 ${
+										isActive ? 'text-amber-600 dark:text-amber-400' : 'text-gray-500 dark:text-gray-400'
+									}`}
 								>
 									<span
-										className={`
-											w-1.5 h-1.5 rounded-full transition-colors
-											${isActive ? 'bg-amber-500' : isPast ? 'bg-amber-300 dark:bg-amber-700' : 'bg-gray-300 dark:bg-gray-600'}
-										`}
+										className={`w-1.5 h-1.5 rounded-full transition-colors ${
+											isActive
+												? 'bg-amber-500'
+												: isPast
+													? 'bg-amber-300 dark:bg-amber-700'
+													: 'bg-gray-300 dark:bg-gray-600'
+										}`}
 									/>
 									<span className="text-[10px] font-medium truncate">{r.label}</span>
 								</button>
@@ -168,20 +101,18 @@ export function ReadingTimeline({ readings }: { readings: ReadingsData }) {
 				aria-label="Reading navigation"
 			>
 				<div className="flex flex-col items-center gap-0 py-2 px-2 rounded-2xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg">
-					{availableGroups.map((group, groupIdx) => (
+					{groups.map((group, groupIdx) => (
 						<div key={group.label} className="flex flex-col items-center">
-							{/* Group label */}
 							<span className="text-[8px] font-bold tracking-wider uppercase text-gray-400 dark:text-gray-500 mb-1 mt-1">
 								{group.label}
 							</span>
 
-							{/* Readings in group */}
 							<div className="flex flex-col items-center gap-1">
-								{group.readings.map((r) => {
+								{group.readings.map((r, idx) => {
 									const isActive = activeSection === r.key
-									const isPast = activeIndex > allReadings.findIndex((ar) => ar.key === r.key)
-									const size = r.size as ReadingSize
-									const sizeClass = isActive ? sizeClasses[size].active : sizeClasses[size].normal
+									const globalIdx = allReadings.findIndex((ar) => ar.key === r.key)
+									const isPast = activeIndex > globalIdx
+									const sizeClass = isActive ? sizeClasses[r.size].active : sizeClasses[r.size].normal
 
 									return (
 										<button
@@ -199,8 +130,6 @@ export function ReadingTimeline({ readings }: { readings: ReadingsData }) {
 											aria-current={isActive ? 'true' : undefined}
 										>
 											<span className="font-semibold">{r.short}</span>
-
-											{/* Tooltip */}
 											<span className="absolute right-full mr-3 px-2 py-1 rounded bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
 												{r.label}
 											</span>
@@ -209,8 +138,7 @@ export function ReadingTimeline({ readings }: { readings: ReadingsData }) {
 								})}
 							</div>
 
-							{/* Divider between groups */}
-							{groupIdx < availableGroups.length - 1 && (
+							{groupIdx < groups.length - 1 && (
 								<div className="w-4 h-px bg-gray-200 dark:bg-gray-700 my-2" />
 							)}
 						</div>

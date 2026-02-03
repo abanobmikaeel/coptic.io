@@ -17,6 +17,7 @@ import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ScriptureReading } from '@/components/ScriptureReading'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
 import { API_BASE_URL } from '@/config'
+import { getAvailableSections } from '@/lib/reading-sections'
 import { themeClasses } from '@/lib/reading-styles'
 import type { ReadingsData } from '@/lib/types'
 import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils'
@@ -267,7 +268,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 			)}
 
 			{/* Timeline navigation */}
-			{readings && <ReadingTimeline readings={readings} />}
+			{readings && <ReadingTimeline sections={getAvailableSections(readings)} />}
 
 			{/* Back to top */}
 			<BackToTop />

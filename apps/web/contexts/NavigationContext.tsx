@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { type ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { type ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 type NavigationMode = 'browse' | 'read'
 
@@ -37,19 +37,18 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 		setMode('browse')
 	}, [])
 
-	return (
-		<NavigationContext.Provider
-			value={{
-				mode,
-				enterReadMode,
-				exitReadMode,
-				readModeTitle,
-				setReadModeTitle,
-			}}
-		>
-			{children}
-		</NavigationContext.Provider>
+	const value = useMemo(
+		() => ({
+			mode,
+			enterReadMode,
+			exitReadMode,
+			readModeTitle,
+			setReadModeTitle,
+		}),
+		[mode, enterReadMode, exitReadMode, readModeTitle],
 	)
+
+	return <NavigationContext.Provider value={value}>{children}</NavigationContext.Provider>
 }
 
 export function useNavigation() {

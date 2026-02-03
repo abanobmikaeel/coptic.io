@@ -1,5 +1,6 @@
 'use client'
 
+import { BookIcon, ClockIcon, LoadingSpinner, PersonIcon, SearchIcon } from '@/components/ui/Icons'
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { RemoveScroll } from 'react-remove-scroll'
@@ -10,104 +11,6 @@ import {
 	type SynaxariumSearchResult,
 	useCommandPalette,
 } from './useCommandPalette'
-
-// Icons for different result types
-function BibleIcon() {
-	return (
-		<svg
-			className="w-4 h-4"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			aria-hidden="true"
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth={1.5}
-				d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-			/>
-		</svg>
-	)
-}
-
-function SaintIcon() {
-	return (
-		<svg
-			className="w-4 h-4"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			aria-hidden="true"
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth={1.5}
-				d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-			/>
-		</svg>
-	)
-}
-
-function PrayerIcon() {
-	return (
-		<svg
-			className="w-4 h-4"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			aria-hidden="true"
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth={1.5}
-				d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-			/>
-		</svg>
-	)
-}
-
-function SearchIcon() {
-	return (
-		<svg
-			className="w-5 h-5"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			aria-hidden="true"
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth={2}
-				d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-			/>
-		</svg>
-	)
-}
-
-function LoadingSpinner() {
-	return (
-		<svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
-			<circle
-				className="opacity-25"
-				cx="12"
-				cy="12"
-				r="10"
-				stroke="currentColor"
-				strokeWidth="4"
-				fill="none"
-			/>
-			<path
-				className="opacity-75"
-				fill="currentColor"
-				d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-			/>
-		</svg>
-	)
-}
 
 // Result item component
 function ResultItem({
@@ -131,11 +34,11 @@ function ResultItem({
 	const getIcon = () => {
 		switch (item.category) {
 			case 'bible':
-				return <BibleIcon />
+				return <BookIcon className="w-4 h-4" />
 			case 'synaxarium':
-				return <SaintIcon />
+				return <PersonIcon className="w-4 h-4" />
 			case 'agpeya':
-				return <PrayerIcon />
+				return <ClockIcon className="w-4 h-4" />
 		}
 	}
 
