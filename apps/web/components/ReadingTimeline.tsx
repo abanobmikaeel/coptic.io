@@ -75,7 +75,9 @@ export function ReadingTimeline({ sections }: ReadingTimelineProps) {
 									type="button"
 									onClick={() => scrollToReading(r.key)}
 									className={`flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all min-w-0 ${
-										isActive ? 'text-amber-600 dark:text-amber-400' : 'text-gray-500 dark:text-gray-400'
+										isActive
+											? 'text-amber-600 dark:text-amber-400'
+											: 'text-gray-500 dark:text-gray-400'
 									}`}
 								>
 									<span
@@ -108,11 +110,13 @@ export function ReadingTimeline({ sections }: ReadingTimelineProps) {
 							</span>
 
 							<div className="flex flex-col items-center gap-1">
-								{group.readings.map((r, idx) => {
+								{group.readings.map((r, _idx) => {
 									const isActive = activeSection === r.key
 									const globalIdx = allReadings.findIndex((ar) => ar.key === r.key)
 									const isPast = activeIndex > globalIdx
-									const sizeClass = isActive ? sizeClasses[r.size].active : sizeClasses[r.size].normal
+									const sizeClass = isActive
+										? sizeClasses[r.size].active
+										: sizeClasses[r.size].normal
 
 									return (
 										<button
