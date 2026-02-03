@@ -1,9 +1,11 @@
 import { API_BASE_URL } from '@/config'
 import type { CalendarData, CalendarMonth, Celebration, UpcomingCelebration } from './types'
 
-async function fetchApi<T>(endpoint: string): Promise<T | null> {
+async function fetchApi<T>(endpoint: string, revalidate = 3600): Promise<T | null> {
 	try {
-		const res = await fetch(`${API_BASE_URL}${endpoint}`, { cache: 'no-store' })
+		const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+			next: { revalidate }, // Cache for 1 hour by default
+		})
 		if (!res.ok) return null
 		return res.json()
 	} catch (error) {

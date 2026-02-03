@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { RemoveScroll } from 'react-remove-scroll'
 import {
 	type AgpeyaSearchResult,
 	type BibleSearchResult,
@@ -259,18 +260,6 @@ export function CommandPalette() {
 		}
 	}, [isOpen])
 
-	// Prevent body scroll when open
-	useEffect(() => {
-		if (isOpen) {
-			document.body.style.overflow = 'hidden'
-		} else {
-			document.body.style.overflow = ''
-		}
-		return () => {
-			document.body.style.overflow = ''
-		}
-	}, [isOpen])
-
 	if (!isOpen) return null
 
 	// Group results by category for display
@@ -278,123 +267,125 @@ export function CommandPalette() {
 	const hasNoResults = results && items.length === 0 && query.trim()
 
 	const content = (
-		<div className="fixed inset-0 z-[100]">
-			{/* Backdrop */}
-			<div
-				className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-				onClick={close}
-				onKeyDown={(e) => e.key === 'Escape' && close()}
-			/>
+		<RemoveScroll>
+			<div className="fixed inset-0 z-[100]">
+				{/* Backdrop */}
+				<div
+					className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+					onClick={close}
+					onKeyDown={(e) => e.key === 'Escape' && close()}
+				/>
 
-			{/* Modal */}
-			<div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-full max-w-xl">
-				<div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-					{/* Search input */}
-					<div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-						<span className="text-gray-400 dark:text-gray-500">
-							{isLoading ? <LoadingSpinner /> : <SearchIcon />}
-						</span>
-						<input
-							ref={inputRef}
-							type="text"
-							value={query}
-							onChange={(e) => setQuery(e.target.value)}
-							placeholder="Search Synaxarium, Agpeya..."
-							className="flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none text-base"
-						/>
-						<kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded">
-							ESC
-						</kbd>
-					</div>
-
-					{/* Results */}
-					<div className="max-h-[60vh] overflow-y-auto">
-						{error && (
-							<div className="px-4 py-8 text-center text-red-500 dark:text-red-400">{error}</div>
-						)}
-
-						{!query.trim() && !error && (
-							<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
-								<p>Type to search across all content</p>
-								<p className="text-sm mt-2">
-									Try &quot;St. Mark&quot;, &quot;Prime&quot;, or &quot;Martyrs&quot;
-								</p>
-							</div>
-						)}
-
-						{hasNoResults && (
-							<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
-								No results found for &quot;{query}&quot;
-							</div>
-						)}
-
-						{hasResults && (
-							<>
-								{results.synaxarium.length > 0 && (
-									<>
-										<CategoryHeader title="Synaxarium" />
-										{results.synaxarium.map((item, i) => {
-											const globalIndex = i
-											return (
-												<ResultItem
-													key={`synax-${item.url}`}
-													item={{ ...item, category: 'synaxarium' }}
-													isSelected={selectedIndex === globalIndex}
-													onClick={() => navigateToResult({ ...item, category: 'synaxarium' })}
-												/>
-											)
-										})}
-									</>
-								)}
-
-								{results.agpeya.length > 0 && (
-									<>
-										<CategoryHeader title="Agpeya" />
-										{results.agpeya.map((item, i) => {
-											const globalIndex = results.synaxarium.length + i
-											return (
-												<ResultItem
-													key={`agpeya-${item.id}`}
-													item={{ ...item, category: 'agpeya' }}
-													isSelected={selectedIndex === globalIndex}
-													onClick={() => navigateToResult({ ...item, category: 'agpeya' })}
-												/>
-											)
-										})}
-									</>
-								)}
-							</>
-						)}
-					</div>
-
-					{/* Footer */}
-					<div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-						<div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
-							<div className="flex items-center gap-3">
-								<span className="flex items-center gap-1">
-									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
-										↑↓
-									</kbd>
-									<span>Navigate</span>
-								</span>
-								<span className="flex items-center gap-1">
-									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
-										↵
-									</kbd>
-									<span>Select</span>
-								</span>
-							</div>
-							<span className="flex items-center gap-1">
-								<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
-									⌘K
-								</kbd>
-								<span>Toggle</span>
+				{/* Modal */}
+				<div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-full max-w-xl">
+					<div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+						{/* Search input */}
+						<div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+							<span className="text-gray-400 dark:text-gray-500">
+								{isLoading ? <LoadingSpinner /> : <SearchIcon />}
 							</span>
+							<input
+								ref={inputRef}
+								type="text"
+								value={query}
+								onChange={(e) => setQuery(e.target.value)}
+								placeholder="Search Synaxarium, Agpeya..."
+								className="flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none text-base"
+							/>
+							<kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded">
+								ESC
+							</kbd>
+						</div>
+
+						{/* Results */}
+						<div className="max-h-[60vh] overflow-y-auto">
+							{error && (
+								<div className="px-4 py-8 text-center text-red-500 dark:text-red-400">{error}</div>
+							)}
+
+							{!query.trim() && !error && (
+								<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
+									<p>Type to search across all content</p>
+									<p className="text-sm mt-2">
+										Try &quot;St. Mark&quot;, &quot;Prime&quot;, or &quot;Martyrs&quot;
+									</p>
+								</div>
+							)}
+
+							{hasNoResults && (
+								<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
+									No results found for &quot;{query}&quot;
+								</div>
+							)}
+
+							{hasResults && (
+								<>
+									{results.synaxarium.length > 0 && (
+										<>
+											<CategoryHeader title="Synaxarium" />
+											{results.synaxarium.map((item, i) => {
+												const globalIndex = i
+												return (
+													<ResultItem
+														key={`synax-${item.url}`}
+														item={{ ...item, category: 'synaxarium' }}
+														isSelected={selectedIndex === globalIndex}
+														onClick={() => navigateToResult({ ...item, category: 'synaxarium' })}
+													/>
+												)
+											})}
+										</>
+									)}
+
+									{results.agpeya.length > 0 && (
+										<>
+											<CategoryHeader title="Agpeya" />
+											{results.agpeya.map((item, i) => {
+												const globalIndex = results.synaxarium.length + i
+												return (
+													<ResultItem
+														key={`agpeya-${item.id}`}
+														item={{ ...item, category: 'agpeya' }}
+														isSelected={selectedIndex === globalIndex}
+														onClick={() => navigateToResult({ ...item, category: 'agpeya' })}
+													/>
+												)
+											})}
+										</>
+									)}
+								</>
+							)}
+						</div>
+
+						{/* Footer */}
+						<div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+							<div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
+								<div className="flex items-center gap-3">
+									<span className="flex items-center gap-1">
+										<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+											↑↓
+										</kbd>
+										<span>Navigate</span>
+									</span>
+									<span className="flex items-center gap-1">
+										<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+											↵
+										</kbd>
+										<span>Select</span>
+									</span>
+								</div>
+								<span className="flex items-center gap-1">
+									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+										⌘K
+									</kbd>
+									<span>Toggle</span>
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</RemoveScroll>
 	)
 
 	// Use portal to render at document root

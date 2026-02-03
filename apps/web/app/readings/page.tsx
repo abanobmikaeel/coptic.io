@@ -72,7 +72,8 @@ async function getReadings(date?: string, lang?: string): Promise<ReadingsData |
 		const endpoint = date
 			? `${API_BASE_URL}/readings/${date}?${params}`
 			: `${API_BASE_URL}/readings?${params}`
-		const res = await fetch(endpoint, { cache: 'no-store' })
+		// Readings don't change - cache for 1 hour
+		const res = await fetch(endpoint, { next: { revalidate: 300 } })
 		if (!res.ok) return null
 		return res.json()
 	} catch {

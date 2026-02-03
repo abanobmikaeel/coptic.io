@@ -21,7 +21,7 @@ import { filterUpcomingFeasts } from '@/lib/filterUpcomingFeasts'
 import { formatGregorianDate } from '@/lib/utils'
 import Link from 'next/link'
 
-export const dynamic = 'force-dynamic'
+// Page revalidates via API caching (5 minute ISR)
 
 export default async function Home() {
 	const [calendar, celebrations, upcoming] = await Promise.all([

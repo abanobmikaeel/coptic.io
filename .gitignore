@@ -69,3 +69,6 @@ src/resources/synxarium-scraped.json
 # Claude Code
 .claude/
 .next/
+
+playwright-report
+test-results

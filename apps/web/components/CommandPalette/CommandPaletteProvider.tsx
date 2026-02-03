@@ -4,6 +4,7 @@ import { API_BASE_URL } from '@/config'
 import { useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { RemoveScroll } from 'react-remove-scroll'
 import type {
 	AgpeyaSearchResult,
 	BibleSearchResult,
@@ -182,18 +183,6 @@ function CommandPaletteModal({
 		}
 	}, [isOpen])
 
-	// Prevent body scroll when open
-	useEffect(() => {
-		if (isOpen) {
-			document.body.style.overflow = 'hidden'
-		} else {
-			document.body.style.overflow = ''
-		}
-		return () => {
-			document.body.style.overflow = ''
-		}
-	}, [isOpen])
-
 	// Search function
 	const search = useCallback(async (searchQuery: string) => {
 		if (abortControllerRef.current) abortControllerRef.current.abort()
@@ -346,186 +335,188 @@ function CommandPaletteModal({
 	}
 
 	const content = (
-		<div className="fixed inset-0 z-[100]">
-			{/* Backdrop */}
-			<div
-				className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-				onClick={close}
-				onKeyDown={(e) => e.key === 'Escape' && close()}
-				role="button"
-				tabIndex={-1}
-				aria-label="Close search"
-			/>
+		<RemoveScroll>
+			<div className="fixed inset-0 z-[100]">
+				{/* Backdrop */}
+				<div
+					className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+					onClick={close}
+					onKeyDown={(e) => e.key === 'Escape' && close()}
+					role="button"
+					tabIndex={-1}
+					aria-label="Close search"
+				/>
 
-			{/* Modal */}
-			<div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-full max-w-xl px-4">
-				<div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-					{/* Search input */}
-					<div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-						<span className="text-gray-400 dark:text-gray-500">
-							{isLoading ? (
-								<LoadingSpinner className="w-5 h-5" />
-							) : (
-								<SearchIcon className="w-5 h-5" />
-							)}
-						</span>
-						<input
-							ref={inputRef}
-							type="text"
-							value={query}
-							onChange={(e) => setQuery(e.target.value)}
-							placeholder="Search Synaxarium, Agpeya..."
-							className="flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none text-base"
-						/>
-						<kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded">
-							ESC
-						</kbd>
-					</div>
-
-					{/* Results */}
-					<div className="max-h-[60vh] overflow-y-auto">
-						{error && (
-							<div className="px-4 py-8 text-center text-red-500 dark:text-red-400">{error}</div>
-						)}
-
-						{!query.trim() && !error && (
-							<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
-								<p>Type to search across all content</p>
-								<p className="text-sm mt-2">
-									Try &quot;St. Mark&quot;, &quot;Prime&quot;, or &quot;Martyrs&quot;
-								</p>
-							</div>
-						)}
-
-						{hasNoResults && (
-							<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
-								No results found for &quot;{query}&quot;
-							</div>
-						)}
-
-						{hasResults && (
-							<>
-								{results.synaxarium.length > 0 && (
-									<div>
-										<div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
-											Synaxarium
-										</div>
-										{results.synaxarium.map((item, i) => {
-											const globalIndex = i
-											return (
-												<button
-													key={`synax-${item.url}`}
-													type="button"
-													onClick={() => navigateToResult({ ...item, category: 'synaxarium' })}
-													className={`w-full px-4 py-3 flex items-start gap-3 text-left transition-colors ${
-														selectedIndex === globalIndex
-															? 'bg-amber-50 dark:bg-amber-900/20'
-															: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
-													}`}
-												>
-													<span
-														className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}
-													>
-														{getIcon('synaxarium')}
-													</span>
-													<div className="flex-1 min-w-0">
-														<div className="flex items-center gap-2">
-															<span
-																className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}
-															>
-																{item.name}
-															</span>
-															<span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-																{getCategoryLabel('synaxarium')}
-															</span>
-														</div>
-														<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-															{item.copticDate}
-														</p>
-													</div>
-												</button>
-											)
-										})}
-									</div>
+				{/* Modal */}
+				<div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-full max-w-xl px-4">
+					<div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+						{/* Search input */}
+						<div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+							<span className="text-gray-400 dark:text-gray-500">
+								{isLoading ? (
+									<LoadingSpinner className="w-5 h-5" />
+								) : (
+									<SearchIcon className="w-5 h-5" />
 								)}
-
-								{results.agpeya.length > 0 && (
-									<div>
-										<div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
-											Agpeya
-										</div>
-										{results.agpeya.map((item, i) => {
-											const globalIndex = results.synaxarium.length + i
-											return (
-												<button
-													key={`agpeya-${item.id}`}
-													type="button"
-													onClick={() => navigateToResult({ ...item, category: 'agpeya' })}
-													className={`w-full px-4 py-3 flex items-start gap-3 text-left transition-colors ${
-														selectedIndex === globalIndex
-															? 'bg-amber-50 dark:bg-amber-900/20'
-															: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
-													}`}
-												>
-													<span
-														className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}
-													>
-														{getIcon('agpeya')}
-													</span>
-													<div className="flex-1 min-w-0">
-														<div className="flex items-center gap-2">
-															<span
-																className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}
-															>
-																{item.name}
-															</span>
-															<span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-																{getCategoryLabel('agpeya')}
-															</span>
-														</div>
-														<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-															{item.traditionalTime
-																? `${item.englishName} - ${item.traditionalTime}`
-																: item.englishName}
-														</p>
-													</div>
-												</button>
-											)
-										})}
-									</div>
-								)}
-							</>
-						)}
-					</div>
-
-					{/* Footer */}
-					<div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-						<div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
-							<div className="flex items-center gap-3">
-								<span className="flex items-center gap-1">
-									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
-										↑↓
-									</kbd>
-									<span>Navigate</span>
-								</span>
-								<span className="flex items-center gap-1">
-									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
-										↵
-									</kbd>
-									<span>Select</span>
-								</span>
-							</div>
-							<span className="flex items-center gap-1">
-								<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
-									⌘K
-								</kbd>
-								<span>Toggle</span>
 							</span>
+							<input
+								ref={inputRef}
+								type="text"
+								value={query}
+								onChange={(e) => setQuery(e.target.value)}
+								placeholder="Search Synaxarium, Agpeya..."
+								className="flex-1 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none text-base"
+							/>
+							<kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded">
+								ESC
+							</kbd>
+						</div>
+
+						{/* Results */}
+						<div className="max-h-[60vh] overflow-y-auto">
+							{error && (
+								<div className="px-4 py-8 text-center text-red-500 dark:text-red-400">{error}</div>
+							)}
+
+							{!query.trim() && !error && (
+								<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
+									<p>Type to search across all content</p>
+									<p className="text-sm mt-2">
+										Try &quot;St. Mark&quot;, &quot;Prime&quot;, or &quot;Martyrs&quot;
+									</p>
+								</div>
+							)}
+
+							{hasNoResults && (
+								<div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
+									No results found for &quot;{query}&quot;
+								</div>
+							)}
+
+							{hasResults && (
+								<>
+									{results.synaxarium.length > 0 && (
+										<div>
+											<div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+												Synaxarium
+											</div>
+											{results.synaxarium.map((item, i) => {
+												const globalIndex = i
+												return (
+													<button
+														key={`synax-${item.url}`}
+														type="button"
+														onClick={() => navigateToResult({ ...item, category: 'synaxarium' })}
+														className={`w-full px-4 py-3 flex items-start gap-3 text-left transition-colors ${
+															selectedIndex === globalIndex
+																? 'bg-amber-50 dark:bg-amber-900/20'
+																: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
+														}`}
+													>
+														<span
+															className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}
+														>
+															{getIcon('synaxarium')}
+														</span>
+														<div className="flex-1 min-w-0">
+															<div className="flex items-center gap-2">
+																<span
+																	className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}
+																>
+																	{item.name}
+																</span>
+																<span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+																	{getCategoryLabel('synaxarium')}
+																</span>
+															</div>
+															<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+																{item.copticDate}
+															</p>
+														</div>
+													</button>
+												)
+											})}
+										</div>
+									)}
+
+									{results.agpeya.length > 0 && (
+										<div>
+											<div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
+												Agpeya
+											</div>
+											{results.agpeya.map((item, i) => {
+												const globalIndex = results.synaxarium.length + i
+												return (
+													<button
+														key={`agpeya-${item.id}`}
+														type="button"
+														onClick={() => navigateToResult({ ...item, category: 'agpeya' })}
+														className={`w-full px-4 py-3 flex items-start gap-3 text-left transition-colors ${
+															selectedIndex === globalIndex
+																? 'bg-amber-50 dark:bg-amber-900/20'
+																: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
+														}`}
+													>
+														<span
+															className={`mt-0.5 ${selectedIndex === globalIndex ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}
+														>
+															{getIcon('agpeya')}
+														</span>
+														<div className="flex-1 min-w-0">
+															<div className="flex items-center gap-2">
+																<span
+																	className={`font-medium truncate ${selectedIndex === globalIndex ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-gray-100'}`}
+																>
+																	{item.name}
+																</span>
+																<span className="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+																	{getCategoryLabel('agpeya')}
+																</span>
+															</div>
+															<p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+																{item.traditionalTime
+																	? `${item.englishName} - ${item.traditionalTime}`
+																	: item.englishName}
+															</p>
+														</div>
+													</button>
+												)
+											})}
+										</div>
+									)}
+								</>
+							)}
+						</div>
+
+						{/* Footer */}
+						<div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+							<div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
+								<div className="flex items-center gap-3">
+									<span className="flex items-center gap-1">
+										<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+											↑↓
+										</kbd>
+										<span>Navigate</span>
+									</span>
+									<span className="flex items-center gap-1">
+										<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+											↵
+										</kbd>
+										<span>Select</span>
+									</span>
+								</div>
+								<span className="flex items-center gap-1">
+									<kbd className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">
+										⌘K
+									</kbd>
+									<span>Toggle</span>
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</RemoveScroll>
 	)
 
 	return createPortal(content, document.body)
