@@ -1,7 +1,11 @@
+'use client'
+
 import Link from 'next/link'
 import CopticCross from './CopticCross'
 import { NavDropdown } from './NavDropdown'
 import ThemeToggle from './ThemeToggle'
+import { SearchIcon } from './ui/Icons'
+import { useNavigation } from '@/contexts/NavigationContext'
 
 const readMenuItems = [
 	{
@@ -22,8 +26,15 @@ const readMenuItems = [
 ]
 
 export default function Navbar() {
+	const { mode } = useNavigation()
+
+	// Hide navbar on mobile in read mode (ReadModeHeader is used instead)
+	const mobileHiddenClass = mode === 'read' ? 'hidden lg:block' : ''
+
 	return (
-		<nav className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl">
+		<nav
+			className={`sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl ${mobileHiddenClass}`}
+		>
 			<div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
 				<Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
 					<CopticCross size={22} />
@@ -33,18 +44,28 @@ export default function Navbar() {
 				</Link>
 
 				<div className="flex items-center gap-2 sm:gap-4">
-					<div className="hidden sm:block">
+					{/* Search icon - visible on mobile in browse mode */}
+					<button
+						type="button"
+						className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						aria-label="Search"
+					>
+						<SearchIcon className="w-5 h-5" />
+					</button>
+
+					{/* Desktop navigation */}
+					<div className="hidden lg:block">
 						<NavDropdown label="Read" items={readMenuItems} />
 					</div>
 					<Link
 						href="/calendar"
-						className="hidden sm:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
 					>
 						Calendar
 					</Link>
 					<Link
 						href="/subscribe"
-						className="hidden sm:block text-[13px] bg-amber-700 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-lg transition-colors"
+						className="hidden lg:block text-[13px] bg-amber-700 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-lg transition-colors"
 					>
 						Subscribe
 					</Link>

@@ -12,6 +12,7 @@ import {
 	type WordSpacing,
 } from '@/components/DisplaySettings'
 import { ReadingProgress } from '@/components/ReadingProgress'
+import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
 import { ScriptureReading } from '@/components/ScriptureReading'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
@@ -164,50 +165,46 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 			</Suspense>
 
 			{/* Sticky header bar with date and settings */}
-			<div
-				className={`sticky top-14 z-30 ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border-b ${themeClasses.border[theme]}`}
-			>
-				<div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-center relative">
-					{/* Date navigation - centered */}
-					<div className="flex items-center gap-3">
-						<Suspense
-							fallback={
-								<span className="text-xl font-semibold">
+			<ReadingsHeader theme={theme} themeClasses={themeClasses}>
+				{/* Date navigation - centered */}
+				<div className="flex items-center gap-3">
+					<Suspense
+						fallback={
+							<span className="text-xl font-semibold">
+								{readings?.fullDate?.dateString || gregorianDate}
+							</span>
+						}
+					>
+						<DateNavigation theme={theme}>
+							<div className="text-center">
+								<h1 className="text-xl font-bold">
 									{readings?.fullDate?.dateString || gregorianDate}
-								</span>
-							}
+								</h1>
+								<p
+									className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
+								>
+									{readings?.fullDate ? gregorianDate : ''}
+								</p>
+							</div>
+						</DateNavigation>
+					</Suspense>
+					{!isToday && (
+						<Link
+							href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
+							className={`text-xs px-2 py-1 rounded-full ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
 						>
-							<DateNavigation theme={theme}>
-								<div className="text-center">
-									<h1 className="text-xl font-bold">
-										{readings?.fullDate?.dateString || gregorianDate}
-									</h1>
-									<p
-										className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
-									>
-										{readings?.fullDate ? gregorianDate : ''}
-									</p>
-								</div>
-							</DateNavigation>
-						</Suspense>
-						{!isToday && (
-							<Link
-								href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
-								className={`text-xs px-2 py-1 rounded-full ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
-							>
-								Today
-							</Link>
-						)}
-					</div>
-
-					{/* Display settings - absolute right */}
-					<div className="absolute right-6">
-						<Suspense fallback={null}>
-							<DisplaySettings />
-						</Suspense>
-					</div>
+							Today
+						</Link>
+					)}
 				</div>
-			</div>
+
+				{/* Display settings - absolute right */}
+				<div className="absolute right-6">
+					<Suspense fallback={null}>
+						<DisplaySettings />
+					</Suspense>
+				</div>
+			</ReadingsHeader>
 
 			{readings ? (
 				<div className="px-6 pt-10 pb-32 lg:pb-24">

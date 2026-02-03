@@ -16,7 +16,9 @@ import { AgpeyaProgress } from '@/components/AgpeyaProgress'
 import { BackToTop } from '@/components/BackToTop'
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { DisplaySettings } from '@/components/DisplaySettings'
+import { CloseIcon } from '@/components/ui/Icons'
 import { API_BASE_URL } from '@/config'
+import { useNavigation } from '@/contexts/NavigationContext'
 import { useReadingSettings } from '@/hooks/useReadingSettings'
 import { getWidthClass, themeClasses } from '@/lib/reading-styles'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -114,6 +116,7 @@ function AgpeyaContent() {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const { settings, mounted } = useReadingSettings()
+	const { mode } = useNavigation()
 	const [hourData, setHourData] = useState<AgpeyaHourData | AgpeyaMidnightData | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [showSkeleton, setShowSkeleton] = useState(false)
@@ -203,10 +206,21 @@ function AgpeyaContent() {
 		>
 			{/* Sticky header with breadcrumb and settings */}
 			<div
-				className={`sticky top-14 z-30 ${themeClasses.bgTranslucent[effectiveTheme]} backdrop-blur-sm border-b ${themeClasses.border[effectiveTheme]}`}
+				className={`sticky ${mode === 'read' ? 'top-0 lg:top-14' : 'top-14'} z-30 ${themeClasses.bgTranslucent[effectiveTheme]} backdrop-blur-sm border-b ${themeClasses.border[effectiveTheme]}`}
 			>
 				<div className="max-w-4xl mx-auto px-6 py-3">
 					<div className="flex items-center justify-between gap-4">
+						{/* Exit button for mobile in read mode */}
+						{mode === 'read' && (
+							<button
+								type="button"
+								onClick={() => router.push('/library')}
+								className="lg:hidden p-2 -ml-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+								aria-label="Exit reading mode"
+							>
+								<CloseIcon className="w-5 h-5" />
+							</button>
+						)}
 						{/* Breadcrumb with hour selector dropdown */}
 						<div className="flex items-center gap-2">
 							<Breadcrumb
