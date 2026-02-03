@@ -61,3 +61,77 @@ export const SynaxariumSearchResultSchema = z.object({
 		name: z.string().optional(),
 	}),
 })
+
+// Agpeya schemas - new structured format with watches support
+export const AgpeyaVerseSchema = z.object({
+	num: z.number(),
+	text: z.string(),
+})
+
+export const AgpeyaPsalmSchema = z.object({
+	title: z.string(),
+	reference: z.string(),
+	rubric: z.string().optional(),
+	verses: z.array(AgpeyaVerseSchema),
+})
+
+export const AgpeyaGospelSchema = z.object({
+	reference: z.string(),
+	rubric: z.string().optional(),
+	verses: z.array(AgpeyaVerseSchema),
+})
+
+export const AgpeyaPrayerSectionSchema = z.object({
+	title: z.string().optional(),
+	content: z.array(z.string()),
+	inline: z.boolean().optional(),
+})
+
+export const AgpeyaLitanySchema = z.object({
+	title: z.string().optional(),
+	content: z.array(z.string()),
+})
+
+// Watch schema for midnight prayers
+export const AgpeyaWatchSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	theme: z.string(),
+	opening: AgpeyaPrayerSectionSchema.optional(),
+	psalms: z.array(AgpeyaPsalmSchema),
+	gospel: AgpeyaGospelSchema.optional(),
+	litanies: AgpeyaLitanySchema.optional(),
+	closing: AgpeyaPrayerSectionSchema.optional(),
+})
+
+// Standard hour schema (non-midnight)
+export const AgpeyaHourSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	englishName: z.string(),
+	traditionalTime: z.string(),
+	introduction: z.string().optional(),
+	opening: AgpeyaPrayerSectionSchema,
+	thanksgiving: AgpeyaPrayerSectionSchema.optional(),
+	psalms: z.array(AgpeyaPsalmSchema),
+	gospel: AgpeyaGospelSchema,
+	litanies: AgpeyaLitanySchema,
+	lordsPrayer: AgpeyaPrayerSectionSchema.optional(),
+	thanksgivingAfter: AgpeyaPrayerSectionSchema.optional(),
+	closing: AgpeyaPrayerSectionSchema,
+})
+
+// Midnight hour schema with watches
+export const AgpeyaMidnightHourSchema = z.object({
+	id: z.literal('midnight'),
+	name: z.string(),
+	englishName: z.string(),
+	traditionalTime: z.string(),
+	introduction: z.string().optional(),
+	opening: AgpeyaPrayerSectionSchema,
+	watches: z.array(AgpeyaWatchSchema),
+	closing: AgpeyaPrayerSectionSchema,
+})
+
+// Union schema for any hour type
+export const AgpeyaAnyHourSchema = z.union([AgpeyaHourSchema, AgpeyaMidnightHourSchema])

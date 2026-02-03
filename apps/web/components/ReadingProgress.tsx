@@ -49,8 +49,8 @@ export function ReadingProgress() {
 
 	return (
 		<>
-			{/* Progress bar at top */}
-			<div className="fixed top-14 left-0 right-0 z-40 h-0.5 bg-gray-200/50 dark:bg-gray-800/50">
+			{/* Progress bar at very top of viewport */}
+			<div className="fixed top-0 left-0 right-0 z-[60] h-0.5 bg-transparent">
 				<div
 					className="h-full bg-amber-500"
 					style={{
@@ -61,8 +61,8 @@ export function ReadingProgress() {
 				/>
 			</div>
 
-			{/* Floating progress indicator */}
-			<div className="fixed bottom-24 left-6 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">
+			{/* Floating progress indicator - hidden on mobile */}
+			<div className="hidden lg:flex fixed bottom-24 left-6 z-40 items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">
 				<svg className="w-4 h-4" viewBox="0 0 36 36" aria-hidden="true">
 					<path
 						className="text-gray-200 dark:text-gray-700"
