@@ -14,7 +14,13 @@ const contentTypes = [
 		description: 'Scripture readings for the liturgical calendar',
 		href: '/readings',
 		icon: (
-			<svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<svg
+				className="w-8 h-8"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				aria-hidden="true"
+			>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -32,7 +38,13 @@ const contentTypes = [
 		description: 'The seven canonical hours of prayer',
 		href: '/agpeya',
 		icon: (
-			<svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<svg
+				className="w-8 h-8"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				aria-hidden="true"
+			>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -50,7 +62,13 @@ const contentTypes = [
 		description: 'Daily commemorations and martyrologies',
 		href: '/synaxarium',
 		icon: (
-			<svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<svg
+				className="w-8 h-8"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				aria-hidden="true"
+			>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -69,12 +87,8 @@ export default function LibraryPage() {
 			{/* Header */}
 			<section className="pt-8 pb-6 px-6">
 				<div className="max-w-4xl mx-auto">
-					<h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-						Library
-					</h1>
-					<p className="text-gray-600 dark:text-gray-400 mt-1">
-						Browse prayers and readings
-					</p>
+					<h1 className="text-2xl font-bold text-gray-900 dark:text-white">Library</h1>
+					<p className="text-gray-600 dark:text-gray-400 mt-1">Browse prayers and readings</p>
 				</div>
 			</section>
 
@@ -90,9 +104,7 @@ export default function LibraryPage() {
 							>
 								<div className="flex items-start gap-4">
 									{/* Icon */}
-									<div className={`p-3 rounded-xl ${content.color}`}>
-										{content.icon}
-									</div>
+									<div className={`p-3 rounded-xl ${content.color}`}>{content.icon}</div>
 
 									{/* Text */}
 									<div className="flex-1 min-w-0">
@@ -115,6 +127,7 @@ export default function LibraryPage() {
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
+										aria-hidden="true"
 									>
 										<path
 											strokeLinecap="round"

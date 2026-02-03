@@ -12,8 +12,8 @@ import {
 	type WordSpacing,
 } from '@/components/DisplaySettings'
 import { ReadingProgress } from '@/components/ReadingProgress'
-import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
+import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ScriptureReading } from '@/components/ScriptureReading'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
 import { API_BASE_URL } from '@/config'

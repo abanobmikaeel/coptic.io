@@ -1,7 +1,7 @@
 'use client'
 
-import { useNavigation } from '@/contexts/NavigationContext'
 import { CloseIcon } from '@/components/ui/Icons'
+import { useNavigation } from '@/contexts/NavigationContext'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
 

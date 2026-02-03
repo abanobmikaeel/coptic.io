@@ -1,11 +1,11 @@
 'use client'
 
+import { useNavigation } from '@/contexts/NavigationContext'
 import Link from 'next/link'
 import CopticCross from './CopticCross'
 import { NavDropdown } from './NavDropdown'
 import ThemeToggle from './ThemeToggle'
 import { SearchIcon } from './ui/Icons'
-import { useNavigation } from '@/contexts/NavigationContext'
 
 const readMenuItems = [
 	{
