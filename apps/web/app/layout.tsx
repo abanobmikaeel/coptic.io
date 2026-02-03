@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Amiri, Inter, Literata, Noto_Sans_Coptic } from 'next/font/google'
 import './globals.css'
+import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { BottomTabs } from '@/components/navigation/BottomTabs'
@@ -117,13 +118,15 @@ export default function RootLayout({
 				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased overflow-x-hidden`}
 			>
 				<ThemeProvider>
-					<NavigationProvider>
-						<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-							<Navbar />
-							{children}
-							<BottomTabs />
-						</div>
-					</NavigationProvider>
+					<CommandPaletteProvider>
+						<NavigationProvider>
+							<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+								<Navbar />
+								{children}
+								<BottomTabs />
+							</div>
+						</NavigationProvider>
+					</CommandPaletteProvider>
 				</ThemeProvider>
 				<Analytics />
 			</body>

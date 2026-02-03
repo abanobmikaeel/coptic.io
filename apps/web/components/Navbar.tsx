@@ -4,6 +4,7 @@ import { useNavigation } from '@/contexts/NavigationContext'
 import Link from 'next/link'
 import CopticCross from './CopticCross'
 import { NavDropdown } from './NavDropdown'
+import { SearchButton } from './SearchButton'
 import ThemeToggle from './ThemeToggle'
 import { SearchIcon } from './ui/Icons'
 
@@ -43,26 +44,29 @@ export default function Navbar() {
 					</span>
 				</Link>
 
-				<div className="flex items-center gap-2 sm:gap-4">
-					{/* Search icon - visible on mobile in browse mode */}
-					<button
-						type="button"
-						className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-						aria-label="Search"
-					>
-						<SearchIcon className="w-5 h-5" />
-					</button>
+				<div className="flex items-center gap-4">
+					<SearchButton />
+					<div className="flex items-center gap-2 sm:gap-4">
+						{/* Search icon - visible on mobile in browse mode */}
+						<button
+							type="button"
+							className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+							aria-label="Search"
+						>
+							<SearchIcon className="w-5 h-5" />
+						</button>
 
-					{/* Desktop navigation */}
-					<div className="hidden lg:block">
-						<NavDropdown label="Read" items={readMenuItems} />
+						{/* Desktop navigation */}
+						<div className="hidden lg:block">
+							<NavDropdown label="Read" items={readMenuItems} />
+						</div>
+						<Link
+							href="/calendar"
+							className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						>
+							Calendar
+						</Link>
 					</div>
-					<Link
-						href="/calendar"
-						className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-					>
-						Calendar
-					</Link>
 					<Link
 						href="/subscribe"
 						className="hidden lg:block text-[13px] bg-amber-700 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-lg transition-colors"
