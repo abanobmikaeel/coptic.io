@@ -38,6 +38,18 @@ export default function CalendarPage() {
 		}
 	}, [year, month])
 
+	// Prefetch adjacent months for smoother navigation
+	useEffect(() => {
+		const prevMonth = month === 1 ? 12 : month - 1
+		const prevYear = month === 1 ? year - 1 : year
+		const nextMonth = month === 12 ? 1 : month + 1
+		const nextYear = month === 12 ? year + 1 : year
+
+		// Fire and forget - these populate the Next.js cache
+		getCalendarMonth(prevYear, prevMonth)
+		getCalendarMonth(nextYear, nextMonth)
+	}, [year, month])
+
 	const navigateMonth = (delta: number) => {
 		setSelectedDay(1)
 		const newMonth = month + delta
