@@ -108,4 +108,73 @@ describe('API Endpoints', () => {
 			expect(json).toHaveProperty('error', 'Not Found')
 		})
 	})
+
+	describe('GET /api/synaxarium', () => {
+		it('should return synaxarium entries for specific date', async () => {
+			const res = await app.request('/api/synaxarium/2025-01-15')
+			expect(res.status).toBe(200)
+
+			const json = await res.json()
+			expect(Array.isArray(json)).toBe(true)
+			expect(json.length).toBeGreaterThan(0)
+			expect(json[0]).toHaveProperty('name')
+		})
+
+		it('should return 400 for invalid date format', async () => {
+			const res = await app.request('/api/synaxarium/not-a-date')
+			expect(res.status).toBe(400)
+
+			const json = await res.json()
+			expect(json).toHaveProperty('error')
+		})
+
+		it('should return same synaxarium entries as /readings for the same date', async () => {
+			const testDate = '2025-01-15'
+
+			// Fetch from both endpoints
+			const [synaxariumRes, readingsRes] = await Promise.all([
+				app.request(`/api/synaxarium/${testDate}?detailed=true`),
+				app.request(`/api/readings/${testDate}?detailed=true`),
+			])
+
+			expect(synaxariumRes.status).toBe(200)
+			expect(readingsRes.status).toBe(200)
+
+			const synaxarium = await synaxariumRes.json()
+			const readings = await readingsRes.json()
+
+			// Both should have synaxarium data
+			expect(Array.isArray(synaxarium)).toBe(true)
+			expect(Array.isArray(readings.Synxarium)).toBe(true)
+
+			// The entries should match (same names)
+			const synaxariumNames = synaxarium.map((e: { name: string }) => e.name).sort()
+			const readingsNames = readings.Synxarium.map((e: { name: string }) => e.name).sort()
+
+			expect(synaxariumNames).toEqual(readingsNames)
+		})
+
+		it('should return consistent synaxarium across multiple dates', async () => {
+			// Test several dates to ensure consistency
+			const testDates = ['2025-01-15', '2025-06-01', '2025-12-25', '2024-02-29']
+
+			for (const testDate of testDates) {
+				const [synaxariumRes, readingsRes] = await Promise.all([
+					app.request(`/api/synaxarium/${testDate}`),
+					app.request(`/api/readings/${testDate}`),
+				])
+
+				expect(synaxariumRes.status).toBe(200)
+				expect(readingsRes.status).toBe(200)
+
+				const synaxarium = await synaxariumRes.json()
+				const readings = await readingsRes.json()
+
+				const synaxariumNames = synaxarium.map((e: { name: string }) => e.name).sort()
+				const readingsNames = readings.Synxarium.map((e: { name: string }) => e.name).sort()
+
+				expect(synaxariumNames).toEqual(readingsNames)
+			}
+		})
+	})
 })

@@ -86,19 +86,36 @@ const fasting = await client.fasting.today()
 
 ## API Reference
 
-**Live API**: `https://copticio-production.up.railway.app`
+**Base URL**: `https://api.coptic.io` (or use the environment variable `API_BASE_URL`)
 
 ### REST Endpoints
 
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/readings/:date?` | Daily readings |
+| **Calendar** | |
 | `GET /api/calendar/:date?` | Coptic date conversion |
-| `GET /api/fasting/:date` | Fasting information |
-| `GET /api/synaxarium/:date` | Saints of the day |
+| `GET /api/calendar/month/:year/:month` | Calendar month data |
+| `GET /api/calendar/ical/subscribe` | iCalendar subscription feed |
+| **Readings** | |
+| `GET /api/readings/:date?` | Daily readings (add `?detailed=true` for full text) |
+| **Synaxarium** | |
+| `GET /api/synaxarium/:date` | Saints for a Gregorian date |
+| `GET /api/synaxarium/coptic/:copticDate` | Saints by Coptic date (e.g. "7 Toba") |
+| `GET /api/synaxarium/search/query?q=` | Search saints by name |
+| **Agpeya** | |
+| `GET /api/agpeya` | Current prayer hour |
+| `GET /api/agpeya/hours` | List all prayer hours |
+| `GET /api/agpeya/:hour` | Specific hour (prime, terce, sext, none, vespers, compline, midnight) |
+| **Fasting & Seasons** | |
+| `GET /api/fasting/:date` | Fasting status for date |
+| `GET /api/fasting/calendar/:year` | Full year fasting calendar |
 | `GET /api/season/:date?` | Liturgical season |
+| `GET /api/season/year/:year` | All seasons for a year |
+| **Celebrations** | |
 | `GET /api/celebrations/:date` | Celebrations for date |
-| `GET /api/calendar/ical/subscribe` | iCalendar subscription |
+| `GET /api/celebrations/upcoming/list?days=` | Upcoming celebrations |
+| **Search** | |
+| `GET /api/search?q=` | Unified search (Bible, Synaxarium, Agpeya) |
 
 ### GraphQL
 

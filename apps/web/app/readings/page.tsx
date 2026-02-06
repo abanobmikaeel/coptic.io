@@ -70,9 +70,9 @@ async function getReadings(date?: string, lang?: string): Promise<ReadingsData |
 		if (lang && lang !== 'en') {
 			params.set('lang', lang)
 		}
-		const endpoint = date
-			? `${API_BASE_URL}/readings/${date}?${params}`
-			: `${API_BASE_URL}/readings?${params}`
+		// Always send a date to ensure consistency with synaxarium page
+		const effectiveDate = date || getTodayDateString()
+		const endpoint = `${API_BASE_URL}/readings/${effectiveDate}?${params}`
 		// Readings don't change - cache for 1 hour
 		const res = await fetch(endpoint, { next: { revalidate: 300 } })
 		if (!res.ok) return null

@@ -37,12 +37,18 @@ const endpointGroups: EndpointGroup[] = [
 				description: 'Convert a specific date to Coptic',
 				params: 'date: YYYY-MM-DD',
 			},
+			{
+				method: 'GET',
+				path: '/calendar/month/:year/:month',
+				description: 'Get calendar month data',
+			},
 			{ method: 'GET', path: '/calendar/ical/:year', description: 'Get iCalendar feed for a year' },
 			{
 				method: 'GET',
 				path: '/calendar/ical/subscribe',
 				description: 'Subscribe to live iCal feed',
 			},
+			{ method: 'GET', path: '/calendar/ical/info', description: 'Get iCal subscription info' },
 		],
 	},
 	{
@@ -109,9 +115,47 @@ const endpointGroups: EndpointGroup[] = [
 			{ method: 'GET', path: '/synaxarium/:date', description: 'Get saints for a specific date' },
 			{
 				method: 'GET',
+				path: '/synaxarium/coptic/:copticDate',
+				description: 'Get saints by Coptic date',
+				params: 'copticDate: e.g. "7 Toba"',
+			},
+			{
+				method: 'GET',
 				path: '/synaxarium/search/query',
 				description: 'Search saints by name',
 				params: 'q: search term',
+			},
+		],
+	},
+	{
+		title: 'Agpeya',
+		description: 'Coptic Book of Hours prayers',
+		endpoints: [
+			{ method: 'GET', path: '/agpeya', description: 'Get current prayer hour' },
+			{ method: 'GET', path: '/agpeya/hours', description: 'List all prayer hours' },
+			{
+				method: 'GET',
+				path: '/agpeya/:hour',
+				description: 'Get specific hour',
+				params: 'hour: prime|terce|sext|none|vespers|compline|midnight',
+			},
+			{
+				method: 'GET',
+				path: '/agpeya/midnight/watch/:watch',
+				description: 'Get midnight watch',
+				params: 'watch: 1|2|3',
+			},
+		],
+	},
+	{
+		title: 'Search',
+		description: 'Unified search across all content',
+		endpoints: [
+			{
+				method: 'GET',
+				path: '/search',
+				description: 'Search Bible, Synaxarium, and Agpeya',
+				params: 'q: query, limit?: number, categories?: bible,synaxarium,agpeya',
 			},
 		],
 	},
