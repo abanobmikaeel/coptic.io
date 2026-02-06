@@ -1,6 +1,24 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Scroll behavior', () => {
+	test('should not have scroll-blocking CSS properties', async ({ page }) => {
+		await page.goto('/readings')
+		await page.waitForLoadState('networkidle')
+
+		const styles = await page.evaluate(() => ({
+			htmlOverscroll: getComputedStyle(document.documentElement).overscrollBehavior,
+			bodyOverscroll: getComputedStyle(document.body).overscrollBehavior,
+			htmlOverflowX: getComputedStyle(document.documentElement).overflowX,
+		}))
+
+		// overscroll-behavior: none on html breaks Mac touchpad momentum scrolling
+		expect(styles.htmlOverscroll).not.toBe('none')
+
+		// overflow-x: hidden on BOTH html and body causes mobile scroll issues
+		// (body can have overflow-x: hidden, but html should not)
+		expect(styles.htmlOverflowX).not.toBe('hidden')
+	})
+
 	test('body should not have scroll lock stuck after modal', async ({ page }) => {
 		await page.goto('/')
 		await page.waitForLoadState('networkidle')
