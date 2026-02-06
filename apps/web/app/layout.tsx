@@ -115,7 +115,7 @@ export default function RootLayout({
 				<link rel="dns-prefetch" href={apiDomain} />
 			</head>
 			<body
-				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased overflow-x-hidden`}
+				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased`}
 			>
 				<ThemeProvider>
 					<CommandPaletteProvider>

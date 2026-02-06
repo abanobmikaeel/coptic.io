@@ -3,7 +3,7 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { SynaxariumSection } from '@/components/SynaxariumSection'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from '@/components/ui/Icons'
+import { ChevronLeftIcon, ChevronRightIcon, CloseIcon, SearchIcon } from '@/components/ui/Icons'
 import { getSynaxariumByDate, searchSynaxarium } from '@/lib/api'
 import type { SynaxariumEntry, SynaxariumSearchResult } from '@/lib/types'
 import Link from 'next/link'
@@ -197,9 +197,19 @@ export default function SynaxariumPage() {
 			</div>
 
 			{/* Header */}
-			<section className="relative pt-20 pb-8 px-6">
+			<section className="relative pt-6 lg:pt-20 pb-8 px-6">
 				<div className="max-w-4xl mx-auto">
-					<Breadcrumb items={[{ label: 'Synaxarium' }]} />
+					<div className="flex items-center justify-between mb-4">
+						<Link
+							href="/library"
+							className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+						>
+							<CloseIcon className="w-4 h-4" />
+							<span className="hidden sm:inline">Back</span>
+						</Link>
+						<Breadcrumb items={[{ label: 'Synaxarium' }]} />
+						<div className="w-12" /> {/* Spacer for centering */}
+					</div>
 					<div className="text-center">
 						<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Synaxarium</h1>
 						<p className="text-gray-600 dark:text-gray-400">
