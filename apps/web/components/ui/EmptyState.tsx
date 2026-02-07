@@ -114,10 +114,10 @@ export function EmptyState({
 	const styles = themeStyles[theme]
 
 	return (
-		<div className={`flex flex-col items-center justify-center py-12 px-4 text-center ${className}`}>
-			<div className={`mb-4 ${styles.icon}`}>
-				{icon || <DefaultIcon className="w-12 h-12" />}
-			</div>
+		<div
+			className={`flex flex-col items-center justify-center py-12 px-4 text-center ${className}`}
+		>
+			<div className={`mb-4 ${styles.icon}`}>{icon || <DefaultIcon className="w-12 h-12" />}</div>
 			<h3 className={`text-lg font-medium mb-2 ${styles.title}`}>{title}</h3>
 			{description && <p className={`text-sm max-w-md ${styles.description}`}>{description}</p>}
 			{action && <div className="mt-6">{action}</div>}
@@ -139,7 +139,11 @@ export function NoResultsState({
 		<EmptyState
 			icon={<SearchIcon className="w-12 h-12" />}
 			title="No results found"
-			description={query ? `No matches for "${query}". Try different keywords or check your spelling.` : 'Try adjusting your search or filters.'}
+			description={
+				query
+					? `No matches for "${query}". Try different keywords or check your spelling.`
+					: 'Try adjusting your search or filters.'
+			}
 			theme={theme}
 			action={
 				onClear && (

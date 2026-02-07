@@ -214,54 +214,54 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 			{readings ? (
 				<Suspense fallback={<div className="px-6 pt-10 pb-32 lg:pb-24" />}>
 					<SwipeableContainer basePath="/readings" className="px-6 pt-10 pb-32 lg:pb-24">
-					{(() => {
-						const ServiceDivider = () => (
-							<div className={'max-w-2xl mx-auto px-4 my-8'}>
-								<div className={`border-t ${themeClasses.border[theme]}`} />
-							</div>
-						)
+						{(() => {
+							const ServiceDivider = () => (
+								<div className={'max-w-2xl mx-auto px-4 my-8'}>
+									<div className={`border-t ${themeClasses.border[theme]}`} />
+								</div>
+							)
 
-						const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
-						const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
+							const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
+							const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
 
-						return (
-							<>
-								{/* LITURGY */}
-								{renderSection('Pauline', 'Liturgy')}
-								{renderSection('Catholic', 'Liturgy')}
-								{renderSection('Acts', 'Liturgy')}
-								{readings.Synxarium?.length ? (
-									<SynaxariumReading
-										entries={readings.Synxarium}
-										textSize={textSize}
-										theme={theme}
-										width={width}
-										service="Liturgy"
-									/>
-								) : null}
-								{renderSection('LPsalm', 'Liturgy')}
-								{renderSection('LGospel', 'Liturgy')}
+							return (
+								<>
+									{/* LITURGY */}
+									{renderSection('Pauline', 'Liturgy')}
+									{renderSection('Catholic', 'Liturgy')}
+									{renderSection('Acts', 'Liturgy')}
+									{readings.Synxarium?.length ? (
+										<SynaxariumReading
+											entries={readings.Synxarium}
+											textSize={textSize}
+											theme={theme}
+											width={width}
+											service="Liturgy"
+										/>
+									) : null}
+									{renderSection('LPsalm', 'Liturgy')}
+									{renderSection('LGospel', 'Liturgy')}
 
-								{/* VESPERS */}
-								{hasVespers && (
-									<>
-										<ServiceDivider />
-										{renderSection('VPsalm', 'Vespers')}
-										{renderSection('VGospel', 'Vespers')}
-									</>
-								)}
+									{/* VESPERS */}
+									{hasVespers && (
+										<>
+											<ServiceDivider />
+											{renderSection('VPsalm', 'Vespers')}
+											{renderSection('VGospel', 'Vespers')}
+										</>
+									)}
 
-								{/* MATINS */}
-								{hasMatins && (
-									<>
-										<ServiceDivider />
-										{renderSection('MPsalm', 'Matins')}
-										{renderSection('MGospel', 'Matins')}
-									</>
-								)}
-							</>
-						)
-					})()}
+									{/* MATINS */}
+									{hasMatins && (
+										<>
+											<ServiceDivider />
+											{renderSection('MPsalm', 'Matins')}
+											{renderSection('MGospel', 'Matins')}
+										</>
+									)}
+								</>
+							)
+						})()}
 					</SwipeableContainer>
 				</Suspense>
 			) : (

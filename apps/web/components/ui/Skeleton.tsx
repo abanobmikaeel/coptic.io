@@ -55,7 +55,10 @@ export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) 
 						{[1, 2, 3, 4, 5].map((verse) => (
 							<div key={verse} className="flex gap-3">
 								<div className={`h-5 w-6 rounded flex-shrink-0 ${shimmer}`} />
-								<div className={`h-5 flex-1 rounded ${shimmer}`} style={{ width: `${70 + Math.random() * 30}%` }} />
+								<div
+									className={`h-5 flex-1 rounded ${shimmer}`}
+									style={{ width: `${70 + Math.random() * 30}%` }}
+								/>
 							</div>
 						))}
 					</div>

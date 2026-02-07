@@ -7,6 +7,8 @@
 	"scripts": {
 		"dev": "pnpm --filter @coptic/api dev",
 		"dev:web": "pnpm --filter @coptic/web dev",
+		"dev:api": "pnpm --filter @coptic/api dev ",
+		"dev:fullstack": "pnpm dev",
 		"dev:admin": "pnpm --filter @coptic/admin dev",
 		"build": "pnpm -r build",
 		"build:packages": "pnpm --filter '@coptic/*' --filter '!@coptic/api' --filter '!@coptic/web' --filter '!@coptic/admin' build",
@@ -39,7 +41,7 @@
 		"@changesets/cli": "^2.27.0",
 		"typescript": "^5.7.3"
 	},
-	"packageManager": "pnpm@10.28.2",
+	"packageManager": "pnpm@10.29.1",
 	"engines": {
 		"node": ">=24"
 	},

@@ -129,9 +129,7 @@ export default function RootLayout({
 						<NavigationProvider>
 							<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 								<Navbar />
-								<div id="main-content">
-									{children}
-								</div>
+								<div id="main-content">{children}</div>
 								<BottomTabs />
 							</div>
 						</NavigationProvider>

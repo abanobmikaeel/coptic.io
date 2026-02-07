@@ -125,18 +125,26 @@ function LtrHeader({
 	theme: ReadingTheme
 }) {
 	return (
-		<div className={`py-4 px-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}>
+		<div
+			className={`py-4 px-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
+		>
 			{service && (
-				<p className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}>
+				<p
+					className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}
+				>
 					{service}
 				</p>
 			)}
 			<div className="flex items-center justify-between">
 				<div>
-					<h2 className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}>
+					<h2
+						className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+					>
 						{title}
 					</h2>
-					<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}>
+					<p
+						className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}
+					>
 						{reference}
 					</p>
 				</div>
@@ -177,16 +185,22 @@ function RtlHeader({
 			dir="rtl"
 		>
 			{service && (
-				<p className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}>
+				<p
+					className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}
+				>
 					{service}
 				</p>
 			)}
 			<div className="flex items-center justify-between">
 				<div>
-					<h2 className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors font-arabic`}>
+					<h2
+						className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors font-arabic`}
+					>
 						{title}
 					</h2>
-					<p className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'} font-arabic`}>
+					<p
+						className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'} font-arabic`}
+					>
 						{reference}
 					</p>
 				</div>
@@ -272,9 +286,21 @@ export function ScriptureReading({
 			>
 				<div className={`${widthClass} mx-auto px-4`}>
 					{isRtl ? (
-						<RtlHeader title={title} reference={reference} service={service ? getServiceName(service, true) : undefined} isOpen={isOpen} theme={theme} />
+						<RtlHeader
+							title={title}
+							reference={reference}
+							service={service ? getServiceName(service, true) : undefined}
+							isOpen={isOpen}
+							theme={theme}
+						/>
 					) : (
-						<LtrHeader title={title} reference={reference} service={service} isOpen={isOpen} theme={theme} />
+						<LtrHeader
+							title={title}
+							reference={reference}
+							service={service}
+							isOpen={isOpen}
+							theme={theme}
+						/>
 					)}
 				</div>
 			</button>

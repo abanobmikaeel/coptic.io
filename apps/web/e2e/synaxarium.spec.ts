@@ -10,7 +10,8 @@ test.describe('Synaxarium and Readings date consistency', () => {
 		const synaxariumPageText = await page.locator('body').innerText()
 
 		// Extract the Gregorian date from synaxarium (e.g., "Thursday, February 6, 2026")
-		const gregorianDateRegex = /(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})/i
+		const gregorianDateRegex =
+			/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})/i
 		const synaxariumDateMatch = synaxariumPageText.match(gregorianDateRegex)
 		expect(synaxariumDateMatch, 'Synaxarium should display a Gregorian date').toBeTruthy()
 
@@ -33,7 +34,20 @@ test.describe('Synaxarium and Readings date consistency', () => {
 	test('should show same date on both pages when accessed directly', async ({ page }) => {
 		// Get today's date for comparison
 		const today = new Date()
-		const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+		const monthNames = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December',
+		]
 		const expectedMonth = monthNames[today.getMonth()]
 		const expectedDay = today.getDate()
 

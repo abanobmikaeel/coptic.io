@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y curl unzip && \
     curl -fsSL https://bun.sh/install | bash && \
     ln -s /root/.bun/bin/bun /usr/local/bin/bun && \
-    corepack enable && corepack prepare pnpm@10.28.1 --activate && \
+    corepack enable && corepack prepare pnpm@10.29.1 --activate && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy workspace configuration

@@ -16,7 +16,11 @@ interface SwipeableContainerProps {
  * Wrapper component that enables swipe navigation between dates.
  * Swipe left to go to the next day, swipe right to go to the previous day.
  */
-export function SwipeableContainer({ children, basePath, className = '' }: SwipeableContainerProps) {
+export function SwipeableContainer({
+	children,
+	basePath,
+	className = '',
+}: SwipeableContainerProps) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 

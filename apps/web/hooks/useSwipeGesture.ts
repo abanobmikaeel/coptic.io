@@ -79,9 +79,7 @@ export function useSwipeGesture<T extends HTMLElement = HTMLElement>({
 			// 2. Vertical distance is within bounds
 			// 3. Swipe completed within reasonable time (1 second)
 			const isValidSwipe =
-				Math.abs(deltaX) >= minSwipeDistance &&
-				deltaY <= maxVerticalDistance &&
-				deltaTime < 1000
+				Math.abs(deltaX) >= minSwipeDistance && deltaY <= maxVerticalDistance && deltaTime < 1000
 
 			if (isValidSwipe) {
 				if (deltaX > 0 && onSwipeRight) {
