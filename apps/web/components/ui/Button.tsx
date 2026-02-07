@@ -25,6 +25,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 				className={`
 					font-medium py-3 px-4 rounded-lg transition-colors
 					disabled:cursor-not-allowed
+					focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900
 					${variantStyles[variant]}
 					${className}
 				`}

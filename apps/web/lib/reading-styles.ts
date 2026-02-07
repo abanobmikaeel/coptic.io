@@ -112,16 +112,18 @@ export const themeClasses = {
 		dark: 'text-gray-100',
 	} as Record<ReadingTheme, string>,
 
+	// Muted text colors - WCAG 2.1 AA compliant (4.5:1 contrast ratio)
 	muted: {
-		light: 'text-gray-400 dark:text-gray-500',
-		sepia: 'text-[#a08c72]',
-		dark: 'text-gray-500',
+		light: 'text-gray-500 dark:text-gray-400',
+		sepia: 'text-[#6b5a45]', // Darker brown for 4.5:1+ contrast on #f5f0e6
+		dark: 'text-gray-400', // Lighter gray for 4.5:1+ contrast on gray-900
 	} as Record<ReadingTheme, string>,
 
+	// Accent colors - WCAG 2.1 AA compliant (removed transparency for better contrast)
 	accent: {
-		light: 'text-amber-600/70 dark:text-amber-500/70',
-		sepia: 'text-amber-700/70',
-		dark: 'text-amber-500/70',
+		light: 'text-amber-600 dark:text-amber-400',
+		sepia: 'text-amber-800', // Darker amber for sepia background
+		dark: 'text-amber-400', // Lighter amber for dark background
 	} as Record<ReadingTheme, string>,
 
 	border: {

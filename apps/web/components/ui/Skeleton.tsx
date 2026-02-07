@@ -25,3 +25,66 @@ export function FormSkeleton() {
 		</div>
 	)
 }
+
+type ReadingTheme = 'light' | 'sepia' | 'dark'
+
+function getShimmerClass(theme: ReadingTheme) {
+	return theme === 'dark'
+		? 'bg-gray-800 animate-pulse'
+		: theme === 'sepia'
+			? 'bg-[#e5dccb] animate-pulse'
+			: 'bg-gray-200 dark:bg-gray-700 animate-pulse'
+}
+
+export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) {
+	const shimmer = getShimmerClass(theme)
+
+	return (
+		<div className="space-y-12 max-w-2xl mx-auto px-6 pt-10 pb-32">
+			{/* Scripture section skeleton */}
+			{[1, 2, 3].map((section) => (
+				<div key={section} className="space-y-6">
+					{/* Section header */}
+					<div className="flex items-center gap-3 mb-4">
+						<div className={`h-6 w-32 rounded ${shimmer}`} />
+						<div className={`h-4 w-24 rounded ${shimmer}`} />
+					</div>
+
+					{/* Verses */}
+					<div className="space-y-4">
+						{[1, 2, 3, 4, 5].map((verse) => (
+							<div key={verse} className="flex gap-3">
+								<div className={`h-5 w-6 rounded flex-shrink-0 ${shimmer}`} />
+								<div className={`h-5 flex-1 rounded ${shimmer}`} style={{ width: `${70 + Math.random() * 30}%` }} />
+							</div>
+						))}
+					</div>
+				</div>
+			))}
+		</div>
+	)
+}
+
+export function SynaxariumSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) {
+	const shimmer = getShimmerClass(theme)
+
+	return (
+		<div className="space-y-6 max-w-2xl mx-auto px-6 pt-10 pb-32">
+			{/* Header skeleton */}
+			<div className="text-center mb-8">
+				<div className={`h-8 w-48 mx-auto rounded ${shimmer} mb-3`} />
+				<div className={`h-4 w-64 mx-auto rounded ${shimmer}`} />
+			</div>
+
+			{/* Entry cards skeleton */}
+			{[1, 2, 3].map((entry) => (
+				<div key={entry} className="p-4 rounded-xl border border-gray-200 dark:border-gray-800">
+					<div className={`h-5 w-16 rounded ${shimmer} mb-3`} />
+					<div className={`h-6 w-3/4 rounded ${shimmer} mb-2`} />
+					<div className={`h-4 w-full rounded ${shimmer} mb-1`} />
+					<div className={`h-4 w-2/3 rounded ${shimmer}`} />
+				</div>
+			))}
+		</div>
+	)
+}

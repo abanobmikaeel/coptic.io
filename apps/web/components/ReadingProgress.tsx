@@ -61,7 +61,33 @@ export function ReadingProgress() {
 				/>
 			</div>
 
-			{/* Floating progress indicator - hidden on mobile */}
+			{/* Mobile floating progress indicator - positioned above bottom tabs */}
+			<div className="flex lg:hidden fixed bottom-20 right-4 z-40 items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">
+				<svg className="w-3.5 h-3.5" viewBox="0 0 36 36" aria-hidden="true">
+					<path
+						className="text-gray-200 dark:text-gray-700"
+						stroke="currentColor"
+						strokeWidth="3"
+						fill="none"
+						d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+					/>
+					<path
+						className="text-amber-500"
+						stroke="currentColor"
+						strokeWidth="3"
+						strokeLinecap="round"
+						fill="none"
+						style={{
+							strokeDasharray: `${progress}, 100`,
+							transition: 'stroke-dasharray 100ms linear',
+						}}
+						d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+					/>
+				</svg>
+				<span className="tabular-nums">{roundedProgress}%</span>
+			</div>
+
+			{/* Desktop floating progress indicator */}
 			<div className="hidden lg:flex fixed bottom-24 left-6 z-40 items-center gap-2 px-3 py-2 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">
 				<svg className="w-4 h-4" viewBox="0 0 36 36" aria-hidden="true">
 					<path

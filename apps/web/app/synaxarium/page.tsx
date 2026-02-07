@@ -3,7 +3,9 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { SynaxariumSection } from '@/components/SynaxariumSection'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import { NoEntriesState, NoResultsState } from '@/components/ui/EmptyState'
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon, SearchIcon } from '@/components/ui/Icons'
+import { useSwipeGesture } from '@/hooks/useSwipeGesture'
 import { getSynaxariumByDate, searchSynaxarium } from '@/lib/api'
 import type { SynaxariumEntry, SynaxariumSearchResult } from '@/lib/types'
 import Link from 'next/link'
@@ -189,8 +191,15 @@ export default function SynaxariumPage() {
 	const showingSearch = searchQuery.trim().length > 0
 	const activeCounts = showingSearch ? searchCategoryCounts : categoryCounts
 
+	// Swipe gesture for mobile date navigation (only when not searching)
+	const swipeRef = useSwipeGesture<HTMLElement>({
+		onSwipeLeft: showingSearch ? undefined : () => navigateDate(1),
+		onSwipeRight: showingSearch ? undefined : () => navigateDate(-1),
+		minSwipeDistance: 75,
+	})
+
 	return (
-		<main className="min-h-screen relative">
+		<main ref={swipeRef} className="min-h-screen relative">
 			{/* Background */}
 			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
 				<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
@@ -319,11 +328,10 @@ export default function SynaxariumPage() {
 										})}
 									</ul>
 								) : !isSearching ? (
-									<p className="text-gray-500 text-center py-8">
-										{searchResults.length > 0
-											? `No ${CATEGORIES.find((c) => c.id === selectedCategory)?.label.toLowerCase() || 'results'} found`
-											: `No results found for "${searchQuery}"`}
-									</p>
+									<NoResultsState
+										query={searchResults.length > 0 ? undefined : searchQuery}
+										onClear={searchResults.length > 0 ? undefined : () => setSearchQuery('')}
+									/>
 								) : null}
 							</CardContent>
 						</Card>
@@ -424,21 +432,29 @@ export default function SynaxariumPage() {
 								</CardHeader>
 								<CardContent>
 									{loading ? (
-										<div className="flex justify-center py-12">
-											<div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+										<div className="space-y-4 py-4">
+											{/* Skeleton loading state */}
+											{[1, 2, 3, 4].map((i) => (
+												<div
+													key={i}
+													className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-4 last:pb-0"
+												>
+													<div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-2" />
+													<div className="h-5 w-3/4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-1" />
+													<div className="h-4 w-1/2 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />
+												</div>
+											))}
 										</div>
 									) : filteredEntries.length > 0 ? (
 										<SynaxariumSection entries={filteredEntries} />
 									) : (
-										<p className="text-gray-500 text-center py-8">
-											No{' '}
-											{selectedCategory === 'all'
-												? 'entries'
-												: CATEGORIES.find(
-														(c) => c.id === selectedCategory,
-													)?.label.toLowerCase()}{' '}
-											found for this date.
-										</p>
+										<NoEntriesState
+											type={
+												selectedCategory === 'all'
+													? 'commemorations'
+													: CATEGORIES.find((c) => c.id === selectedCategory)?.label.toLowerCase()
+											}
+										/>
 									)}
 								</CardContent>
 							</Card>
