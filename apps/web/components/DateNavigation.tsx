@@ -43,7 +43,7 @@ export function DateNavigation({ theme = 'light', children }: DateNavigationProp
 		<div className="flex items-center justify-center gap-3">
 			<Link
 				href={buildUrl(prevDate)}
-				className={`p-2 rounded-full transition-colors ${buttonClass}`}
+				className={`p-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
 				aria-label="Previous day"
 			>
 				<ChevronLeftIcon className="w-5 h-5" />
@@ -51,7 +51,7 @@ export function DateNavigation({ theme = 'light', children }: DateNavigationProp
 			{children}
 			<Link
 				href={buildUrl(nextDate)}
-				className={`p-2 rounded-full transition-colors ${buttonClass}`}
+				className={`p-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
 				aria-label="Next day"
 			>
 				<ChevronRightIcon className="w-5 h-5" />

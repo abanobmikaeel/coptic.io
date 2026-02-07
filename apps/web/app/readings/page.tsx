@@ -15,7 +15,9 @@ import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ScriptureReading } from '@/components/ScriptureReading'
+import { SwipeableContainer } from '@/components/SwipeableContainer'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
+import { NoReadingsState } from '@/components/ui/EmptyState'
 import { API_BASE_URL } from '@/config'
 import { getAvailableSections } from '@/lib/reading-sections'
 import { themeClasses } from '@/lib/reading-styles'
@@ -38,16 +40,16 @@ export const metadata: Metadata = {
 
 type BibleTranslation = 'en' | 'ar'
 
-const sectionLabels: Record<string, string> = {
-	VPsalm: 'Vespers Psalm',
-	VGospel: 'Vespers Gospel',
-	MPsalm: 'Matins Psalm',
-	MGospel: 'Matins Gospel',
-	Pauline: 'Pauline Epistle',
-	Catholic: 'Catholic Epistle',
-	Acts: 'Acts of the Apostles',
-	LPsalm: 'Psalm',
-	LGospel: 'Gospel',
+const sectionLabels: Record<string, { en: string; ar: string }> = {
+	VPsalm: { en: 'Vespers Psalm', ar: 'مزمور العشية' },
+	VGospel: { en: 'Vespers Gospel', ar: 'إنجيل العشية' },
+	MPsalm: { en: 'Matins Psalm', ar: 'مزمور باكر' },
+	MGospel: { en: 'Matins Gospel', ar: 'إنجيل باكر' },
+	Pauline: { en: 'Pauline Epistle', ar: 'البولس' },
+	Catholic: { en: 'Catholic Epistle', ar: 'الكاثوليكون' },
+	Acts: { en: 'Acts of the Apostles', ar: 'الإبركسيس' },
+	LPsalm: { en: 'Psalm', ar: 'المزمور' },
+	LGospel: { en: 'Gospel', ar: 'الإنجيل' },
 }
 
 // All reading sections in display order
@@ -70,9 +72,9 @@ async function getReadings(date?: string, lang?: string): Promise<ReadingsData |
 		if (lang && lang !== 'en') {
 			params.set('lang', lang)
 		}
-		const endpoint = date
-			? `${API_BASE_URL}/readings/${date}?${params}`
-			: `${API_BASE_URL}/readings?${params}`
+		// Always send a date to ensure consistency with synaxarium page
+		const effectiveDate = date || getTodayDateString()
+		const endpoint = `${API_BASE_URL}/readings/${effectiveDate}?${params}`
 		// Readings don't change - cache for 1 hour
 		const res = await fetch(endpoint, { next: { revalidate: 300 } })
 		if (!res.ok) return null
@@ -145,12 +147,13 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	const renderSection = (key: ReadingSection, service?: string) => {
 		const data = readings?.[key]
 		if (!data?.length) return null
+		const labels = sectionLabels[key]
 		return (
 			<ScriptureReading
 				key={key}
 				id={`reading-${key}`}
 				readings={data}
-				title={sectionLabels[key]}
+				title={labels[translation]}
 				service={service}
 				{...scriptureProps}
 			/>
@@ -168,18 +171,18 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 			{/* Sticky header bar with date and settings */}
 			<ReadingsHeader theme={theme} themeClasses={themeClasses}>
-				{/* Date navigation - centered */}
-				<div className="flex items-center gap-3">
+				{/* Date navigation - centered, with padding for settings button */}
+				<div className="flex items-center gap-2 sm:gap-3 pr-14 sm:pr-16">
 					<Suspense
 						fallback={
-							<span className="text-xl font-semibold">
+							<span className="text-lg sm:text-xl font-semibold">
 								{readings?.fullDate?.dateString || gregorianDate}
 							</span>
 						}
 					>
 						<DateNavigation theme={theme}>
 							<div className="text-center">
-								<h1 className="text-xl font-bold">
+								<h1 className="text-lg sm:text-xl font-bold">
 									{readings?.fullDate?.dateString || gregorianDate}
 								</h1>
 								<p
@@ -193,7 +196,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 					{!isToday && (
 						<Link
 							href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
-							className={`text-xs px-2 py-1 rounded-full ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
+							className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
 						>
 							Today
 						</Link>
@@ -201,7 +204,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				</div>
 
 				{/* Display settings - absolute right */}
-				<div className="absolute right-6">
+				<div className="absolute right-4 sm:right-6">
 					<Suspense fallback={null}>
 						<DisplaySettings />
 					</Suspense>
@@ -209,61 +212,61 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 			</ReadingsHeader>
 
 			{readings ? (
-				<div className="px-6 pt-10 pb-32 lg:pb-24">
-					{(() => {
-						const ServiceDivider = () => (
-							<div className={'max-w-2xl mx-auto px-4 my-8'}>
-								<div className={`border-t ${themeClasses.border[theme]}`} />
-							</div>
-						)
+				<Suspense fallback={<div className="px-6 pt-10 pb-32 lg:pb-24" />}>
+					<SwipeableContainer basePath="/readings" className="px-6 pt-10 pb-32 lg:pb-24">
+						{(() => {
+							const ServiceDivider = () => (
+								<div className={'max-w-2xl mx-auto px-4 my-8'}>
+									<div className={`border-t ${themeClasses.border[theme]}`} />
+								</div>
+							)
 
-						const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
-						const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
+							const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
+							const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
 
-						return (
-							<>
-								{/* LITURGY */}
-								{renderSection('Pauline', 'Liturgy')}
-								{renderSection('Catholic', 'Liturgy')}
-								{renderSection('Acts', 'Liturgy')}
-								{readings.Synxarium?.length ? (
-									<SynaxariumReading
-										entries={readings.Synxarium}
-										textSize={textSize}
-										theme={theme}
-										width={width}
-										service="Liturgy"
-									/>
-								) : null}
-								{renderSection('LPsalm', 'Liturgy')}
-								{renderSection('LGospel', 'Liturgy')}
+							return (
+								<>
+									{/* LITURGY */}
+									{renderSection('Pauline', 'Liturgy')}
+									{renderSection('Catholic', 'Liturgy')}
+									{renderSection('Acts', 'Liturgy')}
+									{readings.Synxarium?.length ? (
+										<SynaxariumReading
+											entries={readings.Synxarium}
+											textSize={textSize}
+											theme={theme}
+											width={width}
+											service="Liturgy"
+										/>
+									) : null}
+									{renderSection('LPsalm', 'Liturgy')}
+									{renderSection('LGospel', 'Liturgy')}
 
-								{/* VESPERS */}
-								{hasVespers && (
-									<>
-										<ServiceDivider />
-										{renderSection('VPsalm', 'Vespers')}
-										{renderSection('VGospel', 'Vespers')}
-									</>
-								)}
+									{/* VESPERS */}
+									{hasVespers && (
+										<>
+											<ServiceDivider />
+											{renderSection('VPsalm', 'Vespers')}
+											{renderSection('VGospel', 'Vespers')}
+										</>
+									)}
 
-								{/* MATINS */}
-								{hasMatins && (
-									<>
-										<ServiceDivider />
-										{renderSection('MPsalm', 'Matins')}
-										{renderSection('MGospel', 'Matins')}
-									</>
-								)}
-							</>
-						)
-					})()}
-				</div>
+									{/* MATINS */}
+									{hasMatins && (
+										<>
+											<ServiceDivider />
+											{renderSection('MPsalm', 'Matins')}
+											{renderSection('MGospel', 'Matins')}
+										</>
+									)}
+								</>
+							)
+						})()}
+					</SwipeableContainer>
+				</Suspense>
 			) : (
-				<section className="px-6 py-24 text-center">
-					<p className={theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}>
-						Unable to load readings. Please try again later.
-					</p>
+				<section className="px-6 py-12">
+					<NoReadingsState theme={theme} />
 				</section>
 			)}
 

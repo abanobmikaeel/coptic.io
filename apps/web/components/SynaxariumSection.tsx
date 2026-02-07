@@ -26,15 +26,20 @@ export function SynaxariumSection({
 	const [expanded, setExpanded] = useState<number | null>(null)
 	const sizes = textSizeClasses[textSize]
 
+	// Use dark: variants for light theme to respect system dark mode
 	const bodyClass =
-		theme === 'sepia' ? 'text-[#6b5a45]' : theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+		theme === 'sepia'
+			? 'text-[#6b5a45]'
+			: theme === 'dark'
+				? 'text-gray-200'
+				: 'text-gray-700 dark:text-gray-200'
 	const borderClass =
 		theme === 'sepia'
 			? 'border-[#d4c9b8]'
 			: theme === 'dark'
 				? 'border-gray-800'
-				: 'border-gray-100'
-	const accentClass = theme === 'sepia' ? 'text-amber-700' : 'text-amber-600 dark:text-amber-500'
+				: 'border-gray-100 dark:border-gray-800'
+	const accentClass = theme === 'sepia' ? 'text-amber-700' : 'text-amber-600 dark:text-amber-400'
 
 	return (
 		<ul className="space-y-4">

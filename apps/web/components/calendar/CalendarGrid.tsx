@@ -37,8 +37,14 @@ export function CalendarGrid({
 			</div>
 
 			{loading ? (
-				<div className="h-64 flex items-center justify-center">
-					<p className="text-gray-600 dark:text-gray-400">Loading...</p>
+				<div className="grid grid-cols-7 gap-3">
+					{/* Skeleton cells for loading state */}
+					{Array.from({ length: 35 }, (_, i) => (
+						<div
+							key={`skeleton-${i}`}
+							className="aspect-square rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse min-h-[60px]"
+						/>
+					))}
 				</div>
 			) : (
 				<div className="grid grid-cols-7 gap-3">

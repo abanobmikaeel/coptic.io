@@ -3,6 +3,7 @@ import { Hono } from 'hono'
 import { getByCopticDate } from '../models/readings'
 import type { BibleTranslation } from '../types'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import { parseLocalDate } from '../utils/dateUtils'
 
 const readings = new Hono()
 
@@ -19,17 +20,11 @@ readings.get('/:date?', async (c) => {
 		// Default to today
 		let parsedDate = new Date()
 		if (dateParam) {
-			// Parse as local date to avoid timezone issues
-			// new Date("2026-02-01") interprets as UTC, which can shift the day
-			const [year, month, day] = dateParam.split('-').map(Number)
-			if (!year || !month || !day) {
+			const parsed = parseLocalDate(dateParam)
+			if (!parsed) {
 				return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 			}
-			parsedDate = new Date(year, month - 1, day) // month is 0-indexed
-			// Validate date
-			if (Number.isNaN(parsedDate.getTime())) {
-				return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
-			}
+			parsedDate = parsed
 		}
 
 		// Get readings

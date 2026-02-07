@@ -43,6 +43,7 @@ export function BottomTabs() {
 								href={tab.href}
 								className={`
 									flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-lg transition-colors min-w-[72px]
+									focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900
 									${
 										isActive
 											? 'text-amber-600 dark:text-amber-400'

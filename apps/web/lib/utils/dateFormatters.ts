@@ -38,12 +38,23 @@ export function formatMonthYear(date: Date): string {
 	})
 }
 
+/**
+ * Get today's date as YYYY-MM-DD string in local timezone.
+ * Using toISOString() would give UTC which can be a different day
+ * depending on the user's timezone.
+ */
 export function getTodayDateString(): string {
-	return new Date().toISOString().split('T')[0]
+	const d = new Date()
+	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
+/**
+ * Parse a YYYY-MM-DD date string as local time.
+ * Using new Date(dateString) interprets as UTC which can shift the day.
+ */
 export function parseDateString(dateString: string): Date {
-	return new Date(`${dateString}T00:00:00`)
+	const [year, month, day] = dateString.split('-').map(Number)
+	return new Date(year, month - 1, day)
 }
 
 export function getAdjacentDate(dateString: string | undefined, offset: number): string {

@@ -22,11 +22,10 @@ html.dark {
 	box-sizing: border-box;
 }
 
-/* Prevent horizontal overflow and overscroll bounce on mobile */
-html,
+/* Prevent horizontal overflow - only on body to avoid scroll issues */
 body {
 	overflow-x: hidden;
-	overscroll-behavior: none;
+	-webkit-overflow-scrolling: touch;
 }
 
 html {
