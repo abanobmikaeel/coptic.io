@@ -47,9 +47,11 @@ export function ScriptureReading({
 	// Determine header style for single language
 	const headerIsRtl = firstLang === 'ar'
 	const widthClass = isMultiLang
-		? availableLangs.length >= 3
-			? 'max-w-7xl'
-			: 'max-w-6xl'
+		? availableLangs.length >= 4
+			? 'max-w-[90rem]' // Extra wide for 4 languages
+			: availableLangs.length >= 3
+				? 'max-w-7xl'
+				: 'max-w-6xl'
 		: getWidthClass(width)
 
 	return (
@@ -69,6 +71,7 @@ export function ScriptureReading({
 								en: getReferenceForLang('en', readingsByLang.en),
 								ar: getReferenceForLang('ar', readingsByLang.ar),
 								es: getReferenceForLang('es', readingsByLang.es),
+								cop: getReferenceForLang('cop', readingsByLang.cop),
 							}}
 							service={service}
 							isOpen={isOpen}

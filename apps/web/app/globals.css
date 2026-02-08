@@ -118,6 +118,13 @@ body {
 	letter-spacing: 0.01em;
 }
 
+/* Coptic font class - uses Google's Noto Sans Coptic */
+.font-coptic {
+	font-family: var(--font-coptic), "Noto Sans Coptic", "Sophia Nubian", system-ui, sans-serif;
+	word-spacing: 0.1em;
+	letter-spacing: 0.02em;
+}
+
 /* RTL text alignment adjustments */
 [dir="rtl"] .text-left {
 	text-align: right;

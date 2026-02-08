@@ -46,10 +46,10 @@ export const metadata: Metadata = {
 	},
 }
 
-type BibleTranslation = 'en' | 'ar' | 'es'
+type BibleTranslation = 'en' | 'ar' | 'es' | 'cop'
 
 // Languages that have API support for content
-const supportedContentLanguages: ContentLanguage[] = ['en', 'ar', 'es']
+const supportedContentLanguages: ContentLanguage[] = ['en', 'ar', 'es', 'cop']
 
 // All reading sections in display order
 const readingSections = [
@@ -138,6 +138,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		en: null,
 		ar: null,
 		es: null,
+		cop: null,
 	}
 	for (const result of readingsResults) {
 		readingsByLang[result.lang] = result.data

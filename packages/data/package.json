@@ -33,6 +33,14 @@
 		"./es/bible": {
 			"types": "./dist/es/bible/index.d.ts",
 			"import": "./dist/es/bible/index.js"
+		},
+		"./cop": {
+			"types": "./dist/cop/index.d.ts",
+			"import": "./dist/cop/index.js"
+		},
+		"./cop/bible": {
+			"types": "./dist/cop/bible/index.d.ts",
+			"import": "./dist/cop/bible/index.js"
 		}
 	},
 	"files": [

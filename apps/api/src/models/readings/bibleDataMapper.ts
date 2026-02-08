@@ -1,4 +1,5 @@
 import { bibleData as bibleAr } from '@coptic/data/ar'
+import { bibleData as bibleCop } from '@coptic/data/cop'
 import { bibleData as bibleEn } from '@coptic/data/en'
 import { bibleData as bibleEs } from '@coptic/data/es'
 import type {
@@ -52,6 +53,7 @@ function buildIndex(bible: BibleType): TranslationIndex {
 translationIndexes.set('en', buildIndex(bibleEn as BibleType))
 translationIndexes.set('ar', buildIndex(bibleAr as BibleType))
 translationIndexes.set('es', buildIndex(bibleEs as BibleType))
+translationIndexes.set('cop', buildIndex(bibleCop as BibleType))
 
 function getIndex(translation: BibleTranslation = 'en'): TranslationIndex {
 	const index = translationIndexes.get(translation)

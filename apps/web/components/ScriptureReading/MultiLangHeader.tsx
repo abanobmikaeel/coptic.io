@@ -11,7 +11,13 @@ export function MultiLangHeader({
 	isOpen,
 	theme,
 }: MultiLangHeaderProps) {
-	const gridCols = orderedLangs.length === 3 ? 'grid-cols-3' : 'grid-cols-2'
+	// Dynamic grid columns based on number of languages
+	const gridCols =
+		orderedLangs.length === 4
+			? 'grid-cols-4'
+			: orderedLangs.length === 3
+				? 'grid-cols-3'
+				: 'grid-cols-2'
 
 	return (
 		<div className={`py-4 transition-all ${themeClasses.cardBg[theme]}`}>
@@ -19,6 +25,24 @@ export function MultiLangHeader({
 			<div className={`grid ${gridCols} gap-6`}>
 				{orderedLangs.map((lang) => {
 					const isRtl = lang === 'ar'
+					const isCoptic = lang === 'cop'
+
+					// Coptic doesn't need its own header - just show a minimal label
+					if (isCoptic) {
+						return (
+							<div
+								key={lang}
+								className="border-l-4 pl-4 text-left border-amber-500/60 flex items-center"
+							>
+								<p
+									className={`text-[10px] tracking-widest uppercase font-semibold ${themeClasses.muted[theme]}`}
+								>
+									Coptic
+								</p>
+							</div>
+						)
+					}
+
 					return (
 						<div
 							key={lang}

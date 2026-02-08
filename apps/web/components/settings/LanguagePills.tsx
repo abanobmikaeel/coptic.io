@@ -2,15 +2,15 @@
 
 import type { ContentLanguage } from '@/i18n/content-languages'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 
 interface LanguagePillsProps {
 	selected: ContentLanguage[]
 	onChange: (languages: ContentLanguage[]) => void
 }
 
-// Only show languages that have API support for now
-// Coptic will be added when the API supports it
-const displayLanguages: ContentLanguage[] = ['en', 'ar', 'es']
+// Languages with API support for readings
+const displayLanguages: ContentLanguage[] = ['en', 'cop', 'ar', 'es']
 
 const languageKeys: Record<ContentLanguage, string> = {
 	cop: 'coptic',
@@ -21,6 +21,7 @@ const languageKeys: Record<ContentLanguage, string> = {
 
 export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
 	const t = useTranslations('contentLanguages')
+	const router = useRouter()
 
 	const handleToggle = (lang: ContentLanguage) => {
 		if (selected.includes(lang)) {
@@ -30,6 +31,8 @@ export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
 		} else {
 			onChange([...selected, lang])
 		}
+		// Refresh to pick up the new cookie value in Server Components
+		router.refresh()
 	}
 
 	return (
@@ -46,7 +49,7 @@ export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
 						disabled={isLastSelected}
 						className={`
 							flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors
-							${lang === 'ar' ? 'font-arabic' : ''}
+							${lang === 'ar' ? 'font-arabic' : lang === 'cop' ? 'font-coptic' : ''}
 							${
 								isSelected
 									? 'bg-amber-700 text-white'

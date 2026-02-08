@@ -15,7 +15,7 @@ export type BibleTranslation = ContentLang
 
 export interface ScriptureReadingProps {
 	readingsByLang: Partial<Record<BibleTranslation, Reading[]>>
-	labels: { en: string; ar: string; es: string }
+	labels: { en: string; ar: string; es: string; cop: string }
 	languages: BibleTranslation[]
 	id: string
 	viewMode: ViewMode
@@ -53,8 +53,8 @@ export interface HeaderProps {
 
 export interface MultiLangHeaderProps {
 	orderedLangs: BibleTranslation[]
-	labels: { en: string; ar: string; es: string }
-	references: { en: string; ar: string; es: string }
+	labels: { en: string; ar: string; es: string; cop: string }
+	references: { en: string; ar: string; es: string; cop: string }
 	service?: string
 	isOpen: boolean
 	theme: ReadingTheme

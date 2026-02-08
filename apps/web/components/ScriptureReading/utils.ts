@@ -43,28 +43,33 @@ export function getStyleClasses(
 	wordSpacing: WordSpacing,
 ): StyleClasses {
 	const isRtl = lang === 'ar'
+	const isCoptic = lang === 'cop'
 	return {
 		isRtl,
 		sizes: getTextSizeClasses(textSize, isRtl),
 		lineHeight: getLineHeightClass(lineSpacing, isRtl),
-		fontClass: getFontClass(fontFamily, isRtl),
+		fontClass: isCoptic ? 'font-coptic' : getFontClass(fontFamily, isRtl),
 		weightClass: getWeightClass(weight, isRtl),
 		wordSpacingClass: getWordSpacingClass(wordSpacing, isRtl),
 	}
 }
 
 /**
- * Order languages: English first, then other LTR, then Arabic (RTL) last
+ * Order languages: English first, Coptic second, then other LTR, then Arabic (RTL) last
  */
 export function orderLanguages(availableLangs: BibleTranslation[]): BibleTranslation[] {
-	if (availableLangs.includes('en')) {
-		return [
-			'en',
-			...availableLangs.filter((l) => l !== 'en' && l !== 'ar'),
-			...availableLangs.filter((l) => l === 'ar'),
-		]
+	const order: BibleTranslation[] = []
+	// English first
+	if (availableLangs.includes('en')) order.push('en')
+	// Coptic second (LTR)
+	if (availableLangs.includes('cop')) order.push('cop')
+	// Other LTR languages (es, etc.)
+	for (const lang of availableLangs) {
+		if (lang !== 'en' && lang !== 'cop' && lang !== 'ar') order.push(lang)
 	}
-	return availableLangs
+	// Arabic last (RTL)
+	if (availableLangs.includes('ar')) order.push('ar')
+	return order
 }
 
 /**

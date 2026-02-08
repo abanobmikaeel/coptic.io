@@ -24,10 +24,19 @@ export function MultiLanguageContent({
 	showVerses,
 	theme,
 }: MultiLanguageContentProps) {
-	const gridCols = orderedLangs.length === 3 ? 'grid-cols-3' : 'grid-cols-2'
+	// Dynamic grid columns based on number of languages
+	const gridCols =
+		orderedLangs.length === 4
+			? 'grid-cols-4'
+			: orderedLangs.length === 3
+				? 'grid-cols-3'
+				: 'grid-cols-2'
+
+	// Container width based on number of languages
+	const containerWidth = orderedLangs.length >= 4 ? 'max-w-[90rem]' : 'max-w-7xl'
 
 	return (
-		<div className="mx-auto mt-6 px-4 max-w-7xl">
+		<div className={`mx-auto mt-6 px-4 ${containerWidth}`}>
 			{firstReadings.map((reading, idx) => (
 				<div key={idx}>
 					{reading.chapters.map((chapter, cidx) => (
@@ -103,11 +112,12 @@ function ChapterHeadings({
 				const langChapter = langReading?.chapters[chapterIdx]
 				if (!langChapter) return <div key={lang} />
 
-				const { isRtl, sizes } = getStyleClasses(lang)
+				const { isRtl, sizes, fontClass } = getStyleClasses(lang)
+				const isCoptic = lang === 'cop'
 				return (
 					<h3
 						key={lang}
-						className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} ${isRtl ? 'font-arabic' : 'uppercase'}`}
+						className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} ${isRtl ? 'font-arabic' : isCoptic ? fontClass : 'uppercase'}`}
 						dir={isRtl ? 'rtl' : 'ltr'}
 					>
 						{getBookName(langReading.bookName, lang)}{' '}

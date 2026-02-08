@@ -8,13 +8,14 @@ import arMessages from '../messages/ar.json'
 import enMessages from '../messages/en.json'
 import esMessages from '../messages/es.json'
 
-export type ContentLang = 'en' | 'ar' | 'es'
+export type ContentLang = 'en' | 'ar' | 'es' | 'cop'
 
-// Book name translations
+// Book name translations (Coptic uses English book names for references)
 export const bookNames: Record<ContentLang, Record<string, string>> = {
 	en: enMessages.books,
 	ar: arMessages.books,
 	es: esMessages.books,
+	cop: enMessages.books, // Coptic uses English book names for references
 }
 
 // Service name translations (Liturgy, Vespers, Matins)
@@ -22,6 +23,7 @@ export const serviceNames: Record<ContentLang, Record<string, string>> = {
 	en: enMessages.services,
 	ar: arMessages.services,
 	es: esMessages.services,
+	cop: enMessages.services, // Coptic uses English service names
 }
 
 // Section label translations (VPsalm, LGospel, etc.)
@@ -29,6 +31,7 @@ export const sectionLabels: Record<ContentLang, Record<string, string>> = {
 	en: enMessages.sections,
 	ar: arMessages.sections,
 	es: esMessages.sections,
+	cop: enMessages.sections, // Coptic uses English section labels
 }
 
 /**
@@ -60,5 +63,6 @@ export function getSectionLabels(sectionKey: string): Record<ContentLang, string
 		en: sectionLabels.en[sectionKey] || sectionKey,
 		ar: sectionLabels.ar[sectionKey] || sectionKey,
 		es: sectionLabels.es[sectionKey] || sectionKey,
+		cop: sectionLabels.en[sectionKey] || sectionKey, // Coptic uses English labels
 	}
 }
