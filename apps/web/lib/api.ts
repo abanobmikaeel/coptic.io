@@ -40,3 +40,7 @@ export const getSynaxariumByCopticDate = (copticDate: string, detailed = true) =
 	fetchApi<SynaxariumEntry[]>(
 		`/synaxarium/coptic/${encodeURIComponent(copticDate)}${detailed ? '?detailed=true' : ''}`,
 	)
+
+// Get calendar data for a specific date (includes Coptic date)
+export const getCalendarDate = (date: string) =>
+	fetchApi<{ dateString: string; day: number; month: number; monthString: string }>(`/calendar/${date}`)

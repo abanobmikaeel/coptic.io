@@ -16,14 +16,16 @@ interface SynaxariumSectionProps {
 	entries: SynaxariumEntry[]
 	textSize?: TextSize
 	theme?: ReadingTheme
+	initialExpanded?: number | null
 }
 
 export function SynaxariumSection({
 	entries,
 	textSize = 'md',
 	theme = 'light',
+	initialExpanded = null,
 }: SynaxariumSectionProps) {
-	const [expanded, setExpanded] = useState<number | null>(null)
+	const [expanded, setExpanded] = useState<number | null>(initialExpanded)
 	const sizes = textSizeClasses[textSize]
 
 	// Use dark: variants for light theme to respect system dark mode

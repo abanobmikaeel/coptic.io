@@ -67,6 +67,7 @@ export const SelectedDayDetails = memo(function SelectedDayDetails({
 
 			<Link
 				href={`/readings?date=${dayData.gregorianDate}`}
+				prefetch={false}
 				className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-semibold rounded-lg shadow-sm hover:shadow transition-all"
 			>
 				View Readings
