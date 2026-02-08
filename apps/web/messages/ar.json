@@ -1,0 +1,67 @@
+{
+	"common": {
+		"skipToContent": "انتقل إلى المحتوى",
+		"loading": "جارٍ التحميل...",
+		"back": "العودة",
+		"today": "اليوم",
+		"tomorrow": "غدًا",
+		"upcoming": "القادم",
+		"search": "البحث",
+		"clearSearch": "إلغاء",
+		"entry": "تذكار",
+		"entries": "تذكارات"
+	},
+	"nav": {
+		"read": "القراءات",
+		"calendar": "التقويم",
+		"subscribe": "الاشتراك",
+		"library": "المكتبة",
+		"katamaros": "القطمارس",
+		"katamarosDescription": "القراءات اليومية",
+		"agpeya": "الأجبية",
+		"agpeyaDescription": "صلوات السواعي",
+		"synaxarium": "السنكسار",
+		"synaxariumDescription": "سير القديسين"
+	},
+	"tabs": {
+		"today": "الرئيسية",
+		"library": "المكتبة",
+		"calendar": "التقويم"
+	},
+	"synaxarium": {
+		"title": "السنكسار",
+		"subtitle": "سير القديسين والشهداء والآباء",
+		"searchPlaceholder": "البحث في أسماء القديسين والأعياد...",
+		"day": "اليوم",
+		"viewReadings": "عرض قراءات هذا اليوم",
+		"readOnCopticChurch": "اقرأ المزيد",
+		"todaysSaints": "تذكارات اليوم",
+		"commemorations": "تذكار",
+		"commemorationsPlural": "تذكارات",
+		"allCommemorations": "جميع التذكارات",
+		"searchResults": "نتائج البحث",
+		"filteredBy": "عرض",
+		"previousDay": "السابق",
+		"nextDay": "التالي"
+	},
+	"categories": {
+		"all": "الكل",
+		"martyrs": "الشهداء",
+		"popes": "البطاركة",
+		"apostles": "الرسل",
+		"departures": "النياحات",
+		"feasts": "الأعياد",
+		"monastics": "الرهبان",
+		"bishops": "الأساقفة",
+		"other": "أخرى"
+	},
+	"emptyStates": {
+		"noResults": "لا توجد نتائج",
+		"noResultsWithQuery": "لا توجد نتائج لـ \"{query}\". جرّب كلمات بحث مختلفة.",
+		"noResultsGeneric": "جرّب تعديل البحث أو معايير التصفية.",
+		"readingsUnavailable": "القراءات غير متوفرة",
+		"readingsUnavailableDescription": "تعذر تحميل القراءات لهذا التاريخ. يرجى المحاولة لاحقًا أو اختيار تاريخ آخر.",
+		"noEntriesTitle": "لا توجد {type}",
+		"noEntriesDescription": "لا توجد {type} لهذا التاريخ."
+	}
+}

@@ -2,6 +2,7 @@
 
 import { themeClasses } from '@/lib/reading-styles'
 import type { SynaxariumEntry } from '@/lib/types'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import type { ReadingTheme, TextSize } from './DisplaySettings'
 import { ChevronRightIcon } from './ui/Icons'
@@ -25,6 +26,7 @@ export function SynaxariumSection({
 	theme = 'light',
 	initialExpanded = null,
 }: SynaxariumSectionProps) {
+	const t = useTranslations('synaxarium')
 	const [expanded, setExpanded] = useState<number | null>(initialExpanded)
 	const sizes = textSizeClasses[textSize]
 
@@ -66,7 +68,7 @@ export function SynaxariumSection({
 
 					{expanded === idx && entry.text && (
 						<div
-							className={`mt-4 ml-8 ${sizes.body} ${bodyClass} whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200`}
+							className={`mt-4 ms-8 ${sizes.body} ${bodyClass} whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200`}
 						>
 							{entry.text}
 							{entry.url && (
@@ -76,7 +78,7 @@ export function SynaxariumSection({
 									rel="noopener noreferrer"
 									className={`block mt-4 ${accentClass} hover:underline text-sm`}
 								>
-									Read on copticchurch.net
+									{t('readOnCopticChurch')}
 								</a>
 							)}
 						</div>

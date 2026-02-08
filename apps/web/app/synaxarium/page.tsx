@@ -11,10 +11,15 @@ import { CloseIcon } from '@/components/ui/Icons'
 import { useSwipeGesture } from '@/hooks/useSwipeGesture'
 import { useSynaxarium } from '@/hooks/useSynaxarium'
 import { getTodayDateString } from '@/lib/utils/dateFormatters'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
 function SynaxariumPageContent() {
+	const t = useTranslations('synaxarium')
+	const tCommon = useTranslations('common')
+	const tNav = useTranslations('nav')
+
 	const {
 		viewMode,
 		currentDate,
@@ -58,16 +63,14 @@ function SynaxariumPageContent() {
 							className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
 						>
 							<CloseIcon className="w-4 h-4" />
-							<span className="hidden sm:inline">Back</span>
+							<span className="hidden sm:inline">{tCommon('back')}</span>
 						</Link>
-						<Breadcrumb items={[{ label: 'Synaxarium' }]} />
+						<Breadcrumb items={[{ label: tNav('synaxarium') }]} />
 						<div className="w-12" />
 					</div>
 					<div className="text-center">
-						<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Synaxarium</h1>
-						<p className="text-gray-600 dark:text-gray-400">
-							Lives of the Saints of the Coptic Orthodox Church
-						</p>
+						<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('title')}</h1>
+						<p className="text-gray-600 dark:text-gray-400">{t('subtitle')}</p>
 					</div>
 				</div>
 			</section>

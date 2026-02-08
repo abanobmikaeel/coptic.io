@@ -3,6 +3,7 @@
 import { getSynaxariumByDate } from '@/lib/api'
 import type { SynaxariumEntry } from '@/lib/types'
 import { addDaysToDateString, getTodayDateString } from '@/lib/utils/dateFormatters'
+import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { SynaxariumDayCard } from './SynaxariumDayCard'
 
@@ -16,14 +17,14 @@ interface UpcomingSynaxariumProps {
 	startDate: string
 	daysToShow?: number
 	selectedCategory: string
-	getCategoryLabel: (name: string) => string
+	getCategoryLabelKey: (name: string) => string
 	getCategoryColor: (name: string) => string
 	matchesCategory: (name: string, category: string) => boolean
 }
 
-function formatUpcomingDate(dateStr: string): string {
+function formatUpcomingDate(dateStr: string, locale: string): string {
 	const d = new Date(`${dateStr}T00:00:00`)
-	return d.toLocaleDateString('en-US', {
+	return d.toLocaleDateString(locale, {
 		weekday: 'short',
 		month: 'short',
 		day: 'numeric',
@@ -38,10 +39,12 @@ export function UpcomingSynaxarium({
 	startDate,
 	daysToShow = TOTAL_DAYS,
 	selectedCategory,
-	getCategoryLabel,
+	getCategoryLabelKey,
 	getCategoryColor,
 	matchesCategory,
 }: UpcomingSynaxariumProps) {
+	const locale = useLocale()
+	const t = useTranslations('synaxarium')
 	const [days, setDays] = useState<DayData[]>([])
 	const [expandedEntries, setExpandedEntries] = useState<Set<string>>(new Set())
 	const [loadingEntries, setLoadingEntries] = useState<Set<string>>(new Set())
@@ -189,12 +192,12 @@ export function UpcomingSynaxarium({
 				<SynaxariumDayCard
 					key={day.date}
 					date={day.date}
-					displayDate={formatUpcomingDate(day.date)}
+					displayDate={formatUpcomingDate(day.date, locale)}
 					isToday={day.date === today}
 					isTomorrow={day.date === tomorrow}
 					entries={day.entries}
 					selectedCategory={selectedCategory}
-					getCategoryLabel={getCategoryLabel}
+					getCategoryLabelKey={getCategoryLabelKey}
 					getCategoryColor={getCategoryColor}
 					matchesCategory={matchesCategory}
 					onEntryExpand={handleEntryExpand}
@@ -207,13 +210,6 @@ export function UpcomingSynaxarium({
 			{!allLoaded && (
 				<div className="flex justify-center py-8">
 					<div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-				</div>
-			)}
-
-			{/* Load more indicator */}
-			{allLoaded && visibleDays < daysToShow && (
-				<div className="text-center py-4 text-sm text-gray-500 dark:text-gray-400">
-					Scroll for more days...
 				</div>
 			)}
 		</div>

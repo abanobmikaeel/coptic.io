@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { NoResultsState } from '@/components/ui/EmptyState'
 import { ChevronRightIcon } from '@/components/ui/Icons'
 import type { SynaxariumSearchResult } from '@/lib/types'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { CATEGORIES, getCategoryColor, getCategoryForEntry } from './SynaxariumCategoryFilters'
 
@@ -22,14 +23,17 @@ export function SynaxariumSearchResults({
 	searchQuery,
 	onClearSearch,
 }: SynaxariumSearchResultsProps) {
+	const t = useTranslations('synaxarium')
+	const tCategories = useTranslations('categories')
+
 	return (
 		<section className="relative px-6 pb-16">
 			<div className="max-w-4xl mx-auto">
 				<Card>
 					<CardHeader>
-						Search Results
+						{t('searchResults')}
 						{results.length > 0 && (
-							<span className="ml-2 text-sm font-normal text-gray-500">
+							<span className="ms-2 text-sm font-normal text-gray-500">
 								({results.length} of {totalResults})
 							</span>
 						)}
@@ -55,7 +59,7 @@ export function SynaxariumSearchResults({
 														<span
 															className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-1 ${getCategoryColor(category)}`}
 														>
-															{CATEGORIES.find((c) => c.id === category)?.label || 'Other'}
+															{tCategories(CATEGORIES.find((c) => c.id === category)?.labelKey || 'other')}
 														</span>
 														<h3 className="font-medium text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
 															{name}

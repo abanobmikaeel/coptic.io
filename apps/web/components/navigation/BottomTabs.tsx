@@ -2,18 +2,20 @@
 
 import { BookIcon, CalendarIcon, SunIcon } from '@/components/ui/Icons'
 import { useNavigation } from '@/contexts/NavigationContext'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const tabs = [
-	{ id: 'today', label: 'Today', icon: SunIcon, href: '/' },
-	{ id: 'library', label: 'Library', icon: BookIcon, href: '/library' },
-	{ id: 'calendar', label: 'Calendar', icon: CalendarIcon, href: '/calendar' },
+const tabsConfig = [
+	{ id: 'today', labelKey: 'today', icon: SunIcon, href: '/' },
+	{ id: 'library', labelKey: 'library', icon: BookIcon, href: '/library' },
+	{ id: 'calendar', labelKey: 'calendar', icon: CalendarIcon, href: '/calendar' },
 ] as const
 
 export function BottomTabs() {
 	const { mode } = useNavigation()
 	const pathname = usePathname()
+	const t = useTranslations('tabs')
 
 	// Hide tabs in read mode
 	if (mode === 'read') {
@@ -33,7 +35,7 @@ export function BottomTabs() {
 		<nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden" aria-label="Main navigation">
 			<div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800">
 				<div className="flex items-center justify-around h-16 px-4 safe-area-pb">
-					{tabs.map((tab) => {
+					{tabsConfig.map((tab) => {
 						const isActive = activeTab === tab.id
 						const Icon = tab.icon
 
@@ -53,7 +55,7 @@ export function BottomTabs() {
 								aria-current={isActive ? 'page' : undefined}
 							>
 								<Icon className="w-6 h-6" strokeWidth={isActive ? 2 : 1.5} />
-								<span className={`text-xs ${isActive ? 'font-medium' : ''}`}>{tab.label}</span>
+								<span className={`text-xs ${isActive ? 'font-medium' : ''}`}>{t(tab.labelKey)}</span>
 							</Link>
 						)
 					})}

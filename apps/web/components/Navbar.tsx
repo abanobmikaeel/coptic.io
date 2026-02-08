@@ -1,33 +1,36 @@
 'use client'
 
 import { useNavigation } from '@/contexts/NavigationContext'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import CopticCross from './CopticCross'
+import { LocaleSwitcher } from './LocaleSwitcher'
 import { NavDropdown } from './NavDropdown'
 import { SearchButton } from './SearchButton'
 import ThemeToggle from './ThemeToggle'
 import { SearchIcon } from './ui/Icons'
 
-const readMenuItems = [
-	{
-		label: 'Katamaros',
-		description: 'Daily Lectionary',
-		href: '/readings',
-	},
-	{
-		label: 'Agpeya',
-		description: 'Prayer Hours',
-		href: '/agpeya',
-	},
-	{
-		label: 'Synaxarium',
-		description: 'Lives of Saints',
-		href: '/synaxarium',
-	},
-]
-
 export default function Navbar() {
 	const { mode } = useNavigation()
+	const t = useTranslations('nav')
+
+	const readMenuItems = [
+		{
+			label: t('katamaros'),
+			description: t('katamarosDescription'),
+			href: '/readings',
+		},
+		{
+			label: t('agpeya'),
+			description: t('agpeyaDescription'),
+			href: '/agpeya',
+		},
+		{
+			label: t('synaxarium'),
+			description: t('synaxariumDescription'),
+			href: '/synaxarium',
+		},
+	]
 
 	// Hide navbar on mobile in read mode (ReadModeHeader is used instead)
 	const mobileHiddenClass = mode === 'read' ? 'hidden lg:block' : ''
@@ -51,28 +54,29 @@ export default function Navbar() {
 						<button
 							type="button"
 							className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-							aria-label="Search"
+							aria-label={t('search') || 'Search'}
 						>
 							<SearchIcon className="w-5 h-5" />
 						</button>
 
 						{/* Desktop navigation */}
 						<div className="hidden lg:block">
-							<NavDropdown label="Read" items={readMenuItems} />
+							<NavDropdown label={t('read')} items={readMenuItems} />
 						</div>
 						<Link
 							href="/calendar"
 							className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
 						>
-							Calendar
+							{t('calendar')}
 						</Link>
 					</div>
 					<Link
 						href="/subscribe"
 						className="hidden lg:block text-[13px] bg-amber-700 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-lg transition-colors"
 					>
-						Subscribe
+						{t('subscribe')}
 					</Link>
+					<LocaleSwitcher />
 					<ThemeToggle />
 				</div>
 			</div>

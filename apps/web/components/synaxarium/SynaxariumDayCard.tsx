@@ -1,6 +1,7 @@
 'use client'
 
 import type { SynaxariumEntry } from '@/lib/types'
+import { useTranslations } from 'next-intl'
 import { SynaxariumEntryCompact } from './SynaxariumEntryCompact'
 
 interface SynaxariumDayCardProps {
@@ -10,7 +11,7 @@ interface SynaxariumDayCardProps {
 	isTomorrow: boolean
 	entries: SynaxariumEntry[]
 	selectedCategory: string
-	getCategoryLabel: (name: string) => string
+	getCategoryLabelKey: (name: string) => string
 	getCategoryColor: (name: string) => string
 	matchesCategory: (name: string, category: string) => boolean
 	onEntryExpand: (entryKey: string) => void
@@ -25,13 +26,16 @@ export function SynaxariumDayCard({
 	isTomorrow,
 	entries,
 	selectedCategory,
-	getCategoryLabel,
+	getCategoryLabelKey,
 	getCategoryColor,
 	matchesCategory,
 	onEntryExpand,
 	expandedEntries,
 	loadingEntries,
 }: SynaxariumDayCardProps) {
+	const tCommon = useTranslations('common')
+	const tSynaxarium = useTranslations('synaxarium')
+	const tCategories = useTranslations('categories')
 	const filteredEntries =
 		selectedCategory === 'all'
 			? entries
@@ -42,8 +46,8 @@ export function SynaxariumDayCard({
 	}
 
 	const getDateLabel = () => {
-		if (isToday) return 'Today'
-		if (isTomorrow) return 'Tomorrow'
+		if (isToday) return tCommon('today')
+		if (isTomorrow) return tCommon('tomorrow')
 		return ''
 	}
 
@@ -67,8 +71,9 @@ export function SynaxariumDayCard({
 					<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
 						{displayDate}
 					</span>
-					<span className="ml-auto text-xs text-gray-500 dark:text-gray-500">
-						{filteredEntries.length} {filteredEntries.length === 1 ? 'entry' : 'entries'}
+					<span className="ms-auto text-xs text-gray-500 dark:text-gray-500">
+						{filteredEntries.length}{' '}
+						{filteredEntries.length === 1 ? tSynaxarium('commemorations') : tSynaxarium('commemorationsPlural')}
 					</span>
 				</div>
 			</div>
@@ -82,7 +87,7 @@ export function SynaxariumDayCard({
 						<SynaxariumEntryCompact
 							key={entryKey}
 							entry={entry}
-							categoryLabel={getCategoryLabel(entry.name)}
+							categoryLabel={tCategories(getCategoryLabelKey(entry.name))}
 							categoryColor={getCategoryColor(entry.name)}
 							isExpanded={expandedEntries.has(entryKey)}
 							onToggle={() => onEntryExpand(entryKey)}

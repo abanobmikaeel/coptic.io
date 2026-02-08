@@ -1,5 +1,5 @@
-export function formatGregorianDate(date: Date): string {
-	return date.toLocaleDateString('en-US', {
+export function formatGregorianDate(date: Date, locale = 'en'): string {
+	return date.toLocaleDateString(locale, {
 		weekday: 'long',
 		year: 'numeric',
 		month: 'long',
@@ -7,23 +7,23 @@ export function formatGregorianDate(date: Date): string {
 	})
 }
 
-export function formatDateShort(date: Date): string {
-	return date.toLocaleDateString('en-US', {
+export function formatDateShort(date: Date, locale = 'en'): string {
+	return date.toLocaleDateString(locale, {
 		month: 'short',
 		day: 'numeric',
 	})
 }
 
-export function formatDateShortUTC(date: Date): string {
-	return date.toLocaleDateString('en-US', {
+export function formatDateShortUTC(date: Date, locale = 'en'): string {
+	return date.toLocaleDateString(locale, {
 		month: 'short',
 		day: 'numeric',
 		timeZone: 'UTC',
 	})
 }
 
-export function formatDateWithWeekday(date: Date): string {
-	return date.toLocaleDateString('en-US', {
+export function formatDateWithWeekday(date: Date, locale = 'en'): string {
+	return date.toLocaleDateString(locale, {
 		weekday: 'long',
 		month: 'long',
 		day: 'numeric',
@@ -31,8 +31,8 @@ export function formatDateWithWeekday(date: Date): string {
 	})
 }
 
-export function formatMonthYear(date: Date): string {
-	return date.toLocaleDateString('en-US', {
+export function formatMonthYear(date: Date, locale = 'en'): string {
+	return date.toLocaleDateString(locale, {
 		month: 'long',
 		year: 'numeric',
 	})

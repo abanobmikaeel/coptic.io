@@ -1,9 +1,12 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
+import createNextIntlPlugin from 'next-intl/plugin'
 import type { NextConfig } from 'next'
 
 const withBundleAnalyzer = bundleAnalyzer({
 	enabled: process.env.ANALYZE === 'true',
 })
+
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 const nextConfig: NextConfig = {
 	images: {
@@ -26,4 +29,4 @@ const nextConfig: NextConfig = {
 	compress: true,
 }
 
-export default withBundleAnalyzer(nextConfig)
+export default withBundleAnalyzer(withNextIntl(nextConfig))

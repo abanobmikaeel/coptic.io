@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { NoEntriesState } from '@/components/ui/EmptyState'
 import { ChevronRightIcon } from '@/components/ui/Icons'
 import type { SynaxariumEntry } from '@/lib/types'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import {
 	CATEGORIES,
@@ -32,6 +33,9 @@ export function SynaxariumDayView({
 	selectedCategory,
 	expandedEntry,
 }: SynaxariumDayViewProps) {
+	const t = useTranslations('synaxarium')
+	const tCategories = useTranslations('categories')
+
 	return (
 		<>
 			{/* Featured Today */}
@@ -43,9 +47,9 @@ export function SynaxariumDayView({
 					<Card>
 						<CardHeader>
 							{selectedCategory === 'all'
-								? 'All Commemorations'
-								: CATEGORIES.find((c) => c.id === selectedCategory)?.label}
-							<span className="ml-2 text-sm font-normal text-gray-500">
+								? t('allCommemorations')
+								: tCategories(CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all')}
+							<span className="ms-2 text-sm font-normal text-gray-500">
 								({filteredEntries.length})
 							</span>
 						</CardHeader>
@@ -58,8 +62,10 @@ export function SynaxariumDayView({
 								<NoEntriesState
 									type={
 										selectedCategory === 'all'
-											? 'commemorations'
-											: CATEGORIES.find((c) => c.id === selectedCategory)?.label?.toLowerCase()
+											? t('commemorationsPlural')
+											: tCategories(
+													CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all'
+												).toLowerCase()
 									}
 								/>
 							)}
@@ -72,7 +78,7 @@ export function SynaxariumDayView({
 							prefetch={false}
 							className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 font-medium transition-colors"
 						>
-							View readings for this date
+							{t('viewReadings')}
 							<ChevronRightIcon className="w-4 h-4" />
 						</Link>
 					</div>
@@ -83,14 +89,18 @@ export function SynaxariumDayView({
 }
 
 function FeaturedTodayCard({ entries }: { entries: SynaxariumEntry[] }) {
+	const t = useTranslations('synaxarium')
+	const tCategories = useTranslations('categories')
+
 	return (
 		<section className="relative px-6 pb-6">
 			<div className="max-w-4xl mx-auto">
 				<Card className="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/10">
 					<CardHeader className="flex items-center gap-2">
-						<span className="text-amber-600 dark:text-amber-500">Today's Saints</span>
+						<span className="text-amber-600 dark:text-amber-500">{t('todaysSaints')}</span>
 						<span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-							{entries.length} commemoration{entries.length !== 1 ? 's' : ''}
+							{entries.length}{' '}
+							{entries.length !== 1 ? t('commemorationsPlural') : t('commemorations')}
 						</span>
 					</CardHeader>
 					<CardContent>
@@ -105,7 +115,7 @@ function FeaturedTodayCard({ entries }: { entries: SynaxariumEntry[] }) {
 										<span
 											className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-2 ${getCategoryColor(category)}`}
 										>
-											{CATEGORIES.find((c) => c.id === category)?.label || 'Other'}
+											{tCategories(CATEGORIES.find((c) => c.id === category)?.labelKey || 'other')}
 										</span>
 										<p className="text-sm font-medium text-gray-900 dark:text-white line-clamp-2">
 											{entry.name}

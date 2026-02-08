@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
+import { useTranslations } from 'next-intl'
 
 export type ViewMode = 'day' | 'upcoming'
 
@@ -23,6 +24,8 @@ export function SynaxariumHeader({
 	onPrevious,
 	onNext,
 }: SynaxariumHeaderProps) {
+	const t = useTranslations('synaxarium')
+	const tCommon = useTranslations('common')
 	const isDayView = viewMode === 'day'
 
 	return (
@@ -33,24 +36,24 @@ export function SynaxariumHeader({
 					<button
 						type="button"
 						onClick={() => onViewModeChange('day')}
-						className={`px-5 py-2 text-sm font-medium rounded-l-lg border transition-all ${
+						className={`px-5 py-2 text-sm font-medium rounded-s-lg border transition-all ${
 							isDayView
 								? 'bg-amber-700 text-white border-amber-700'
 								: 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'
 						}`}
 					>
-						{isDayView ? (isToday ? 'Today' : 'Day') : 'Today'}
+						{isDayView ? (isToday ? tCommon('today') : t('day')) : tCommon('today')}
 					</button>
 					<button
 						type="button"
 						onClick={() => onViewModeChange('upcoming')}
-						className={`px-5 py-2 text-sm font-medium rounded-r-lg border-t border-r border-b -ml-3 transition-all ${
+						className={`px-5 py-2 text-sm font-medium rounded-e-lg border-t border-e border-b -ms-3 transition-all ${
 							!isDayView
 								? 'bg-amber-700 text-white border-amber-700'
 								: 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'
 						}`}
 					>
-						Upcoming
+						{tCommon('upcoming')}
 					</button>
 				</div>
 
@@ -60,7 +63,7 @@ export function SynaxariumHeader({
 						<button
 							type="button"
 							onClick={onPrevious}
-							aria-label="Previous day"
+							aria-label={t('previousDay')}
 							className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						>
 							<ChevronLeftIcon className="w-5 h-5" />
@@ -78,7 +81,7 @@ export function SynaxariumHeader({
 						<button
 							type="button"
 							onClick={onNext}
-							aria-label="Next day"
+							aria-label={t('nextDay')}
 							className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						>
 							<ChevronRightIcon className="w-5 h-5" />

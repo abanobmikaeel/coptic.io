@@ -10,12 +10,14 @@ import type { ViewMode } from '@/components/synaxarium/SynaxariumHeader'
 import { getCalendarDate, getSynaxariumByDate, searchSynaxarium } from '@/lib/api'
 import type { SynaxariumEntry, SynaxariumSearchResult } from '@/lib/types'
 import { formatGregorianDate, getTodayDateString } from '@/lib/utils/dateFormatters'
+import { useLocale } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export function useSynaxarium() {
 	const router = useRouter()
 	const searchParams = useSearchParams()
+	const locale = useLocale()
 
 	// === URL as source of truth ===
 	const dateParam = searchParams.get('date')
@@ -32,7 +34,7 @@ export function useSynaxarium() {
 
 	// === Derived from URL ===
 	const isToday = currentDate === today
-	const displayDate = formatGregorianDate(new Date(`${currentDate}T00:00:00`))
+	const displayDate = formatGregorianDate(new Date(`${currentDate}T00:00:00`), locale)
 
 	// === Local UI state ===
 	const [searchQuery, setSearchQuery] = useState('')

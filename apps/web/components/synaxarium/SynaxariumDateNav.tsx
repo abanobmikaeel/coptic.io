@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
+import { useTranslations } from 'next-intl'
 
 interface SynaxariumDateNavProps {
 	currentDate: string
@@ -18,6 +19,9 @@ export function SynaxariumDateNav({
 	onNext,
 	onGoToToday,
 }: SynaxariumDateNavProps) {
+	const t = useTranslations('synaxarium')
+	const tCommon = useTranslations('common')
+
 	return (
 		<section className="relative px-6 pb-6">
 			<div className="max-w-4xl mx-auto">
@@ -25,7 +29,7 @@ export function SynaxariumDateNav({
 					<button
 						type="button"
 						onClick={onPrevious}
-						aria-label="Previous day"
+						aria-label={t('previousDay')}
 						className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors"
 					>
 						<ChevronLeftIcon className="w-6 h-6" />
@@ -38,19 +42,21 @@ export function SynaxariumDateNav({
 								onClick={onGoToToday}
 								className="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-700 hover:bg-amber-600 text-white shadow-sm hover:shadow transition-all"
 							>
-								Today
+								{tCommon('today')}
 							</button>
 						)}
 						<div className="text-center">
 							<p className="text-lg font-semibold text-gray-900 dark:text-white">{displayDate}</p>
-							{isToday && <p className="text-sm text-amber-600 dark:text-amber-500">Today</p>}
+							{isToday && (
+								<p className="text-sm text-amber-600 dark:text-amber-500">{tCommon('today')}</p>
+							)}
 						</div>
 					</div>
 
 					<button
 						type="button"
 						onClick={onNext}
-						aria-label="Next day"
+						aria-label={t('nextDay')}
 						className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors"
 					>
 						<ChevronRightIcon className="w-6 h-6" />

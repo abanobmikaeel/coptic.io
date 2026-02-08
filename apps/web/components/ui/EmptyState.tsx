@@ -1,3 +1,6 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 
 interface EmptyStateProps {
@@ -135,14 +138,17 @@ export function NoResultsState({
 	theme?: 'light' | 'sepia' | 'dark'
 	onClear?: () => void
 }) {
+	const t = useTranslations('emptyStates')
+	const tCommon = useTranslations('common')
+
 	return (
 		<EmptyState
 			icon={<SearchIcon className="w-12 h-12" />}
-			title="No results found"
+			title={t('noResults')}
 			description={
 				query
-					? `No matches for "${query}". Try different keywords or check your spelling.`
-					: 'Try adjusting your search or filters.'
+					? t('noResultsWithQuery', { query })
+					: t('noResultsGeneric')
 			}
 			theme={theme}
 			action={
@@ -152,7 +158,7 @@ export function NoResultsState({
 						onClick={onClear}
 						className="text-sm text-amber-600 hover:text-amber-700 dark:text-amber-500 dark:hover:text-amber-400 font-medium"
 					>
-						Clear search
+						{tCommon('clearSearch')}
 					</button>
 				)
 			}
@@ -161,11 +167,13 @@ export function NoResultsState({
 }
 
 export function NoReadingsState({ theme = 'light' }: { theme?: 'light' | 'sepia' | 'dark' }) {
+	const t = useTranslations('emptyStates')
+
 	return (
 		<EmptyState
 			icon={<BookIcon className="w-12 h-12" />}
-			title="Readings unavailable"
-			description="Unable to load readings for this date. Please try again later or select a different date."
+			title={t('readingsUnavailable')}
+			description={t('readingsUnavailableDescription')}
 			theme={theme}
 		/>
 	)
@@ -178,11 +186,13 @@ export function NoEntriesState({
 	type?: string
 	theme?: 'light' | 'sepia' | 'dark'
 }) {
+	const t = useTranslations('emptyStates')
+
 	return (
 		<EmptyState
 			icon={<CalendarIcon className="w-12 h-12" />}
-			title={`No ${type} found`}
-			description={`There are no ${type} for this date.`}
+			title={t('noEntriesTitle', { type })}
+			description={t('noEntriesDescription', { type })}
 			theme={theme}
 		/>
 	)

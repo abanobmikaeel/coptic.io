@@ -7,6 +7,8 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { BottomTabs } from '@/components/navigation/BottomTabs'
 import { NavigationProvider } from '@/contexts/NavigationContext'
 import { Analytics } from '@vercel/analytics/next'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages } from 'next-intl/server'
 
 const inter = Inter({
 	variable: '--font-inter',
@@ -99,17 +101,20 @@ export const viewport: Viewport = {
 	],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	const locale = await getLocale()
+	const messages = await getMessages()
+
 	const apiDomain = process.env.NEXT_PUBLIC_API_URL
 		? new URL(process.env.NEXT_PUBLIC_API_URL).origin
 		: 'https://api.coptic.io'
 
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
 			<head>
 				<link rel="preconnect" href={apiDomain} />
 				<link rel="dns-prefetch" href={apiDomain} />
@@ -122,19 +127,21 @@ export default function RootLayout({
 					tabIndex={0}
 					className="absolute left-[-9999px] top-auto w-px h-px overflow-hidden focus:static focus:w-auto focus:h-auto focus:overflow-visible focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-amber-700 focus:text-white focus:font-semibold focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
 				>
-					Skip to main content
+					{messages.common?.skipToContent ?? 'Skip to main content'}
 				</a>
-				<ThemeProvider>
-					<CommandPaletteProvider>
-						<NavigationProvider>
-							<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-								<Navbar />
-								<div id="main-content">{children}</div>
-								<BottomTabs />
-							</div>
-						</NavigationProvider>
-					</CommandPaletteProvider>
-				</ThemeProvider>
+				<NextIntlClientProvider messages={messages}>
+					<ThemeProvider>
+						<CommandPaletteProvider>
+							<NavigationProvider>
+								<div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+									<Navbar />
+									<div id="main-content">{children}</div>
+									<BottomTabs />
+								</div>
+							</NavigationProvider>
+						</CommandPaletteProvider>
+					</ThemeProvider>
+				</NextIntlClientProvider>
 				<Analytics />
 			</body>
 		</html>

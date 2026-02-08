@@ -1,18 +1,20 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 export const CATEGORIES = [
-	{ id: 'all', label: 'All', pattern: null },
-	{ id: 'martyrs', label: 'Martyrs', pattern: /martyr/i },
-	{ id: 'popes', label: 'Popes', pattern: /pope|patriarch/i },
-	{ id: 'apostles', label: 'Apostles', pattern: /apostle/i },
-	{ id: 'departures', label: 'Departures', pattern: /departure/i },
-	{ id: 'feasts', label: 'Feasts', pattern: /feast|commemoration/i },
+	{ id: 'all', labelKey: 'all', pattern: null },
+	{ id: 'martyrs', labelKey: 'martyrs', pattern: /martyr/i },
+	{ id: 'popes', labelKey: 'popes', pattern: /pope|patriarch/i },
+	{ id: 'apostles', labelKey: 'apostles', pattern: /apostle/i },
+	{ id: 'departures', labelKey: 'departures', pattern: /departure/i },
+	{ id: 'feasts', labelKey: 'feasts', pattern: /feast|commemoration/i },
 	{
 		id: 'monastics',
-		label: 'Monastics',
+		labelKey: 'monastics',
 		pattern: /monk|nun|hermit|abbot|monastery|desert father|ascetic/i,
 	},
-	{ id: 'bishops', label: 'Bishops', pattern: /bishop|metropolitan|archbishop/i },
+	{ id: 'bishops', labelKey: 'bishops', pattern: /bishop|metropolitan|archbishop/i },
 ] as const
 
 export type CategoryId = (typeof CATEGORIES)[number]['id']
@@ -40,9 +42,9 @@ export function getCategoryColor(categoryId: CategoryId): string {
 	return colors[categoryId] || colors.all
 }
 
-export function getCategoryLabel(name: string): string {
+export function getCategoryLabelKey(name: string): string {
 	const categoryId = getCategoryForEntry(name)
-	return CATEGORIES.find((c) => c.id === categoryId)?.label || 'Other'
+	return CATEGORIES.find((c) => c.id === categoryId)?.labelKey || 'other'
 }
 
 export function getCategoryColorForName(name: string): string {
@@ -68,6 +70,8 @@ export function SynaxariumCategoryFilters({
 	counts,
 	showCounts,
 }: SynaxariumCategoryFiltersProps) {
+	const t = useTranslations('categories')
+
 	return (
 		<section className="relative px-6 pb-6">
 			<div className="max-w-4xl mx-auto">
@@ -86,8 +90,8 @@ export function SynaxariumCategoryFilters({
 										: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
 								}`}
 							>
-								{cat.label}
-								{showCounts && <span className="ml-1.5 opacity-70">({count})</span>}
+								{t(cat.labelKey)}
+								{showCounts && <span className="ms-1.5 opacity-70">({count})</span>}
 							</button>
 						)
 					})}
