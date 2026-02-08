@@ -15,7 +15,8 @@ readings.get('/:date?', async (c) => {
 		const langParam = c.req.query('lang')
 
 		// Validate and default language to English
-		const translation: BibleTranslation = langParam === 'ar' ? 'ar' : 'en'
+		const translation: BibleTranslation =
+			langParam === 'ar' ? 'ar' : langParam === 'es' ? 'es' : 'en'
 
 		// Default to today
 		let parsedDate = new Date()

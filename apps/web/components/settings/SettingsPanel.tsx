@@ -1,6 +1,8 @@
 'use client'
 
+import type { ContentLanguage } from '@/i18n/content-languages'
 import type { ReadingSettings, ReadingSettingsActions } from '@/hooks/useReadingSettings'
+import { LanguagePills } from './LanguagePills'
 import { SegmentedButtons } from './SegmentedButtons'
 import { SettingSection } from './SettingSection'
 import { ThemePicker } from './ThemePicker'
@@ -16,12 +18,19 @@ import {
 interface SettingsPanelProps {
 	settings: ReadingSettings
 	actions: ReadingSettingsActions
+	contentLanguages: ContentLanguage[]
+	onContentLanguagesChange: (languages: ContentLanguage[]) => void
 	onClose: () => void
 }
 
-export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps) {
+export function SettingsPanel({
+	settings,
+	actions,
+	contentLanguages,
+	onContentLanguagesChange,
+	onClose,
+}: SettingsPanelProps) {
 	const {
-		translation,
 		fontFamily,
 		textSize,
 		weight,
@@ -33,6 +42,8 @@ export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps
 		theme,
 		isAutoTheme,
 	} = settings
+
+	const hasEnglish = contentLanguages.includes('en')
 
 	return (
 		<>
@@ -53,20 +64,13 @@ export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps
 					<ThemePicker value={theme} isAuto={isAutoTheme} onChange={actions.setTheme} />
 				</SettingSection>
 
-				{/* Reading Language */}
-				<SettingSection label="Reading Language">
-					<SegmentedButtons
-						value={translation}
-						onChange={actions.setTranslation}
-						options={[
-							{ value: 'en', label: 'English' },
-							{ value: 'ar', label: 'العربية', className: 'font-arabic' },
-						]}
-					/>
+				{/* Display Languages */}
+				<SettingSection label="Display Languages">
+					<LanguagePills selected={contentLanguages} onChange={onContentLanguagesChange} />
 				</SettingSection>
 
 				{/* Font Family - only for English */}
-				{translation === 'en' && (
+				{hasEnglish && (
 					<SettingSection label="Font">
 						<SegmentedButtons
 							value={fontFamily}
@@ -141,7 +145,7 @@ export function SettingsPanel({ settings, actions, onClose }: SettingsPanelProps
 				</SettingSection>
 
 				{/* Word Spacing - only for English */}
-				{translation === 'en' && (
+				{hasEnglish && (
 					<SettingSection label="Word Spacing">
 						<SegmentedButtons
 							value={wordSpacing}

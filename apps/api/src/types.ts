@@ -1,4 +1,4 @@
-export type BibleTranslation = 'en' | 'ar'
+export type BibleTranslation = 'en' | 'ar' | 'es'
 
 export interface BibleVerse {
 	text: string

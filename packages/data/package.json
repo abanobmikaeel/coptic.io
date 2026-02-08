@@ -21,6 +21,18 @@
 		"./ar": {
 			"types": "./dist/ar/index.d.ts",
 			"import": "./dist/ar/index.js"
+		},
+		"./ar/bible": {
+			"types": "./dist/ar/bible/index.d.ts",
+			"import": "./dist/ar/bible/index.js"
+		},
+		"./es": {
+			"types": "./dist/es/index.d.ts",
+			"import": "./dist/es/index.js"
+		},
+		"./es/bible": {
+			"types": "./dist/es/bible/index.d.ts",
+			"import": "./dist/es/bible/index.js"
 		}
 	},
 	"files": [

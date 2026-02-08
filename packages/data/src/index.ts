@@ -18,7 +18,7 @@ export type { SynaxariumEntry } from '@coptic/core'
 /**
  * Supported languages
  */
-export type SupportedLanguage = 'en' | 'ar' | 'cop'
+export type SupportedLanguage = 'en' | 'ar' | 'cop' | 'es'
 
 /**
  * Data sources for synaxarium
@@ -29,7 +29,7 @@ export type SynaxariumSource = 'st-takla' | 'suscopts' | 'canonical'
  * Get available languages
  */
 export const getAvailableLanguages = (): SupportedLanguage[] => {
-	return ['en', 'ar', 'cop']
+	return ['en', 'ar', 'cop', 'es']
 }
 
 /**

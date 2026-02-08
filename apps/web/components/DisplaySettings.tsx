@@ -1,5 +1,6 @@
 'use client'
 
+import { useContentLanguages } from '@/hooks/useContentLanguages'
 import { useReadingSettings } from '@/hooks/useReadingSettings'
 import { useState } from 'react'
 import { ChevronIcon, SettingsPanel } from './settings'
@@ -20,9 +21,10 @@ export type {
 
 export function DisplaySettings() {
 	const { settings, actions, mounted } = useReadingSettings()
+	const { languages, setLanguages, isLoaded } = useContentLanguages()
 	const [isOpen, setIsOpen] = useState(false)
 
-	if (!mounted) return null
+	if (!mounted || !isLoaded) return null
 
 	return (
 		<div className="relative">
@@ -48,7 +50,13 @@ export function DisplaySettings() {
 			</button>
 
 			{isOpen && (
-				<SettingsPanel settings={settings} actions={actions} onClose={() => setIsOpen(false)} />
+				<SettingsPanel
+					settings={settings}
+					actions={actions}
+					contentLanguages={languages}
+					onContentLanguagesChange={setLanguages}
+					onClose={() => setIsOpen(false)}
+				/>
 			)}
 		</div>
 	)

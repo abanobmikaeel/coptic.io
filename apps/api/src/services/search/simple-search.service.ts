@@ -6,8 +6,7 @@
  * by implementing the SearchService interface.
  */
 
-import { type AgpeyaHourId, getAllAgpeyaHours, isMidnightHour } from '@coptic/data/en'
-import * as bibleEn from '../../resources/bible.json'
+import { type AgpeyaHourId, getAllAgpeyaHours, isMidnightHour, bibleData as bibleEn } from '@coptic/data/en'
 import type { BibleBook, BibleType } from '../../types'
 import { searchSynaxarium as searchSynaxariumService } from '../synaxarium.service'
 import type {

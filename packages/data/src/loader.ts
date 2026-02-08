@@ -41,9 +41,19 @@ export const loadSynaxarium = async (
 /**
  * Load Bible data for a specific language
  */
-export const loadBible = async (_language: SupportedLanguage): Promise<RawBibleData> => {
-	const data = await import('./en/bible/books.json')
-	return data.default as RawBibleData
+export const loadBible = async (language: SupportedLanguage): Promise<RawBibleData> => {
+	switch (language) {
+		case 'en':
+			return (await import('./en/bible/books.json')).default as RawBibleData
+		case 'ar':
+			return (await import('./ar/bible/books.json')).default as RawBibleData
+		case 'es':
+			return (await import('./es/bible/books.json')).default as RawBibleData
+		case 'cop':
+		default:
+			// Fall back to English for unsupported languages
+			return (await import('./en/bible/books.json')).default as RawBibleData
+	}
 }
 
 /**
