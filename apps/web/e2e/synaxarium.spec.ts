@@ -86,8 +86,18 @@ test.describe('Synaxarium and Readings date consistency', () => {
 
 		// Verify the synaxarium page shows this future date
 		const monthNames = [
-			'January', 'February', 'March', 'April', 'May', 'June',
-			'July', 'August', 'September', 'October', 'November', 'December',
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December',
 		]
 		const expectedMonth = monthNames[futureDate.getMonth()]
 		const expectedDay = String(futureDate.getDate())
@@ -129,8 +139,18 @@ test.describe('Synaxarium and Readings date consistency', () => {
 		// Today's date should be shown
 		const today = new Date()
 		const monthNames = [
-			'January', 'February', 'March', 'April', 'May', 'June',
-			'July', 'August', 'September', 'October', 'November', 'December',
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December',
 		]
 		const expectedMonth = monthNames[today.getMonth()]
 		const expectedDay = String(today.getDate())
@@ -235,19 +255,32 @@ test.describe('Synaxarium page', () => {
 	test('should display Coptic date', async ({ page }) => {
 		// Synaxarium shows Coptic dates (includes alternative romanizations)
 		const copticMonths = [
-			'Thout', 'Tout',
-			'Paopi', 'Baba',
-			'Hathor', 'Hator',
-			'Koiak', 'Kiahk',
-			'Tobi', 'Toba',
-			'Meshir', 'Amshir',
-			'Paremhat', 'Baramhat',
-			'Parmouti', 'Baramoda',
-			'Pashons', 'Bashans',
-			'Paoni', 'Baona',
-			'Epip', 'Abib',
-			'Mesori', 'Mesra',
-			'Nasie', 'Nasi',
+			'Thout',
+			'Tout',
+			'Paopi',
+			'Baba',
+			'Hathor',
+			'Hator',
+			'Koiak',
+			'Kiahk',
+			'Tobi',
+			'Toba',
+			'Meshir',
+			'Amshir',
+			'Paremhat',
+			'Baramhat',
+			'Parmouti',
+			'Baramoda',
+			'Pashons',
+			'Bashans',
+			'Paoni',
+			'Baona',
+			'Epip',
+			'Abib',
+			'Mesori',
+			'Mesra',
+			'Nasie',
+			'Nasi',
 		]
 		const monthRegex = new RegExp(copticMonths.join('|'), 'i')
 		const copticDate = page.getByText(monthRegex)
@@ -551,8 +584,18 @@ test.describe('Synaxarium URL params', () => {
 		// The date display should show the future date, not today
 		const pageText = await page.locator('body').innerText()
 		const futureMonthNames = [
-			'January', 'February', 'March', 'April', 'May', 'June',
-			'July', 'August', 'September', 'October', 'November', 'December',
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December',
 		]
 		const expectedMonth = futureMonthNames[futureDate.getMonth()]
 		expect(pageText).toContain(expectedMonth)

@@ -8,7 +8,11 @@ interface SynaxariumViewToggleProps {
 	isToday?: boolean
 }
 
-export function SynaxariumViewToggle({ viewMode, onViewModeChange, isToday = true }: SynaxariumViewToggleProps) {
+export function SynaxariumViewToggle({
+	viewMode,
+	onViewModeChange,
+	isToday = true,
+}: SynaxariumViewToggleProps) {
 	return (
 		<div className="flex w-full sm:w-auto">
 			<button

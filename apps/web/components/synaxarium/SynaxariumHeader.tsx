@@ -71,9 +71,7 @@ export function SynaxariumHeader({
 								{gregorianDate}
 							</p>
 							{copticDate && (
-								<p className="text-sm text-amber-600 dark:text-amber-500">
-									{copticDate}
-								</p>
+								<p className="text-sm text-amber-600 dark:text-amber-500">{copticDate}</p>
 							)}
 						</div>
 

@@ -25,7 +25,9 @@ export function SynaxariumEntryCompact({
 }: SynaxariumEntryCompactProps) {
 	const content = (
 		<>
-			<span className={`inline-block px-2 py-0.5 rounded text-xs font-medium shrink-0 ${categoryColor}`}>
+			<span
+				className={`inline-block px-2 py-0.5 rounded text-xs font-medium shrink-0 ${categoryColor}`}
+			>
 				{categoryLabel}
 			</span>
 			<span className="flex-1 text-sm font-medium text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-500 line-clamp-2 transition-colors">

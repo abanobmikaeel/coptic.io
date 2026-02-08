@@ -33,7 +33,9 @@ export function SynaxariumDayCard({
 	loadingEntries,
 }: SynaxariumDayCardProps) {
 	const filteredEntries =
-		selectedCategory === 'all' ? entries : entries.filter((e) => matchesCategory(e.name, selectedCategory))
+		selectedCategory === 'all'
+			? entries
+			: entries.filter((e) => matchesCategory(e.name, selectedCategory))
 
 	if (filteredEntries.length === 0) {
 		return null
@@ -62,7 +64,9 @@ export function SynaxariumDayCard({
 						</span>
 					)}
 					{dateLabel && <span className="text-gray-400 dark:text-gray-600">—</span>}
-					<span className="text-sm font-medium text-gray-700 dark:text-gray-300">{displayDate}</span>
+					<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+						{displayDate}
+					</span>
 					<span className="ml-auto text-xs text-gray-500 dark:text-gray-500">
 						{filteredEntries.length} {filteredEntries.length === 1 ? 'entry' : 'entries'}
 					</span>

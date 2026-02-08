@@ -2,24 +2,40 @@
 
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { SynaxariumCategoryFilters } from '@/components/synaxarium/SynaxariumCategoryFilters'
+import { SynaxariumDayView } from '@/components/synaxarium/SynaxariumDayView'
 import { SynaxariumHeader } from '@/components/synaxarium/SynaxariumHeader'
 import { SynaxariumSearch } from '@/components/synaxarium/SynaxariumSearch'
 import { SynaxariumSearchResults } from '@/components/synaxarium/SynaxariumSearchResults'
-import { SynaxariumDayView } from '@/components/synaxarium/SynaxariumDayView'
 import { SynaxariumUpcomingView } from '@/components/synaxarium/SynaxariumUpcomingView'
 import { CloseIcon } from '@/components/ui/Icons'
-import { useSynaxarium } from '@/hooks/useSynaxarium'
 import { useSwipeGesture } from '@/hooks/useSwipeGesture'
+import { useSynaxarium } from '@/hooks/useSynaxarium'
 import { getTodayDateString } from '@/lib/utils/dateFormatters'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
 function SynaxariumPageContent() {
 	const {
-		viewMode, currentDate, copticDate, displayDate, entries, filteredEntries,
-		searchQuery, searchResults, filteredSearchResults, isSearching,
-		loading, selectedCategory, expandedEntry, isToday, showingSearch, categoryCounts,
-		setSearchQuery, navigateDate, handleViewModeChange, handleCategoryChange,
+		viewMode,
+		currentDate,
+		copticDate,
+		displayDate,
+		entries,
+		filteredEntries,
+		searchQuery,
+		searchResults,
+		filteredSearchResults,
+		isSearching,
+		loading,
+		selectedCategory,
+		expandedEntry,
+		isToday,
+		showingSearch,
+		categoryCounts,
+		setSearchQuery,
+		navigateDate,
+		handleViewModeChange,
+		handleCategoryChange,
 	} = useSynaxarium()
 
 	const swipeRef = useSwipeGesture<HTMLElement>({
@@ -49,7 +65,9 @@ function SynaxariumPageContent() {
 					</div>
 					<div className="text-center">
 						<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Synaxarium</h1>
-						<p className="text-gray-600 dark:text-gray-400">Lives of the Saints of the Coptic Orthodox Church</p>
+						<p className="text-gray-600 dark:text-gray-400">
+							Lives of the Saints of the Coptic Orthodox Church
+						</p>
 					</div>
 				</div>
 			</section>
@@ -82,7 +100,10 @@ function SynaxariumPageContent() {
 					onClearSearch={() => setSearchQuery('')}
 				/>
 			) : viewMode === 'upcoming' ? (
-				<SynaxariumUpcomingView startDate={getTodayDateString()} selectedCategory={selectedCategory} />
+				<SynaxariumUpcomingView
+					startDate={getTodayDateString()}
+					selectedCategory={selectedCategory}
+				/>
 			) : (
 				<SynaxariumDayView
 					key={currentDate}

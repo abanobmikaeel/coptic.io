@@ -16,7 +16,10 @@ interface SynaxariumUpcomingViewProps {
 	selectedCategory: CategoryId
 }
 
-export function SynaxariumUpcomingView({ startDate, selectedCategory }: SynaxariumUpcomingViewProps) {
+export function SynaxariumUpcomingView({
+	startDate,
+	selectedCategory,
+}: SynaxariumUpcomingViewProps) {
 	// Start from tomorrow, not today
 	const tomorrowDate = addDaysToDateString(startDate, 1)
 

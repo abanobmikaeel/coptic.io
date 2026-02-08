@@ -45,7 +45,9 @@ export function SynaxariumDayView({
 							{selectedCategory === 'all'
 								? 'All Commemorations'
 								: CATEGORIES.find((c) => c.id === selectedCategory)?.label}
-							<span className="ml-2 text-sm font-normal text-gray-500">({filteredEntries.length})</span>
+							<span className="ml-2 text-sm font-normal text-gray-500">
+								({filteredEntries.length})
+							</span>
 						</CardHeader>
 						<CardContent>
 							{loading ? (
@@ -123,7 +125,10 @@ function EntriesLoadingSkeleton() {
 	return (
 		<div className="space-y-4 py-4">
 			{[1, 2, 3, 4].map((i) => (
-				<div key={i} className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-4 last:pb-0">
+				<div
+					key={i}
+					className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-4 last:pb-0"
+				>
 					<div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-2" />
 					<div className="h-5 w-3/4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-1" />
 					<div className="h-4 w-1/2 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />

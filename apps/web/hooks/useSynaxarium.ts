@@ -26,7 +26,9 @@ export function useSynaxarium() {
 	const today = getTodayDateString()
 	const currentDate = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam) ? dateParam : today
 	const viewMode: ViewMode = viewParam === 'upcoming' ? 'upcoming' : 'day'
-	const selectedCategory: CategoryId = (categoryParam && CATEGORIES.some((c) => c.id === categoryParam) ? categoryParam : 'all') as CategoryId
+	const selectedCategory: CategoryId = (
+		categoryParam && CATEGORIES.some((c) => c.id === categoryParam) ? categoryParam : 'all'
+	) as CategoryId
 
 	// === Derived from URL ===
 	const isToday = currentDate === today
@@ -44,55 +46,67 @@ export function useSynaxarium() {
 	const [isSearching, setIsSearching] = useState(false)
 
 	// === URL update helper ===
-	const updateUrl = useCallback((updates: { date?: string | null; view?: ViewMode | null; category?: CategoryId | null }) => {
-		const params = new URLSearchParams(searchParams.toString())
+	const updateUrl = useCallback(
+		(updates: { date?: string | null; view?: ViewMode | null; category?: CategoryId | null }) => {
+			const params = new URLSearchParams(searchParams.toString())
 
-		if ('date' in updates) {
-			if (updates.date && updates.date !== today) {
-				params.set('date', updates.date)
-			} else {
-				params.delete('date')
+			if ('date' in updates) {
+				if (updates.date && updates.date !== today) {
+					params.set('date', updates.date)
+				} else {
+					params.delete('date')
+				}
 			}
-		}
-		if ('view' in updates) {
-			if (updates.view === 'upcoming') {
-				params.set('view', 'upcoming')
-			} else {
-				params.delete('view')
+			if ('view' in updates) {
+				if (updates.view === 'upcoming') {
+					params.set('view', 'upcoming')
+				} else {
+					params.delete('view')
+				}
 			}
-		}
-		if ('category' in updates) {
-			if (updates.category && updates.category !== 'all') {
-				params.set('category', updates.category)
-			} else {
-				params.delete('category')
+			if ('category' in updates) {
+				if (updates.category && updates.category !== 'all') {
+					params.set('category', updates.category)
+				} else {
+					params.delete('category')
+				}
 			}
-		}
 
-		const query = params.toString()
-		router.replace(`/synaxarium${query ? `?${query}` : ''}`, { scroll: false })
-	}, [router, searchParams, today])
+			const query = params.toString()
+			router.replace(`/synaxarium${query ? `?${query}` : ''}`, { scroll: false })
+		},
+		[router, searchParams, today],
+	)
 
 	// === Actions ===
-	const navigateDate = useCallback((days: number) => {
-		const d = new Date(`${currentDate}T00:00:00`)
-		d.setDate(d.getDate() + days)
-		const newDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-		updateUrl({ date: newDate })
-	}, [currentDate, updateUrl])
+	const navigateDate = useCallback(
+		(days: number) => {
+			const d = new Date(`${currentDate}T00:00:00`)
+			d.setDate(d.getDate() + days)
+			const newDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+			updateUrl({ date: newDate })
+		},
+		[currentDate, updateUrl],
+	)
 
-	const handleViewModeChange = useCallback((mode: ViewMode) => {
-		if (mode === 'day' && viewMode === 'upcoming') {
-			// Clicking "Today" from upcoming goes to today
-			updateUrl({ date: null, view: 'day' })
-		} else {
-			updateUrl({ view: mode })
-		}
-	}, [viewMode, updateUrl])
+	const handleViewModeChange = useCallback(
+		(mode: ViewMode) => {
+			if (mode === 'day' && viewMode === 'upcoming') {
+				// Clicking "Today" from upcoming goes to today
+				updateUrl({ date: null, view: 'day' })
+			} else {
+				updateUrl({ view: mode })
+			}
+		},
+		[viewMode, updateUrl],
+	)
 
-	const handleCategoryChange = useCallback((category: CategoryId) => {
-		updateUrl({ category })
-	}, [updateUrl])
+	const handleCategoryChange = useCallback(
+		(category: CategoryId) => {
+			updateUrl({ category })
+		},
+		[updateUrl],
+	)
 
 	// === Data fetching ===
 
@@ -102,7 +116,9 @@ export function useSynaxarium() {
 		getCalendarDate(currentDate).then((data) => {
 			if (!cancelled && data) setCopticDate(data.dateString)
 		})
-		return () => { cancelled = true }
+		return () => {
+			cancelled = true
+		}
 	}, [currentDate])
 
 	// Fetch entries
@@ -116,7 +132,9 @@ export function useSynaxarium() {
 				setLoading(false)
 			}
 		})
-		return () => { cancelled = true }
+		return () => {
+			cancelled = true
+		}
 	}, [currentDate, viewMode])
 
 	// Expand entry from URL param
@@ -152,13 +170,21 @@ export function useSynaxarium() {
 
 	const filteredSearchResults = useMemo(() => {
 		if (selectedCategory === 'all') return searchResults
-		return searchResults.filter((r) => r.entry.name && matchesCategory(r.entry.name, selectedCategory))
+		return searchResults.filter(
+			(r) => r.entry.name && matchesCategory(r.entry.name, selectedCategory),
+		)
 	}, [searchResults, selectedCategory])
 
 	const categoryCounts = useMemo(() => {
 		const counts: Record<CategoryId, number> = {
-			all: entries.length, martyrs: 0, popes: 0, apostles: 0,
-			departures: 0, feasts: 0, monastics: 0, bishops: 0,
+			all: entries.length,
+			martyrs: 0,
+			popes: 0,
+			apostles: 0,
+			departures: 0,
+			feasts: 0,
+			monastics: 0,
+			bishops: 0,
 		}
 		for (const entry of entries) {
 			const cat = getCategoryForEntry(entry.name)
