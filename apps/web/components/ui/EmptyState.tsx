@@ -145,11 +145,7 @@ export function NoResultsState({
 		<EmptyState
 			icon={<SearchIcon className="w-12 h-12" />}
 			title={t('noResults')}
-			description={
-				query
-					? t('noResultsWithQuery', { query })
-					: t('noResultsGeneric')
-			}
+			description={query ? t('noResultsWithQuery', { query }) : t('noResultsGeneric')}
 			theme={theme}
 			action={
 				onClear && (

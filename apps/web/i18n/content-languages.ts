@@ -43,9 +43,9 @@ export const CONTENT_LANGUAGES_COOKIE = 'CONTENT_LANGUAGES'
 export function parseContentLanguages(cookieValue: string | undefined): ContentLanguage[] {
 	if (!cookieValue) return []
 
-	const langs = cookieValue.split(',').filter((lang): lang is ContentLanguage =>
-		contentLanguages.includes(lang as ContentLanguage)
-	)
+	const langs = cookieValue
+		.split(',')
+		.filter((lang): lang is ContentLanguage => contentLanguages.includes(lang as ContentLanguage))
 
 	return langs.length > 0 ? langs : []
 }

@@ -36,7 +36,8 @@ export function SynaxariumUpcomingView({
 						{tCommon('upcoming')}
 						{selectedCategory !== 'all' && (
 							<span className="ms-2 text-sm font-normal text-gray-500">
-								{t('filteredBy')} {tCategories(CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all')}
+								{t('filteredBy')}{' '}
+								{tCategories(CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all')}
 							</span>
 						)}
 					</CardHeader>

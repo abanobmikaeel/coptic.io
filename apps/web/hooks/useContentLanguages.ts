@@ -50,17 +50,14 @@ export function useContentLanguages() {
 	const toggleLanguage = useCallback(
 		(lang: ContentLanguage) => {
 			setLanguages(
-				languages.includes(lang) ? languages.filter((l) => l !== lang) : [...languages, lang]
+				languages.includes(lang) ? languages.filter((l) => l !== lang) : [...languages, lang],
 			)
 		},
-		[languages, setLanguages]
+		[languages, setLanguages],
 	)
 
 	// Check if a language is selected
-	const hasLanguage = useCallback(
-		(lang: ContentLanguage) => languages.includes(lang),
-		[languages]
-	)
+	const hasLanguage = useCallback((lang: ContentLanguage) => languages.includes(lang), [languages])
 
 	return {
 		languages,

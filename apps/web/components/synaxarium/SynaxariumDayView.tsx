@@ -64,7 +64,7 @@ export function SynaxariumDayView({
 										selectedCategory === 'all'
 											? t('commemorationsPlural')
 											: tCategories(
-													CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all'
+													CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all',
 												).toLowerCase()
 									}
 								/>

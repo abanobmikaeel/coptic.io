@@ -49,7 +49,6 @@ export const loadBible = async (language: SupportedLanguage): Promise<RawBibleDa
 			return (await import('./ar/bible/books.json')).default as RawBibleData
 		case 'es':
 			return (await import('./es/bible/books.json')).default as RawBibleData
-		case 'cop':
 		default:
 			// Fall back to English for unsupported languages
 			return (await import('./en/bible/books.json')).default as RawBibleData

@@ -80,7 +80,7 @@ export function SynaxariumTodayView({
 										selectedCategory === 'all'
 											? t('commemorationsPlural')
 											: tCategories(
-													CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all'
+													CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all',
 												).toLowerCase()
 									}
 								/>
@@ -115,7 +115,8 @@ function FeaturedTodayCard({ entries }: { entries: SynaxariumEntry[] }) {
 					<CardHeader className="flex items-center gap-2">
 						<span className="text-amber-600 dark:text-amber-500">{t('todaysSaints')}</span>
 						<span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-							{entries.length} {entries.length !== 1 ? t('commemorationsPlural') : t('commemorations')}
+							{entries.length}{' '}
+							{entries.length !== 1 ? t('commemorationsPlural') : t('commemorations')}
 						</span>
 					</CardHeader>
 					<CardContent>

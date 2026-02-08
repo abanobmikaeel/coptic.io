@@ -7,13 +7,7 @@ import {
 	getWordSpacingClass,
 } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
-import type {
-	FontFamily,
-	FontWeight,
-	LineSpacing,
-	TextSize,
-	WordSpacing,
-} from '../DisplaySettings'
+import type { FontFamily, FontWeight, LineSpacing, TextSize, WordSpacing } from '../DisplaySettings'
 import type { BibleTranslation, StyleClasses } from './types'
 
 // Arabic-Indic numerals for RTL display
@@ -96,7 +90,7 @@ export function getReferenceForLang(
 					const lastVerseNum = isRtl ? toArabicNumerals(lastVerse) : lastVerse
 					return `${bookName} ${chapterNum}:${firstVerseNum}${firstVerse !== lastVerse ? `-${lastVerseNum}` : ''}`
 				})
-				.join(separator)
+				.join(separator),
 		)
 		.join(separator)
 }

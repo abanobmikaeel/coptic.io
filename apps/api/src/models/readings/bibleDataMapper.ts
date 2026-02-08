@@ -1,5 +1,5 @@
-import { bibleData as bibleEn } from '@coptic/data/en'
 import { bibleData as bibleAr } from '@coptic/data/ar'
+import { bibleData as bibleEn } from '@coptic/data/en'
 import { bibleData as bibleEs } from '@coptic/data/es'
 import type {
 	BibleBook,

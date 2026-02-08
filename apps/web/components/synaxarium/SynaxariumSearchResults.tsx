@@ -59,7 +59,9 @@ export function SynaxariumSearchResults({
 														<span
 															className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-1 ${getCategoryColor(category)}`}
 														>
-															{tCategories(CATEGORIES.find((c) => c.id === category)?.labelKey || 'other')}
+															{tCategories(
+																CATEGORIES.find((c) => c.id === category)?.labelKey || 'other',
+															)}
 														</span>
 														<h3 className="font-medium text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
 															{name}

@@ -73,7 +73,9 @@ export function SynaxariumDayCard({
 					</span>
 					<span className="ms-auto text-xs text-gray-500 dark:text-gray-500">
 						{filteredEntries.length}{' '}
-						{filteredEntries.length === 1 ? tSynaxarium('commemorations') : tSynaxarium('commemorationsPlural')}
+						{filteredEntries.length === 1
+							? tSynaxarium('commemorations')
+							: tSynaxarium('commemorationsPlural')}
 					</span>
 				</div>
 			</div>

@@ -8,11 +8,7 @@ interface ChevronIconProps {
 }
 
 export function ChevronIcon({ isOpen, theme, rotate }: ChevronIconProps) {
-	const rotationClass = isOpen
-		? ''
-		: rotate === 'right'
-			? 'rotate-90'
-			: '-rotate-90'
+	const rotationClass = isOpen ? '' : rotate === 'right' ? 'rotate-90' : '-rotate-90'
 
 	return (
 		<svg

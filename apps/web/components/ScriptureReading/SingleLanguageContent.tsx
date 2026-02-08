@@ -24,7 +24,7 @@ export function SingleLanguageContent({
 	theme,
 	width,
 }: SingleLanguageContentProps) {
-	const { isRtl, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } = styleClasses
+	const { isRtl, sizes } = styleClasses
 	const widthClass = getWidthClass(width)
 
 	return (

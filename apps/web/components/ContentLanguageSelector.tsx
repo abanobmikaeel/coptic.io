@@ -34,12 +34,8 @@ export function ContentLanguageSelector({ className = '' }: ContentLanguageSelec
 
 	return (
 		<div className={className}>
-			<h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
-				{t('title')}
-			</h3>
-			<p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
-				{t('description')}
-			</p>
+			<h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">{t('title')}</h3>
+			<p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{t('description')}</p>
 			<div className="flex flex-wrap gap-2">
 				{contentLanguages.map((lang) => {
 					const isSelected = languages.includes(lang)

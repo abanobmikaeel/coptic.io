@@ -55,7 +55,9 @@ export function BottomTabs() {
 								aria-current={isActive ? 'page' : undefined}
 							>
 								<Icon className="w-6 h-6" strokeWidth={isActive ? 2 : 1.5} />
-								<span className={`text-xs ${isActive ? 'font-medium' : ''}`}>{t(tab.labelKey)}</span>
+								<span className={`text-xs ${isActive ? 'font-medium' : ''}`}>
+									{t(tab.labelKey)}
+								</span>
 							</Link>
 						)
 					})}

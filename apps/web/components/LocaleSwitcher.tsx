@@ -1,9 +1,9 @@
 'use client'
 
+import type { Locale } from '@/i18n/config'
 import { useLocale } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
-import type { Locale } from '@/i18n/config'
 
 const localeNames: Record<Locale, string> = {
 	en: 'English',

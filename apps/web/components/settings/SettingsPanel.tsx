@@ -1,7 +1,7 @@
 'use client'
 
-import type { ContentLanguage } from '@/i18n/content-languages'
 import type { ReadingSettings, ReadingSettingsActions } from '@/hooks/useReadingSettings'
+import type { ContentLanguage } from '@/i18n/content-languages'
 import { LanguagePills } from './LanguagePills'
 import { SegmentedButtons } from './SegmentedButtons'
 import { SettingSection } from './SettingSection'

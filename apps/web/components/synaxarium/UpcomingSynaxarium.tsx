@@ -44,7 +44,7 @@ export function UpcomingSynaxarium({
 	matchesCategory,
 }: UpcomingSynaxariumProps) {
 	const locale = useLocale()
-	const t = useTranslations('synaxarium')
+	const _t = useTranslations('synaxarium')
 	const [days, setDays] = useState<DayData[]>([])
 	const [expandedEntries, setExpandedEntries] = useState<Set<string>>(new Set())
 	const [loadingEntries, setLoadingEntries] = useState<Set<string>>(new Set())

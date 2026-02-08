@@ -51,7 +51,6 @@ type BibleTranslation = 'en' | 'ar' | 'es'
 // Languages that have API support for content
 const supportedContentLanguages: ContentLanguage[] = ['en', 'ar', 'es']
 
-
 // All reading sections in display order
 const readingSections = [
 	'Pauline',
@@ -112,7 +111,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 	// Filter to only languages the API supports
 	const languagesToFetch = selectedLanguages.filter((lang) =>
-		supportedContentLanguages.includes(lang)
+		supportedContentLanguages.includes(lang),
 	) as BibleTranslation[]
 
 	// Parse display settings from URL
@@ -131,7 +130,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		languagesToFetch.map(async (lang) => ({
 			lang,
 			data: await getReadings(params.date, lang === 'en' ? undefined : lang),
-		}))
+		})),
 	)
 
 	// Build a map of readings by language
