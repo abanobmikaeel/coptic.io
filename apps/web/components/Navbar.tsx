@@ -32,6 +32,24 @@ export default function Navbar() {
 		},
 	]
 
+	const moreMenuItems = [
+		{
+			label: t('settings'),
+			description: t('settingsDescription'),
+			href: '/settings',
+		},
+		{
+			label: t('developers'),
+			description: t('developersDescription'),
+			href: '/docs',
+		},
+		{
+			label: t('privacy'),
+			description: t('privacyDescription'),
+			href: '/privacy',
+		},
+	]
+
 	// Hide navbar on mobile in read mode (ReadModeHeader is used instead)
 	const mobileHiddenClass = mode === 'read' ? 'hidden lg:block' : ''
 
@@ -60,8 +78,9 @@ export default function Navbar() {
 						</button>
 
 						{/* Desktop navigation */}
-						<div className="hidden lg:block">
+						<div className="hidden lg:flex items-center gap-4">
 							<NavDropdown label={t('read')} items={readMenuItems} />
+							<NavDropdown label={t('more')} items={moreMenuItems} />
 						</div>
 						<Link
 							href="/calendar"
