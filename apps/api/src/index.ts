@@ -3,6 +3,7 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
 import { yoga } from './graphql'
+import { metricsMiddleware, register } from './middleware/metrics'
 import agpeyaRoutes from './routes/agpeya'
 import calendarRoutes from './routes/calendar'
 import celebrationsRoutes from './routes/celebrations'
@@ -17,6 +18,7 @@ const app = new OpenAPIHono()
 // Middleware
 app.use('*', cors())
 app.use('*', logger())
+app.use('*', metricsMiddleware)
 
 // GraphQL endpoint
 app.on(['GET', 'POST'], '/graphql', async (c) => {
@@ -46,6 +48,12 @@ app.doc('/openapi.json', {
 // Health check
 app.get('/health', (c) => {
 	return c.json({ success: true, timestamp: new Date().toISOString() })
+})
+
+// Prometheus metrics endpoint
+app.get('/metrics', async (c) => {
+	c.header('Content-Type', register.contentType)
+	return c.text(await register.metrics())
 })
 
 // REST Routes
