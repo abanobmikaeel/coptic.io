@@ -36,7 +36,7 @@ export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
 	}
 
 	return (
-		<div className="flex gap-2">
+		<div className="grid grid-cols-2 gap-2">
 			{displayLanguages.map((lang) => {
 				const isSelected = selected.includes(lang)
 				const isLastSelected = isSelected && selected.length === 1
@@ -48,8 +48,8 @@ export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
 						onClick={() => handleToggle(lang)}
 						disabled={isLastSelected}
 						className={`
-							flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors
-							${lang === 'ar' ? 'font-arabic' : lang === 'cop' ? 'font-coptic' : ''}
+							px-3 py-2 h-[72px] rounded-lg text-sm font-medium transition-colors
+							${lang === 'ar' ? 'font-arabic' : lang === 'cop' ? 'font-coptic !text-base !leading-normal' : ''}
 							${
 								isSelected
 									? 'bg-amber-700 text-white'

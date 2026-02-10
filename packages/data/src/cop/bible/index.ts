@@ -5,7 +5,10 @@
  * - Bohairic dialect (primary, officially supported by the Coptic Orthodox Church)
  * - Sahidic dialect (fallback for missing books: Joshua, Judges)
  */
-import canonicalData from '../../coptic/canonical.json'
+// Use ASCII-mapped version for compatibility with traditional Coptic fonts
+// like CS Avva Shenouda, CS Copt, etc. which display Coptic glyphs when
+// rendering ASCII letters
+import canonicalData from '../../coptic/canonical-ascii.json'
 
 export interface BibleVerse {
 	num: number

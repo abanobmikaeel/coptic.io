@@ -111,18 +111,26 @@ body {
 	font-family: var(--font-serif), Georgia, serif;
 }
 
-/* Arabic font class - optimized for readability */
+/* Arabic font class - modern clean style with lighter weight to tone down diacritics */
 .font-arabic {
-	font-family: var(--font-arabic), "Amiri", "Traditional Arabic", serif;
-	word-spacing: 0.05em;
-	letter-spacing: 0.01em;
+	font-family: var(--font-arabic), "Cairo", "Noto Sans Arabic", sans-serif;
+	word-spacing: 0.02em;
+	font-weight: 400;
 }
 
-/* Coptic font class - uses Google's Noto Sans Coptic */
+/* Coptic font - CS Avva Shenouda (ASCII-mapped traditional Coptic font) */
+@font-face {
+	font-family: "CS Avva Shenouda";
+	src: url("/fonts/CS Avva Shenouda.ttf") format("truetype");
+	font-display: swap;
+}
+
+/* Coptic font class - CS fonts are ASCII-mapped (display Coptic when typing ASCII)
+   Our Coptic Bible data is now in ASCII format to work with these traditional fonts */
 .font-coptic {
-	font-family: var(--font-coptic), "Noto Sans Coptic", "Sophia Nubian", system-ui, sans-serif;
-	word-spacing: 0.1em;
-	letter-spacing: 0.02em;
+	font-family: "CS Avva Shenouda", serif;
+	font-size: 1.45em; /* Larger for better readability */
+	line-height: 1.9; /* More line spacing for Coptic text */
 }
 
 /* RTL text alignment adjustments */

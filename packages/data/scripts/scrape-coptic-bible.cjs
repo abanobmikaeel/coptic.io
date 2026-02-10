@@ -19,22 +19,72 @@ const DELAY_MS = 500
 
 // Canonical book order
 const BOOK_ORDER = [
-	'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
-	'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel',
-	'1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles',
-	'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms',
-	'Proverbs', 'Ecclesiastes', 'Song of Solomon',
-	'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel',
-	'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah',
-	'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai',
-	'Zechariah', 'Malachi',
-	'Matthew', 'Mark', 'Luke', 'John', 'Acts',
-	'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
-	'Ephesians', 'Philippians', 'Colossians',
-	'1 Thessalonians', '2 Thessalonians',
-	'1 Timothy', '2 Timothy', 'Titus', 'Philemon',
-	'Hebrews', 'James', '1 Peter', '2 Peter',
-	'1 John', '2 John', '3 John', 'Jude', 'Revelation'
+	'Genesis',
+	'Exodus',
+	'Leviticus',
+	'Numbers',
+	'Deuteronomy',
+	'Joshua',
+	'Judges',
+	'Ruth',
+	'1 Samuel',
+	'2 Samuel',
+	'1 Kings',
+	'2 Kings',
+	'1 Chronicles',
+	'2 Chronicles',
+	'Ezra',
+	'Nehemiah',
+	'Esther',
+	'Job',
+	'Psalms',
+	'Proverbs',
+	'Ecclesiastes',
+	'Song of Solomon',
+	'Isaiah',
+	'Jeremiah',
+	'Lamentations',
+	'Ezekiel',
+	'Daniel',
+	'Hosea',
+	'Joel',
+	'Amos',
+	'Obadiah',
+	'Jonah',
+	'Micah',
+	'Nahum',
+	'Habakkuk',
+	'Zephaniah',
+	'Haggai',
+	'Zechariah',
+	'Malachi',
+	'Matthew',
+	'Mark',
+	'Luke',
+	'John',
+	'Acts',
+	'Romans',
+	'1 Corinthians',
+	'2 Corinthians',
+	'Galatians',
+	'Ephesians',
+	'Philippians',
+	'Colossians',
+	'1 Thessalonians',
+	'2 Thessalonians',
+	'1 Timothy',
+	'2 Timothy',
+	'Titus',
+	'Philemon',
+	'Hebrews',
+	'James',
+	'1 Peter',
+	'2 Peter',
+	'1 John',
+	'2 John',
+	'3 John',
+	'Jude',
+	'Revelation',
 ]
 
 // NT books - available in both Bohairic and Sahidic on copticchurch.net
@@ -111,7 +161,7 @@ const OT_SAHIDIC = [
 
 // Utility functions
 function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms))
+	return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 function ensureDir(dir) {
@@ -173,6 +223,7 @@ function parseCopticChurchChapter(html) {
 	// Parse verses: <small class='text-muted'>NUM</small> TEXT
 	const versePattern = /<small class='text-muted'>(\d+)<\/small>\s*([^<]+)/g
 	let match
+	// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 	while ((match = versePattern.exec(content)) !== null) {
 		const num = parseInt(match[1], 10)
 		const text = match[2].trim()
@@ -192,15 +243,13 @@ function parseCopticOrgBook(html) {
 	let content = decodeHtmlEntities(html)
 
 	// Remove HTML tags but preserve line breaks
-	content = content
-		.replace(/<br\s*\/?>/gi, '\n')
-		.replace(/<[^>]+>/g, '')
+	content = content.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')
 
 	// Split into lines and filter to only Coptic text
 	const lines = content
 		.split('\n')
-		.map(l => l.trim())
-		.filter(l => {
+		.map((l) => l.trim())
+		.filter((l) => {
 			// Keep lines that contain Coptic Unicode characters
 			return /[ⲀⲂⲄⲆⲈⲊⲌⲎⲐⲒⲔⲖⲘⲚⲜⲞⲠⲢⲤⲦⲨⲪⲬⲮⲰϢϤϦϨϪϬϮⲀⲂⲄⲆⲈⲊⲌⲎⲐⲒⲔⲖⲘⲚⲜⲞⲠⲢⲤⲦⲨⲪⲬⲮⲰ]/.test(l) && l.length > 10
 		})
@@ -213,7 +262,7 @@ function parseCopticOrgBook(html) {
 		const chapterLines = lines.slice(i, i + VERSES_PER_CHAPTER)
 		const verses = chapterLines.map((text, idx) => ({
 			num: idx + 1,
-			text
+			text,
 		}))
 
 		if (verses.length > 0) {
@@ -278,7 +327,7 @@ async function scrapeOT(bookList, dialect) {
 				books.push({ name: book.name, chapters })
 				console.log(`  Found ${chapters.length} chapters`)
 			} else {
-				console.log(`  No content found`)
+				console.log('  No content found')
 			}
 		} catch (err) {
 			console.error(`  ERROR - ${err.message}`)
@@ -327,8 +376,8 @@ async function main() {
 
 	// === CANONICAL (Combined) ===
 	// Start with all Bohairic books, then add Sahidic fallbacks for missing ones
-	const bohairicNames = new Set(bohairicBooks.map(b => b.name))
-	const sahidicFallbacks = sahidicBooks.filter(b => !bohairicNames.has(b.name))
+	const bohairicNames = new Set(bohairicBooks.map((b) => b.name))
+	const sahidicFallbacks = sahidicBooks.filter((b) => !bohairicNames.has(b.name))
 
 	const canonicalBooks = sortBooks([...bohairicBooks, ...sahidicFallbacks])
 
@@ -345,7 +394,7 @@ async function main() {
 		description: 'Combined Coptic Bible: Bohairic primary, Sahidic fallback for missing books',
 		books: canonicalBooks,
 		sources: bookSources,
-		missingBooks: BOOK_ORDER.filter(name => !canonicalBooks.find(b => b.name === name))
+		missingBooks: BOOK_ORDER.filter((name) => !canonicalBooks.find((b) => b.name === name)),
 	}
 
 	const canonicalFile = path.join(OUTPUT_BASE, 'canonical.json')
@@ -353,18 +402,20 @@ async function main() {
 	console.log(`Written: ${canonicalFile}`)
 
 	// === Summary ===
-	console.log('\n' + '='.repeat(60))
+	console.log(`\n${'='.repeat(60)}`)
 	console.log('Summary:')
 	console.log(`  Bohairic books: ${bohairicBooks.length}`)
 	console.log(`  Sahidic books: ${sahidicBooks.length}`)
 	console.log(`  Canonical (combined): ${canonicalBooks.length}`)
 	console.log(`  - From Bohairic: ${bohairicBooks.length}`)
-	console.log(`  - From Sahidic (fallback): ${sahidicFallbacks.length} (${sahidicFallbacks.map(b => b.name).join(', ') || 'none'})`)
+	console.log(
+		`  - From Sahidic (fallback): ${sahidicFallbacks.length} (${sahidicFallbacks.map((b) => b.name).join(', ') || 'none'})`,
+	)
 	console.log(`  Still missing: ${canonical.missingBooks.join(', ') || 'None'}`)
 	console.log('='.repeat(60))
 }
 
-main().catch(err => {
+main().catch((err) => {
 	console.error('Fatal error:', err)
 	process.exit(1)
 })

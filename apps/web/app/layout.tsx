@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Amiri, Inter, Literata, Noto_Sans_Coptic } from 'next/font/google'
+import { Cairo, Inter, Literata, Noto_Sans_Coptic } from 'next/font/google'
 import './globals.css'
 import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
@@ -30,9 +30,9 @@ const notoSansCoptic = Noto_Sans_Coptic({
 	display: 'swap',
 })
 
-const amiri = Amiri({
+const cairo = Cairo({
 	variable: '--font-arabic',
-	weight: ['400', '700'],
+	weight: ['400', '600', '700'],
 	subsets: ['arabic'],
 	display: 'swap',
 })
@@ -120,7 +120,7 @@ export default async function RootLayout({
 				<link rel="dns-prefetch" href={apiDomain} />
 			</head>
 			<body
-				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${amiri.variable} antialiased`}
+				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${cairo.variable} antialiased`}
 			>
 				<a
 					href="#main-content"

@@ -23,15 +23,14 @@ function copticToLowerCase(text) {
 		const code = char.codePointAt(0)
 
 		// Main Coptic block (U+2C80 to U+2CE4) - even = uppercase
-		if (code >= 0x2C80 && code <= 0x2CE4 && code % 2 === 0) {
+		if (code >= 0x2c80 && code <= 0x2ce4 && code % 2 === 0) {
 			result += String.fromCodePoint(code + 1)
 		}
 		// Greek block Coptic letters (U+03E2 to U+03EF) - even = uppercase
 		// Ϣ/ϣ, Ϥ/ϥ, Ϧ/ϧ, Ϩ/ϩ, Ϫ/ϫ, Ϭ/ϭ, Ϯ/ϯ
-		else if (code >= 0x03E2 && code <= 0x03EF && code % 2 === 0) {
+		else if (code >= 0x03e2 && code <= 0x03ef && code % 2 === 0) {
 			result += String.fromCodePoint(code + 1)
-		}
-		else {
+		} else {
 			// Keep as-is (lowercase, diacritics, punctuation, symbols, etc.)
 			result += char
 		}
@@ -42,13 +41,13 @@ function copticToLowerCase(text) {
 function normalizeBook(book) {
 	return {
 		...book,
-		chapters: book.chapters.map(chapter => ({
+		chapters: book.chapters.map((chapter) => ({
 			...chapter,
-			verses: chapter.verses.map(verse => ({
+			verses: chapter.verses.map((verse) => ({
 				...verse,
-				text: copticToLowerCase(verse.text)
-			}))
-		}))
+				text: copticToLowerCase(verse.text),
+			})),
+		})),
 	}
 }
 
@@ -56,7 +55,7 @@ function processFile(filePath, backupFirst = true) {
 	console.log(`Processing: ${filePath}`)
 
 	// Read backup if exists, otherwise original
-	const backupPath = filePath + '.backup'
+	const backupPath = `${filePath}.backup`
 	let sourcePath = filePath
 
 	if (backupFirst && !fs.existsSync(backupPath)) {
@@ -66,7 +65,7 @@ function processFile(filePath, backupFirst = true) {
 	} else if (fs.existsSync(backupPath)) {
 		// Use backup as source to allow re-running
 		sourcePath = backupPath
-		console.log(`  Using backup as source`)
+		console.log('  Using backup as source')
 	}
 
 	const data = JSON.parse(fs.readFileSync(sourcePath, 'utf8'))
