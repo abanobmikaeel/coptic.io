@@ -40,16 +40,15 @@ export const httpErrorsTotal = new client.Counter({
 // Normalize route paths to avoid high cardinality
 // e.g., /api/readings/2024-01-15 -> /api/readings/:date
 function normalizeRoute(path: string): string {
-	return path
-		// Date patterns (YYYY-MM-DD)
-		.replace(/\/\d{4}-\d{2}-\d{2}/g, '/:date')
-		// Numeric IDs
-		.replace(/\/\d+/g, '/:id')
-		// UUID patterns
-		.replace(
-			/\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
-			'/:uuid'
-		)
+	return (
+		path
+			// Date patterns (YYYY-MM-DD)
+			.replace(/\/\d{4}-\d{2}-\d{2}/g, '/:date')
+			// Numeric IDs
+			.replace(/\/\d+/g, '/:id')
+			// UUID patterns
+			.replace(/\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, '/:uuid')
+	)
 }
 
 // Metrics middleware
