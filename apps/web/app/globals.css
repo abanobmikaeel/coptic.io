@@ -113,7 +113,7 @@ body {
 
 /* Arabic font class - modern clean style with lighter weight to tone down diacritics */
 .font-arabic {
-	font-family: var(--font-arabic), "Cairo", "Noto Sans Arabic", sans-serif;
+	font-family: var(--font-arabic), "Noto Naskh Arabic", serif;
 	word-spacing: 0.02em;
 	font-weight: 400;
 }

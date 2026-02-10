@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Cairo, Inter, Literata, Noto_Sans_Coptic } from 'next/font/google'
+import { EB_Garamond, Inter, Noto_Naskh_Arabic, Noto_Sans_Coptic } from 'next/font/google'
 import './globals.css'
 import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
@@ -16,8 +16,8 @@ const inter = Inter({
 	display: 'swap',
 })
 
-// Literata - Google's reading font, similar to Kindle's Bookerly
-const literata = Literata({
+// EB Garamond - Classic, elegant serif with traditional biblical feel
+const ebGaramond = EB_Garamond({
 	variable: '--font-serif',
 	subsets: ['latin'],
 	display: 'swap',
@@ -30,9 +30,9 @@ const notoSansCoptic = Noto_Sans_Coptic({
 	display: 'swap',
 })
 
-const cairo = Cairo({
+const notoNaskhArabic = Noto_Naskh_Arabic({
 	variable: '--font-arabic',
-	weight: ['400', '600', '700'],
+	weight: ['400', '500', '600'],
 	subsets: ['arabic'],
 	display: 'swap',
 })
@@ -120,7 +120,7 @@ export default async function RootLayout({
 				<link rel="dns-prefetch" href={apiDomain} />
 			</head>
 			<body
-				className={`${inter.variable} ${literata.variable} ${notoSansCoptic.variable} ${cairo.variable} antialiased`}
+				className={`${inter.variable} ${ebGaramond.variable} ${notoSansCoptic.variable} ${notoNaskhArabic.variable} antialiased`}
 			>
 				<a
 					href="#main-content"

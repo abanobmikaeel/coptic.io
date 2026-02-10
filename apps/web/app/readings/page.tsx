@@ -115,7 +115,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	) as BibleTranslation[]
 
 	// Parse display settings from URL
-	const viewMode: ViewMode = params.view === 'continuous' ? 'continuous' : 'verse'
+	const viewMode: ViewMode = params.view === 'verse' ? 'verse' : 'continuous'
 	const showVerses = params.verses !== 'hide'
 	const textSize: TextSize = (params.size as TextSize) || 'md'
 	const fontFamily: FontFamily = (params.font as FontFamily) || 'sans'
