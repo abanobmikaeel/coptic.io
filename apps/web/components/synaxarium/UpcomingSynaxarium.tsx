@@ -54,6 +54,7 @@ export function UpcomingSynaxarium({
 
 	// Fetch initial days (non-detailed for speed)
 	useEffect(() => {
+		const lang = locale === 'ar' ? 'ar' : undefined
 		const fetchInitialDays = async () => {
 			const initialDays: DayData[] = []
 			for (let i = 0; i < daysToShow; i++) {
@@ -67,7 +68,7 @@ export function UpcomingSynaxarium({
 
 			// Fetch first batch in parallel
 			const firstBatchPromises = initialDays.slice(0, INITIAL_DAYS).map(async (day, idx) => {
-				const data = await getSynaxariumByDate(day.date, false)
+				const data = await getSynaxariumByDate(day.date, false, lang)
 				return { idx, entries: data || [] }
 			})
 
@@ -82,7 +83,7 @@ export function UpcomingSynaxarium({
 
 			// Fetch remaining days in background
 			const remainingPromises = initialDays.slice(INITIAL_DAYS).map(async (day, idx) => {
-				const data = await getSynaxariumByDate(day.date, false)
+				const data = await getSynaxariumByDate(day.date, false, lang)
 				return { idx: idx + INITIAL_DAYS, entries: data || [] }
 			})
 
@@ -97,7 +98,7 @@ export function UpcomingSynaxarium({
 		}
 
 		fetchInitialDays()
-	}, [startDate, daysToShow])
+	}, [startDate, daysToShow, locale])
 
 	// Handle scroll to load more days
 	const handleScroll = useCallback(() => {
@@ -155,7 +156,8 @@ export function UpcomingSynaxarium({
 			// Otherwise, fetch detailed data
 			setLoadingEntries((prev) => new Set(prev).add(entryKey))
 
-			const detailedData = await getSynaxariumByDate(date, true)
+			const lang = locale === 'ar' ? 'ar' : undefined
+			const detailedData = await getSynaxariumByDate(date, true, lang)
 			if (detailedData?.[idx]) {
 				setDays((prev) => {
 					const updated = [...prev]
@@ -176,7 +178,7 @@ export function UpcomingSynaxarium({
 			})
 			setExpandedEntries((prev) => new Set(prev).add(entryKey))
 		},
-		[days, expandedEntries],
+		[days, expandedEntries, locale],
 	)
 
 	const today = getTodayDateString()

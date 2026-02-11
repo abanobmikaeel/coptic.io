@@ -128,7 +128,9 @@ export function useSynaxarium() {
 		if (viewMode !== 'day') return
 		let cancelled = false
 		setLoading(true)
-		getSynaxariumByDate(currentDate).then((data) => {
+		// Pass locale for Arabic synaxarium support
+		const lang = locale === 'ar' ? 'ar' : undefined
+		getSynaxariumByDate(currentDate, true, lang).then((data) => {
 			if (!cancelled) {
 				setEntries(data || [])
 				setLoading(false)
@@ -137,7 +139,7 @@ export function useSynaxarium() {
 		return () => {
 			cancelled = true
 		}
-	}, [currentDate, viewMode])
+	}, [currentDate, viewMode, locale])
 
 	// Expand entry from URL param
 	useEffect(() => {
@@ -154,13 +156,14 @@ export function useSynaxarium() {
 			return
 		}
 		setIsSearching(true)
+		const lang = locale === 'ar' ? 'ar' : undefined
 		const timer = setTimeout(async () => {
-			const results = await searchSynaxarium(searchQuery)
+			const results = await searchSynaxarium(searchQuery, lang)
 			setSearchResults(results || [])
 			setIsSearching(false)
 		}, 300)
 		return () => clearTimeout(timer)
-	}, [searchQuery])
+	}, [searchQuery, locale])
 
 	// === Derived data ===
 	const showingSearch = searchQuery.trim().length > 0
