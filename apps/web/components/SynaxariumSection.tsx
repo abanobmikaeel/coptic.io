@@ -68,7 +68,7 @@ export function SynaxariumSection({
 
 					{expanded === idx && entry.text && (
 						<div
-							className={`mt-4 ms-8 ${sizes.body} ${bodyClass} whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200`}
+							className={`mt-4 ms-8 ${sizes.body} ${bodyClass} whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200 font-serif-reading`}
 						>
 							{entry.text}
 							{entry.url && (

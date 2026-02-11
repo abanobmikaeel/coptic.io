@@ -31,11 +31,15 @@ export interface RawBibleData {
  * Load synaxarium data for a specific language and source
  */
 export const loadSynaxarium = async (
-	_language: SupportedLanguage,
+	language: SupportedLanguage,
 	_source: SynaxariumSource = 'canonical',
 ): Promise<RawSynaxariumData> => {
-	const data = await import('./en/synaxarium/canonical.json')
-	return data.default as RawSynaxariumData
+	switch (language) {
+		case 'ar':
+			return (await import('./ar/synaxarium/canonical.json')).default as RawSynaxariumData
+		default:
+			return (await import('./en/synaxarium/canonical.json')).default as RawSynaxariumData
+	}
 }
 
 /**

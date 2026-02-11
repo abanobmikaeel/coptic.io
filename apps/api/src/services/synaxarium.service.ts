@@ -1,5 +1,18 @@
 import { type SynaxariumEntry, type SynaxariumSearchResult, gregorianToCoptic } from '@coptic/core'
+import { synaxariumCanonical as synaxariumAr } from '@coptic/data/ar'
 import { synaxariumCanonical, synaxariumIndex } from '@coptic/data/en'
+
+type SynaxariumLanguage = 'en' | 'ar'
+
+// Get synaxarium data by language
+const getSynaxariumData = (lang: SynaxariumLanguage = 'en'): Record<string, SynaxariumEntry[]> => {
+	switch (lang) {
+		case 'ar':
+			return synaxariumAr as Record<string, SynaxariumEntry[]>
+		default:
+			return synaxariumCanonical as Record<string, SynaxariumEntry[]>
+	}
+}
 
 // Type for the pre-built index from @coptic/data
 interface IndexedEntry {
@@ -29,10 +42,15 @@ const getEntriesForWord = (word: string): IndexedEntry[] => {
 	return indices.map((i) => allEntries[i]).filter((e): e is IndexedEntry => !!e)
 }
 
-export const getSynaxariumForDate = (date: Date, includeText = false): SynaxariumEntry[] | null => {
+export const getSynaxariumForDate = (
+	date: Date,
+	includeText = false,
+	lang: SynaxariumLanguage = 'en',
+): SynaxariumEntry[] | null => {
 	const copticDate = gregorianToCoptic(date)
 	const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
-	const synxarium = (synaxariumCanonical as Record<string, SynaxariumEntry[]>)[synxariumKey]
+	const data = getSynaxariumData(lang)
+	const synxarium = data[synxariumKey]
 
 	if (!synxarium) {
 		return null
@@ -51,8 +69,10 @@ export const getSynaxariumForDate = (date: Date, includeText = false): Synaxariu
 export const getSynaxariumByCopticDate = (
 	copticDateKey: string,
 	includeText = false,
+	lang: SynaxariumLanguage = 'en',
 ): SynaxariumEntry[] | null => {
-	const synxarium = (synaxariumCanonical as Record<string, SynaxariumEntry[]>)[copticDateKey]
+	const data = getSynaxariumData(lang)
+	const synxarium = data[copticDateKey]
 
 	if (!synxarium) {
 		return null
