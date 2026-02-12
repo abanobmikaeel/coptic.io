@@ -6,6 +6,7 @@ export {
 	WidthIcon,
 	WordSpacingIcon,
 } from './icons'
+export { LanguagePills } from './LanguagePills'
 export { SegmentedButtons } from './SegmentedButtons'
 export { SettingSection } from './SettingSection'
 export { SettingsPanel } from './SettingsPanel'

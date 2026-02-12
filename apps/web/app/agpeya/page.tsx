@@ -202,7 +202,7 @@ function AgpeyaContent() {
 
 	return (
 		<main
-			className={`min-h-screen ${themeClasses.bg[effectiveTheme]} ${themeClasses.textHeading[effectiveTheme]} transition-colors duration-300`}
+			className={`min-h-screen overflow-x-hidden ${themeClasses.bg[effectiveTheme]} ${themeClasses.textHeading[effectiveTheme]} transition-colors duration-300`}
 		>
 			{/* Sticky header with breadcrumb and settings */}
 			<div

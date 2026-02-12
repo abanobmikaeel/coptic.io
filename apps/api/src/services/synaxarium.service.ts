@@ -1,5 +1,34 @@
 import { type SynaxariumEntry, type SynaxariumSearchResult, gregorianToCoptic } from '@coptic/core'
+import { synaxariumCanonical as synaxariumAr } from '@coptic/data/ar'
 import { synaxariumCanonical, synaxariumIndex } from '@coptic/data/en'
+import { decodeHtmlEntities } from '../utils/textUtils'
+
+type SynaxariumLanguage = 'en' | 'ar'
+
+// Decode HTML entities in a synaxarium entry
+function decodeEntry(entry: SynaxariumEntry, includeText = true): SynaxariumEntry {
+	// Destructure to separate text from other properties
+	const { text, ...rest } = entry
+	const decoded: SynaxariumEntry = {
+		...rest,
+		name: decodeHtmlEntities(entry.name) || entry.name,
+	}
+	// Only include text if explicitly requested
+	if (includeText && text !== undefined) {
+		decoded.text = decodeHtmlEntities(text)
+	}
+	return decoded
+}
+
+// Get synaxarium data by language
+const getSynaxariumData = (lang: SynaxariumLanguage = 'en'): Record<string, SynaxariumEntry[]> => {
+	switch (lang) {
+		case 'ar':
+			return synaxariumAr as Record<string, SynaxariumEntry[]>
+		default:
+			return synaxariumCanonical as Record<string, SynaxariumEntry[]>
+	}
+}
 
 // Type for the pre-built index from @coptic/data
 interface IndexedEntry {
@@ -29,43 +58,36 @@ const getEntriesForWord = (word: string): IndexedEntry[] => {
 	return indices.map((i) => allEntries[i]).filter((e): e is IndexedEntry => !!e)
 }
 
-export const getSynaxariumForDate = (date: Date, includeText = false): SynaxariumEntry[] | null => {
+export const getSynaxariumForDate = (
+	date: Date,
+	includeText = false,
+	lang: SynaxariumLanguage = 'en',
+): SynaxariumEntry[] | null => {
 	const copticDate = gregorianToCoptic(date)
-	const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
-	const synxarium = (synaxariumCanonical as Record<string, SynaxariumEntry[]>)[synxariumKey]
+	const synaxariumKey = `${copticDate.day} ${copticDate.monthString}`
+	const data = getSynaxariumData(lang)
+	const synaxarium = data[synaxariumKey]
 
-	if (!synxarium) {
+	if (!synaxarium) {
 		return null
 	}
 
-	if (!includeText) {
-		return synxarium.map((reading: SynaxariumEntry) => {
-			const { text: _text, ...rest } = reading
-			return rest
-		})
-	}
-
-	return synxarium
+	return synaxarium.map((entry) => decodeEntry(entry, includeText))
 }
 
 export const getSynaxariumByCopticDate = (
 	copticDateKey: string,
 	includeText = false,
+	lang: SynaxariumLanguage = 'en',
 ): SynaxariumEntry[] | null => {
-	const synxarium = (synaxariumCanonical as Record<string, SynaxariumEntry[]>)[copticDateKey]
+	const data = getSynaxariumData(lang)
+	const synaxarium = data[copticDateKey]
 
-	if (!synxarium) {
+	if (!synaxarium) {
 		return null
 	}
 
-	if (!includeText) {
-		return synxarium.map((reading: SynaxariumEntry) => {
-			const { text: _text, ...rest } = reading
-			return rest
-		})
-	}
-
-	return synxarium
+	return synaxarium.map((entry) => decodeEntry(entry, includeText))
 }
 
 export const searchSynaxarium = (searchTerm: string, limit = 50): SynaxariumSearchResult[] => {

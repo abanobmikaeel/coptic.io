@@ -19,11 +19,19 @@ import { SwipeableContainer } from '@/components/SwipeableContainer'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
 import { NoReadingsState } from '@/components/ui/EmptyState'
 import { API_BASE_URL } from '@/config'
+import {
+	CONTENT_LANGUAGES_COOKIE,
+	type ContentLanguage,
+	defaultContentLanguages,
+	parseContentLanguages,
+} from '@/i18n/content-languages'
+import { getSectionLabels } from '@/i18n/content-translations'
 import { getAvailableSections } from '@/lib/reading-sections'
 import { themeClasses } from '@/lib/reading-styles'
 import type { ReadingsData } from '@/lib/types'
 import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
@@ -38,19 +46,10 @@ export const metadata: Metadata = {
 	},
 }
 
-type BibleTranslation = 'en' | 'ar'
+type BibleTranslation = 'en' | 'ar' | 'es' | 'cop'
 
-const sectionLabels: Record<string, { en: string; ar: string }> = {
-	VPsalm: { en: 'Vespers Psalm', ar: 'مزمور العشية' },
-	VGospel: { en: 'Vespers Gospel', ar: 'إنجيل العشية' },
-	MPsalm: { en: 'Matins Psalm', ar: 'مزمور باكر' },
-	MGospel: { en: 'Matins Gospel', ar: 'إنجيل باكر' },
-	Pauline: { en: 'Pauline Epistle', ar: 'البولس' },
-	Catholic: { en: 'Catholic Epistle', ar: 'الكاثوليكون' },
-	Acts: { en: 'Acts of the Apostles', ar: 'الإبركسيس' },
-	LPsalm: { en: 'Psalm', ar: 'المزمور' },
-	LGospel: { en: 'Gospel', ar: 'الإنجيل' },
-}
+// Languages that have API support for content
+const supportedContentLanguages: ContentLanguage[] = ['en', 'ar', 'es', 'cop']
 
 // All reading sections in display order
 const readingSections = [
@@ -103,9 +102,20 @@ interface ReadingsPageProps {
 export default async function ReadingsPage({ searchParams }: ReadingsPageProps) {
 	const params = await searchParams
 
+	// Read content languages from cookie
+	const cookieStore = await cookies()
+	const contentLangCookie = cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value
+	const contentLanguages = parseContentLanguages(contentLangCookie)
+	const selectedLanguages =
+		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
+
+	// Filter to only languages the API supports
+	const languagesToFetch = selectedLanguages.filter((lang) =>
+		supportedContentLanguages.includes(lang),
+	) as BibleTranslation[]
+
 	// Parse display settings from URL
-	const translation: BibleTranslation = params.lang === 'ar' ? 'ar' : 'en'
-	const viewMode: ViewMode = params.view === 'continuous' ? 'continuous' : 'verse'
+	const viewMode: ViewMode = params.view === 'verse' ? 'verse' : 'continuous'
 	const showVerses = params.verses !== 'hide'
 	const textSize: TextSize = (params.size as TextSize) || 'md'
 	const fontFamily: FontFamily = (params.font as FontFamily) || 'sans'
@@ -114,9 +124,39 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	const theme: ReadingTheme = (params.theme as ReadingTheme) || 'light'
 	const width: ReadingWidth = (params.width as ReadingWidth) || 'normal'
 	const fontWeight: FontWeight = (params.weight as FontWeight) || 'normal'
-	const isRtl = translation === 'ar'
 
-	const readings = await getReadings(params.date, params.lang)
+	// Fetch readings for all selected languages in parallel
+	const readingsResults = await Promise.all(
+		languagesToFetch.map(async (lang) => ({
+			lang,
+			data: await getReadings(params.date, lang === 'en' ? undefined : lang),
+		})),
+	)
+
+	// Build a map of readings by language
+	const readingsByLang: Record<BibleTranslation, ReadingsData | null> = {
+		en: null,
+		ar: null,
+		es: null,
+		cop: null,
+	}
+	for (const result of readingsResults) {
+		readingsByLang[result.lang] = result.data
+	}
+
+	// Use the first available readings for metadata/structure
+	const readings = readingsResults.find((r) => r.data)?.data ?? null
+
+	// Build synaxarium entries by language for multi-language display
+	// Only English and Arabic synaxarium are available
+	const synaxariumLangs: BibleTranslation[] = ['en', 'ar']
+	const synaxariumByLang: Partial<Record<BibleTranslation, ReadingsData['Synxarium']>> = {}
+	for (const lang of languagesToFetch.filter((l) => synaxariumLangs.includes(l))) {
+		const langSynaxarium = readingsByLang[lang]?.Synxarium
+		if (langSynaxarium?.length) {
+			synaxariumByLang[lang] = langSynaxarium
+		}
+	}
 
 	const displayDate = params.date ? parseDateString(params.date) : new Date()
 	const gregorianDate = formatGregorianDate(displayDate)
@@ -131,7 +171,6 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 	// Common props for all ScriptureReading components
 	const scriptureProps = {
-		isRtl,
 		viewMode,
 		showVerses,
 		textSize,
@@ -141,19 +180,31 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		theme,
 		width,
 		weight: fontWeight,
+		languages: languagesToFetch,
 	}
 
-	// Render a scripture section if it has data
+	// Render a scripture section if it has data in any language
 	const renderSection = (key: ReadingSection, service?: string) => {
-		const data = readings?.[key]
-		if (!data?.length) return null
-		const labels = sectionLabels[key]
+		// Check if any language has data for this section
+		const hasAnyData = languagesToFetch.some((lang) => readingsByLang[lang]?.[key]?.length)
+		if (!hasAnyData) return null
+
+		// Build readings map for this section
+		const readingsMap: Partial<Record<BibleTranslation, ReadingsData[ReadingSection]>> = {}
+		for (const lang of languagesToFetch) {
+			const data = readingsByLang[lang]?.[key]
+			if (data?.length) {
+				readingsMap[lang] = data
+			}
+		}
+
+		const labels = getSectionLabels(key)
 		return (
 			<ScriptureReading
 				key={key}
 				id={`reading-${key}`}
-				readings={data}
-				title={labels[translation]}
+				readingsByLang={readingsMap}
+				labels={labels}
 				service={service}
 				{...scriptureProps}
 			/>
@@ -230,13 +281,18 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{renderSection('Pauline', 'Liturgy')}
 									{renderSection('Catholic', 'Liturgy')}
 									{renderSection('Acts', 'Liturgy')}
-									{readings.Synxarium?.length ? (
+									{Object.keys(synaxariumByLang).length > 0 ? (
 										<SynaxariumReading
-											entries={readings.Synxarium}
+											entriesByLang={synaxariumByLang}
+											languages={languagesToFetch.filter((l) => synaxariumLangs.includes(l))}
 											textSize={textSize}
 											theme={theme}
 											width={width}
 											service="Liturgy"
+											fontFamily={fontFamily}
+											weight={fontWeight}
+											lineSpacing={lineSpacing}
+											wordSpacing={wordSpacing}
 										/>
 									) : null}
 									{renderSection('LPsalm', 'Liturgy')}

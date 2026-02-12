@@ -31,19 +31,35 @@ export interface RawBibleData {
  * Load synaxarium data for a specific language and source
  */
 export const loadSynaxarium = async (
-	_language: SupportedLanguage,
+	language: SupportedLanguage,
 	_source: SynaxariumSource = 'canonical',
 ): Promise<RawSynaxariumData> => {
-	const data = await import('./en/synaxarium/canonical.json')
-	return data.default as RawSynaxariumData
+	switch (language) {
+		case 'ar':
+			return (await import('./ar/synaxarium/canonical.json')).default as RawSynaxariumData
+		default:
+			return (await import('./en/synaxarium/canonical.json')).default as RawSynaxariumData
+	}
 }
 
 /**
  * Load Bible data for a specific language
  */
-export const loadBible = async (_language: SupportedLanguage): Promise<RawBibleData> => {
-	const data = await import('./en/bible/books.json')
-	return data.default as RawBibleData
+export const loadBible = async (language: SupportedLanguage): Promise<RawBibleData> => {
+	switch (language) {
+		case 'en':
+			return (await import('./en/bible/books.json')).default as RawBibleData
+		case 'ar':
+			return (await import('./ar/bible/books.json')).default as RawBibleData
+		case 'es':
+			return (await import('./es/bible/books.json')).default as RawBibleData
+		case 'cop':
+			// Coptic uses canonical.json which combines Bohairic + Sahidic fallbacks
+			return (await import('./coptic/canonical.json')).default as unknown as RawBibleData
+		default:
+			// Fall back to English for unsupported languages
+			return (await import('./en/bible/books.json')).default as RawBibleData
+	}
 }
 
 /**

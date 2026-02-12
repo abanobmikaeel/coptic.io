@@ -75,4 +75,18 @@ test.describe('Agpeya page', () => {
 		const count = await hourLinks.count()
 		expect(count).toBeGreaterThan(0)
 	})
+
+	test('should not have horizontal overflow on mobile', async ({ page }) => {
+		// Set mobile viewport
+		await page.setViewportSize({ width: 375, height: 812 })
+		await page.goto('/agpeya')
+		await page.waitForLoadState('networkidle')
+
+		// Check that the page doesn't have horizontal scroll
+		const hasHorizontalScroll = await page.evaluate(() => {
+			return document.documentElement.scrollWidth > document.documentElement.clientWidth
+		})
+
+		expect(hasHorizontalScroll).toBe(false)
+	})
 })

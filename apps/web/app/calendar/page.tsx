@@ -11,9 +11,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { features } from '@/config'
 import { getCalendarMonth } from '@/lib/api'
 import type { CalendarMonth } from '@/lib/types'
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 
 export default function CalendarPage() {
+	const t = useTranslations('calendar')
 	const today = useMemo(() => new Date(), [])
 	const [year, setYear] = useState(() => new Date().getFullYear())
 	const [month, setMonth] = useState(() => new Date().getMonth() + 1)
@@ -99,12 +101,8 @@ export default function CalendarPage() {
 
 			<section className="relative pt-20 pb-8 px-6">
 				<div className="max-w-4xl mx-auto text-center">
-					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-						Fasting Calendar
-					</h1>
-					<p className="text-gray-600 dark:text-gray-400">
-						View fasting periods throughout the year
-					</p>
+					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('title')}</h1>
+					<p className="text-gray-600 dark:text-gray-400">{t('subtitle')}</p>
 				</div>
 			</section>
 
@@ -122,7 +120,7 @@ export default function CalendarPage() {
 						<button
 							type="button"
 							onClick={() => navigateMonth(-1)}
-							aria-label="Previous month"
+							aria-label={t('previousMonth')}
 							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						>
 							<ChevronLeftIcon />
@@ -134,7 +132,7 @@ export default function CalendarPage() {
 								onClick={goToToday}
 								className="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-700 hover:bg-amber-600 text-white shadow-sm hover:shadow transition-all"
 							>
-								Today
+								{t('today')}
 							</button>
 							<span className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-2" />
 							<MonthYearSelector
@@ -157,7 +155,7 @@ export default function CalendarPage() {
 						<button
 							type="button"
 							onClick={() => navigateMonth(1)}
-							aria-label="Next month"
+							aria-label={t('nextMonth')}
 							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						>
 							<ChevronRightIcon />

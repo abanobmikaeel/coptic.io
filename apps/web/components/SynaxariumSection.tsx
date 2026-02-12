@@ -1,45 +1,67 @@
 'use client'
 
-import { themeClasses } from '@/lib/reading-styles'
+import {
+	getFontClass,
+	getLineHeightClass,
+	getTextSizeClasses,
+	getWeightClass,
+	getWordSpacingClass,
+	themeClasses,
+} from '@/lib/reading-styles'
 import type { SynaxariumEntry } from '@/lib/types'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
-import type { ReadingTheme, TextSize } from './DisplaySettings'
+import type {
+	FontFamily,
+	FontWeight,
+	LineSpacing,
+	ReadingTheme,
+	TextSize,
+	WordSpacing,
+} from './DisplaySettings'
 import { ChevronRightIcon } from './ui/Icons'
-
-const textSizeClasses: Record<TextSize, { title: string; body: string }> = {
-	sm: { title: 'text-base', body: 'text-base leading-relaxed' },
-	md: { title: 'text-lg', body: 'text-lg leading-relaxed' },
-	lg: { title: 'text-xl', body: 'text-2xl leading-loose' },
-}
 
 interface SynaxariumSectionProps {
 	entries: SynaxariumEntry[]
 	textSize?: TextSize
 	theme?: ReadingTheme
+	initialExpanded?: number | null
+	fontFamily?: FontFamily
+	weight?: FontWeight
+	lineSpacing?: LineSpacing
+	wordSpacing?: WordSpacing
+	isRtl?: boolean
 }
 
 export function SynaxariumSection({
 	entries,
 	textSize = 'md',
 	theme = 'light',
+	initialExpanded = null,
+	fontFamily = 'serif',
+	weight = 'normal',
+	lineSpacing = 'normal',
+	wordSpacing = 'normal',
+	isRtl = false,
 }: SynaxariumSectionProps) {
-	const [expanded, setExpanded] = useState<number | null>(null)
-	const sizes = textSizeClasses[textSize]
+	const t = useTranslations('synaxarium')
+	const [expanded, setExpanded] = useState<number | null>(initialExpanded)
 
-	// Use dark: variants for light theme to respect system dark mode
-	const bodyClass =
-		theme === 'sepia'
-			? 'text-[#6b5a45]'
-			: theme === 'dark'
-				? 'text-gray-200'
-				: 'text-gray-700 dark:text-gray-200'
-	const borderClass =
-		theme === 'sepia'
-			? 'border-[#d4c9b8]'
-			: theme === 'dark'
-				? 'border-gray-800'
-				: 'border-gray-100 dark:border-gray-800'
-	const accentClass = theme === 'sepia' ? 'text-amber-700' : 'text-amber-600 dark:text-amber-400'
+	// Get style classes similar to ScriptureReading
+	const sizes = getTextSizeClasses(textSize, isRtl)
+	const lineHeightClass = getLineHeightClass(lineSpacing, isRtl)
+	const fontClass = getFontClass(fontFamily, isRtl)
+	const weightClass = getWeightClass(weight, isRtl)
+	const wordSpacingClass = getWordSpacingClass(wordSpacing, isRtl)
+
+	// Title sizes based on textSize
+	const titleSizes: Record<TextSize, string> = {
+		sm: 'text-base',
+		md: 'text-lg',
+		lg: 'text-xl',
+	}
+
+	const borderClass = themeClasses.border[theme]
 
 	return (
 		<ul className="space-y-4">
@@ -49,14 +71,15 @@ export function SynaxariumSection({
 						type="button"
 						onClick={() => setExpanded(expanded === idx ? null : idx)}
 						className="w-full flex items-start gap-3 text-left group"
+						dir={isRtl ? 'rtl' : 'ltr'}
 					>
 						<ChevronRightIcon
 							className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
 								expanded === idx ? 'rotate-90' : ''
-							}`}
+							} ${isRtl ? 'rotate-180' : ''} ${expanded === idx && isRtl ? '-rotate-90' : ''}`}
 						/>
 						<span
-							className={`${sizes.title} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+							className={`${titleSizes[textSize]} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
 						>
 							{entry.name}
 						</span>
@@ -64,17 +87,22 @@ export function SynaxariumSection({
 
 					{expanded === idx && entry.text && (
 						<div
-							className={`mt-4 ml-8 ${sizes.body} ${bodyClass} whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200`}
+							className={`mt-4 ${isRtl ? 'me-8' : 'ms-8'} animate-in fade-in slide-in-from-top-2 duration-200`}
+							dir={isRtl ? 'rtl' : 'ltr'}
 						>
-							{entry.text}
+							<p
+								className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeightClass} ${themeClasses.text[theme]} whitespace-pre-line`}
+							>
+								{entry.text}
+							</p>
 							{entry.url && (
 								<a
 									href={entry.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className={`block mt-4 ${accentClass} hover:underline text-sm`}
+									className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm`}
 								>
-									Read on copticchurch.net
+									{t('readOnCopticChurch')}
 								</a>
 							)}
 						</div>

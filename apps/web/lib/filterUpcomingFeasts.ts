@@ -74,3 +74,65 @@ export function filterUpcomingFeasts(upcoming: DayCelebration[]): EventWithDate[
 
 	return filtered
 }
+
+/**
+ * Filters upcoming celebrations to only return fasts (start and end)
+ */
+export function filterUpcomingFasts(upcoming: DayCelebration[]): EventWithDate[] {
+	const allFasts: EventWithDate[] = []
+	const fastTracking = new Map<string, { firstDate: string; lastDate: string }>()
+
+	// First pass: collect all fasts and track periods
+	upcoming.forEach((day) => {
+		day.celebrations.forEach((cel) => {
+			if (cel.type === 'fast') {
+				const eventWithDate: EventWithDate = { ...cel, date: day.date }
+				allFasts.push(eventWithDate)
+
+				const existing = fastTracking.get(cel.name)
+				if (!existing) {
+					fastTracking.set(cel.name, { firstDate: day.date, lastDate: day.date })
+				} else {
+					existing.lastDate = day.date
+				}
+			}
+		})
+	})
+
+	// Second pass: filter to only first and last day of each fast
+	const seen = new Set<string>()
+	const filtered = allFasts.filter((event) => {
+		const fastPeriod = fastTracking.get(event.name)
+		if (!fastPeriod) return true
+
+		const isFirstDay = event.date === fastPeriod.firstDate
+		const isLastDay = event.date === fastPeriod.lastDate
+
+		if (isFirstDay) {
+			const key = `${event.name}-start`
+			if (seen.has(key)) return false
+			seen.add(key)
+			event.displayName = `${event.name} begins`
+			return true
+		}
+
+		if (isLastDay && fastPeriod.firstDate !== fastPeriod.lastDate) {
+			const key = `${event.name}-end`
+			if (seen.has(key)) return false
+			seen.add(key)
+			event.displayName = `${event.name} ends`
+			return true
+		}
+
+		return false
+	})
+
+	return filtered
+}
+
+/**
+ * Filters upcoming celebrations to exclude fasts (feasts only)
+ */
+export function filterFeastsOnly(events: EventWithDate[]): EventWithDate[] {
+	return events.filter((event) => event.type !== 'fast')
+}

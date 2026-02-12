@@ -32,7 +32,7 @@ export const typeDefs = /* GraphQL */ `
 		Acts: [ReadingDetail]
 		LPsalm: [ReadingDetail]
 		LGospel: [ReadingDetail]
-		Synxarium: [SynaxariumEntry!]!
+		Synaxarium: [SynaxariumEntry!]!
 		celebrations: [Celebration]
 		fullDate: CopticDate!
 	}

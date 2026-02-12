@@ -19,6 +19,7 @@ const getForDateRoute = createRoute({
 		}),
 		query: z.object({
 			detailed: z.string().optional().openapi({ example: 'true' }),
+			lang: z.enum(['en', 'ar']).optional().openapi({ example: 'en' }),
 		}),
 	},
 	responses: {
@@ -51,7 +52,7 @@ const getForDateRoute = createRoute({
 
 app.openapi(getForDateRoute, (c) => {
 	const { date } = c.req.valid('param')
-	const { detailed } = c.req.valid('query')
+	const { detailed, lang } = c.req.valid('query')
 
 	let parsedDate = new Date()
 	if (date) {
@@ -62,7 +63,7 @@ app.openapi(getForDateRoute, (c) => {
 		parsedDate = parsed
 	}
 
-	const synaxarium = synaxariumService.getSynaxariumForDate(parsedDate, detailed === 'true')
+	const synaxarium = synaxariumService.getSynaxariumForDate(parsedDate, detailed === 'true', lang)
 
 	if (!synaxarium) {
 		return c.json({ error: 'No synaxarium found for this date' }, 404)
@@ -84,6 +85,7 @@ const getForCopticDateRoute = createRoute({
 		}),
 		query: z.object({
 			detailed: z.string().optional().openapi({ example: 'true' }),
+			lang: z.enum(['en', 'ar']).optional().openapi({ example: 'en' }),
 		}),
 	},
 	responses: {
@@ -108,12 +110,16 @@ const getForCopticDateRoute = createRoute({
 
 app.openapi(getForCopticDateRoute, (c) => {
 	const { copticDate } = c.req.valid('param')
-	const { detailed } = c.req.valid('query')
+	const { detailed, lang } = c.req.valid('query')
 
 	// Decode URL-encoded Coptic date (e.g., "7%20Hator" -> "7 Hator")
 	const decodedDate = decodeURIComponent(copticDate).replace(/-/g, ' ')
 
-	const synaxarium = synaxariumService.getSynaxariumByCopticDate(decodedDate, detailed === 'true')
+	const synaxarium = synaxariumService.getSynaxariumByCopticDate(
+		decodedDate,
+		detailed === 'true',
+		lang,
+	)
 
 	if (!synaxarium) {
 		return c.json({ error: 'No synaxarium found for this Coptic date' }, 404)

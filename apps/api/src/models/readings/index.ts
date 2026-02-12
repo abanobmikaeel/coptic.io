@@ -1,7 +1,7 @@
-import { gregorianToCoptic } from '@coptic/core'
+import { type SynaxariumEntry, gregorianToCoptic } from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
-import synxariumReadings from '../../resources/synxarium.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
+import { getSynaxariumForDate } from '../../services/synaxarium.service'
 import type { BibleTranslation, Reading } from '../../types'
 import {
 	multiChapterRange,
@@ -79,11 +79,6 @@ type ReadingRecord = {
 	LGospel?: string
 }
 
-type SynaxariumEntry = {
-	_?: string
-	[key: string]: unknown
-}
-
 export const transformReading = (record: ReadingRecord, translation: BibleTranslation = 'en') => {
 	const { VPsalm, VGospel, MPsalm, MGospel, Pauline, Catholic, Acts, LPsalm, LGospel } = record
 
@@ -101,8 +96,8 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 }
 
 type ReadingResponse = {
-	reference?: unknown
-	Synxarium: SynaxariumEntry[]
+	reference?: (typeof uniqueReadings)[number]
+	Synaxarium: SynaxariumEntry[]
 	VPsalm?: Reading[] | null
 	VGospel?: Reading[] | null
 	MPsalm?: Reading[] | null
@@ -143,25 +138,20 @@ export const getByCopticDate = (
 			throw new Error(`Reading not found for ID: ${readingID}`)
 		}
 
-		const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
-		const synxarium = (synxariumReadings as Record<string, SynaxariumEntry[]>)[synxariumKey]
+		// Use synaxarium service for consistent processing
+		const lang = translation === 'ar' ? 'ar' : 'en'
+		const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, lang)
 
-		if (!synxarium) {
-			throw new Error(`Synxarium not found for: ${synxariumKey}`)
+		if (!synaxarium) {
+			throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
 		}
 
-		const synxariumWithoutText = synxarium.map((reading: SynaxariumEntry) => {
-			const { _: _unused, text: _text, ...rest } = reading
-			return rest
-		})
-		const synxariumText = isDetailed ? synxarium : synxariumWithoutText
-
 		if (!isDetailed) {
-			return { reference: reading, Synxarium: synxariumText }
+			return { reference: reading, Synaxarium: synaxarium }
 		}
 
 		const detailedReadings = transformReading(reading, translation)
-		return { ...detailedReadings, Synxarium: synxariumText }
+		return { ...detailedReadings, Synaxarium: synaxarium }
 	} catch (error) {
 		console.error(
 			'[getByCopticDate] Error:',

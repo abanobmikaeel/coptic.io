@@ -67,10 +67,10 @@ export function useReadingSettings(): {
 		const isAuto = !prefs.theme || prefs.theme === 'auto'
 		setIsAutoTheme(isAuto)
 
-		// If no URL params, apply stored preferences
+		// If no display settings in URL, apply stored preferences while preserving other params (like date)
 		const currentParams = searchParams.toString()
 		if (currentParams === '' || !searchParams.has('size')) {
-			const params = new URLSearchParams()
+			const params = new URLSearchParams(searchParams.toString())
 			if (prefs.size && prefs.size !== 'md') params.set('size', prefs.size)
 			if (prefs.view && prefs.view !== 'verse') params.set('view', prefs.view)
 			if (prefs.lang && prefs.lang !== 'en') params.set('lang', prefs.lang)
