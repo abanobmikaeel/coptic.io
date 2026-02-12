@@ -19,7 +19,11 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { CalendarIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { ICAL_SUBSCRIBE_URL } from '@/config'
 import { getCalendarData, getTodayCelebrations, getUpcomingCelebrations } from '@/lib/api'
-import { filterFeastsOnly, filterUpcomingFasts, filterUpcomingFeasts } from '@/lib/filterUpcomingFeasts'
+import {
+	filterFeastsOnly,
+	filterUpcomingFasts,
+	filterUpcomingFeasts,
+} from '@/lib/filterUpcomingFeasts'
 import { formatGregorianDate } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'

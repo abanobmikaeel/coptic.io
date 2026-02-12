@@ -1,7 +1,7 @@
 import { getSynaxariumByDate } from '@/lib/api'
 import { getTodayDateString } from '@/lib/utils/dateFormatters'
-import { ChevronRightIcon } from './ui/Icons'
 import Link from 'next/link'
+import { ChevronRightIcon } from './ui/Icons'
 
 interface HomeUpcomingSynaxariumProps {
 	limit?: number

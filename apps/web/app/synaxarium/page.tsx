@@ -81,7 +81,11 @@ function SynaxariumPageContent() {
 						>
 							{t('title')}
 						</h1>
-						<p className={mounted ? themeClasses.muted[settings.theme] : 'text-gray-600 dark:text-gray-400'}>
+						<p
+							className={
+								mounted ? themeClasses.muted[settings.theme] : 'text-gray-600 dark:text-gray-400'
+							}
+						>
 							{t('subtitle')}
 						</p>
 					</div>

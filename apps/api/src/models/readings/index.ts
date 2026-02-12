@@ -1,4 +1,4 @@
-import { gregorianToCoptic, type SynaxariumEntry } from '@coptic/core'
+import { type SynaxariumEntry, gregorianToCoptic } from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import { getSynaxariumForDate } from '../../services/synaxarium.service'
@@ -96,7 +96,7 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 }
 
 type ReadingResponse = {
-	reference?: typeof uniqueReadings[number]
+	reference?: (typeof uniqueReadings)[number]
 	Synaxarium: SynaxariumEntry[]
 	VPsalm?: Reading[] | null
 	VGospel?: Reading[] | null
