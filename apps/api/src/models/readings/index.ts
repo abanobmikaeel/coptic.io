@@ -30,7 +30,10 @@ const htmlEntities: Record<string, string> = {
 
 function decodeHtmlEntities(text: string): string {
 	if (!text) return text
-	return text.replace(/&(?:quot|amp|lt|gt|apos|nbsp|#39);/g, (match) => htmlEntities[match] || match)
+	return text.replace(
+		/&(?:quot|amp|lt|gt|apos|nbsp|#39);/g,
+		(match) => htmlEntities[match] || match,
+	)
 }
 
 // Build indexed Map at module load for O(1) lookup by reading ID

@@ -17,7 +17,10 @@ const htmlEntities: Record<string, string> = {
 
 function decodeHtmlEntities(text: string | undefined): string | undefined {
 	if (!text) return text
-	return text.replace(/&(?:quot|amp|lt|gt|apos|nbsp|#39);/g, (match) => htmlEntities[match] || match)
+	return text.replace(
+		/&(?:quot|amp|lt|gt|apos|nbsp|#39);/g,
+		(match) => htmlEntities[match] || match,
+	)
 }
 
 // Decode HTML entities in a synaxarium entry
