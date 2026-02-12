@@ -4,6 +4,31 @@ import { synaxariumCanonical, synaxariumIndex } from '@coptic/data/en'
 
 type SynaxariumLanguage = 'en' | 'ar'
 
+// Decode HTML entities in text
+const htmlEntities: Record<string, string> = {
+	'&quot;': '"',
+	'&amp;': '&',
+	'&lt;': '<',
+	'&gt;': '>',
+	'&apos;': "'",
+	'&#39;': "'",
+	'&nbsp;': ' ',
+}
+
+function decodeHtmlEntities(text: string | undefined): string | undefined {
+	if (!text) return text
+	return text.replace(/&(?:quot|amp|lt|gt|apos|nbsp|#39);/g, (match) => htmlEntities[match] || match)
+}
+
+// Decode HTML entities in a synaxarium entry
+function decodeEntry(entry: SynaxariumEntry): SynaxariumEntry {
+	return {
+		...entry,
+		name: decodeHtmlEntities(entry.name) || entry.name,
+		text: decodeHtmlEntities(entry.text),
+	}
+}
+
 // Get synaxarium data by language
 const getSynaxariumData = (lang: SynaxariumLanguage = 'en'): Record<string, SynaxariumEntry[]> => {
 	switch (lang) {
@@ -59,11 +84,11 @@ export const getSynaxariumForDate = (
 	if (!includeText) {
 		return synxarium.map((reading: SynaxariumEntry) => {
 			const { text: _text, ...rest } = reading
-			return rest
+			return decodeEntry(rest)
 		})
 	}
 
-	return synxarium
+	return synxarium.map(decodeEntry)
 }
 
 export const getSynaxariumByCopticDate = (
@@ -81,11 +106,11 @@ export const getSynaxariumByCopticDate = (
 	if (!includeText) {
 		return synxarium.map((reading: SynaxariumEntry) => {
 			const { text: _text, ...rest } = reading
-			return rest
+			return decodeEntry(rest)
 		})
 	}
 
-	return synxarium
+	return synxarium.map(decodeEntry)
 }
 
 export const searchSynaxarium = (searchTerm: string, limit = 50): SynaxariumSearchResult[] => {

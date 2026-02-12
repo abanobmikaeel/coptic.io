@@ -1,9 +1,18 @@
 'use client'
 
+import type {
+	FontFamily,
+	FontWeight,
+	LineSpacing,
+	ReadingTheme,
+	TextSize,
+	WordSpacing,
+} from '@/components/DisplaySettings'
 import { SynaxariumSection } from '@/components/SynaxariumSection'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { NoEntriesState } from '@/components/ui/EmptyState'
 import { ChevronRightIcon } from '@/components/ui/Icons'
+import { themeClasses } from '@/lib/reading-styles'
 import type { SynaxariumEntry } from '@/lib/types'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -22,6 +31,12 @@ interface SynaxariumDayViewProps {
 	loading: boolean
 	selectedCategory: CategoryId
 	expandedEntry: number | null
+	textSize?: TextSize
+	theme?: ReadingTheme
+	fontFamily?: FontFamily
+	weight?: FontWeight
+	lineSpacing?: LineSpacing
+	wordSpacing?: WordSpacing
 }
 
 export function SynaxariumDayView({
@@ -32,6 +47,12 @@ export function SynaxariumDayView({
 	loading,
 	selectedCategory,
 	expandedEntry,
+	textSize = 'md',
+	theme = 'light',
+	fontFamily = 'serif',
+	weight = 'normal',
+	lineSpacing = 'normal',
+	wordSpacing = 'normal',
 }: SynaxariumDayViewProps) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
@@ -41,15 +62,29 @@ export function SynaxariumDayView({
 			{/* Featured Today */}
 			{isToday && entries.length > 0 && <FeaturedTodayCard entries={entries} />}
 
+			{/* View Readings Link */}
+			<section className="relative px-6 pb-4">
+				<div className="max-w-4xl mx-auto text-center">
+					<Link
+						href={`/readings?date=${currentDate}`}
+						prefetch={false}
+						className={`inline-flex items-center gap-2 font-medium transition-colors ${themeClasses.accent[theme]} hover:opacity-80`}
+					>
+						{t('viewReadings')}
+						<ChevronRightIcon className="w-4 h-4" />
+					</Link>
+				</div>
+			</section>
+
 			{/* Entries List */}
 			<section className="relative px-6 pb-16">
 				<div className="max-w-4xl mx-auto">
-					<Card>
-						<CardHeader>
+					<Card className={themeClasses.bg[theme]}>
+						<CardHeader className={themeClasses.textHeading[theme]}>
 							{selectedCategory === 'all'
 								? t('allCommemorations')
 								: tCategories(CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all')}
-							<span className="ms-2 text-sm font-normal text-gray-500">
+							<span className={`ms-2 text-sm font-normal ${themeClasses.muted[theme]}`}>
 								({filteredEntries.length})
 							</span>
 						</CardHeader>
@@ -57,7 +92,16 @@ export function SynaxariumDayView({
 							{loading ? (
 								<EntriesLoadingSkeleton />
 							) : filteredEntries.length > 0 ? (
-								<SynaxariumSection entries={filteredEntries} initialExpanded={expandedEntry} />
+								<SynaxariumSection
+									entries={filteredEntries}
+									initialExpanded={expandedEntry}
+									textSize={textSize}
+									theme={theme}
+									fontFamily={fontFamily}
+									weight={weight}
+									lineSpacing={lineSpacing}
+									wordSpacing={wordSpacing}
+								/>
 							) : (
 								<NoEntriesState
 									type={
@@ -71,17 +115,6 @@ export function SynaxariumDayView({
 							)}
 						</CardContent>
 					</Card>
-
-					<div className="mt-6 text-center">
-						<Link
-							href={`/readings?date=${currentDate}`}
-							prefetch={false}
-							className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 font-medium transition-colors"
-						>
-							{t('viewReadings')}
-							<ChevronRightIcon className="w-4 h-4" />
-						</Link>
-					</div>
 				</div>
 			</section>
 		</>

@@ -147,6 +147,17 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	// Use the first available readings for metadata/structure
 	const readings = readingsResults.find((r) => r.data)?.data ?? null
 
+	// Build synaxarium entries by language for multi-language display
+	// Only English and Arabic synaxarium are available
+	const synaxariumLangs: BibleTranslation[] = ['en', 'ar']
+	const synaxariumByLang: Partial<Record<BibleTranslation, ReadingsData['Synxarium']>> = {}
+	for (const lang of languagesToFetch.filter((l) => synaxariumLangs.includes(l))) {
+		const langSynaxarium = readingsByLang[lang]?.Synxarium
+		if (langSynaxarium?.length) {
+			synaxariumByLang[lang] = langSynaxarium
+		}
+	}
+
 	const displayDate = params.date ? parseDateString(params.date) : new Date()
 	const gregorianDate = formatGregorianDate(displayDate)
 	const isToday = !params.date || params.date === getTodayDateString()
@@ -270,13 +281,18 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{renderSection('Pauline', 'Liturgy')}
 									{renderSection('Catholic', 'Liturgy')}
 									{renderSection('Acts', 'Liturgy')}
-									{readings.Synxarium?.length ? (
+									{Object.keys(synaxariumByLang).length > 0 ? (
 										<SynaxariumReading
-											entries={readings.Synxarium}
+											entriesByLang={synaxariumByLang}
+											languages={languagesToFetch.filter((l) => synaxariumLangs.includes(l))}
 											textSize={textSize}
 											theme={theme}
 											width={width}
 											service="Liturgy"
+											fontFamily={fontFamily}
+											weight={fontWeight}
+											lineSpacing={lineSpacing}
+											wordSpacing={wordSpacing}
 										/>
 									) : null}
 									{renderSection('LPsalm', 'Liturgy')}

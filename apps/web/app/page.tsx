@@ -12,15 +12,18 @@ export const metadata: Metadata = {
 	},
 }
 import EmailSignup from '@/components/EmailSignup'
+import HomeUpcomingSynaxarium from '@/components/HomeUpcomingSynaxarium'
+import UpcomingFastsList from '@/components/UpcomingFastsList'
 import UpcomingFeastsList from '@/components/UpcomingFeastsList'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { CalendarIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { ICAL_SUBSCRIBE_URL } from '@/config'
 import { getCalendarData, getTodayCelebrations, getUpcomingCelebrations } from '@/lib/api'
-import { filterUpcomingFeasts } from '@/lib/filterUpcomingFeasts'
+import { filterFeastsOnly, filterUpcomingFasts, filterUpcomingFeasts } from '@/lib/filterUpcomingFeasts'
 import { formatGregorianDate } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 // Page revalidates via API caching (5 minute ISR)
 
@@ -38,7 +41,9 @@ export default async function Home() {
 	const copticDate = calendar?.dateString || 'Loading...'
 	const todayFeast = Array.isArray(celebrations) && celebrations.length > 0 ? celebrations[0] : null
 
-	const upcomingFeasts = Array.isArray(upcoming) ? filterUpcomingFeasts(upcoming) : []
+	const allEvents = Array.isArray(upcoming) ? filterUpcomingFeasts(upcoming) : []
+	const upcomingFeasts = filterFeastsOnly(allEvents)
+	const upcomingFasts = Array.isArray(upcoming) ? filterUpcomingFasts(upcoming) : []
 
 	return (
 		<main className="min-h-screen relative overflow-hidden">
@@ -96,12 +101,46 @@ export default async function Home() {
 			</section>
 
 			{/* Upcoming Feasts */}
-			<section className="relative px-6 pb-12">
+			<section className="relative px-6 pb-6">
 				<div className="max-w-4xl mx-auto">
 					<Card>
 						<CardHeader>{t('upcomingFeasts')}</CardHeader>
 						<CardContent>
 							<UpcomingFeastsList feasts={upcomingFeasts} />
+						</CardContent>
+					</Card>
+				</div>
+			</section>
+
+			{/* Upcoming Fasts */}
+			{upcomingFasts.length > 0 && (
+				<section className="relative px-6 pb-6">
+					<div className="max-w-4xl mx-auto">
+						<Card>
+							<CardHeader>{t('upcomingFasts')}</CardHeader>
+							<CardContent>
+								<UpcomingFastsList fasts={upcomingFasts} />
+							</CardContent>
+						</Card>
+					</div>
+				</section>
+			)}
+
+			{/* Today's Commemorations */}
+			<section className="relative px-6 pb-12">
+				<div className="max-w-4xl mx-auto">
+					<Card>
+						<CardHeader>{t('todaysCommemorations')}</CardHeader>
+						<CardContent>
+							<Suspense
+								fallback={
+									<div className="py-4 flex justify-center">
+										<div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+									</div>
+								}
+							>
+								<HomeUpcomingSynaxarium limit={5} />
+							</Suspense>
 						</CardContent>
 					</Card>
 				</div>
