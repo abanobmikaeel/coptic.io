@@ -54,7 +54,7 @@ describe('API Endpoints', () => {
 
 			const json = await res.json()
 			expect(json).toHaveProperty('reference')
-			expect(json).toHaveProperty('Synxarium')
+			expect(json).toHaveProperty('Synaxarium')
 			expect(json).toHaveProperty('celebrations')
 			expect(json).toHaveProperty('fullDate')
 		})
@@ -73,7 +73,7 @@ describe('API Endpoints', () => {
 			expect(json.reference).toHaveProperty('Acts')
 			expect(json.reference).toHaveProperty('LPsalm')
 			expect(json.reference).toHaveProperty('LGospel')
-			expect(Array.isArray(json.Synxarium)).toBe(true)
+			expect(Array.isArray(json.Synaxarium)).toBe(true)
 			// celebrations can be null or array depending on if there are celebrations for this day
 			expect(json.celebrations === null || Array.isArray(json.celebrations)).toBe(true)
 		})
@@ -86,8 +86,8 @@ describe('API Endpoints', () => {
 			// Should have parsed reading arrays instead of reference object
 			expect(json).not.toHaveProperty('reference')
 			expect(json).toHaveProperty('VPsalm')
-			expect(json).toHaveProperty('Synxarium')
-			expect(Array.isArray(json.Synxarium)).toBe(true)
+			expect(json).toHaveProperty('Synaxarium')
+			expect(Array.isArray(json.Synaxarium)).toBe(true)
 		})
 
 		it('should return 400 for invalid date', async () => {
@@ -145,11 +145,11 @@ describe('API Endpoints', () => {
 
 			// Both should have synaxarium data
 			expect(Array.isArray(synaxarium)).toBe(true)
-			expect(Array.isArray(readings.Synxarium)).toBe(true)
+			expect(Array.isArray(readings.Synaxarium)).toBe(true)
 
 			// The entries should match (same names)
 			const synaxariumNames = synaxarium.map((e: { name: string }) => e.name).sort()
-			const readingsNames = readings.Synxarium.map((e: { name: string }) => e.name).sort()
+			const readingsNames = readings.Synaxarium.map((e: { name: string }) => e.name).sort()
 
 			expect(synaxariumNames).toEqual(readingsNames)
 		})
@@ -171,7 +171,7 @@ describe('API Endpoints', () => {
 				const readings = await readingsRes.json()
 
 				const synaxariumNames = synaxarium.map((e: { name: string }) => e.name).sort()
-				const readingsNames = readings.Synxarium.map((e: { name: string }) => e.name).sort()
+				const readingsNames = readings.Synaxarium.map((e: { name: string }) => e.name).sort()
 
 				expect(synaxariumNames).toEqual(readingsNames)
 			}

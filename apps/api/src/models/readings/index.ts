@@ -1,8 +1,7 @@
-import { gregorianToCoptic } from '@coptic/core'
-import { synaxariumCanonical as synaxariumAr } from '@coptic/data/ar'
+import { gregorianToCoptic, type SynaxariumEntry } from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
-import synxariumReadings from '../../resources/synxarium.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
+import { getSynaxariumForDate } from '../../services/synaxarium.service'
 import type { BibleTranslation, Reading } from '../../types'
 import {
 	multiChapterRange,
@@ -16,25 +15,6 @@ import {
 	getSingleVerse,
 	getVerseRange,
 } from './verseTextTransformer'
-
-// Decode HTML entities in text
-const htmlEntities: Record<string, string> = {
-	'&quot;': '"',
-	'&amp;': '&',
-	'&lt;': '<',
-	'&gt;': '>',
-	'&apos;': "'",
-	'&#39;': "'",
-	'&nbsp;': ' ',
-}
-
-function decodeHtmlEntities(text: string): string {
-	if (!text) return text
-	return text.replace(
-		/&(?:quot|amp|lt|gt|apos|nbsp|#39);/g,
-		(match) => htmlEntities[match] || match,
-	)
-}
 
 // Build indexed Map at module load for O(1) lookup by reading ID
 const readingsById = new Map<number, (typeof uniqueReadings)[number]>()
@@ -99,11 +79,6 @@ type ReadingRecord = {
 	LGospel?: string
 }
 
-type SynaxariumEntry = {
-	_?: string
-	[key: string]: unknown
-}
-
 export const transformReading = (record: ReadingRecord, translation: BibleTranslation = 'en') => {
 	const { VPsalm, VGospel, MPsalm, MGospel, Pauline, Catholic, Acts, LPsalm, LGospel } = record
 
@@ -121,8 +96,8 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 }
 
 type ReadingResponse = {
-	reference?: unknown
-	Synxarium: SynaxariumEntry[]
+	reference?: typeof uniqueReadings[number]
+	Synaxarium: SynaxariumEntry[]
 	VPsalm?: Reading[] | null
 	VGospel?: Reading[] | null
 	MPsalm?: Reading[] | null
@@ -163,47 +138,20 @@ export const getByCopticDate = (
 			throw new Error(`Reading not found for ID: ${readingID}`)
 		}
 
-		const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
-		// Use Arabic synaxarium if translation is Arabic
-		const synxariumData =
-			translation === 'ar'
-				? (synaxariumAr as Record<string, SynaxariumEntry[]>)
-				: (synxariumReadings as Record<string, SynaxariumEntry[]>)
-		const synxarium = synxariumData[synxariumKey]
+		// Use synaxarium service for consistent processing
+		const lang = translation === 'ar' ? 'ar' : 'en'
+		const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, lang)
 
-		if (!synxarium) {
-			throw new Error(`Synxarium not found for: ${synxariumKey}`)
+		if (!synaxarium) {
+			throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
 		}
 
-		const synxariumWithoutText = synxarium.map((reading: SynaxariumEntry) => {
-			const { _: _unused, text: _text, ...rest } = reading
-			// Decode HTML entities in name field
-			if (rest.name && typeof rest.name === 'string') {
-				rest.name = decodeHtmlEntities(rest.name)
-			}
-			return rest
-		})
-
-		// For detailed view, decode HTML entities in text field as well
-		const synxariumDecoded = synxarium.map((reading: SynaxariumEntry) => {
-			const { _: _unused, ...rest } = reading
-			if (rest.name && typeof rest.name === 'string') {
-				rest.name = decodeHtmlEntities(rest.name)
-			}
-			if (rest.text && typeof rest.text === 'string') {
-				rest.text = decodeHtmlEntities(rest.text)
-			}
-			return rest
-		})
-
-		const synxariumText = isDetailed ? synxariumDecoded : synxariumWithoutText
-
 		if (!isDetailed) {
-			return { reference: reading, Synxarium: synxariumText }
+			return { reference: reading, Synaxarium: synaxarium }
 		}
 
 		const detailedReadings = transformReading(reading, translation)
-		return { ...detailedReadings, Synxarium: synxariumText }
+		return { ...detailedReadings, Synaxarium: synaxarium }
 	} catch (error) {
 		console.error(
 			'[getByCopticDate] Error:',

@@ -149,7 +149,7 @@ describe('getByCopticDate - Integration Regression Tests', () => {
 		expect(result.Acts).toBeDefined()
 		expect(result.LPsalm).toBeDefined()
 		expect(result.LGospel).toBeDefined()
-		expect(result.Synxarium).toBeDefined()
+		expect(result.Synaxarium).toBeDefined()
 	})
 
 	it('should return valid verse data for multi-chapter readings', () => {
@@ -238,7 +238,7 @@ describe('Full Year Readings Smoke Test', () => {
 
 		// Known month name mismatches to filter out
 		const knownDataIssues = [
-			'Synxarium not found',
+			'Synaxarium not found',
 			'No reading found for day', // Leap year edge case
 		]
 

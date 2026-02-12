@@ -1,27 +1,9 @@
 import { type SynaxariumEntry, type SynaxariumSearchResult, gregorianToCoptic } from '@coptic/core'
 import { synaxariumCanonical as synaxariumAr } from '@coptic/data/ar'
 import { synaxariumCanonical, synaxariumIndex } from '@coptic/data/en'
+import { decodeHtmlEntities } from '../utils/textUtils'
 
 type SynaxariumLanguage = 'en' | 'ar'
-
-// Decode HTML entities in text
-const htmlEntities: Record<string, string> = {
-	'&quot;': '"',
-	'&amp;': '&',
-	'&lt;': '<',
-	'&gt;': '>',
-	'&apos;': "'",
-	'&#39;': "'",
-	'&nbsp;': ' ',
-}
-
-function decodeHtmlEntities(text: string | undefined): string | undefined {
-	if (!text) return text
-	return text.replace(
-		/&(?:quot|amp|lt|gt|apos|nbsp|#39);/g,
-		(match) => htmlEntities[match] || match,
-	)
-}
 
 // Decode HTML entities in a synaxarium entry
 function decodeEntry(entry: SynaxariumEntry, includeText = true): SynaxariumEntry {
@@ -82,15 +64,15 @@ export const getSynaxariumForDate = (
 	lang: SynaxariumLanguage = 'en',
 ): SynaxariumEntry[] | null => {
 	const copticDate = gregorianToCoptic(date)
-	const synxariumKey = `${copticDate.day} ${copticDate.monthString}`
+	const synaxariumKey = `${copticDate.day} ${copticDate.monthString}`
 	const data = getSynaxariumData(lang)
-	const synxarium = data[synxariumKey]
+	const synaxarium = data[synaxariumKey]
 
-	if (!synxarium) {
+	if (!synaxarium) {
 		return null
 	}
 
-	return synxarium.map((entry) => decodeEntry(entry, includeText))
+	return synaxarium.map((entry) => decodeEntry(entry, includeText))
 }
 
 export const getSynaxariumByCopticDate = (
@@ -99,13 +81,13 @@ export const getSynaxariumByCopticDate = (
 	lang: SynaxariumLanguage = 'en',
 ): SynaxariumEntry[] | null => {
 	const data = getSynaxariumData(lang)
-	const synxarium = data[copticDateKey]
+	const synaxarium = data[copticDateKey]
 
-	if (!synxarium) {
+	if (!synaxarium) {
 		return null
 	}
 
-	return synxarium.map((entry) => decodeEntry(entry, includeText))
+	return synaxarium.map((entry) => decodeEntry(entry, includeText))
 }
 
 export const searchSynaxarium = (searchTerm: string, limit = 50): SynaxariumSearchResult[] => {
