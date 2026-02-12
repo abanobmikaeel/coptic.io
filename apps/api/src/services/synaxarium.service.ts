@@ -24,12 +24,18 @@ function decodeHtmlEntities(text: string | undefined): string | undefined {
 }
 
 // Decode HTML entities in a synaxarium entry
-function decodeEntry(entry: SynaxariumEntry): SynaxariumEntry {
-	return {
-		...entry,
+function decodeEntry(entry: SynaxariumEntry, includeText = true): SynaxariumEntry {
+	// Destructure to separate text from other properties
+	const { text, ...rest } = entry
+	const decoded: SynaxariumEntry = {
+		...rest,
 		name: decodeHtmlEntities(entry.name) || entry.name,
-		text: decodeHtmlEntities(entry.text),
 	}
+	// Only include text if explicitly requested
+	if (includeText && text !== undefined) {
+		decoded.text = decodeHtmlEntities(text)
+	}
+	return decoded
 }
 
 // Get synaxarium data by language
@@ -84,14 +90,7 @@ export const getSynaxariumForDate = (
 		return null
 	}
 
-	if (!includeText) {
-		return synxarium.map((reading: SynaxariumEntry) => {
-			const { text: _text, ...rest } = reading
-			return decodeEntry(rest)
-		})
-	}
-
-	return synxarium.map(decodeEntry)
+	return synxarium.map((entry) => decodeEntry(entry, includeText))
 }
 
 export const getSynaxariumByCopticDate = (
@@ -106,14 +105,7 @@ export const getSynaxariumByCopticDate = (
 		return null
 	}
 
-	if (!includeText) {
-		return synxarium.map((reading: SynaxariumEntry) => {
-			const { text: _text, ...rest } = reading
-			return decodeEntry(rest)
-		})
-	}
-
-	return synxarium.map(decodeEntry)
+	return synxarium.map((entry) => decodeEntry(entry, includeText))
 }
 
 export const searchSynaxarium = (searchTerm: string, limit = 50): SynaxariumSearchResult[] => {

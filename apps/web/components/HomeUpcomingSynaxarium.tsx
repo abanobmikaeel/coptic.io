@@ -1,5 +1,4 @@
 import { getSynaxariumByDate } from '@/lib/api'
-import type { SynaxariumEntry } from '@/lib/types'
 import { getTodayDateString } from '@/lib/utils/dateFormatters'
 import { ChevronRightIcon } from './ui/Icons'
 import Link from 'next/link'
