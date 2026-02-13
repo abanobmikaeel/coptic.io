@@ -1,8 +1,8 @@
 'use client'
 
+import type { ViewMode } from '@/lib/reading-preferences'
 import type { Reading } from '@/lib/types'
 import { useState } from 'react'
-import type { ViewMode } from './ViewModeToggle'
 
 interface CollapsibleReadingProps {
 	readings: Reading[]

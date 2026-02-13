@@ -9,10 +9,9 @@ import { SynaxariumSearch } from '@/components/synaxarium/SynaxariumSearch'
 import { SynaxariumSearchResults } from '@/components/synaxarium/SynaxariumSearchResults'
 import { SynaxariumUpcomingView } from '@/components/synaxarium/SynaxariumUpcomingView'
 import { CloseIcon } from '@/components/ui/Icons'
-import { useReadingSettings } from '@/hooks/useReadingSettings'
+import { useReadingSettingsContext } from '@/contexts/ReadingSettingsContext'
 import { useSwipeGesture } from '@/hooks/useSwipeGesture'
 import { useSynaxarium } from '@/hooks/useSynaxarium'
-import { themeClasses } from '@/lib/reading-styles'
 import { getTodayDateString } from '@/lib/utils/dateFormatters'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -22,7 +21,7 @@ function SynaxariumPageContent() {
 	const t = useTranslations('synaxarium')
 	const tCommon = useTranslations('common')
 	const tNav = useTranslations('nav')
-	const { settings, mounted } = useReadingSettings()
+	const { styles, mounted } = useReadingSettingsContext()
 
 	const {
 		viewMode,
@@ -57,7 +56,7 @@ function SynaxariumPageContent() {
 	return (
 		<main
 			ref={swipeRef}
-			className={`min-h-screen relative transition-colors duration-300 ${mounted ? themeClasses.bg[settings.theme] : ''}`}
+			className={`min-h-screen relative transition-colors duration-300 ${mounted ? styles.theme.bg : ''}`}
 		>
 			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
 				<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
@@ -68,7 +67,7 @@ function SynaxariumPageContent() {
 					<div className="flex items-center justify-between mb-4">
 						<Link
 							href="/library"
-							className={`flex items-center gap-1 text-sm transition-colors ${mounted ? `${themeClasses.muted[settings.theme]} hover:${themeClasses.text[settings.theme]}` : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+							className={`flex items-center gap-1 text-sm transition-colors ${mounted ? `${styles.theme.muted} hover:${styles.theme.text}` : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
 						>
 							<CloseIcon className="w-4 h-4" />
 							<span className="hidden sm:inline">{tCommon('back')}</span>
@@ -78,15 +77,11 @@ function SynaxariumPageContent() {
 					</div>
 					<div className="text-center">
 						<h1
-							className={`text-3xl font-bold mb-2 ${mounted ? themeClasses.textHeading[settings.theme] : 'text-gray-900 dark:text-white'}`}
+							className={`text-3xl font-bold mb-2 ${mounted ? styles.theme.textHeading : 'text-gray-900 dark:text-white'}`}
 						>
 							{t('title')}
 						</h1>
-						<p
-							className={
-								mounted ? themeClasses.muted[settings.theme] : 'text-gray-600 dark:text-gray-400'
-							}
-						>
+						<p className={mounted ? styles.theme.muted : 'text-gray-600 dark:text-gray-400'}>
 							{t('subtitle')}
 						</p>
 					</div>
@@ -136,12 +131,6 @@ function SynaxariumPageContent() {
 					selectedCategory={selectedCategory}
 					expandedEntry={expandedEntry}
 					onExpandedChange={setExpandedEntry}
-					textSize={settings.textSize}
-					theme={settings.theme}
-					fontFamily={settings.fontFamily}
-					weight={settings.weight}
-					lineSpacing={settings.lineSpacing}
-					wordSpacing={settings.wordSpacing}
 				/>
 			)}
 		</main>

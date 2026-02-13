@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from 'next'
 import { EB_Garamond, Inter, Noto_Naskh_Arabic, Noto_Sans_Coptic } from 'next/font/google'
 import './globals.css'
-import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
+import { Providers } from '@/components/Providers'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { BottomTabs } from '@/components/navigation/BottomTabs'
-import { NavigationProvider } from '@/contexts/NavigationContext'
 import { Analytics } from '@vercel/analytics/next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
@@ -131,15 +130,13 @@ export default async function RootLayout({
 				</a>
 				<NextIntlClientProvider messages={messages}>
 					<ThemeProvider>
-						<CommandPaletteProvider>
-							<NavigationProvider>
-								<div className="min-h-screen overflow-x-hidden bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-									<Navbar />
-									<div id="main-content">{children}</div>
-									<BottomTabs />
-								</div>
-							</NavigationProvider>
-						</CommandPaletteProvider>
+						<Providers>
+							<div className="min-h-screen overflow-x-hidden bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+								<Navbar />
+								<div id="main-content">{children}</div>
+								<BottomTabs />
+							</div>
+						</Providers>
 					</ThemeProvider>
 				</NextIntlClientProvider>
 				<Analytics />

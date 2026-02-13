@@ -11,6 +11,9 @@ export type ThemePreference = ReadingTheme | 'auto'
 export type ReadingWidth = 'narrow' | 'normal' | 'wide'
 export type FontWeight = 'light' | 'normal' | 'bold'
 
+// Synaxarium-specific view mode (distinct from Bible view mode)
+export type SynaxariumViewMode = 'day' | 'upcoming'
+
 const STORAGE_KEY = 'coptic-reading-preferences'
 
 export interface ReadingPreferences {

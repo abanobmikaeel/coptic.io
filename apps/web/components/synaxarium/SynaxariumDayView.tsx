@@ -1,19 +1,12 @@
 'use client'
 
-import type {
-	FontFamily,
-	FontWeight,
-	LineSpacing,
-	ReadingTheme,
-	TextSize,
-	WordSpacing,
-} from '@/components/DisplaySettings'
 import { BilingualSynaxariumSection } from '@/components/synaxarium/BilingualSynaxariumSection'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { NoEntriesState } from '@/components/ui/EmptyState'
 import { ChevronRightIcon } from '@/components/ui/Icons'
+import { useReadingSettingsContext } from '@/contexts/ReadingSettingsContext'
 import type { BilingualEntry } from '@/hooks/useSynaxarium'
-import { themeClasses } from '@/lib/reading-styles'
+import type { ReadingTheme } from '@/lib/reading-preferences'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import {
@@ -32,12 +25,6 @@ interface SynaxariumDayViewProps {
 	selectedCategory: CategoryId
 	expandedEntry: string | null
 	onExpandedChange: (id: string | null) => void
-	textSize?: TextSize
-	theme?: ReadingTheme
-	fontFamily?: FontFamily
-	weight?: FontWeight
-	lineSpacing?: LineSpacing
-	wordSpacing?: WordSpacing
 }
 
 export function SynaxariumDayView({
@@ -49,21 +36,17 @@ export function SynaxariumDayView({
 	selectedCategory,
 	expandedEntry,
 	onExpandedChange,
-	textSize = 'md',
-	theme = 'light',
-	fontFamily = 'serif',
-	weight = 'normal',
-	lineSpacing = 'normal',
-	wordSpacing = 'normal',
 }: SynaxariumDayViewProps) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
+	const { styles, settings } = useReadingSettingsContext()
+	const { theme } = styles
 
 	return (
 		<>
 			{/* Featured Today */}
 			{isToday && bilingualEntries.length > 0 && (
-				<FeaturedTodayCard entries={bilingualEntries} theme={theme} />
+				<FeaturedTodayCard entries={bilingualEntries} theme={settings.theme} />
 			)}
 
 			{/* View Readings Link */}
@@ -72,7 +55,7 @@ export function SynaxariumDayView({
 					<Link
 						href={`/readings?date=${currentDate}`}
 						prefetch={false}
-						className={`inline-flex items-center gap-2 font-medium transition-colors ${themeClasses.accent[theme]} hover:opacity-80`}
+						className={`inline-flex items-center gap-2 font-medium transition-colors ${theme.accent} hover:opacity-80`}
 					>
 						{t('viewReadings')}
 						<ChevronRightIcon className="w-4 h-4" />
@@ -83,12 +66,12 @@ export function SynaxariumDayView({
 			{/* Entries List */}
 			<section className="relative px-6 pb-16">
 				<div className="max-w-5xl mx-auto">
-					<Card className={themeClasses.bg[theme]}>
-						<CardHeader className={themeClasses.textHeading[theme]}>
+					<Card className={theme.bg}>
+						<CardHeader className={theme.textHeading}>
 							{selectedCategory === 'all'
 								? t('allCommemorations')
 								: tCategories(CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all')}
-							<span className={`ms-2 text-sm font-normal ${themeClasses.muted[theme]}`}>
+							<span className={`ms-2 text-sm font-normal ${theme.muted}`}>
 								({filteredBilingualEntries.length})
 							</span>
 						</CardHeader>
@@ -100,12 +83,6 @@ export function SynaxariumDayView({
 									entries={filteredBilingualEntries}
 									expandedEntry={expandedEntry}
 									onExpandedChange={onExpandedChange}
-									textSize={textSize}
-									theme={theme}
-									fontFamily={fontFamily}
-									weight={weight}
-									lineSpacing={lineSpacing}
-									wordSpacing={wordSpacing}
 								/>
 							) : (
 								<NoEntriesState

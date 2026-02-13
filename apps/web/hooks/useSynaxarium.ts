@@ -6,8 +6,8 @@ import {
 	getCategoryForEntry,
 	matchesCategory,
 } from '@/components/synaxarium/SynaxariumCategoryFilters'
-import type { ViewMode } from '@/components/synaxarium/SynaxariumHeader'
 import { getCalendarDate, getSynaxariumByDate, searchSynaxarium } from '@/lib/api'
+import type { SynaxariumViewMode } from '@/lib/reading-preferences'
 import type { SynaxariumEntry, SynaxariumSearchResult } from '@/lib/types'
 import { formatGregorianDate, getTodayDateString } from '@/lib/utils/dateFormatters'
 import { useLocale } from 'next-intl'
@@ -64,7 +64,7 @@ export function useSynaxarium() {
 
 	const today = getTodayDateString()
 	const currentDate = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam) ? dateParam : today
-	const viewMode: ViewMode = viewParam === 'upcoming' ? 'upcoming' : 'day'
+	const viewMode: SynaxariumViewMode = viewParam === 'upcoming' ? 'upcoming' : 'day'
 	const selectedCategory: CategoryId = (
 		categoryParam && CATEGORIES.some((c) => c.id === categoryParam) ? categoryParam : 'all'
 	) as CategoryId
@@ -87,7 +87,11 @@ export function useSynaxarium() {
 
 	// === URL update helper ===
 	const updateUrl = useCallback(
-		(updates: { date?: string | null; view?: ViewMode | null; category?: CategoryId | null }) => {
+		(updates: {
+			date?: string | null
+			view?: SynaxariumViewMode | null
+			category?: CategoryId | null
+		}) => {
 			const params = new URLSearchParams(searchParams.toString())
 
 			if ('date' in updates) {
@@ -130,7 +134,7 @@ export function useSynaxarium() {
 	)
 
 	const handleViewModeChange = useCallback(
-		(mode: ViewMode) => {
+		(mode: SynaxariumViewMode) => {
 			if (mode === 'day' && viewMode === 'upcoming') {
 				// Clicking "Today" from upcoming goes to today
 				updateUrl({ date: null, view: 'day' })

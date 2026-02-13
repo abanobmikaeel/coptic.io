@@ -1,9 +1,8 @@
 'use client'
 
+import type { ViewMode } from '@/lib/reading-preferences'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
-
-export type ViewMode = 'verse' | 'continuous'
 
 export function ViewModeToggle() {
 	const router = useRouter()

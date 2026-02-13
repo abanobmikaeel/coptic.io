@@ -19,8 +19,8 @@ import { DisplaySettings } from '@/components/DisplaySettings'
 import { CloseIcon } from '@/components/ui/Icons'
 import { API_BASE_URL } from '@/config'
 import { useNavigation } from '@/contexts/NavigationContext'
-import { useReadingSettings } from '@/hooks/useReadingSettings'
-import { getWidthClass, themeClasses } from '@/lib/reading-styles'
+import { useReadingSettingsContext } from '@/contexts/ReadingSettingsContext'
+import { themeClasses } from '@/lib/reading-styles'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useCallback, useEffect, useState } from 'react'
 
@@ -115,7 +115,7 @@ function AgpeyaSkeleton({ theme }: { theme: 'light' | 'sepia' | 'dark' }) {
 function AgpeyaContent() {
 	const router = useRouter()
 	const searchParams = useSearchParams()
-	const { settings, mounted } = useReadingSettings()
+	const { settings, styles, mounted } = useReadingSettingsContext()
 	const { mode } = useNavigation()
 	const [hourData, setHourData] = useState<AgpeyaHourData | AgpeyaMidnightData | null>(null)
 	const [loading, setLoading] = useState(true)
@@ -136,7 +136,6 @@ function AgpeyaContent() {
 	const currentWatch: MidnightWatch = watchParam || '1'
 
 	const theme = settings.theme || 'light'
-	const isRtl = settings.translation === 'ar'
 
 	// Handle hour change from breadcrumb dropdown
 	const handleHourChange = useCallback(
@@ -277,9 +276,7 @@ function AgpeyaContent() {
 			</div>
 
 			{/* Content */}
-			<div
-				className={`${getWidthClass(settings.width || 'normal')} mx-auto px-6 pt-8 pb-32 lg:pb-24`}
-			>
+			<div className={`${styles.width} mx-auto px-6 pt-8 pb-32 lg:pb-24`}>
 				{error ? (
 					<section className="py-24 text-center">
 						<p className={themeClasses.muted[effectiveTheme]}>{error}</p>
@@ -290,14 +287,6 @@ function AgpeyaContent() {
 					<AgpeyaPrayer
 						hour={hourData}
 						currentWatch={currentHour === 'midnight' ? currentWatch : undefined}
-						isRtl={isRtl}
-						textSize={settings.textSize}
-						fontFamily={settings.fontFamily}
-						lineSpacing={settings.lineSpacing}
-						wordSpacing={settings.wordSpacing}
-						theme={effectiveTheme}
-						weight={settings.weight}
-						viewMode={settings.viewMode}
 						allCollapsed={allCollapsed}
 					/>
 				) : null}

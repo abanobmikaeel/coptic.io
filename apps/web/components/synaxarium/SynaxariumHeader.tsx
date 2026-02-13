@@ -1,16 +1,15 @@
 'use client'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
+import type { SynaxariumViewMode } from '@/lib/reading-preferences'
 import { useTranslations } from 'next-intl'
 
-export type ViewMode = 'day' | 'upcoming'
-
 interface SynaxariumHeaderProps {
-	viewMode: ViewMode
+	viewMode: SynaxariumViewMode
 	gregorianDate: string
 	copticDate?: string
 	isToday: boolean
-	onViewModeChange: (mode: ViewMode) => void
+	onViewModeChange: (mode: SynaxariumViewMode) => void
 	onPrevious: () => void
 	onNext: () => void
 }

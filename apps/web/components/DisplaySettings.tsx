@@ -14,6 +14,7 @@ export type {
 	PaginatedMode,
 	ReadingTheme,
 	ReadingWidth,
+	SynaxariumViewMode,
 	TextSize,
 	ThemePreference,
 	ViewMode,
