@@ -293,7 +293,10 @@ export function SynaxariumReading({
 														wordSpacingClass,
 													} = getStyleClasses(firstLang)
 													return (
-														<div className={`${isRtl ? 'me-0' : 'ms-8'}`} dir={isRtl ? 'rtl' : 'ltr'}>
+														<div
+															className={`${isRtl ? 'me-0' : 'ms-8'}`}
+															dir={isRtl ? 'rtl' : 'ltr'}
+														>
 															<p
 																className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} whitespace-pre-line ${isRtl ? 'text-right' : ''}`}
 															>

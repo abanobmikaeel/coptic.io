@@ -8,7 +8,7 @@
  * Run with: pnpm match:synaxarium
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 // Load .env file if exists
@@ -49,7 +49,7 @@ async function callDeepSeek(prompt: string): Promise<string> {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${apiKey}`,
+			Authorization: `Bearer ${apiKey}`,
 		},
 		body: JSON.stringify({
 			model: 'deepseek-chat',
@@ -60,12 +60,12 @@ async function callDeepSeek(prompt: string): Promise<string> {
 Your task is to match English saint names with their Arabic equivalents.
 Respond ONLY with a JSON array of matches, no explanation.
 Format: [{"en_idx": 0, "ar_idx": 2}, {"en_idx": 1, "ar_idx": 0}, ...]
-If an entry has no match, omit it from the array.`
+If an entry has no match, omit it from the array.`,
 				},
 				{
 					role: 'user',
-					content: prompt
-				}
+					content: prompt,
+				},
 			],
 			temperature: 0.1,
 		}),
@@ -80,7 +80,11 @@ If an entry has no match, omit it from the array.`
 	return data.choices[0].message.content
 }
 
-function buildPrompt(dateKey: string, enEntries: SynaxariumEntry[], arEntries: SynaxariumEntry[]): string {
+function buildPrompt(
+	dateKey: string,
+	enEntries: SynaxariumEntry[],
+	arEntries: SynaxariumEntry[],
+): string {
 	const enList = enEntries.map((e, i) => `${i}: ${e.name}`).join('\n')
 	const arList = arEntries.map((e, i) => `${i}: ${e.name}`).join('\n')
 
@@ -115,7 +119,7 @@ function parseMatches(response: string): Match[] {
 async function matchEntriesForDate(
 	dateKey: string,
 	enEntries: SynaxariumEntry[],
-	arEntries: SynaxariumEntry[]
+	arEntries: SynaxariumEntry[],
 ): Promise<Map<number, number>> {
 	const prompt = buildPrompt(dateKey, enEntries, arEntries)
 
@@ -125,8 +129,12 @@ async function matchEntriesForDate(
 
 		const matchMap = new Map<number, number>()
 		for (const match of matches) {
-			if (match.en_idx >= 0 && match.en_idx < enEntries.length &&
-				match.ar_idx >= 0 && match.ar_idx < arEntries.length) {
+			if (
+				match.en_idx >= 0 &&
+				match.en_idx < enEntries.length &&
+				match.ar_idx >= 0 &&
+				match.ar_idx < arEntries.length
+			) {
 				matchMap.set(match.en_idx, match.ar_idx)
 			}
 		}
@@ -161,7 +169,7 @@ async function main() {
 	const allDateKeys = [...new Set([...Object.keys(enData), ...Object.keys(arData)])]
 
 	const log = (msg: string) => {
-		process.stdout.write(msg + '\n')
+		process.stdout.write(`${msg}\n`)
 	}
 
 	log(`Processing ${allDateKeys.length} dates...\n`)
@@ -175,58 +183,60 @@ async function main() {
 	for (let i = 0; i < allDateKeys.length; i += batchSize) {
 		const batch = allDateKeys.slice(i, i + batchSize)
 
-		await Promise.all(batch.map(async (dateKey) => {
-			const enEntries = enData[dateKey] || []
-			const arEntries = arData[dateKey] || []
+		await Promise.all(
+			batch.map(async (dateKey) => {
+				const enEntries = enData[dateKey] || []
+				const arEntries = arData[dateKey] || []
 
-			totalEn += enEntries.length
-			totalAr += arEntries.length
+				totalEn += enEntries.length
+				totalAr += arEntries.length
 
-			if (enEntries.length === 0 || arEntries.length === 0) {
-				// No matching possible, assign unique IDs
+				if (enEntries.length === 0 || arEntries.length === 0) {
+					// No matching possible, assign unique IDs
+					for (let j = 0; j < enEntries.length; j++) {
+						enEntries[j].id = generateSemanticId(dateKey, enEntries[j].name)
+					}
+					for (let j = 0; j < arEntries.length; j++) {
+						arEntries[j].id = `${dateKey.toLowerCase().replace(/\s+/g, '-')}-ar-${j + 1}`
+					}
+					return
+				}
+
+				log(`Matching: ${dateKey} (${enEntries.length} EN, ${arEntries.length} AR)`)
+
+				const matches = await matchEntriesForDate(dateKey, enEntries, arEntries)
+				const usedArIndices = new Set<number>()
+
+				// Assign IDs to matched entries
+				for (const [enIdx, arIdx] of matches) {
+					const semanticId = generateSemanticId(dateKey, enEntries[enIdx].name)
+					enEntries[enIdx].id = semanticId
+					arEntries[arIdx].id = semanticId
+					usedArIndices.add(arIdx)
+					totalMatched++
+				}
+
+				// Assign unique IDs to unmatched English entries
 				for (let j = 0; j < enEntries.length; j++) {
-					enEntries[j].id = generateSemanticId(dateKey, enEntries[j].name)
+					if (!enEntries[j].id) {
+						enEntries[j].id = generateSemanticId(dateKey, enEntries[j].name)
+					}
 				}
+
+				// Assign unique IDs to unmatched Arabic entries
 				for (let j = 0; j < arEntries.length; j++) {
-					arEntries[j].id = `${dateKey.toLowerCase().replace(/\s+/g, '-')}-ar-${j + 1}`
+					if (!arEntries[j].id) {
+						arEntries[j].id = `${dateKey.toLowerCase().replace(/\s+/g, '-')}-ar-${j + 1}`
+					}
 				}
-				return
-			}
 
-			log(`Matching: ${dateKey} (${enEntries.length} EN, ${arEntries.length} AR)`)
-
-			const matches = await matchEntriesForDate(dateKey, enEntries, arEntries)
-			const usedArIndices = new Set<number>()
-
-			// Assign IDs to matched entries
-			for (const [enIdx, arIdx] of matches) {
-				const semanticId = generateSemanticId(dateKey, enEntries[enIdx].name)
-				enEntries[enIdx].id = semanticId
-				arEntries[arIdx].id = semanticId
-				usedArIndices.add(arIdx)
-				totalMatched++
-			}
-
-			// Assign unique IDs to unmatched English entries
-			for (let j = 0; j < enEntries.length; j++) {
-				if (!enEntries[j].id) {
-					enEntries[j].id = generateSemanticId(dateKey, enEntries[j].name)
-				}
-			}
-
-			// Assign unique IDs to unmatched Arabic entries
-			for (let j = 0; j < arEntries.length; j++) {
-				if (!arEntries[j].id) {
-					arEntries[j].id = `${dateKey.toLowerCase().replace(/\s+/g, '-')}-ar-${j + 1}`
-				}
-			}
-
-			log(`  ✓ Matched ${matches.size}/${Math.min(enEntries.length, arEntries.length)} entries`)
-		}))
+				log(`  ✓ Matched ${matches.size}/${Math.min(enEntries.length, arEntries.length)} entries`)
+			}),
+		)
 
 		// Small delay between batches to respect rate limits
 		if (i + batchSize < allDateKeys.length) {
-			await new Promise(resolve => setTimeout(resolve, 1000))
+			await new Promise((resolve) => setTimeout(resolve, 1000))
 		}
 	}
 
@@ -234,7 +244,7 @@ async function main() {
 	writeFileSync(enPath, JSON.stringify(enData, null, '\t'))
 	writeFileSync(arPath, JSON.stringify(arData, null, '\t'))
 
-	log('\n' + '='.repeat(50))
+	log(`\n${'='.repeat(50)}`)
 	log('COMPLETE!')
 	log(`Total English entries: ${totalEn}`)
 	log(`Total Arabic entries: ${totalAr}`)

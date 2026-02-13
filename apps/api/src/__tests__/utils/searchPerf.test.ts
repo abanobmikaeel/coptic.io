@@ -1,4 +1,4 @@
-import { describe, it, beforeAll } from 'vitest'
+import { beforeAll, describe, it } from 'vitest'
 import { SimpleSearchService } from '../../services/search/simple-search.service'
 
 describe('Search Performance', () => {
@@ -26,15 +26,15 @@ describe('Search Performance', () => {
 		const min = Math.min(...times)
 		const max = Math.max(...times)
 
-		console.log('\n' + '='.repeat(60))
+		console.log(`\n${'='.repeat(60)}`)
 		console.log('BIBLE FULL-TEXT SEARCH')
 		console.log('='.repeat(60))
-		console.log('  Queries:     ' + queries.join(', '))
-		console.log('  Iterations:  ' + iterations + ' per query')
-		console.log('  Average:     ' + avg.toFixed(2) + 'ms')
-		console.log('  Min:         ' + min.toFixed(2) + 'ms')
-		console.log('  Max:         ' + max.toFixed(2) + 'ms')
-		console.log('='.repeat(60) + '\n')
+		console.log(`  Queries:     ${queries.join(', ')}`)
+		console.log(`  Iterations:  ${iterations} per query`)
+		console.log(`  Average:     ${avg.toFixed(2)}ms`)
+		console.log(`  Min:         ${min.toFixed(2)}ms`)
+		console.log(`  Max:         ${max.toFixed(2)}ms`)
+		console.log(`${'='.repeat(60)}\n`)
 	})
 
 	it('measures Bible reference lookup performance', async () => {
@@ -54,15 +54,15 @@ describe('Search Performance', () => {
 		const min = Math.min(...times)
 		const max = Math.max(...times)
 
-		console.log('\n' + '='.repeat(60))
+		console.log(`\n${'='.repeat(60)}`)
 		console.log('BIBLE REFERENCE LOOKUP (indexed)')
 		console.log('='.repeat(60))
-		console.log('  References:  ' + refs.join(', '))
-		console.log('  Iterations:  ' + iterations + ' per ref')
-		console.log('  Average:     ' + avg.toFixed(2) + 'ms')
-		console.log('  Min:         ' + min.toFixed(2) + 'ms')
-		console.log('  Max:         ' + max.toFixed(2) + 'ms')
-		console.log('='.repeat(60) + '\n')
+		console.log(`  References:  ${refs.join(', ')}`)
+		console.log(`  Iterations:  ${iterations} per ref`)
+		console.log(`  Average:     ${avg.toFixed(2)}ms`)
+		console.log(`  Min:         ${min.toFixed(2)}ms`)
+		console.log(`  Max:         ${max.toFixed(2)}ms`)
+		console.log(`${'='.repeat(60)}\n`)
 	})
 
 	it('measures synaxarium search performance', async () => {
@@ -80,12 +80,12 @@ describe('Search Performance', () => {
 
 		const avg = times.reduce((a, b) => a + b, 0) / times.length
 
-		console.log('\n' + '='.repeat(60))
+		console.log(`\n${'='.repeat(60)}`)
 		console.log('SYNAXARIUM SEARCH')
 		console.log('='.repeat(60))
-		console.log('  Queries:     ' + queries.join(', '))
-		console.log('  Iterations:  ' + iterations + ' per query')
-		console.log('  Average:     ' + avg.toFixed(2) + 'ms')
-		console.log('='.repeat(60) + '\n')
+		console.log(`  Queries:     ${queries.join(', ')}`)
+		console.log(`  Iterations:  ${iterations} per query`)
+		console.log(`  Average:     ${avg.toFixed(2)}ms`)
+		console.log(`${'='.repeat(60)}\n`)
 	})
 })
