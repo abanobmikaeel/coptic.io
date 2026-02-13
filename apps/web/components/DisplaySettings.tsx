@@ -11,6 +11,7 @@ export type {
 	FontFamily,
 	FontWeight,
 	LineSpacing,
+	PaginatedMode,
 	ReadingTheme,
 	ReadingWidth,
 	TextSize,

@@ -3,15 +3,19 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import type { Locale } from '@/i18n/config'
-import type {
-	FontFamily,
-	FontWeight,
-	LineSpacing,
-	ReadingWidth,
-	TextSize,
-	ThemePreference,
-	ViewMode,
-	WordSpacing,
+import {
+	type FontFamily,
+	type FontWeight,
+	type LineSpacing,
+	type PaginatedMode,
+	type ReadingPreferences as StoredPreferences,
+	type ReadingWidth,
+	type TextSize,
+	type ThemePreference,
+	type ViewMode,
+	type WordSpacing,
+	loadPreferences as loadStoredPreferences,
+	savePreferences as saveStoredPreferences,
 } from '@/lib/reading-preferences'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
@@ -20,6 +24,7 @@ import { Suspense, useEffect, useState, useTransition } from 'react'
 interface ReadingPreferences {
 	size: TextSize
 	view: ViewMode
+	paginatedMode: PaginatedMode
 	font: FontFamily
 	spacing: LineSpacing
 	wordSpacing: WordSpacing
@@ -32,6 +37,7 @@ interface ReadingPreferences {
 const DEFAULTS: ReadingPreferences = {
 	size: 'md',
 	view: 'verse',
+	paginatedMode: 'scroll',
 	font: 'sans',
 	spacing: 'normal',
 	wordSpacing: 'normal',
@@ -43,18 +49,36 @@ const DEFAULTS: ReadingPreferences = {
 
 function loadPreferences(): ReadingPreferences {
 	if (typeof window === 'undefined') return DEFAULTS
-	try {
-		const stored = localStorage.getItem('readingPreferences')
-		if (stored) {
-			return { ...DEFAULTS, ...JSON.parse(stored) }
-		}
-	} catch {}
-	return DEFAULTS
+	const stored = loadStoredPreferences()
+	return {
+		size: stored.size || DEFAULTS.size,
+		view: stored.view || DEFAULTS.view,
+		paginatedMode: stored.paginatedMode || DEFAULTS.paginatedMode,
+		font: stored.font || DEFAULTS.font,
+		spacing: stored.spacing || DEFAULTS.spacing,
+		wordSpacing: stored.wordSpacing || DEFAULTS.wordSpacing,
+		theme: stored.theme || DEFAULTS.theme,
+		width: stored.width || DEFAULTS.width,
+		weight: stored.weight || DEFAULTS.weight,
+		verses: stored.verses === 'hide' ? 'hide' : 'show',
+	}
 }
 
 function savePreferences(prefs: ReadingPreferences) {
 	if (typeof window === 'undefined') return
-	localStorage.setItem('readingPreferences', JSON.stringify(prefs))
+	const toStore: StoredPreferences = {
+		size: prefs.size,
+		view: prefs.view,
+		paginatedMode: prefs.paginatedMode,
+		font: prefs.font,
+		spacing: prefs.spacing,
+		wordSpacing: prefs.wordSpacing,
+		theme: prefs.theme,
+		width: prefs.width,
+		weight: prefs.weight,
+		verses: prefs.verses === 'hide' ? 'hide' : null,
+	}
+	saveStoredPreferences(toStore)
 }
 
 function SettingsContent() {
@@ -237,6 +261,19 @@ function SettingsContent() {
 										options={[
 											{ value: 'verse', label: t('viewModeVerse') },
 											{ value: 'continuous', label: t('viewModeContinuous') },
+										]}
+									/>
+								</SettingRow>
+								<SettingRow
+									label={t('navigationMode') || 'Navigation Mode'}
+									description={t('navigationModeDescription') || 'How to navigate between readings'}
+								>
+									<Select
+										value={prefs.paginatedMode}
+										onChange={(v) => updatePref('paginatedMode', v as PaginatedMode)}
+										options={[
+											{ value: 'scroll', label: t('navigationScroll') || 'Scroll' },
+											{ value: 'paginated', label: t('navigationPaginated') || 'Paginated' },
 										]}
 									/>
 								</SettingRow>

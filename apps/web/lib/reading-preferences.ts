@@ -1,6 +1,7 @@
 // Types for reading display settings
 export type TextSize = 'sm' | 'md' | 'lg'
 export type ViewMode = 'verse' | 'continuous'
+export type PaginatedMode = 'scroll' | 'paginated'
 export type BibleTranslation = 'en' | 'ar'
 export type FontFamily = 'sans' | 'serif'
 export type LineSpacing = 'compact' | 'normal' | 'relaxed'
@@ -15,6 +16,7 @@ const STORAGE_KEY = 'coptic-reading-preferences'
 export interface ReadingPreferences {
 	size?: TextSize
 	view?: ViewMode
+	paginatedMode?: PaginatedMode
 	lang?: BibleTranslation
 	font?: FontFamily
 	spacing?: LineSpacing

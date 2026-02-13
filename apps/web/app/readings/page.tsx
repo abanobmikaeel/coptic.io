@@ -5,12 +5,15 @@ import {
 	type FontFamily,
 	type FontWeight,
 	type LineSpacing,
+	type PaginatedMode,
 	type ReadingTheme,
 	type ReadingWidth,
 	type TextSize,
 	type ViewMode,
 	type WordSpacing,
 } from '@/components/DisplaySettings'
+import type { ReadingPage } from '@/components/PaginatedReadingView'
+import { PaginatedReadingsWrapper } from '@/components/PaginatedReadingsWrapper'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
@@ -88,6 +91,7 @@ interface ReadingsPageProps {
 		date?: string
 		lang?: string
 		view?: string
+		paginatedMode?: string
 		verses?: string
 		size?: string
 		font?: string
@@ -116,6 +120,8 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 	// Parse display settings from URL
 	const viewMode: ViewMode = params.view === 'verse' ? 'verse' : 'continuous'
+	const paginatedMode: PaginatedMode =
+		params.paginatedMode === 'paginated' ? 'paginated' : 'scroll'
 	const showVerses = params.verses !== 'hide'
 	const textSize: TextSize = (params.size as TextSize) || 'md'
 	const fontFamily: FontFamily = (params.font as FontFamily) || 'sans'
@@ -211,14 +217,119 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		)
 	}
 
+	// Build pages for paginated mode
+	const buildPages = (): ReadingPage[] => {
+		if (!readings) return []
+
+		const pages: ReadingPage[] = []
+		const sectionLabels: Record<string, { name: string; service: string }> = {
+			Pauline: { name: 'Pauline Epistle', service: 'Liturgy' },
+			Catholic: { name: 'Catholic Epistle', service: 'Liturgy' },
+			Acts: { name: 'Acts of the Apostles', service: 'Liturgy' },
+			Synaxarium: { name: 'Synaxarium', service: 'Liturgy' },
+			LPsalm: { name: 'Psalm', service: 'Liturgy' },
+			LGospel: { name: 'Gospel', service: 'Liturgy' },
+			VPsalm: { name: 'Psalm', service: 'Vespers' },
+			VGospel: { name: 'Gospel', service: 'Vespers' },
+			MPsalm: { name: 'Psalm', service: 'Matins' },
+			MGospel: { name: 'Gospel', service: 'Matins' },
+		}
+
+		// Add Liturgy sections
+		const liturgySections: ReadingSection[] = ['Pauline', 'Catholic', 'Acts']
+		for (const key of liturgySections) {
+			const content = renderSection(key, 'Liturgy')
+			if (content) {
+				const label = sectionLabels[key]
+				pages.push({
+					id: key,
+					service: label.service,
+					section: label.name,
+					content,
+				})
+			}
+		}
+
+		// Add Synaxarium
+		if (Object.keys(synaxariumByLang).length > 0) {
+			pages.push({
+				id: 'Synaxarium',
+				service: 'Liturgy',
+				section: 'Synaxarium',
+				content: (
+					<SynaxariumReading
+						entriesByLang={synaxariumByLang}
+						languages={languagesToFetch.filter((l) => synaxariumLangs.includes(l))}
+						textSize={textSize}
+						theme={theme}
+						width={width}
+						service="Liturgy"
+						fontFamily={fontFamily}
+						weight={fontWeight}
+						lineSpacing={lineSpacing}
+						wordSpacing={wordSpacing}
+					/>
+				),
+			})
+		}
+
+		// Add Liturgy Psalm and Gospel
+		for (const key of ['LPsalm', 'LGospel'] as ReadingSection[]) {
+			const content = renderSection(key, 'Liturgy')
+			if (content) {
+				const label = sectionLabels[key]
+				pages.push({
+					id: key,
+					service: label.service,
+					section: label.name,
+					content,
+				})
+			}
+		}
+
+		// Add Vespers sections
+		for (const key of ['VPsalm', 'VGospel'] as ReadingSection[]) {
+			const content = renderSection(key, 'Vespers')
+			if (content) {
+				const label = sectionLabels[key]
+				pages.push({
+					id: key,
+					service: label.service,
+					section: label.name,
+					content,
+				})
+			}
+		}
+
+		// Add Matins sections
+		for (const key of ['MPsalm', 'MGospel'] as ReadingSection[]) {
+			const content = renderSection(key, 'Matins')
+			if (content) {
+				const label = sectionLabels[key]
+				pages.push({
+					id: key,
+					service: label.service,
+					section: label.name,
+					content,
+				})
+			}
+		}
+
+		return pages
+	}
+
+	const pages = buildPages()
+
 	return (
 		<main
 			className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}
 		>
-			{/* Progress indicator */}
-			<Suspense fallback={null}>
-				<ReadingProgress />
-			</Suspense>
+			{/* Progress indicator - only in scroll mode */}
+			{paginatedMode === 'scroll' && (
+				<Suspense fallback={null}>
+					<ReadingProgress />
+				</Suspense>
+			)}
 
 			{/* Sticky header bar with date and settings */}
 			<ReadingsHeader theme={theme} themeClasses={themeClasses}>
@@ -264,61 +375,68 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 			{readings ? (
 				<Suspense fallback={<div className="px-6 pt-10 pb-32 lg:pb-24" />}>
-					<SwipeableContainer basePath="/readings" className="px-6 pt-10 pb-32 lg:pb-24">
-						{(() => {
-							const ServiceDivider = () => (
-								<div className={'max-w-2xl mx-auto px-4 my-8'}>
-									<div className={`border-t ${themeClasses.border[theme]}`} />
-								</div>
-							)
+					<PaginatedReadingsWrapper
+						pages={pages}
+						theme={theme}
+						paginatedMode={paginatedMode}
+						scrollContent={
+							<SwipeableContainer basePath="/readings" className="px-6 pt-10 pb-32 lg:pb-24">
+								{(() => {
+									const ServiceDivider = () => (
+										<div className={'max-w-2xl mx-auto px-4 my-8'}>
+											<div className={`border-t ${themeClasses.border[theme]}`} />
+										</div>
+									)
 
-							const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
-							const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
+									const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
+									const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
 
-							return (
-								<>
-									{/* LITURGY */}
-									{renderSection('Pauline', 'Liturgy')}
-									{renderSection('Catholic', 'Liturgy')}
-									{renderSection('Acts', 'Liturgy')}
-									{Object.keys(synaxariumByLang).length > 0 ? (
-										<SynaxariumReading
-											entriesByLang={synaxariumByLang}
-											languages={languagesToFetch.filter((l) => synaxariumLangs.includes(l))}
-											textSize={textSize}
-											theme={theme}
-											width={width}
-											service="Liturgy"
-											fontFamily={fontFamily}
-											weight={fontWeight}
-											lineSpacing={lineSpacing}
-											wordSpacing={wordSpacing}
-										/>
-									) : null}
-									{renderSection('LPsalm', 'Liturgy')}
-									{renderSection('LGospel', 'Liturgy')}
-
-									{/* VESPERS */}
-									{hasVespers && (
+									return (
 										<>
-											<ServiceDivider />
-											{renderSection('VPsalm', 'Vespers')}
-											{renderSection('VGospel', 'Vespers')}
-										</>
-									)}
+											{/* LITURGY */}
+											{renderSection('Pauline', 'Liturgy')}
+											{renderSection('Catholic', 'Liturgy')}
+											{renderSection('Acts', 'Liturgy')}
+											{Object.keys(synaxariumByLang).length > 0 ? (
+												<SynaxariumReading
+													entriesByLang={synaxariumByLang}
+													languages={languagesToFetch.filter((l) => synaxariumLangs.includes(l))}
+													textSize={textSize}
+													theme={theme}
+													width={width}
+													service="Liturgy"
+													fontFamily={fontFamily}
+													weight={fontWeight}
+													lineSpacing={lineSpacing}
+													wordSpacing={wordSpacing}
+												/>
+											) : null}
+											{renderSection('LPsalm', 'Liturgy')}
+											{renderSection('LGospel', 'Liturgy')}
 
-									{/* MATINS */}
-									{hasMatins && (
-										<>
-											<ServiceDivider />
-											{renderSection('MPsalm', 'Matins')}
-											{renderSection('MGospel', 'Matins')}
+											{/* VESPERS */}
+											{hasVespers && (
+												<>
+													<ServiceDivider />
+													{renderSection('VPsalm', 'Vespers')}
+													{renderSection('VGospel', 'Vespers')}
+												</>
+											)}
+
+											{/* MATINS */}
+											{hasMatins && (
+												<>
+													<ServiceDivider />
+													{renderSection('MPsalm', 'Matins')}
+													{renderSection('MGospel', 'Matins')}
+												</>
+											)}
 										</>
-									)}
-								</>
-							)
-						})()}
-					</SwipeableContainer>
+									)
+								})()}
+							</SwipeableContainer>
+						}
+					/>
 				</Suspense>
 			) : (
 				<section className="px-6 py-12">
@@ -326,11 +444,13 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				</section>
 			)}
 
-			{/* Timeline navigation */}
-			{readings && <ReadingTimeline sections={getAvailableSections(readings)} />}
+			{/* Timeline navigation - only in scroll mode */}
+			{readings && paginatedMode === 'scroll' && (
+				<ReadingTimeline sections={getAvailableSections(readings)} />
+			)}
 
-			{/* Back to top */}
-			<BackToTop />
+			{/* Back to top - only in scroll mode */}
+			{paginatedMode === 'scroll' && <BackToTop />}
 		</main>
 	)
 }

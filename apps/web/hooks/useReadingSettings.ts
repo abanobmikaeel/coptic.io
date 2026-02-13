@@ -5,6 +5,7 @@ import {
 	type FontFamily,
 	type FontWeight,
 	type LineSpacing,
+	type PaginatedMode,
 	type ReadingPreferences,
 	type ReadingTheme,
 	type ReadingWidth,
@@ -23,6 +24,7 @@ export interface ReadingSettings {
 	showVerses: boolean
 	textSize: TextSize
 	viewMode: ViewMode
+	paginatedMode: PaginatedMode
 	translation: BibleTranslation
 	fontFamily: FontFamily
 	lineSpacing: LineSpacing
@@ -37,6 +39,7 @@ export interface ReadingSettingsActions {
 	setShowVerses: (show: boolean) => void
 	setTextSize: (size: TextSize) => void
 	setViewMode: (mode: ViewMode) => void
+	setPaginatedMode: (mode: PaginatedMode) => void
 	setTranslation: (lang: BibleTranslation) => void
 	setFontFamily: (font: FontFamily) => void
 	setLineSpacing: (spacing: LineSpacing) => void
@@ -73,6 +76,8 @@ export function useReadingSettings(): {
 			const params = new URLSearchParams(searchParams.toString())
 			if (prefs.size && prefs.size !== 'md') params.set('size', prefs.size)
 			if (prefs.view && prefs.view !== 'verse') params.set('view', prefs.view)
+			if (prefs.paginatedMode && prefs.paginatedMode !== 'scroll')
+				params.set('paginatedMode', prefs.paginatedMode)
 			if (prefs.lang && prefs.lang !== 'en') params.set('lang', prefs.lang)
 			if (prefs.font && prefs.font !== 'sans') params.set('font', prefs.font)
 			if (prefs.spacing && prefs.spacing !== 'normal') params.set('spacing', prefs.spacing)
@@ -116,6 +121,7 @@ export function useReadingSettings(): {
 		showVerses: searchParams.get('verses') !== 'hide',
 		textSize: (searchParams.get('size') as TextSize) || 'md',
 		viewMode: (searchParams.get('view') as ViewMode) || 'verse',
+		paginatedMode: (searchParams.get('paginatedMode') as PaginatedMode) || 'scroll',
 		translation: (searchParams.get('lang') as BibleTranslation) || 'en',
 		fontFamily: (searchParams.get('font') as FontFamily) || 'sans',
 		lineSpacing: (searchParams.get('spacing') as LineSpacing) || 'normal',
@@ -154,6 +160,7 @@ export function useReadingSettings(): {
 		setShowVerses: (show) => updateParam('verses', show ? null : 'hide'),
 		setTextSize: (size) => updateParam('size', size === 'md' ? null : size),
 		setViewMode: (mode) => updateParam('view', mode === 'verse' ? null : mode),
+		setPaginatedMode: (mode) => updateParam('paginatedMode', mode === 'scroll' ? null : mode),
 		setTranslation: (lang) => updateParam('lang', lang === 'en' ? null : lang),
 		setFontFamily: (font) => updateParam('font', font === 'sans' ? null : font),
 		setLineSpacing: (spacing) => updateParam('spacing', spacing === 'normal' ? null : spacing),
