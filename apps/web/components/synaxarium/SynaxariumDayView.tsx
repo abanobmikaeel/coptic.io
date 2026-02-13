@@ -8,12 +8,12 @@ import type {
 	TextSize,
 	WordSpacing,
 } from '@/components/DisplaySettings'
-import { SynaxariumSection } from '@/components/SynaxariumSection'
+import { BilingualSynaxariumSection } from '@/components/synaxarium/BilingualSynaxariumSection'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { NoEntriesState } from '@/components/ui/EmptyState'
 import { ChevronRightIcon } from '@/components/ui/Icons'
+import type { BilingualEntry } from '@/hooks/useSynaxarium'
 import { themeClasses } from '@/lib/reading-styles'
-import type { SynaxariumEntry } from '@/lib/types'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import {
@@ -26,11 +26,12 @@ import {
 interface SynaxariumDayViewProps {
 	currentDate: string
 	isToday: boolean
-	entries: SynaxariumEntry[]
-	filteredEntries: SynaxariumEntry[]
+	bilingualEntries: BilingualEntry[]
+	filteredBilingualEntries: BilingualEntry[]
 	loading: boolean
 	selectedCategory: CategoryId
-	expandedEntry: number | null
+	expandedEntry: string | null
+	onExpandedChange: (id: string | null) => void
 	textSize?: TextSize
 	theme?: ReadingTheme
 	fontFamily?: FontFamily
@@ -42,11 +43,12 @@ interface SynaxariumDayViewProps {
 export function SynaxariumDayView({
 	currentDate,
 	isToday,
-	entries,
-	filteredEntries,
+	bilingualEntries,
+	filteredBilingualEntries,
 	loading,
 	selectedCategory,
 	expandedEntry,
+	onExpandedChange,
 	textSize = 'md',
 	theme = 'light',
 	fontFamily = 'serif',
@@ -60,11 +62,13 @@ export function SynaxariumDayView({
 	return (
 		<>
 			{/* Featured Today */}
-			{isToday && entries.length > 0 && <FeaturedTodayCard entries={entries} />}
+			{isToday && bilingualEntries.length > 0 && (
+				<FeaturedTodayCard entries={bilingualEntries} theme={theme} />
+			)}
 
 			{/* View Readings Link */}
 			<section className="relative px-6 pb-4">
-				<div className="max-w-4xl mx-auto text-center">
+				<div className="max-w-5xl mx-auto text-center">
 					<Link
 						href={`/readings?date=${currentDate}`}
 						prefetch={false}
@@ -78,23 +82,24 @@ export function SynaxariumDayView({
 
 			{/* Entries List */}
 			<section className="relative px-6 pb-16">
-				<div className="max-w-4xl mx-auto">
+				<div className="max-w-5xl mx-auto">
 					<Card className={themeClasses.bg[theme]}>
 						<CardHeader className={themeClasses.textHeading[theme]}>
 							{selectedCategory === 'all'
 								? t('allCommemorations')
 								: tCategories(CATEGORIES.find((c) => c.id === selectedCategory)?.labelKey || 'all')}
 							<span className={`ms-2 text-sm font-normal ${themeClasses.muted[theme]}`}>
-								({filteredEntries.length})
+								({filteredBilingualEntries.length})
 							</span>
 						</CardHeader>
 						<CardContent>
 							{loading ? (
 								<EntriesLoadingSkeleton />
-							) : filteredEntries.length > 0 ? (
-								<SynaxariumSection
-									entries={filteredEntries}
-									initialExpanded={expandedEntry}
+							) : filteredBilingualEntries.length > 0 ? (
+								<BilingualSynaxariumSection
+									entries={filteredBilingualEntries}
+									expandedEntry={expandedEntry}
+									onExpandedChange={onExpandedChange}
 									textSize={textSize}
 									theme={theme}
 									fontFamily={fontFamily}
@@ -121,14 +126,19 @@ export function SynaxariumDayView({
 	)
 }
 
-function FeaturedTodayCard({ entries }: { entries: SynaxariumEntry[] }) {
+function FeaturedTodayCard({
+	entries,
+	theme,
+}: { entries: BilingualEntry[]; theme: ReadingTheme }) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
 
 	return (
 		<section className="relative px-6 pb-6">
-			<div className="max-w-4xl mx-auto">
-				<Card className="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/10">
+			<div className="max-w-5xl mx-auto">
+				<Card
+					className={`border-amber-200 dark:border-amber-800 ${theme === 'sepia' ? 'bg-amber-100/50' : 'bg-amber-50/50 dark:bg-amber-900/10'}`}
+				>
 					<CardHeader className="flex items-center gap-2">
 						<span className="text-amber-600 dark:text-amber-500">{t('todaysSaints')}</span>
 						<span className="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -138,21 +148,36 @@ function FeaturedTodayCard({ entries }: { entries: SynaxariumEntry[] }) {
 					</CardHeader>
 					<CardContent>
 						<div className="grid gap-3 sm:grid-cols-2">
-							{entries.slice(0, 4).map((entry, idx) => {
-								const category = getCategoryForEntry(entry.name)
+							{entries.slice(0, 4).map((entry) => {
+								const name = entry.en?.name || entry.ar?.name || ''
+								const category = getCategoryForEntry(name)
 								return (
 									<div
-										key={idx}
-										className="p-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800"
+										key={entry.id}
+										className={`p-3 rounded-lg border ${theme === 'sepia' ? 'bg-amber-50 border-amber-200' : 'bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800'}`}
 									>
 										<span
 											className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-2 ${getCategoryColor(category)}`}
 										>
 											{tCategories(CATEGORIES.find((c) => c.id === category)?.labelKey || 'other')}
 										</span>
-										<p className="text-sm font-medium text-gray-900 dark:text-white line-clamp-2">
-											{entry.name}
-										</p>
+										{/* English name */}
+										{entry.en && (
+											<p
+												className={`text-sm font-medium line-clamp-2 ${theme === 'sepia' ? 'text-amber-900' : 'text-gray-900 dark:text-white'}`}
+											>
+												{entry.en.name}
+											</p>
+										)}
+										{/* Arabic name */}
+										{entry.ar && (
+											<p
+												className={`text-sm font-medium line-clamp-2 mt-1 ${theme === 'sepia' ? 'text-amber-800/80' : 'text-gray-600 dark:text-gray-400'}`}
+												dir="rtl"
+											>
+												{entry.ar.name}
+											</p>
+										)}
 									</div>
 								)
 							})}

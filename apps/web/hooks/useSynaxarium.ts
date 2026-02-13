@@ -14,6 +14,43 @@ import { useLocale } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+export interface BilingualEntry {
+	id: string
+	en?: SynaxariumEntry
+	ar?: SynaxariumEntry
+}
+
+// Merge English and Arabic entries by ID
+function mergeEntriesById(
+	enEntries: SynaxariumEntry[],
+	arEntries: SynaxariumEntry[],
+): BilingualEntry[] {
+	const mergedMap = new Map<string, BilingualEntry>()
+	const orderKeys: string[] = []
+
+	// Add English entries first (primary order)
+	for (const entry of enEntries) {
+		const id = entry.id || `fallback-en-${entry.name.slice(0, 30)}`
+		if (!mergedMap.has(id)) {
+			mergedMap.set(id, { id })
+			orderKeys.push(id)
+		}
+		mergedMap.get(id)!.en = entry
+	}
+
+	// Add Arabic entries (match by ID or add as new)
+	for (const entry of arEntries) {
+		const id = entry.id || `fallback-ar-${entry.name.slice(0, 30)}`
+		if (!mergedMap.has(id)) {
+			mergedMap.set(id, { id })
+			orderKeys.push(id)
+		}
+		mergedMap.get(id)!.ar = entry
+	}
+
+	return orderKeys.map((id) => mergedMap.get(id)!)
+}
+
 export function useSynaxarium() {
 	const router = useRouter()
 	const searchParams = useSearchParams()
@@ -38,11 +75,12 @@ export function useSynaxarium() {
 
 	// === Local UI state ===
 	const [searchQuery, setSearchQuery] = useState('')
-	const [expandedEntry, setExpandedEntry] = useState<number | null>(null)
+	const [expandedEntry, setExpandedEntry] = useState<string | null>(null)
 
 	// === Fetched data ===
 	const [copticDate, setCopticDate] = useState<string | null>(null)
-	const [entries, setEntries] = useState<SynaxariumEntry[]>([])
+	const [entriesEn, setEntriesEn] = useState<SynaxariumEntry[]>([])
+	const [entriesAr, setEntriesAr] = useState<SynaxariumEntry[]>([])
 	const [loading, setLoading] = useState(true)
 	const [searchResults, setSearchResults] = useState<SynaxariumSearchResult[]>([])
 	const [isSearching, setIsSearching] = useState(false)
@@ -123,31 +161,48 @@ export function useSynaxarium() {
 		}
 	}, [currentDate])
 
-	// Fetch entries
+	// Fetch entries (both English and Arabic in parallel)
 	useEffect(() => {
 		if (viewMode !== 'day') return
 		let cancelled = false
 		setLoading(true)
-		// Pass locale for Arabic synaxarium support
-		const lang = locale === 'ar' ? 'ar' : undefined
-		getSynaxariumByDate(currentDate, true, lang).then((data) => {
+
+		Promise.all([
+			getSynaxariumByDate(currentDate, true), // English
+			getSynaxariumByDate(currentDate, true, 'ar'), // Arabic
+		]).then(([enData, arData]) => {
 			if (!cancelled) {
-				setEntries(data || [])
+				setEntriesEn(enData || [])
+				setEntriesAr(arData || [])
 				setLoading(false)
 			}
 		})
+
 		return () => {
 			cancelled = true
 		}
-	}, [currentDate, viewMode, locale])
+	}, [currentDate, viewMode])
+
+	// Merge entries by ID for bilingual display
+	const bilingualEntries = useMemo(
+		() => mergeEntriesById(entriesEn, entriesAr),
+		[entriesEn, entriesAr],
+	)
+
+	// For backwards compatibility - English entries as primary
+	const entries = entriesEn
 
 	// Expand entry from URL param
 	useEffect(() => {
-		if (entryParam && entries.length > 0) {
-			const idx = entries.findIndex((e) => e.name === decodeURIComponent(entryParam))
-			if (idx >= 0) setExpandedEntry(idx)
+		if (entryParam && bilingualEntries.length > 0) {
+			const entry = bilingualEntries.find(
+				(e) =>
+					e.en?.name === decodeURIComponent(entryParam) ||
+					e.ar?.name === decodeURIComponent(entryParam),
+			)
+			if (entry) setExpandedEntry(entry.id)
 		}
-	}, [entryParam, entries])
+	}, [entryParam, bilingualEntries])
 
 	// Debounced search
 	useEffect(() => {
@@ -173,6 +228,15 @@ export function useSynaxarium() {
 		return entries.filter((e) => matchesCategory(e.name, selectedCategory))
 	}, [entries, selectedCategory])
 
+	const filteredBilingualEntries = useMemo(() => {
+		if (selectedCategory === 'all') return bilingualEntries
+		return bilingualEntries.filter((e) => {
+			// Match on English name (primary) or Arabic if no English
+			const name = e.en?.name || e.ar?.name || ''
+			return matchesCategory(name, selectedCategory)
+		})
+	}, [bilingualEntries, selectedCategory])
+
 	const filteredSearchResults = useMemo(() => {
 		if (selectedCategory === 'all') return searchResults
 		return searchResults.filter(
@@ -182,7 +246,7 @@ export function useSynaxarium() {
 
 	const categoryCounts = useMemo(() => {
 		const counts: Record<CategoryId, number> = {
-			all: entries.length,
+			all: bilingualEntries.length,
 			martyrs: 0,
 			popes: 0,
 			apostles: 0,
@@ -191,12 +255,13 @@ export function useSynaxarium() {
 			monastics: 0,
 			bishops: 0,
 		}
-		for (const entry of entries) {
-			const cat = getCategoryForEntry(entry.name)
+		for (const entry of bilingualEntries) {
+			const name = entry.en?.name || entry.ar?.name || ''
+			const cat = getCategoryForEntry(name)
 			if (cat !== 'all') counts[cat]++
 		}
 		return counts
-	}, [entries])
+	}, [bilingualEntries])
 
 	return {
 		// State from URL
@@ -209,6 +274,8 @@ export function useSynaxarium() {
 		copticDate,
 		entries,
 		filteredEntries,
+		bilingualEntries,
+		filteredBilingualEntries,
 		loading,
 		// Search
 		searchQuery,
@@ -218,6 +285,7 @@ export function useSynaxarium() {
 		showingSearch,
 		// UI state
 		expandedEntry,
+		setExpandedEntry,
 		categoryCounts,
 		// Actions
 		setSearchQuery,

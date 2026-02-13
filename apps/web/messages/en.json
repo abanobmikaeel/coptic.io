@@ -135,7 +135,11 @@
 		"searchResults": "Search Results",
 		"filteredBy": "Filtered by",
 		"previousDay": "Previous day",
-		"nextDay": "Next day"
+		"nextDay": "Next day",
+		"noEnglish": "No English available",
+		"noArabic": "No Arabic available",
+		"noEnglishText": "No English text available",
+		"noArabicText": "No Arabic text available"
 	},
 	"categories": {
 		"all": "All",

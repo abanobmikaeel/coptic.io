@@ -135,7 +135,11 @@
 		"searchResults": "نتائج البحث",
 		"filteredBy": "عرض",
 		"previousDay": "السابق",
-		"nextDay": "التالي"
+		"nextDay": "التالي",
+		"noEnglish": "غير متوفر بالإنجليزية",
+		"noArabic": "غير متوفر بالعربية",
+		"noEnglishText": "النص غير متوفر بالإنجليزية",
+		"noArabicText": "النص غير متوفر بالعربية"
 	},
 	"categories": {
 		"all": "الكل",

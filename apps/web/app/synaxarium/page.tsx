@@ -29,8 +29,8 @@ function SynaxariumPageContent() {
 		currentDate,
 		copticDate,
 		displayDate,
-		entries,
-		filteredEntries,
+		bilingualEntries,
+		filteredBilingualEntries,
 		searchQuery,
 		searchResults,
 		filteredSearchResults,
@@ -38,6 +38,7 @@ function SynaxariumPageContent() {
 		loading,
 		selectedCategory,
 		expandedEntry,
+		setExpandedEntry,
 		isToday,
 		showingSearch,
 		categoryCounts,
@@ -129,11 +130,12 @@ function SynaxariumPageContent() {
 					key={currentDate}
 					currentDate={currentDate}
 					isToday={isToday}
-					entries={entries}
-					filteredEntries={filteredEntries}
+					bilingualEntries={bilingualEntries}
+					filteredBilingualEntries={filteredBilingualEntries}
 					loading={loading}
 					selectedCategory={selectedCategory}
 					expandedEntry={expandedEntry}
+					onExpandedChange={setExpandedEntry}
 					textSize={settings.textSize}
 					theme={settings.theme}
 					fontFamily={settings.fontFamily}
