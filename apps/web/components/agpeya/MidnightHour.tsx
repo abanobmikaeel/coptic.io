@@ -50,7 +50,7 @@ export function MidnightHour({
 
 			<div className="space-y-8">
 				{/* Opening */}
-				<section id="section-introduction" className="scroll-mt-32">
+				<section id="section-introduction" className="scroll-mt-24">
 					<InlinePrayer content={hour.opening.content} textStyles={textStyles} isRtl={isRtl} />
 					{watch.opening && (
 						<div className="mt-4">
@@ -108,7 +108,7 @@ export function MidnightHour({
 
 				{/* Watch Litanies */}
 				{watch.litanies && (
-					<section id="section-litanies" className="scroll-mt-32">
+					<section id="section-litanies" className="scroll-mt-24">
 						<CollapsibleSection
 							title="Litanies"
 							themeStyles={themeStyles}

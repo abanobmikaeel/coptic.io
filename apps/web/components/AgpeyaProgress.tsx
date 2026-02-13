@@ -22,9 +22,10 @@ const SECTIONS: Section[] = [
 interface AgpeyaProgressProps {
 	theme?: ReadingTheme
 	psalmsCount?: number
+	isRtl?: boolean
 }
 
-export function AgpeyaProgress({ theme = 'light', psalmsCount = 0 }: AgpeyaProgressProps) {
+export function AgpeyaProgress({ theme = 'light', psalmsCount = 0, isRtl = false }: AgpeyaProgressProps) {
 	const [activeSection, setActiveSection] = useState<SectionId>('introduction')
 	const [isVisible, setIsVisible] = useState(true)
 	const [lastScrollY, setLastScrollY] = useState(0)
@@ -115,8 +116,8 @@ export function AgpeyaProgress({ theme = 'light', psalmsCount = 0 }: AgpeyaProgr
 
 	return (
 		<>
-			{/* Desktop sidebar */}
-			<nav className="hidden lg:block fixed right-8 top-1/2 -translate-y-1/2 z-40">
+			{/* Desktop sidebar - position based on reading direction */}
+			<nav className={`hidden lg:block fixed top-1/2 -translate-y-1/2 z-40 ${isRtl ? 'left-8' : 'right-8'}`}>
 				<div
 					className={`py-3 px-1 rounded-xl border backdrop-blur-sm shadow-lg ${styles.bg} ${styles.border}`}
 				>

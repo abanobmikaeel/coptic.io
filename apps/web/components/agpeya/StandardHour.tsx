@@ -40,7 +40,7 @@ export function StandardHour({
 
 			<div className="space-y-8">
 				{/* Opening - always inline */}
-				<section id="section-introduction" className="scroll-mt-32">
+				<section id="section-introduction" className="scroll-mt-24">
 					<InlinePrayer content={hour.opening.content} textStyles={textStyles} isRtl={isRtl} />
 				</section>
 
@@ -94,7 +94,7 @@ export function StandardHour({
 				/>
 
 				{/* Litanies */}
-				<section id="section-litanies" className="scroll-mt-32">
+				<section id="section-litanies" className="scroll-mt-24">
 					<CollapsibleSection
 						title="Litanies"
 						themeStyles={themeStyles}
@@ -107,7 +107,7 @@ export function StandardHour({
 
 				{/* Lord's Prayer - always inline */}
 				{hour.lordsPrayer && (
-					<section id="section-lords-prayer" className="scroll-mt-32">
+					<section id="section-lords-prayer" className="scroll-mt-24">
 						<InlinePrayer
 							content={hour.lordsPrayer.content}
 							textStyles={textStyles}

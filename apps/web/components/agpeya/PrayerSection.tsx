@@ -27,14 +27,14 @@ export function PrayerSection({
 
 	if (section.inline) {
 		return (
-			<section id={id} className="scroll-mt-32">
+			<section id={id} className="scroll-mt-24">
 				<InlinePrayer content={section.content} textStyles={textStyles} isRtl={isRtl} />
 			</section>
 		)
 	}
 
 	return (
-		<section id={id} className="scroll-mt-32">
+		<section id={id} className="scroll-mt-24">
 			<CollapsibleSection
 				title={title}
 				themeStyles={themeStyles}

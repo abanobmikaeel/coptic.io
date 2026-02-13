@@ -25,7 +25,7 @@ export function IntroductoryPsalmSection({
 	forceCollapsed,
 }: IntroductoryPsalmSectionProps) {
 	return (
-		<section id="section-introductory-psalm" className="scroll-mt-32">
+		<section id="section-introductory-psalm" className="scroll-mt-24">
 			<CollapsibleSection
 				title={psalm.title || 'Psalm 50'}
 				subtitle={psalm.reference}

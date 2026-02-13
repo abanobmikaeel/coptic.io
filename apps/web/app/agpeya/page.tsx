@@ -21,6 +21,7 @@ import { API_BASE_URL } from '@/config'
 import { useNavigation } from '@/contexts/NavigationContext'
 import { useReadingSettingsContext } from '@/contexts/ReadingSettingsContext'
 import { themeClasses } from '@/lib/reading-styles'
+import { useLocale } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useCallback, useEffect, useState } from 'react'
 
@@ -115,8 +116,10 @@ function AgpeyaSkeleton({ theme }: { theme: 'light' | 'sepia' | 'dark' }) {
 function AgpeyaContent() {
 	const router = useRouter()
 	const searchParams = useSearchParams()
+	const locale = useLocale()
 	const { settings, styles, mounted } = useReadingSettingsContext()
 	const { mode } = useNavigation()
+	const isRtl = locale === 'ar'
 	const [hourData, setHourData] = useState<AgpeyaHourData | AgpeyaMidnightData | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [showSkeleton, setShowSkeleton] = useState(false)
@@ -207,7 +210,7 @@ function AgpeyaContent() {
 			<div
 				className={`sticky ${mode === 'read' ? 'top-0 lg:top-14' : 'top-14'} z-30 ${themeClasses.bgTranslucent[effectiveTheme]} backdrop-blur-sm border-b ${themeClasses.border[effectiveTheme]}`}
 			>
-				<div className="max-w-4xl mx-auto px-6 py-3">
+				<div className="max-w-4xl mx-auto px-6 py-1.5">
 					<div className="flex items-center justify-between gap-4">
 						{/* Exit button for mobile in read mode */}
 						{mode === 'read' && (
@@ -276,7 +279,7 @@ function AgpeyaContent() {
 			</div>
 
 			{/* Content */}
-			<div className={`${styles.width} mx-auto px-6 pt-8 pb-32 lg:pb-24`}>
+			<div className={`${styles.width} mx-auto px-6 pt-6 pb-32 lg:pb-24`}>
 				{error ? (
 					<section className="py-24 text-center">
 						<p className={themeClasses.muted[effectiveTheme]}>{error}</p>
@@ -296,6 +299,7 @@ function AgpeyaContent() {
 			{hourData && (
 				<AgpeyaProgress
 					theme={effectiveTheme}
+					isRtl={isRtl}
 					psalmsCount={
 						'watches' in hourData && hourData.watches
 							? hourData.watches[parseInt(currentWatch, 10) - 1]?.psalms?.length || 0

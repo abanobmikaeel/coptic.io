@@ -25,7 +25,7 @@ export function GospelSection({
 	forceCollapsed,
 }: GospelSectionProps) {
 	return (
-		<section id="section-gospel" className="scroll-mt-32">
+		<section id="section-gospel" className="scroll-mt-24">
 			<CollapsibleSection
 				title="Gospel"
 				subtitle={gospel.reference}

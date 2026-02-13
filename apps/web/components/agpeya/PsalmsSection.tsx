@@ -27,7 +27,7 @@ export function PsalmsSection({
 	forceCollapsed,
 }: PsalmsSectionProps) {
 	return (
-		<section id="section-psalms" className="scroll-mt-32">
+		<section id="section-psalms" className="scroll-mt-24">
 			{psalmsIntro && <p className={`text-sm italic mb-4 ${themeStyles.muted}`}>{psalmsIntro}</p>}
 			<CollapsibleSection
 				title="Psalms"
