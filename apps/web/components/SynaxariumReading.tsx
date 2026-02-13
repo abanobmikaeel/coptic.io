@@ -47,6 +47,33 @@ function orderLanguages(langs: BibleTranslation[]): BibleTranslation[] {
 	return order
 }
 
+// Merge entries from multiple languages by ID
+function mergeEntriesByLang(
+	entriesByLang: Partial<Record<BibleTranslation, SynaxariumEntry[]>>,
+	orderedLangs: BibleTranslation[],
+): { id: string; entries: Partial<Record<BibleTranslation, SynaxariumEntry>> }[] {
+	const mergedMap = new Map<string, Partial<Record<BibleTranslation, SynaxariumEntry>>>()
+	const orderKeys: string[] = []
+
+	// Process each language's entries
+	for (const lang of orderedLangs) {
+		const entries = entriesByLang[lang] || []
+		for (const entry of entries) {
+			const id = entry.id || `fallback-${lang}-${entry.name.slice(0, 20)}`
+
+			if (!mergedMap.has(id)) {
+				mergedMap.set(id, {})
+				orderKeys.push(id)
+			}
+
+			const merged = mergedMap.get(id)!
+			merged[lang] = entry
+		}
+	}
+
+	return orderKeys.map((id) => ({ id, entries: mergedMap.get(id)! }))
+}
+
 export function SynaxariumReading({
 	entriesByLang,
 	languages,
@@ -60,16 +87,18 @@ export function SynaxariumReading({
 	wordSpacing = 'normal',
 }: SynaxariumReadingProps) {
 	const [isOpen, setIsOpen] = useState(true)
-	const [expandedEntry, setExpandedEntry] = useState<number | null>(null)
+	const [expandedEntry, setExpandedEntry] = useState<string | null>(null)
 
 	// Get available languages with data
 	const availableLangs = languages.filter((lang) => entriesByLang[lang]?.length)
 	const orderedLangs = orderLanguages(availableLangs)
 	const isMultiLang = orderedLangs.length > 1
 
-	// Use first available language for count
-	const firstLang = orderedLangs[0] || 'en'
-	const count = entriesByLang[firstLang]?.length || 0
+	// Merge entries by ID for multi-language matching
+	const mergedEntries = mergeEntriesByLang(entriesByLang, orderedLangs)
+
+	// Use first available language for count (unique entries)
+	const count = mergedEntries.length
 
 	// Width class - wider for multi-language
 	const widthClass = isMultiLang
@@ -155,69 +184,106 @@ export function SynaxariumReading({
 			{isOpen && (
 				<div className={`${widthClass} mx-auto mt-4 px-4`}>
 					<ul className="space-y-6">
-						{(entriesByLang[firstLang] || []).map((entry, idx) => (
-							<li
-								key={idx}
-								className={`border-b ${themeClasses.border[theme]} last:border-0 pb-6 last:pb-0`}
-							>
-								{/* Entry title(s) */}
-								{isMultiLang ? (
-									<button
-										type="button"
-										onClick={() => setExpandedEntry(expandedEntry === idx ? null : idx)}
-										className={`w-full grid ${gridCols} gap-6`}
-									>
-										{orderedLangs.map((lang) => {
-											const langEntry = entriesByLang[lang]?.[idx]
-											if (!langEntry) return <div key={lang} />
-											const { isRtl } = getStyleClasses(lang)
-											return (
-												<div
-													key={lang}
-													className={`flex items-start gap-3 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'} group`}
-													dir={isRtl ? 'rtl' : 'ltr'}
-												>
-													<ChevronRightIcon
-														className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
-															expandedEntry === idx ? 'rotate-90' : ''
-														}`}
-													/>
-													<span
-														className={`${titleSizes[textSize]} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
-													>
-														{langEntry.name}
-													</span>
-												</div>
-											)
-										})}
-									</button>
-								) : (
-									<button
-										type="button"
-										onClick={() => setExpandedEntry(expandedEntry === idx ? null : idx)}
-										className="w-full flex items-start gap-3 text-left group"
-									>
-										<ChevronRightIcon
-											className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
-												expandedEntry === idx ? 'rotate-90' : ''
-											}`}
-										/>
-										<span
-											className={`${titleSizes[textSize]} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
-										>
-											{entry.name}
-										</span>
-									</button>
-								)}
+						{mergedEntries.map(({ id, entries }) => {
+							// Get the first available entry for single-language display
+							const firstEntry = orderedLangs.map((l) => entries[l]).find(Boolean)
+							if (!firstEntry) return null
 
-								{/* Expanded content */}
-								{expandedEntry === idx && (
-									<div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
-										{isMultiLang ? (
-											<div className={`grid ${gridCols} gap-6`}>
-												{orderedLangs.map((lang) => {
-													const langEntry = entriesByLang[lang]?.[idx]
-													if (!langEntry?.text) return <div key={lang} />
+							return (
+								<li
+									key={id}
+									className={`border-b ${themeClasses.border[theme]} last:border-0 pb-6 last:pb-0`}
+								>
+									{/* Entry title(s) */}
+									{isMultiLang ? (
+										<button
+											type="button"
+											onClick={() => setExpandedEntry(expandedEntry === id ? null : id)}
+											className={`w-full grid ${gridCols} gap-6`}
+										>
+											{orderedLangs.map((lang) => {
+												const langEntry = entries[lang]
+												if (!langEntry) return <div key={lang} />
+												const { isRtl } = getStyleClasses(lang)
+												return (
+													<div
+														key={lang}
+														className={`flex items-start gap-3 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'} group`}
+														dir={isRtl ? 'rtl' : 'ltr'}
+													>
+														<ChevronRightIcon
+															className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
+																expandedEntry === id ? 'rotate-90' : ''
+															}`}
+														/>
+														<span
+															className={`${titleSizes[textSize]} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+														>
+															{langEntry.name}
+														</span>
+													</div>
+												)
+											})}
+										</button>
+									) : (
+										<button
+											type="button"
+											onClick={() => setExpandedEntry(expandedEntry === id ? null : id)}
+											className="w-full flex items-start gap-3 text-left group"
+										>
+											<ChevronRightIcon
+												className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
+													expandedEntry === id ? 'rotate-90' : ''
+												}`}
+											/>
+											<span
+												className={`${titleSizes[textSize]} font-medium ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+											>
+												{firstEntry.name}
+											</span>
+										</button>
+									)}
+
+									{/* Expanded content */}
+									{expandedEntry === id && (
+										<div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
+											{isMultiLang ? (
+												<div className={`grid ${gridCols} gap-6`}>
+													{orderedLangs.map((lang) => {
+														const langEntry = entries[lang]
+														if (!langEntry?.text) return <div key={lang} />
+														const {
+															isRtl,
+															sizes,
+															lineHeight,
+															fontClass,
+															weightClass,
+															wordSpacingClass,
+														} = getStyleClasses(lang)
+														return (
+															<div key={lang} dir={isRtl ? 'rtl' : 'ltr'}>
+																<p
+																	className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} whitespace-pre-line ${isRtl ? 'text-right' : ''}`}
+																>
+																	{langEntry.text}
+																</p>
+																{langEntry.url && (
+																	<a
+																		href={langEntry.url}
+																		target="_blank"
+																		rel="noopener noreferrer"
+																		className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm`}
+																	>
+																		Read on CopticChurch.net
+																	</a>
+																)}
+															</div>
+														)
+													})}
+												</div>
+											) : (
+												(() => {
+													const firstLang = orderedLangs[0] || 'en'
 													const {
 														isRtl,
 														sizes,
@@ -225,17 +291,17 @@ export function SynaxariumReading({
 														fontClass,
 														weightClass,
 														wordSpacingClass,
-													} = getStyleClasses(lang)
+													} = getStyleClasses(firstLang)
 													return (
-														<div key={lang} dir={isRtl ? 'rtl' : 'ltr'}>
+														<div className={`${isRtl ? 'me-0' : 'ms-8'}`} dir={isRtl ? 'rtl' : 'ltr'}>
 															<p
 																className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} whitespace-pre-line ${isRtl ? 'text-right' : ''}`}
 															>
-																{langEntry.text}
+																{firstEntry.text}
 															</p>
-															{langEntry.url && (
+															{firstEntry.url && (
 																<a
-																	href={langEntry.url}
+																	href={firstEntry.url}
 																	target="_blank"
 																	rel="noopener noreferrer"
 																	className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm`}
@@ -245,43 +311,13 @@ export function SynaxariumReading({
 															)}
 														</div>
 													)
-												})}
-											</div>
-										) : (
-											(() => {
-												const {
-													isRtl,
-													sizes,
-													lineHeight,
-													fontClass,
-													weightClass,
-													wordSpacingClass,
-												} = getStyleClasses(firstLang)
-												return (
-													<div className={`${isRtl ? 'me-0' : 'ms-8'}`} dir={isRtl ? 'rtl' : 'ltr'}>
-														<p
-															className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} whitespace-pre-line ${isRtl ? 'text-right' : ''}`}
-														>
-															{entry.text}
-														</p>
-														{entry.url && (
-															<a
-																href={entry.url}
-																target="_blank"
-																rel="noopener noreferrer"
-																className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm`}
-															>
-																Read on CopticChurch.net
-															</a>
-														)}
-													</div>
-												)
-											})()
-										)}
-									</div>
-								)}
-							</li>
-						))}
+												})()
+											)}
+										</div>
+									)}
+								</li>
+							)
+						})}
 					</ul>
 				</div>
 			)}

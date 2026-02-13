@@ -67,7 +67,7 @@ export interface AvailableSections {
 
 function hasReadingData(readings: ReadingsData, key: string): boolean {
 	// Synaxarium uses different key in data
-	const dataKey = key === 'Synaxarium' ? 'Synxarium' : key
+	const dataKey = key
 	const data = readings[dataKey as keyof ReadingsData]
 	return data != null && Array.isArray(data) && data.length > 0
 }

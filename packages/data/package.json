@@ -50,6 +50,7 @@
 	"scripts": {
 		"build": "tsc",
 		"build:index": "tsx scripts/build-synaxarium-index.ts",
+		"match:synaxarium": "tsx scripts/llm-match-synaxarium.ts",
 		"dev": "tsc --watch",
 		"lint": "biome lint src",
 		"lint:fix": "biome lint --write src",

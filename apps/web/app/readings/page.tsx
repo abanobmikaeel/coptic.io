@@ -150,9 +150,9 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	// Build synaxarium entries by language for multi-language display
 	// Only English and Arabic synaxarium are available
 	const synaxariumLangs: BibleTranslation[] = ['en', 'ar']
-	const synaxariumByLang: Partial<Record<BibleTranslation, ReadingsData['Synxarium']>> = {}
+	const synaxariumByLang: Partial<Record<BibleTranslation, ReadingsData['Synaxarium']>> = {}
 	for (const lang of languagesToFetch.filter((l) => synaxariumLangs.includes(l))) {
-		const langSynaxarium = readingsByLang[lang]?.Synxarium
+		const langSynaxarium = readingsByLang[lang]?.Synaxarium
 		if (langSynaxarium?.length) {
 			synaxariumByLang[lang] = langSynaxarium
 		}

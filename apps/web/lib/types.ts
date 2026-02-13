@@ -104,6 +104,7 @@ export interface Reading {
 }
 
 export interface SynaxariumEntry {
+	id?: string
 	name: string
 	url: string
 	text?: string
@@ -119,7 +120,7 @@ export interface ReadingsData {
 	Acts?: Reading[]
 	LPsalm?: Reading[]
 	LGospel?: Reading[]
-	Synxarium?: SynaxariumEntry[]
+	Synaxarium?: SynaxariumEntry[]
 	fullDate?: CopticDate
 }
 
