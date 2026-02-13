@@ -86,7 +86,7 @@ export function ReadingDrawer({
 				ref={(el) => {
 					// Combine refs
 					if (el) {
-						(drawerRef as React.MutableRefObject<HTMLElement | null>).current = el
+						;(drawerRef as React.MutableRefObject<HTMLElement | null>).current = el
 						;(swipeRef as React.MutableRefObject<HTMLElement | null>).current = el
 					}
 				}}
@@ -100,9 +100,7 @@ export function ReadingDrawer({
 				<div
 					className={`flex items-center justify-between px-4 py-4 border-b ${themeClasses.border[theme]}`}
 				>
-					<h2 className={`text-lg font-semibold ${themeClasses.textHeading[theme]}`}>
-						Sections
-					</h2>
+					<h2 className={`text-lg font-semibold ${themeClasses.textHeading[theme]}`}>Sections</h2>
 					<button
 						type="button"
 						onClick={onClose}

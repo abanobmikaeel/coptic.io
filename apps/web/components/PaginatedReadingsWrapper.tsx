@@ -2,7 +2,7 @@
 
 import type { PaginatedMode, ReadingTheme } from '@/lib/reading-preferences'
 import { useCallback, useState } from 'react'
-import { type ReadingPage, PaginatedReadingView } from './PaginatedReadingView'
+import { PaginatedReadingView, type ReadingPage } from './PaginatedReadingView'
 import { ReadingDrawer } from './ReadingDrawer'
 
 interface PaginatedReadingsWrapperProps {

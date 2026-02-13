@@ -20,11 +20,7 @@ interface PaginatedReadingViewProps {
 	onMenuClick?: () => void
 }
 
-export function PaginatedReadingView({
-	pages,
-	theme,
-	onPageChange,
-}: PaginatedReadingViewProps) {
+export function PaginatedReadingView({ pages, theme, onPageChange }: PaginatedReadingViewProps) {
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [isAnimating, setIsAnimating] = useState(false)
 	const [direction, setDirection] = useState<'left' | 'right' | null>(null)
@@ -75,9 +71,13 @@ export function PaginatedReadingView({
 	// Expose jumpToPage for external use
 	useEffect(() => {
 		// Store the jump function on window for drawer access
-		;(window as unknown as { __paginatedJumpToPage?: (index: number) => void }).__paginatedJumpToPage = jumpToPage
+		;(
+			window as unknown as { __paginatedJumpToPage?: (index: number) => void }
+		).__paginatedJumpToPage = jumpToPage
 		return () => {
-			;(window as unknown as { __paginatedJumpToPage?: (index: number) => void }).__paginatedJumpToPage = undefined
+			;(
+				window as unknown as { __paginatedJumpToPage?: (index: number) => void }
+			).__paginatedJumpToPage = undefined
 		}
 	}, [jumpToPage])
 
@@ -132,19 +132,13 @@ export function PaginatedReadingView({
 		<div className="relative min-h-[calc(100vh-200px)]">
 			{/* Main content area with tap zones */}
 			{/* biome-ignore lint/a11y/useKeyWithClickEvents: keyboard nav is handled globally via useEffect */}
-			<div
-				ref={swipeRef}
-				onClick={handleClick}
-				className="touch-pan-y cursor-pointer"
-			>
+			<div ref={swipeRef} onClick={handleClick} className="touch-pan-y cursor-pointer">
 				{/* Tap zone indicators (visible on hover/focus) */}
 				<div className="pointer-events-none absolute inset-y-0 left-0 w-[20%] opacity-0 hover:opacity-10 bg-gradient-to-r from-gray-500 to-transparent transition-opacity" />
 				<div className="pointer-events-none absolute inset-y-0 right-0 w-[20%] opacity-0 hover:opacity-10 bg-gradient-to-l from-gray-500 to-transparent transition-opacity" />
 
 				{/* Content with animation */}
-				<div
-					className={`transition-all duration-150 ease-out ${getAnimationClass()}`}
-				>
+				<div className={`transition-all duration-150 ease-out ${getAnimationClass()}`}>
 					{currentPage?.content}
 				</div>
 			</div>
@@ -212,12 +206,7 @@ export function PaginatedReadingView({
 							viewBox="0 0 24 24"
 							aria-hidden="true"
 						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M9 5l7 7-7 7"
-							/>
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
 						</svg>
 					</button>
 				</div>

@@ -216,7 +216,9 @@ async function main() {
 
 		if (unmatchedArIndices.length === 0) continue
 
-		log(`Re-matching: ${dateKey} (${enEntries.length} EN, ${arEntries.length} AR, ${unmatchedArIndices.length} unmatched)`)
+		log(
+			`Re-matching: ${dateKey} (${enEntries.length} EN, ${arEntries.length} AR, ${unmatchedArIndices.length} unmatched)`,
+		)
 		totalProcessed++
 
 		const matches = await matchEntriesForDate(dateKey, enEntries, arEntries)

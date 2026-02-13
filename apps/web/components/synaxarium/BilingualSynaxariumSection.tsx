@@ -189,9 +189,7 @@ export function BilingualSynaxariumSection({
 												)}
 											</>
 										) : (
-											<p className={`${themeClasses.muted[theme]} italic`}>
-												{t('noArabicText')}
-											</p>
+											<p className={`${themeClasses.muted[theme]} italic`}>{t('noArabicText')}</p>
 										)}
 									</div>
 								</div>

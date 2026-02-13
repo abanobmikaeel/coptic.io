@@ -11,12 +11,7 @@ interface ReadingOutlineProps {
 	onSelectPage: (index: number) => void
 }
 
-export function ReadingOutline({
-	pages,
-	currentIndex,
-	theme,
-	onSelectPage,
-}: ReadingOutlineProps) {
+export function ReadingOutline({ pages, currentIndex, theme, onSelectPage }: ReadingOutlineProps) {
 	// Group pages by service
 	const groupedPages = pages.reduce(
 		(acc, page, index) => {
@@ -63,9 +58,7 @@ export function ReadingOutline({
 											{/* Active indicator */}
 											<span
 												className={`w-1.5 h-1.5 rounded-full transition-all ${
-													isActive
-														? 'bg-amber-500 scale-100'
-														: 'bg-transparent scale-0'
+													isActive ? 'bg-amber-500 scale-100' : 'bg-transparent scale-0'
 												}`}
 											/>
 											<span className="truncate">{page.section}</span>

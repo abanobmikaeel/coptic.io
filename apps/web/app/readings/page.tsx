@@ -120,8 +120,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 	// Parse display settings from URL
 	const viewMode: ViewMode = params.view === 'verse' ? 'verse' : 'continuous'
-	const paginatedMode: PaginatedMode =
-		params.paginatedMode === 'paginated' ? 'paginated' : 'scroll'
+	const paginatedMode: PaginatedMode = params.paginatedMode === 'paginated' ? 'paginated' : 'scroll'
 	const showVerses = params.verses !== 'hide'
 	const textSize: TextSize = (params.size as TextSize) || 'md'
 	const fontFamily: FontFamily = (params.font as FontFamily) || 'sans'

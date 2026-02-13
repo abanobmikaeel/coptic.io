@@ -126,10 +126,7 @@ export function SynaxariumDayView({
 	)
 }
 
-function FeaturedTodayCard({
-	entries,
-	theme,
-}: { entries: BilingualEntry[]; theme: ReadingTheme }) {
+function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; theme: ReadingTheme }) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
 
