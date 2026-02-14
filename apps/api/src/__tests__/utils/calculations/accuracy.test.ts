@@ -5,6 +5,7 @@ import {
 	gregorianToCoptic,
 } from '@coptic/core'
 import { describe, expect, it } from 'vitest'
+import { getByCopticDate } from '../../../models/readings'
 import { getStaticCelebrationsForDay } from '../../../utils/calculations/getStaticCelebrations'
 
 /**
@@ -484,5 +485,72 @@ describe('Liturgical Season Durations', () => {
 			const duration = daysBetween(nativity.startDate, nativity.endDate) + 1
 			expect(duration).toBe(43)
 		}
+	})
+})
+
+describe('Daily Readings - Katameros Accuracy', () => {
+	/**
+	 * Validates daily readings against known correct values.
+	 * Source: Google Sheet "Daily Readings" (last updated June 18, 2022 by Mina Beshy)
+	 *
+	 * These spot-checks catch data drift by validating specific dates.
+	 * If readings are wrong, compare dayReadings.json against the source spreadsheet.
+	 */
+
+	// Spot checks: validate end-to-end (date -> reading ID -> psalm reference)
+	// These are verified against St-Takla.org and the source Google Sheet
+	const knownReadings = [
+		{
+			name: 'Amshir 6 - Martyrs',
+			date: [2025, 2, 13],
+			expectedVPsalm: 'Psalms 68:35;Psalms 68:3',
+			expectedLPsalm: 'Psalms 34:19-20',
+		},
+		{
+			name: 'Tout 1 - Nayrouz',
+			date: [2024, 9, 11],
+			expectedVPsalm: 'Psalms 96:1-2',
+			expectedLPsalm: 'Psalms 65:11;Psalms 81:1',
+		},
+		{
+			name: 'Kiahk 29 - Nativity',
+			date: [2025, 1, 7],
+			expectedVPsalm: 'Psalms 72:10',
+			expectedLPsalm: 'Psalms 2:7-8',
+		},
+		{
+			name: 'Toba 11 - Theophany',
+			date: [2025, 1, 19],
+			expectedVPsalm: 'Psalms 42:6;Psalms 42:11',
+			expectedLPsalm: 'Psalms 118:26;Psalms 118:28',
+		},
+		{
+			name: 'Baba 14',
+			date: [2024, 10, 24],
+			expectedVPsalm: 'Psalms 68:3;Psalms 68:35',
+			expectedLPsalm: 'Psalms 32:1-2',
+		},
+		{
+			name: 'Mesra 13 - Transfiguration',
+			date: [2025, 8, 19],
+			expectedVPsalm: 'Psalms 99:6-7',
+			expectedLPsalm: 'Psalms 87:1-2;Psalms 87:5',
+		},
+	]
+
+	knownReadings.forEach(({ name, date, expectedVPsalm, expectedLPsalm }) => {
+		it(`${name} should have correct VPsalm`, () => {
+			const d = new Date(date[0], date[1] - 1, date[2])
+			const reading = getByCopticDate(d, false)
+			expect(reading.reference).toBeDefined()
+			expect(reading.reference.VPsalm).toBe(expectedVPsalm)
+		})
+
+		it(`${name} should have correct LPsalm`, () => {
+			const d = new Date(date[0], date[1] - 1, date[2])
+			const reading = getByCopticDate(d, false)
+			expect(reading.reference).toBeDefined()
+			expect(reading.reference.LPsalm).toBe(expectedLPsalm)
+		})
 	})
 })

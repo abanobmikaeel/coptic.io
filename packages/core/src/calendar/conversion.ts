@@ -20,9 +20,9 @@ const COPTIC_MONTHS = [
 	'Amshir',
 	'Baramhat',
 	'Baramouda',
-	'Bashons',
+	'Bashans',
 	'Paona',
-	'Abib',
+	'Epep',
 	'Mesra',
 	'Nasie',
 ] as const

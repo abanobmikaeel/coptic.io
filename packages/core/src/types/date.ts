@@ -54,17 +54,17 @@ export interface CopticMonthInfo {
  * Coptic month names in order
  */
 export const COPTIC_MONTHS = [
-	'Toot',
+	'Tout',
 	'Baba',
-	'Hatour',
+	'Hator',
 	'Kiahk',
 	'Toba',
 	'Amshir',
 	'Baramhat',
 	'Baramouda',
 	'Bashans',
-	'Baounah',
-	'Abib',
+	'Paona',
+	'Epep',
 	'Mesra',
 	'Nasie',
 ] as const
