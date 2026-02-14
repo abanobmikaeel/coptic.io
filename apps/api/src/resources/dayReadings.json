@@ -355,15 +355,15 @@
 	{
 		"month": "Amshir",
 		"readings": [
-			5,
-			71,
-			8,
-			2,
-			3,
-			7,
-			4,
-			2,
-			7,
+			15,
+			40,
+			48,
+			12,
+			13,
+			17,
+			54,
+			32,
+			57,
 			55,
 			24,
 			48,
@@ -487,7 +487,7 @@
 		]
 	},
 	{
-		"month": "Baramoda",
+		"month": "Baramouda",
 		"readings": [
 			48,
 			56,
@@ -554,7 +554,7 @@
 		]
 	},
 	{
-		"month": "Bashans",
+		"month": "Bashons",
 		"readings": [
 			46,
 			57,
@@ -621,7 +621,7 @@
 		]
 	},
 	{
-		"month": "Baona",
+		"month": "Paona",
 		"readings": [
 			29,
 			51,
@@ -688,7 +688,7 @@
 		]
 	},
 	{
-		"month": "Apip",
+		"month": "Abib",
 		"readings": [
 			39,
 			45,
