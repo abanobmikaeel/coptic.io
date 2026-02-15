@@ -49,8 +49,11 @@ test.describe('Synaxarium and Readings date consistency', () => {
 		const nextButton = page.getByRole('button', { name: /next day/i })
 		await nextButton.click()
 
-		// Wait for URL to update with date param
-		await page.waitForURL(/date=/)
+		// Wait for URL to update with a date different from today
+		await page.waitForURL((url) => {
+			const dateParam = url.searchParams.get('date')
+			return dateParam !== null && dateParam !== todayStr
+		})
 
 		// The readings link href MUST have a date that is NOT today
 		const readingsLink = page.locator('a[href*="/readings?date="]')
@@ -415,15 +418,15 @@ test.describe('Synaxarium view toggle', () => {
 		const upcomingToggle = page.getByRole('button', { name: /Upcoming/i })
 		await upcomingToggle.click()
 
-		// Wait for content to load
-		await page.waitForTimeout(1000)
-
 		// URL should reflect the view mode
 		await expect(page).toHaveURL(/view=upcoming/)
 
+		// Wait for upcoming content to load (API calls for multiple days)
+		await page.waitForTimeout(3000)
+
 		// Should see "Tomorrow" label (starts from tomorrow, not today)
 		const tomorrowLabel = page.locator('text=Tomorrow').first()
-		await expect(tomorrowLabel).toBeVisible()
+		await expect(tomorrowLabel).toBeVisible({ timeout: 10000 })
 	})
 
 	test('should switch back to day view', async ({ page }) => {

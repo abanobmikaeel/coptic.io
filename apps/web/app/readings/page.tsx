@@ -160,7 +160,8 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 	const displayDate = params.date ? parseDateString(params.date) : new Date()
 	const gregorianDate = formatGregorianDate(displayDate)
-	const isToday = !params.date || params.date === getTodayDateString()
+	const serverToday = getTodayDateString()
+	const isToday = !params.date || params.date === serverToday
 
 	// Preserve settings when navigating back to today
 	const backToTodayParams = new URLSearchParams()

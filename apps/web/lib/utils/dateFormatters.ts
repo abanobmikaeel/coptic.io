@@ -60,7 +60,7 @@ export function parseDateString(dateString: string): Date {
 export function getAdjacentDate(dateString: string | undefined, offset: number): string {
 	const date = dateString ? parseDateString(dateString) : new Date()
 	date.setDate(date.getDate() + offset)
-	return date.toISOString().split('T')[0]
+	return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }
 
 export function addDaysToDateString(dateString: string, days: number): string {
