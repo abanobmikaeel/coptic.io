@@ -24,23 +24,30 @@ import {
 	filterUpcomingFasts,
 	filterUpcomingFeasts,
 } from '@/lib/filterUpcomingFeasts'
-import { formatGregorianDate } from '@/lib/utils'
+import { formatGregorianDate, parseDateString } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
 // Page revalidates via API caching (5 minute ISR)
 
-export default async function Home() {
+interface HomeProps {
+	searchParams: Promise<{ date?: string }>
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+	const params = await searchParams
+	const date = params.date
 	const t = await getTranslations('home')
 
 	const [calendar, celebrations, upcoming] = await Promise.all([
-		getCalendarData(),
-		getTodayCelebrations(),
+		getCalendarData(date),
+		getTodayCelebrations(date),
 		getUpcomingCelebrations(60),
 	])
 
-	const gregorianDate = formatGregorianDate(new Date())
+	const displayDate = date ? parseDateString(date) : new Date()
+	const gregorianDate = formatGregorianDate(displayDate)
 
 	const copticDate = calendar?.dateString || 'Loading...'
 	const todayFeast = Array.isArray(celebrations) && celebrations.length > 0 ? celebrations[0] : null

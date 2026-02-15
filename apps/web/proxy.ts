@@ -13,7 +13,7 @@ export function proxy(request: NextRequest) {
 	// Only intercept date-dependent pages that have no explicit date
 	if (searchParams.has('date')) return
 
-	const needsDate = pathname === '/readings' || pathname === '/synaxarium'
+	const needsDate = pathname === '/' || pathname === '/readings' || pathname === '/synaxarium'
 	if (!needsDate) return
 
 	// Get timezone from Vercel geo header, fall back to system timezone
@@ -35,5 +35,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/readings', '/synaxarium'],
+	matcher: ['/', '/readings', '/synaxarium'],
 }

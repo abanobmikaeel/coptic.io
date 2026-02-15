@@ -14,10 +14,12 @@ async function fetchApi<T>(endpoint: string, revalidate = 3600): Promise<T | nul
 	}
 }
 
-export const getCalendarData = () => fetchApi<CalendarData>('/calendar')
+export const getCalendarData = (date?: string) =>
+	fetchApi<CalendarData>(date ? `/calendar/${date}` : '/calendar')
 
-export const getTodayCelebrations = () => {
-	const today = new Date().toISOString().split('T')[0]
+export const getTodayCelebrations = (date?: string) => {
+	const d = new Date()
+	const today = date || `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 	return fetchApi<Celebration[]>(`/celebrations/${today}`)
 }
 
