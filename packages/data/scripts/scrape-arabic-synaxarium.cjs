@@ -13,15 +13,15 @@ const path = require('node:path')
 const COPTIC_MONTHS = [
 	{ name: 'Tout', days: 30, num: 1 },
 	{ name: 'Baba', days: 30, num: 2 },
-	{ name: 'Hatour', days: 30, num: 3 },
+	{ name: 'Hator', days: 30, num: 3 },
 	{ name: 'Kiahk', days: 30, num: 4 },
-	{ name: 'Touba', days: 30, num: 5 },
+	{ name: 'Toba', days: 30, num: 5 },
 	{ name: 'Amshir', days: 30, num: 6 },
 	{ name: 'Baramhat', days: 30, num: 7 },
 	{ name: 'Baramouda', days: 30, num: 8 },
 	{ name: 'Bashans', days: 30, num: 9 },
-	{ name: 'Baouna', days: 30, num: 10 },
-	{ name: 'Abib', days: 30, num: 11 },
+	{ name: 'Paona', days: 30, num: 10 },
+	{ name: 'Epep', days: 30, num: 11 },
 	{ name: 'Mesra', days: 30, num: 12 },
 	{ name: 'Nasie', days: 6, num: 13 }, // 5 or 6 days (leap year)
 ]

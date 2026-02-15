@@ -16,7 +16,7 @@ export const GREGORIAN_MONTHS = [
 export const COPTIC_MONTHS = [
 	'Tout',
 	'Baba',
-	'Hatour',
+	'Hator',
 	'Kiahk',
 	'Toba',
 	'Amshir',

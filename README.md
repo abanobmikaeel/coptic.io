@@ -153,7 +153,7 @@ pnpm release
 - *Moveable:* Palm Sunday, Resurrection, Ascension, Pentecost
 
 **7 Minor Lord's Feasts:**
-- *Fixed:* Circumcision (6 Tobe), Entry into Temple (8 Amshir), Flight to Egypt (24 Bashans), Cana (13 Tobe), Transfiguration (13 Mesori)
+- *Fixed:* Circumcision (6 Toba), Entry into Temple (8 Amshir), Flight to Egypt (24 Bashans), Cana (13 Toba), Transfiguration (13 Mesra)
 - *Moveable:* Covenant Thursday, Thomas Sunday
 
 *Note: Feast of the Cross is a separate feast (not among the 14 Lord's Feasts).

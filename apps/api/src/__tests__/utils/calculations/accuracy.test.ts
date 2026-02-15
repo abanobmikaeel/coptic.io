@@ -75,7 +75,7 @@ describe('Coptic Date Conversion - Exact Dates', () => {
 			gregorian: { year: 2025, month: 1, day: 7 },
 			coptic: { day: 29, month: 4, year: 1741, monthString: 'Kiahk' },
 		},
-		// Epiphany - Tobi 11
+		// Epiphany - Toba 11
 		{
 			gregorian: { year: 2025, month: 1, day: 19 },
 			coptic: { day: 11, month: 5, year: 1741, monthString: 'Toba' },
@@ -334,9 +334,7 @@ describe('Coptic Date Conversion - Month Boundaries', () => {
 	it('should convert all 13 Coptic month names correctly', () => {
 		// First day of each Coptic month in AM 1741 (Gregorian dates)
 		// Computed from Tout 1 = Sept 11, 2024, each month = 30 days
-		// Month names as returned by Intl.DateTimeFormat('en-u-ca-coptic')
-		// Note: some differ from dayReadings.json transliterations
-		// (e.g. Intl: Hator vs data: Hatoor, Intl: Paona vs data: Baona)
+		// Month names match COPTIC_MONTHS from @coptic/core
 		const monthFirstDays: Array<{ month: string; greg: [number, number, number] }> = [
 			{ month: 'Tout', greg: [2024, 8, 11] }, // Sept 11
 			{ month: 'Baba', greg: [2024, 9, 11] }, // Oct 11
@@ -346,9 +344,9 @@ describe('Coptic Date Conversion - Month Boundaries', () => {
 			{ month: 'Amshir', greg: [2025, 1, 8] }, // Feb 8
 			{ month: 'Baramhat', greg: [2025, 2, 10] }, // Mar 10
 			{ month: 'Baramouda', greg: [2025, 3, 9] }, // Apr 9
-			{ month: 'Bashons', greg: [2025, 4, 9] }, // May 9
+			{ month: 'Bashans', greg: [2025, 4, 9] }, // May 9
 			{ month: 'Paona', greg: [2025, 5, 8] }, // Jun 8
-			{ month: 'Abib', greg: [2025, 6, 8] }, // Jul 8
+			{ month: 'Epep', greg: [2025, 6, 8] }, // Jul 8
 			{ month: 'Mesra', greg: [2025, 7, 7] }, // Aug 7
 			{ month: 'Nasie', greg: [2025, 8, 6] }, // Sept 6
 		]

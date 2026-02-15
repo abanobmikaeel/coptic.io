@@ -228,9 +228,6 @@ describe('Full Year Readings Smoke Test', () => {
 	 * Ensure readings work for an entire year without crashing due to
 	 * parsing errors (like the multi-chapter range bug).
 	 *
-	 * Note: There's a known issue with month name mismatches between
-	 * @coptic/core (uses Epep, Bashans) and synxarium.json (uses Abib, Bashons).
-	 * These are filtered out as they're a data standardization issue, not a code bug.
 	 */
 	it('should not have parsing/array errors for 365 days', () => {
 		const startDate = new Date(2025, 0, 1) // Jan 1, 2025
