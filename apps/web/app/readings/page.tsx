@@ -53,6 +53,7 @@ const supportedContentLanguages: ContentLanguage[] = ['en', 'ar', 'es', 'cop']
 
 // All reading sections in display order
 const readingSections = [
+	'Prophecies',
 	'Pauline',
 	'Catholic',
 	'Acts',
@@ -62,6 +63,8 @@ const readingSections = [
 	'VGospel',
 	'MPsalm',
 	'MGospel',
+	'EPPsalm',
+	'EPGospel',
 ] as const
 type ReadingSection = (typeof readingSections)[number]
 
@@ -240,7 +243,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 								<p
 									className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
 								>
-									{readings?.fullDate ? gregorianDate : ''}
+									{readings?.seasonDay || (readings?.fullDate ? gregorianDate : '')}
 								</p>
 							</div>
 						</DateNavigation>
@@ -274,7 +277,8 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 							)
 
 							const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
-							const hasMatins = readings.MPsalm?.length || readings.MGospel?.length
+							const hasMatins =
+								readings.Prophecies?.length || readings.MPsalm?.length || readings.MGospel?.length
 
 							return (
 								<>
@@ -312,10 +316,20 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{hasMatins && (
 										<>
 											<ServiceDivider />
+											{renderSection('Prophecies', 'Matins')}
 											{renderSection('MPsalm', 'Matins')}
 											{renderSection('MGospel', 'Matins')}
 										</>
 									)}
+
+									{/* EVENING PRAYER (Lent only) */}
+									{readings.EPPsalm?.length || readings.EPGospel?.length ? (
+										<>
+											<ServiceDivider />
+											{renderSection('EPPsalm' as ReadingSection, 'Evening Prayer')}
+											{renderSection('EPGospel' as ReadingSection, 'Evening Prayer')}
+										</>
+									) : null}
 								</>
 							)
 						})()}

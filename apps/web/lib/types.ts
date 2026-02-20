@@ -111,6 +111,7 @@ export interface SynaxariumEntry {
 }
 
 export interface ReadingsData {
+	Prophecies?: Reading[]
 	VPsalm?: Reading[]
 	VGospel?: Reading[]
 	MPsalm?: Reading[]
@@ -120,8 +121,12 @@ export interface ReadingsData {
 	Acts?: Reading[]
 	LPsalm?: Reading[]
 	LGospel?: Reading[]
+	EPPsalm?: Reading[]
+	EPGospel?: Reading[]
 	Synaxarium?: SynaxariumEntry[]
 	fullDate?: CopticDate
+	season?: string
+	seasonDay?: string
 }
 
 // Synaxarium Search Types

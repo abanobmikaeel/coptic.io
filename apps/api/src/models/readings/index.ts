@@ -1,5 +1,13 @@
-import { type SynaxariumEntry, gregorianToCoptic } from '@coptic/core'
+import {
+	type SynaxariumEntry,
+	getEasterDate,
+	getLiturgicalSeasonForDate,
+	gregorianToCoptic,
+	toMidnight,
+} from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
+import jonahReadings from '../../resources/jonahReadings.json'
+import lentReadings from '../../resources/lentReadings.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import { getSynaxariumForDate } from '../../services/synaxarium.service'
 import type { BibleTranslation, Reading } from '../../types'
@@ -68,6 +76,7 @@ export const parseReadingString = (
 }
 
 type ReadingRecord = {
+	Prophecies?: string
 	VPsalm?: string
 	VGospel?: string
 	MPsalm?: string
@@ -77,12 +86,28 @@ type ReadingRecord = {
 	Acts?: string
 	LPsalm?: string
 	LGospel?: string
+	EPPsalm?: string
+	EPGospel?: string
 }
 
 export const transformReading = (record: ReadingRecord, translation: BibleTranslation = 'en') => {
-	const { VPsalm, VGospel, MPsalm, MGospel, Pauline, Catholic, Acts, LPsalm, LGospel } = record
+	const {
+		Prophecies,
+		VPsalm,
+		VGospel,
+		MPsalm,
+		MGospel,
+		Pauline,
+		Catholic,
+		Acts,
+		LPsalm,
+		LGospel,
+		EPPsalm,
+		EPGospel,
+	} = record
 
 	return {
+		Prophecies: parseReadingString(Prophecies, translation),
 		VPsalm: parseReadingString(VPsalm, translation),
 		VGospel: parseReadingString(VGospel, translation),
 		MPsalm: parseReadingString(MPsalm, translation),
@@ -92,12 +117,15 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 		Acts: parseReadingString(Acts, translation),
 		LPsalm: parseReadingString(LPsalm, translation),
 		LGospel: parseReadingString(LGospel, translation),
+		EPPsalm: parseReadingString(EPPsalm, translation),
+		EPGospel: parseReadingString(EPGospel, translation),
 	}
 }
 
 type ReadingResponse = {
 	reference?: (typeof uniqueReadings)[number]
 	Synaxarium: SynaxariumEntry[]
+	Prophecies?: Reading[] | null
 	VPsalm?: Reading[] | null
 	VGospel?: Reading[] | null
 	MPsalm?: Reading[] | null
@@ -107,6 +135,55 @@ type ReadingResponse = {
 	Acts?: Reading[] | null
 	LPsalm?: Reading[] | null
 	LGospel?: Reading[] | null
+	EPPsalm?: Reading[] | null
+	EPGospel?: Reading[] | null
+	season?: string
+	seasonDay?: string
+}
+
+// Type for lentReadings.json entries (covers Lent, Jonah's Fast, and other moveable readings)
+type LentReadingEntry = {
+	label: string
+	Prophecies?: string
+	VPsalm?: string
+	VGospel?: string
+	MPsalm?: string
+	MGospel?: string
+	Pauline?: string
+	Catholic?: string
+	Acts?: string
+	LPsalm?: string
+	LGospel?: string
+	EPPsalm?: string
+	EPGospel?: string
+}
+
+// Cast the imported JSON to typed records and merge into a single lookup
+const lentReadingsMap = lentReadings as Record<string, LentReadingEntry>
+const jonahReadingsMap = jonahReadings as Record<string, LentReadingEntry>
+const moveableReadingsMap: Record<string, LentReadingEntry> = {
+	...jonahReadingsMap,
+	...lentReadingsMap,
+}
+
+/**
+ * Compute the day offset from Easter for a given date.
+ * Returns negative numbers for days before Easter, positive for after.
+ */
+const getDaysFromEaster = (date: Date): number => {
+	const easter = getEasterDate(date.getFullYear())
+	const dateMs = toMidnight(date)
+	const easterMs = toMidnight(easter)
+	return Math.round((dateMs - easterMs) / (1000 * 60 * 60 * 24))
+}
+
+/**
+ * Try to get Lenten readings for a date.
+ * Returns the readings if the date falls during Great Lent, null otherwise.
+ */
+const getLentReading = (date: Date): LentReadingEntry | null => {
+	const offset = getDaysFromEaster(date)
+	return moveableReadingsMap[String(offset)] ?? null
 }
 
 export const getByCopticDate = (
@@ -119,6 +196,37 @@ export const getByCopticDate = (
 			throw new Error('Invalid gregorian date provided')
 		}
 
+		// Use synaxarium service for consistent processing
+		const lang = translation === 'ar' ? 'ar' : 'en'
+		const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, lang)
+
+		if (!synaxarium) {
+			throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
+		}
+
+		// Check for Lenten readings first (moveable readings override fixed ones)
+		const lentReading = getLentReading(gregorianDate)
+		if (lentReading) {
+			const season = getLiturgicalSeasonForDate(gregorianDate)
+
+			if (!isDetailed) {
+				return {
+					Synaxarium: synaxarium,
+					season: season?.name,
+					seasonDay: lentReading.label,
+				}
+			}
+
+			const detailedReadings = transformReading(lentReading, translation)
+			return {
+				...detailedReadings,
+				Synaxarium: synaxarium,
+				season: season?.name,
+				seasonDay: lentReading.label,
+			}
+		}
+
+		// Fall through to fixed Coptic date readings
 		const copticDate = gregorianToCoptic(gregorianDate)
 		const monthFound = dayReadings[copticDate.month - 1]
 
@@ -136,14 +244,6 @@ export const getByCopticDate = (
 		const reading = readingsById.get(readingID)
 		if (!reading) {
 			throw new Error(`Reading not found for ID: ${readingID}`)
-		}
-
-		// Use synaxarium service for consistent processing
-		const lang = translation === 'ar' ? 'ar' : 'en'
-		const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, lang)
-
-		if (!synaxarium) {
-			throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
 		}
 
 		if (!isDetailed) {
