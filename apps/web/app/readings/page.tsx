@@ -323,7 +323,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									)}
 
 									{/* EVENING PRAYER (Lent only) */}
-									{(readings.EPPsalm?.length || readings.EPGospel?.length) ? (
+									{readings.EPPsalm?.length || readings.EPGospel?.length ? (
 										<>
 											<ServiceDivider />
 											{renderSection('EPPsalm' as ReadingSection, 'Evening Prayer')}

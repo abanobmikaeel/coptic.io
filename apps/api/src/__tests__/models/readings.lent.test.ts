@@ -301,16 +301,22 @@ describe('Lenten Readings - Accuracy', () => {
 			const lentReadings = (await import('../../resources/lentReadings.json')).default
 			const jonahReadings = (await import('../../resources/jonahReadings.json')).default
 			const fields = [
-				'Prophecies', 'VPsalm', 'VGospel', 'MPsalm', 'MGospel',
-				'Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel',
-				'EPPsalm', 'EPGospel',
+				'Prophecies',
+				'VPsalm',
+				'VGospel',
+				'MPsalm',
+				'MGospel',
+				'Pauline',
+				'Catholic',
+				'Acts',
+				'LPsalm',
+				'LGospel',
+				'EPPsalm',
+				'EPGospel',
 			] as const
 
 			const allReadings = { ...jonahReadings, ...lentReadings }
-			const entries = Object.entries(allReadings) as [
-				string,
-				Record<string, string | undefined>,
-			][]
+			const entries = Object.entries(allReadings) as [string, Record<string, string | undefined>][]
 			expect(entries.length).toBe(55)
 
 			const errors: string[] = []
@@ -365,7 +371,9 @@ describe('Lenten Readings - Accuracy', () => {
 					} else if (offset >= -57 && offset <= -56) {
 						// Preparation week: has moveable readings but not a formal liturgical season
 						if (!result.seasonDay) {
-							errors.push(`${date.toISOString().slice(0, 10)} (offset ${offset}): missing seasonDay`)
+							errors.push(
+								`${date.toISOString().slice(0, 10)} (offset ${offset}): missing seasonDay`,
+							)
 						}
 					} else if (offset >= -55 && offset <= -7) {
 						// Great Lent range

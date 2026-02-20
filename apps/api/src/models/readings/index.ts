@@ -92,9 +92,18 @@ type ReadingRecord = {
 
 export const transformReading = (record: ReadingRecord, translation: BibleTranslation = 'en') => {
 	const {
-		Prophecies, VPsalm, VGospel, MPsalm, MGospel,
-		Pauline, Catholic, Acts, LPsalm, LGospel,
-		EPPsalm, EPGospel,
+		Prophecies,
+		VPsalm,
+		VGospel,
+		MPsalm,
+		MGospel,
+		Pauline,
+		Catholic,
+		Acts,
+		LPsalm,
+		LGospel,
+		EPPsalm,
+		EPGospel,
 	} = record
 
 	return {
