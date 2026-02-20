@@ -2,9 +2,11 @@
 	"services": {
 		"Liturgy": "Liturgy",
 		"Vespers": "Vespers",
-		"Matins": "Matins"
+		"Matins": "Matins",
+		"Evening Prayer": "Evening Prayer"
 	},
 	"sections": {
+		"Prophecies": "Prophecies",
 		"VPsalm": "Vespers Psalm",
 		"VGospel": "Vespers Gospel",
 		"MPsalm": "Matins Psalm",
@@ -13,7 +15,9 @@
 		"Catholic": "Catholic Epistle",
 		"Acts": "Acts of the Apostles",
 		"LPsalm": "Psalm",
-		"LGospel": "Gospel"
+		"LGospel": "Gospel",
+		"EPPsalm": "Evening Psalm",
+		"EPGospel": "Evening Gospel"
 	},
 	"books": {
 		"Genesis": "Genesis",

@@ -2,9 +2,11 @@
 	"services": {
 		"Liturgy": "القداس",
 		"Vespers": "العشية",
-		"Matins": "باكر"
+		"Matins": "باكر",
+		"Evening Prayer": "صلاة المساء"
 	},
 	"sections": {
+		"Prophecies": "النبوات",
 		"VPsalm": "مزمور العشية",
 		"VGospel": "إنجيل العشية",
 		"MPsalm": "مزمور باكر",
@@ -13,7 +15,9 @@
 		"Catholic": "الكاثوليكون",
 		"Acts": "الإبركسيس",
 		"LPsalm": "المزمور",
-		"LGospel": "الإنجيل"
+		"LGospel": "الإنجيل",
+		"EPPsalm": "مزمور صلاة المساء",
+		"EPGospel": "إنجيل صلاة المساء"
 	},
 	"books": {
 		"Genesis": "التكوين",

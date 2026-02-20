@@ -149,7 +149,7 @@ pnpm release
 ### Feast Classifications
 
 **7 Major Lord's Feasts:**
-- *Fixed:* Annunciation (29 Baramhat), Nativity (29 Kiahk), Theophany (11 Tobe)
+- *Fixed:* Annunciation (29 Baramhat), Nativity (29 Kiahk), Theophany (11 Toba)
 - *Moveable:* Palm Sunday, Resurrection, Ascension, Pentecost
 
 **7 Minor Lord's Feasts:**

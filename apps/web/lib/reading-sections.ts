@@ -33,8 +33,16 @@ const readingGroups = [
 	{
 		label: 'Matins',
 		readings: [
+			{ key: 'Prophecies', short: 'Pr', label: 'Prophecies', size: 'md' as const },
 			{ key: 'MPsalm', short: 'Ps', label: 'Psalm', size: 'sm' as const },
 			{ key: 'MGospel', short: 'Go', label: 'Gospel', size: 'lg' as const },
+		],
+	},
+	{
+		label: 'Evening Prayer',
+		readings: [
+			{ key: 'EPPsalm', short: 'Ps', label: 'Psalm', size: 'sm' as const },
+			{ key: 'EPGospel', short: 'Go', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 ]

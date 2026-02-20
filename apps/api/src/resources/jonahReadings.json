@@ -1,0 +1,47 @@
+{
+	"-69": {
+		"label": "Monday of Jonah's Fast",
+		"Prophecies": "Jonah 1:1-2:1",
+		"MPsalm": "Psalms 103:1,8",
+		"MGospel": "Matthew 7:6-12",
+		"Pauline": "Romans 6:17-23",
+		"Catholic": "Jude 1:1-13",
+		"Acts": "Acts 2:38-47",
+		"LPsalm": "Psalms 130:3,4",
+		"LGospel": "Matthew 12:35-45",
+		"EPPsalm": "Psalms 95:1-2",
+		"EPGospel": "Luke 13:1-5"
+	},
+	"-68": {
+		"label": "Tuesday of Jonah's Fast",
+		"Prophecies": "Jonah 2:2-11",
+		"MPsalm": "Psalms 103:14,9",
+		"MGospel": "Luke 13:6-9",
+		"Pauline": "Colossians 1:21-29",
+		"Catholic": "1 Peter 4:3-11",
+		"Acts": "Acts 17:30-34",
+		"LPsalm": "Psalms 85:2",
+		"LGospel": "Luke 11:29-36"
+	},
+	"-67": {
+		"label": "Wednesday of Jonah's Fast",
+		"Prophecies": "Jonah 3:1-4:11",
+		"MPsalm": "Psalms 103:13,12",
+		"MGospel": "Matthew 11:25-30",
+		"Pauline": "Ephesians 2:1-22",
+		"Catholic": "1 John 2:12-17",
+		"Acts": "Acts 15:12-20",
+		"LPsalm": "Psalms 32:1,5",
+		"LGospel": "Matthew 15:32-16:12"
+	},
+	"-66": {
+		"label": "Thursday after Jonah's Fast",
+		"MPsalm": "Psalms 29:10,11",
+		"MGospel": "Mark 8:10-21",
+		"Pauline": "Romans 10:4-18",
+		"Catholic": "1 Peter 3:17-22",
+		"Acts": "Acts 3:22-26",
+		"LPsalm": "Psalms 118:5,18",
+		"LGospel": "John 2:12-25"
+	}
+}

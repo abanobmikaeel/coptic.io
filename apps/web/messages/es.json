@@ -2,9 +2,11 @@
 	"services": {
 		"Liturgy": "Liturgia",
 		"Vespers": "Vísperas",
-		"Matins": "Maitines"
+		"Matins": "Maitines",
+		"Evening Prayer": "Oración Vespertina"
 	},
 	"sections": {
+		"Prophecies": "Profecías",
 		"VPsalm": "Salmo de Vísperas",
 		"VGospel": "Evangelio de Vísperas",
 		"MPsalm": "Salmo de Maitines",
@@ -13,7 +15,9 @@
 		"Catholic": "Epístola Católica",
 		"Acts": "Hechos de los Apóstoles",
 		"LPsalm": "Salmo",
-		"LGospel": "Evangelio"
+		"LGospel": "Evangelio",
+		"EPPsalm": "Salmo de la Oración Vespertina",
+		"EPGospel": "Evangelio de la Oración Vespertina"
 	},
 	"books": {
 		"Genesis": "Génesis",

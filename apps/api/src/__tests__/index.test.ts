@@ -53,7 +53,15 @@ describe('API Endpoints', () => {
 			expect(res.status).toBe(200)
 
 			const json = await res.json()
-			expect(json).toHaveProperty('reference')
+			// During moveable seasons (like Great Lent), readings come from the
+			// Lenten Katameros and won't have a `reference` field. Outside of those
+			// seasons, the fixed Coptic calendar readings are returned with `reference`.
+			if (json.season) {
+				expect(json).toHaveProperty('season')
+				expect(json).toHaveProperty('seasonDay')
+			} else {
+				expect(json).toHaveProperty('reference')
+			}
 			expect(json).toHaveProperty('Synaxarium')
 			expect(json).toHaveProperty('celebrations')
 			expect(json).toHaveProperty('fullDate')
