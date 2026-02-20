@@ -121,7 +121,7 @@ describe('Lenten Readings - Accuracy', () => {
 
 			// Thursday falls outside the 3-day Nineveh fast season
 			// but we still have readings for it
-			expect(result.seasonDay).toBe("Thursday of Jonah's Fast")
+			expect(result.seasonDay).toBe("Thursday after Jonah's Fast")
 		})
 	})
 
@@ -299,13 +299,15 @@ describe('Lenten Readings - Accuracy', () => {
 	describe('All moveable readings parse without errors', () => {
 		it('should parse all 55 moveable reading entries without errors', async () => {
 			const lentReadings = (await import('../../resources/lentReadings.json')).default
+			const jonahReadings = (await import('../../resources/jonahReadings.json')).default
 			const fields = [
 				'Prophecies', 'VPsalm', 'VGospel', 'MPsalm', 'MGospel',
 				'Pauline', 'Catholic', 'Acts', 'LPsalm', 'LGospel',
 				'EPPsalm', 'EPGospel',
 			] as const
 
-			const entries = Object.entries(lentReadings) as [
+			const allReadings = { ...jonahReadings, ...lentReadings }
+			const entries = Object.entries(allReadings) as [
 				string,
 				Record<string, string | undefined>,
 			][]
@@ -360,8 +362,13 @@ describe('Lenten Readings - Accuracy', () => {
 						if (result.seasonDay) {
 							expect(result.seasonDay).toContain("Jonah's Fast")
 						}
-					} else if (offset >= -57 && offset <= -7) {
-						// Great Lent range (including preparation)
+					} else if (offset >= -57 && offset <= -56) {
+						// Preparation week: has moveable readings but not a formal liturgical season
+						if (!result.seasonDay) {
+							errors.push(`${date.toISOString().slice(0, 10)} (offset ${offset}): missing seasonDay`)
+						}
+					} else if (offset >= -55 && offset <= -7) {
+						// Great Lent range
 						if (!result.season) {
 							errors.push(`${date.toISOString().slice(0, 10)} (offset ${offset}): missing season`)
 						}

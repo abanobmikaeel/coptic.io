@@ -499,8 +499,9 @@ describe('Daily Readings - Katameros Accuracy', () => {
 	// These are verified against St-Takla.org and the source Google Sheet
 	const knownReadings = [
 		{
+			// Note: use 2024 because in 2025 this date falls on Jonah's Fast Thursday
 			name: 'Amshir 6 - Martyrs',
-			date: [2025, 2, 13],
+			date: [2024, 2, 14],
 			expectedVPsalm: 'Psalms 68:35;Psalms 68:3',
 			expectedLPsalm: 'Psalms 34:19-20',
 		},

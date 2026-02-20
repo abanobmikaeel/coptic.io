@@ -6,6 +6,7 @@ import {
 	toMidnight,
 } from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
+import jonahReadings from '../../resources/jonahReadings.json'
 import lentReadings from '../../resources/lentReadings.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import { getSynaxariumForDate } from '../../services/synaxarium.service'
@@ -148,8 +149,13 @@ type LentReadingEntry = {
 	EPGospel?: string
 }
 
-// Cast the imported JSON to a typed record
+// Cast the imported JSON to typed records and merge into a single lookup
 const lentReadingsMap = lentReadings as Record<string, LentReadingEntry>
+const jonahReadingsMap = jonahReadings as Record<string, LentReadingEntry>
+const moveableReadingsMap: Record<string, LentReadingEntry> = {
+	...jonahReadingsMap,
+	...lentReadingsMap,
+}
 
 /**
  * Compute the day offset from Easter for a given date.
@@ -168,7 +174,7 @@ const getDaysFromEaster = (date: Date): number => {
  */
 const getLentReading = (date: Date): LentReadingEntry | null => {
 	const offset = getDaysFromEaster(date)
-	return lentReadingsMap[String(offset)] ?? null
+	return moveableReadingsMap[String(offset)] ?? null
 }
 
 export const getByCopticDate = (
