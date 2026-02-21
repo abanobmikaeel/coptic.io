@@ -1,0 +1,533 @@
+[
+	{
+		"dayOffset": -55,
+		"dayNumber": 1,
+		"part": "One",
+		"weekNumber": 1,
+		"weekTheme": "Preparation for Procession",
+		"day": "monday",
+		"title": "Reject Evil",
+		"references": ["Mark 9:33-50"]
+	},
+	{
+		"dayOffset": -54,
+		"dayNumber": 2,
+		"part": "One",
+		"weekNumber": 1,
+		"weekTheme": "Preparation for Procession",
+		"day": "tuesday",
+		"title": "Cleave to Good",
+		"references": ["Luke 12:41-50"]
+	},
+	{
+		"dayOffset": -53,
+		"dayNumber": 3,
+		"part": "One",
+		"weekNumber": 1,
+		"weekTheme": "Preparation for Procession",
+		"day": "wednesday",
+		"title": "Love & Give",
+		"references": ["Luke 6:35"]
+	},
+	{
+		"dayOffset": -52,
+		"dayNumber": 4,
+		"part": "One",
+		"weekNumber": 1,
+		"weekTheme": "Preparation for Procession",
+		"day": "thursday",
+		"title": "Grow in Spirit",
+		"references": ["Mark 4:21-29"]
+	},
+	{
+		"dayOffset": -51,
+		"dayNumber": 5,
+		"part": "One",
+		"weekNumber": 1,
+		"weekTheme": "Preparation for Procession",
+		"day": "friday",
+		"title": "Pray & Submit",
+		"references": ["Luke 11:1-13"]
+	},
+	{
+		"dayOffset": -50,
+		"dayNumber": 6,
+		"part": "One",
+		"weekNumber": 1,
+		"weekTheme": "Preparation for Procession",
+		"day": "saturday",
+		"title": "Be Perfect",
+		"references": ["Matthew 5:38-48"]
+	},
+	{
+		"dayOffset": -49,
+		"dayNumber": 7,
+		"part": "One",
+		"weekNumber": 1,
+		"weekTheme": "Preparation for Procession",
+		"day": "sunday",
+		"title": "Seek the Kingdom",
+		"references": ["Matthew 6:19-33"],
+		"sundayHolyGospelReading": "Do not lay up treasures… Seek 1st the Kingdom…"
+	},
+	{
+		"dayOffset": -48,
+		"dayNumber": 8,
+		"part": "One",
+		"weekNumber": 2,
+		"weekTheme": "Nature of Procession: Struggle",
+		"day": "monday",
+		"title": "Pray Always",
+		"references": ["Luke 18:1-8"],
+		"sermons": [
+			{
+				"title": "Persistent Prayers (English)",
+				"preacher": "Fr. Cryil Gorgy",
+				"youtubeUrl": "https://www.youtube.com/watch?v=dXh7l7KRKyM",
+				"thumbnail": "https://i.ytimg.com/vi/dXh7l7KRKyM/hqdefault.jpg"
+			},
+			{
+				"title": "The Desire of Unceasing Prayer (Arabic)",
+				"preacher": "Fr. Daoud Lamei",
+				"youtubeUrl": "https://www.youtube.com/watch?v=majjYKI94JM",
+				"thumbnail": "https://i.ytimg.com/vi/majjYKI94JM/hqdefault.jpg"
+			}
+		]
+	},
+	{
+		"dayOffset": -47,
+		"dayNumber": 9,
+		"part": "One",
+		"weekNumber": 2,
+		"weekTheme": "Nature of Procession: Struggle",
+		"day": "tuesday",
+		"title": "Follow Christ",
+		"references": ["Mark 10:17-27"],
+		"sermons": [
+			{
+				"title": "Follow Me (English)",
+				"preacher": "Fr. Antonios Baky",
+				"youtubeUrl": "https://www.youtube.com/watch?v=a9YEo1aVf2k",
+				"thumbnail": "https://i.ytimg.com/vi/a9YEo1aVf2k/hqdefault.jpg"
+			},
+			{
+				"title": "Follow Me (Arabic)",
+				"preacher": "Pope Shenouda III",
+				"youtubeUrl": "https://www.youtube.com/watch?v=L-u6z0Jgyss",
+				"thumbnail": "https://i.ytimg.com/vi/L-u6z0Jgyss/hqdefault.jpg"
+			},
+			{
+				"title": "Follow Me (Arabic)",
+				"preacher": "Fr. Daoud Lamei",
+				"youtubeUrl": "https://www.youtube.com/watch?v=FhMjac8NPs0",
+				"thumbnail": "https://i.ytimg.com/vi/FhMjac8NPs0/hqdefault.jpg"
+			}
+		]
+	},
+	{
+		"dayOffset": -46,
+		"dayNumber": 10,
+		"part": "One",
+		"weekNumber": 2,
+		"weekTheme": "Nature of Procession: Struggle",
+		"day": "wednesday",
+		"title": "Assurance",
+		"references": ["Matthew 15:32-38"]
+	},
+	{
+		"dayOffset": -45,
+		"dayNumber": 11,
+		"part": "One",
+		"weekNumber": 2,
+		"weekTheme": "Nature of Procession: Struggle",
+		"day": "thursday",
+		"title": "Reject, Give & Follow",
+		"references": ["Matthew 19:16-30"]
+	},
+	{
+		"dayOffset": -44,
+		"dayNumber": 12,
+		"part": "One",
+		"weekNumber": 2,
+		"weekTheme": "Nature of Procession: Struggle",
+		"day": "friday",
+		"title": "Build on Rock",
+		"references": ["Luke 6:39-49"]
+	},
+	{
+		"dayOffset": -43,
+		"dayNumber": 13,
+		"part": "One",
+		"weekNumber": 2,
+		"weekTheme": "Nature of Procession: Struggle",
+		"day": "saturday",
+		"title": "Difficulties on the Road",
+		"references": ["Matthew 7:13-21"]
+	},
+	{
+		"dayOffset": -42,
+		"dayNumber": 14,
+		"part": "One",
+		"weekNumber": 2,
+		"weekTheme": "Nature of Procession: Struggle",
+		"day": "sunday",
+		"title": "Victory",
+		"references": ["Matthew 4:1-11"],
+		"sundayHolyGospelReading": "Temptation in the Wilderness"
+	},
+	{
+		"dayOffset": -41,
+		"dayNumber": 15,
+		"part": "One",
+		"weekNumber": 3,
+		"weekTheme": "Purity of Procession: Repentance",
+		"day": "monday",
+		"title": "Confession of Repentance",
+		"references": ["Luke 13:1-36"]
+	},
+	{
+		"dayOffset": -40,
+		"dayNumber": 16,
+		"part": "One",
+		"weekNumber": 3,
+		"weekTheme": "Purity of Procession: Repentance",
+		"day": "tuesday",
+		"title": "Righteousness of Repentance",
+		"references": ["Mark 2:1-12"]
+	},
+	{
+		"dayOffset": -39,
+		"dayNumber": 17,
+		"part": "One",
+		"weekNumber": 3,
+		"weekTheme": "Purity of Procession: Repentance",
+		"day": "wednesday",
+		"title": "Temptation",
+		"references": ["Luke 4:1-13"]
+	},
+	{
+		"dayOffset": -38,
+		"dayNumber": 18,
+		"part": "One",
+		"weekNumber": 3,
+		"weekTheme": "Purity of Procession: Repentance",
+		"day": "thursday",
+		"title": "Judgment",
+		"references": ["John 12:44-50"]
+	},
+	{
+		"dayOffset": -37,
+		"dayNumber": 19,
+		"part": "One",
+		"weekNumber": 3,
+		"weekTheme": "Purity of Procession: Repentance",
+		"day": "friday",
+		"title": "Faithfulness",
+		"references": ["(TBD)"]
+	},
+	{
+		"dayOffset": -36,
+		"dayNumber": 20,
+		"part": "One",
+		"weekNumber": 3,
+		"weekTheme": "Purity of Procession: Repentance",
+		"day": "saturday",
+		"title": "Forgiveness of Repentance",
+		"references": ["Matthew 18:23-35"]
+	},
+	{
+		"dayOffset": -35,
+		"dayNumber": 21,
+		"part": "One",
+		"weekNumber": 3,
+		"weekTheme": "Purity of Procession: Repentance",
+		"day": "sunday",
+		"title": "Acceptance of Repentance",
+		"references": ["Luke 15:11-32"],
+		"sundayHolyGospelReading": "The Prodigal Son"
+	},
+	{
+		"dayOffset": -34,
+		"dayNumber": 22,
+		"part": "One",
+		"weekNumber": 4,
+		"weekTheme": "Constitution of Procession: The Holy Gospel",
+		"day": "monday",
+		"title": "Spirit of the Holy Gospel",
+		"references": ["Luke 16:1-9"]
+	},
+	{
+		"dayOffset": -33,
+		"dayNumber": 23,
+		"part": "One",
+		"weekNumber": 4,
+		"weekTheme": "Constitution of Procession: The Holy Gospel",
+		"day": "tuesday",
+		"title": "Spreading the Holy Gospel",
+		"references": ["Luke 9:57-62"]
+	},
+	{
+		"dayOffset": -32,
+		"dayNumber": 24,
+		"part": "One",
+		"weekNumber": 4,
+		"weekTheme": "Constitution of Procession: The Holy Gospel",
+		"day": "wednesday",
+		"title": "Light of the Holy Gospel",
+		"references": ["Luke 18:35-43"]
+	},
+	{
+		"dayOffset": -31,
+		"dayNumber": 25,
+		"part": "One",
+		"weekNumber": 4,
+		"weekTheme": "Constitution of Procession: The Holy Gospel",
+		"day": "thursday",
+		"title": "Faith in the Holy Gospel",
+		"references": ["Matthew 15:21-31"]
+	},
+	{
+		"dayOffset": -30,
+		"dayNumber": 26,
+		"part": "One",
+		"weekNumber": 4,
+		"weekTheme": "Constitution of Procession: The Holy Gospel",
+		"day": "friday",
+		"title": "Works of the Holy Gospel",
+		"references": ["Matthew 21:33-46"]
+	},
+	{
+		"dayOffset": -29,
+		"dayNumber": 27,
+		"part": "One",
+		"weekNumber": 4,
+		"weekTheme": "Constitution of Procession: The Holy Gospel",
+		"day": "saturday",
+		"title": "Glory of the Holy Gospel",
+		"references": ["John 4:1-42"]
+	},
+	{
+		"dayOffset": -28,
+		"dayNumber": 28,
+		"part": "One",
+		"weekNumber": 4,
+		"weekTheme": "Constitution of Procession: The Holy Gospel",
+		"day": "sunday",
+		"title": "Samaritan Woman",
+		"references": ["John 4:1-42"],
+		"sundayHolyGospelReading": "Samaritan Woman"
+	},
+	{
+		"dayOffset": -27,
+		"dayNumber": 29,
+		"part": "One",
+		"weekNumber": 5,
+		"weekTheme": "Target of Procession: Faith",
+		"day": "monday",
+		"title": "Submission in Faith",
+		"references": ["Luke 9:12-17"]
+	},
+	{
+		"dayOffset": -26,
+		"dayNumber": 30,
+		"part": "One",
+		"weekNumber": 5,
+		"weekTheme": "Target of Procession: Faith",
+		"day": "tuesday",
+		"title": "Service in Faith",
+		"references": ["John 8:12-20"]
+	},
+	{
+		"dayOffset": -25,
+		"dayNumber": 31,
+		"part": "One",
+		"weekNumber": 5,
+		"weekTheme": "Target of Procession: Faith",
+		"day": "wednesday",
+		"title": "Hope in Faith",
+		"references": ["Luke 13:6-9"]
+	},
+	{
+		"dayOffset": -24,
+		"dayNumber": 32,
+		"part": "One",
+		"weekNumber": 5,
+		"weekTheme": "Target of Procession: Faith",
+		"day": "thursday",
+		"title": "Freedom through Faith",
+		"references": ["John 8:31-36"]
+	},
+	{
+		"dayOffset": -23,
+		"dayNumber": 33,
+		"part": "One",
+		"weekNumber": 5,
+		"weekTheme": "Target of Procession: Faith",
+		"day": "friday",
+		"title": "Sentence of Faith",
+		"references": ["John 8:1-11"]
+	},
+	{
+		"dayOffset": -22,
+		"dayNumber": 34,
+		"part": "One",
+		"weekNumber": 5,
+		"weekTheme": "Target of Procession: Faith",
+		"day": "saturday",
+		"title": "Guidance by Faith",
+		"references": ["Matthew 23:13-39"]
+	},
+	{
+		"dayOffset": -21,
+		"dayNumber": 35,
+		"part": "One",
+		"weekNumber": 5,
+		"weekTheme": "Target of Procession: Faith",
+		"day": "sunday",
+		"title": "Strengthening in Faith",
+		"references": ["John 5:1-18"],
+		"sundayHolyGospelReading": "Healing the Paralytic"
+	},
+	{
+		"dayOffset": -20,
+		"dayNumber": 36,
+		"part": "Two",
+		"weekNumber": 6,
+		"weekTheme": "Identity in Procession: Baptism",
+		"day": "monday",
+		"title": "Repentance & Baptism",
+		"references": ["Luke 13:1-5"]
+	},
+	{
+		"dayOffset": -19,
+		"dayNumber": 37,
+		"part": "Two",
+		"weekNumber": 6,
+		"weekTheme": "Identity in Procession: Baptism",
+		"day": "tuesday",
+		"title": "Witnessing in Baptism",
+		"references": ["John 9:1-38"]
+	},
+	{
+		"dayOffset": -18,
+		"dayNumber": 38,
+		"part": "Two",
+		"weekNumber": 6,
+		"weekTheme": "Identity in Procession: Baptism",
+		"day": "wednesday",
+		"title": "Judgment in Baptism",
+		"references": ["John 11:45-52"]
+	},
+	{
+		"dayOffset": -17,
+		"dayNumber": 39,
+		"part": "Two",
+		"weekNumber": 6,
+		"weekTheme": "Identity in Procession: Baptism",
+		"day": "thursday",
+		"title": "Life of Baptism",
+		"references": ["(TBD)"]
+	},
+	{
+		"dayOffset": -16,
+		"dayNumber": 40,
+		"part": "Two",
+		"weekNumber": 6,
+		"weekTheme": "Identity in Procession: Baptism",
+		"day": "friday",
+		"title": "Rebirth in Baptism",
+		"references": ["(TBD)"]
+	},
+	{
+		"dayOffset": -15,
+		"dayNumber": 41,
+		"part": "Two",
+		"weekNumber": 6,
+		"weekTheme": "Identity in Procession: Baptism",
+		"day": "saturday",
+		"title": "Salvation in Baptism",
+		"references": ["Mark 10:46-52"]
+	},
+	{
+		"dayOffset": -14,
+		"dayNumber": 42,
+		"part": "Two",
+		"weekNumber": 6,
+		"weekTheme": "Identity in Procession: Baptism",
+		"day": "sunday",
+		"title": "Enlightenment of Baptism",
+		"references": ["John 9:1-41"],
+		"sundayHolyGospelReading": "Healing the Man Born Blind"
+	},
+	{
+		"dayOffset": -13,
+		"dayNumber": 43,
+		"part": "Two",
+		"weekNumber": 7,
+		"weekTheme": "End of Procession: Salvation",
+		"day": "monday",
+		"title": "Savior's Witnesses",
+		"references": ["John 5:31-47"]
+	},
+	{
+		"dayOffset": -12,
+		"dayNumber": 44,
+		"part": "Two",
+		"weekNumber": 7,
+		"weekTheme": "End of Procession: Salvation",
+		"day": "tuesday",
+		"title": "Savior's Resurrection",
+		"references": ["Matthew 12:18-37"]
+	},
+	{
+		"dayOffset": -11,
+		"dayNumber": 45,
+		"part": "Two",
+		"weekNumber": 7,
+		"weekTheme": "End of Procession: Salvation",
+		"day": "wednesday",
+		"title": "Confessing the Savior",
+		"references": ["John 12:36-43"]
+	},
+	{
+		"dayOffset": -10,
+		"dayNumber": 46,
+		"part": "Two",
+		"weekNumber": 7,
+		"weekTheme": "End of Procession: Salvation",
+		"day": "thursday",
+		"title": "Faith in the Savior",
+		"references": ["John 6:35-45"]
+	},
+	{
+		"dayOffset": -9,
+		"dayNumber": 47,
+		"part": "Two",
+		"weekNumber": 7,
+		"weekTheme": "End of Procession: Salvation",
+		"day": "friday",
+		"title": "Savior's Blessings (Raising of Lazarus)",
+		"references": ["John 11:1-45"]
+	},
+	{
+		"dayOffset": -8,
+		"dayNumber": 48,
+		"part": "Two",
+		"weekNumber": 7,
+		"weekTheme": "End of Procession: Salvation",
+		"day": "saturday",
+		"title": "Savior's Entry",
+		"references": ["Matthew 21:1-17"]
+	},
+	{
+		"dayOffset": -7,
+		"dayNumber": 49,
+		"part": "Two",
+		"weekNumber": 7,
+		"weekTheme": "End of Procession: Salvation",
+		"day": "sunday",
+		"title": "Triumphant Entry into Jerusalem",
+		"references": ["Luke 19:28-48", "John 12:12-19"],
+		"sundayHolyGospelReading": "Palm Sunday"
+	}
+]

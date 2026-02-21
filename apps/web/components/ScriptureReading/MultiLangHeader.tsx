@@ -33,10 +33,10 @@ export function MultiLangHeader({
 							return (
 								<div
 									key={lang}
-									className="border-l-4 pl-2 py-1.5 text-left border-amber-500/60 flex items-center"
+									className="border-l-4 pl-2 py-2.5 text-left border-amber-500/60 flex items-center"
 								>
 									<p
-										className={`text-[10px] tracking-widest uppercase font-semibold ${themeClasses.muted[theme]}`}
+										className={`text-xs tracking-widest uppercase font-semibold ${themeClasses.muted[theme]}`}
 									>
 										Coptic
 									</p>
@@ -47,24 +47,24 @@ export function MultiLangHeader({
 						return (
 							<div
 								key={lang}
-								className={`${isRtl ? 'border-r-4 pr-2 text-right' : 'border-l-4 pl-2 text-left'} border-amber-500/60 py-1.5`}
+								className={`${isRtl ? 'border-r-4 pr-2 text-right' : 'border-l-4 pl-2 text-left'} border-amber-500/60 py-2.5`}
 								dir={isRtl ? 'rtl' : 'ltr'}
 							>
 								{/* Service label */}
 								{service && (
 									<p
-										className={`${isRtl ? 'text-[10px] font-arabic' : 'text-[9px] tracking-widest uppercase'} font-semibold ${themeClasses.muted[theme]}`}
+										className={`${isRtl ? 'text-xs font-arabic' : 'text-xs tracking-widest uppercase'} font-semibold ${themeClasses.muted[theme]}`}
 									>
 										{getServiceName(service, lang)}
 									</p>
 								)}
 								<h2
-									className={`text-sm font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors ${isRtl ? 'font-arabic' : ''} leading-tight`}
+									className={`text-base font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors ${isRtl ? 'font-arabic' : ''} leading-tight`}
 								>
 									{labels[lang]}
 								</h2>
 								<p
-									className={`${isRtl ? 'text-xs' : 'text-[11px]'} ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'} ${isRtl ? 'font-arabic' : ''} leading-tight`}
+									className={`text-sm ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'} ${isRtl ? 'font-arabic' : ''} leading-tight`}
 								>
 									{references[lang]}
 								</p>

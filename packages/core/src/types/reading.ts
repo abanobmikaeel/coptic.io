@@ -92,3 +92,39 @@ export interface ReadingSource {
 	/** Source URL if available */
 	url?: string
 }
+
+/**
+ * A sermon linked to a Lent devotional day
+ */
+export interface LentDevotionalSermon {
+	title: string
+	preacher?: string
+	youtubeUrl: string
+	thumbnail?: string
+}
+
+/**
+ * A single day's entry in the Lent devotional guide
+ */
+export interface LentDevotionalReading {
+	/** Days from Easter (e.g., -55 for day 1 of Lent) */
+	dayOffset: number
+	/** Day number within the 49-day Lent period (1-49) */
+	dayNumber: number
+	/** Part of Lent ("One" or "Two") */
+	part: string
+	/** Week number (1-7) */
+	weekNumber: number
+	/** Theme for the week */
+	weekTheme: string
+	/** Day of the week */
+	day: string
+	/** Daily theme title */
+	title: string
+	/** Bible reference strings */
+	references: string[]
+	/** Optional sermon links */
+	sermons?: LentDevotionalSermon[]
+	/** Sunday gospel reading description */
+	sundayHolyGospelReading?: string
+}

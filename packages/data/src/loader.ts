@@ -1,4 +1,4 @@
-import type { SynaxariumEntry } from '@coptic/core'
+import type { LentDevotionalReading, SynaxariumEntry } from '@coptic/core'
 import type { SupportedLanguage, SynaxariumSource } from './index'
 
 /**
@@ -98,4 +98,11 @@ export const searchSynaxarium = async (
 	}
 
 	return results
+}
+
+/**
+ * Load Lent devotional guide data (49 days)
+ */
+export const loadLentDevotional = async (): Promise<LentDevotionalReading[]> => {
+	return (await import('./en/lent/devotional.json')).default as LentDevotionalReading[]
 }

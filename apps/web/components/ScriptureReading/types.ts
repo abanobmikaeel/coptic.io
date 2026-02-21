@@ -43,19 +43,17 @@ export interface StyleClasses {
 	wordSpacingClass: string
 }
 
-export interface HeaderProps {
-	title: string
-	reference: string
+export interface ReadingHeaderProps {
+	// Single-lang mode
+	title?: string
+	reference?: string
+	// Multi-lang mode
+	orderedLangs?: BibleTranslation[]
+	labels?: { en: string; ar: string; es: string; cop: string }
+	references?: { en: string; ar: string; es: string; cop: string }
+	// Shared
 	service?: string
 	isOpen: boolean
 	theme: ReadingTheme
-}
-
-export interface MultiLangHeaderProps {
-	orderedLangs: BibleTranslation[]
-	labels: { en: string; ar: string; es: string; cop: string }
-	references: { en: string; ar: string; es: string; cop: string }
-	service?: string
-	isOpen: boolean
-	theme: ReadingTheme
+	isRtl?: boolean
 }

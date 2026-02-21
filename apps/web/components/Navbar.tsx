@@ -30,6 +30,11 @@ export default function Navbar() {
 			description: t('synaxariumDescription'),
 			href: '/synaxarium',
 		},
+		{
+			label: 'Lent Guide',
+			description: 'Great Lent devotional readings',
+			href: '/lent',
+		},
 	]
 
 	const moreMenuItems = [

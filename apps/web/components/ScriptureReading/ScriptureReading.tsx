@@ -3,10 +3,8 @@
 import { getServiceName } from '@/i18n/content-translations'
 import { getWidthClass } from '@/lib/reading-styles'
 import { useState } from 'react'
-import { LtrHeader } from './LtrHeader'
-import { MultiLangHeader } from './MultiLangHeader'
 import { MultiLanguageContent } from './MultiLanguageContent'
-import { RtlHeader } from './RtlHeader'
+import { ReadingHeader } from './ReadingHeader'
 import { SingleLanguageContent } from './SingleLanguageContent'
 import type { ScriptureReadingProps } from './types'
 import { getReferenceForLang, getStyleClasses, orderLanguages } from './utils'
@@ -64,37 +62,22 @@ export function ScriptureReading({
 				className="w-full group cursor-pointer -mx-3 sm:mx-0"
 			>
 				<div className={`${widthClass} sm:mx-auto`}>
-					{isMultiLang ? (
-						<MultiLangHeader
-							orderedLangs={orderedLangs}
-							labels={labels}
-							references={{
-								en: getReferenceForLang('en', readingsByLang.en),
-								ar: getReferenceForLang('ar', readingsByLang.ar),
-								es: getReferenceForLang('es', readingsByLang.es),
-								cop: getReferenceForLang('cop', readingsByLang.cop),
-							}}
-							service={service}
-							isOpen={isOpen}
-							theme={theme}
-						/>
-					) : headerIsRtl ? (
-						<RtlHeader
-							title={labels.ar}
-							reference={getReferenceForLang('ar', readingsByLang.ar)}
-							service={service ? getServiceName(service, 'ar') : undefined}
-							isOpen={isOpen}
-							theme={theme}
-						/>
-					) : (
-						<LtrHeader
-							title={labels.en}
-							reference={getReferenceForLang('en', readingsByLang.en)}
-							service={service}
-							isOpen={isOpen}
-							theme={theme}
-						/>
-					)}
+					<ReadingHeader
+						orderedLangs={isMultiLang ? orderedLangs : undefined}
+						labels={isMultiLang ? labels : undefined}
+						references={isMultiLang ? {
+							en: getReferenceForLang('en', readingsByLang.en),
+							ar: getReferenceForLang('ar', readingsByLang.ar),
+							es: getReferenceForLang('es', readingsByLang.es),
+							cop: getReferenceForLang('cop', readingsByLang.cop),
+						} : undefined}
+						title={!isMultiLang ? labels[firstLang as 'en' | 'ar'] : undefined}
+						reference={!isMultiLang ? getReferenceForLang(firstLang, readingsByLang[firstLang]) : undefined}
+						service={!isMultiLang && headerIsRtl ? (service ? getServiceName(service, 'ar') : undefined) : service}
+						isOpen={isOpen}
+						theme={theme}
+						isRtl={!isMultiLang ? headerIsRtl : undefined}
+					/>
 				</div>
 			</button>
 
