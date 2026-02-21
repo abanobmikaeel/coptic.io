@@ -1,6 +1,7 @@
 'use client'
 
 import type { MobileReadingItem } from '@/lib/reading-sections'
+import { themeClasses } from '@/lib/reading-styles'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -85,36 +86,12 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 		{ label: t('developers'), description: t('developersDescription'), href: '/docs' },
 	]
 
-	const buttonClass =
-		theme === 'sepia'
-			? 'text-amber-700 hover:text-amber-900'
-			: 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-
-	const drawerBg = theme === 'sepia' ? 'bg-amber-50' : theme === 'dark' ? 'bg-gray-900' : 'bg-white'
-
-	const borderColor =
-		theme === 'sepia'
-			? 'border-amber-200'
-			: theme === 'dark'
-				? 'border-gray-700'
-				: 'border-gray-200'
-
-	const textMuted =
-		theme === 'sepia' ? 'text-amber-600' : theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-
-	const backdropClass =
-		theme === 'sepia'
-			? 'backdrop:bg-amber-950/50'
-			: theme === 'dark'
-				? 'backdrop:bg-black/70'
-				: 'backdrop:bg-black/60'
-
 	return (
 		<>
 			<button
 				type="button"
 				onClick={openMenu}
-				className={`p-2 transition-colors ${buttonClass}`}
+				className={`p-2 transition-colors ${themeClasses.drawerButton[theme]}`}
 				aria-label="Open menu"
 			>
 				<MenuIcon className="w-5 h-5" />
@@ -122,7 +99,7 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 
 			<dialog
 				ref={dialogRef}
-				className={`m-0 p-0 h-full max-h-full w-72 max-w-full border-none bg-transparent ${backdropClass}`}
+				className={`m-0 p-0 h-full max-h-full w-72 max-w-full border-none bg-transparent ${themeClasses.drawerBackdrop[theme]}`}
 				onClick={(e) => {
 					if (e.target === dialogRef.current) closeMenu()
 				}}
@@ -130,21 +107,21 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 					if (e.key === 'Escape') closeMenu()
 				}}
 			>
-				<div className={`h-full ${drawerBg} shadow-xl`}>
+				<div className={`h-full ${themeClasses.drawerBg[theme]} shadow-xl`}>
 					{/* Header */}
-					<div className={`flex items-center justify-between px-4 py-3 border-b ${borderColor}`}>
+					<div
+						className={`flex items-center justify-between px-4 py-3 border-b ${themeClasses.drawerBorder[theme]}`}
+					>
 						<Link href="/" className="flex items-center gap-2 group" onClick={closeMenu}>
 							<CopticCross size={20} />
-							<span
-								className={`text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
-							>
+							<span className={`text-sm font-semibold ${themeClasses.breadcrumbActive[theme]}`}>
 								Coptic IO
 							</span>
 						</Link>
 						<button
 							type="button"
 							onClick={closeMenu}
-							className={`p-2 transition-colors ${buttonClass}`}
+							className={`p-2 transition-colors ${themeClasses.drawerButton[theme]}`}
 							aria-label="Close menu"
 						>
 							<CloseIcon className="w-5 h-5" />
@@ -156,7 +133,7 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 						{/* Read section */}
 						<div className="px-4 mb-2">
 							<h2
-								className={`text-[10px] font-semibold uppercase tracking-wider ${textMuted} mb-1`}
+								className={`text-[10px] font-semibold uppercase tracking-wider ${themeClasses.dropdownMuted[theme]} mb-1`}
 							>
 								{t('read')}
 							</h2>
@@ -170,20 +147,14 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 											onClick={closeMenu}
 											className={`block px-3 py-1.5 rounded-lg transition-colors ${
 												isActive
-													? theme === 'sepia'
-														? 'bg-amber-100 text-amber-800'
-														: theme === 'dark'
-															? 'bg-amber-900/20 text-amber-400'
-															: 'bg-amber-50 text-amber-700'
-													: theme === 'sepia'
-														? 'text-amber-900 hover:bg-amber-100/50'
-														: theme === 'dark'
-															? 'text-white hover:bg-gray-800'
-															: 'text-gray-900 hover:bg-gray-100'
+													? themeClasses.drawerNavActive[theme]
+													: themeClasses.drawerNavInactive[theme]
 											}`}
 										>
 											<span className="block text-sm font-medium">{item.label}</span>
-											<span className={`block text-[11px] ${textMuted}`}>{item.description}</span>
+											<span className={`block text-[11px] ${themeClasses.dropdownMuted[theme]}`}>
+												{item.description}
+											</span>
 										</Link>
 									)
 								})}
@@ -193,10 +164,10 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 						{/* Sections navigation (if available) */}
 						{sections && sections.length > 0 && (
 							<>
-								<div className={`border-t ${borderColor} mx-4 my-2`} />
+								<div className={`border-t ${themeClasses.drawerBorder[theme]} mx-4 my-2`} />
 								<div className="px-4 mb-2">
 									<h2
-										className={`text-[10px] font-semibold uppercase tracking-wider ${textMuted} mb-1`}
+										className={`text-[10px] font-semibold uppercase tracking-wider ${themeClasses.dropdownMuted[theme]} mb-1`}
 									>
 										Jump to
 									</h2>
@@ -210,16 +181,8 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 													onClick={() => scrollToReading(section.key)}
 													className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
 														isActive
-															? theme === 'sepia'
-																? 'bg-amber-200 text-amber-900'
-																: theme === 'dark'
-																	? 'bg-amber-600 text-white'
-																	: 'bg-amber-500 text-white'
-															: theme === 'sepia'
-																? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
-																: theme === 'dark'
-																	? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-																	: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+															? themeClasses.drawerSectionActive[theme]
+															: themeClasses.drawerSectionInactive[theme]
 													}`}
 												>
 													{section.label}
@@ -231,12 +194,12 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 							</>
 						)}
 
-						<div className={`border-t ${borderColor} mx-4 my-2`} />
+						<div className={`border-t ${themeClasses.drawerBorder[theme]} mx-4 my-2`} />
 
 						{/* More section */}
 						<div className="px-4">
 							<h2
-								className={`text-[10px] font-semibold uppercase tracking-wider ${textMuted} mb-1`}
+								className={`text-[10px] font-semibold uppercase tracking-wider ${themeClasses.dropdownMuted[theme]} mb-1`}
 							>
 								{t('more')}
 							</h2>
@@ -250,20 +213,14 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 											onClick={closeMenu}
 											className={`block px-3 py-1.5 rounded-lg transition-colors ${
 												isActive
-													? theme === 'sepia'
-														? 'bg-amber-100 text-amber-800'
-														: theme === 'dark'
-															? 'bg-amber-900/20 text-amber-400'
-															: 'bg-amber-50 text-amber-700'
-													: theme === 'sepia'
-														? 'text-amber-900 hover:bg-amber-100/50'
-														: theme === 'dark'
-															? 'text-white hover:bg-gray-800'
-															: 'text-gray-900 hover:bg-gray-100'
+													? themeClasses.drawerNavActive[theme]
+													: themeClasses.drawerNavInactive[theme]
 											}`}
 										>
 											<span className="block text-sm font-medium">{item.label}</span>
-											<span className={`block text-[11px] ${textMuted}`}>{item.description}</span>
+											<span className={`block text-[11px] ${themeClasses.dropdownMuted[theme]}`}>
+												{item.description}
+											</span>
 										</Link>
 									)
 								})}

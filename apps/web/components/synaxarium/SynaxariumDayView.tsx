@@ -134,7 +134,7 @@ function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; them
 		<section className="relative px-4 sm:px-6 pb-6">
 			<div className="max-w-5xl mx-auto">
 				<Card
-					className={`border-amber-200 dark:border-amber-800 ${theme === 'sepia' ? 'bg-amber-100/50' : 'bg-amber-50/50 dark:bg-amber-900/10'}`}
+					className={`border-amber-200 dark:border-amber-800 ${themeClasses.featuredCardBg[theme]}`}
 				>
 					<CardHeader className="flex items-center gap-2">
 						<span className="text-amber-600 dark:text-amber-500">{t('todaysSaints')}</span>
@@ -151,7 +151,7 @@ function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; them
 								return (
 									<div
 										key={entry.id}
-										className={`p-3 rounded-lg border ${theme === 'sepia' ? 'bg-amber-50 border-amber-200' : 'bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800'}`}
+										className={`p-3 rounded-lg border ${themeClasses.featuredCardItem[theme]}`}
 									>
 										<span
 											className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-2 ${getCategoryColor(category)}`}
@@ -161,7 +161,7 @@ function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; them
 										{/* English name */}
 										{entry.en && (
 											<p
-												className={`text-sm font-medium line-clamp-2 ${theme === 'sepia' ? 'text-amber-900' : 'text-gray-900 dark:text-white'}`}
+												className={`text-sm font-medium line-clamp-2 ${themeClasses.featuredCardText[theme]}`}
 											>
 												{entry.en.name}
 											</p>
@@ -169,7 +169,7 @@ function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; them
 										{/* Arabic name */}
 										{entry.ar && (
 											<p
-												className={`text-sm font-medium line-clamp-2 mt-1 ${theme === 'sepia' ? 'text-amber-800/80' : 'text-gray-600 dark:text-gray-400'}`}
+												className={`text-sm font-medium line-clamp-2 mt-1 ${themeClasses.featuredCardMuted[theme]}`}
 												dir="rtl"
 											>
 												{entry.ar.name}

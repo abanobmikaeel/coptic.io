@@ -2,6 +2,7 @@
 
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { DisplaySettings } from '@/components/DisplaySettings'
+import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { SynaxariumCategoryFilters } from '@/components/synaxarium/SynaxariumCategoryFilters'
 import { SynaxariumDayView } from '@/components/synaxarium/SynaxariumDayView'
 import { SynaxariumHeader } from '@/components/synaxarium/SynaxariumHeader'
@@ -54,97 +55,91 @@ function SynaxariumPageContent() {
 		minSwipeDistance: 75,
 	})
 
+	const effectiveTheme = mounted ? settings.theme : 'light'
+
 	return (
-		<main
-			ref={swipeRef}
-			className={`min-h-screen relative transition-colors duration-300 ${mounted ? themeClasses.bg[settings.theme] : ''}`}
+		<ReadingPageLayout
+			theme={effectiveTheme}
+			className={`relative ${!mounted ? '!bg-transparent' : ''}`}
 		>
-			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
-				<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
-			</div>
-
-			<section className="relative pt-6 lg:pt-20 pb-6 px-6">
-				<div className="max-w-4xl mx-auto">
-					<div className="flex items-center justify-between mb-4">
-						<Link
-							href="/library"
-							className={`flex items-center gap-1 text-sm transition-colors ${mounted ? `${themeClasses.muted[settings.theme]} hover:${themeClasses.text[settings.theme]}` : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
-						>
-							<CloseIcon className="w-4 h-4" />
-							<span className="hidden sm:inline">{tCommon('back')}</span>
-						</Link>
-						<Breadcrumb items={[{ label: tNav('synaxarium') }]} />
-						<DisplaySettings />
-					</div>
-					<div className="text-center">
-						<h1
-							className={`text-3xl font-bold mb-2 ${mounted ? themeClasses.textHeading[settings.theme] : 'text-gray-900 dark:text-white'}`}
-						>
-							{t('title')}
-						</h1>
-						<p
-							className={
-								mounted ? themeClasses.muted[settings.theme] : 'text-gray-600 dark:text-gray-400'
-							}
-						>
-							{t('subtitle')}
-						</p>
-					</div>
+			<div ref={swipeRef as React.RefObject<HTMLDivElement>}>
+				<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
+					<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
 				</div>
-			</section>
 
-			<SynaxariumHeader
-				viewMode={viewMode}
-				gregorianDate={displayDate}
-				copticDate={copticDate ?? undefined}
-				isToday={isToday}
-				onViewModeChange={handleViewModeChange}
-				onPrevious={() => navigateDate(-1)}
-				onNext={() => navigateDate(1)}
-			/>
+				<section className="relative pt-6 lg:pt-20 pb-6 px-6">
+					<div className="max-w-4xl mx-auto">
+						<div className="flex items-center justify-between mb-4">
+							<Link
+								href="/library"
+								className={`flex items-center gap-1 text-sm transition-colors ${themeClasses.muted[effectiveTheme]}`}
+							>
+								<CloseIcon className="w-4 h-4" />
+								<span className="hidden sm:inline">{tCommon('back')}</span>
+							</Link>
+							<Breadcrumb items={[{ label: tNav('synaxarium') }]} />
+							<DisplaySettings />
+						</div>
+						<div className="text-center">
+							<h1 className="text-3xl font-bold mb-2">{t('title')}</h1>
+							<p className={themeClasses.muted[effectiveTheme]}>{t('subtitle')}</p>
+						</div>
+					</div>
+				</section>
 
-			<SynaxariumSearch value={searchQuery} onChange={setSearchQuery} isSearching={isSearching} />
-
-			<SynaxariumCategoryFilters
-				selectedCategory={selectedCategory}
-				onCategoryChange={handleCategoryChange}
-				counts={categoryCounts}
-				showCounts={viewMode === 'day' && !showingSearch}
-			/>
-
-			{showingSearch ? (
-				<SynaxariumSearchResults
-					results={filteredSearchResults}
-					totalResults={searchResults.length}
-					isSearching={isSearching}
-					searchQuery={searchQuery}
-					onClearSearch={() => setSearchQuery('')}
-				/>
-			) : viewMode === 'upcoming' ? (
-				<SynaxariumUpcomingView
-					startDate={getTodayDateString()}
-					selectedCategory={selectedCategory}
-				/>
-			) : (
-				<SynaxariumDayView
-					key={currentDate}
-					currentDate={currentDate}
+				<SynaxariumHeader
+					viewMode={viewMode}
+					gregorianDate={displayDate}
+					copticDate={copticDate ?? undefined}
 					isToday={isToday}
-					bilingualEntries={bilingualEntries}
-					filteredBilingualEntries={filteredBilingualEntries}
-					loading={loading}
-					selectedCategory={selectedCategory}
-					expandedEntry={expandedEntry}
-					onExpandedChange={setExpandedEntry}
-					textSize={settings.textSize}
-					theme={settings.theme}
-					fontFamily={settings.fontFamily}
-					weight={settings.weight}
-					lineSpacing={settings.lineSpacing}
-					wordSpacing={settings.wordSpacing}
+					onViewModeChange={handleViewModeChange}
+					onPrevious={() => navigateDate(-1)}
+					onNext={() => navigateDate(1)}
 				/>
-			)}
-		</main>
+
+				<SynaxariumSearch value={searchQuery} onChange={setSearchQuery} isSearching={isSearching} />
+
+				<SynaxariumCategoryFilters
+					selectedCategory={selectedCategory}
+					onCategoryChange={handleCategoryChange}
+					counts={categoryCounts}
+					showCounts={viewMode === 'day' && !showingSearch}
+				/>
+
+				{showingSearch ? (
+					<SynaxariumSearchResults
+						results={filteredSearchResults}
+						totalResults={searchResults.length}
+						isSearching={isSearching}
+						searchQuery={searchQuery}
+						onClearSearch={() => setSearchQuery('')}
+					/>
+				) : viewMode === 'upcoming' ? (
+					<SynaxariumUpcomingView
+						startDate={getTodayDateString()}
+						selectedCategory={selectedCategory}
+					/>
+				) : (
+					<SynaxariumDayView
+						key={currentDate}
+						currentDate={currentDate}
+						isToday={isToday}
+						bilingualEntries={bilingualEntries}
+						filteredBilingualEntries={filteredBilingualEntries}
+						loading={loading}
+						selectedCategory={selectedCategory}
+						expandedEntry={expandedEntry}
+						onExpandedChange={setExpandedEntry}
+						textSize={settings.textSize}
+						theme={settings.theme}
+						fontFamily={settings.fontFamily}
+						weight={settings.weight}
+						lineSpacing={settings.lineSpacing}
+						wordSpacing={settings.wordSpacing}
+					/>
+				)}
+			</div>
+		</ReadingPageLayout>
 	)
 }
 

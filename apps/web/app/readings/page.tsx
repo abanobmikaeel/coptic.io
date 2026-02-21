@@ -11,6 +11,7 @@ import {
 	type ViewMode,
 	type WordSpacing,
 } from '@/components/DisplaySettings'
+import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
@@ -215,19 +216,13 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		)
 	}
 
-	return (
-		<main
-			className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}
-		>
-			{/* Progress indicator */}
+	const stickyHeader = (
+		<>
 			<Suspense fallback={null}>
 				<ReadingProgress />
 			</Suspense>
-
-			{/* Sticky header bar with date and settings */}
 			<ReadingsHeader
 				theme={theme}
-				themeClasses={themeClasses}
 				sections={readings ? getAvailableSections(readings).mobileReadings : undefined}
 			>
 				{/* Date navigation - centered, with padding for settings button */}
@@ -244,9 +239,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 								<h1 className="text-sm sm:text-base font-bold truncate">
 									{readings?.fullDate?.dateString || gregorianDate}
 								</h1>
-								<p
-									className={`text-[10px] sm:text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
-								>
+								<p className={`text-[10px] sm:text-xs ${themeClasses.muted[theme]}`}>
 									{readings?.seasonDay || (readings?.fullDate ? gregorianDate : '')}
 								</p>
 							</div>
@@ -255,7 +248,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 					{!isToday && (
 						<Link
 							href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
-							className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full whitespace-nowrap ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
+							className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full whitespace-nowrap ${themeClasses.pillBadge[theme]} hover:opacity-80`}
 						>
 							Today
 						</Link>
@@ -269,7 +262,11 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 					</Suspense>
 				</div>
 			</ReadingsHeader>
+		</>
+	)
 
+	return (
+		<ReadingPageLayout theme={theme} header={stickyHeader}>
 			{readings ? (
 				<Suspense fallback={<div className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24" />}>
 					<SwipeableContainer basePath="/readings" className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24">
@@ -350,6 +347,6 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 			{/* Back to top */}
 			<BackToTop />
-		</main>
+		</ReadingPageLayout>
 	)
 }

@@ -158,9 +158,7 @@ export function SynaxariumReading({
 								>
 									Synaxarium
 								</h2>
-								<p
-									className={`text-[11px] ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'} leading-tight`}
-								>
+								<p className={`text-[11px] ${themeClasses.refText[theme]} leading-tight`}>
 									{count} {count === 1 ? 'commemoration' : 'commemorations'}
 								</p>
 							</div>

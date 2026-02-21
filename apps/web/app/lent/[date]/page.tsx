@@ -10,6 +10,7 @@ import {
 	type ViewMode,
 	type WordSpacing,
 } from '@/components/DisplaySettings'
+import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ScriptureReading } from '@/components/ScriptureReading'
@@ -146,7 +147,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 
 	if (!devotional) {
 		return (
-			<main className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]}`}>
+			<ReadingPageLayout theme={theme}>
 				<div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
 					<Link
 						href="/lent"
@@ -159,7 +160,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 						This date does not fall within Great Lent, or the devotional data is unavailable.
 					</p>
 				</div>
-			</main>
+			</ReadingPageLayout>
 		)
 	}
 
@@ -200,28 +201,18 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 		languages: languages as ContentLang[],
 	}
 
-	const chevronClass =
-		theme === 'sepia'
-			? 'text-amber-700 hover:bg-amber-100'
-			: 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-
-	return (
-		<main
-			className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}
-		>
-			{/* Progress indicator */}
+	const stickyHeader = (
+		<>
 			<Suspense fallback={null}>
 				<ReadingProgress />
 			</Suspense>
-
-			{/* Sticky header — inline nav arrows + title, like readings page */}
-			<ReadingsHeader theme={theme} themeClasses={themeClasses}>
+			<ReadingsHeader theme={theme}>
 				<div className="flex items-center gap-1.5 sm:gap-2 pr-10 sm:pr-12">
 					<div className="flex items-center justify-center gap-1 sm:gap-2">
 						{prevDay ? (
 							<Link
 								href={`/lent/${prevDay.date}`}
-								className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${chevronClass}`}
+								className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${themeClasses.navChevron[theme]}`}
 								aria-label={`Previous day: Day ${prevDay.dayNumber}`}
 							>
 								<ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -234,9 +225,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 
 						<div className="text-center min-w-0">
 							<h1 className="text-base sm:text-lg font-bold truncate">{devotional.title}</h1>
-							<p
-								className={`text-xs sm:text-sm ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
-							>
+							<p className={`text-xs sm:text-sm ${themeClasses.muted[theme]}`}>
 								Day {devotional.dayNumber} &middot; {devotional.weekTheme}
 							</p>
 						</div>
@@ -244,7 +233,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 						{nextDay ? (
 							<Link
 								href={`/lent/${nextDay.date}`}
-								className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${chevronClass}`}
+								className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${themeClasses.navChevron[theme]}`}
 								aria-label={`Next day: Day ${nextDay.dayNumber}`}
 							>
 								<ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -258,7 +247,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 
 					<Link
 						href="/lent"
-						className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full whitespace-nowrap ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
+						className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full whitespace-nowrap ${themeClasses.pillBadge[theme]} hover:opacity-80`}
 					>
 						All Days
 					</Link>
@@ -271,7 +260,11 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 					</Suspense>
 				</div>
 			</ReadingsHeader>
+		</>
+	)
 
+	return (
+		<ReadingPageLayout theme={theme} header={stickyHeader}>
 			<Suspense fallback={<div className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24" />}>
 				<LentSwipeContainer
 					prevDate={prevDay?.date ?? null}
@@ -319,13 +312,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 										href={sermon.youtubeUrl}
 										target="_blank"
 										rel="noopener noreferrer"
-										className={`flex items-start gap-3 p-3 rounded-lg border transition-colors ${
-											theme === 'sepia'
-												? 'border-[#d4c9b8] hover:bg-[#ebe4d6]'
-												: theme === 'dark'
-													? 'border-gray-800 hover:bg-gray-800/50'
-													: 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50'
-										}`}
+										className={`flex items-start gap-3 p-3 rounded-lg border transition-colors ${themeClasses.border[theme]} ${themeClasses.collapsedBg[theme]}`}
 									>
 										{sermon.thumbnail && (
 											<img
@@ -361,6 +348,6 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 			</Suspense>
 
 			<BackToTop />
-		</main>
+		</ReadingPageLayout>
 	)
 }

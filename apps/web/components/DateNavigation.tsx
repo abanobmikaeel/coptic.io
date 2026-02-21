@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
+import { themeClasses } from '@/lib/reading-styles'
 import { getAdjacentDate, getTodayDateString } from '@/lib/utils'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -34,10 +35,7 @@ export function DateNavigation({ theme = 'light', children }: DateNavigationProp
 	const prevDate = getAdjacentDate(currentDate, -1)
 	const nextDate = getAdjacentDate(currentDate, 1)
 
-	const buttonClass =
-		theme === 'sepia'
-			? 'text-amber-700 hover:bg-amber-100'
-			: 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+	const buttonClass = themeClasses.navChevron[theme]
 
 	return (
 		<div className="flex items-center justify-center gap-1 sm:gap-2">

@@ -67,7 +67,7 @@ function SingleLangLayout({
 	theme: ReadingHeaderProps['theme']
 	isRtl?: boolean
 }) {
-	const refColor = theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'
+	const refColor = themeClasses.refText[theme]
 
 	return (
 		<div
@@ -112,7 +112,7 @@ function MultiLangLayout({
 	isOpen: boolean
 	theme: ReadingHeaderProps['theme']
 }) {
-	const refColor = theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'
+	const refColor = themeClasses.refText[theme]
 
 	// Separate LTR langs, RTL (Arabic), and Coptic
 	const ltrLangs = orderedLangs.filter((l) => l !== 'ar' && l !== 'cop')

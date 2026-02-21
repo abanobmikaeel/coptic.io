@@ -1,10 +1,14 @@
+import { themeClasses } from '@/lib/reading-styles'
+
 export default function AgpeyaLoading() {
-	const shimmer = 'bg-gray-200 dark:bg-gray-800 animate-pulse'
+	const shimmer = themeClasses.shimmer.light
 
 	return (
-		<main className="min-h-screen bg-white dark:bg-gray-900">
+		<main className={`min-h-screen ${themeClasses.bg.light}`}>
 			{/* Sticky header skeleton */}
-			<div className="sticky top-14 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-800">
+			<div
+				className={`sticky top-14 z-30 ${themeClasses.bgTranslucent.light} backdrop-blur-sm border-b ${themeClasses.border.light}`}
+			>
 				<div className="max-w-4xl mx-auto px-6 py-3">
 					<div className="flex items-center justify-between gap-4">
 						<div className={`h-10 w-40 rounded-full ${shimmer}`} />
@@ -32,7 +36,9 @@ export default function AgpeyaLoading() {
 
 					{/* Psalms section skeleton */}
 					<div>
-						<div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-800">
+						<div
+							className={`flex items-center justify-between py-3 border-b ${themeClasses.border.light}`}
+						>
 							<div className={`h-5 w-24 rounded ${shimmer}`} />
 							<div className={`h-4 w-4 rounded ${shimmer}`} />
 						</div>
@@ -56,7 +62,9 @@ export default function AgpeyaLoading() {
 
 					{/* Gospel section skeleton */}
 					<div>
-						<div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-800">
+						<div
+							className={`flex items-center justify-between py-3 border-b ${themeClasses.border.light}`}
+						>
 							<div className="flex items-center gap-2">
 								<div className={`h-5 w-16 rounded ${shimmer}`} />
 								<div className={`h-4 w-24 rounded ${shimmer}`} />
@@ -75,7 +83,9 @@ export default function AgpeyaLoading() {
 
 					{/* Litanies section skeleton */}
 					<div>
-						<div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-800">
+						<div
+							className={`flex items-center justify-between py-3 border-b ${themeClasses.border.light}`}
+						>
 							<div className={`h-5 w-20 rounded ${shimmer}`} />
 							<div className={`h-4 w-4 rounded ${shimmer}`} />
 						</div>

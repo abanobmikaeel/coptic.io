@@ -26,14 +26,12 @@ export function FormSkeleton() {
 	)
 }
 
+import { themeClasses } from '@/lib/reading-styles'
+
 type ReadingTheme = 'light' | 'sepia' | 'dark'
 
 function getShimmerClass(theme: ReadingTheme) {
-	return theme === 'dark'
-		? 'bg-gray-800 animate-pulse'
-		: theme === 'sepia'
-			? 'bg-[#e5dccb] animate-pulse'
-			: 'bg-gray-200 dark:bg-gray-700 animate-pulse'
+	return themeClasses.shimmer[theme]
 }
 
 export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) {

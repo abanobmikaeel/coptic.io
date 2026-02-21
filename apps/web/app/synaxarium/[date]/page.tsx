@@ -1,6 +1,7 @@
 'use client'
 
 import { Breadcrumb } from '@/components/Breadcrumb'
+import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { ChevronRightIcon } from '@/components/ui/Icons'
 import { getSynaxariumByCopticDate } from '@/lib/api'
@@ -65,7 +66,7 @@ export default function SynaxariumDatePage() {
 	}, [copticDate])
 
 	return (
-		<main className="min-h-screen relative">
+		<ReadingPageLayout theme="light" className="relative">
 			{/* Background */}
 			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
 				<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
@@ -148,6 +149,6 @@ export default function SynaxariumDatePage() {
 					)}
 				</div>
 			</section>
-		</main>
+		</ReadingPageLayout>
 	)
 }
