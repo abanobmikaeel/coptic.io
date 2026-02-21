@@ -16,34 +16,40 @@ export function ReadingHeader({
 	const isMultiLang = !!orderedLangs
 
 	if (isMultiLang) {
-		return <MultiLangLayout
-			orderedLangs={orderedLangs}
-			labels={labels!}
-			references={references!}
-			service={service}
-			isOpen={isOpen}
-			theme={theme}
-		/>
+		return (
+			<MultiLangLayout
+				orderedLangs={orderedLangs}
+				labels={labels!}
+				references={references!}
+				service={service}
+				isOpen={isOpen}
+				theme={theme}
+			/>
+		)
 	}
 
 	if (isRtl) {
-		return <SingleLangLayout
+		return (
+			<SingleLangLayout
+				title={title!}
+				reference={reference!}
+				service={service}
+				isOpen={isOpen}
+				theme={theme}
+				isRtl
+			/>
+		)
+	}
+
+	return (
+		<SingleLangLayout
 			title={title!}
 			reference={reference!}
 			service={service}
 			isOpen={isOpen}
 			theme={theme}
-			isRtl
 		/>
-	}
-
-	return <SingleLangLayout
-		title={title!}
-		reference={reference!}
-		service={service}
-		isOpen={isOpen}
-		theme={theme}
-	/>
+	)
 }
 
 function SingleLangLayout({
@@ -83,9 +89,7 @@ function SingleLangLayout({
 					>
 						{title}
 					</h2>
-					<span className={`text-sm ${refColor} ${isRtl ? 'font-arabic' : ''}`}>
-						{reference}
-					</span>
+					<span className={`text-sm ${refColor} ${isRtl ? 'font-arabic' : ''}`}>{reference}</span>
 				</div>
 				<ChevronIcon isOpen={isOpen} theme={theme} rotate={isRtl ? 'right' : 'left'} />
 			</div>
@@ -137,9 +141,7 @@ function MultiLangLayout({
 									>
 										{labels[lang]}
 									</h2>
-									{references[lang] && (
-										<p className={`text-sm ${refColor}`}>{references[lang]}</p>
-									)}
+									{references[lang] && <p className={`text-sm ${refColor}`}>{references[lang]}</p>}
 								</div>
 							))}
 							{hasCoptic && (

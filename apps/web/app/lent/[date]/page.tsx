@@ -62,10 +62,7 @@ interface ScheduleResponse {
 	days: ScheduleDay[]
 }
 
-async function getDevotional(
-	date: string,
-	lang?: string,
-): Promise<DevotionalResponse | null> {
+async function getDevotional(date: string, lang?: string): Promise<DevotionalResponse | null> {
 	try {
 		const params = new URLSearchParams({ detailed: 'true' })
 		if (lang && lang !== 'en') params.set('lang', lang)
@@ -149,9 +146,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 
 	if (!devotional) {
 		return (
-			<main
-				className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]}`}
-			>
+			<main className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]}`}>
 				<div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
 					<Link
 						href="/lent"
@@ -161,8 +156,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 					</Link>
 					<h1 className="text-2xl font-bold mb-4">No Devotional Found</h1>
 					<p className={themeClasses.muted[theme]}>
-						This date does not fall within Great Lent, or the devotional data is
-						unavailable.
+						This date does not fall within Great Lent, or the devotional data is unavailable.
 					</p>
 				</div>
 			</main>
@@ -239,9 +233,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 						)}
 
 						<div className="text-center min-w-0">
-							<h1 className="text-base sm:text-lg font-bold truncate">
-								{devotional.title}
-							</h1>
+							<h1 className="text-base sm:text-lg font-bold truncate">{devotional.title}</h1>
 							<p
 								className={`text-xs sm:text-sm ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
 							>
@@ -343,13 +335,9 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 											/>
 										)}
 										<div className="min-w-0">
-											<p className="text-sm font-medium leading-tight">
-												{sermon.title}
-											</p>
+											<p className="text-sm font-medium leading-tight">{sermon.title}</p>
 											{sermon.preacher && (
-												<p
-													className={`text-xs mt-0.5 ${themeClasses.muted[theme]}`}
-												>
+												<p className={`text-xs mt-0.5 ${themeClasses.muted[theme]}`}>
 													{sermon.preacher}
 												</p>
 											)}

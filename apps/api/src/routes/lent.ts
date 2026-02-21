@@ -85,7 +85,12 @@ lent.get('/:date?', async (c) => {
 		const entry = devotional.find((d) => d.dayOffset === offset)
 
 		if (!entry) {
-			return c.json({ error: 'No devotional reading found for this date. Date may not fall within Great Lent.' }, 404)
+			return c.json(
+				{
+					error: 'No devotional reading found for this date. Date may not fall within Great Lent.',
+				},
+				404,
+			)
 		}
 
 		const result: Record<string, unknown> = {

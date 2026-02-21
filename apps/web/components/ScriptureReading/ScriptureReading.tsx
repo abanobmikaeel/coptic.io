@@ -65,15 +65,27 @@ export function ScriptureReading({
 					<ReadingHeader
 						orderedLangs={isMultiLang ? orderedLangs : undefined}
 						labels={isMultiLang ? labels : undefined}
-						references={isMultiLang ? {
-							en: getReferenceForLang('en', readingsByLang.en),
-							ar: getReferenceForLang('ar', readingsByLang.ar),
-							es: getReferenceForLang('es', readingsByLang.es),
-							cop: getReferenceForLang('cop', readingsByLang.cop),
-						} : undefined}
+						references={
+							isMultiLang
+								? {
+										en: getReferenceForLang('en', readingsByLang.en),
+										ar: getReferenceForLang('ar', readingsByLang.ar),
+										es: getReferenceForLang('es', readingsByLang.es),
+										cop: getReferenceForLang('cop', readingsByLang.cop),
+									}
+								: undefined
+						}
 						title={!isMultiLang ? labels[firstLang as 'en' | 'ar'] : undefined}
-						reference={!isMultiLang ? getReferenceForLang(firstLang, readingsByLang[firstLang]) : undefined}
-						service={!isMultiLang && headerIsRtl ? (service ? getServiceName(service, 'ar') : undefined) : service}
+						reference={
+							!isMultiLang ? getReferenceForLang(firstLang, readingsByLang[firstLang]) : undefined
+						}
+						service={
+							!isMultiLang && headerIsRtl
+								? service
+									? getServiceName(service, 'ar')
+									: undefined
+								: service
+						}
 						isOpen={isOpen}
 						theme={theme}
 						isRtl={!isMultiLang ? headerIsRtl : undefined}
