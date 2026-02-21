@@ -128,24 +128,25 @@ export const getMultiChapterRange = (
 	return { bookName, chapters }
 }
 
+/** Split a verse reference string into its component parts using character positions. */
 export const splitAtIndex = (
 	value: string,
-	index: number,
-	startVerse?: number,
-	endVerse?: number,
+	spaceIndex: number,
+	colonIndex?: number,
+	dashIndex?: number,
 ) => {
-	const bookName = value.substring(0, index)
-	const chapterNum = startVerse
-		? value.substring(index, startVerse).replace(' ', '')
-		: value.substring(index)
+	const bookName = value.substring(0, spaceIndex)
+	const chapterNum = colonIndex
+		? value.substring(spaceIndex, colonIndex).replace(' ', '')
+		: value.substring(spaceIndex)
 	let startingVerseNum: string | undefined
 	let endVerseNum: string | null = null
 
-	if (startVerse && endVerse) {
-		startingVerseNum = value.substring(startVerse).replace(':', '').split('-')[0]
-		endVerseNum = value.substring(endVerse).replace('-', '')
-	} else if (startVerse) {
-		startingVerseNum = value.substring(startVerse).replace(':', '')
+	if (colonIndex && dashIndex) {
+		startingVerseNum = value.substring(colonIndex).replace(':', '').split('-')[0]
+		endVerseNum = value.substring(dashIndex).replace('-', '')
+	} else if (colonIndex) {
+		startingVerseNum = value.substring(colonIndex).replace(':', '')
 	}
 	return {
 		bookName,

@@ -58,21 +58,10 @@ export const parseReadingString = (
 	verseString?: string,
 	translation: BibleTranslation = 'en',
 ): Reading[] | null => {
-	if (!verseString) {
-		return null
-	}
-	if (verseString.includes(';')) {
-		const finalArr: Reading[] = []
-		verseString.split(';').forEach((verse) => {
-			const currVerse = getReading(verse, translation)
-			if (currVerse) {
-				finalArr.push(currVerse)
-			}
-		})
-		return finalArr
-	}
-	const foundReading = getReading(verseString, translation)
-	return foundReading ? [foundReading] : null
+	if (!verseString) return null
+	const parts = verseString.split(';')
+	const readings = parts.map((v) => getReading(v, translation)).filter(Boolean) as Reading[]
+	return readings.length > 0 ? readings : null
 }
 
 type ReadingRecord = {
@@ -186,77 +175,74 @@ const getLentReading = (date: Date): LentReadingEntry | null => {
 	return moveableReadingsMap[String(offset)] ?? null
 }
 
+const buildLentResponse = (
+	lentReading: LentReadingEntry,
+	synaxarium: SynaxariumEntry[],
+	date: Date,
+	isDetailed?: boolean,
+	translation: BibleTranslation = 'en',
+): ReadingResponse => {
+	const season = getLiturgicalSeasonForDate(date)
+	if (!isDetailed) {
+		return { Synaxarium: synaxarium, season: season?.name, seasonDay: lentReading.label }
+	}
+	return {
+		...transformReading(lentReading, translation),
+		Synaxarium: synaxarium,
+		season: season?.name,
+		seasonDay: lentReading.label,
+	}
+}
+
+const buildFixedResponse = (
+	gregorianDate: Date,
+	synaxarium: SynaxariumEntry[],
+	isDetailed?: boolean,
+	translation: BibleTranslation = 'en',
+): ReadingResponse => {
+	const copticDate = gregorianToCoptic(gregorianDate)
+	const monthFound = dayReadings[copticDate.month - 1]
+	if (!monthFound) {
+		throw new Error(`Month not found: ${copticDate.month}`)
+	}
+
+	const dayIndex = Number(copticDate.day) - 1
+	const readingID = monthFound?.readings[dayIndex]
+	if (!readingID) {
+		throw new Error(`No reading found for day: ${copticDate.day}`)
+	}
+
+	const reading = readingsById.get(readingID)
+	if (!reading) {
+		throw new Error(`Reading not found for ID: ${readingID}`)
+	}
+
+	if (!isDetailed) {
+		return { reference: reading, Synaxarium: synaxarium }
+	}
+	return { ...transformReading(reading, translation), Synaxarium: synaxarium }
+}
+
 export const getByCopticDate = (
 	gregorianDate: Date,
 	isDetailed?: boolean,
 	translation: BibleTranslation = 'en',
 ): ReadingResponse => {
-	try {
-		if (!gregorianDate || !(gregorianDate instanceof Date)) {
-			throw new Error('Invalid gregorian date provided')
-		}
-
-		// Use synaxarium service for consistent processing
-		const lang = translation === 'ar' ? 'ar' : 'en'
-		const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, lang)
-
-		if (!synaxarium) {
-			throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
-		}
-
-		// Check for Lenten readings first (moveable readings override fixed ones)
-		const lentReading = getLentReading(gregorianDate)
-		if (lentReading) {
-			const season = getLiturgicalSeasonForDate(gregorianDate)
-
-			if (!isDetailed) {
-				return {
-					Synaxarium: synaxarium,
-					season: season?.name,
-					seasonDay: lentReading.label,
-				}
-			}
-
-			const detailedReadings = transformReading(lentReading, translation)
-			return {
-				...detailedReadings,
-				Synaxarium: synaxarium,
-				season: season?.name,
-				seasonDay: lentReading.label,
-			}
-		}
-
-		// Fall through to fixed Coptic date readings
-		const copticDate = gregorianToCoptic(gregorianDate)
-		const monthFound = dayReadings[copticDate.month - 1]
-
-		if (!monthFound) {
-			throw new Error(`Month not found: ${copticDate.month}`)
-		}
-
-		const dayIndex = Number(copticDate.day) - 1
-		const readingID = monthFound?.readings[dayIndex]
-
-		if (!readingID) {
-			throw new Error(`No reading found for day: ${copticDate.day}`)
-		}
-
-		const reading = readingsById.get(readingID)
-		if (!reading) {
-			throw new Error(`Reading not found for ID: ${readingID}`)
-		}
-
-		if (!isDetailed) {
-			return { reference: reading, Synaxarium: synaxarium }
-		}
-
-		const detailedReadings = transformReading(reading, translation)
-		return { ...detailedReadings, Synaxarium: synaxarium }
-	} catch (error) {
-		console.error(
-			'[getByCopticDate] Error:',
-			error instanceof Error ? error.message : 'Unknown error',
-		)
-		throw error
+	if (!gregorianDate || !(gregorianDate instanceof Date)) {
+		throw new Error('Invalid gregorian date provided')
 	}
+
+	const lang = translation === 'ar' ? 'ar' : 'en'
+	const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, lang)
+	if (!synaxarium) {
+		throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
+	}
+
+	// Moveable readings (Lent, Jonah's Fast, etc.) override fixed ones
+	const lentReading = getLentReading(gregorianDate)
+	if (lentReading) {
+		return buildLentResponse(lentReading, synaxarium, gregorianDate, isDetailed, translation)
+	}
+
+	return buildFixedResponse(gregorianDate, synaxarium, isDetailed, translation)
 }

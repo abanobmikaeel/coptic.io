@@ -1,6 +1,6 @@
 import { type CopticDate, gregorianToCoptic, isInMoveableFast } from '@coptic/core'
-import { addDays, format, isAfter } from 'date-fns'
 import { getStaticCelebrationsForCopticDay } from '../utils/calculations/getStaticCelebrations'
+import { getYearView } from './yearView.service'
 
 type FastingResult = {
 	isFasting: boolean
@@ -47,45 +47,35 @@ export const getFastingForDate = (date: Date): FastingResult => {
 }
 
 export const getFastingCalendar = (year: number) => {
-	const fastingDays = []
-	const startDate = new Date(year, 0, 1)
-	const endDate = new Date(year, 11, 31)
+	const days = getYearView(year)
+	const result: Array<{
+		date: string
+		copticDate: (typeof days)[0]['copticDate']
+		fastType: string
+		description: string
+	}> = []
 
-	let currentDate = startDate
-	while (!isAfter(currentDate, endDate)) {
-		// Compute Coptic date once per day
-		const copticDate = gregorianToCoptic(currentDate)
-
-		// Check for moveable fasting periods first
-		const moveableFast = isInMoveableFast(currentDate)
-		if (moveableFast) {
-			fastingDays.push({
-				date: format(currentDate, 'yyyy-MM-dd'),
-				copticDate,
-				fastType: moveableFast.type,
-				description: moveableFast.name,
+	// One pass implementation to reduce the looping
+	for (const d of days) {
+		if (d.moveableFast) {
+			result.push({
+				date: d.gregorianDate,
+				copticDate: d.copticDate,
+				fastType: d.moveableFast.type,
+				description: d.moveableFast.name,
 			})
-			currentDate = addDays(currentDate, 1)
-			continue
-		}
-
-		// Check for static fasting days using pre-computed Coptic date
-		const celebrationsForDay = getStaticCelebrationsForCopticDay(copticDate.month, copticDate.day)
-
-		if (celebrationsForDay) {
-			const firstFast = celebrationsForDay.find((c) => c.type.toLowerCase().includes('fast'))
-			if (firstFast) {
-				fastingDays.push({
-					date: format(currentDate, 'yyyy-MM-dd'),
-					copticDate,
-					fastType: firstFast.type,
-					description: firstFast.name,
+		} else {
+			const fast = d.celebrations?.find((c) => c.type.toLowerCase().includes('fast'))
+			if (fast) {
+				result.push({
+					date: d.gregorianDate,
+					copticDate: d.copticDate,
+					fastType: fast.type,
+					description: fast.name,
 				})
 			}
 		}
-
-		currentDate = addDays(currentDate, 1)
 	}
 
-	return fastingDays
+	return result
 }
