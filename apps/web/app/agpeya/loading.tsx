@@ -3,13 +3,6 @@ export default function AgpeyaLoading() {
 
 	return (
 		<main className="min-h-screen bg-white dark:bg-gray-900">
-			{/* Header */}
-			<section className="relative pt-20 pb-4 px-6">
-				<div className="max-w-4xl mx-auto">
-					<div className={`h-4 w-16 rounded ${shimmer}`} />
-				</div>
-			</section>
-
 			{/* Sticky header skeleton */}
 			<div className="sticky top-14 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-800">
 				<div className="max-w-4xl mx-auto px-6 py-3">
@@ -21,7 +14,7 @@ export default function AgpeyaLoading() {
 			</div>
 
 			{/* Content skeleton */}
-			<div className="max-w-2xl mx-auto px-6 pt-8 pb-32">
+			<div className="max-w-2xl mx-auto px-6 pt-14 pb-32">
 				<div className="space-y-8">
 					{/* Hour title skeleton */}
 					<div className="mb-8">

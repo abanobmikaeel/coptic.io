@@ -26,6 +26,8 @@ interface BreadcrumbProps {
 		options: DropdownOption[]
 		onSelect: (id: string) => void
 	}
+	/** CSS class to apply to parent breadcrumb items (Home + items). Use to hide them responsively. */
+	parentClassName?: string
 }
 
 const themeStyles = {
@@ -78,7 +80,7 @@ const themeStyles = {
 	},
 }
 
-export function Breadcrumb({ items, theme = 'light', dropdown }: BreadcrumbProps) {
+export function Breadcrumb({ items, theme = 'light', dropdown, parentClassName }: BreadcrumbProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -116,13 +118,13 @@ export function Breadcrumb({ items, theme = 'light', dropdown }: BreadcrumbProps
 	return (
 		<nav aria-label="Breadcrumb">
 			<ol className="flex items-center gap-1 text-sm">
-				<li>
+				<li className={parentClassName}>
 					<Link href="/" className={`${themeStyles.link[theme]} transition-colors`}>
 						Home
 					</Link>
 				</li>
 				{items.map((item, idx) => (
-					<li key={idx} className="flex items-center gap-1">
+					<li key={idx} className={`flex items-center gap-1 ${parentClassName || ''}`}>
 						<ChevronRightIcon className={`w-4 h-4 ${themeStyles.chevron[theme]}`} />
 						{item.href ? (
 							<Link href={item.href} className={`${themeStyles.link[theme]} transition-colors`}>
@@ -135,7 +137,9 @@ export function Breadcrumb({ items, theme = 'light', dropdown }: BreadcrumbProps
 				))}
 				{dropdown && currentOption && (
 					<li className="flex items-center gap-1">
-						<ChevronRightIcon className={`w-4 h-4 ${themeStyles.chevron[theme]}`} />
+						<ChevronRightIcon
+							className={`w-4 h-4 ${themeStyles.chevron[theme]} ${parentClassName || ''}`}
+						/>
 						<div className="relative" ref={dropdownRef}>
 							<button
 								type="button"

@@ -206,7 +206,7 @@ function AgpeyaContent() {
 		>
 			{/* Sticky header with breadcrumb and settings */}
 			<div
-				className={`sticky ${mode === 'read' ? 'top-0 lg:top-14' : 'top-14'} z-30 ${themeClasses.bgTranslucent[effectiveTheme]} backdrop-blur-sm border-b ${themeClasses.border[effectiveTheme]}`}
+				className={`z-30 ${themeClasses.bgTranslucent[effectiveTheme]} backdrop-blur-sm border-b ${themeClasses.border[effectiveTheme]}`}
 			>
 				<div className="max-w-4xl mx-auto px-6 py-3">
 					<div className="flex items-center justify-between gap-4">
@@ -226,6 +226,7 @@ function AgpeyaContent() {
 							<Breadcrumb
 								items={[{ label: 'Agpeya', href: '/agpeya' }]}
 								theme={effectiveTheme}
+								parentClassName={mode === 'read' ? 'hidden lg:flex' : undefined}
 								dropdown={{
 									current: currentHour,
 									options: hourOptions,
@@ -278,7 +279,7 @@ function AgpeyaContent() {
 
 			{/* Content */}
 			<div
-				className={`${getWidthClass(settings.width || 'normal')} mx-auto px-6 pt-8 pb-32 lg:pb-24`}
+				className={`${getWidthClass(settings.width || 'normal')} mx-auto px-6 pt-14 pb-32 lg:pb-24`}
 			>
 				{error ? (
 					<section className="py-24 text-center">
