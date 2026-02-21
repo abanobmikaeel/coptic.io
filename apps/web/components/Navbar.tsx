@@ -50,8 +50,8 @@ export default function Navbar() {
 		},
 	]
 
-	// Hide navbar on mobile in read mode (ReadModeHeader is used instead)
-	const mobileHiddenClass = mode === 'read' ? 'hidden lg:block' : ''
+	// Hide navbar on mobile/tablet in read mode (ReadModeHeader is used instead)
+	const mobileHiddenClass = mode === 'read' ? 'hidden xl:block' : ''
 
 	return (
 		<nav

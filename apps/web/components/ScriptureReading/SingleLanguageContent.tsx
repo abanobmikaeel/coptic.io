@@ -27,20 +27,26 @@ export function SingleLanguageContent({
 	const { isRtl, sizes } = styleClasses
 	const widthClass = getWidthClass(width)
 
+	// Count total chapters to determine if we should show chapter headings
+	const totalChapters = readings.reduce((sum, r) => sum + r.chapters.length, 0)
+	const showChapterHeading = totalChapters > 1
+
 	return (
-		<div className={`${widthClass} mx-auto mt-6 px-4`}>
+		<div className={`${widthClass} mx-auto sm:mt-2`}>
 			{readings.map((reading, idx) => (
 				<div key={idx}>
 					{reading.chapters.map((chapter, cidx) => (
 						<div key={cidx} className="mb-8">
-							{/* Chapter heading */}
-							<h3
-								className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} mb-10 ${isRtl ? 'font-arabic' : 'uppercase'}`}
-								dir={isRtl ? 'rtl' : 'ltr'}
-							>
-								{getBookName(reading.bookName, lang)}{' '}
-								{isRtl ? toArabicNumerals(chapter.chapterNum) : chapter.chapterNum}
-							</h3>
+							{/* Chapter heading - only show for multi-chapter readings */}
+							{showChapterHeading && (
+								<h3
+									className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} mb-6 ${isRtl ? 'font-arabic' : 'uppercase'}`}
+									dir={isRtl ? 'rtl' : 'ltr'}
+								>
+									{getBookName(reading.bookName, lang)}{' '}
+									{isRtl ? toArabicNumerals(chapter.chapterNum) : chapter.chapterNum}
+								</h3>
+							)}
 
 							{/* Verses */}
 							{viewMode === 'continuous' ? (
@@ -85,7 +91,7 @@ function ContinuousVerses({ verses, styleClasses, showVerses, theme }: VersesPro
 				<span key={verse.num}>
 					{showVerses && (
 						<sup
-							className={`${sizes.verseNum} font-normal ${themeClasses.accent[theme]} ${isRtl ? 'ml-1.5' : 'mr-1'}`}
+							className={`${sizes.verseNum} font-normal ${themeClasses.accent[theme]} ${isRtl ? 'ml-1' : 'mr-1'}`}
 						>
 							{getVerseNumber(verse.num, isRtl)}
 						</sup>
@@ -113,7 +119,7 @@ function VerseByVerse({ verses, styleClasses, showVerses, theme }: VersesProps) 
 				>
 					{showVerses && (
 						<span
-							className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-3' : 'mr-2'}`}
+							className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-1.5' : 'mr-2'}`}
 						>
 							{getVerseNumber(verse.num, isRtl)}
 						</span>

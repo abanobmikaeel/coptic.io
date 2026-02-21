@@ -100,11 +100,11 @@ export function SynaxariumReading({
 	// Use first available language for count (unique entries)
 	const count = mergedEntries.length
 
-	// Width class - wider for multi-language
+	// Width class - responsive, wider for multi-language
 	const widthClass = isMultiLang
 		? orderedLangs.length >= 3
-			? 'max-w-7xl'
-			: 'max-w-6xl'
+			? 'max-w-full sm:max-w-7xl'
+			: 'max-w-full sm:max-w-6xl'
 		: getWidthClass(width)
 
 	// Get style classes for a language
@@ -121,11 +121,11 @@ export function SynaxariumReading({
 		}
 	}
 
-	// Title sizes based on textSize
+	// Title sizes based on textSize (matching scripture reading scales)
 	const titleSizes: Record<TextSize, string> = {
-		sm: 'text-base',
-		md: 'text-lg',
-		lg: 'text-xl',
+		sm: 'text-sm',
+		md: 'text-base',
+		lg: 'text-lg',
 	}
 
 	// Grid columns for multi-language
@@ -133,30 +133,37 @@ export function SynaxariumReading({
 		orderedLangs.length >= 3 ? 'grid-cols-3' : orderedLangs.length === 2 ? 'grid-cols-2' : ''
 
 	return (
-		<article id="reading-Synaxarium" className={`scroll-mt-24 ${isOpen ? 'mb-12' : 'mb-4'}`}>
-			{/* Clickable header */}
+		<article id="reading-Synaxarium" className={`scroll-mt-24 ${isOpen ? 'mb-8' : 'mb-3'}`}>
+			{/* Clickable header - edge-to-edge on mobile */}
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
-				className="w-full group cursor-pointer"
+				className="w-full group cursor-pointer -mx-3 sm:mx-0"
 			>
-				<div className={`${widthClass} mx-auto px-4`}>
+				<div className={`${widthClass} sm:mx-auto`}>
 					<div
-						className={`py-4 pl-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
+						className={`border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
 					>
-						{service && (
-							<p
-								className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}
-							>
-								{service}
-							</p>
-						)}
-						<div className="flex items-center gap-3">
-							<h2
-								className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
-							>
-								Synaxarium
-							</h2>
+						<div className="py-1.5 pl-2 pr-1 sm:px-0 flex items-center justify-between">
+							<div>
+								{service && (
+									<p
+										className={`text-[9px] font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
+									>
+										{service}
+									</p>
+								)}
+								<h2
+									className={`text-sm font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors leading-tight`}
+								>
+									Synaxarium
+								</h2>
+								<p
+									className={`text-[11px] ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'} leading-tight`}
+								>
+									{count} {count === 1 ? 'commemoration' : 'commemorations'}
+								</p>
+							</div>
 							{/* Collapse indicator */}
 							<svg
 								width="16"
@@ -165,24 +172,19 @@ export function SynaxariumReading({
 								fill="none"
 								stroke="currentColor"
 								strokeWidth="2"
-								className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? '' : '-rotate-90'} opacity-0 group-hover:opacity-100`}
+								className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? 'rotate-180' : ''} mr-2`}
 								aria-hidden="true"
 							>
 								<path d="m6 9 6 6 6-6" />
 							</svg>
 						</div>
-						<p
-							className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}
-						>
-							{count} {count === 1 ? 'commemoration' : 'commemorations'}
-						</p>
 					</div>
 				</div>
 			</button>
 
 			{/* Content */}
 			{isOpen && (
-				<div className={`${widthClass} mx-auto mt-4 px-4`}>
+				<div className={`${widthClass} mx-auto mt-2`}>
 					<ul className="space-y-6">
 						{mergedEntries.map(({ id, entries }) => {
 							// Get the first available entry for single-language display

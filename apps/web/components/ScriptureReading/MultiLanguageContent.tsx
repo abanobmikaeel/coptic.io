@@ -32,25 +32,32 @@ export function MultiLanguageContent({
 				? 'grid-cols-3'
 				: 'grid-cols-2'
 
-	// Container width based on number of languages
-	const containerWidth = orderedLangs.length >= 4 ? 'max-w-[90rem]' : 'max-w-7xl'
+	// Container width - mobile uses full width, larger screens have max-width
+	const containerWidth =
+		orderedLangs.length >= 4 ? 'max-w-full sm:max-w-[90rem]' : 'max-w-full sm:max-w-7xl'
+
+	// Count total chapters to determine if we should show chapter headings
+	const totalChapters = firstReadings.reduce((sum, r) => sum + r.chapters.length, 0)
+	const showChapterHeading = totalChapters > 1
 
 	return (
-		<div className={`mx-auto mt-6 px-4 ${containerWidth}`}>
+		<div className={`mx-auto ${containerWidth} sm:mt-2`}>
 			{firstReadings.map((reading, idx) => (
 				<div key={idx}>
 					{reading.chapters.map((chapter, cidx) => (
-						<div key={cidx} className="mb-12">
-							{/* Chapter headings - side by side */}
-							<ChapterHeadings
-								orderedLangs={orderedLangs}
-								readingsByLang={readingsByLang}
-								readingIdx={idx}
-								chapterIdx={cidx}
-								getStyleClasses={getStyleClasses}
-								theme={theme}
-								gridCols={gridCols}
-							/>
+						<div key={cidx} className="mb-8">
+							{/* Chapter headings - only show for multi-chapter readings */}
+							{showChapterHeading && (
+								<ChapterHeadings
+									orderedLangs={orderedLangs}
+									readingsByLang={readingsByLang}
+									readingIdx={idx}
+									chapterIdx={cidx}
+									getStyleClasses={getStyleClasses}
+									theme={theme}
+									gridCols={gridCols}
+								/>
+							)}
 
 							{/* Verses - side by side */}
 							{viewMode === 'continuous' ? (
@@ -105,7 +112,7 @@ function ChapterHeadings({
 	gridCols,
 }: ChapterHeadingsProps) {
 	return (
-		<div className={`grid ${gridCols} gap-6 mb-8`}>
+		<div className={`grid ${gridCols} gap-4 mb-5`}>
 			{orderedLangs.map((lang) => {
 				const langReadings = readingsByLang[lang]
 				const langReading = langReadings?.[readingIdx]
@@ -170,7 +177,7 @@ function ContinuousVerses({
 							<span key={verse.num}>
 								{showVerses && (
 									<sup
-										className={`${sizes.verseNum} font-normal ${themeClasses.accent[theme]} ${isRtl ? 'ml-1.5' : 'mr-1'}`}
+										className={`${sizes.verseNum} font-normal ${themeClasses.accent[theme]} ${isRtl ? 'ml-1' : 'mr-1'}`}
 									>
 										{getVerseNumber(verse.num, isRtl)}
 									</sup>
@@ -230,7 +237,7 @@ function VerseByVerseComparison({
 							>
 								{showVerses && (
 									<span
-										className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-3' : 'mr-2'}`}
+										className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-1.5' : 'mr-2'}`}
 									>
 										{getVerseNumber(langVerse.num, isRtl)}
 									</span>

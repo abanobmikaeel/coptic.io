@@ -40,21 +40,21 @@ export function DateNavigation({ theme = 'light', children }: DateNavigationProp
 			: 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
 
 	return (
-		<div className="flex items-center justify-center gap-3">
+		<div className="flex items-center justify-center gap-1 sm:gap-2">
 			<Link
 				href={buildUrl(prevDate)}
-				className={`p-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
+				className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
 				aria-label="Previous day"
 			>
-				<ChevronLeftIcon className="w-5 h-5" />
+				<ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 			</Link>
 			{children}
 			<Link
 				href={buildUrl(nextDate)}
-				className={`p-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
+				className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
 				aria-label="Next day"
 			>
-				<ChevronRightIcon className="w-5 h-5" />
+				<ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 			</Link>
 		</div>
 	)

@@ -4,25 +4,23 @@ import type { HeaderProps } from './types'
 
 export function LtrHeader({ title, reference, service, isOpen, theme }: HeaderProps) {
 	return (
-		<div
-			className={`py-4 px-4 border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
-		>
-			{service && (
-				<p
-					className={`text-[10px] font-semibold tracking-widest uppercase mb-2 ${themeClasses.muted[theme]}`}
-				>
-					{service}
-				</p>
-			)}
-			<div className="flex items-center justify-between">
+		<div className={`border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}>
+			<div className="py-1.5 pl-2 pr-1 sm:px-0 flex items-center justify-between">
 				<div>
+					{service && (
+						<p
+							className={`text-[9px] font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
+						>
+							{service}
+						</p>
+					)}
 					<h2
-						className={`text-2xl font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+						className={`text-sm font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors leading-tight`}
 					>
 						{title}
 					</h2>
 					<p
-						className={`text-base mt-1 ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'}`}
+						className={`text-[11px] ${theme === 'sepia' ? 'text-amber-700' : 'text-amber-600/80'} leading-tight`}
 					>
 						{reference}
 					</p>

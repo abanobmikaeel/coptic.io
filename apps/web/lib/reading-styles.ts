@@ -8,21 +8,34 @@ import type {
 	WordSpacing,
 } from '@/components/DisplaySettings'
 
-// Text sizes - generous for comfortable reading, especially on podium/lectern use
+// Text sizes - uses CSS variable-based classes for responsive scaling
+// Mobile-first: ~30% smaller, scales up on tablet/desktop via --font-scale CSS variable
 export const getTextSizeClasses = (size: TextSize, isRtl: boolean) => {
 	if (isRtl) {
-		// Arabic needs larger sizes for readability
+		// Arabic - uses RTL classes that apply additional --arabic-scale multiplier
 		return {
-			sm: { chapter: 'text-xl', verse: 'text-2xl', verseNum: 'text-sm' },
-			md: { chapter: 'text-2xl', verse: 'text-3xl', verseNum: 'text-base' },
-			lg: { chapter: 'text-3xl', verse: 'text-4xl', verseNum: 'text-lg' },
+			sm: {
+				chapter: 'text-chapter-sm-rtl',
+				verse: 'text-verse-sm-rtl',
+				verseNum: 'text-versenum-sm-rtl',
+			},
+			md: {
+				chapter: 'text-chapter-md-rtl',
+				verse: 'text-verse-md-rtl',
+				verseNum: 'text-versenum-md-rtl',
+			},
+			lg: {
+				chapter: 'text-chapter-lg-rtl',
+				verse: 'text-verse-lg-rtl',
+				verseNum: 'text-versenum-lg-rtl',
+			},
 		}[size]
 	}
-	// English - comfortable reading sizes (sm: 18px, md: 24px, lg: 30px)
+	// English (LTR) - scalable via CSS variables
 	return {
-		sm: { chapter: 'text-sm', verse: 'text-lg', verseNum: 'text-xs' },
-		md: { chapter: 'text-base', verse: 'text-2xl', verseNum: 'text-sm' },
-		lg: { chapter: 'text-lg', verse: 'text-3xl', verseNum: 'text-base' },
+		sm: { chapter: 'text-chapter-sm', verse: 'text-verse-sm', verseNum: 'text-versenum-sm' },
+		md: { chapter: 'text-chapter-md', verse: 'text-verse-md', verseNum: 'text-versenum-md' },
+		lg: { chapter: 'text-chapter-lg', verse: 'text-verse-lg', verseNum: 'text-versenum-lg' },
 	}[size]
 }
 
@@ -76,12 +89,12 @@ export const getWeightClass = (weight: FontWeight, isRtl: boolean) => {
 	}[weight]
 }
 
-// Width classes
+// Width classes - mobile uses nearly full width, constraints apply on larger screens
 export const getWidthClass = (width: ReadingWidth) => {
 	return {
-		narrow: 'max-w-lg',
-		normal: 'max-w-2xl',
-		wide: 'max-w-4xl',
+		narrow: 'max-w-full sm:max-w-lg',
+		normal: 'max-w-full sm:max-w-2xl',
+		wide: 'max-w-full sm:max-w-4xl',
 	}[width]
 }
 

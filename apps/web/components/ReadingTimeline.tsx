@@ -61,8 +61,8 @@ export function ReadingTimeline({ sections }: ReadingTimelineProps) {
 
 	return (
 		<>
-			{/* Mobile bottom bar */}
-			<nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40" aria-label="Reading navigation">
+			{/* Mobile bottom bar - hidden, now in burger menu */}
+			<nav className="hidden fixed bottom-0 left-0 right-0 z-40" aria-label="Reading navigation">
 				<div className="bg-gray-50/95 dark:bg-gray-900/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 safe-area-pb">
 					<div className="flex items-center justify-around px-1 py-2">
 						{mobileReadings.map((r, idx) => {
@@ -99,7 +99,7 @@ export function ReadingTimeline({ sections }: ReadingTimelineProps) {
 
 			{/* Desktop sidebar */}
 			<nav
-				className="fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden lg:block"
+				className="fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden xl:block"
 				aria-label="Reading navigation"
 			>
 				<div className="flex flex-col items-center gap-0 py-2 px-2 rounded-2xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg">

@@ -60,11 +60,20 @@ test.describe('Readings page', () => {
 	})
 
 	test('should have collapsible reading sections', async ({ page }) => {
-		const collapseButtons = page
-			.locator('button')
-			.filter({ hasText: /pauline|catholic|acts|psalm|gospel/i })
+		// Reading sections are wrapped in buttons that toggle open/closed
+		// Look for buttons containing h2 headers or article sections
+		const collapseButtons = page.locator('article button').first()
 		if ((await collapseButtons.count()) > 0) {
-			await collapseButtons.first().click()
+			// Get initial content visibility
+			const article = page.locator('article').first()
+			await expect(article).toBeVisible()
+
+			// Click to collapse
+			await collapseButtons.click()
+			await page.waitForTimeout(300)
+
+			// Click again to expand
+			await collapseButtons.click()
 			await page.waitForTimeout(300)
 		}
 	})

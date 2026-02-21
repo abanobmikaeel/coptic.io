@@ -40,7 +40,7 @@ export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) 
 	const shimmer = getShimmerClass(theme)
 
 	return (
-		<div className="space-y-12 max-w-2xl mx-auto px-6 pt-10 pb-32">
+		<div className="space-y-12 max-w-full sm:max-w-2xl mx-auto px-3 sm:px-6 pt-4 pb-32">
 			{/* Scripture section skeleton */}
 			{[1, 2, 3].map((section) => (
 				<div key={section} className="space-y-6">
@@ -72,7 +72,7 @@ export function SynaxariumSkeleton({ theme = 'light' }: { theme?: ReadingTheme }
 	const shimmer = getShimmerClass(theme)
 
 	return (
-		<div className="space-y-6 max-w-2xl mx-auto px-6 pt-10 pb-32">
+		<div className="space-y-6 max-w-full sm:max-w-2xl mx-auto px-3 sm:px-6 pt-4 pb-32">
 			{/* Header skeleton */}
 			<div className="text-center mb-8">
 				<div className={`h-8 w-48 mx-auto rounded ${shimmer} mb-3`} />

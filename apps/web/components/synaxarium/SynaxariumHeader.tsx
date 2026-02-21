@@ -29,7 +29,7 @@ export function SynaxariumHeader({
 	const isDayView = viewMode === 'day'
 
 	return (
-		<section className="relative px-6 pb-4">
+		<section className="relative px-4 sm:px-6 pb-4">
 			<div className="max-w-4xl mx-auto">
 				{/* Toggle buttons */}
 				<div className="flex items-center justify-center gap-3 mb-4">

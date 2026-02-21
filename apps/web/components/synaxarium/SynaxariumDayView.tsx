@@ -67,7 +67,7 @@ export function SynaxariumDayView({
 			)}
 
 			{/* View Readings Link */}
-			<section className="relative px-6 pb-4">
+			<section className="relative px-4 sm:px-6 pb-4">
 				<div className="max-w-5xl mx-auto text-center">
 					<Link
 						href={`/readings?date=${currentDate}`}
@@ -81,7 +81,7 @@ export function SynaxariumDayView({
 			</section>
 
 			{/* Entries List */}
-			<section className="relative px-6 pb-16">
+			<section className="relative px-4 sm:px-6 pb-16">
 				<div className="max-w-5xl mx-auto">
 					<Card className={themeClasses.bg[theme]}>
 						<CardHeader className={themeClasses.textHeading[theme]}>
@@ -131,7 +131,7 @@ function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; them
 	const tCategories = useTranslations('categories')
 
 	return (
-		<section className="relative px-6 pb-6">
+		<section className="relative px-4 sm:px-6 pb-6">
 			<div className="max-w-5xl mx-auto">
 				<Card
 					className={`border-amber-200 dark:border-amber-800 ${theme === 'sepia' ? 'bg-amber-100/50' : 'bg-amber-50/50 dark:bg-amber-900/10'}`}

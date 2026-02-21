@@ -46,23 +46,24 @@ export function ScriptureReading({
 
 	// Determine header style for single language
 	const headerIsRtl = firstLang === 'ar'
+	// Mobile uses full width, larger screens use max-width constraints
 	const widthClass = isMultiLang
 		? availableLangs.length >= 4
-			? 'max-w-[90rem]' // Extra wide for 4 languages
+			? 'max-w-full sm:max-w-[90rem]' // Extra wide for 4 languages
 			: availableLangs.length >= 3
-				? 'max-w-7xl'
-				: 'max-w-6xl'
+				? 'max-w-full sm:max-w-7xl'
+				: 'max-w-full sm:max-w-6xl'
 		: getWidthClass(width)
 
 	return (
-		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-12' : 'mb-4'}`}>
-			{/* Clickable header */}
+		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-8' : 'mb-3'}`}>
+			{/* Clickable header - full width on mobile */}
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
-				className="w-full group cursor-pointer"
+				className="w-full group cursor-pointer -mx-3 sm:mx-0"
 			>
-				<div className={`${widthClass} mx-auto px-4`}>
+				<div className={`${widthClass} sm:mx-auto`}>
 					{isMultiLang ? (
 						<MultiLangHeader
 							orderedLangs={orderedLangs}

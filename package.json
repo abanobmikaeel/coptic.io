@@ -8,7 +8,7 @@
 		"dev": "pnpm --filter @coptic/api dev",
 		"dev:web": "pnpm --filter @coptic/web dev",
 		"dev:api": "pnpm --filter @coptic/api dev ",
-		"dev:fullstack": "pnpm dev",
+		"dev:fullstack": "pnpm --filter @coptic/api dev & pnpm --filter @coptic/web dev",
 		"dev:admin": "pnpm --filter @coptic/admin dev",
 		"build": "pnpm -r build",
 		"build:packages": "pnpm --filter '@coptic/*' --filter '!@coptic/api' --filter '!@coptic/web' --filter '!@coptic/admin' build",
