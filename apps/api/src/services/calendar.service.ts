@@ -1,12 +1,20 @@
-import {
-	type CalendarDay,
-	type CalendarMonth,
-	type CopticMonthInfo,
-	gregorianToCoptic,
-} from '@coptic/core'
-import { format, getDaysInMonth } from 'date-fns'
+import type { CalendarDay, CalendarMonth, CopticMonthInfo } from '@coptic/core'
+import { format } from 'date-fns'
 import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
-import { getFastingForCopticDate } from './fasting.service'
+import { type DayEntry, getMonthView } from './yearView.service'
+
+const NO_FASTING = { isFasting: false, fastType: null, description: null } as const
+
+const fastingFromDayEntry = (d: DayEntry) => {
+	if (d.moveableFast) {
+		return { isFasting: true, fastType: d.moveableFast.type, description: d.moveableFast.name }
+	}
+	const fast = d.celebrations?.find((c) => c.type.toLowerCase().includes('fast'))
+	if (fast) {
+		return { isFasting: true, fastType: fast.type, description: fast.name }
+	}
+	return NO_FASTING
+}
 
 // In-memory cache for generated iCal calendars (24-hour TTL)
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000
@@ -20,33 +28,29 @@ export const getCalendarMonth = (year: number, month: number): CalendarMonth => 
 		throw new Error('Invalid month. Must be between 1 and 12')
 	}
 
-	const firstOfMonth = new Date(year, month - 1, 1)
-	const numDays = getDaysInMonth(firstOfMonth)
-	const days: CalendarDay[] = []
+	const monthDays = getMonthView(year, month)
 	const copticMonthsSeen = new Map<string, CopticMonthInfo>()
 
-	for (let day = 1; day <= numDays; day++) {
-		const date = new Date(year, month - 1, day)
-		const copticDate = gregorianToCoptic(date)
-		const fasting = getFastingForCopticDate(date, copticDate)
+	const days: CalendarDay[] = monthDays.map((d, i) => {
+		const fasting = fastingFromDayEntry(d)
 
-		days.push({ gregorianDate: format(date, 'yyyy-MM-dd'), copticDate, fasting })
-
-		const key = `${copticDate.year}-${copticDate.month}`
+		const key = `${d.copticDate.year}-${d.copticDate.month}`
 		if (!copticMonthsSeen.has(key)) {
 			copticMonthsSeen.set(key, {
-				month: copticDate.month,
-				monthString: copticDate.monthString,
-				year: copticDate.year,
-				startDay: day,
+				month: d.copticDate.month,
+				monthString: d.copticDate.monthString,
+				year: d.copticDate.year,
+				startDay: i + 1,
 			})
 		}
-	}
+
+		return { gregorianDate: d.gregorianDate, copticDate: d.copticDate, fasting }
+	})
 
 	return {
 		year,
 		month,
-		monthName: format(firstOfMonth, 'MMMM'),
+		monthName: format(new Date(year, month - 1, 1), 'MMMM'),
 		days,
 		copticMonths: Array.from(copticMonthsSeen.values()),
 	}

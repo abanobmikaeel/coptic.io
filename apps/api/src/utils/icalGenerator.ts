@@ -1,5 +1,5 @@
 import { getAllSeasonsForYear, getMoveableFeastsForYear } from '@coptic/core'
-import { getStaticCelebrationsForDay } from './calculations/getStaticCelebrations'
+import { getYearView } from '../services/yearView.service'
 
 // Celebrations that span multiple consecutive days - only show "begins" marker
 const MULTI_DAY_CELEBRATIONS = new Set(['St. Mary Fast', 'Advent Fast', 'Nativity Fast', 'Kiahk'])
@@ -85,41 +85,47 @@ const pushEvent = (
 const getConsolidatedCelebrations = (
 	year: number,
 ): Array<{ name: string; date: Date; marker?: 'begins' }> => {
+	const yearView = getYearView(year)
 	const result: Array<{ name: string; date: Date; marker?: 'begins' }> = []
-	const startDate = new Date(year, 0, 1)
-	const endDate = new Date(year, 11, 31)
 
 	// Track which multi-day celebrations we've already added a "begins" for
 	const addedMultiDay = new Set<string>()
 	let previousDayCelebrations = new Set<string>()
 
-	for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-		const currentDate = new Date(date)
-		const celebrations = getStaticCelebrationsForDay(currentDate)
+	for (const day of yearView) {
+		if (!day.celebrations) {
+			// Reset tracking when a multi-day celebration ends
+			for (const name of previousDayCelebrations) {
+				if (MULTI_DAY_CELEBRATIONS.has(name)) {
+					addedMultiDay.delete(name)
+				}
+			}
+			previousDayCelebrations = new Set()
+			continue
+		}
+
 		const todayCelebrations = new Set<string>()
 
-		if (celebrations && Array.isArray(celebrations)) {
-			for (const celebration of celebrations) {
-				if (!celebration?.name) continue
-				todayCelebrations.add(celebration.name)
+		for (const celebration of day.celebrations) {
+			if (!celebration?.name) continue
+			todayCelebrations.add(celebration.name)
 
-				if (MULTI_DAY_CELEBRATIONS.has(celebration.name)) {
-					// Multi-day celebration - only add "begins" on first day
-					if (
-						!previousDayCelebrations.has(celebration.name) &&
-						!addedMultiDay.has(celebration.name)
-					) {
-						result.push({
-							name: celebration.name,
-							date: currentDate,
-							marker: 'begins',
-						})
-						addedMultiDay.add(celebration.name)
-					}
-				} else {
-					// Single-day celebration - add directly
-					result.push({ name: celebration.name, date: currentDate })
+			if (MULTI_DAY_CELEBRATIONS.has(celebration.name)) {
+				// Multi-day celebration - only add "begins" on first day
+				if (
+					!previousDayCelebrations.has(celebration.name) &&
+					!addedMultiDay.has(celebration.name)
+				) {
+					result.push({
+						name: celebration.name,
+						date: day.date,
+						marker: 'begins',
+					})
+					addedMultiDay.add(celebration.name)
 				}
+			} else {
+				// Single-day celebration - add directly
+				result.push({ name: celebration.name, date: day.date })
 			}
 		}
 
@@ -136,26 +142,19 @@ const getConsolidatedCelebrations = (
 	return result
 }
 
-/**
- * Generate full iCal calendar for a year
- */
-export const generateYearCalendar = (year: number): string => {
-	// Cache timestamp once for all events
-	cachedDtstamp = formatICalDateTime(new Date())
+const ICAL_HEADER = [
+	'BEGIN:VCALENDAR',
+	'VERSION:2.0',
+	'PRODID:-//Coptic.IO//Coptic Orthodox Calendar//EN',
+	'CALSCALE:GREGORIAN',
+	'METHOD:PUBLISH',
+	'X-WR-CALNAME:Coptic Orthodox Calendar',
+	'X-WR-TIMEZONE:UTC',
+] as const
 
-	const lines: string[] = [
-		'BEGIN:VCALENDAR',
-		'VERSION:2.0',
-		'PRODID:-//Coptic.IO//Coptic Orthodox Calendar//EN',
-		'CALSCALE:GREGORIAN',
-		'METHOD:PUBLISH',
-		'X-WR-CALNAME:Coptic Orthodox Calendar',
-		'X-WR-TIMEZONE:UTC',
-		`X-WR-CALDESC:Coptic Orthodox liturgical calendar for ${year}`,
-		'REFRESH-INTERVAL;VALUE=DURATION:P1D',
-		'X-PUBLISHED-TTL:PT1H',
-	]
+const ICAL_FOOTER = ['REFRESH-INTERVAL;VALUE=DURATION:P1D', 'X-PUBLISHED-TTL:PT1H'] as const
 
+const pushYearEvents = (lines: string[], year: number): void => {
 	// Add moveable feasts (exclude fasts covered by seasons)
 	const moveableFeasts = getMoveableFeastsForYear(year)
 	for (const feast of moveableFeasts) {
@@ -182,9 +181,20 @@ export const generateYearCalendar = (year: number): string => {
 			: celebration.name
 		pushEvent(lines, summary, celebration.date, celebration.name, 'Feast')
 	}
+}
 
+/**
+ * Generate full iCal calendar for a year
+ */
+export const generateYearCalendar = (year: number): string => {
+	cachedDtstamp = formatICalDateTime(new Date())
+	const lines: string[] = [
+		...ICAL_HEADER,
+		`X-WR-CALDESC:Coptic Orthodox liturgical calendar for ${year}`,
+		...ICAL_FOOTER,
+	]
+	pushYearEvents(lines, year)
 	lines.push('END:VCALENDAR')
-
 	return `${lines.join('\r\n')}\r\n`
 }
 
@@ -192,53 +202,15 @@ export const generateYearCalendar = (year: number): string => {
  * Generate multi-year iCal calendar (for subscriptions)
  */
 export const generateMultiYearCalendar = (startYear: number, endYear: number): string => {
-	// Cache timestamp once for all events
 	cachedDtstamp = formatICalDateTime(new Date())
-
 	const lines: string[] = [
-		'BEGIN:VCALENDAR',
-		'VERSION:2.0',
-		'PRODID:-//Coptic.IO//Coptic Orthodox Calendar//EN',
-		'CALSCALE:GREGORIAN',
-		'METHOD:PUBLISH',
-		'X-WR-CALNAME:Coptic Orthodox Calendar',
-		'X-WR-TIMEZONE:UTC',
+		...ICAL_HEADER,
 		`X-WR-CALDESC:Coptic Orthodox liturgical calendar ${startYear}-${endYear}`,
-		'REFRESH-INTERVAL;VALUE=DURATION:P1D',
-		'X-PUBLISHED-TTL:PT1H',
+		...ICAL_FOOTER,
 	]
-
-	// Generate events for each year
 	for (let year = startYear; year <= endYear; year++) {
-		// Add moveable feasts (exclude fasts covered by seasons)
-		const moveableFeasts = getMoveableFeastsForYear(year)
-		for (const feast of moveableFeasts) {
-			if (!SEASON_COVERED_FASTS.has(feast.name)) {
-				pushEvent(lines, feast.name, feast.date, feast.name, 'Feast')
-			}
-		}
-
-		// Add liturgical seasons (begins marker only)
-		const seasons = getAllSeasonsForYear(year)
-		for (const season of seasons) {
-			const startDate = new Date(season.startDate)
-			if (startDate.getFullYear() === year) {
-				const category = season.isFasting ? 'Fasting Period' : 'Liturgical Season'
-				pushEvent(lines, `${season.name} begins`, startDate, season.description, category)
-			}
-		}
-
-		// Add static celebrations (consolidated for multi-day celebrations)
-		const celebrations = getConsolidatedCelebrations(year)
-		for (const celebration of celebrations) {
-			const summary = celebration.marker
-				? `${celebration.name} ${celebration.marker}`
-				: celebration.name
-			pushEvent(lines, summary, celebration.date, celebration.name, 'Feast')
-		}
+		pushYearEvents(lines, year)
 	}
-
 	lines.push('END:VCALENDAR')
-
 	return `${lines.join('\r\n')}\r\n`
 }
