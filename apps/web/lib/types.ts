@@ -127,6 +127,7 @@ export interface ReadingsData {
 	fullDate?: CopticDate
 	season?: string
 	seasonDay?: string
+	celebrations?: Celebration[] | null
 }
 
 // Synaxarium Search Types
