@@ -5,10 +5,10 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import CopticCross from './CopticCross'
 import { LocaleSwitcher } from './LocaleSwitcher'
+import { MobileMenu } from './MobileMenu'
 import { NavDropdown } from './NavDropdown'
 import { SearchButton } from './SearchButton'
 import ThemeToggle from './ThemeToggle'
-import { SearchIcon } from './ui/Icons'
 
 export default function Navbar() {
 	const { mode } = useNavigation()
@@ -63,25 +63,22 @@ export default function Navbar() {
 			className={`sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl ${mobileHiddenClass}`}
 		>
 			<div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-				<Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
-					<CopticCross size={22} />
-					<span className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">
-						Coptic IO
-					</span>
-				</Link>
+				<div className="flex items-center gap-2">
+					{/* Mobile hamburger menu (browse mode only, hidden on desktop) */}
+					<div className="lg:hidden">
+						<MobileMenu />
+					</div>
+					<Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+						<CopticCross size={22} />
+						<span className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">
+							Coptic IO
+						</span>
+					</Link>
+				</div>
 
 				<div className="flex items-center gap-4">
 					<SearchButton />
 					<div className="flex items-center gap-2 sm:gap-4">
-						{/* Search icon - visible on mobile in browse mode */}
-						<button
-							type="button"
-							className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-							aria-label={t('search') || 'Search'}
-						>
-							<SearchIcon className="w-5 h-5" />
-						</button>
-
 						{/* Desktop navigation */}
 						<div className="hidden lg:flex items-center gap-4">
 							<NavDropdown label={t('read')} items={readMenuItems} />

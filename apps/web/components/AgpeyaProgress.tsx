@@ -26,19 +26,16 @@ interface AgpeyaProgressProps {
 
 export function AgpeyaProgress({ theme = 'light', psalmsCount = 0 }: AgpeyaProgressProps) {
 	const [activeSection, setActiveSection] = useState<SectionId>('introduction')
-	const [isVisible, setIsVisible] = useState(true)
-	const [lastScrollY, setLastScrollY] = useState(0)
 
-	// Track which section is currently in view
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
-				entries.forEach((entry) => {
+				for (const entry of entries) {
 					if (entry.isIntersecting) {
 						const sectionId = entry.target.id.replace('section-', '') as SectionId
 						setActiveSection(sectionId)
 					}
-				})
+				}
 			},
 			{
 				rootMargin: '-30% 0px -60% 0px',
@@ -46,30 +43,15 @@ export function AgpeyaProgress({ theme = 'light', psalmsCount = 0 }: AgpeyaProgr
 			},
 		)
 
-		SECTIONS.forEach((section) => {
+		for (const section of SECTIONS) {
 			const element = document.getElementById(`section-${section.id}`)
 			if (element) {
 				observer.observe(element)
 			}
-		})
+		}
 
 		return () => observer.disconnect()
 	}, [])
-
-	// Hide on scroll down, show on scroll up (mobile only)
-	useEffect(() => {
-		const handleScroll = () => {
-			const currentScrollY = window.scrollY
-			const isScrollingUp = currentScrollY < lastScrollY
-			const isAtTop = currentScrollY < 100
-
-			setIsVisible(isScrollingUp || isAtTop)
-			setLastScrollY(currentScrollY)
-		}
-
-		window.addEventListener('scroll', handleScroll, { passive: true })
-		return () => window.removeEventListener('scroll', handleScroll)
-	}, [lastScrollY])
 
 	const scrollToSection = useCallback((sectionId: SectionId) => {
 		const element = document.getElementById(`section-${sectionId}`)
@@ -113,91 +95,47 @@ export function AgpeyaProgress({ theme = 'light', psalmsCount = 0 }: AgpeyaProgr
 
 	const styles = themeStyles[theme]
 
+	// Desktop sidebar only — mobile uses the global MobileMenu burger
 	return (
-		<>
-			{/* Desktop sidebar */}
-			<nav className="hidden lg:block fixed right-8 top-1/2 -translate-y-1/2 z-40">
-				<div
-					className={`py-3 px-1 rounded-xl border backdrop-blur-sm shadow-lg ${styles.bg} ${styles.border}`}
-				>
-					<ul className="space-y-1">
-						{SECTIONS.map((section) => {
-							const isActive = activeSection === section.id
-							const isPast =
-								SECTIONS.findIndex((s) => s.id === activeSection) >
-								SECTIONS.findIndex((s) => s.id === section.id)
-
-							return (
-								<li key={section.id}>
-									<button
-										type="button"
-										onClick={() => scrollToSection(section.id)}
-										className={`
-											w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all
-											${isActive ? `${styles.activeBg} ${styles.activeText}` : `${styles.text} ${styles.hoverBg}`}
-										`}
-									>
-										{/* Progress dot */}
-										<span
-											className={`
-												w-2 h-2 rounded-full transition-colors
-												${isActive || isPast ? styles.activeDot : styles.inactiveDot}
-											`}
-										/>
-										<span className={`text-sm font-medium ${isActive ? styles.activeText : ''}`}>
-											{section.label}
-											{section.id === 'psalms' && psalmsCount > 0 && (
-												<span className="ml-1 opacity-60">({psalmsCount})</span>
-											)}
-										</span>
-									</button>
-								</li>
-							)
-						})}
-					</ul>
-				</div>
-			</nav>
-
-			{/* Mobile bottom bar */}
-			<nav
-				className={`
-					lg:hidden fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300
-					${isVisible ? 'translate-y-0' : 'translate-y-full'}
-				`}
+		<nav className="hidden lg:block fixed right-8 top-1/2 -translate-y-1/2 z-40">
+			<div
+				className={`py-3 px-1 rounded-xl border backdrop-blur-sm shadow-lg ${styles.bg} ${styles.border}`}
 			>
-				<div className={`border-t backdrop-blur-sm ${styles.bg} ${styles.border} safe-area-pb`}>
-					<ul className="flex items-center justify-around px-2 py-2">
-						{SECTIONS.map((section) => {
-							const isActive = activeSection === section.id
-							const isPast =
-								SECTIONS.findIndex((s) => s.id === activeSection) >
-								SECTIONS.findIndex((s) => s.id === section.id)
+				<ul className="space-y-1">
+					{SECTIONS.map((section) => {
+						const isActive = activeSection === section.id
+						const isPast =
+							SECTIONS.findIndex((s) => s.id === activeSection) >
+							SECTIONS.findIndex((s) => s.id === section.id)
 
-							return (
-								<li key={section.id}>
-									<button
-										type="button"
-										onClick={() => scrollToSection(section.id)}
+						return (
+							<li key={section.id}>
+								<button
+									type="button"
+									onClick={() => scrollToSection(section.id)}
+									className={`
+										w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all
+										${isActive ? `${styles.activeBg} ${styles.activeText}` : `${styles.text} ${styles.hoverBg}`}
+									`}
+								>
+									<span
 										className={`
-											flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg transition-all
-											${isActive ? styles.activeText : styles.text}
+											w-2 h-2 rounded-full transition-colors
+											${isActive || isPast ? styles.activeDot : styles.inactiveDot}
 										`}
-									>
-										{/* Progress dot */}
-										<span
-											className={`
-												w-1.5 h-1.5 rounded-full transition-colors
-												${isActive || isPast ? styles.activeDot : styles.inactiveDot}
-											`}
-										/>
-										<span className={'text-xs font-medium'}>{section.shortLabel}</span>
-									</button>
-								</li>
-							)
-						})}
-					</ul>
-				</div>
-			</nav>
-		</>
+									/>
+									<span className={`text-sm font-medium ${isActive ? styles.activeText : ''}`}>
+										{section.label}
+										{section.id === 'psalms' && psalmsCount > 0 && (
+											<span className="ml-1 opacity-60">({psalmsCount})</span>
+										)}
+									</span>
+								</button>
+							</li>
+						)
+					})}
+				</ul>
+			</div>
+		</nav>
 	)
 }

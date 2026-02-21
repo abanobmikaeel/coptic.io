@@ -18,7 +18,6 @@ import { Breadcrumb } from '@/components/Breadcrumb'
 import { DisplaySettings } from '@/components/DisplaySettings'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
-import { CloseIcon } from '@/components/ui/Icons'
 import { API_BASE_URL } from '@/config'
 import { useNavigation } from '@/contexts/NavigationContext'
 import { useReadingSettings } from '@/hooks/useReadingSettings'
@@ -199,17 +198,6 @@ function AgpeyaContent() {
 
 	const stickyHeader = (
 		<ReadingsHeader theme={effectiveTheme} layout="between">
-			{/* Exit button for mobile in read mode */}
-			{mode === 'read' && (
-				<button
-					type="button"
-					onClick={() => router.push('/library')}
-					className="lg:hidden p-2 -ml-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-					aria-label="Exit reading mode"
-				>
-					<CloseIcon className="w-5 h-5" />
-				</button>
-			)}
 			{/* Breadcrumb with hour selector dropdown */}
 			<div className="flex items-center gap-2">
 				<Breadcrumb
@@ -266,10 +254,10 @@ function AgpeyaContent() {
 	)
 
 	return (
-		<ReadingPageLayout theme={effectiveTheme} header={stickyHeader} className="overflow-x-hidden">
+		<ReadingPageLayout theme={effectiveTheme} header={stickyHeader}>
 			{/* Content */}
 			<div
-				className={`${getWidthClass(settings.width || 'normal')} mx-auto px-6 pt-14 pb-32 lg:pb-24`}
+				className={`${getWidthClass(settings.width || 'normal')} mx-auto px-6 pt-4 pb-32 lg:pb-24`}
 			>
 				{error ? (
 					<section className="py-24 text-center">

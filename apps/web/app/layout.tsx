@@ -4,7 +4,6 @@ import './globals.css'
 import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import { BottomTabs } from '@/components/navigation/BottomTabs'
 import { NavigationProvider } from '@/contexts/NavigationContext'
 import { Analytics } from '@vercel/analytics/next'
 import { NextIntlClientProvider } from 'next-intl'
@@ -136,7 +135,6 @@ export default async function RootLayout({
 								<div className="min-h-screen overflow-x-hidden bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 									<Navbar />
 									<div id="main-content">{children}</div>
-									<BottomTabs />
 								</div>
 							</NavigationProvider>
 						</CommandPaletteProvider>

@@ -3,25 +3,23 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { DisplaySettings } from '@/components/DisplaySettings'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
+import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { SynaxariumCategoryFilters } from '@/components/synaxarium/SynaxariumCategoryFilters'
 import { SynaxariumDayView } from '@/components/synaxarium/SynaxariumDayView'
 import { SynaxariumHeader } from '@/components/synaxarium/SynaxariumHeader'
 import { SynaxariumSearch } from '@/components/synaxarium/SynaxariumSearch'
 import { SynaxariumSearchResults } from '@/components/synaxarium/SynaxariumSearchResults'
 import { SynaxariumUpcomingView } from '@/components/synaxarium/SynaxariumUpcomingView'
-import { CloseIcon } from '@/components/ui/Icons'
 import { useReadingSettings } from '@/hooks/useReadingSettings'
 import { useSwipeGesture } from '@/hooks/useSwipeGesture'
 import { useSynaxarium } from '@/hooks/useSynaxarium'
 import { themeClasses } from '@/lib/reading-styles'
 import { getTodayDateString } from '@/lib/utils/dateFormatters'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
 import { Suspense } from 'react'
 
 function SynaxariumPageContent() {
 	const t = useTranslations('synaxarium')
-	const tCommon = useTranslations('common')
 	const tNav = useTranslations('nav')
 	const { settings, mounted } = useReadingSettings()
 
@@ -57,9 +55,17 @@ function SynaxariumPageContent() {
 
 	const effectiveTheme = mounted ? settings.theme : 'light'
 
+	const stickyHeader = (
+		<ReadingsHeader theme={effectiveTheme} layout="between">
+			<Breadcrumb items={[{ label: tNav('synaxarium') }]} theme={effectiveTheme} />
+			<DisplaySettings />
+		</ReadingsHeader>
+	)
+
 	return (
 		<ReadingPageLayout
 			theme={effectiveTheme}
+			header={stickyHeader}
 			className={`relative ${!mounted ? '!bg-transparent' : ''}`}
 		>
 			<div ref={swipeRef as React.RefObject<HTMLDivElement>}>
@@ -67,19 +73,8 @@ function SynaxariumPageContent() {
 					<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
 				</div>
 
-				<section className="relative pt-6 lg:pt-20 pb-6 px-6">
+				<section className="relative pt-8 lg:pt-16 pb-6 px-6">
 					<div className="max-w-4xl mx-auto">
-						<div className="flex items-center justify-between mb-4">
-							<Link
-								href="/library"
-								className={`flex items-center gap-1 text-sm transition-colors ${themeClasses.muted[effectiveTheme]}`}
-							>
-								<CloseIcon className="w-4 h-4" />
-								<span className="hidden sm:inline">{tCommon('back')}</span>
-							</Link>
-							<Breadcrumb items={[{ label: tNav('synaxarium') }]} />
-							<DisplaySettings />
-						</div>
 						<div className="text-center">
 							<h1 className="text-3xl font-bold mb-2">{t('title')}</h1>
 							<p className={themeClasses.muted[effectiveTheme]}>{t('subtitle')}</p>

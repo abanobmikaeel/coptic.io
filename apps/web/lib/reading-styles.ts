@@ -195,7 +195,7 @@ export const themeClasses = {
 
 	// Breadcrumb active item
 	breadcrumbActive: {
-		light: 'text-gray-900',
+		light: 'text-gray-900 dark:text-white',
 		sepia: 'text-[#5c4b37]',
 		dark: 'text-white',
 	} as Record<ReadingTheme, string>,
