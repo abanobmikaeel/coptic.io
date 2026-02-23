@@ -43,7 +43,6 @@ export function SynaxariumSearchResults({
 							<ul className="space-y-3">
 								{results.map((result, idx) => {
 									const name = result.entry.name || 'Unknown'
-									const dateUrl = result.copticDate.dateString.replace(/ /g, '-')
 									const category = getCategoryForEntry(name)
 									return (
 										<li
@@ -51,7 +50,7 @@ export function SynaxariumSearchResults({
 											className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-3 last:pb-0"
 										>
 											<Link
-												href={`/synaxarium/${encodeURIComponent(dateUrl)}?entry=${encodeURIComponent(name)}`}
+												href={`/synaxarium?date=${result.date}&entry=${encodeURIComponent(name)}`}
 												className="block group hover:bg-gray-50 dark:hover:bg-gray-800/50 -mx-2 px-2 py-2 rounded-lg transition-colors"
 											>
 												<div className="flex items-start justify-between gap-2">

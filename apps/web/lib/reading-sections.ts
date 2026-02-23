@@ -2,12 +2,12 @@ import type { ReadingsData } from './types'
 
 // Reading metadata for mobile view
 const mobileReadings = [
-	{ key: 'Pauline', short: 'Pa', label: 'Pauline' },
-	{ key: 'Catholic', short: 'Ca', label: 'Catholic' },
-	{ key: 'Acts', short: 'Ac', label: 'Acts' },
-	{ key: 'Synaxarium', short: 'Sx', label: 'Synax' },
-	{ key: 'LPsalm', short: 'Ps', label: 'Psalm' },
-	{ key: 'LGospel', short: 'Go', label: 'Gospel' },
+	{ key: 'Pauline', short: 'Pau', label: 'Pauline' },
+	{ key: 'Catholic', short: 'Cat', label: 'Catholic' },
+	{ key: 'Acts', short: 'Act', label: 'Acts' },
+	{ key: 'Synaxarium', short: 'Syn', label: 'Synax' },
+	{ key: 'LPsalm', short: 'Psm', label: 'Psalm' },
+	{ key: 'LGospel', short: 'Gos', label: 'Gospel' },
 ] as const
 
 // Reading metadata grouped by service (desktop view)
@@ -15,34 +15,34 @@ const readingGroups = [
 	{
 		label: 'Liturgy',
 		readings: [
-			{ key: 'Pauline', short: 'Pa', label: 'Pauline Epistle', size: 'md' as const },
-			{ key: 'Catholic', short: 'Ca', label: 'Catholic Epistle', size: 'md' as const },
-			{ key: 'Acts', short: 'Ac', label: 'Acts', size: 'md' as const },
-			{ key: 'Synaxarium', short: 'Sx', label: 'Synaxarium', size: 'sm' as const },
-			{ key: 'LPsalm', short: 'Ps', label: 'Psalm', size: 'sm' as const },
-			{ key: 'LGospel', short: 'Go', label: 'Gospel', size: 'lg' as const },
+			{ key: 'Pauline', short: 'Pau', label: 'Pauline Epistle', size: 'md' as const },
+			{ key: 'Catholic', short: 'Cat', label: 'Catholic Epistle', size: 'md' as const },
+			{ key: 'Acts', short: 'Act', label: 'Acts', size: 'md' as const },
+			{ key: 'Synaxarium', short: 'Syn', label: 'Synaxarium', size: 'sm' as const },
+			{ key: 'LPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
+			{ key: 'LGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 	{
 		label: 'Vespers',
 		readings: [
-			{ key: 'VPsalm', short: 'Ps', label: 'Psalm', size: 'sm' as const },
-			{ key: 'VGospel', short: 'Go', label: 'Gospel', size: 'lg' as const },
+			{ key: 'VPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
+			{ key: 'VGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 	{
 		label: 'Matins',
 		readings: [
 			{ key: 'Prophecies', short: 'Pr', label: 'Prophecies', size: 'md' as const },
-			{ key: 'MPsalm', short: 'Ps', label: 'Psalm', size: 'sm' as const },
-			{ key: 'MGospel', short: 'Go', label: 'Gospel', size: 'lg' as const },
+			{ key: 'MPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
+			{ key: 'MGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 	{
 		label: 'Evening Prayer',
 		readings: [
-			{ key: 'EPPsalm', short: 'Ps', label: 'Psalm', size: 'sm' as const },
-			{ key: 'EPGospel', short: 'Go', label: 'Gospel', size: 'lg' as const },
+			{ key: 'EPPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
+			{ key: 'EPGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 ]

@@ -271,9 +271,17 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				<Suspense fallback={<div className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24" />}>
 					<SwipeableContainer basePath="/readings" className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24">
 						{(() => {
-							const ServiceDivider = () => (
-								<div className={'max-w-full sm:max-w-2xl mx-auto my-8'}>
-									<div className={`border-t ${themeClasses.border[theme]}`} />
+							const ServiceDivider = ({ label }: { label: string }) => (
+								<div className={'max-w-full sm:max-w-2xl mx-auto my-12'}>
+									<div className="flex items-center gap-4">
+										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
+										<span
+											className={`text-xs font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
+										>
+											{label}
+										</span>
+										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
+									</div>
 								</div>
 							)
 
@@ -307,7 +315,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{/* VESPERS */}
 									{hasVespers && (
 										<>
-											<ServiceDivider />
+											<ServiceDivider label="Vespers" />
 											{renderSection('VPsalm', 'Vespers')}
 											{renderSection('VGospel', 'Vespers')}
 										</>
@@ -316,7 +324,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{/* MATINS */}
 									{hasMatins && (
 										<>
-											<ServiceDivider />
+											<ServiceDivider label="Matins" />
 											{renderSection('Prophecies', 'Matins')}
 											{renderSection('MPsalm', 'Matins')}
 											{renderSection('MGospel', 'Matins')}
@@ -326,7 +334,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{/* EVENING PRAYER (Lent only) */}
 									{readings.EPPsalm?.length || readings.EPGospel?.length ? (
 										<>
-											<ServiceDivider />
+											<ServiceDivider label="Evening Prayer" />
 											{renderSection('EPPsalm' as ReadingSection, 'Evening Prayer')}
 											{renderSection('EPGospel' as ReadingSection, 'Evening Prayer')}
 										</>

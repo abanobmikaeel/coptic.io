@@ -13,9 +13,12 @@ interface NavItem {
 interface NavDropdownProps {
 	label: string
 	items: NavItem[]
+	id?: string
+	onOpen?: (id: string) => void
+	forceClose?: boolean
 }
 
-export function NavDropdown({ label, items }: NavDropdownProps) {
+export function NavDropdown({ label, items, id, onOpen, forceClose }: NavDropdownProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -42,12 +45,20 @@ export function NavDropdown({ label, items }: NavDropdownProps) {
 		setIsOpen(false)
 	}, [pathname])
 
+	// Force close when another dropdown opens
+	useEffect(() => {
+		if (forceClose) {
+			setIsOpen(false)
+		}
+	}, [forceClose])
+
 	const handleMouseEnter = () => {
 		if (timeoutRef.current) {
 			clearTimeout(timeoutRef.current)
 			timeoutRef.current = null
 		}
 		setIsOpen(true)
+		if (id) onOpen?.(id)
 	}
 
 	const handleMouseLeave = () => {
@@ -65,7 +76,11 @@ export function NavDropdown({ label, items }: NavDropdownProps) {
 		>
 			<button
 				type="button"
-				onClick={() => setIsOpen(!isOpen)}
+				onClick={() => {
+					const next = !isOpen
+					setIsOpen(next)
+					if (next && id) onOpen?.(id)
+				}}
 				className={`flex items-center gap-1 text-[13px] transition-colors ${
 					isActive
 						? 'text-amber-600 dark:text-amber-500'

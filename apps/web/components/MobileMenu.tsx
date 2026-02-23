@@ -83,7 +83,6 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 	const moreMenuItems = [
 		{ label: t('calendar'), description: 'View the Coptic calendar', href: '/calendar' },
 		{ label: t('settings'), description: t('settingsDescription'), href: '/settings' },
-		{ label: t('developers'), description: t('developersDescription'), href: '/docs' },
 	]
 
 	return (

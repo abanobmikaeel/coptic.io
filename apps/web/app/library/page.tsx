@@ -84,6 +84,31 @@ export default async function LibraryPage() {
 			),
 			color: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400',
 		},
+		{
+			id: 'lent',
+			title: 'Lent Guide',
+			subtitle: 'Great Lent devotional readings',
+			description:
+				'A daily guide through the Great Lent season with scripture readings, reflections, and prayers for each day of the fast.',
+			href: '/lent',
+			icon: (
+				<svg
+					className="w-8 h-8"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth={1.5}
+						d="M12 3v1m0 16v1m-7.071-2.929l.707-.707m12.728-12.728l.707-.707M3 12h1m16 0h1m-2.929 7.071l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 00-1 9.9V20h2v-3.1A5 5 0 0012 7z"
+					/>
+				</svg>
+			),
+			color: 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400',
+		},
 	]
 
 	return (

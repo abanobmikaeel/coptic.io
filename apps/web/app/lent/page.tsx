@@ -51,12 +51,26 @@ export default async function LentPage() {
 
 	if (!schedule) {
 		return (
-			<main className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
-				<div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-					<h1 className="text-2xl font-bold mb-4">Great Lent Devotional Guide</h1>
-					<p className="text-gray-500 dark:text-gray-400">
-						Unable to load the Lent schedule. Please try again later.
-					</p>
+			<main className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-white dark:from-gray-950 dark:via-gray-950 dark:to-gray-950 text-gray-900 dark:text-white">
+				<div className="max-w-lg mx-auto px-4 sm:px-6 py-20 text-center">
+					<div className="rounded-2xl border-2 border-amber-200 dark:border-amber-800/50 bg-white dark:bg-gray-900/50 p-8 sm:p-10 shadow-sm">
+						<p className="text-amber-600 dark:text-amber-400 text-sm font-medium tracking-widest uppercase mb-4">
+							Coming Soon
+						</p>
+						<h1 className="text-2xl sm:text-3xl font-bold mb-3 bg-gradient-to-r from-amber-700 via-amber-600 to-orange-600 dark:from-amber-400 dark:via-amber-300 dark:to-orange-400 bg-clip-text text-transparent">
+							Great Lent Devotional Guide
+						</h1>
+						<p className="text-gray-500 dark:text-gray-400 mb-6">
+							The Great Lent devotional readings are being prepared. Check back closer to the Lenten
+							season.
+						</p>
+						<Link
+							href="/readings"
+							className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium transition-colors"
+						>
+							Browse Today&apos;s Readings
+						</Link>
+					</div>
 				</div>
 			</main>
 		)

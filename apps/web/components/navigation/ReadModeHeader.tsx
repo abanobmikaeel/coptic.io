@@ -15,7 +15,7 @@ export function ReadModeHeader() {
 	}
 
 	const handleExit = () => {
-		router.push('/library')
+		router.push('/')
 	}
 
 	return (

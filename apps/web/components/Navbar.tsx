@@ -3,6 +3,7 @@
 import { useNavigation } from '@/contexts/NavigationContext'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { useCallback, useState } from 'react'
 import CopticCross from './CopticCross'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
@@ -13,6 +14,11 @@ import ThemeToggle from './ThemeToggle'
 export default function Navbar() {
 	const { mode } = useNavigation()
 	const t = useTranslations('nav')
+	const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
+	const handleDropdownOpen = useCallback((id: string) => {
+		setOpenDropdown(id)
+	}, [])
 
 	const readMenuItems = [
 		{
@@ -42,11 +48,6 @@ export default function Navbar() {
 			label: t('settings'),
 			description: t('settingsDescription'),
 			href: '/settings',
-		},
-		{
-			label: t('developers'),
-			description: t('developersDescription'),
-			href: '/docs',
 		},
 		{
 			label: t('privacy'),
@@ -81,8 +82,20 @@ export default function Navbar() {
 					<div className="flex items-center gap-2 sm:gap-4">
 						{/* Desktop navigation */}
 						<div className="hidden lg:flex items-center gap-4">
-							<NavDropdown label={t('read')} items={readMenuItems} />
-							<NavDropdown label={t('more')} items={moreMenuItems} />
+							<NavDropdown
+								label={t('read')}
+								items={readMenuItems}
+								id="read"
+								onOpen={handleDropdownOpen}
+								forceClose={openDropdown !== null && openDropdown !== 'read'}
+							/>
+							<NavDropdown
+								label={t('more')}
+								items={moreMenuItems}
+								id="more"
+								onOpen={handleDropdownOpen}
+								forceClose={openDropdown !== null && openDropdown !== 'more'}
+							/>
 						</div>
 						<Link
 							href="/calendar"
