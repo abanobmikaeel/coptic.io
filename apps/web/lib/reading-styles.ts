@@ -237,7 +237,7 @@ export const themeClasses = {
 
 	// Dropdown muted text
 	dropdownMuted: {
-		light: 'text-gray-500',
+		light: 'text-gray-500 dark:text-gray-400',
 		sepia: 'text-[#8b7355]',
 		dark: 'text-gray-500',
 	} as Record<ReadingTheme, string>,
@@ -251,14 +251,14 @@ export const themeClasses = {
 
 	// Mobile menu drawer background
 	drawerBg: {
-		light: 'bg-white',
+		light: 'bg-white dark:bg-gray-900',
 		sepia: 'bg-amber-50',
 		dark: 'bg-gray-900',
 	} as Record<ReadingTheme, string>,
 
 	// Mobile menu drawer border
 	drawerBorder: {
-		light: 'border-gray-200',
+		light: 'border-gray-200 dark:border-gray-700',
 		sepia: 'border-amber-200',
 		dark: 'border-gray-700',
 	} as Record<ReadingTheme, string>,
@@ -279,14 +279,14 @@ export const themeClasses = {
 
 	// Mobile menu active nav item
 	drawerNavActive: {
-		light: 'bg-amber-50 text-amber-700',
+		light: 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400',
 		sepia: 'bg-amber-100 text-amber-800',
 		dark: 'bg-amber-900/20 text-amber-400',
 	} as Record<ReadingTheme, string>,
 
 	// Mobile menu inactive nav item
 	drawerNavInactive: {
-		light: 'text-gray-900 hover:bg-gray-100',
+		light: 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800',
 		sepia: 'text-amber-900 hover:bg-amber-100/50',
 		dark: 'text-white hover:bg-gray-800',
 	} as Record<ReadingTheme, string>,

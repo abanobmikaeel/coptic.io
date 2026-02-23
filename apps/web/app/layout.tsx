@@ -132,7 +132,7 @@ export default async function RootLayout({
 					<ThemeProvider>
 						<CommandPaletteProvider>
 							<NavigationProvider>
-								<div className="min-h-screen overflow-x-hidden bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+								<div className="min-h-screen [overflow-x:clip] bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 									<Navbar />
 									<div id="main-content">{children}</div>
 								</div>

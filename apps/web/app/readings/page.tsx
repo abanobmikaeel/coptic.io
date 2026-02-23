@@ -271,15 +271,30 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				<Suspense fallback={<div className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24" />}>
 					<SwipeableContainer basePath="/readings" className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24">
 						{(() => {
+							const serviceDescriptions: Record<string, string> = {
+								Vespers: 'Evening Service',
+								Matins: 'Morning Service',
+								'Evening Prayer': 'Evening Prayer Service',
+							}
+
 							const ServiceDivider = ({ label }: { label: string }) => (
 								<div className={'max-w-full sm:max-w-2xl mx-auto my-12'}>
 									<div className="flex items-center gap-4">
 										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
-										<span
-											className={`text-xs font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
-										>
-											{label}
-										</span>
+										<div className="text-center">
+											<span
+												className={`block text-xs font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
+											>
+												{label}
+											</span>
+											{serviceDescriptions[label] && (
+												<span
+													className={`block text-[10px] mt-0.5 ${themeClasses.muted[theme]} opacity-70`}
+												>
+													{serviceDescriptions[label]}
+												</span>
+											)}
+										</div>
 										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
 									</div>
 								</div>
