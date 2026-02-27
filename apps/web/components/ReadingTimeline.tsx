@@ -4,9 +4,9 @@ import type { AvailableSections, ReadingSize } from '@/lib/reading-sections'
 import { useCallback, useEffect, useState } from 'react'
 
 const sizeClasses: Record<ReadingSize, { normal: string; active: string }> = {
-	sm: { normal: 'w-5 h-5 text-[9px]', active: 'w-6 h-6 text-[10px]' },
-	md: { normal: 'w-7 h-7 text-[10px]', active: 'w-8 h-8 text-[11px]' },
-	lg: { normal: 'w-9 h-9 text-xs', active: 'w-10 h-10 text-xs' },
+	sm: { normal: 'w-8 h-8 text-[10px]', active: 'w-9 h-9 text-[11px]' },
+	md: { normal: 'w-8 h-8 text-[10px]', active: 'w-9 h-9 text-[11px]' },
+	lg: { normal: 'w-8 h-8 text-[10px]', active: 'w-9 h-9 text-[11px]' },
 }
 
 interface ReadingTimelineProps {
@@ -66,7 +66,7 @@ export function ReadingTimeline({ sections }: ReadingTimelineProps) {
 				<div className="flex flex-col items-center gap-0 py-2 px-2 rounded-2xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg">
 					{groups.map((group, groupIdx) => (
 						<div key={group.label} className="flex flex-col items-center">
-							<span className="text-[8px] font-bold tracking-wider uppercase text-gray-400 dark:text-gray-500 mb-1 mt-1">
+							<span className="text-[10px] font-bold tracking-wider uppercase text-gray-400 dark:text-gray-500 mb-1.5 mt-1.5">
 								{group.label}
 							</span>
 
@@ -104,7 +104,7 @@ export function ReadingTimeline({ sections }: ReadingTimelineProps) {
 							</div>
 
 							{groupIdx < groups.length - 1 && (
-								<div className="w-4 h-px bg-gray-200 dark:bg-gray-700 my-2" />
+								<div className="w-6 h-px bg-gray-300 dark:bg-gray-600 my-2" />
 							)}
 						</div>
 					))}

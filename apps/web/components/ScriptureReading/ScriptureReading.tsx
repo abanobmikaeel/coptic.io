@@ -1,7 +1,7 @@
 'use client'
 
 import { getServiceName } from '@/i18n/content-translations'
-import { getWidthClass } from '@/lib/reading-styles'
+import { getWidthClass, themeClasses } from '@/lib/reading-styles'
 import { useState } from 'react'
 import { MultiLanguageContent } from './MultiLanguageContent'
 import { ReadingHeader } from './ReadingHeader'
@@ -118,6 +118,13 @@ export function ScriptureReading({
 						/>
 					)
 				))}
+
+			{/* Liturgical closing marker */}
+			{isOpen && !id?.includes('Synaxarium') && (
+				<p className={`text-center text-sm italic mt-6 ${themeClasses.muted[theme]}`}>
+					Glory be to God forever. Amen.
+				</p>
+			)}
 		</article>
 	)
 }

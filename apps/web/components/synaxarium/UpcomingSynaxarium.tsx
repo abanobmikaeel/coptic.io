@@ -1,6 +1,6 @@
 'use client'
 
-import { getSynaxariumByDate } from '@/lib/api'
+import { getCalendarDate, getSynaxariumByDate } from '@/lib/api'
 import type { SynaxariumEntry } from '@/lib/types'
 import { addDaysToDateString, getTodayDateString } from '@/lib/utils/dateFormatters'
 import { useLocale, useTranslations } from 'next-intl'
@@ -11,6 +11,7 @@ interface DayData {
 	date: string
 	entries: SynaxariumEntry[]
 	loading: boolean
+	copticDate?: string
 }
 
 interface UpcomingSynaxariumProps {
@@ -66,32 +67,48 @@ export function UpcomingSynaxarium({
 			}
 			setDays(initialDays)
 
-			// Fetch first batch in parallel
+			// Fetch first batch in parallel (synaxarium + Coptic dates)
 			const firstBatchPromises = initialDays.slice(0, INITIAL_DAYS).map(async (day, idx) => {
-				const data = await getSynaxariumByDate(day.date, false, lang)
-				return { idx, entries: data || [] }
+				const [data, calData] = await Promise.all([
+					getSynaxariumByDate(day.date, false, lang),
+					getCalendarDate(day.date),
+				])
+				return { idx, entries: data || [], copticDate: calData?.dateString }
 			})
 
 			const firstBatchResults = await Promise.all(firstBatchPromises)
 			setDays((prev) => {
 				const updated = [...prev]
 				for (const result of firstBatchResults) {
-					updated[result.idx] = { ...updated[result.idx], entries: result.entries, loading: false }
+					updated[result.idx] = {
+						...updated[result.idx],
+						entries: result.entries,
+						copticDate: result.copticDate,
+						loading: false,
+					}
 				}
 				return updated
 			})
 
 			// Fetch remaining days in background
 			const remainingPromises = initialDays.slice(INITIAL_DAYS).map(async (day, idx) => {
-				const data = await getSynaxariumByDate(day.date, false, lang)
-				return { idx: idx + INITIAL_DAYS, entries: data || [] }
+				const [data, calData] = await Promise.all([
+					getSynaxariumByDate(day.date, false, lang),
+					getCalendarDate(day.date),
+				])
+				return { idx: idx + INITIAL_DAYS, entries: data || [], copticDate: calData?.dateString }
 			})
 
 			const remainingResults = await Promise.all(remainingPromises)
 			setDays((prev) => {
 				const updated = [...prev]
 				for (const result of remainingResults) {
-					updated[result.idx] = { ...updated[result.idx], entries: result.entries, loading: false }
+					updated[result.idx] = {
+						...updated[result.idx],
+						entries: result.entries,
+						copticDate: result.copticDate,
+						loading: false,
+					}
 				}
 				return updated
 			})
@@ -195,6 +212,7 @@ export function UpcomingSynaxarium({
 					key={day.date}
 					date={day.date}
 					displayDate={formatUpcomingDate(day.date, locale)}
+					copticDate={day.copticDate}
 					isToday={day.date === today}
 					isTomorrow={day.date === tomorrow}
 					entries={day.entries}

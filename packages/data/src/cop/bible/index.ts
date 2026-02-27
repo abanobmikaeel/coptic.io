@@ -8,7 +8,7 @@
 // Use ASCII-mapped version for compatibility with traditional Coptic fonts
 // like CS Avva Shenouda, CS Copt, etc. which display Coptic glyphs when
 // rendering ASCII letters
-import canonicalData from '../../coptic/canonical-ascii.json'
+import canonicalData from '../canonical-ascii.json'
 
 export interface BibleVerse {
 	num: number

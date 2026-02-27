@@ -26,23 +26,23 @@ const readingGroups = [
 	{
 		label: 'Vespers',
 		readings: [
-			{ key: 'VPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
-			{ key: 'VGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
+			{ key: 'VPsalm', short: 'V·Ps', label: 'Psalm', size: 'sm' as const },
+			{ key: 'VGospel', short: 'V·Go', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 	{
 		label: 'Matins',
 		readings: [
 			{ key: 'Prophecies', short: 'Pr', label: 'Prophecies', size: 'md' as const },
-			{ key: 'MPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
-			{ key: 'MGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
+			{ key: 'MPsalm', short: 'M·Ps', label: 'Psalm', size: 'sm' as const },
+			{ key: 'MGospel', short: 'M·Go', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 	{
 		label: 'Evening Prayer',
 		readings: [
-			{ key: 'EPPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
-			{ key: 'EPGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
+			{ key: 'EPPsalm', short: 'E·Ps', label: 'Psalm', size: 'sm' as const },
+			{ key: 'EPGospel', short: 'E·Go', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 ]

@@ -122,8 +122,8 @@ function convertToAscii(text) {
 }
 
 // Process the canonical.json file
-const canonicalPath = path.join(__dirname, '../src/coptic/canonical.json')
-const outputPath = path.join(__dirname, '../src/coptic/canonical-ascii.json')
+const canonicalPath = path.join(__dirname, '../src/cop/canonical.json')
+const outputPath = path.join(__dirname, '../src/cop/canonical-ascii.json')
 
 console.log('Loading canonical.json...')
 const data = JSON.parse(fs.readFileSync(canonicalPath, 'utf-8'))

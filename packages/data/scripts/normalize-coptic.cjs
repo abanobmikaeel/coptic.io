@@ -11,7 +11,7 @@
 const fs = require('node:fs')
 const path = require('node:path')
 
-const COPTIC_DIR = path.join(__dirname, '../src/coptic')
+const COPTIC_DIR = path.join(__dirname, '../src/cop')
 
 // Coptic letters exist in TWO Unicode blocks:
 // 1. Coptic block: U+2C80 to U+2CFF (main block)

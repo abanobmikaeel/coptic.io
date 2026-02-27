@@ -18,7 +18,12 @@ import UpcomingFeastsList from '@/components/UpcomingFeastsList'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { CalendarIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { ICAL_SUBSCRIBE_URL } from '@/config'
-import { getCalendarData, getTodayCelebrations, getUpcomingCelebrations } from '@/lib/api'
+import {
+	getCalendarData,
+	getReadingReferences,
+	getTodayCelebrations,
+	getUpcomingCelebrations,
+} from '@/lib/api'
 import {
 	filterFeastsOnly,
 	filterUpcomingFasts,
@@ -40,10 +45,11 @@ export default async function Home({ searchParams }: HomeProps) {
 	const date = params.date
 	const t = await getTranslations('home')
 
-	const [calendar, celebrations, upcoming] = await Promise.all([
+	const [calendar, celebrations, upcoming, readingRefs] = await Promise.all([
 		getCalendarData(date),
 		getTodayCelebrations(date),
 		getUpcomingCelebrations(60),
+		getReadingReferences(date),
 	])
 
 	const displayDate = date ? parseDateString(date) : new Date()
@@ -51,6 +57,9 @@ export default async function Home({ searchParams }: HomeProps) {
 
 	const copticDate = calendar?.dateString || 'Loading...'
 	const todayFeast = Array.isArray(celebrations) && celebrations.length > 0 ? celebrations[0] : null
+
+	const hasReadingRefs = readingRefs?.reference?.LPsalm || readingRefs?.reference?.LGospel
+	const isLent = !hasReadingRefs && readingRefs?.season
 
 	const allEvents = Array.isArray(upcoming) ? filterUpcomingFeasts(upcoming) : []
 	const upcomingFeasts = filterFeastsOnly(allEvents)
@@ -72,15 +81,8 @@ export default async function Home({ searchParams }: HomeProps) {
 				</div>
 			</section>
 
-			{/* Email Signup - Primary CTA */}
+			{/* Today's Readings Card */}
 			<section className="relative px-6 pb-8">
-				<div className="max-w-lg mx-auto">
-					<EmailSignup />
-				</div>
-			</section>
-
-			{/* Today's Date Card */}
-			<section className="relative px-6 pb-6">
 				<div className="max-w-4xl mx-auto">
 					<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 text-center shadow-sm dark:shadow-none">
 						<p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">
@@ -100,6 +102,38 @@ export default async function Home({ searchParams }: HomeProps) {
 							</div>
 						)}
 
+						{hasReadingRefs && (
+							<div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800 space-y-3">
+								<p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
+									{t('todaysReadings')}
+								</p>
+								{readingRefs?.reference?.LPsalm && (
+									<p className="text-gray-700 dark:text-gray-300 text-sm">
+										<span className="font-medium text-gray-900 dark:text-white">Psalm:</span>{' '}
+										{readingRefs.reference.LPsalm}
+									</p>
+								)}
+								{readingRefs?.reference?.LGospel && (
+									<p className="text-gray-700 dark:text-gray-300 text-sm">
+										<span className="font-medium text-gray-900 dark:text-white">Gospel:</span>{' '}
+										{readingRefs.reference.LGospel}
+									</p>
+								)}
+							</div>
+						)}
+
+						{isLent && (
+							<div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+								<p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
+									Season
+								</p>
+								<p className="text-gray-900 dark:text-white text-lg">
+									{readingRefs?.season}
+									{readingRefs?.seasonDay && ` — ${readingRefs.seasonDay}`}
+								</p>
+							</div>
+						)}
+
 						<Link
 							href="/readings"
 							className="inline-flex items-center gap-2 mt-6 text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 font-medium transition-colors"
@@ -108,6 +142,13 @@ export default async function Home({ searchParams }: HomeProps) {
 							<ChevronRightIcon className="w-4 h-4" />
 						</Link>
 					</div>
+				</div>
+			</section>
+
+			{/* Email Signup */}
+			<section className="relative px-6 pb-6">
+				<div className="max-w-lg mx-auto">
+					<EmailSignup />
 				</div>
 			</section>
 

@@ -11,7 +11,7 @@
 const fs = require('node:fs')
 const path = require('node:path')
 
-const OUTPUT_BASE = path.join(__dirname, '../src/coptic')
+const OUTPUT_BASE = path.join(__dirname, '../src/cop')
 const CACHE_DIR = path.join(__dirname, '../.cache/coptic-bible')
 
 // Rate limiting

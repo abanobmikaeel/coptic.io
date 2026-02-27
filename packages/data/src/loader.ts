@@ -39,7 +39,7 @@ export const loadBible = async (language: SupportedLanguage): Promise<RawBibleDa
 		case 'es':
 			return (await import('./es/bible/books.json')).default as RawBibleData
 		case 'cop':
-			return (await import('./coptic/canonical.json')).default as unknown as RawBibleData // combines Bohairic + Sahidic fallbacks
+			return (await import('./cop/canonical.json')).default as unknown as RawBibleData // combines Bohairic + Sahidic fallbacks
 		default:
 			return (await import('./en/bible/books.json')).default as RawBibleData
 	}
