@@ -3,21 +3,24 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import type { Locale } from '@/i18n/config'
-import type {
-	FontFamily,
-	FontWeight,
-	LineSpacing,
-	ReadingWidth,
-	TextSize,
-	ThemePreference,
-	ViewMode,
-	WordSpacing,
+import {
+	type FontFamily,
+	type FontWeight,
+	type LineSpacing,
+	type ReadingWidth,
+	type TextSize,
+	type ThemePreference,
+	type ViewMode,
+	type WordSpacing,
+	loadPreferences as loadStoredPreferences,
+	savePreferences as saveStoredPreferences,
 } from '@/lib/reading-preferences'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Suspense, useEffect, useState, useTransition } from 'react'
 
-interface ReadingPreferences {
+// Local type extends shared type with required fields for UI state
+interface SettingsPreferences {
 	size: TextSize
 	view: ViewMode
 	font: FontFamily
@@ -29,7 +32,7 @@ interface ReadingPreferences {
 	verses: 'show' | 'hide'
 }
 
-const DEFAULTS: ReadingPreferences = {
+const DEFAULTS: SettingsPreferences = {
 	size: 'md',
 	view: 'verse',
 	font: 'sans',
@@ -41,20 +44,20 @@ const DEFAULTS: ReadingPreferences = {
 	verses: 'show',
 }
 
-function loadPreferences(): ReadingPreferences {
+function loadPreferences(): SettingsPreferences {
 	if (typeof window === 'undefined') return DEFAULTS
-	try {
-		const stored = localStorage.getItem('readingPreferences')
-		if (stored) {
-			return { ...DEFAULTS, ...JSON.parse(stored) }
-		}
-	} catch {}
-	return DEFAULTS
+	// loadStoredPreferences handles migration automatically
+	const stored = loadStoredPreferences()
+	// Convert null/undefined verses to 'show' for UI state
+	const verses = stored.verses === 'hide' ? 'hide' : 'show'
+	return { ...DEFAULTS, ...stored, verses }
 }
 
-function savePreferences(prefs: ReadingPreferences) {
+function savePreferences(prefs: SettingsPreferences) {
 	if (typeof window === 'undefined') return
-	localStorage.setItem('readingPreferences', JSON.stringify(prefs))
+	// Convert 'show' to undefined for storage (it's the default)
+	const { verses, ...rest } = prefs
+	saveStoredPreferences({ ...rest, verses: verses === 'hide' ? 'hide' : undefined })
 }
 
 function SettingsContent() {
@@ -62,7 +65,7 @@ function SettingsContent() {
 	const locale = useLocale() as Locale
 	const t = useTranslations('settings')
 	const [isPending, startTransition] = useTransition()
-	const [prefs, setPrefs] = useState<ReadingPreferences>(DEFAULTS)
+	const [prefs, setPrefs] = useState<SettingsPreferences>(DEFAULTS)
 	const [mounted, setMounted] = useState(false)
 	const [saved, setSaved] = useState(false)
 
@@ -78,7 +81,10 @@ function SettingsContent() {
 		})
 	}
 
-	const updatePref = <K extends keyof ReadingPreferences>(key: K, value: ReadingPreferences[K]) => {
+	const updatePref = <K extends keyof SettingsPreferences>(
+		key: K,
+		value: SettingsPreferences[K],
+	) => {
 		setPrefs((prev) => {
 			const next = { ...prev, [key]: value }
 			savePreferences(next)
@@ -197,8 +203,9 @@ function SettingsContent() {
 										value={prefs.weight}
 										onChange={(v) => updatePref('weight', v as FontWeight)}
 										options={[
+											{ value: 'light', label: t('weightLight') },
 											{ value: 'normal', label: t('weightNormal') },
-											{ value: 'medium', label: t('weightMedium') },
+											{ value: 'bold', label: t('weightBold') },
 										]}
 									/>
 								</SettingRow>
@@ -207,7 +214,7 @@ function SettingsContent() {
 										value={prefs.spacing}
 										onChange={(v) => updatePref('spacing', v as LineSpacing)}
 										options={[
-											{ value: 'tight', label: t('spacingTight') },
+											{ value: 'compact', label: t('spacingCompact') },
 											{ value: 'normal', label: t('spacingNormal') },
 											{ value: 'relaxed', label: t('spacingRelaxed') },
 										]}
@@ -218,8 +225,9 @@ function SettingsContent() {
 										value={prefs.wordSpacing}
 										onChange={(v) => updatePref('wordSpacing', v as WordSpacing)}
 										options={[
+											{ value: 'compact', label: t('wordSpacingCompact') },
 											{ value: 'normal', label: t('wordSpacingNormal') },
-											{ value: 'wide', label: t('wordSpacingWide') },
+											{ value: 'relaxed', label: t('wordSpacingRelaxed') },
 										]}
 									/>
 								</SettingRow>

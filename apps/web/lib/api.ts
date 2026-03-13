@@ -62,3 +62,22 @@ export const getCalendarDate = (date: string) =>
 	fetchApi<{ dateString: string; day: number; month: number; monthString: string }>(
 		`/calendar/${date}`,
 	)
+
+// Reading references (non-detailed endpoint)
+export interface ReadingReferences {
+	reference?: {
+		LPsalm?: string
+		LGospel?: string
+	}
+	season?: string
+	seasonDay?: string
+	Synaxarium?: string
+}
+
+export const getReadingReferences = (date?: string) => {
+	const d = new Date()
+	const today =
+		date ||
+		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+	return fetchApi<ReadingReferences>(`/readings/${today}`)
+}

@@ -7,6 +7,7 @@ import { SynaxariumEntryCompact } from './SynaxariumEntryCompact'
 interface SynaxariumDayCardProps {
 	date: string
 	displayDate: string
+	copticDate?: string
 	isToday: boolean
 	isTomorrow: boolean
 	entries: SynaxariumEntry[]
@@ -22,6 +23,7 @@ interface SynaxariumDayCardProps {
 export function SynaxariumDayCard({
 	date,
 	displayDate,
+	copticDate,
 	isToday,
 	isTomorrow,
 	entries,
@@ -68,9 +70,16 @@ export function SynaxariumDayCard({
 						</span>
 					)}
 					{dateLabel && <span className="text-gray-400 dark:text-gray-600">—</span>}
-					<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-						{displayDate}
-					</span>
+					<div className="flex flex-col">
+						<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+							{displayDate}
+						</span>
+						{copticDate && (
+							<span className="text-xs font-medium text-amber-600 dark:text-amber-500">
+								{copticDate}
+							</span>
+						)}
+					</div>
 					<span className="ms-auto text-xs text-gray-500 dark:text-gray-500">
 						{filteredEntries.length}{' '}
 						{filteredEntries.length === 1

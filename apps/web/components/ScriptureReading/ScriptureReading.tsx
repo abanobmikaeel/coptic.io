@@ -1,12 +1,10 @@
 'use client'
 
 import { getServiceName } from '@/i18n/content-translations'
-import { getWidthClass } from '@/lib/reading-styles'
+import { getWidthClass, themeClasses } from '@/lib/reading-styles'
 import { useState } from 'react'
-import { LtrHeader } from './LtrHeader'
-import { MultiLangHeader } from './MultiLangHeader'
 import { MultiLanguageContent } from './MultiLanguageContent'
-import { RtlHeader } from './RtlHeader'
+import { ReadingHeader } from './ReadingHeader'
 import { SingleLanguageContent } from './SingleLanguageContent'
 import type { ScriptureReadingProps } from './types'
 import { getReferenceForLang, getStyleClasses, orderLanguages } from './utils'
@@ -46,54 +44,52 @@ export function ScriptureReading({
 
 	// Determine header style for single language
 	const headerIsRtl = firstLang === 'ar'
+	// Mobile uses full width, larger screens use max-width constraints
 	const widthClass = isMultiLang
 		? availableLangs.length >= 4
-			? 'max-w-[90rem]' // Extra wide for 4 languages
+			? 'max-w-full sm:max-w-[90rem]' // Extra wide for 4 languages
 			: availableLangs.length >= 3
-				? 'max-w-7xl'
-				: 'max-w-6xl'
+				? 'max-w-full sm:max-w-7xl'
+				: 'max-w-full sm:max-w-6xl'
 		: getWidthClass(width)
 
 	return (
-		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-12' : 'mb-4'}`}>
-			{/* Clickable header */}
+		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-8' : 'mb-3'}`}>
+			{/* Clickable header - full width on mobile */}
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
-				className="w-full group cursor-pointer"
+				className="w-full group cursor-pointer -mx-3 sm:mx-0"
 			>
-				<div className={`${widthClass} mx-auto px-4`}>
-					{isMultiLang ? (
-						<MultiLangHeader
-							orderedLangs={orderedLangs}
-							labels={labels}
-							references={{
-								en: getReferenceForLang('en', readingsByLang.en),
-								ar: getReferenceForLang('ar', readingsByLang.ar),
-								es: getReferenceForLang('es', readingsByLang.es),
-								cop: getReferenceForLang('cop', readingsByLang.cop),
-							}}
-							service={service}
-							isOpen={isOpen}
-							theme={theme}
-						/>
-					) : headerIsRtl ? (
-						<RtlHeader
-							title={labels.ar}
-							reference={getReferenceForLang('ar', readingsByLang.ar)}
-							service={service ? getServiceName(service, 'ar') : undefined}
-							isOpen={isOpen}
-							theme={theme}
-						/>
-					) : (
-						<LtrHeader
-							title={labels.en}
-							reference={getReferenceForLang('en', readingsByLang.en)}
-							service={service}
-							isOpen={isOpen}
-							theme={theme}
-						/>
-					)}
+				<div className={`${widthClass} sm:mx-auto`}>
+					<ReadingHeader
+						orderedLangs={isMultiLang ? orderedLangs : undefined}
+						labels={isMultiLang ? labels : undefined}
+						references={
+							isMultiLang
+								? {
+										en: getReferenceForLang('en', readingsByLang.en),
+										ar: getReferenceForLang('ar', readingsByLang.ar),
+										es: getReferenceForLang('es', readingsByLang.es),
+										cop: getReferenceForLang('cop', readingsByLang.cop),
+									}
+								: undefined
+						}
+						title={!isMultiLang ? labels[firstLang as 'en' | 'ar'] : undefined}
+						reference={
+							!isMultiLang ? getReferenceForLang(firstLang, readingsByLang[firstLang]) : undefined
+						}
+						service={
+							!isMultiLang && headerIsRtl
+								? service
+									? getServiceName(service, 'ar')
+									: undefined
+								: service
+						}
+						isOpen={isOpen}
+						theme={theme}
+						isRtl={!isMultiLang ? headerIsRtl : undefined}
+					/>
 				</div>
 			</button>
 
@@ -122,6 +118,13 @@ export function ScriptureReading({
 						/>
 					)
 				))}
+
+			{/* Liturgical closing marker */}
+			{isOpen && !id?.includes('Synaxarium') && (
+				<p className={`text-center text-sm italic mt-6 ${themeClasses.muted[theme]}`}>
+					Glory be to God forever. Amen.
+				</p>
+			)}
 		</article>
 	)
 }

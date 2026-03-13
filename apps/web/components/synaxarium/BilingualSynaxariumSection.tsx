@@ -127,24 +127,10 @@ export function BilingualSynaxariumSection({
 						{isExpanded && hasText && (
 							<div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
 								<div
-									className={`grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-0 rounded-lg overflow-hidden ${
-										theme === 'dark'
-											? 'bg-gray-800/50'
-											: theme === 'sepia'
-												? 'bg-amber-100/50'
-												: 'bg-gray-50'
-									}`}
+									className={`grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-0 rounded-lg overflow-hidden ${themeClasses.expandedBg[theme]}`}
 								>
 									{/* English text */}
-									<div
-										className={`p-4 md:border-r ${
-											theme === 'dark'
-												? 'md:border-gray-700'
-												: theme === 'sepia'
-													? 'md:border-amber-200'
-													: 'md:border-gray-200'
-										}`}
-									>
+									<div className={`p-4 md:border-r ${themeClasses.expandedBorder[theme]}`}>
 										{entry.en?.text ? (
 											<>
 												<p

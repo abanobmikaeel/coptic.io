@@ -1,54 +1,57 @@
 {
-	"name": "coptic.io",
-	"version": "2.0.0",
-	"private": true,
-	"description": "Coptic.io Monorepo - Coptic Orthodox Church API and applications",
-	"type": "module",
-	"scripts": {
-		"dev": "pnpm --filter @coptic/api dev",
-		"dev:web": "pnpm --filter @coptic/web dev",
-		"dev:api": "pnpm --filter @coptic/api dev ",
-		"dev:fullstack": "pnpm dev",
-		"dev:admin": "pnpm --filter @coptic/admin dev",
-		"build": "pnpm -r build",
-		"build:packages": "pnpm --filter '@coptic/*' --filter '!@coptic/api' --filter '!@coptic/web' --filter '!@coptic/admin' build",
-		"test": "pnpm -r test",
-		"test:api": "pnpm --filter @coptic/api test",
-		"bench": "pnpm --filter @coptic/core --filter @coptic/data bench",
-		"lint": "biome lint .",
-		"lint:fix": "biome lint --write .",
-		"check": "biome check .",
-		"check:fix": "biome check --write .",
-		"typecheck": "pnpm -r typecheck",
-		"ci": "pnpm -r ci",
-		"clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
-		"prepare": "pnpm build:packages",
-		"changeset": "changeset",
-		"version": "changeset version",
-		"release": "pnpm build:packages && changeset publish"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:abanobmikaeel/coptic.io.git"
-	},
-	"author": "Abanob Mikaeel",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/abanobmikaeel/coptic.io/issues"
-	},
-	"homepage": "https://github.com/abanobmikaeel/coptic.io/blob/main/README.md",
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@changesets/cli": "^2.27.0",
-		"typescript": "^5.7.3"
-	},
-	"packageManager": "pnpm@10.29.1",
-	"engines": {
-		"node": ">=20"
-	},
-	"pnpm": {
-		"overrides": {
-			"fast-xml-parser": ">=5.3.6"
-		}
-	}
+  "name": "coptic.io",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Coptic.io Monorepo - Coptic Orthodox Church API and applications",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @coptic/api dev",
+    "dev:web": "pnpm --filter @coptic/web dev",
+    "dev:api": "pnpm --filter @coptic/api dev ",
+    "dev:fullstack": "pnpm --filter @coptic/api dev & pnpm --filter @coptic/web dev",
+    "dev:admin": "pnpm --filter @coptic/admin dev",
+    "build": "pnpm -r build",
+    "build:packages": "pnpm --filter '@coptic/*' --filter '!@coptic/api' --filter '!@coptic/web' --filter '!@coptic/admin' build",
+    "test": "pnpm -r test",
+    "test:api": "pnpm --filter @coptic/api test",
+    "bench": "pnpm --filter @coptic/core --filter @coptic/data bench",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "typecheck": "pnpm -r typecheck",
+    "ci": "pnpm -r ci",
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
+    "prepare": "pnpm build:packages",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build:packages && changeset publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:abanobmikaeel/coptic.io.git"
+  },
+  "author": "Abanob Mikaeel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abanobmikaeel/coptic.io/issues"
+  },
+  "homepage": "https://github.com/abanobmikaeel/coptic.io/blob/main/README.md",
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@changesets/cli": "^2.27.0",
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "fast-xml-parser": ">=5.3.6",
+    "minimatch": ">=10.2.1"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }

@@ -58,7 +58,7 @@ export function SynaxariumTodayView({
 			{isToday && entries.length > 0 && <FeaturedTodayCard entries={entries} />}
 
 			{/* Entries List */}
-			<section className="relative px-6 pb-16">
+			<section className="relative px-4 sm:px-6 pb-16">
 				<div className="max-w-4xl mx-auto">
 					<Card>
 						<CardHeader>
@@ -109,7 +109,7 @@ function FeaturedTodayCard({ entries }: { entries: SynaxariumEntry[] }) {
 	const tCategories = useTranslations('categories')
 
 	return (
-		<section className="relative px-6 pb-6">
+		<section className="relative px-4 sm:px-6 pb-6">
 			<div className="max-w-4xl mx-auto">
 				<Card className="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/10">
 					<CardHeader className="flex items-center gap-2">

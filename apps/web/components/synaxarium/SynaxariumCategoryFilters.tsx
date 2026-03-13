@@ -73,25 +73,32 @@ export function SynaxariumCategoryFilters({
 	const t = useTranslations('categories')
 
 	return (
-		<section className="relative px-6 pb-6">
+		<section className="relative px-6 pb-3 sm:pb-6">
 			<div className="max-w-4xl mx-auto">
 				<div className="flex flex-wrap gap-2 overflow-x-auto pb-2 -mb-2 scrollbar-hide">
 					{CATEGORIES.map((cat) => {
 						const count = counts[cat.id]
 						if (cat.id !== 'all' && count === 0 && showCounts) return null
+						const isSelected = selectedCategory === cat.id
 						return (
 							<button
 								key={cat.id}
 								type="button"
 								onClick={() => onCategoryChange(cat.id)}
-								className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-									selectedCategory === cat.id
-										? 'bg-amber-700 text-white'
-										: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+								className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap border ${
+									isSelected
+										? 'bg-amber-600 text-white border-amber-600 shadow-sm'
+										: 'bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-300 border-gray-200/80 dark:border-gray-700/80 hover:border-amber-300 dark:hover:border-amber-700 hover:bg-amber-50/50 dark:hover:bg-amber-900/20'
 								}`}
 							>
 								{t(cat.labelKey)}
-								{showCounts && <span className="ms-1.5 opacity-70">({count})</span>}
+								{showCounts && (
+									<span
+										className={`ms-1.5 ${isSelected ? 'text-amber-200' : 'text-gray-400 dark:text-gray-500'}`}
+									>
+										({count})
+									</span>
+								)}
 							</button>
 						)
 					})}

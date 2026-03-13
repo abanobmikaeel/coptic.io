@@ -1,18 +1,22 @@
 'use client'
 
-import { useNavigation } from '@/contexts/NavigationContext'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { useCallback, useState } from 'react'
 import CopticCross from './CopticCross'
 import { LocaleSwitcher } from './LocaleSwitcher'
+import { MobileMenu } from './MobileMenu'
 import { NavDropdown } from './NavDropdown'
 import { SearchButton } from './SearchButton'
 import ThemeToggle from './ThemeToggle'
-import { SearchIcon } from './ui/Icons'
 
 export default function Navbar() {
-	const { mode } = useNavigation()
 	const t = useTranslations('nav')
+	const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
+	const handleDropdownOpen = useCallback((id: string) => {
+		setOpenDropdown(id)
+	}, [])
 
 	const readMenuItems = [
 		{
@@ -30,6 +34,11 @@ export default function Navbar() {
 			description: t('synaxariumDescription'),
 			href: '/synaxarium',
 		},
+		{
+			label: 'Lent Guide',
+			description: 'Great Lent devotional readings',
+			href: '/lent',
+		},
 	]
 
 	const moreMenuItems = [
@@ -39,49 +48,54 @@ export default function Navbar() {
 			href: '/settings',
 		},
 		{
-			label: t('developers'),
-			description: t('developersDescription'),
-			href: '/docs',
-		},
-		{
 			label: t('privacy'),
 			description: t('privacyDescription'),
 			href: '/privacy',
 		},
 	]
 
-	// Hide navbar on mobile in read mode (ReadModeHeader is used instead)
-	const mobileHiddenClass = mode === 'read' ? 'hidden lg:block' : ''
-
 	return (
-		<nav
-			className={`sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl ${mobileHiddenClass}`}
-		>
+		<nav className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl">
 			<div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-				<Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
-					<CopticCross size={22} />
-					<span className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">
-						Coptic IO
-					</span>
-				</Link>
+				<div className="flex items-center gap-2">
+					{/* Mobile hamburger menu (browse mode only, hidden on desktop) */}
+					<div className="lg:hidden">
+						<MobileMenu />
+					</div>
+					<Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+						<CopticCross size={22} />
+						<span className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">
+							Coptic IO
+						</span>
+					</Link>
+				</div>
 
 				<div className="flex items-center gap-4">
 					<SearchButton />
 					<div className="flex items-center gap-2 sm:gap-4">
-						{/* Search icon - visible on mobile in browse mode */}
-						<button
-							type="button"
-							className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-							aria-label={t('search') || 'Search'}
-						>
-							<SearchIcon className="w-5 h-5" />
-						</button>
-
 						{/* Desktop navigation */}
 						<div className="hidden lg:flex items-center gap-4">
-							<NavDropdown label={t('read')} items={readMenuItems} />
-							<NavDropdown label={t('more')} items={moreMenuItems} />
+							<NavDropdown
+								label={t('read')}
+								items={readMenuItems}
+								id="read"
+								onOpen={handleDropdownOpen}
+								forceClose={openDropdown !== null && openDropdown !== 'read'}
+							/>
+							<NavDropdown
+								label={t('more')}
+								items={moreMenuItems}
+								id="more"
+								onOpen={handleDropdownOpen}
+								forceClose={openDropdown !== null && openDropdown !== 'more'}
+							/>
 						</div>
+						<Link
+							href="/synaxarium"
+							className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						>
+							{t('synaxarium')}
+						</Link>
 						<Link
 							href="/calendar"
 							className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"

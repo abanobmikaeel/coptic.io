@@ -8,6 +8,35 @@
 	--card: #ffffff;
 	--card-border: #e5e7eb;
 	--muted: #6b7280;
+
+	/* Typography scale - mobile first, balanced for bilingual reading */
+	--font-scale: 0.85;
+	--arabic-scale: 1.05; /* Arabic slightly larger due to diacritics */
+
+	/* Base sizes for English text (will be multiplied by --font-scale) */
+	--verse-base-sm: 1.125rem; /* 18px base */
+	--verse-base-md: 1.5rem; /* 24px base */
+	--verse-base-lg: 1.875rem; /* 30px base */
+	--chapter-base-sm: 0.875rem; /* 14px base */
+	--chapter-base-md: 1rem; /* 16px base */
+	--chapter-base-lg: 1.125rem; /* 18px base */
+	--versenum-base-sm: 0.75rem; /* 12px base */
+	--versenum-base-md: 0.875rem; /* 14px base */
+	--versenum-base-lg: 1rem; /* 16px base */
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+	:root {
+		--font-scale: 0.9;
+	}
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+	:root {
+		--font-scale: 0.95;
+	}
 }
 
 html.dark {
@@ -155,4 +184,81 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
 	display: none;
+}
+
+/* Scalable typography utilities using CSS variables */
+/* English (LTR) text sizes */
+.text-verse-sm {
+	font-size: calc(var(--verse-base-sm) * var(--font-scale));
+}
+.text-verse-md {
+	font-size: calc(var(--verse-base-md) * var(--font-scale));
+}
+.text-verse-lg {
+	font-size: calc(var(--verse-base-lg) * var(--font-scale));
+}
+
+.text-chapter-sm {
+	font-size: calc(var(--chapter-base-sm) * var(--font-scale));
+}
+.text-chapter-md {
+	font-size: calc(var(--chapter-base-md) * var(--font-scale));
+}
+.text-chapter-lg {
+	font-size: calc(var(--chapter-base-lg) * var(--font-scale));
+}
+
+.text-versenum-sm {
+	font-size: calc(var(--versenum-base-sm) * var(--font-scale));
+}
+.text-versenum-md {
+	font-size: calc(var(--versenum-base-md) * var(--font-scale));
+}
+.text-versenum-lg {
+	font-size: calc(var(--versenum-base-lg) * var(--font-scale));
+}
+
+/* Arabic (RTL) text sizes - scaled with both font-scale and arabic-scale */
+.text-verse-sm-rtl {
+	font-size: calc(var(--verse-base-sm) * var(--font-scale) * var(--arabic-scale));
+}
+.text-verse-md-rtl {
+	font-size: calc(var(--verse-base-md) * var(--font-scale) * var(--arabic-scale));
+}
+.text-verse-lg-rtl {
+	font-size: calc(var(--verse-base-lg) * var(--font-scale) * var(--arabic-scale));
+}
+
+.text-chapter-sm-rtl {
+	font-size: calc(var(--chapter-base-sm) * var(--font-scale) * var(--arabic-scale));
+}
+.text-chapter-md-rtl {
+	font-size: calc(var(--chapter-base-md) * var(--font-scale) * var(--arabic-scale));
+}
+.text-chapter-lg-rtl {
+	font-size: calc(var(--chapter-base-lg) * var(--font-scale) * var(--arabic-scale));
+}
+
+.text-versenum-sm-rtl {
+	font-size: calc(var(--versenum-base-sm) * var(--font-scale) * var(--arabic-scale));
+}
+.text-versenum-md-rtl {
+	font-size: calc(var(--versenum-base-md) * var(--font-scale) * var(--arabic-scale));
+}
+.text-versenum-lg-rtl {
+	font-size: calc(var(--versenum-base-lg) * var(--font-scale) * var(--arabic-scale));
+}
+
+/* Mobile menu slide-in animation */
+@keyframes slide-in-left {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+.animate-slide-in-left {
+	animation: slide-in-left 0.2s ease-out forwards;
 }

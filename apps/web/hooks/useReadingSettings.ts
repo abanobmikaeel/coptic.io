@@ -46,6 +46,22 @@ export interface ReadingSettingsActions {
 	setWeight: (weight: FontWeight) => void
 }
 
+function settingsFromParams(params: URLSearchParams, isAutoTheme: boolean): ReadingSettings {
+	return {
+		showVerses: params.get('verses') !== 'hide',
+		textSize: (params.get('size') as TextSize) || 'md',
+		viewMode: (params.get('view') as ViewMode) || 'verse',
+		translation: (params.get('lang') as BibleTranslation) || 'en',
+		fontFamily: (params.get('font') as FontFamily) || 'sans',
+		lineSpacing: (params.get('spacing') as LineSpacing) || 'normal',
+		wordSpacing: (params.get('wordSpacing') as WordSpacing) || 'normal',
+		theme: (params.get('theme') as ReadingTheme) || 'light',
+		width: (params.get('width') as ReadingWidth) || 'normal',
+		weight: (params.get('weight') as FontWeight) || 'normal',
+		isAutoTheme,
+	}
+}
+
 export function useReadingSettings(): {
 	settings: ReadingSettings
 	actions: ReadingSettingsActions
@@ -56,6 +72,10 @@ export function useReadingSettings(): {
 	const searchParams = useSearchParams()
 	const [mounted, setMounted] = useState(false)
 	const [isAutoTheme, setIsAutoTheme] = useState(false)
+	// Local override for settings loaded from preferences on mount.
+	// history.replaceState doesn't trigger useSearchParams updates, so we
+	// store the resolved settings in state to drive the first render.
+	const [localSettings, setLocalSettings] = useState<ReadingSettings | null>(null)
 
 	// Initialize preferences on mount
 	// biome-ignore lint/correctness/useExhaustiveDependencies: intentionally run only once on mount
@@ -86,8 +106,10 @@ export function useReadingSettings(): {
 
 			const queryString = params.toString()
 			if (queryString) {
-				router.replace(`${pathname}?${queryString}`)
+				window.history.replaceState(null, '', `${pathname}?${queryString}`)
 			}
+			// Store resolved settings in state so the component re-renders
+			setLocalSettings(settingsFromParams(params, isAuto))
 		}
 
 		// Listen for system theme changes
@@ -104,27 +126,16 @@ export function useReadingSettings(): {
 					params.set('theme', newSystemTheme)
 				}
 				const queryString = params.toString()
-				router.replace(queryString ? `${pathname}?${queryString}` : pathname)
+				window.history.replaceState(null, '', queryString ? `${pathname}?${queryString}` : pathname)
+				setLocalSettings(settingsFromParams(params, true))
 			}
 		}
 		mediaQuery.addEventListener('change', handleSystemThemeChange)
 		return () => mediaQuery.removeEventListener('change', handleSystemThemeChange)
 	}, [])
 
-	// Read current settings from URL
-	const settings: ReadingSettings = {
-		showVerses: searchParams.get('verses') !== 'hide',
-		textSize: (searchParams.get('size') as TextSize) || 'md',
-		viewMode: (searchParams.get('view') as ViewMode) || 'verse',
-		translation: (searchParams.get('lang') as BibleTranslation) || 'en',
-		fontFamily: (searchParams.get('font') as FontFamily) || 'sans',
-		lineSpacing: (searchParams.get('spacing') as LineSpacing) || 'normal',
-		wordSpacing: (searchParams.get('wordSpacing') as WordSpacing) || 'normal',
-		theme: (searchParams.get('theme') as ReadingTheme) || 'light',
-		width: (searchParams.get('width') as ReadingWidth) || 'normal',
-		weight: (searchParams.get('weight') as FontWeight) || 'normal',
-		isAutoTheme,
-	}
+	// Use local state (from loaded prefs) if available, otherwise read from URL
+	const settings: ReadingSettings = localSettings ?? settingsFromParams(searchParams, isAutoTheme)
 
 	// Generic param updater
 	const updateParam = useCallback(
@@ -136,6 +147,8 @@ export function useReadingSettings(): {
 				params.set(key, value)
 			}
 			const queryString = params.toString()
+			// Clear local override so searchParams (updated by router.push) takes over
+			setLocalSettings(null)
 			router.push(queryString ? `${pathname}?${queryString}` : pathname)
 
 			const prefs = loadPreferences()
@@ -181,6 +194,7 @@ export function useReadingSettings(): {
 			}
 
 			const queryString = params.toString()
+			setLocalSettings(null)
 			router.push(queryString ? `${pathname}?${queryString}` : pathname)
 
 			const prefs = loadPreferences()

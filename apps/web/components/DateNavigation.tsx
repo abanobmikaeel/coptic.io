@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
+import { themeClasses } from '@/lib/reading-styles'
 import { getAdjacentDate, getTodayDateString } from '@/lib/utils'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -34,27 +35,24 @@ export function DateNavigation({ theme = 'light', children }: DateNavigationProp
 	const prevDate = getAdjacentDate(currentDate, -1)
 	const nextDate = getAdjacentDate(currentDate, 1)
 
-	const buttonClass =
-		theme === 'sepia'
-			? 'text-amber-700 hover:bg-amber-100'
-			: 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+	const buttonClass = themeClasses.navChevron[theme]
 
 	return (
-		<div className="flex items-center justify-center gap-3">
+		<div className="flex items-center justify-center gap-1 sm:gap-2">
 			<Link
 				href={buildUrl(prevDate)}
-				className={`p-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
+				className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
 				aria-label="Previous day"
 			>
-				<ChevronLeftIcon className="w-5 h-5" />
+				<ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 			</Link>
 			{children}
 			<Link
 				href={buildUrl(nextDate)}
-				className={`p-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
+				className={`p-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${buttonClass}`}
 				aria-label="Next day"
 			>
-				<ChevronRightIcon className="w-5 h-5" />
+				<ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
 			</Link>
 		</div>
 	)

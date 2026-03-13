@@ -67,7 +67,7 @@ export function SynaxariumDayView({
 			)}
 
 			{/* View Readings Link */}
-			<section className="relative px-6 pb-4">
+			<section className="relative px-4 sm:px-6 pb-4">
 				<div className="max-w-5xl mx-auto text-center">
 					<Link
 						href={`/readings?date=${currentDate}`}
@@ -81,7 +81,7 @@ export function SynaxariumDayView({
 			</section>
 
 			{/* Entries List */}
-			<section className="relative px-6 pb-16">
+			<section className="relative px-4 sm:px-6 pb-16">
 				<div className="max-w-5xl mx-auto">
 					<Card className={themeClasses.bg[theme]}>
 						<CardHeader className={themeClasses.textHeading[theme]}>
@@ -131,37 +131,45 @@ function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; them
 	const tCategories = useTranslations('categories')
 
 	return (
-		<section className="relative px-6 pb-6">
+		<section className="relative px-4 sm:px-6 pb-8">
 			<div className="max-w-5xl mx-auto">
 				<Card
-					className={`border-amber-200 dark:border-amber-800 ${theme === 'sepia' ? 'bg-amber-100/50' : 'bg-amber-50/50 dark:bg-amber-900/10'}`}
+					className={`relative overflow-hidden border-amber-300/50 dark:border-amber-700/50 ${themeClasses.featuredCardBg[theme]} shadow-sm`}
 				>
-					<CardHeader className="flex items-center gap-2">
-						<span className="text-amber-600 dark:text-amber-500">{t('todaysSaints')}</span>
+					{/* Decorative corner accents */}
+					<div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-amber-400/30 dark:border-amber-600/30 rounded-tl-lg" />
+					<div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-amber-400/30 dark:border-amber-600/30 rounded-tr-lg" />
+					<div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-amber-400/30 dark:border-amber-600/30 rounded-bl-lg" />
+					<div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-amber-400/30 dark:border-amber-600/30 rounded-br-lg" />
+
+					<CardHeader className="flex items-center gap-3 relative z-10">
+						<span className="text-amber-600 dark:text-amber-500 font-serif text-lg tracking-wide">
+							{t('todaysSaints')}
+						</span>
 						<span className="text-sm font-normal text-gray-500 dark:text-gray-400">
 							{entries.length}{' '}
 							{entries.length !== 1 ? t('commemorationsPlural') : t('commemorations')}
 						</span>
 					</CardHeader>
-					<CardContent>
-						<div className="grid gap-3 sm:grid-cols-2">
+					<CardContent className="relative z-10">
+						<div className="grid gap-4 sm:grid-cols-2">
 							{entries.slice(0, 4).map((entry) => {
 								const name = entry.en?.name || entry.ar?.name || ''
 								const category = getCategoryForEntry(name)
 								return (
 									<div
 										key={entry.id}
-										className={`p-3 rounded-lg border ${theme === 'sepia' ? 'bg-amber-50 border-amber-200' : 'bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800'}`}
+										className={`p-4 rounded-xl border ${themeClasses.featuredCardItem[theme]} transition-all duration-200 hover:shadow-sm hover:border-amber-200/80 dark:hover:border-amber-800/80`}
 									>
 										<span
-											className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-2 ${getCategoryColor(category)}`}
+											className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium mb-3 ${getCategoryColor(category)}`}
 										>
 											{tCategories(CATEGORIES.find((c) => c.id === category)?.labelKey || 'other')}
 										</span>
 										{/* English name */}
 										{entry.en && (
 											<p
-												className={`text-sm font-medium line-clamp-2 ${theme === 'sepia' ? 'text-amber-900' : 'text-gray-900 dark:text-white'}`}
+												className={`font-serif text-base font-medium line-clamp-2 ${themeClasses.featuredCardText[theme]}`}
 											>
 												{entry.en.name}
 											</p>
@@ -169,7 +177,7 @@ function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; them
 										{/* Arabic name */}
 										{entry.ar && (
 											<p
-												className={`text-sm font-medium line-clamp-2 mt-1 ${theme === 'sepia' ? 'text-amber-800/80' : 'text-gray-600 dark:text-gray-400'}`}
+												className={`text-sm line-clamp-2 mt-2 ${themeClasses.featuredCardMuted[theme]}`}
 												dir="rtl"
 											>
 												{entry.ar.name}

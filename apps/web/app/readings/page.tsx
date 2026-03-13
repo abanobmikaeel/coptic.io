@@ -11,6 +11,7 @@ import {
 	type ViewMode,
 	type WordSpacing,
 } from '@/components/DisplaySettings'
+import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
@@ -215,34 +216,30 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		)
 	}
 
-	return (
-		<main
-			className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300`}
-		>
-			{/* Progress indicator */}
+	const stickyHeader = (
+		<>
 			<Suspense fallback={null}>
 				<ReadingProgress />
 			</Suspense>
-
-			{/* Sticky header bar with date and settings */}
-			<ReadingsHeader theme={theme} themeClasses={themeClasses}>
+			<ReadingsHeader
+				theme={theme}
+				sections={readings ? getAvailableSections(readings).mobileReadings : undefined}
+			>
 				{/* Date navigation - centered, with padding for settings button */}
-				<div className="flex items-center gap-2 sm:gap-3 pr-14 sm:pr-16">
+				<div className="flex items-center gap-1.5 sm:gap-2 pr-10 sm:pr-12">
 					<Suspense
 						fallback={
-							<span className="text-lg sm:text-xl font-semibold">
+							<span className="text-sm sm:text-base font-semibold">
 								{readings?.fullDate?.dateString || gregorianDate}
 							</span>
 						}
 					>
 						<DateNavigation theme={theme}>
-							<div className="text-center">
-								<h1 className="text-lg sm:text-xl font-bold">
+							<div className="text-center min-w-0">
+								<h1 className="text-sm sm:text-base font-bold truncate">
 									{readings?.fullDate?.dateString || gregorianDate}
 								</h1>
-								<p
-									className={`text-xs ${theme === 'sepia' ? 'text-[#8b7355]' : 'text-gray-500 dark:text-gray-400'}`}
-								>
+								<p className={`text-[10px] sm:text-xs ${themeClasses.muted[theme]}`}>
 									{readings?.seasonDay || (readings?.fullDate ? gregorianDate : '')}
 								</p>
 							</div>
@@ -251,7 +248,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 					{!isToday && (
 						<Link
 							href={`/readings${backToTodayQuery ? `?${backToTodayQuery}` : ''}`}
-							className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ${theme === 'sepia' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'} hover:opacity-80`}
+							className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full whitespace-nowrap ${themeClasses.pillBadge[theme]} hover:opacity-80`}
 						>
 							Today
 						</Link>
@@ -259,20 +256,47 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				</div>
 
 				{/* Display settings - absolute right */}
-				<div className="absolute right-4 sm:right-6">
+				<div className="absolute right-2 sm:right-4">
 					<Suspense fallback={null}>
 						<DisplaySettings />
 					</Suspense>
 				</div>
 			</ReadingsHeader>
+		</>
+	)
 
+	return (
+		<ReadingPageLayout theme={theme} header={stickyHeader}>
 			{readings ? (
-				<Suspense fallback={<div className="px-6 pt-10 pb-32 lg:pb-24" />}>
-					<SwipeableContainer basePath="/readings" className="px-6 pt-10 pb-32 lg:pb-24">
+				<Suspense fallback={<div className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24" />}>
+					<SwipeableContainer basePath="/readings" className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24">
 						{(() => {
-							const ServiceDivider = () => (
-								<div className={'max-w-2xl mx-auto px-4 my-8'}>
-									<div className={`border-t ${themeClasses.border[theme]}`} />
+							const serviceDescriptions: Record<string, string> = {
+								Vespers: 'Evening Service',
+								Matins: 'Morning Service',
+								'Evening Prayer': 'Evening Prayer Service',
+							}
+
+							const ServiceDivider = ({ label }: { label: string }) => (
+								<div className={'max-w-full sm:max-w-2xl mx-auto my-12'}>
+									<div className="flex items-center gap-4">
+										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
+										<div className="text-center">
+											<span
+												className={`block text-xs font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
+											>
+												{label}
+											</span>
+											{serviceDescriptions[label] && (
+												<span
+													className={`block text-[10px] mt-0.5 ${themeClasses.muted[theme]} opacity-70`}
+												>
+													{serviceDescriptions[label]}
+												</span>
+											)}
+										</div>
+										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
+									</div>
 								</div>
 							)
 
@@ -306,7 +330,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{/* VESPERS */}
 									{hasVespers && (
 										<>
-											<ServiceDivider />
+											<ServiceDivider label="Vespers" />
 											{renderSection('VPsalm', 'Vespers')}
 											{renderSection('VGospel', 'Vespers')}
 										</>
@@ -315,7 +339,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{/* MATINS */}
 									{hasMatins && (
 										<>
-											<ServiceDivider />
+											<ServiceDivider label="Matins" />
 											{renderSection('Prophecies', 'Matins')}
 											{renderSection('MPsalm', 'Matins')}
 											{renderSection('MGospel', 'Matins')}
@@ -325,7 +349,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 									{/* EVENING PRAYER (Lent only) */}
 									{readings.EPPsalm?.length || readings.EPGospel?.length ? (
 										<>
-											<ServiceDivider />
+											<ServiceDivider label="Evening Prayer" />
 											{renderSection('EPPsalm' as ReadingSection, 'Evening Prayer')}
 											{renderSection('EPGospel' as ReadingSection, 'Evening Prayer')}
 										</>
@@ -336,7 +360,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 					</SwipeableContainer>
 				</Suspense>
 			) : (
-				<section className="px-6 py-12">
+				<section className="px-3 sm:px-6 py-12">
 					<NoReadingsState theme={theme} />
 				</section>
 			)}
@@ -346,6 +370,6 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 
 			{/* Back to top */}
 			<BackToTop />
-		</main>
+		</ReadingPageLayout>
 	)
 }
