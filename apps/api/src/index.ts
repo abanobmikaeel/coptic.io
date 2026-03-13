@@ -1,4 +1,5 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+import * as Sentry from '@sentry/bun'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
@@ -13,6 +14,13 @@ import readingsRoutes from './routes/readings'
 import searchRoutes from './routes/search'
 import seasonRoutes from './routes/season'
 import synaxariumRoutes from './routes/synaxarium'
+
+if (process.env.SENTRY_DSN) {
+	Sentry.init({
+		dsn: process.env.SENTRY_DSN,
+		tracesSampleRate: 0.1,
+	})
+}
 
 const app = new OpenAPIHono()
 
@@ -75,6 +83,7 @@ app.notFound((c) => {
 
 // Error handler
 app.onError((err, c) => {
+	Sentry.captureException(err)
 	console.error(`Error: ${err.message}`)
 	return c.json({ error: err.message }, 500)
 })

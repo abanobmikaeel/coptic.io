@@ -16,7 +16,8 @@ const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '�
 /**
  * Convert Western numerals to Arabic-Indic numerals
  */
-export function toArabicNumerals(num: number): string {
+export function toArabicNumerals(num: number | undefined): string {
+	if (num == null) return ''
 	return num
 		.toString()
 		.split('')
@@ -86,6 +87,7 @@ export function getReferenceForLang(
 	return readings
 		.map((reading) =>
 			reading.chapters
+				.filter((chapter) => chapter.verses.length > 0)
 				.map((chapter) => {
 					const bookName = getBookName(reading.bookName, lang)
 					const firstVerse = chapter.verses[0]?.num
