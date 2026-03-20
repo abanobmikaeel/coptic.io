@@ -1,4 +1,4 @@
-name: Build and Push API Image
+name: Build and Deploy API
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
       - 'apps/api/**'
       - 'packages/core/**'
       - 'packages/data/**'
+      - 'packages/client/**'
       - 'pnpm-lock.yaml'
       - '.github/workflows/docker-build.yml'
 
@@ -15,7 +16,24 @@ env:
   IMAGE_NAME: ${{ github.repository }}-api
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - run: pnpm install
+      - run: pnpm build:packages
+      - run: pnpm --filter @coptic/api test run
+
   build-and-push:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
