@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReadingTheme } from '@/lib/reading-preferences'
+import { type ReadingTheme, getSystemTheme, loadPreferences } from '@/lib/reading-preferences'
 import type { MobileReadingItem } from '@/lib/reading-sections'
 import { usePathname } from 'next/navigation'
 import {
@@ -37,7 +37,12 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 	const [mode, setMode] = useState<NavigationMode>('browse')
 	const [readModeTitle, setReadModeTitle] = useState<string | undefined>()
 	const [mobileSections, setMobileSections] = useState<MobileReadingItem[]>([])
-	const [readingTheme, setReadingTheme] = useState<ReadingTheme>('light')
+	const [readingTheme, setReadingTheme] = useState<ReadingTheme>(() => {
+		if (typeof window === 'undefined') return 'light'
+		const prefs = loadPreferences()
+		if (!prefs.theme || prefs.theme === 'auto') return getSystemTheme()
+		return prefs.theme as ReadingTheme
+	})
 
 	// Auto-detect mode based on pathname
 	useEffect(() => {
@@ -45,7 +50,6 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 		setMode(isReadModePath ? 'read' : 'browse')
 		if (!isReadModePath) {
 			setMobileSections([])
-			setReadingTheme('light')
 		}
 	}, [pathname])
 

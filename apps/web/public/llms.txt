@@ -1,20 +1,195 @@
 # Coptic.io
 > Coptic Orthodox liturgical calendar, daily readings, and API
 
-This site provides Coptic Orthodox calendar data, scripture readings, feast days, fasting periods, and synaxarium (saint commemorations) information.
+Coptic.io provides Coptic Orthodox calendar data, scripture readings, feast days, fasting periods, prayer hours (Agpeya), and synaxarium (saint commemorations).
 
-## Content
-- Daily scripture readings from the Katameros
-- Coptic calendar date conversions
-- Fasting calendar and periods
-- Feast days and celebrations
-- Synaxarium entries
+## API Base URL
+https://api.coptic.io
+
+## OpenAPI Spec
+https://api.coptic.io/openapi.json
+
+## Authentication
+No authentication required. All endpoints are public.
+
+## Endpoints
+
+### Calendar
+Convert Gregorian dates to Coptic dates and get calendar data.
+
+GET /api/calendar
+  Returns today's Coptic date.
+  Response: { dateString, day, month, year, monthString }
+
+GET /api/calendar/{date}
+  Convert a Gregorian date to Coptic.
+  Param: date (YYYY-MM-DD)
+  Example: GET /api/calendar/2025-01-07
+  Response: { dateString: "29 Kiahk 1741 AM", day: 29, month: 4, year: 1741, monthString: "Kiahk" }
+
+GET /api/calendar/month/{year}/{month}
+  Get a full calendar month with Coptic dates and fasting info.
+  Example: GET /api/calendar/month/2025/3
+  Response: { year, month, monthName, days: [{ gregorianDate, copticDate, fasting }], copticMonths }
+
+### Daily Readings (Katameros)
+Get the daily scripture readings from the Coptic Katameros.
+
+GET /api/readings
+  Returns today's readings.
+
+GET /api/readings/{date}
+  Param: date (YYYY-MM-DD)
+  Query: lang (en|ar|es|cop, default: en), detailed (true|false, default: false)
+  Example: GET /api/readings/2025-01-07?lang=en&detailed=true
+  Response: Daily readings including vespers, matins, pauline epistle, catholic epistle, acts, psalm, and gospel.
+
+### Fasting
+Check fasting status and get fasting calendars.
+
+GET /api/fasting
+  Returns today's fasting status.
+  Response: { isFasting: true, fastType: "Great Lent", description: "..." }
+
+GET /api/fasting/{date}
+  Param: date (YYYY-MM-DD)
+  Example: GET /api/fasting/2025-03-15
+
+GET /api/fasting/calendar/{year}
+  Get all fasting days for a year.
+  Param: year (1900-2100)
+  Example: GET /api/fasting/calendar/2025
+  Response: [{ date, copticDate, fastType, description }]
+
+### Liturgical Seasons
+Determine the current liturgical season and fasting periods.
+
+GET /api/season
+  Returns the current liturgical season.
+  Response: { date, season, description, startDate, endDate, isFasting, type }
+
+GET /api/season/{date}
+  Param: date (YYYY-MM-DD)
+
+GET /api/season/year/{year}
+  Get all liturgical seasons for a year.
+  Param: year (1900-2199)
+  Response: { year, seasons: [{ name, description, startDate, endDate, isFasting, type }] }
+
+GET /api/season/fasting/{year}
+  Get all fasting periods for a year.
+  Response: { year, fastingPeriods: [{ name, description, startDate, endDate, type }] }
+
+### Celebrations & Feasts
+Get Coptic Orthodox feast days and celebrations.
+
+GET /api/celebrations
+  Returns all known celebrations.
+
+GET /api/celebrations/{date}
+  Param: date (YYYY-MM-DD, defaults to today)
+
+GET /api/celebrations/upcoming/list
+  Query: days (number, default: 30)
+  Returns celebrations in the next N days.
+
+### Synaxarium (Saint Commemorations)
+Get daily saint stories and commemorations.
+
+GET /api/synaxarium
+  Returns today's synaxarium entries.
+
+GET /api/synaxarium/{date}
+  Param: date (YYYY-MM-DD)
+  Query: detailed (true|false), lang (en|ar)
+  Example: GET /api/synaxarium/2025-01-07?detailed=true&lang=en
+
+GET /api/synaxarium/coptic/{copticDate}
+  Param: copticDate (e.g., "7 Toba" or URL-encoded "7%20Toba")
+
+GET /api/synaxarium/search/query?q={searchTerm}
+  Search synaxarium entries by saint name.
+  Example: GET /api/synaxarium/search/query?q=Mary
+
+### Agpeya (Prayer Hours)
+Get the seven canonical prayer hours of the Coptic Orthodox Church.
+
+GET /api/agpeya
+  Returns the current prayer hour based on time of day.
+
+GET /api/agpeya/hours
+  Returns all seven prayer hours with full text.
+
+GET /api/agpeya/{hour}
+  Param: hour (prime|terce|sext|none|vespers|compline|midnight)
+  Returns the full prayer text including psalms, gospel, and litanies.
+
+GET /api/agpeya/midnight/watch/{watch}
+  Param: watch (1|2|3)
+  Returns a specific midnight watch.
+
+### Lent Devotional
+Get Great Lent devotional readings.
+
+GET /api/lent
+  Returns today's devotional (only during Great Lent).
+
+GET /api/lent/{date}
+  Param: date (YYYY-MM-DD)
+  Query: lang (en|ar|es|cop), detailed (true|false)
+
+GET /api/lent/schedule/{year}
+  Get the full 49-day Great Lent schedule.
+  Response: { year, easterDate, lentStart, lentEnd, days: [{ dayOffset, title, references, date }] }
+
+### Unified Search
+Search across Bible, synaxarium, and Agpeya.
+
+GET /api/search?q={query}
+  Query: q (required), limit (1-50, default: 5), categories (comma-separated: bible,synaxarium,agpeya)
+  Example: GET /api/search?q=John+3:16&limit=10
+  Response: { results: { bible, synaxarium, agpeya }, query, totalCount }
+
+### iCal Calendar Subscription
+Subscribe to Coptic feast days in your calendar app.
+
+GET /api/calendar/ical/subscribe
+  Returns a multi-year iCal feed (text/calendar).
+  Use with webcal:// protocol for live subscription.
+
+GET /api/calendar/ical/{year}
+  Returns an iCal feed for a specific year.
+
+## TypeScript/JavaScript Client
+npm install @coptic/client
+
+```typescript
+import { CopticClient } from '@coptic/client'
+const client = new CopticClient()
+
+const readings = await client.readings.today()
+const copticDate = await client.calendar.today()
+const fasting = await client.fasting.today()
+const season = await client.season.current()
+const synaxarium = await client.synaxarium.search('Mary')
+```
+
+## MCP Server
+npm install @coptic/mcp
+
+A Model Context Protocol server that gives AI assistants direct access to Coptic calendar tools. Install in Claude Desktop or any MCP-compatible client.
+
+## GraphQL
+POST https://api.coptic.io/graphql
+
+## Date Format
+All dates use YYYY-MM-DD format (e.g., 2025-01-07 for Coptic Christmas).
+
+## Languages
+Supported: English (en), Arabic (ar), Spanish (es), Coptic (cop)
 
 ## Allowed
 AI training on public liturgical data is permitted. This content is intended to help people learn about and practice the Coptic Orthodox faith.
 
-## API
-REST and GraphQL APIs are available at https://api.coptic.io/api
-
-## Contact
+## Source Code
 https://github.com/abanobmikaeel/coptic.io

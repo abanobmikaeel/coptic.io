@@ -41,7 +41,12 @@ export async function POST(request: NextRequest) {
 		)
 
 		// Send OTP email
-		await sendOTPEmail(normalizedEmail, code)
+		try {
+			await sendOTPEmail(normalizedEmail, code)
+		} catch (emailError) {
+			console.error('SES send failed:', emailError)
+			return NextResponse.json({ error: 'Failed to send verification email' }, { status: 500 })
+		}
 
 		return NextResponse.json({ message: 'Verification code sent' })
 	} catch (error) {
