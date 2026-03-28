@@ -346,4 +346,75 @@ export const themeClasses = {
 		sepia: 'text-amber-800/80',
 		dark: 'text-gray-400',
 	} as Record<ReadingTheme, string>,
+
+	// ─── Settings panel ────────────────────────────────────────────────────────
+
+	// Floating panel container (background + border)
+	settingsPanel: {
+		light: 'bg-white border-gray-200',
+		sepia: 'bg-[#f5f0e6] border-[#d4c9b8]',
+		dark: 'bg-gray-900 border-gray-700',
+	} as Record<ReadingTheme, string>,
+
+	// Panel body text
+	settingsText: {
+		light: 'text-gray-900',
+		sepia: 'text-[#5c4b37]',
+		dark: 'text-gray-100',
+	} as Record<ReadingTheme, string>,
+
+	// Section / field labels inside the panel
+	settingsLabel: {
+		light: 'text-gray-400',
+		sepia: 'text-[#a08c72]',
+		dark: 'text-gray-500',
+	} as Record<ReadingTheme, string>,
+
+	// ─── Segmented buttons ─────────────────────────────────────────────────────
+
+	// Container track background
+	segmentContainer: {
+		light: 'bg-gray-100',
+		sepia: 'bg-[#ebe4d6]',
+		dark: 'bg-gray-800',
+	} as Record<ReadingTheme, string>,
+
+	// Active segment
+	segmentActive: {
+		light: 'bg-white text-gray-900 shadow-sm',
+		sepia: 'bg-[#f5f0e6] text-[#5c4b37] shadow-sm',
+		dark: 'bg-gray-700 text-white shadow-sm',
+	} as Record<ReadingTheme, string>,
+
+	// Inactive segment
+	segmentInactive: {
+		light: 'text-gray-500 hover:text-gray-700',
+		sepia: 'text-[#a08c72] hover:text-[#5c4b37]',
+		dark: 'text-gray-400 hover:text-gray-300',
+	} as Record<ReadingTheme, string>,
+
+	// ─── Language pills ────────────────────────────────────────────────────────
+
+	// Unselected pill (selected always uses bg-amber-700 text-white)
+	pillUnselected: {
+		light: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+		sepia: 'bg-[#ebe4d6] text-[#5c4b37] hover:bg-[#e0d7c5]',
+		dark: 'bg-gray-800 text-gray-300 hover:bg-gray-700',
+	} as Record<ReadingTheme, string>,
+
+	// ─── Toggle switch ─────────────────────────────────────────────────────────
+
+	// Label text
+	toggleLabel: {
+		light: 'text-gray-700',
+		sepia: 'text-[#5c4b37]',
+		dark: 'text-gray-300',
+	} as Record<ReadingTheme, string>,
+
+	// Unchecked track (checked always uses bg-amber-500)
+	toggleUnchecked: {
+		light: 'bg-gray-300',
+		sepia: 'bg-amber-200',
+		dark: 'bg-gray-600',
+	} as Record<ReadingTheme, string>,
 }

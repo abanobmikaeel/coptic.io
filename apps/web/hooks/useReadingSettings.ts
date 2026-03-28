@@ -5,6 +5,7 @@ import {
 	type FontFamily,
 	type FontWeight,
 	type LineSpacing,
+	READING_THEME_COOKIE,
 	type ReadingPreferences,
 	type ReadingTheme,
 	type ReadingWidth,
@@ -98,8 +99,10 @@ export function useReadingSettings(): {
 			if (prefs.spacing && prefs.spacing !== 'normal') params.set('spacing', prefs.spacing)
 			if (prefs.wordSpacing && prefs.wordSpacing !== 'normal')
 				params.set('wordSpacing', prefs.wordSpacing)
-			const effectiveTheme = isAuto ? systemTheme : prefs.theme
-			if (effectiveTheme && effectiveTheme !== 'light') params.set('theme', effectiveTheme)
+			const effectiveTheme: ReadingTheme = isAuto
+				? systemTheme
+				: (prefs.theme as ReadingTheme) || 'light'
+			if (effectiveTheme !== 'light') params.set('theme', effectiveTheme)
 			if (prefs.width && prefs.width !== 'normal') params.set('width', prefs.width)
 			if (prefs.weight && prefs.weight !== 'normal') params.set('weight', prefs.weight)
 			if (prefs.verses === 'hide') params.set('verses', 'hide')
@@ -108,6 +111,8 @@ export function useReadingSettings(): {
 			if (queryString) {
 				window.history.replaceState(null, '', `${pathname}?${queryString}`)
 			}
+			// Persist effective theme to cookie so the server renders the correct theme on next load
+			document.cookie = `${READING_THEME_COOKIE}=${effectiveTheme}; path=/; max-age=31536000`
 			// Store resolved settings in state so the component re-renders
 			setLocalSettings(settingsFromParams(params, isAuto))
 		}
@@ -175,10 +180,12 @@ export function useReadingSettings(): {
 		setWeight: (w) => updateParam('weight', w === 'normal' ? null : w),
 		setTheme: (t) => {
 			const params = new URLSearchParams(searchParams.toString())
+			let effectiveTheme: ReadingTheme
 
 			if (t === 'auto') {
 				setIsAutoTheme(true)
 				const systemTheme = getSystemTheme()
+				effectiveTheme = systemTheme
 				if (systemTheme === 'light') {
 					params.delete('theme')
 				} else {
@@ -186,12 +193,16 @@ export function useReadingSettings(): {
 				}
 			} else {
 				setIsAutoTheme(false)
+				effectiveTheme = t
 				if (t === 'light') {
 					params.delete('theme')
 				} else {
 					params.set('theme', t)
 				}
 			}
+
+			// Persist effective theme to cookie for SSR on next page load
+			document.cookie = `${READING_THEME_COOKIE}=${effectiveTheme}; path=/; max-age=31536000`
 
 			const queryString = params.toString()
 			setLocalSettings(null)

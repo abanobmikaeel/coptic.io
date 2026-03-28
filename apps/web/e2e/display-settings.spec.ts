@@ -12,8 +12,8 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have line spacing options with correct values', async ({ page }) => {
-		// Find the line spacing dropdown/select
-		const lineSpacingSelect = page.locator('select').nth(4) // Line spacing is the 5th select
+		// Select order: locale(0), theme(1), width(2), font(3), size(4), weight(5), line-spacing(6), word-spacing(7), view(8), verses(9)
+		const lineSpacingSelect = page.locator('select').nth(6)
 
 		// Get all options
 		const options = await lineSpacingSelect.locator('option').allTextContents()
@@ -21,22 +21,18 @@ test.describe('Display Settings - Settings Page', () => {
 		// Should NOT have 'tight' (old incorrect value)
 		expect(options.join(' ').toLowerCase()).not.toContain('tight')
 
-		// Click on the select to verify it has the correct values
 		const optionValues = await lineSpacingSelect
 			.locator('option')
 			.evaluateAll((opts) => opts.map((opt) => (opt as HTMLOptionElement).value))
 
-		// Should have 'compact', 'normal', 'relaxed'
 		expect(optionValues).toContain('compact')
 		expect(optionValues).toContain('normal')
 		expect(optionValues).toContain('relaxed')
 	})
 
 	test('should have word spacing options with correct values', async ({ page }) => {
-		// Find the word spacing dropdown/select
-		const wordSpacingSelect = page.locator('select').nth(5) // Word spacing is the 6th select
+		const wordSpacingSelect = page.locator('select').nth(7)
 
-		// Get option values
 		const optionValues = await wordSpacingSelect
 			.locator('option')
 			.evaluateAll((opts) => opts.map((opt) => (opt as HTMLOptionElement).value))
@@ -44,17 +40,14 @@ test.describe('Display Settings - Settings Page', () => {
 		// Should NOT have 'wide' (old incorrect value)
 		expect(optionValues).not.toContain('wide')
 
-		// Should have 'compact', 'normal', 'relaxed'
 		expect(optionValues).toContain('compact')
 		expect(optionValues).toContain('normal')
 		expect(optionValues).toContain('relaxed')
 	})
 
 	test('should have font weight options with correct values', async ({ page }) => {
-		// Find the font weight dropdown
-		const fontWeightSelect = page.locator('select').nth(3) // Font weight is the 4th select
+		const fontWeightSelect = page.locator('select').nth(5)
 
-		// Get option values
 		const optionValues = await fontWeightSelect
 			.locator('option')
 			.evaluateAll((opts) => opts.map((opt) => (opt as HTMLOptionElement).value))
@@ -62,15 +55,14 @@ test.describe('Display Settings - Settings Page', () => {
 		// Should NOT have 'medium' (old incorrect value)
 		expect(optionValues).not.toContain('medium')
 
-		// Should have 'light', 'normal', 'bold'
 		expect(optionValues).toContain('light')
 		expect(optionValues).toContain('normal')
 		expect(optionValues).toContain('bold')
 	})
 
 	test('should persist settings changes', async ({ page }) => {
-		// Change line spacing to compact
-		const lineSpacingSelect = page.locator('select').nth(4)
+		// Change line spacing to compact — nth(6) in current select order
+		const lineSpacingSelect = page.locator('select').nth(6)
 		await lineSpacingSelect.selectOption('compact')
 
 		// Should show saved message
@@ -81,7 +73,7 @@ test.describe('Display Settings - Settings Page', () => {
 		await page.waitForLoadState('networkidle')
 
 		// Line spacing should still be compact
-		const selectedValue = await page.locator('select').nth(4).inputValue()
+		const selectedValue = await page.locator('select').nth(6).inputValue()
 		expect(selectedValue).toBe('compact')
 	})
 })
@@ -122,24 +114,22 @@ test.describe('Display Settings - Readings Page Integration', () => {
 		expect(hasWordSpacing).toBeGreaterThanOrEqual(0)
 	})
 
-	test('settings panel should have correct option values', async ({ page }) => {
+	test('settings panel shows language pills', async ({ page }) => {
 		await page.goto('/readings')
 		await page.waitForLoadState('networkidle')
 
-		// Open settings panel by clicking the settings button
-		const settingsButton = page.getByRole('button', { name: /settings|display|options/i }).first()
-		if ((await settingsButton.count()) > 0) {
-			await settingsButton.click()
-			await page.waitForTimeout(300)
+		// Open the language settings panel
+		const settingsButton = page.getByRole('button', { name: 'Display languages' })
+		await expect(settingsButton).toBeVisible()
+		await settingsButton.click()
+		await page.waitForTimeout(300)
 
-			// Look for line spacing buttons - should have 'compact', not 'tight'
-			const lineSpacingSection = page.getByText('Line Spacing').locator('..')
-			if ((await lineSpacingSection.count()) > 0) {
-				// The section should exist and have buttons
-				const buttons = lineSpacingSection.locator('button')
-				expect(await buttons.count()).toBeGreaterThan(0)
-			}
-		}
+		// Panel should show language options (English is always present)
+		const englishPill = page.getByRole('button', { name: /english/i })
+		await expect(englishPill).toBeVisible()
+
+		// Panel must NOT show line spacing controls (those moved to /settings)
+		await expect(page.getByText('Line Spacing')).not.toBeVisible()
 	})
 })
 

@@ -1,32 +1,19 @@
 import { BackToTop } from '@/components/BackToTop'
 import { DateNavigation } from '@/components/DateNavigation'
-import {
-	DisplaySettings,
-	type FontFamily,
-	type FontWeight,
-	type LineSpacing,
-	type ReadingTheme,
-	type ReadingWidth,
-	type TextSize,
-	type ViewMode,
-	type WordSpacing,
-} from '@/components/DisplaySettings'
+import { DisplaySettings } from '@/components/DisplaySettings'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingTimeline } from '@/components/ReadingTimeline'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ScriptureReading } from '@/components/ScriptureReading'
+import { ServiceDivider } from '@/components/ServiceDivider'
 import { SwipeableContainer } from '@/components/SwipeableContainer'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
 import { NoReadingsState } from '@/components/ui/EmptyState'
 import { API_BASE_URL } from '@/config'
-import {
-	CONTENT_LANGUAGES_COOKIE,
-	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
-} from '@/i18n/content-languages'
+import type { ContentLanguage } from '@/i18n/content-languages'
 import { getSectionLabels } from '@/i18n/content-translations'
+import { parseDisplaySettings, resolveContentLanguages, resolveTheme } from '@/lib/display-settings'
 import { getAvailableSections } from '@/lib/reading-sections'
 import { themeClasses } from '@/lib/reading-styles'
 import type { ReadingsData } from '@/lib/types'
@@ -49,10 +36,8 @@ export const metadata: Metadata = {
 
 type BibleTranslation = 'en' | 'ar' | 'es' | 'cop'
 
-// Languages that have API support for content
 const supportedContentLanguages: ContentLanguage[] = ['en', 'ar', 'es', 'cop']
 
-// All reading sections in display order
 const readingSections = [
 	'Prophecies',
 	'Pauline',
@@ -72,14 +57,11 @@ type ReadingSection = (typeof readingSections)[number]
 async function getReadings(date?: string, lang?: string): Promise<ReadingsData | null> {
 	try {
 		const params = new URLSearchParams({ detailed: 'true' })
-		if (lang && lang !== 'en') {
-			params.set('lang', lang)
-		}
-		// Always send a date to ensure consistency with synaxarium page
+		if (lang && lang !== 'en') params.set('lang', lang)
 		const effectiveDate = date || getTodayDateString()
-		const endpoint = `${API_BASE_URL}/readings/${effectiveDate}?${params}`
-		// Readings don't change - cache for 1 hour
-		const res = await fetch(endpoint, { next: { revalidate: 300 } })
+		const res = await fetch(`${API_BASE_URL}/readings/${effectiveDate}?${params}`, {
+			next: { revalidate: 300 },
+		})
 		if (!res.ok) return null
 		return res.json()
 	} catch {
@@ -106,30 +88,25 @@ interface ReadingsPageProps {
 export default async function ReadingsPage({ searchParams }: ReadingsPageProps) {
 	const params = await searchParams
 
-	// Read content languages from cookie
 	const cookieStore = await cookies()
-	const contentLangCookie = cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value
-	const contentLanguages = parseContentLanguages(contentLangCookie)
-	const selectedLanguages =
-		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
-
-	// Filter to only languages the API supports
-	const languagesToFetch = selectedLanguages.filter((lang) =>
-		supportedContentLanguages.includes(lang),
+	const themeFallback = resolveTheme(cookieStore)
+	const languagesToFetch = resolveContentLanguages(
+		cookieStore,
+		supportedContentLanguages,
 	) as BibleTranslation[]
 
-	// Parse display settings from URL
-	const viewMode: ViewMode = params.view === 'verse' ? 'verse' : 'continuous'
-	const showVerses = params.verses !== 'hide'
-	const textSize: TextSize = (params.size as TextSize) || 'md'
-	const fontFamily: FontFamily = (params.font as FontFamily) || 'sans'
-	const lineSpacing: LineSpacing = (params.spacing as LineSpacing) || 'normal'
-	const wordSpacing: WordSpacing = (params.wordSpacing as WordSpacing) || 'normal'
-	const theme: ReadingTheme = (params.theme as ReadingTheme) || 'light'
-	const width: ReadingWidth = (params.width as ReadingWidth) || 'normal'
-	const fontWeight: FontWeight = (params.weight as FontWeight) || 'normal'
+	const {
+		viewMode,
+		showVerses,
+		textSize,
+		fontFamily,
+		lineSpacing,
+		wordSpacing,
+		theme,
+		width,
+		fontWeight,
+	} = parseDisplaySettings(params, themeFallback)
 
-	// Fetch readings for all selected languages in parallel
 	const readingsResults = await Promise.all(
 		languagesToFetch.map(async (lang) => ({
 			lang,
@@ -137,7 +114,6 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		})),
 	)
 
-	// Build a map of readings by language
 	const readingsByLang: Record<BibleTranslation, ReadingsData | null> = {
 		en: null,
 		ar: null,
@@ -148,33 +124,25 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		readingsByLang[result.lang] = result.data
 	}
 
-	// Use the first available readings for metadata/structure
 	const readings = readingsResults.find((r) => r.data)?.data ?? null
 
-	// Build synaxarium entries by language for multi-language display
-	// Only English and Arabic synaxarium are available
 	const synaxariumLangs: BibleTranslation[] = ['en', 'ar']
 	const synaxariumByLang: Partial<Record<BibleTranslation, ReadingsData['Synaxarium']>> = {}
 	for (const lang of languagesToFetch.filter((l) => synaxariumLangs.includes(l))) {
 		const langSynaxarium = readingsByLang[lang]?.Synaxarium
-		if (langSynaxarium?.length) {
-			synaxariumByLang[lang] = langSynaxarium
-		}
+		if (langSynaxarium?.length) synaxariumByLang[lang] = langSynaxarium
 	}
 
 	const displayDate = params.date ? parseDateString(params.date) : new Date()
 	const gregorianDate = formatGregorianDate(displayDate)
-	const serverToday = getTodayDateString()
-	const isToday = !params.date || params.date === serverToday
+	const isToday = !params.date || params.date === getTodayDateString()
 
-	// Preserve settings when navigating back to today
 	const backToTodayParams = new URLSearchParams()
 	for (const [key, value] of Object.entries(params)) {
 		if (key !== 'date' && value) backToTodayParams.set(key, value)
 	}
 	const backToTodayQuery = backToTodayParams.toString()
 
-	// Common props for all ScriptureReading components
 	const scriptureProps = {
 		viewMode,
 		showVerses,
@@ -188,33 +156,32 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		languages: languagesToFetch,
 	}
 
-	// Render a scripture section if it has data in any language
 	const renderSection = (key: ReadingSection, service?: string) => {
-		// Check if any language has data for this section
 		const hasAnyData = languagesToFetch.some((lang) => readingsByLang[lang]?.[key]?.length)
 		if (!hasAnyData) return null
 
-		// Build readings map for this section
 		const readingsMap: Partial<Record<BibleTranslation, ReadingsData[ReadingSection]>> = {}
 		for (const lang of languagesToFetch) {
 			const data = readingsByLang[lang]?.[key]
-			if (data?.length) {
-				readingsMap[lang] = data
-			}
+			if (data?.length) readingsMap[lang] = data
 		}
 
-		const labels = getSectionLabels(key)
 		return (
 			<ScriptureReading
 				key={key}
 				id={`reading-${key}`}
 				readingsByLang={readingsMap}
-				labels={labels}
+				labels={getSectionLabels(key)}
 				service={service}
 				{...scriptureProps}
 			/>
 		)
 	}
+
+	const hasVespers = readings?.VPsalm?.length || readings?.VGospel?.length
+	const hasMatins =
+		readings?.Prophecies?.length || readings?.MPsalm?.length || readings?.MGospel?.length
+	const hasEveningPrayer = readings?.EPPsalm?.length || readings?.EPGospel?.length
 
 	const stickyHeader = (
 		<>
@@ -225,7 +192,6 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				theme={theme}
 				sections={readings ? getAvailableSections(readings).mobileReadings : undefined}
 			>
-				{/* Date navigation - centered, with padding for settings button */}
 				<div className="flex items-center gap-1.5 sm:gap-2 pr-10 sm:pr-12">
 					<Suspense
 						fallback={
@@ -254,8 +220,6 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 						</Link>
 					)}
 				</div>
-
-				{/* Display settings - absolute right */}
 				<div className="absolute right-2 sm:right-4">
 					<Suspense fallback={null}>
 						<DisplaySettings />
@@ -270,93 +234,54 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 			{readings ? (
 				<Suspense fallback={<div className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24" />}>
 					<SwipeableContainer basePath="/readings" className="px-3 sm:px-6 pt-4 pb-32 lg:pb-24">
-						{(() => {
-							const serviceDescriptions: Record<string, string> = {
-								Vespers: 'Evening Service',
-								Matins: 'Morning Service',
-								'Evening Prayer': 'Evening Prayer Service',
-							}
+						{/* LITURGY */}
+						{renderSection('Pauline', 'Liturgy')}
+						{renderSection('Catholic', 'Liturgy')}
+						{renderSection('Acts', 'Liturgy')}
+						{Object.keys(synaxariumByLang).length > 0 ? (
+							<SynaxariumReading
+								entriesByLang={synaxariumByLang}
+								languages={languagesToFetch.filter((l) => synaxariumLangs.includes(l))}
+								textSize={textSize}
+								theme={theme}
+								width={width}
+								service="Liturgy"
+								fontFamily={fontFamily}
+								weight={fontWeight}
+								lineSpacing={lineSpacing}
+								wordSpacing={wordSpacing}
+							/>
+						) : null}
+						{renderSection('LPsalm', 'Liturgy')}
+						{renderSection('LGospel', 'Liturgy')}
 
-							const ServiceDivider = ({ label }: { label: string }) => (
-								<div className={'max-w-full sm:max-w-2xl mx-auto my-12'}>
-									<div className="flex items-center gap-4">
-										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
-										<div className="text-center">
-											<span
-												className={`block text-xs font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
-											>
-												{label}
-											</span>
-											{serviceDescriptions[label] && (
-												<span
-													className={`block text-[10px] mt-0.5 ${themeClasses.muted[theme]} opacity-70`}
-												>
-													{serviceDescriptions[label]}
-												</span>
-											)}
-										</div>
-										<div className={`flex-1 border-t ${themeClasses.border[theme]}`} />
-									</div>
-								</div>
-							)
+						{/* VESPERS */}
+						{hasVespers ? (
+							<>
+								<ServiceDivider label="Vespers" theme={theme} />
+								{renderSection('VPsalm', 'Vespers')}
+								{renderSection('VGospel', 'Vespers')}
+							</>
+						) : null}
 
-							const hasVespers = readings.VPsalm?.length || readings.VGospel?.length
-							const hasMatins =
-								readings.Prophecies?.length || readings.MPsalm?.length || readings.MGospel?.length
+						{/* MATINS */}
+						{hasMatins ? (
+							<>
+								<ServiceDivider label="Matins" theme={theme} />
+								{renderSection('Prophecies', 'Matins')}
+								{renderSection('MPsalm', 'Matins')}
+								{renderSection('MGospel', 'Matins')}
+							</>
+						) : null}
 
-							return (
-								<>
-									{/* LITURGY */}
-									{renderSection('Pauline', 'Liturgy')}
-									{renderSection('Catholic', 'Liturgy')}
-									{renderSection('Acts', 'Liturgy')}
-									{Object.keys(synaxariumByLang).length > 0 ? (
-										<SynaxariumReading
-											entriesByLang={synaxariumByLang}
-											languages={languagesToFetch.filter((l) => synaxariumLangs.includes(l))}
-											textSize={textSize}
-											theme={theme}
-											width={width}
-											service="Liturgy"
-											fontFamily={fontFamily}
-											weight={fontWeight}
-											lineSpacing={lineSpacing}
-											wordSpacing={wordSpacing}
-										/>
-									) : null}
-									{renderSection('LPsalm', 'Liturgy')}
-									{renderSection('LGospel', 'Liturgy')}
-
-									{/* VESPERS */}
-									{hasVespers && (
-										<>
-											<ServiceDivider label="Vespers" />
-											{renderSection('VPsalm', 'Vespers')}
-											{renderSection('VGospel', 'Vespers')}
-										</>
-									)}
-
-									{/* MATINS */}
-									{hasMatins && (
-										<>
-											<ServiceDivider label="Matins" />
-											{renderSection('Prophecies', 'Matins')}
-											{renderSection('MPsalm', 'Matins')}
-											{renderSection('MGospel', 'Matins')}
-										</>
-									)}
-
-									{/* EVENING PRAYER (Lent only) */}
-									{readings.EPPsalm?.length || readings.EPGospel?.length ? (
-										<>
-											<ServiceDivider label="Evening Prayer" />
-											{renderSection('EPPsalm' as ReadingSection, 'Evening Prayer')}
-											{renderSection('EPGospel' as ReadingSection, 'Evening Prayer')}
-										</>
-									) : null}
-								</>
-							)
-						})()}
+						{/* EVENING PRAYER (Lent only) */}
+						{hasEveningPrayer ? (
+							<>
+								<ServiceDivider label="Evening Prayer" theme={theme} />
+								{renderSection('EPPsalm' as ReadingSection, 'Evening Prayer')}
+								{renderSection('EPGospel' as ReadingSection, 'Evening Prayer')}
+							</>
+						) : null}
 					</SwipeableContainer>
 				</Suspense>
 			) : (
@@ -365,10 +290,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 				</section>
 			)}
 
-			{/* Timeline navigation */}
 			{readings && <ReadingTimeline sections={getAvailableSections(readings)} />}
-
-			{/* Back to top */}
 			<BackToTop />
 		</ReadingPageLayout>
 	)

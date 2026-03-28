@@ -1,7 +1,9 @@
 'use client'
 
 import { Breadcrumb } from '@/components/Breadcrumb'
+import { SettingRow } from '@/components/settings/SettingRow'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import { Select } from '@/components/ui/Select'
 import type { Locale } from '@/i18n/config'
 import {
 	type FontFamily,
@@ -15,11 +17,17 @@ import {
 	loadPreferences as loadStoredPreferences,
 	savePreferences as saveStoredPreferences,
 } from '@/lib/reading-preferences'
+import {
+	getFontClass,
+	getLineHeightClass,
+	getWeightClass,
+	getWordSpacingClass,
+} from '@/lib/reading-styles'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Suspense, useEffect, useState, useTransition } from 'react'
+import { SettingsSkeleton } from './SettingsSkeleton'
 
-// Local type extends shared type with required fields for UI state
 interface SettingsPreferences {
 	size: TextSize
 	view: ViewMode
@@ -46,18 +54,21 @@ const DEFAULTS: SettingsPreferences = {
 
 function loadPreferences(): SettingsPreferences {
 	if (typeof window === 'undefined') return DEFAULTS
-	// loadStoredPreferences handles migration automatically
 	const stored = loadStoredPreferences()
-	// Convert null/undefined verses to 'show' for UI state
 	const verses = stored.verses === 'hide' ? 'hide' : 'show'
 	return { ...DEFAULTS, ...stored, verses }
 }
 
 function savePreferences(prefs: SettingsPreferences) {
 	if (typeof window === 'undefined') return
-	// Convert 'show' to undefined for storage (it's the default)
 	const { verses, ...rest } = prefs
 	saveStoredPreferences({ ...rest, verses: verses === 'hide' ? 'hide' : undefined })
+}
+
+const previewTextSize: Record<TextSize, string> = {
+	sm: 'text-sm',
+	md: 'text-base',
+	lg: 'text-lg',
 }
 
 function SettingsContent() {
@@ -94,18 +105,7 @@ function SettingsContent() {
 		})
 	}
 
-	if (!mounted) {
-		return (
-			<main className="min-h-screen bg-gray-50 dark:bg-gray-950">
-				<div className="max-w-2xl mx-auto px-6 py-12">
-					<div className="animate-pulse space-y-4">
-						<div className="h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded" />
-						<div className="h-64 bg-gray-200 dark:bg-gray-800 rounded-lg" />
-					</div>
-				</div>
-			</main>
-		)
-	}
+	if (!mounted) return <SettingsSkeleton />
 
 	return (
 		<main className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -124,7 +124,6 @@ function SettingsContent() {
 					)}
 
 					<div className="space-y-6">
-						{/* Language */}
 						<Card>
 							<CardHeader>{t('language')}</CardHeader>
 							<CardContent>
@@ -143,7 +142,6 @@ function SettingsContent() {
 							</CardContent>
 						</Card>
 
-						{/* Theme */}
 						<Card>
 							<CardHeader>{t('appearance')}</CardHeader>
 							<CardContent className="space-y-4">
@@ -173,10 +171,27 @@ function SettingsContent() {
 							</CardContent>
 						</Card>
 
-						{/* Typography */}
 						<Card>
 							<CardHeader>{t('typography')}</CardHeader>
 							<CardContent className="space-y-4">
+								<div className="p-3 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+									<p className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2">
+										{t('preview')}
+									</p>
+									<p
+										className={[
+											previewTextSize[prefs.size],
+											getFontClass(prefs.font, false),
+											getWeightClass(prefs.weight, false),
+											getLineHeightClass(prefs.spacing, false),
+											getWordSpacingClass(prefs.wordSpacing, false),
+											'text-gray-800 dark:text-gray-200',
+										].join(' ')}
+									>
+										Blessed are the pure in heart, for they shall see God. The Lord is my shepherd;
+										I shall not want.
+									</p>
+								</div>
 								<SettingRow label={t('font')} description={t('fontDescription')}>
 									<Select
 										value={prefs.font}
@@ -234,7 +249,6 @@ function SettingsContent() {
 							</CardContent>
 						</Card>
 
-						{/* Reading */}
 						<Card>
 							<CardHeader>{t('reading')}</CardHeader>
 							<CardContent className="space-y-4">
@@ -261,7 +275,6 @@ function SettingsContent() {
 							</CardContent>
 						</Card>
 
-						{/* Reset */}
 						<button
 							type="button"
 							onClick={() => {
@@ -281,67 +294,9 @@ function SettingsContent() {
 	)
 }
 
-function SettingRow({
-	label,
-	description,
-	children,
-}: {
-	label: string
-	description: string
-	children: React.ReactNode
-}) {
-	return (
-		<div className="flex items-center justify-between gap-4">
-			<div>
-				<p className="text-sm font-medium text-gray-900 dark:text-white">{label}</p>
-				<p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
-			</div>
-			{children}
-		</div>
-	)
-}
-
-function Select({
-	value,
-	onChange,
-	options,
-	disabled,
-}: {
-	value: string
-	onChange: (value: string) => void
-	options: { value: string; label: string }[]
-	disabled?: boolean
-}) {
-	return (
-		<select
-			value={value}
-			onChange={(e) => onChange(e.target.value)}
-			disabled={disabled}
-			className="px-3 py-1.5 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:opacity-50"
-		>
-			{options.map((opt) => (
-				<option key={opt.value} value={opt.value}>
-					{opt.label}
-				</option>
-			))}
-		</select>
-	)
-}
-
 export default function SettingsPage() {
 	return (
-		<Suspense
-			fallback={
-				<main className="min-h-screen bg-gray-50 dark:bg-gray-950">
-					<div className="max-w-2xl mx-auto px-6 py-12">
-						<div className="animate-pulse space-y-4">
-							<div className="h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded" />
-							<div className="h-64 bg-gray-200 dark:bg-gray-800 rounded-lg" />
-						</div>
-					</div>
-				</main>
-			}
-		>
+		<Suspense fallback={<SettingsSkeleton />}>
 			<SettingsContent />
 		</Suspense>
 	)

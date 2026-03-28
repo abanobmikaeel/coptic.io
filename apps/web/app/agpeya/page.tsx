@@ -15,7 +15,6 @@ import {
 import { AgpeyaProgress } from '@/components/AgpeyaProgress'
 import { BackToTop } from '@/components/BackToTop'
 import { Breadcrumb } from '@/components/Breadcrumb'
-import { DisplaySettings } from '@/components/DisplaySettings'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { API_BASE_URL } from '@/config'
@@ -246,9 +245,6 @@ function AgpeyaContent() {
 				>
 					{allCollapsed ? 'Expand All' : 'Collapse All'}
 				</button>
-				<Suspense fallback={null}>
-					<DisplaySettings />
-				</Suspense>
 			</div>
 		</ReadingsHeader>
 	)

@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import CopticCross from './CopticCross'
-import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
 import { NavDropdown } from './NavDropdown'
 import { SearchButton } from './SearchButton'
@@ -74,6 +73,12 @@ export default function Navbar() {
 					<SearchButton />
 					<div className="flex items-center gap-2 sm:gap-4">
 						{/* Desktop navigation */}
+						<Link
+							href="/calendar"
+							className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+						>
+							{t('calendar')}
+						</Link>
 						<div className="hidden lg:flex items-center gap-4">
 							<NavDropdown
 								label={t('read')}
@@ -90,18 +95,7 @@ export default function Navbar() {
 								forceClose={openDropdown !== null && openDropdown !== 'more'}
 							/>
 						</div>
-						<Link
-							href="/synaxarium"
-							className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-						>
-							{t('synaxarium')}
-						</Link>
-						<Link
-							href="/calendar"
-							className="hidden lg:block text-[13px] text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-						>
-							{t('calendar')}
-						</Link>
+						
 					</div>
 					<Link
 						href="/subscribe"
@@ -109,7 +103,6 @@ export default function Navbar() {
 					>
 						{t('subscribe')}
 					</Link>
-					<LocaleSwitcher />
 					<ThemeToggle />
 				</div>
 			</div>

@@ -1,21 +1,25 @@
 'use client'
 
+import type { ReadingTheme } from '@/lib/reading-preferences'
+import { themeClasses } from '@/lib/reading-styles'
+
 interface ToggleSwitchProps {
 	label: string
 	checked: boolean
 	onChange: () => void
+	theme?: ReadingTheme
 }
 
-export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
+export function ToggleSwitch({ label, checked, onChange, theme = 'light' }: ToggleSwitchProps) {
 	return (
 		<button
 			type="button"
 			onClick={onChange}
 			className="w-full flex items-center justify-between py-1"
 		>
-			<span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
+			<span className={`text-sm font-medium ${themeClasses.toggleLabel[theme]}`}>{label}</span>
 			<div
-				className={`w-12 h-7 rounded-full transition-colors duration-200 relative ${checked ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600'}`}
+				className={`w-12 h-7 rounded-full transition-colors duration-200 relative ${checked ? 'bg-amber-500' : themeClasses.toggleUnchecked[theme]}`}
 			>
 				<div
 					className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-200 ${checked ? 'translate-x-6' : 'translate-x-1'}`}

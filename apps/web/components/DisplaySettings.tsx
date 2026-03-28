@@ -20,7 +20,7 @@ export type {
 } from '@/lib/reading-preferences'
 
 export function DisplaySettings() {
-	const { settings, actions, mounted } = useReadingSettings()
+	const { settings, mounted } = useReadingSettings()
 	const { languages, setLanguages, isLoaded } = useContentLanguages()
 	const [isOpen, setIsOpen] = useState(false)
 
@@ -37,7 +37,7 @@ export function DisplaySettings() {
 						? 'bg-amber-500 text-white shadow-lg shadow-amber-500/25'
 						: 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-600'
 				}`}
-				aria-label="Reading settings"
+				aria-label="Display languages"
 			>
 				<div className="flex items-center gap-2">
 					<span
@@ -51,8 +51,7 @@ export function DisplaySettings() {
 
 			{isOpen && (
 				<SettingsPanel
-					settings={settings}
-					actions={actions}
+					theme={settings.theme}
 					contentLanguages={languages}
 					onContentLanguagesChange={setLanguages}
 					onClose={() => setIsOpen(false)}

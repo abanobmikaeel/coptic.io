@@ -11,6 +11,7 @@ export type ReadingWidth = 'narrow' | 'normal' | 'wide'
 export type FontWeight = 'light' | 'normal' | 'bold'
 
 const STORAGE_KEY = 'coptic-reading-preferences'
+export const READING_THEME_COOKIE = 'READING_THEME'
 
 // Migration map for old invalid values that may be stored in localStorage
 const MIGRATIONS: Record<string, Record<string, string>> = {

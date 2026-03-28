@@ -1,12 +1,15 @@
 'use client'
 
 import type { ContentLanguage } from '@/i18n/content-languages'
+import type { ReadingTheme } from '@/lib/reading-preferences'
+import { themeClasses } from '@/lib/reading-styles'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
 interface LanguagePillsProps {
 	selected: ContentLanguage[]
 	onChange: (languages: ContentLanguage[]) => void
+	theme?: ReadingTheme
 }
 
 // Languages with API support for readings
@@ -19,7 +22,7 @@ const languageKeys: Record<ContentLanguage, string> = {
 	es: 'spanish',
 }
 
-export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
+export function LanguagePills({ selected, onChange, theme = 'light' }: LanguagePillsProps) {
 	const t = useTranslations('contentLanguages')
 	const router = useRouter()
 
@@ -50,11 +53,7 @@ export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
 						className={`
 							px-3 py-2 h-[72px] rounded-lg text-sm font-medium transition-colors
 							${lang === 'ar' ? 'font-arabic' : lang === 'cop' ? 'font-coptic !text-base !leading-normal' : ''}
-							${
-								isSelected
-									? 'bg-amber-700 text-white'
-									: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-							}
+							${isSelected ? 'bg-amber-700 text-white' : themeClasses.pillUnselected[theme]}
 							${isLastSelected ? 'cursor-not-allowed opacity-75' : ''}
 						`}
 						aria-pressed={isSelected}
