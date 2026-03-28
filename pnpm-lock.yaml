@@ -159,6 +159,9 @@ importers:
       react-dom:
         specifier: 19.2.1
         version: 19.2.1(react@19.2.1)
+      react-hook-form:
+        specifier: ^7.72.0
+        version: 7.72.0(react@19.2.1)
       react-remove-scroll:
         specifier: ^2.7.2
         version: 2.7.2(@types/react@19.2.9)(react@19.2.1)
@@ -3230,6 +3233,12 @@ packages:
     resolution: {integrity: sha512-ibrK8llX2a4eOskq1mXKu/TGZj9qzomO+sNfO98M6d9zIPOEhlBkMkBUBLd1vgS0gQsLDBzA+8jJBVXDnfHmJg==}
     peerDependencies:
       react: ^19.2.1
+
+  react-hook-form@7.72.0:
+    resolution: {integrity: sha512-V4v6jubaf6JAurEaVnT9aUPKFbNtDgohj5CIgVGyPHvT9wRx5OZHVjz31GsxnPNI278XMu+ruFz+wGOscHaLKw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
 
   react-remove-scroll-bar@2.3.8:
     resolution: {integrity: sha512-9r+yi9+mgU33AKcj6IbT9oRCO78WriSj6t/cF8DWBZJ9aOGPOTEDvdUDz1FwKim7QXWwmHqtdHnRJfhAxEG46Q==}
@@ -6928,6 +6937,10 @@ snapshots:
     dependencies:
       react: 19.2.1
       scheduler: 0.27.0
+
+  react-hook-form@7.72.0(react@19.2.1):
+    dependencies:
+      react: 19.2.1
 
   react-remove-scroll-bar@2.3.8(@types/react@19.2.9)(react@19.2.1):
     dependencies:

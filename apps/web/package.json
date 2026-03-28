@@ -27,6 +27,7 @@
     "pg": "^8.13.0",
     "react": "19.2.1",
     "react-dom": "19.2.1",
+    "react-hook-form": "^7.72.0",
     "react-remove-scroll": "^2.7.2"
   },
   "devDependencies": {

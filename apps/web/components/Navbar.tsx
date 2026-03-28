@@ -7,7 +7,6 @@ import CopticCross from './CopticCross'
 import { MobileMenu } from './MobileMenu'
 import { NavDropdown } from './NavDropdown'
 import { SearchButton } from './SearchButton'
-import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
 	const t = useTranslations('nav')
@@ -68,8 +67,13 @@ export default function Navbar() {
 						</span>
 					</Link>
 				</div>
-
 				<div className="flex items-center gap-4">
+					<Link
+						href="/subscribe"
+						className="hidden lg:block text-[13px] bg-amber-700 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-lg transition-colors"
+					>
+						{t('subscribe')}
+					</Link>
 					<SearchButton />
 					<div className="flex items-center gap-2 sm:gap-4">
 						{/* Desktop navigation */}
@@ -95,15 +99,7 @@ export default function Navbar() {
 								forceClose={openDropdown !== null && openDropdown !== 'more'}
 							/>
 						</div>
-						
 					</div>
-					<Link
-						href="/subscribe"
-						className="hidden lg:block text-[13px] bg-amber-700 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-lg transition-colors"
-					>
-						{t('subscribe')}
-					</Link>
-					<ThemeToggle />
 				</div>
 			</div>
 		</nav>

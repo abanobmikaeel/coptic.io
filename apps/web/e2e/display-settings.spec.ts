@@ -12,7 +12,7 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have line spacing options with correct values', async ({ page }) => {
-		// Select order: locale(0), theme(1), width(2), font(3), size(4), weight(5), line-spacing(6), word-spacing(7), view(8), verses(9)
+		// Select order: reading-theme(0), width(1), locale(2), font(3), size(4), weight(5), line-spacing(6), word-spacing(7), view(8), verses(9)
 		const lineSpacingSelect = page.locator('select').nth(6)
 
 		// Get all options
