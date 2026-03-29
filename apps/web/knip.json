@@ -1,0 +1,5 @@
+{
+  "entry": ["app/**/{page,layout,loading,error,route}.tsx", "app/**/{page,layout,loading,error,route}.ts"],
+  "project": ["**/*.{ts,tsx}", "!.next/**", "!node_modules/**", "!e2e/**"],
+  "ignore": [".next/**", "node_modules/**", "e2e/**"]
+}

@@ -25,7 +25,8 @@
     "prepare": "pnpm build:packages",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build:packages && changeset publish"
+    "release": "pnpm build:packages && changeset publish",
+    "loc": "git ls-files '*.ts' '*.tsx' | grep -v e2e | xargs wc -l | tail -1"
   },
   "repository": {
     "type": "git",

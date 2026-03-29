@@ -3,7 +3,8 @@ import { themeClasses } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
 import type { ReadingTheme, ViewMode } from '../DisplaySettings'
 import type { BibleTranslation, StyleClasses } from './types'
-import { getVerseNumber, toArabicNumerals } from './utils'
+import { toArabicNumerals } from './utils'
+import { ContinuousParagraph, VerseParagraph } from './VerseContent'
 
 interface MultiLanguageContentProps {
 	orderedLangs: BibleTranslation[]
@@ -163,30 +164,14 @@ function ContinuousVerses({
 				const langReadings = readingsByLang[lang]
 				const langChapter = langReadings?.[readingIdx]?.chapters[chapterIdx]
 				if (!langChapter) return <div key={lang} />
-
-				const { isRtl, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
-					getStyleClasses(lang)
-
 				return (
-					<p
+					<ContinuousParagraph
 						key={lang}
-						className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : !showVerses ? 'first-letter-large' : ''}`}
-						dir={isRtl ? 'rtl' : 'ltr'}
-					>
-						{langChapter.verses.map((verse, vidx) => (
-							<span key={verse.num}>
-								{showVerses && (
-									<sup
-										className={`${sizes.verseNum} font-normal ${themeClasses.accent[theme]} ${isRtl ? 'ml-1' : 'mr-1'}`}
-									>
-										{getVerseNumber(verse.num, isRtl)}
-									</sup>
-								)}
-								<span>{verse.text}</span>
-								{vidx < langChapter.verses.length - 1 && ' '}
-							</span>
-						))}
-					</p>
+						verses={langChapter.verses}
+						styleClasses={getStyleClasses(lang)}
+						showVerses={showVerses}
+						theme={theme}
+					/>
 				)
 			})}
 		</div>
@@ -225,25 +210,15 @@ function VerseByVerseComparison({
 						const langChapter = langReadings?.[readingIdx]?.chapters[chapterIdx]
 						const langVerse = langChapter?.verses.find((v) => v.num === verse.num)
 						if (!langVerse) return <div key={lang} />
-
-						const { isRtl, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
-							getStyleClasses(lang)
-
 						return (
-							<p
+							<VerseParagraph
 								key={lang}
-								className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''} ${vidx === 0 && !isRtl && !showVerses ? 'first-letter-large' : ''}`}
-								dir={isRtl ? 'rtl' : 'ltr'}
-							>
-								{showVerses && (
-									<span
-										className={`${themeClasses.accent[theme]} ${sizes.verseNum} font-normal tabular-nums ${isRtl ? 'ml-1.5' : 'mr-2'}`}
-									>
-										{getVerseNumber(langVerse.num, isRtl)}
-									</span>
-								)}
-								{langVerse.text}
-							</p>
+								verse={langVerse}
+								styleClasses={getStyleClasses(lang)}
+								showVerses={showVerses}
+								theme={theme}
+								isFirst={vidx === 0}
+							/>
 						)
 					})}
 				</div>
