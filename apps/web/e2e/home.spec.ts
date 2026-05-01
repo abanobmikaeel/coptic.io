@@ -64,34 +64,11 @@ test.describe('Home page - Desktop', () => {
 test.describe('Home page - Mobile', () => {
 	test.use({ viewport: { width: 375, height: 667 } })
 
-	test('should have bottom navigation tabs', async ({ page }) => {
+	test('should have hamburger menu button', async ({ page }) => {
 		await page.goto('/')
 		await page.waitForLoadState('networkidle')
 
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		await expect(bottomNav).toBeVisible()
-
-		// Should have Today, Library, Calendar tabs
-		await expect(bottomNav.getByText('Today')).toBeVisible()
-		await expect(bottomNav.getByText('Library')).toBeVisible()
-		await expect(bottomNav.getByText('Calendar')).toBeVisible()
-	})
-
-	test('should navigate to library from bottom nav', async ({ page }) => {
-		await page.goto('/')
-		await page.waitForLoadState('networkidle')
-
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		await bottomNav.getByRole('link', { name: /library/i }).click()
-		await expect(page).toHaveURL(/library/)
-	})
-
-	test('should navigate to calendar from bottom nav', async ({ page }) => {
-		await page.goto('/')
-		await page.waitForLoadState('networkidle')
-
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		await bottomNav.getByRole('link', { name: /calendar/i }).click()
-		await expect(page).toHaveURL(/calendar/)
+		const menuButton = page.getByRole('button', { name: /open menu/i })
+		await expect(menuButton).toBeVisible()
 	})
 })

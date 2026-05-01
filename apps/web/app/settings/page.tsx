@@ -16,6 +16,7 @@ function SettingsContent() {
 	const router = useRouter()
 	const locale = useLocale() as Locale
 	const [mounted, setMounted] = useState(false)
+	const [formLoaded, setFormLoaded] = useState(false)
 	const [saveSuccess, setSaveSuccess] = useState(false)
 	const [confirmLeave, setConfirmLeave] = useState(false)
 	const pendingNav = useRef<string | null>(null)
@@ -23,11 +24,17 @@ function SettingsContent() {
 	const { control, handleSubmit, reset, watch, formState: { isDirty } } =
 		useForm<SettingsFormValues>({ defaultValues: DEFAULTS })
 
+	// Load stored preferences and reset form. Keep formLoaded separate from mounted so
+	// the form is only shown after RHF has processed the reset (prevents false isDirty flash).
 	useEffect(() => {
 		const stored = load()
 		reset({ ...DEFAULTS, ...stored, verses: stored.verses === 'hide' ? 'hide' : 'show', locale })
-		setMounted(true)
+		setFormLoaded(true)
 	}, [reset, locale])
+
+	useEffect(() => {
+		if (formLoaded) setMounted(true)
+	}, [formLoaded])
 
 	useEffect(() => {
 		if (!isDirty) return
@@ -92,8 +99,8 @@ function SettingsContent() {
 						</button>
 					</div>
 
-					<div className={`fixed bottom-0 inset-x-0 z-50 transition-transform duration-200 ${isDirty ? 'translate-y-0' : 'translate-y-full'}`}>
-						<div className="border-t border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+					<div className={`fixed top-0 inset-x-0 z-50 transition-transform duration-200 ${isDirty ? 'translate-y-0' : '-translate-y-full'}`}>
+						<div className="border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
 							<div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
 								<p className="text-sm text-gray-600 dark:text-gray-400">You have unsaved changes</p>
 								<div className="flex items-center gap-3">

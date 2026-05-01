@@ -38,10 +38,10 @@ test.describe('Calendar page', () => {
 	})
 
 	test('should display day grid', async ({ page }) => {
-		// Calendar should have clickable day elements
+		// Calendar day buttons contain the date number (e.g. "1" or "1 L" with fasting indicator)
 		const dayElements = page
 			.locator('button, td, [role="gridcell"], [class*="day"]')
-			.filter({ hasText: /^[1-9]$|^[12][0-9]$|^3[01]$/ })
+			.filter({ hasText: /^([1-9]|[12][0-9]|3[01])(\s|$)/ })
 
 		expect(await dayElements.count()).toBeGreaterThan(0)
 	})

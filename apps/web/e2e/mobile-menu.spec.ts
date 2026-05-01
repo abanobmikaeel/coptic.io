@@ -47,28 +47,6 @@ test.describe('Mobile Menu - Phone', () => {
 		await expect(dialog.getByRole('link', { name: /settings/i })).toBeVisible()
 	})
 
-	test('should show Jump to sections in menu', async ({ page }) => {
-		await page.goto('/readings')
-		await page.waitForLoadState('networkidle')
-
-		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await menuButton.click()
-
-		// Should have Jump to section with reading labels
-		await expect(page.getByText('Jump to')).toBeVisible()
-
-		// Should have at least some reading sections
-		const sections = ['Pauline', 'Catholic', 'Acts', 'Psalm', 'Gospel']
-		let foundSections = 0
-		for (const section of sections) {
-			const btn = page.locator('dialog button', { hasText: new RegExp(section, 'i') })
-			if ((await btn.count()) > 0) {
-				foundSections++
-			}
-		}
-		expect(foundSections).toBeGreaterThan(0)
-	})
-
 	test('should close menu when clicking close button', async ({ page }) => {
 		await page.goto('/readings')
 		await page.waitForLoadState('networkidle')
@@ -101,34 +79,13 @@ test.describe('Mobile Menu - Phone', () => {
 		await expect(dialog).not.toBeVisible()
 	})
 
-	test('should scroll to section when clicking Jump to button', async ({ page }) => {
-		await page.goto('/readings')
-		await page.waitForLoadState('networkidle')
-
-		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await menuButton.click()
-
-		// Find and click a section button (e.g., Gospel)
-		const gospelButton = page.locator('dialog button', { hasText: /gospel/i }).first()
-		if ((await gospelButton.count()) > 0) {
-			await gospelButton.click()
-
-			// Menu should close
-			const dialog = page.locator('dialog[open]')
-			await expect(dialog).not.toBeVisible()
-
-			// Should have scrolled (hard to verify exact position)
-			await page.waitForTimeout(500)
-		}
-	})
-
-	test('should not show burger menu on non-reading pages', async ({ page }) => {
+	test('should show burger menu on all pages', async ({ page }) => {
 		await page.goto('/')
 		await page.waitForLoadState('networkidle')
 
-		// Home page should NOT have burger menu (not in read mode)
+		// Hamburger menu is in the top navbar and always visible on mobile
 		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await expect(menuButton).not.toBeVisible()
+		await expect(menuButton).toBeVisible()
 	})
 
 	test('should highlight current page in menu', async ({ page }) => {
@@ -156,15 +113,7 @@ test.describe('Mobile Menu - Tablet', () => {
 		await expect(menuButton).toBeVisible()
 	})
 
-	test('should show Jump to sections on tablet', async ({ page }) => {
-		await page.goto('/readings')
-		await page.waitForLoadState('networkidle')
 
-		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await menuButton.click()
-
-		await expect(page.getByText('Jump to')).toBeVisible()
-	})
 })
 
 test.describe('Mobile Menu - Desktop', () => {

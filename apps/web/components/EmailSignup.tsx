@@ -35,6 +35,7 @@ export default function EmailSignup() {
 				<Input
 					type="email"
 					name="email"
+					autoComplete="email"
 					placeholder="Enter your email"
 					required
 					error={!!error}

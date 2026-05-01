@@ -12,8 +12,9 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have line spacing options with correct values', async ({ page }) => {
-		// Select order: reading-theme(0), width(1), locale(2), font(3), size(4), weight(5), line-spacing(6), word-spacing(7), view(8), verses(9)
-		const lineSpacingSelect = page.locator('select').nth(6)
+		// Select order with Advanced open: locale(0), theme(1), size(2), font(3), weight(4), line-spacing(5), word-spacing(6), width(7), view(8), verses(9)
+		await page.getByRole('button', { name: /advanced/i }).click()
+		const lineSpacingSelect = page.locator('select').nth(5)
 
 		// Get all options
 		const options = await lineSpacingSelect.locator('option').allTextContents()
@@ -31,7 +32,8 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have word spacing options with correct values', async ({ page }) => {
-		const wordSpacingSelect = page.locator('select').nth(7)
+		await page.getByRole('button', { name: /advanced/i }).click()
+		const wordSpacingSelect = page.locator('select').nth(6)
 
 		const optionValues = await wordSpacingSelect
 			.locator('option')
@@ -46,7 +48,8 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have font weight options with correct values', async ({ page }) => {
-		const fontWeightSelect = page.locator('select').nth(5)
+		await page.getByRole('button', { name: /advanced/i }).click()
+		const fontWeightSelect = page.locator('select').nth(4)
 
 		const optionValues = await fontWeightSelect
 			.locator('option')
@@ -61,8 +64,9 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should persist settings changes', async ({ page }) => {
-		// Change line spacing to compact — nth(6) in current select order
-		const lineSpacingSelect = page.locator('select').nth(6)
+		// Open Advanced to access line spacing — nth(5) with Advanced open
+		await page.getByRole('button', { name: /advanced/i }).click()
+		const lineSpacingSelect = page.locator('select').nth(5)
 		await lineSpacingSelect.selectOption('compact')
 
 		// Should show saved message
@@ -72,8 +76,9 @@ test.describe('Display Settings - Settings Page', () => {
 		await page.reload()
 		await page.waitForLoadState('networkidle')
 
-		// Line spacing should still be compact
-		const selectedValue = await page.locator('select').nth(6).inputValue()
+		// Open Advanced again and verify line spacing persisted
+		await page.getByRole('button', { name: /advanced/i }).click()
+		const selectedValue = await page.locator('select').nth(5).inputValue()
 		expect(selectedValue).toBe('compact')
 	})
 })
