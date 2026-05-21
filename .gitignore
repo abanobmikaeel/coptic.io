@@ -72,6 +72,11 @@ src/resources/synxarium-scraped.json
 .claude/
 .next/
 
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
 playwright-report
 test-results
 
