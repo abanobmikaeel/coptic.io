@@ -90,8 +90,8 @@ jobs:
       - name: Stop preview container
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
+          host: ${{ secrets.SERVER_IP }}
+          username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             cd ~/coptic
