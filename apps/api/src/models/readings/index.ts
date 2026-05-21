@@ -65,6 +65,7 @@ export const parseReadingString = (
 }
 
 type ReadingRecord = {
+	Day?: string
 	Prophecies?: string
 	VPsalm?: string
 	VGospel?: string
@@ -112,7 +113,7 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 }
 
 type ReadingResponse = {
-	reference?: (typeof uniqueReadings)[number]
+	reference?: Omit<(typeof uniqueReadings)[number], 'Day'>
 	Synaxarium: SynaxariumEntry[]
 	Prophecies?: Reading[] | null
 	VPsalm?: Reading[] | null
@@ -218,7 +219,8 @@ const buildFixedResponse = (
 	}
 
 	if (!isDetailed) {
-		return { reference: reading, Synaxarium: synaxarium }
+		const { Day, ...rest } = reading
+		return { reference: rest as Omit<typeof uniqueReadings[number], 'Day'>, Synaxarium: synaxarium }
 	}
 	return { ...transformReading(reading, translation), Synaxarium: synaxarium }
 }
