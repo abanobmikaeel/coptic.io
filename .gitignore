@@ -72,6 +72,10 @@ src/resources/synxarium-scraped.json
 .claude/
 .next/
 
+# Cloudflare Workers
+.wrangler/
+dev.vars
+
 playwright-report
 test-results
 

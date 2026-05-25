@@ -1,5 +1,5 @@
 import { gregorianToCoptic } from '@coptic/core'
-import { getByCopticDate } from '../models/readings'
+import { getByCopticDate, warmTranslation } from '../models/readings'
 import * as calendarService from '../services/calendar.service'
 import * as celebrationsService from '../services/celebrations.service'
 import * as fastingService from '../services/fasting.service'
@@ -21,7 +21,8 @@ export const resolvers = {
 		// Readings
 		readings: async (_: unknown, { date, detailed }: { date?: string; detailed?: boolean }) => {
 			const parsedDate = date ? new Date(date) : new Date()
-			const data = await getByCopticDate(parsedDate, detailed || false)
+			if (detailed) await warmTranslation('en')
+			const data = getByCopticDate(parsedDate, detailed || false)
 			const celebrations = getStaticCelebrationsForDay(parsedDate)
 			const copticDate = gregorianToCoptic(parsedDate)
 

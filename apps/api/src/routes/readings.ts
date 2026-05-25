@@ -1,6 +1,6 @@
 import { gregorianToCoptic } from '@coptic/core'
 import { Hono } from 'hono'
-import { getByCopticDate } from '../models/readings'
+import { getByCopticDate, warmTranslation } from '../models/readings'
 import type { BibleTranslation } from '../types'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import { parseLocalDate } from '../utils/dateUtils'
@@ -28,8 +28,10 @@ readings.get('/:date?', async (c) => {
 			parsedDate = parsed
 		}
 
-		// Get readings
-		const data = await getByCopticDate(parsedDate, isDetailed, translation)
+		// In Workers, bible data is lazy-loaded from R2 on first use per isolate.
+		// In Bun dev, warmTranslation is a no-op (pre-loaded at module init).
+		if (isDetailed) await warmTranslation(translation)
+		const data = getByCopticDate(parsedDate, isDetailed, translation)
 
 		// Add celebrations and coptic date
 		const celebrations = getStaticCelebrationsForDay(parsedDate)

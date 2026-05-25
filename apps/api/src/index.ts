@@ -1,10 +1,11 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
-import * as Sentry from '@sentry/bun'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
+import type { Bindings } from './env'
 import { yoga } from './graphql'
-import { metricsMiddleware, register } from './middleware/metrics'
+import { cacheResponse } from './middleware/cache'
+import { setBibleBucket } from './models/readings/bibleDataMapper'
 import agpeyaRoutes from './routes/agpeya'
 import calendarRoutes from './routes/calendar'
 import celebrationsRoutes from './routes/celebrations'
@@ -15,25 +16,19 @@ import searchRoutes from './routes/search'
 import seasonRoutes from './routes/season'
 import synaxariumRoutes from './routes/synaxarium'
 
-if (process.env.SENTRY_DSN) {
-	Sentry.init({
-		dsn: process.env.SENTRY_DSN,
-		tracesSampleRate: 0.1,
-	})
-}
+const app = new OpenAPIHono<{ Bindings: Bindings }>()
 
-const app = new OpenAPIHono()
-
-// Middleware
 app.use('*', cors())
 app.use('*', logger())
-app.use('*', metricsMiddleware)
+app.use('*', (c, next) => {
+	if (c.env?.BIBLE_BUCKET) setBibleBucket(c.env.BIBLE_BUCKET)
+	c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+	return next()
+})
 
 // GraphQL endpoint
 app.on(['GET', 'POST'], '/graphql', async (c) => {
-	const response = await yoga.fetch(c.req.raw, {
-		// Pass Hono context if needed
-	})
+	const response = await yoga.fetch(c.req.raw, {})
 	return response
 })
 
@@ -48,22 +43,31 @@ app.doc('/openapi.json', {
 	},
 	servers: [
 		{
-			url: 'http://localhost:3000',
-			description: 'Development server',
+			url: 'https://api.coptic.io',
+			description: 'Production server',
 		},
 	],
 })
 
 // Health check
 app.get('/health', (c) => {
-	return c.json({ success: true, timestamp: new Date().toISOString() })
+	return c.json({
+		success: true,
+		timestamp: new Date().toISOString(),
+	})
 })
 
-// Prometheus metrics endpoint
-app.get('/metrics', async (c) => {
-	c.header('Content-Type', register.contentType)
-	return c.text(await register.metrics())
-})
+// Cache deterministic date-based responses at the CF edge (12h TTL).
+// In Bun dev this is a no-op. Only GET requests with a 200 response are cached.
+const cache12h = cacheResponse(43200)
+app.use('/api/readings/*', cache12h)
+app.use('/api/synaxarium/*', cache12h)
+app.use('/api/calendar/*', cache12h)
+app.use('/api/lent/*', cache12h)
+app.use('/api/agpeya/*', cache12h)
+app.use('/api/fasting/*', cache12h)
+app.use('/api/celebrations/*', cache12h)
+app.use('/api/season/*', cache12h)
 
 // REST Routes
 app.route('/api/agpeya', agpeyaRoutes)
@@ -83,17 +87,11 @@ app.notFound((c) => {
 
 // Error handler
 app.onError((err, c) => {
-	Sentry.captureException(err)
-	console.error(`Error: ${err.message}`)
+	console.error(`Error: ${err.message}`, err.stack)
 	return c.json({ error: err.message }, 500)
 })
 
 // Export the app for tests
 export { app }
 
-// Export server config as default for Bun to auto-serve
-// Bun will automatically call Bun.serve() when running the file directly
-export default {
-	fetch: app.fetch,
-	port: Number(process.env.PORT) || 3000,
-}
+export default { fetch: app.fetch }

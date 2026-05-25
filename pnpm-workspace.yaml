@@ -1,11 +1,16 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+overrides:
+  uuid: ">=11.1.1"
+  postcss: ">=8.5.10"
 allowBuilds:
   '@biomejs/biome': true
   '@parcel/watcher': true
   '@swc/core': true
   esbuild: true
   sharp: true
+  workerd: true
 minimumReleaseAgeExclude:
   - '@aws-sdk/client-ses@3.1051.0'

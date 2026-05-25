@@ -1,6 +1,6 @@
 import { type SynaxariumEntry, type SynaxariumSearchResult, gregorianToCoptic } from '@coptic/core'
-import { synaxariumCanonical as synaxariumAr } from '@coptic/data/ar'
-import { synaxariumCanonical, synaxariumIndex } from '@coptic/data/en'
+import { synaxariumCanonical as synaxariumAr } from '@coptic/data/ar/synaxarium'
+import { synaxariumCanonical, synaxariumIndex } from '@coptic/data/en/synaxarium'
 import { decodeHtmlEntities } from '../utils/textUtils'
 
 type SynaxariumLanguage = 'en' | 'ar'
