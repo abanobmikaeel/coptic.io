@@ -6,12 +6,8 @@
  * by implementing the SearchService interface.
  */
 
-import {
-	type AgpeyaHourId,
-	bibleData as bibleEn,
-	getAllAgpeyaHours,
-	isMidnightHour,
-} from '@coptic/data/en'
+import { type AgpeyaHourId, getAllAgpeyaHours, isMidnightHour } from '@coptic/data/en/agpeya'
+import { getRawBible, warmTranslation } from '../../models/readings/bibleDataMapper'
 import type { BibleBook, BibleType } from '../../types'
 import { searchSynaxarium as searchSynaxariumService } from '../synaxarium.service'
 import type {
@@ -94,17 +90,14 @@ const HOUR_ALIASES: Record<string, AgpeyaHourId> = {
 }
 
 export class SimpleSearchService implements SearchService {
-	private bible: BibleType
+	private bible: BibleType | null = null
 	private bookIndex: Map<string, BibleBook> = new Map()
 	private bookNameLower: Map<string, string> = new Map()
 	private ready = false
 
-	constructor() {
-		this.bible = bibleEn as BibleType
-	}
-
 	async initialize(): Promise<void> {
-		// Build book index for fast lookups
+		await warmTranslation('en')
+		this.bible = getRawBible('en')
 		for (const book of this.bible.books) {
 			this.bookIndex.set(book.name.toLowerCase(), book)
 			this.bookNameLower.set(book.name.toLowerCase(), book.name)
@@ -160,7 +153,7 @@ export class SimpleSearchService implements SearchService {
 		const results: BibleSearchResult[] = []
 		const queryLower = query.toLowerCase().trim()
 
-		if (!queryLower) return results
+		if (!queryLower || !this.bible) return results
 
 		// First, try to parse as a Bible reference (e.g., "John 3:16")
 		const refMatch = queryLower.match(BIBLE_REF_PATTERN)

@@ -1,7 +1,10 @@
-import { bibleData as bibleAr } from '@coptic/data/ar'
-import { bibleData as bibleCop } from '@coptic/data/cop'
-import { bibleData as bibleEn } from '@coptic/data/en'
-import { bibleData as bibleEs } from '@coptic/data/es'
+// IS_WORKERS is injected as `true` by wrangler's [define] at bundle time.
+// esbuild eliminates the Bun-dev dynamic-import branch from the Workers bundle,
+// so bible translation packages are never bundled into the Worker.
+// In Bun dev / tests, IS_WORKERS is undefined and the dynamic-import branch runs.
+declare const IS_WORKERS: boolean | undefined
+
+import type { R2Bucket } from '../../env'
 import type {
 	BibleBook,
 	BibleChapter,
@@ -11,15 +14,24 @@ import type {
 	Reading,
 } from '../../types'
 
-// Build indexed maps at module load for O(1) lookups
-// Separate indexes for each translation
+type TranslationCache = { index: TranslationIndex; raw: BibleType }
+
+// Module-level cache: survives for the lifetime of a Worker isolate (warm requests
+// skip R2 entirely) and for the lifetime of the Bun dev process.
+const translationCache = new Map<BibleTranslation, TranslationCache>()
+const pendingLoads = new Map<BibleTranslation, Promise<void>>()
+
+let r2Bucket: R2Bucket | null = null
+
+export function setBibleBucket(bucket: R2Bucket) {
+	r2Bucket = bucket
+}
+
 type TranslationIndex = {
 	booksByName: Map<string, BibleBook>
 	chaptersByBook: Map<string, Map<number, BibleChapter>>
 	versesByChapter: Map<string, Map<number, Map<number, BibleVerse>>>
 }
-
-const translationIndexes = new Map<BibleTranslation, TranslationIndex>()
 
 function buildIndex(bible: BibleType): TranslationIndex {
 	const booksByName = new Map<string, BibleBook>()
@@ -49,60 +61,92 @@ function buildIndex(bible: BibleType): TranslationIndex {
 	return { booksByName, chaptersByBook, versesByChapter }
 }
 
-// Initialize indexes for all translations
-translationIndexes.set('en', buildIndex(bibleEn as BibleType))
-translationIndexes.set('ar', buildIndex(bibleAr as BibleType))
-translationIndexes.set('es', buildIndex(bibleEs as BibleType))
-translationIndexes.set('cop', buildIndex(bibleCop as BibleType))
+async function loadTranslation(lang: BibleTranslation): Promise<BibleType> {
+	// Workers path: fetch from R2 (injected constant IS_WORKERS=true removes the else branch)
+	if (typeof IS_WORKERS !== 'undefined' && IS_WORKERS) {
+		if (!r2Bucket) throw new Error('BIBLE_BUCKET R2 binding not initialised')
+		const obj = await r2Bucket.get(`bible-${lang}.json`)
+		if (!obj) throw new Error(`bible-${lang}.json not found in R2 bucket`)
+		return obj.json<BibleType>()
+	}
+
+	// Bun dev / test path: computed path prevents esbuild from statically
+	// bundling bible packages into the Workers bundle.
+	const pkg = `@coptic/data/${lang}`
+	// biome-ignore lint/suspicious/noExplicitAny: computed import, type asserted below
+	const m = (await import(pkg)) as any
+	return m.bibleData as BibleType
+}
+
+/**
+ * Ensures the translation index is ready before the synchronous lookup chain
+ * runs. Concurrent calls share a single in-flight Promise so R2 is hit once.
+ */
+export async function warmTranslation(lang: BibleTranslation): Promise<void> {
+	if (translationCache.has(lang)) return
+
+	if (!pendingLoads.has(lang)) {
+		const load = loadTranslation(lang).then((data) => {
+			translationCache.set(lang, { index: buildIndex(data), raw: data })
+		})
+		pendingLoads.set(
+			lang,
+			load.finally(() => pendingLoads.delete(lang)),
+		)
+	}
+
+	await pendingLoads.get(lang)
+}
+
+export function getRawBible(lang: BibleTranslation = 'en'): BibleType {
+	const cache = translationCache.get(lang)
+	if (!cache) throw new Error(`Translation not loaded: ${lang} — was warmTranslation() called?`)
+	return cache.raw
+}
 
 function getIndex(translation: BibleTranslation = 'en'): TranslationIndex {
-	const index = translationIndexes.get(translation)
-	if (!index) {
-		throw new Error(`Unknown translation: ${translation}`)
+	const cache = translationCache.get(translation)
+	if (!cache) {
+		throw new Error(`Translation index not ready: ${translation} — was warmTranslation() called?`)
 	}
-	return index
+	return cache.index
 }
 
 export const getBook = (
 	bookName: string,
 	translation: BibleTranslation = 'en',
-): BibleBook | undefined => {
-	return getIndex(translation).booksByName.get(bookName)
-}
+): BibleBook | undefined => getIndex(translation).booksByName.get(bookName)
 
 export const getChapter = (
 	book: BibleBook,
 	chapterNum: number,
 	translation: BibleTranslation = 'en',
-): BibleChapter | undefined => {
-	return getIndex(translation).chaptersByBook.get(book.name)?.get(chapterNum)
-}
+): BibleChapter | undefined => getIndex(translation).chaptersByBook.get(book.name)?.get(chapterNum)
 
-// O(1) chapter lookup by book name
 export const getChapterByBookName = (
 	bookName: string,
 	chapterNum: number,
 	translation: BibleTranslation = 'en',
-): BibleChapter | undefined => {
-	return getIndex(translation).chaptersByBook.get(bookName)?.get(chapterNum)
-}
+): BibleChapter | undefined => getIndex(translation).chaptersByBook.get(bookName)?.get(chapterNum)
 
-export const getVerse = (chapter: BibleChapter, verseNum: number): BibleVerse | undefined => {
-	// Need to find the book this chapter belongs to
-	// For efficiency, we accept the chapter object but need book context
-	// Since chapter objects are unique, we can search by chapter.num in all books
-	// However, this is called with book context from getChapterAndOrVerse, so we use a different approach
-	return chapter.verses.find((currVerse) => currVerse.num === verseNum)
-}
+export const getVerse = (chapter: BibleChapter, verseNum: number): BibleVerse | undefined =>
+	chapter.verses.find((currVerse) => currVerse.num === verseNum)
 
-// Optimized verse lookup when book name is known
 export const getVerseByBookChapter = (
 	bookName: string,
 	chapterNum: number,
 	verseNum: number,
 	translation: BibleTranslation = 'en',
-): BibleVerse | undefined => {
-	return getIndex(translation).versesByChapter.get(bookName)?.get(chapterNum)?.get(verseNum)
+): BibleVerse | undefined =>
+	getIndex(translation).versesByChapter.get(bookName)?.get(chapterNum)?.get(verseNum)
+
+// Pre-load all translations at module-init in Bun dev/tests so getByCopticDate
+// stays synchronous. esbuild eliminates this block when IS_WORKERS=true.
+if (typeof IS_WORKERS === 'undefined') {
+	await warmTranslation('en')
+	await warmTranslation('ar')
+	await warmTranslation('es')
+	await warmTranslation('cop')
 }
 
 export const getChapterAndOrVerse = (
@@ -123,13 +167,9 @@ export const getChapterAndOrVerse = (
 	} else {
 		verses = chapter?.verses ?? []
 	}
+
 	return {
 		bookName,
-		chapters: [
-			{
-				chapterNum,
-				verses,
-			},
-		],
+		chapters: [{ chapterNum, verses }],
 	}
 }

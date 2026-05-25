@@ -220,10 +220,16 @@ const buildFixedResponse = (
 
 	if (!isDetailed) {
 		const { Day, ...rest } = reading
-		return { reference: rest as Omit<typeof uniqueReadings[number], 'Day'>, Synaxarium: synaxarium }
+		return {
+			reference: rest as Omit<(typeof uniqueReadings)[number], 'Day'>,
+			Synaxarium: synaxarium,
+		}
 	}
 	return { ...transformReading(reading, translation), Synaxarium: synaxarium }
 }
+
+// Re-export so route handlers can call warmTranslation before detailed lookups in Workers.
+export { warmTranslation } from './bibleDataMapper'
 
 export const getByCopticDate = (
 	gregorianDate: Date,

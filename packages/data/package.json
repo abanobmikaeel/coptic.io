@@ -41,6 +41,22 @@
 		"./cop/bible": {
 			"types": "./dist/cop/bible/index.d.ts",
 			"import": "./dist/cop/bible/index.js"
+		},
+		"./en/agpeya": {
+			"types": "./dist/en/agpeya/index.d.ts",
+			"import": "./dist/en/agpeya/index.js"
+		},
+		"./en/synaxarium": {
+			"types": "./dist/en/synaxarium/index.d.ts",
+			"import": "./dist/en/synaxarium/index.js"
+		},
+		"./ar/synaxarium": {
+			"types": "./dist/ar/synaxarium/index.d.ts",
+			"import": "./dist/ar/synaxarium/index.js"
+		},
+		"./en/lent": {
+			"types": "./dist/en/lent/index.d.ts",
+			"import": "./dist/en/lent/index.js"
 		}
 	},
 	"files": [

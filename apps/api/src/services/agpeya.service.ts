@@ -7,7 +7,7 @@ import {
 	getAgpeyaHourData,
 	getAgpeyaHourIds,
 	isMidnightHour,
-} from '@coptic/data/en'
+} from '@coptic/data/en/agpeya'
 import type { BibleTranslation } from '../types'
 import {
 	type ResolvedGospel,
@@ -27,7 +27,7 @@ export type {
 	AgpeyaMidnightHour,
 	AgpeyaWatch,
 	MidnightWatchId,
-} from '@coptic/data/en'
+} from '@coptic/data/en/agpeya'
 
 // Resolved hour with populated psalms and gospel (returned to frontend)
 export interface ResolvedAgpeyaHour {

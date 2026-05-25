@@ -1,0 +1,37 @@
+name = "coptic-api"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = "20136227a8ea87137c4e806e90ba1ccf"
+
+workers_dev = true
+
+routes = [
+  { pattern = "api.coptic.io", custom_domain = true }
+]
+
+[define]
+# Injected as a compile-time constant so esbuild tree-shakes the Bun dev
+# dynamic-import fallback out of the Workers bundle entirely.
+IS_WORKERS = "true"
+
+[vars]
+
+[[r2_buckets]]
+binding = "BIBLE_BUCKET"
+bucket_name = "coptic-io-readings"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1

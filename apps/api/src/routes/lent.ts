@@ -1,5 +1,5 @@
 import { getEasterDate, toMidnight } from '@coptic/core'
-import { loadLentDevotional } from '@coptic/data'
+import { loadLentDevotional } from '@coptic/data/en/lent'
 import { Hono } from 'hono'
 import { parseReadingString } from '../models/readings'
 import type { BibleTranslation } from '../types'
