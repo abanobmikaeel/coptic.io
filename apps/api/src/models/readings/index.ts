@@ -4,6 +4,7 @@ import {
 	getLiturgicalSeasonForDate,
 	gregorianToCoptic,
 	toMidnight,
+	type CopticDate,
 } from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
 import jonahReadings from '../../resources/jonahReadings.json'
@@ -113,6 +114,7 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 }
 
 type ReadingResponse = {
+	fullDate?: CopticDate
 	reference?: Omit<(typeof uniqueReadings)[number], 'Day'>
 	Synaxarium: SynaxariumEntry[]
 	Prophecies?: Reading[] | null
@@ -220,7 +222,10 @@ const buildFixedResponse = (
 
 	if (!isDetailed) {
 		const { Day, ...rest } = reading
-		return { reference: rest as Omit<typeof uniqueReadings[number], 'Day'>, Synaxarium: synaxarium }
+		return {
+			reference: rest as Omit<(typeof uniqueReadings)[number], 'Day'>,
+			Synaxarium: synaxarium,
+		}
 	}
 	return { ...transformReading(reading, translation), Synaxarium: synaxarium }
 }
