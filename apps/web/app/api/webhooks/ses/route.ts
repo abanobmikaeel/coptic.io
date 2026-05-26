@@ -34,8 +34,19 @@ export async function POST(request: NextRequest) {
 
 		// Handle SNS subscription confirmation
 		if (message.Type === 'SubscriptionConfirmation' && message.SubscribeURL) {
-			// Confirm the subscription by visiting the URL
-			await fetch(message.SubscribeURL)
+			let subscribeUrl: URL
+			try {
+				subscribeUrl = new URL(message.SubscribeURL)
+			} catch {
+				return NextResponse.json({ error: 'Invalid URL' }, { status: 400 })
+			}
+			if (
+				subscribeUrl.protocol !== 'https:' ||
+				!/^sns\.[a-z0-9-]+\.amazonaws\.com$/.test(subscribeUrl.hostname)
+			) {
+				return NextResponse.json({ error: 'Invalid subscription URL' }, { status: 400 })
+			}
+			await fetch(subscribeUrl.toString())
 			console.log('SNS subscription confirmed:', message.TopicArn)
 			return NextResponse.json({ message: 'Subscription confirmed' })
 		}

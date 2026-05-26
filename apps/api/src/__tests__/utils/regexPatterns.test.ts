@@ -26,6 +26,14 @@ describe('Regex Patterns', () => {
 			expect(oneChapterPattern.test('Psalms')).toBe(false)
 			expect(oneChapterPattern.test('119')).toBe(false)
 		})
+
+		it('should not match ASCII punctuation chars between Z and a (was [A-z] bug)', () => {
+			// Characters ASCII 91-96: [ \ ] ^ _ `
+			expect(oneChapterPatternExact.test('[ 1')).toBe(false)
+			expect(oneChapterPatternExact.test('] 1')).toBe(false)
+			expect(oneChapterPatternExact.test('^ 1')).toBe(false)
+			expect(oneChapterPatternExact.test('_ 1')).toBe(false)
+		})
 	})
 
 	describe('oneChapterPatternExact', () => {

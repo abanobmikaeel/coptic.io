@@ -13,8 +13,8 @@ const concatRegexp = (reg: RegExp, exp: RegExp) => {
 /**
  * Single chapter, example: Psalms 119
  */
-export const oneChapterPattern = /[0-9]* *[A-z]+ [0-9]+/
-export const oneChapterPatternExact = /^[0-9]* *[A-z]+ [0-9]+$/
+export const oneChapterPattern = /[0-9]* *[A-Za-z]+ [0-9]+/
+export const oneChapterPatternExact = /^[0-9]* *[A-Za-z]+ [0-9]+$/
 
 /**
  * Single verse, example: Psalms 119:96
@@ -25,7 +25,7 @@ export const oneVersePattern = concatRegexp(oneChapterPattern, /:[0-9]+/)
  * Verse range, example: Psalms 119:96-97
  * Anchored to match only single-chapter ranges (not "15:36-16:5")
  */
-export const verseRangePattern = /^[0-9]* *[A-z]+ [0-9]+:[0-9]+-[0-9]+$/
+export const verseRangePattern = /^[0-9]* *[A-Za-z]+ [0-9]+:[0-9]+-[0-9]+$/
 
 /**
  * Verse with commas,
@@ -41,4 +41,4 @@ export const verseWithCommas = concatRegexp(oneVersePattern, /,/)
  * example: 2 Peter 1:19-2:8
  * Anchored for exact matching
  */
-export const multiChapterRange = /^[0-9]* *[A-z]+ [0-9]+:[0-9]+-[0-9]+:[0-9]+$/
+export const multiChapterRange = /^[0-9]* *[A-Za-z]+ [0-9]+:[0-9]+-[0-9]+:[0-9]+$/
