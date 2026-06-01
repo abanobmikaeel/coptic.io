@@ -44,6 +44,35 @@ jobs:
       - run: pnpm build:packages
       - run: pnpm --filter @coptic/web build
 
+  deploy-production:
+    needs: [test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm build:packages
+      - name: Deploy to production
+        working-directory: apps/api
+        run: pnpm exec wrangler deploy
+
+  smoke-test-production:
+    needs: [deploy-production]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Run smoke tests against production
+        env:
+          API_URL: https://api.coptic.io
+        run: bun scripts/smoke-test.ts
+
   deploy-preview:
     needs: [test]
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
@@ -51,6 +80,8 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.preview_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -113,6 +144,20 @@ jobs:
                 body,
               });
             }
+
+  smoke-test:
+    needs: [deploy-preview]
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Run smoke tests against preview
+        env:
+          API_URL: ${{ needs.deploy-preview.outputs.preview_url }}
+        run: |
+          sleep 5
+          bun scripts/smoke-test.ts
 
   teardown-preview:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
