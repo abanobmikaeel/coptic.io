@@ -25,14 +25,24 @@ describe('Regex Patterns', () => {
 		it('should not match invalid formats', () => {
 			expect(oneChapterPattern.test('Psalms')).toBe(false)
 			expect(oneChapterPattern.test('119')).toBe(false)
+			expect(oneChapterPattern.test('')).toBe(false)
+			expect(oneChapterPattern.test('123 456')).toBe(false)
+		})
+
+		it('should match lowercase and uppercase book names', () => {
+			expect(oneChapterPattern.test('john 3')).toBe(true)
+			expect(oneChapterPattern.test('JOHN 3')).toBe(true)
+			expect(oneChapterPattern.test('jOhN 3')).toBe(true)
 		})
 
 		it('should not match ASCII punctuation chars between Z and a (was [A-z] bug)', () => {
-			// Characters ASCII 91-96: [ \ ] ^ _ `
-			expect(oneChapterPatternExact.test('[ 1')).toBe(false)
-			expect(oneChapterPatternExact.test('] 1')).toBe(false)
-			expect(oneChapterPatternExact.test('^ 1')).toBe(false)
-			expect(oneChapterPatternExact.test('_ 1')).toBe(false)
+			// ASCII 91-96: [ \ ] ^ _ ` — all fall between Z(90) and a(97)
+			expect(oneChapterPattern.test('[ 1')).toBe(false)
+			expect(oneChapterPattern.test('\\ 1')).toBe(false)
+			expect(oneChapterPattern.test('] 1')).toBe(false)
+			expect(oneChapterPattern.test('^ 1')).toBe(false)
+			expect(oneChapterPattern.test('_ 1')).toBe(false)
+			expect(oneChapterPattern.test('` 1')).toBe(false)
 		})
 	})
 
@@ -45,6 +55,16 @@ describe('Regex Patterns', () => {
 		it('should not match if there is extra text', () => {
 			expect(oneChapterPatternExact.test('Psalms 119 extra')).toBe(false)
 			expect(oneChapterPatternExact.test('prefix Psalms 119')).toBe(false)
+		})
+
+		it('should not match ASCII punctuation chars between Z and a (was [A-z] bug)', () => {
+			// ASCII 91-96: [ \ ] ^ _ ` — all fall between Z(90) and a(97)
+			expect(oneChapterPatternExact.test('[ 1')).toBe(false)
+			expect(oneChapterPatternExact.test('\\ 1')).toBe(false)
+			expect(oneChapterPatternExact.test('] 1')).toBe(false)
+			expect(oneChapterPatternExact.test('^ 1')).toBe(false)
+			expect(oneChapterPatternExact.test('_ 1')).toBe(false)
+			expect(oneChapterPatternExact.test('` 1')).toBe(false)
 		})
 	})
 
@@ -81,6 +101,13 @@ describe('Regex Patterns', () => {
 			expect(verseRangePattern.test('2 Peter 1:19-2:8')).toBe(false)
 			expect(verseRangePattern.test('Matthew 4:23-5:16')).toBe(false)
 		})
+
+		it('should not match ASCII punctuation chars between Z and a (was [A-z] bug)', () => {
+			expect(verseRangePattern.test('[ 1:1-2')).toBe(false)
+			expect(verseRangePattern.test('\\ 1:1-2')).toBe(false)
+			expect(verseRangePattern.test('^ 1:1-2')).toBe(false)
+			expect(verseRangePattern.test('` 1:1-2')).toBe(false)
+		})
 	})
 
 	describe('verseWithCommas', () => {
@@ -113,6 +140,13 @@ describe('Regex Patterns', () => {
 
 		it('should not match chapter-only references', () => {
 			expect(multiChapterRange.test('Psalms 119')).toBe(false)
+		})
+
+		it('should not match ASCII punctuation chars between Z and a (was [A-z] bug)', () => {
+			expect(multiChapterRange.test('[ 1:1-2:3')).toBe(false)
+			expect(multiChapterRange.test('\\ 1:1-2:3')).toBe(false)
+			expect(multiChapterRange.test('^ 1:1-2:3')).toBe(false)
+			expect(multiChapterRange.test('` 1:1-2:3')).toBe(false)
 		})
 	})
 })

@@ -12,10 +12,11 @@
     "check": "biome check .",
     "check:fix": "biome check --write .",
     "typecheck": "tsc --noEmit",
-    "ci": "bun run typecheck && bun run check && bun run build",
+    "test:unit": "vitest run",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:headed": "playwright test --headed"
+    "test:headed": "playwright test --headed",
+    "ci": "bun run typecheck && bun run check && bun run test:unit && bun run build"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1051.0",
@@ -38,7 +39,8 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.7"
   },
   "browserslist": [
     "last 2 Chrome versions",
