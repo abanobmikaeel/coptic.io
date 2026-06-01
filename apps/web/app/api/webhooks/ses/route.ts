@@ -35,7 +35,10 @@ export async function POST(request: NextRequest) {
 		// Handle SNS subscription confirmation
 		if (message.Type === 'SubscriptionConfirmation' && message.SubscribeURL) {
 			if (!message.Token || !message.TopicArn) {
-				return NextResponse.json({ error: 'Missing subscription confirmation fields' }, { status: 400 })
+				return NextResponse.json(
+					{ error: 'Missing subscription confirmation fields' },
+					{ status: 400 },
+				)
 			}
 			const topicArnParts = message.TopicArn.split(':')
 			const region = topicArnParts[3]
