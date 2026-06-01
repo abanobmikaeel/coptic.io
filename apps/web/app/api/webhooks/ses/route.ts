@@ -34,8 +34,22 @@ export async function POST(request: NextRequest) {
 
 		// Handle SNS subscription confirmation
 		if (message.Type === 'SubscriptionConfirmation' && message.SubscribeURL) {
-			// Confirm the subscription by visiting the URL
-			await fetch(message.SubscribeURL)
+			if (!message.Token || !message.TopicArn) {
+				return NextResponse.json(
+					{ error: 'Missing subscription confirmation fields' },
+					{ status: 400 },
+				)
+			}
+			const topicArnParts = message.TopicArn.split(':')
+			const region = topicArnParts[3]
+			if (!/^[a-z0-9-]+$/.test(region)) {
+				return NextResponse.json({ error: 'Invalid topic region' }, { status: 400 })
+			}
+			const confirmUrl = new URL(`https://sns.${region}.amazonaws.com/`)
+			confirmUrl.searchParams.set('Action', 'ConfirmSubscription')
+			confirmUrl.searchParams.set('TopicArn', message.TopicArn)
+			confirmUrl.searchParams.set('Token', message.Token)
+			await fetch(confirmUrl.toString())
 			console.log('SNS subscription confirmed:', message.TopicArn)
 			return NextResponse.json({ message: 'Subscription confirmed' })
 		}

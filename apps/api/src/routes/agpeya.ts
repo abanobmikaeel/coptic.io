@@ -1,4 +1,5 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { warmTranslation } from '../models/readings'
 import { AgpeyaAnyHourSchema, AgpeyaWatchSchema, ErrorSchema } from '../schemas'
 import * as agpeyaService from '../services/agpeya.service'
 
@@ -26,7 +27,8 @@ const getCurrentRoute = createRoute({
 	},
 })
 
-app.openapi(getCurrentRoute, (c) => {
+app.openapi(getCurrentRoute, async (c) => {
+	await warmTranslation('en')
 	const currentHourId = agpeyaService.getCurrentHour()
 	const hour = agpeyaService.getAgpeyaHour(currentHourId)
 	// Current hour always exists since getCurrentHour returns a valid hour ID
@@ -52,7 +54,8 @@ const listHoursRoute = createRoute({
 	},
 })
 
-app.openapi(listHoursRoute, (c) => {
+app.openapi(listHoursRoute, async (c) => {
+	await warmTranslation('en')
 	const hours = agpeyaService.getAllHours()
 	return c.json(hours, 200)
 })
@@ -92,7 +95,8 @@ const getMidnightWatchRoute = createRoute({
 	},
 })
 
-app.openapi(getMidnightWatchRoute, (c) => {
+app.openapi(getMidnightWatchRoute, async (c) => {
+	await warmTranslation('en')
 	const { watch: watchId } = c.req.valid('param')
 
 	const watch = agpeyaService.getMidnightWatch(watchId as agpeyaService.MidnightWatchId)
@@ -140,7 +144,8 @@ const getHourRoute = createRoute({
 	},
 })
 
-app.openapi(getHourRoute, (c) => {
+app.openapi(getHourRoute, async (c) => {
+	await warmTranslation('en')
 	const { hour: hourId } = c.req.valid('param')
 
 	const hour = agpeyaService.getAgpeyaHour(hourId)
