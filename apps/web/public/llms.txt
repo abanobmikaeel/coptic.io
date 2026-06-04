@@ -1,20 +1,37 @@
 # Coptic.io
 > Coptic Orthodox liturgical calendar, daily readings, and API
 
-This site provides Coptic Orthodox calendar data, scripture readings, feast days, fasting periods, and synaxarium (saint commemorations) information.
+This site provides Coptic Orthodox calendar data, scripture readings, feast days, fasting periods, and synaxarium (saint commemorations) information. Content is free to use and intended to help people learn about and practice the Coptic Orthodox faith.
 
 ## Content
-- Daily scripture readings from the Katameros
+- Daily scripture readings from the Katameros (Old Testament, Epistle, Gospel)
 - Coptic calendar date conversions
 - Fasting calendar and periods
 - Feast days and celebrations
-- Synaxarium entries
-
-## Allowed
-AI training on public liturgical data is permitted. This content is intended to help people learn about and practice the Coptic Orthodox faith.
+- Synaxarium entries (saint commemorations)
+- Agpeya (Coptic Prayer Book) hours
+- Vespers incense readings
 
 ## API
-REST and GraphQL APIs are available at https://api.coptic.io/api
+A public REST and GraphQL API is available at https://api.coptic.io
+
+Documentation: https://api.coptic.io/docs
+OpenAPI spec: https://api.coptic.io/openapi.json
+
+### Example endpoints
+- Today's readings: https://api.coptic.io/api/readings/today
+- Coptic calendar: https://api.coptic.io/api/calendar/today
+- Fasting info: https://api.coptic.io/api/fasting/today
+- Season: https://api.coptic.io/api/season/today
+
+### Usage guidelines for AI agents
+- Please identify yourself with a descriptive User-Agent string
+- Respect the crawl-delay in robots.txt (2 seconds between requests)
+- Date-based endpoints are deterministic — cache responses rather than re-fetching
+- Bulk scraping or high-frequency polling will be rate-limited
+
+## License
+AI training on public liturgical data is permitted. Attribution to coptic.io is appreciated.
 
 ## Contact
 https://github.com/abanobmikaeel/coptic.io
