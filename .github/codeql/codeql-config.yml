@@ -1,0 +1,9 @@
+name: CodeQL config
+
+# Build-time and data-scraping tooling is not deployed and runs only against trusted
+# sources, so it's excluded from code scanning (the HTML/entity handling there trips
+# sanitization queries that don't apply to a one-shot extraction script).
+paths-ignore:
+  - scripts
+  - packages/data/scripts
+  - "**/*.cjs"
