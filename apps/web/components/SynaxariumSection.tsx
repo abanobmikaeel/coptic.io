@@ -48,6 +48,7 @@ export function SynaxariumSection({
 	const [expanded, setExpanded] = useState<number | null>(initialExpanded)
 
 	// Get style classes similar to ScriptureReading
+	const textDir = isRtl ? ('rtl' as const) : ('ltr' as const)
 	const sizes = getTextSizeClasses(textSize, isRtl)
 	const lineHeightClass = getLineHeightClass(lineSpacing, isRtl)
 	const fontClass = getFontClass(fontFamily, isRtl)
@@ -71,7 +72,7 @@ export function SynaxariumSection({
 						type="button"
 						onClick={() => setExpanded(expanded === idx ? null : idx)}
 						className="w-full flex items-start gap-3 text-left group"
-						dir={isRtl ? 'rtl' : 'ltr'}
+						dir={textDir}
 					>
 						<ChevronRightIcon
 							className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
@@ -88,7 +89,7 @@ export function SynaxariumSection({
 					{expanded === idx && entry.text && (
 						<div
 							className={`mt-4 ${isRtl ? 'me-8' : 'ms-8'} animate-in fade-in slide-in-from-top-2 duration-200`}
-							dir={isRtl ? 'rtl' : 'ltr'}
+							dir={textDir}
 						>
 							<p
 								className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeightClass} ${themeClasses.text[theme]} whitespace-pre-line`}

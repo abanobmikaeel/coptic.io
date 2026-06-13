@@ -61,6 +61,7 @@ html {
 	/* Default to light, blocking script overrides before paint */
 	color-scheme: light;
 	background-color: #f9fafb;
+	overscroll-behavior-y: none;
 }
 
 html.dark {
@@ -147,19 +148,25 @@ body {
 	font-weight: 400;
 }
 
-/* Coptic font - CS Avva Shenouda (ASCII-mapped traditional Coptic font) */
+/* Coptic font - CS Avva Shenouda (ASCII-mapped traditional Coptic font).
+   ascent/descent overrides normalize the font's unusually large built-in ascent metric
+   so labels and body text align correctly with Latin/Arabic at the same font-size. */
 @font-face {
 	font-family: "CS Avva Shenouda";
 	src: url("/fonts/CS Avva Shenouda.ttf") format("truetype");
 	font-display: swap;
+	ascent-override: 80%;
+	descent-override: 20%;
+	line-gap-override: 0%;
 }
 
 /* Coptic font class - CS fonts are ASCII-mapped (display Coptic when typing ASCII)
-   Our Coptic Bible data is now in ASCII format to work with these traditional fonts */
+   Our Coptic Bible data is in ASCII format for CS Avva Shenouda; incense/liturgy data
+   uses Unicode Coptic, which falls through to Noto Sans Coptic (var --font-coptic).
+   Font size and line-height are intentionally NOT set here — controlled by Tailwind classes
+   so the same font renders correctly at all sizes (labels, body text, etc.). */
 .font-coptic {
-	font-family: "CS Avva Shenouda", serif;
-	font-size: 1.45em; /* Larger for better readability */
-	line-height: 1.9; /* More line spacing for Coptic text */
+	font-family: "CS Avva Shenouda", var(--font-coptic), "Noto Sans Coptic", serif;
 }
 
 /* RTL text alignment adjustments */

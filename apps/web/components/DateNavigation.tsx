@@ -9,10 +9,20 @@ import type { ReactNode } from 'react'
 
 interface DateNavigationProps {
 	theme?: 'light' | 'sepia' | 'dark'
+	basePath?: string
 	children?: ReactNode
+	// Always keep an explicit ?date= in the URL instead of stripping it for "today".
+	// Pages whose default date is not the calendar date (e.g. Vespers rolls over to the
+	// next liturgical day in the evening) need this so navigating to today's date sticks.
+	keepDateParam?: boolean
 }
 
-export function DateNavigation({ theme = 'light', children }: DateNavigationProps) {
+export function DateNavigation({
+	theme = 'light',
+	basePath = '/readings',
+	children,
+	keepDateParam = false,
+}: DateNavigationProps) {
 	const searchParams = useSearchParams()
 
 	// Read current date from URL params (client-side source of truth)
@@ -22,14 +32,14 @@ export function DateNavigation({ theme = 'light', children }: DateNavigationProp
 		const params = new URLSearchParams(searchParams.toString())
 		const today = getTodayDateString()
 
-		if (targetDate === today) {
+		if (targetDate === today && !keepDateParam) {
 			params.delete('date')
 		} else {
 			params.set('date', targetDate)
 		}
 
 		const queryString = params.toString()
-		return `/readings${queryString ? `?${queryString}` : ''}`
+		return `${basePath}${queryString ? `?${queryString}` : ''}`
 	}
 
 	const prevDate = getAdjacentDate(currentDate, -1)

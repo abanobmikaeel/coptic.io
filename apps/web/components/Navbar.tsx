@@ -35,8 +35,13 @@ export default function Navbar() {
 			href: '/synaxarium',
 		},
 		{
-			label: 'Lent Guide',
-			description: 'Great Lent devotional readings',
+			label: t('vespers'),
+			description: t('vespersDescription'),
+			href: '/vespers',
+		},
+		{
+			label: t('lent'),
+			description: t('lentDescription'),
 			href: '/lent',
 		},
 	]

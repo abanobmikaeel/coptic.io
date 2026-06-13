@@ -1,0 +1,862 @@
+{
+  "evening": {
+    "id": "evening",
+    "name": "Ⲡⲧⲁⲗⲟ Ⲙⲡⲓⲥ̀ⲑⲟⲓⲛⲟⲩϥⲓ ⲛ̀ⲧⲉ Ϩⲁⲛⲁ̀ⲣⲟⲩϩⲓ",
+    "description": "Ⲡⲧⲁⲗⲟ Ⲙⲡⲓⲥ̀ⲑⲟⲓⲛⲟⲩϥⲓ ⲛ̀ⲧⲉ Ϩⲁⲛⲁ̀ⲣⲟⲩϩⲓ",
+    "sections": [
+      {
+        "id": "thanksgiving",
+        "type": "prayer",
+        "role": "all",
+        "title": "Ϯⲡ̀ⲣⲟⲥⲉⲩⲭⲏ ⲛ̀ⲧⲉ ⲡⲓϣⲉⲡϩ̀ⲙⲟⲧ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "eleycon ymac o ;eoc o patyr o pantokratwr. panagia triac eleycon ymac."
+          },
+          "p[oic vnou] nte nijom swpi neman je mmon ntan nouboy;oc /en nen;liqic nem nenhojhej ebyl erok.",
+          "ariten nempsa njoc /en ousephmot",
+          {
+            "speaker": "People",
+            "text": "je peniwt et /en nivyoui mareftoubo nje pekran. mareci nje tekmetouro. peteh nak marefswpi mvry] /en tve nem hijen pikahi. penwik nte rac] myif nan mvoou. ouoh ,a nyeteron nan ebol mvry] hwn nten,w ebol nnyete ouon ntan erwou. ouoh mperenten e/oun epiracmoc alla nahmen ebol ha pipethwou. /en pi,rictoc iycouc pen[oic je ;wk te ]metouro nem ]jom nem piwou sa eneh. amyn."
+          },
+          {
+            "speaker": "People",
+            "text": "/en pi,rictoc iycouc pen[oic."
+          },
+          {
+            "speaker": "Priest",
+            "text": "slyl."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "epi proceu,y cta;yte."
+          },
+          {
+            "speaker": "Priest",
+            "text": "iryny paci."
+          },
+          {
+            "speaker": "People",
+            "text": "ke tw pneumati cou."
+          },
+          {
+            "speaker": "Priest",
+            "text": "marensephmot ntotf mpireferpe;nanef ouoh nnayt vnou] viwt mpen[oic ouoh pennou] ouoh pencwtyr iyc p,c."
+          },
+          "je aferckepazin ejwn aferboy;in eron afareh eron afsopten erof af]aco eron af]toten afenten sa ehryi etaiounou ;ai.",
+          "n;of on maren]ho erof hopwc ntefareh eron /en paiehoou e;ouab vai nem niehoou tyrou nte penwn/ /en hiryny niben nje pipantokratwr p[oic pennou].",
+          {
+            "speaker": "Deacon",
+            "text": "proceuxac;e."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "vnyb p[oic vnou] pipantokratwr viwt mpen[oic ouoh pennou] ouoh pencwtyr iycouc pi,rictoc tensephmot ntotk kata hwb niben nem e;be hwb niben nem /en hwb niben."
+          },
+          "je akerckepazin ejwn akerboy;in eron akareh eron aksopten erok ak]aco eron ak]toten akenten sa ehryi etaiounou ;ai.",
+          {
+            "speaker": "Deacon",
+            "text": "twbh hina nte vnou] nai nan ntefsenhyt /aron ntefcwtem eron nteferboy;in eron ntef[i nni]ho nem nitwbh nte nye;ouab ntaf ntotou ehryi ejwn epiaga;on ncyou niben* ntef,a nennobi nan ebol."
+          },
+          "ntefareh epwn/ nem ptaho eratf mpeniwt ettaiyout nar,yereuc papa abba (...) nem pefkesvyr nlitourgoc peniwt nepickopoc (mmytropolityc) abba (...).",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "e;be vai ten]ho ouoh tentwbh ntekmetaga;oc pimairwmi myic nan e;renjwk ebol mpai ke ehoou e;ouab vai nem niehoou tyrou nte penwn/ /en hiryny niben nem tekho]."
+          },
+          "v;onoc niben piracmoc niben energia niben nte pcatanac pco[ni nte hanrwmi euhwou nem ptwnf epswi nte hanjaji nyethyp nem nye;ouwnh ebol. alitou ebol haron nem ebol ha peklaoc tyrf",
+          "nem ebol ha taiekklycia ;ai",
+          "(nem ebol ha taitrapeza ;ai)",
+          "nem ebol ha paima e;ouab ntak vai.",
+          "ny de e;naneu nem nyeternofri cahni mmwou nan je n;ok pe etak] mpiersisi nan ehwmi ejen nihof nem ni[ly nem ejen ]jom tyrc nte pijaji.",
+          "ouoh mperenten e/oun epiracmoc alla nahmen ebol ha pipethwou /en pihmot nem nimetsenhyt nem ]metmairwmi nte pekmonogenyc nsyri pen[oic ouoh pennou] ouoh pencwtyr iyc p,c.",
+          "vai ete ebol hitotf ere piwou nem pitaio nem piamahi nem ]prockunycic erprepi nak nemaf nem pipneuma e;ouab nreftan/o ouoh nomooucioc nemak. ]nou nem ncyou niben nem sa eneh nte nieneh tyrou amyn."
+        ]
+      },
+      {
+        "id": "verses-of-cymbals",
+        "type": "prayer",
+        "role": "all",
+        "title": "Ⲛⲓⲣⲉϥϩⲱⲥ ⲛ̀ⲧⲉ ⲛⲓⲕⲩⲙⲃⲁⲗⲟⲛ",
+        "blocks": [
+          {
+            "content": [
+              {
+                "speaker": "People",
+                "text": "kurie eleycon."
+              }
+            ]
+          },
+          {
+            "when": {
+              "dayTune": "watos"
+            },
+            "content": [
+              "tenouwst mviwt nem psyri nem pipneuma e;u ]triac e;u nomooucioc.",
+              ",ere ]ekklycia pyi nte niaggeloc ,ere ]par;enoc etacmec pencwtyr."
+            ]
+          },
+          {
+            "when": {
+              "dayTune": "adam"
+            },
+            "content": [
+              "amwini marenouwst n]triac e;ouab ete viwt nem psyri nem pipneuma e;ouab.",
+              "anon /a nilaoc n,rictianoc vai gar pe pennou] naly;inoc.",
+              "ouon ouhelpic ntan /en ;ye;ouab maria ere v] nai nan hiten necprecbia.",
+              "ouon oumetcemnoc nhryi /en pikocmoc ebol hiten pislyl nte ]agia maria ]par;enoc."
+            ]
+          },
+          {
+            "content": [
+              ",ere ne maria ][rompi e;necwc ;yetacmici nan mvnou] pilogoc.",
+              ",ere ne maria /en ou,ere efouab ,ere ne maria ;mau mvye;ouab.",
+              ",ere ;yetacjem hmot poc sop neme ,ere ;yetac[i nten piaggeloc mvrasi mpikocmoc.",
+              ",ere mi,ayl pinis] nar,yaggeloc ,ere gabriyl picwtp mpifaisennoufi.",
+              ",ere ni,eroubim ,ere niceravim ,ere nitagma tyrou nepouranion.",
+              ",ere iwannyc pinis] mprodromoc ,ere piouyb pcuggenyc nemmanouyl.",
+              ",ere naoc nio] napoctoloc ,ere nima;ytyc nte penoc iyc p,c.",
+              ",ere nak w pimarturoc ,ere pieuaggelictyc ,ere piapoctoloc abba markoc pi;ewrimoc."
+            ]
+          },
+          {
+            "when": {
+              "commemoration": "martyrs"
+            },
+            "content": [
+              ",ere nwten w nimarturoc ,ere niswij ngenneoc ,ere nia;lovoroc pa[oic pouro gewrgioc ;eodwroc pictratilatic vilopatyr merkourioc apa myna nte nivaiat."
+            ]
+          },
+          {
+            "content": [
+              "iycouc pi,rictoc ncaf nem voou n;of n;of pe nem sa eneh /en ouhupoctacic nouwt tenouwst mmof ten]wou naf.",
+              "pouro nte ]hiryny moi nan ntekhiryny cemni nan ntekhiryny ,a nennobi nan ebol.",
+              "jwr ebol nnijaji nte ]ekklycia aricobt eroc nneckim sa eneh.",
+              "emmanouyl pennou] /en tenmy] ]nou /en pwou nte pefiwt nem pipneuma e;ouab.",
+              "ntefcmou eron tyren nteftoubo nnenhyt nteftal[o nniswni nte nenqu,y nem nencwma."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "litany-departed",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲉ̀ϫⲉⲛ ⲛⲏⲉⲑⲙⲱⲟⲩⲧ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "slyl."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "epi proceu,y cta;yte."
+          },
+          {
+            "speaker": "Priest",
+            "text": "iryny paci."
+          },
+          {
+            "speaker": "People",
+            "text": "ke tw pneumati cou."
+          },
+          {
+            "speaker": "Priest",
+            "text": "palin on maren]ho evnou] pipantokratwr viwt mpen[oic ouoh pennou] ouoh pencwtyr iycouc pi,rictoc."
+          },
+          "ten]ho ouoh tentwbh ntekmetaga;oc pimairwmi arivmeui p[oic nniqu,y nte nekebiaik etauenkot nenio] nem nencnyou.",
+          {
+            "speaker": "Deacon",
+            "text": "twbh ejen nenio] nem nencnyou etauenkot aumton mmwou /en vnah] mpi,rictoc icjen peneh nenio] e;ouab nar,yepickopoc ke nenio] nepickopoc nenio] nhygoumenoc ke nenio] mprecbuteroc nem nencnyou ndiakwn nenio] mmona,oc ke nenio] nlaikoc nem ehryi ejen ]anapaucic tyrc nte ni,rictianoc."
+          },
+          "hina nte pi,rictoc pennou] ]mton nnouqu,y tyrou /en piparadicoc nte pounof anon de hwn ntefer pinai neman ntef,a nennobi nan ebol.",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "arikataxioin p[oic mamton nnouqu,y tyrou /en kenf nnenio] e;ouab abraam nem icaak nem iakwb."
+          },
+          "sanousou /en ouma n,loy hijen vmwou nte pemton /en piparadicoc nte pounof.",
+          "pima etafvwt ebol n/ytf nje pimkah nhyt nem ]lupy nem pifiahom /en vouwini nte nye;ouab ntak.",
+          "eketounoc ntoukecarx /en piehoou etak;asf kata nekepaggelia mmyi ouoh natme;nouj.",
+          "ekeer,arizec;e nwou nniaga;on nte nekepaggelia nyete mpe bal nau erwou oude mpe masj co;mou oude mpoui ehryi ejen phyt nrwmi. nyetakcebtwtou vnou] nnye;mei mpekran e;ouab.",
+          "je mmon mou sop nnekebiaik alla ououwteb ebol pe.",
+          "icje de ouon oumetamelyc [i erwou ie oumetat]h;yf hwc rwmi eauervorin noucarx ouoh auswpi /en paikocmoc.",
+          "n;ok de hwc aga;oc ouoh mmairwmi vnou] arikataxioin p[oic nnekebiaik n,rictianoc nor;odoxoc et /en ]oikomeny tyrc icjen nima nsai nte vry sa nefma nhwtp nem icjen pemhyt sa vryc piouai piouai kata pefran nem ]oui ]oui kata pecran kurie mamton nwou ,w nwou ebol.",
+          "je mmon hli efouab e;wleb oude kan ouehoou nouwt pe pefwn/ hijen pikahi.",
+          "n;wou men hamny p[oic eak[i nnouqu,y mamton nwou ouoh marouer pempsa n]metouro nte nivyoui.",
+          "anon de tyren ari,arizec;e nan mpenjwk n,rictianoc efranak mpekm;o.",
+          "ouoh moi nwou neman noumeroc nem ouklyroc nem nye;ouab tyrou ntak.",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          }
+        ]
+      },
+      {
+        "id": "litany-sick",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲉ̀ϫⲉⲛ ⲛⲏⲉⲧϣⲱⲛⲓ",
+        "rubric": "A Matins litany, optional for vespers.",
+        "optional": true,
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "slyl."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "epi proceu,y cta;yte."
+          },
+          {
+            "speaker": "Priest",
+            "text": "iryny paci."
+          },
+          {
+            "speaker": "People",
+            "text": "ke tw pneumati cou."
+          },
+          {
+            "speaker": "Priest",
+            "text": "palin on maren]ho evnou] pipantokratwr viwt mpen[oic ouoh pennou] ouoh pencwtyr iycouc pi,rictoc."
+          },
+          "ten]ho ouoh tentwbh ntekmetaga;oc pimairwmi arivmeui p[oic nnyetswni nte peklaoc.",
+          {
+            "speaker": "Deacon",
+            "text": "twbh ejen nenio] nem nencnyou etswni /en jinswni niben ite /en paitopoc ite /en mai niben hina nte pi,rictoc pennou] erhmot nan nemwou mpioujai nem pital[o ntef,a nennobi nan ebol."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "eakjem pousini /en hannai nem hanmetsenhyt matal[wou."
+          },
+          "alioui ebol harwou nem ebol haron nswni niben nem iabi niben pipneuma nte niswni [oji ncwf.",
+          "nyetauwck eustyout /en niiabi matounocou ouoh manom] nwou.",
+          "nyetthemkyout ntotou nnipneuma naka;arton aritou tyrou nremhe.",
+          "nyet /en nistekwou ie nimetalwc ie nyet,y /en niexorictia ie nie,malwcia ie nyetouamoni mmwou /en oumetbwk ecensasi p[oic aritou tyrou nremhe ouoh nai nwou.",
+          "je n;ok petbwl nnyetcwnh ebol ouoh ettaho eratou nnyetaura/tou e/ryi. ]helpic nte nyete mmon tou helpic ]boy;ia nte nyete mmon tou boy;oc. ;nom] nte nyetoi nkouji nhyt pilumyn nte nyet,y /en pi,imwn.",
+          "qu,y niben ethejhwj ouoh etouamoni ejwou. moi nwou p[oic nounai moi nwou noumton moi nwou nou,bob moi nwou nouhmot moi nwou nouboy;ia moi nwou noucwtyria moi nwou noumetref,w ebol nte nounobi nem nouanomia.",
+          "anon de hwn p[oic niswni nte nenqu,y matal[wou ouoh na nenkecwma ariva/ri erwou.",
+          "picyini mmyi nte nenqu,y nem nencwma piepickopoc nte carx niben jempensini /en pekoujai.",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          }
+        ]
+      },
+      {
+        "id": "litany-travelers",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲉ̀ϫⲉⲛ ⲡⲓⲙⲱⲓⲧ",
+        "rubric": "A Matins litany, optional for vespers.",
+        "optional": true,
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "slyl."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "epi proceu,y cta;yte."
+          },
+          {
+            "speaker": "Priest",
+            "text": "iryny paci."
+          },
+          {
+            "speaker": "People",
+            "text": "ke tw pneumati cou."
+          },
+          {
+            "speaker": "Priest",
+            "text": "ten]ho ouoh tentwbh ntekmetaga;oc pimairwmi arivmeui p[oic nnenio] nem nencnyou etause epsemmo."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "twbh ejen nenio] nem nencnyou etause epsemmo ie nye;meui ese /en mai niben coutwn noumwit tyrou ite ebol hiten viom ie niiarwou ie nilumny ie nimwit mmosi ie piayr ie euiri mpoujinmosi nry] niben hina nte pi,rictoc pennou] tac;wou enyete nouou mma nswni /en ouhiryny ntef,a nennobi nan ebol."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "ie nye;meui ese /en mai niben coutwn noumwit tyrou ite ebol hiten viom ie niiarwou ie nilumny ie nimwit mmosi ie nimwit ie euiri mpoujinmosi nry] niben ouon niben et /en mai niben matvwou e/oun eoulumyn njamy eoulumyn nte pioujai."
+          },
+          "arikataxioin arisvyr ns[yr nem svyr mmosi nemwou.",
+          "myitou enyete nouou /en ourasi eurasi /en outoujo eutoujyout.",
+          "arisvyr nerhwb nem nekebiaik /en hwb niben naga;on.",
+          "anon de hwn p[oic tenmetremnjwili et /en paibioc vai areh eroc nateblaby nat,imwn nats;orter sa ebol.",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          }
+        ]
+      },
+      {
+        "id": "litany-oblations",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲉ̀ϫⲉⲛ ⲛⲓⲡ̀ⲣⲟⲥⲫⲟⲣⲁ",
+        "rubric": "A Matins litany, optional for vespers.",
+        "optional": true,
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "ten]ho ouoh tentwbh ntekmetaga;oc pimairwmi arivmeui p[oic nni;ucia niprocvora nisephmot nte nyetauerprocverin eoutaio nem ouwou mpekran e;ouab."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "twbh ejen nyetfi mvrwous nni;ucia niprocvora niapar,y nineh nic;oinoufi nickepacma nijwm nws nikumillion nte pima nerswousi hina nte pi,rictoc pennou] ]sebiw nwou /en ieroucalym nte tve ntef,a nennobi nan ebol."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "sopou erok ejen pek;uciatyrion e;ouab nellogimon nte tve eouc;oi nc;oinoufi e/oun etekmetnis] et /en nivyoui ebol hiten psemsi nte nekaggeloc nem nekar,yaggeloc e;ouab."
+          },
+          "mvry] etakswp erok nnidwron nte pi;myi abel nem ];ucia nte peniwt abraam nem ]tebi cnou] nte ],yra.",
+          "pairy] on nikeeu,arictyrion sopou erok na pihouo nem na pikouji nyethyp nem nye;ouwnh ebol.",
+          "nye;ouws eini nak e/oun ouoh mmon ntwou nem nyetauini nak e/oun /en paiehoou nte voou nnaidwron nai.",
+          "moi nwou nniattako ntsebiw nnye;natako na nivyoui ntsebiw nna pkahi nisaeneh ntsebiw nniprocoucyou.",
+          "nouyou noutamion mahou ebol /en aga;on niben.",
+          "matakto erwou p[oic ntjom nte nekaggeloc nem nekar,yaggeloc e;ouab. mvry] etauervmeui mpekran e;ouab hijen pikahi aripoumeui hwou p[oic /en tekmetouro ouoh /en paike ewn vai mper,au ncwk.",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          }
+        ]
+      },
+      {
+        "id": "graciously-o-lord",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ⲁ̀ⲣⲓⲕⲁⲧⲁⲝⲓⲟⲓⲛ Ⲡ̀ϭⲟⲓⲥ",
+        "content": [
+          "arikataxioin p[oic ntekareh eron /en paiejwrh vai enoi na;nobi. kcmarwout p[oic vnou] nte nenio] kerhouo cmarwout fmeh nwou nje pekran e;ouab sa eneh amyn.",
+          "marefswpi nje peknai ehryi ejwn p[oic kata vry] etanerhelpic erok. je nenbal nouon niben ceerhelpic erok je n;ok e;na] ntou/re nwou /en pcyou ntyic.",
+          "cwtem eron vnou] pencwtyr ]helpic nte auryjf mpkahi tyrf. n;ok de p[oic ekeareh eron ekenahmen eketoujon ebol hitotf mpaijwou vai nem sa eneh amyn.",
+          "kcmarwout p[oic matcaboi enekme;myi. kcmrawout p[oic maka] nyi enekme;myi. kcmrawout p[oic mavouwini nyi enekme;myi.",
+          "p[oic peknai sop sa eneh nihbyoui nte nekjij p[oic mper,au ncwk. je akswpi nan nouma mvwt icjen jwou sa jwou."
+        ]
+      },
+      {
+        "id": "trisagion",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ⲁ̀ⲅⲓⲟⲥ ⲟ̀ Ⲑⲉⲟⲥ",
+        "content": [
+          "agioc o ;eoc agioc ic,uroc agioc a;anatoc o ek par;enou genne;yc eleycon ymac.",
+          "agioc o ;eoc agioc ic,uroc agioc a;anatoc o ctaurw;ic di ymac eleycon ymac.",
+          "agioc o ;eoc agioc ic,uroc agioc a;anatoc o anactac ek twn nekrwn ke anel;wc ic touc ouranouc eleycon ymac.",
+          "doxa patri ke uiw ke agiw pneumati ke nun ke ai ke ic touc ewnac twn ewnwn. amyn.",
+          "agia triac eleycon ymac panagia triac eleycon ymac ]triac e;ouab nai nan.",
+          "p[oic ,a nennobi nan ebol. p[oic ,a nenanomia nan ebol. p[oic ,a nenparaptwma nan ebol. p[oic jempsini nnyetswni nte peklaoc mata[wou e;be pekran e;ouab. nenio] nem nencnyou etauenkot p[oic mamton nnouqu,y.",
+          "pia;nobi p[oic nai nan pia;nobi p[oic ariboy;in eron sep ten]ho erok. je vwk pe piwou nem piamahi nem pitriac agioc kurie eleycon kurie eleycon kurie eulogycon. amyn."
+        ]
+      },
+      {
+        "id": "lord-prayer-post-trisagion",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ϫⲉ Ⲡⲉⲛⲓⲱⲧ",
+        "content": [
+          {
+            "speaker": "People",
+            "text": "je peniwt et /en nivyoui mareftoubo nje pekran. mareci nje tekmetouro. peteh nak marefswpi mvry] /en tve nem hijen pikahi. penwik nte rac] myif nan mvoou. ouoh ,a nyeteron nan ebol mvry] hwn nten,w ebol nnyete ouon ntan erwou. ouoh mperenten e/oun epiracmoc alla nahmen ebol ha pipethwou. /en pi,rictoc iycouc pen[oic je ;wk te ]metouro nem ]jom nem piwou sa eneh. amyn."
+          }
+        ]
+      },
+      {
+        "id": "intro-to-creed",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ⲧⲉⲛϭⲓⲥⲓ ⲙ̀ⲙⲟ",
+        "content": [
+          "ten[ici mmo ;mau mpiouwini ntavmyi ten]wou ne w ;ye;ouab ouoh mmacnou] je aremici nan mpcwtyr mpikocmoc tyrf afi ouoh afcw] nnenqu,y.",
+          "ouwou nak pennyb penouro pi,rictoc psousou nniapoctoloc pi,lom nte nimarturoc p;elyl nnidikeoc ptajro nniekklycia p,w ebol nte ninobi.",
+          "tenhiwis n]triac e;ouab ec /en oume;nou] nouwt tenouwst mmoc ten]wou nac kurie eleycon kurie eleycon kurie eulogycon. amyn."
+        ]
+      },
+      {
+        "id": "creed",
+        "type": "creed",
+        "role": "congregation",
+        "title": "Ⲧⲉⲛⲛⲁϩϯ",
+        "content": [
+          "tennah] eounou] nouwt vnou] viwt pipantokratwr vyetaf-;amio ntve nem pkahi nyetounau erwou nem nyete ncenau erwou an.",
+          "tennah] eou[oic nouwt iycouc pi,rictoc psyri mvnou] pimonogenyc pimici ebol /en viwt /ajwou nniewn tyrou.",
+          "ououwini ebol /en ououwini ounou] ntavmyi ebol /en ounou] ntavmyi. oumici pe ou;amio an pe ouomooucioc pe nem viwt vyeta hwb niben swpi ebol hitotf. vai ete e;byten anon /a nirwmi nem e;be penoujai afi epecyt ebol /en tve af[icarx ebol /en pipneuma e;ouab nem ebol /en maria ]par;enoc ouoh aferrwmi.",
+          "ouoh auerctaurwnin mmof ehryi ejwn nahren pontioc pilatoc afsepemkah ouoh aukocf. ouoh aftwnf ebol /en nye;mwout /en piehoou mmahsomt kata nigravy.",
+          "afsenaf epswi enivyoui afhemci caouinam mpefiwt ke palin fnyou /en pefwou e]hap enyeton/ nem nye;mwout vyete tefmetouro oua;mounk te.",
+          "ce tennah] epipneuma e;ouab p[oic nref] mpwn/ vye;nyou ebol /en viwt ceouwst mmof ce]wou naf nem viwt nem psyri vyetafcaji /en niprovytyc.",
+          "eoui nagia nka;oliky napoctoliky nekklycia. teneromologin nouwmc nouwt ep,w ebol nte ninobi.",
+          "tenjoust ebol /a thy n]anactacic nte nirefmwout nem piwn/ nte piewn e;nyou. amyn."
+        ]
+      },
+      {
+        "id": "o-god-have-mercy",
+        "type": "prayer",
+        "role": "all",
+        "title": "Ϥ̀ⲛⲟⲩϯ ⲛⲁⲓ ⲛⲁⲛ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "vnou] nai nan ;es ounai eron senhyt /aron."
+          },
+          {
+            "speaker": "People",
+            "text": "amyn."
+          },
+          {
+            "speaker": "Priest",
+            "text": "cwtem eron."
+          },
+          {
+            "speaker": "People",
+            "text": "amyn."
+          },
+          {
+            "speaker": "Priest",
+            "text": "cmou eron areh eron ariboy;in eron."
+          },
+          {
+            "speaker": "People",
+            "text": "amyn."
+          },
+          {
+            "speaker": "Priest",
+            "text": "wli mpekjwnt ebol haron jempensini /en pekoujai ouoh ,a nennobi nan ebol."
+          },
+          {
+            "speaker": "People",
+            "text": "amyn."
+          },
+          "kurie eleycon (g)."
+        ]
+      },
+      {
+        "id": "litany-gospel",
+        "type": "litany",
+        "role": "all",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲡⲓⲉⲩⲁⲅⲅⲉⲗⲓⲟⲛ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "slyl."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "epi proceu,y cta;yte."
+          },
+          {
+            "speaker": "Priest",
+            "text": "iryny paci."
+          },
+          {
+            "speaker": "People",
+            "text": "ke tw pneumati cou."
+          },
+          {
+            "speaker": "Priest",
+            "text": "vnyb p[oic iycouc pi,rictoc pennou] vyetafjoc nnefagioc ettaiyout mma;ytyc ouoh napoctoloc e;ouab."
+          },
+          "je hanmys mprovytyc nem han;myi auerepi;umin enau enyetetennau erwou ouoh mpounau ouoh ecwtem enyetetencwtem erwou ouoh mpoucwtem. n;wten de wouniatou nnetenbal je cenau nem netenmasj je cecwtem.",
+          "marenerpempsa ncwtem ouoh eiri nnekeuaggelion e;ouab /en nitwbh nte nye;ouab ntak.",
+          {
+            "speaker": "Deacon",
+            "text": "proceuxac;e uper tou agiou euaggeliou."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "arivmeui de on pennyb nouon niben etauhonhen nan eerpoumeui /en nen]ho nem nentwbh eteniri mmwou epswi harok p[oic pennou]. nyetauersorp nenkot mamton nwou. nyetswni matal[wou."
+          },
+          "je n;ok gar pe penwn/ tyrou nem penoujai tyrou nem tenhelpic tyrou nem pental[o tyrou nem tenanactacic tyren."
+        ]
+      },
+      {
+        "id": "another-litany-gospel",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲕⲉ ⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲡⲓⲉⲩⲁⲅⲅⲉⲗⲓⲟⲛ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "vnyb p[oic iycouc pi,rictoc pennou] vyetafouwrp nnefagioc ettaiyout mma;ytyc ouoh napoctoloc e;ouab ebol /en pikocmoc tyrf."
+          },
+          "ehiwis mpieuaggelion nte tekmetouro nem e]cbw nnie;noc tyrou e/oun epekemi mmyi.",
+          "ten]ho erok pennyb aouwn nnimasj nte nenhyt epjincwtem enekeuaggeliou.",
+          {
+            "speaker": "Deacon",
+            "text": "proceuxac;e uper tou agiou euaggeliou."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "ouoh aouwn nniec;ytyrion nte nenqy,y ouoh marinerpempsa nswpi oumonon nrefcwtem alla nrefiri on nnekouahcahni e;ouab kata p]ma] mvnou] pekiwt naga;oc."
+          }
+        ]
+      },
+      {
+        "id": "daily-psalm",
+        "type": "daily-psalm",
+        "role": "all",
+        "title": "Ⲡⲓⲯⲁⲗⲙⲟⲥ",
+        "rubric": "A psalm of David, chanted before the Holy Gospel"
+      },
+      {
+        "id": "gospel",
+        "type": "gospel",
+        "role": "all",
+        "title": "Ⲡⲓⲉⲩⲁⲅⲅⲉⲗⲓⲟⲛ"
+      },
+      {
+        "id": "gospel-response",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ⲡⲓⲟⲩⲱϣⲧ ⲛ̀ⲧⲉ ⲡⲓⲉⲩⲁⲅⲅⲉⲗⲓⲟⲛ",
+        "content": [
+          "marenouwst mpencwtyr pimairwmi naga;oc je n;of afsenhyt /aron afi ouoh afcw] mmon.",
+          "ariprecbeuin ehryi ejwn w ten[oic nnyb tyren ];eotokoc maria ;mau mpencwtyr ntef,a nennobi nan ebol.",
+          "twbh mp[oic ehryi ejwn w pi;ewrimoc neuaggelictyc abba markoc piapoctoloc ntef,a nennobi nan ebol.",
+          "je fcmarwout nje viwt nem psyri nem pipneuma e;ouab ]triac etjyk ebol tenouwst mmoc ten]wou nac."
+        ]
+      },
+      {
+        "id": "litany-peace",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ϯϩⲓⲣⲏⲛⲏ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "palin on maren]ho evnou] pipantokratwr viwt mpen[oic ouoh pennou] ouoh pencwtyr iycouc pi,rictoc."
+          },
+          "ten]ho ouoh tentwbh ntekmetaga;oc pimairwmi arivmeui p[oic n]hiryny nte tekoui mmauatc e;ouab nka;oliky napoctoliky nekklycia.",
+          {
+            "speaker": "Deacon",
+            "text": "proceuxac;e uper tyc irynyc tyc agiac monyc ka;olikyc ke apoctolikyc or;odoxou tou ;eou ekklyciac."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": ";ai etsop icjen auryjc n]oikoumeny sa auryjc."
+          }
+        ]
+      },
+      {
+        "id": "litany-fathers",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲛⲓⲓⲟϯ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "arivmeui p[oic mpenpatria,yc niwt ettaiyout nar,yereuc papa abba (;eodoroc b)"
+          },
+          "nem nefcnyou mpneumatikon pipatriar,yc ntantio,ia mar ignatiou (...) nem pipatriar,yc neritrea apouna (...).",
+          "nem pefkesvyr nlitourgoc peniwt nepickopoc (mmytropolityc) abba (...).",
+          {
+            "speaker": "Deacon",
+            "text": "proceuxac;e uper touar,yerewc ymwn papa abba (;eodoroc b) papa ke patriar,ou ke ar,yepickopou tyc megalo polewc alexandriac"
+          },
+          "ke twn adelvwn autou en ty apoctoliky litourgia mar ignatiou (...) tou patriar,ou tyc antio,iac ke apouna (...) tou patriar,ou tyc eritreac.",
+          "nem pefkesvyr nlitourgoc peniwt nepickopoc (mmytropolityc) abba (...)",
+          "ke ton or;odoxwn ymwn epickopwn.",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "/en ouareh areh erwou nan mhanmys nrompi nem hancyou nhirynikon."
+          }
+        ]
+      },
+      {
+        "id": "litany-place",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲡⲓⲧⲟⲡⲟⲥ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "arivmeui p[oic ntcwtyria mpaitopoc e;ouab ntak vai nem topoc niben nem monactyrion niben nte nenio] nor;odoxoc."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "proceuxac;e uper tyc cwtyrian tou kocmou ke tyc polewc ymwn tautyc ke pacwn polewn ke twn ,wrwn ke nycwn ke monactyrion."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "nem polic niben nem ,wra niben nem ni]mi nem poucolcel tyrf."
+          },
+          "ouoh nahmen tyren ebol ha ouhbwn nem oumou nem oumonmen nem oukatanonticmoc nem ou,rwm nem oue,malwcia nte hanbarbaroc nem ebol ha tcyfi nte pisemmo nem ebol ha pjintwnf epswi nte hanheretikoc.",
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          }
+        ]
+      },
+      {
+        "id": "litany-nature",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ϯⲫⲩⲥⲓⲥ",
+        "blocks": [
+          {
+            "when": {
+              "season": "waters"
+            },
+            "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲛⲓⲙⲱⲟⲩ",
+            "content": [
+              {
+                "speaker": "Priest",
+                "text": "arikataxioin p[oic nimwou nte viaro et /en tairwmpi ;ai cmou erwou."
+              },
+              {
+                "speaker": "Deacon",
+                "text": "twbh ejen pjinmosi epswi nte niiarwou mmwou /en tairompi ;ai hina nte pi,rictoc pennou] cmou erwou ntefenou epswi kata nousi ntef] mpounof mpho mpkahi ntefsanousten /a nisyri nte nirwmi ntef] mvnohem nnitebnwoui ntef,a nennobi nan ebol."
+              },
+              {
+                "speaker": "People",
+                "text": "kurie eleycon (g)."
+              }
+            ]
+          },
+          {
+            "when": {
+              "season": "plants"
+            },
+            "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲛⲓⲥⲓϯ",
+            "content": [
+              {
+                "speaker": "Priest",
+                "text": "arikataxioin p[oic nici] nem nicim nem nirwt nte tkoi et /en tairompi ;ai cmou erwou."
+              },
+              {
+                "speaker": "Deacon",
+                "text": "twbh ejen nici] nem nicim nem nirwt nte tkoi /en tairompi ;ai hina nte pi,rictoc pennou] cmou erwou ntouaiai ouoh ntouasai sa ntoujwk ebol /en ounis] nkarpoc ouoh ntefsenhyt /a pefplacma eta nefjij ;amiof ntef,a nennobi nan ebol."
+              },
+              {
+                "speaker": "People",
+                "text": "kurie eleycon (g)."
+              }
+            ]
+          },
+          {
+            "when": {
+              "season": "fruits"
+            },
+            "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲛⲓⲕⲁⲣⲡⲟⲥ",
+            "content": [
+              {
+                "speaker": "Priest",
+                "text": "arikataxioin p[oic niayr nte tve nem nikarpoc nte pkahi /en tairompi ;ai cmou erwou."
+              },
+              {
+                "speaker": "Deacon",
+                "text": "twbh ejen niayr nte tve nem nikarpoc nte pkahi nem va nissyn nem va nimanaloli nem ssyn niben nref]karpoc et /en ]oikoumeny tyrc hina nte pi,rictoc pennou] cmou erwou ntefjokou ebol /en ouhiryny a[ne mkah ntef,a nennobi nan ebol."
+              },
+              {
+                "speaker": "People",
+                "text": "kurie eleycon (g)."
+              }
+            ]
+          },
+          {
+            "content": [
+              "anitou epswi kata nousi kata vyete vwk nhmot ma pounof mpho mpkahi. marou;i/i nje nef;lwm marouasai nje nefoutah.",
+              "cebtwtf eoujroj nem ouwc/. ouoh arioikonomin mpenjinwn/ kata peternofri.",
+              "cmou epi,lom nte ]rompi hiten tekmet,ryctoc e;be nihyki nte peklaoc e;be ],yra nem piorvanoc nem pisemmo nem piremnjwili nem e;byten tyren /a nyeterhelpic erok ouoh ettwbh mpekran e;ouab.",
+              "je nenbal nouon niben ceerhelpic erok je n;ok et] ntou/re nwou /en oucyou enanef.",
+              "arioui neman kata tekmetaga;oc vyet]/re ncarx niben moh nnenhyt nrasi nem ouounof hina anon hwn ere vrwsi ntoten /en hwb niben ncyou niben ntenerhouo /en hwb niben naga;on."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "litany-assemblies",
+        "type": "litany",
+        "role": "priest",
+        "title": "Ⲡⲓⲧⲱⲃϩ ⲛ̀ⲧⲉ ⲛⲓⲥⲩⲛⲁⲝⲓⲥ",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "palin on maren]ho evnou] pipantokratwr viwt mpen[oic ouoh pennou] ouoh pencwtyr iycouc pi,rictoc."
+          },
+          "ten]ho ouoh tentwbh ntekmetaga;oc pimairwmi arivmeui p[oic nnenjin;wou].",
+          "cmou erwou.",
+          {
+            "speaker": "Deacon",
+            "text": "proceuexac;e uper tyc agiac ekklyciac tautyc ke twn cuneleucewn ymwn."
+          },
+          {
+            "speaker": "People",
+            "text": "kurie eleycon."
+          },
+          {
+            "speaker": "Priest",
+            "text": "myic e;rouswpi nan naterkwlin nattahno e;renaitou kata pekouws e;ouab ouoh mmakarion."
+          },
+          "hanyi neu,y hanyi ntoubo hanyi ncmou ari,arizec;e mmwou nan p[oic nem nekebiaik e;nyou menencwn sa eneh.",
+          "]metsamse idwlon /en oujwk fojc ebol /en pikocmoc.",
+          "pcatanac nem jom niben ethwou ntaf /em/wmou ouoh ma;ebiwou capecyt nnen[alauj n,wlem.",
+          "nickandalon nem nyetiri mmwou korfou maroukyn nje nivwrj mptako nte niherecic.",
+          "nijaji nte tekekklycia e;ouab p[oic mvry] ncyou niben nem ]nou ma;ebiwou.",
+          "bwl ntoumet[acihyt ebol matamwou etoumetjwb n,wlem.",
+          "kwrf nnouv;onoc nouepiboly noumankania noukakourgia noukatalalia etouiri mmwou /aron.",
+          "p[oic aritou tyrou naprakton ouoh jwr ebol mpouco[ni vnou] vyetafjwr ebol mpco[ni na,itovel.",
+          {
+            "speaker": "People",
+            "text": "amyn."
+          },
+          "kurie eleycon.",
+          {
+            "speaker": "Priest",
+            "text": "twnk p[oic vnou] maroujwr ebol nje nekjaji tyrou marouvwt ebol /athy mpekho nje ouon niben e;moc] mpekran e;ouab."
+          },
+          "peklaoc de marefswpi /en picmou ehananso nso nem han;ba n;ba euiri mpekouws.",
+          "/en pihmot nem nimetsenhyt nem ]metmairwmi nte pekmonogenyc nsyri pen[oic ouoh pennou] ouoh pencwtyr iycouc pi,rictoc.",
+          "vai ete ebol hitotf ere piwou nem pitaio nem piamahi nem ]prockunycic erprepi nak nemaf nem pipneuma e;ouab nreftan/o ouoh nomooucioc nemak. ]nou nem ncyou niben nem sa eneh nte nieneh tyrou amyn.",
+          "ariten nempsa njoc /en ousephmot",
+          {
+            "speaker": "People",
+            "text": "je peniwt et /en nivyoui..."
+          },
+          "/en pi,rictoc iycouc pen[oic."
+        ]
+      },
+      {
+        "id": "lord-prayer-pre-absolution",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ϫⲉ Ⲡⲉⲛⲓⲱⲧ",
+        "content": [
+          {
+            "speaker": "People",
+            "text": "je peniwt et /en nivyoui mareftoubo nje pekran. mareci nje tekmetouro. peteh nak marefswpi mvry] /en tve nem hijen pikahi. penwik nte rac] myif nan mvoou. ouoh ,a nyeteron nan ebol mvry] hwn nten,w ebol nnyete ouon ntan erwou. ouoh mperenten e/oun epiracmoc alla nahmen ebol ha pipethwou. /en pi,rictoc iycouc pen[oic je ;wk te ]metouro nem ]jom nem piwou sa eneh. amyn."
+          }
+        ]
+      },
+      {
+        "id": "conclusion",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ⲡⲓϫⲱⲕ",
+        "content": [
+          {
+            "speaker": "People",
+            "text": "amyn."
+          },
+          "kurie eleycon (g).",
+          "amyn allylouia. doxa patri ke uiw ke agiw pneumati ke nun ke ai ke ic touc ewnac twn ewnwn amyn.",
+          "tenws ebol enjw mmoc je w pen[oic iycouc pi,rictoc.",
+          "cmou niayr nte tve nem nimwou mviaro nem enici] nem nicim.",
+          "mare peknai nem tekhiryny oi ncobt mpeklaoc.",
+          "cw] mmon ouoh nai nan.",
+          "kurie eleycon kurie eleycon kurie eulogycon amyn. cmou eroi cmou eroi ic ]metanoia ,w nyi ebol jw mpicmou."
+        ]
+      },
+      {
+        "id": "short-blessing",
+        "type": "prayer",
+        "role": "all",
+        "title": "Ⲡⲓⲥ̀ⲙⲟⲩ ⲉⲧⲕⲟⲩϫⲓ",
+        "blocks": [
+          {
+            "content": [
+              {
+                "speaker": "Priest",
+                "text": "vnou] efesenhyt /aron efecmou eron efeouwnh mpefho ehryi ejwn ouoh efenai nan."
+              },
+              "p[oic nohem mpeklaoc cmou etekklyronomia amoni mmwou [acou sa eneh.",
+              "[ici mptap nni,rictianoc hiten tjom mpictauroc nreftan/o.",
+              "hiten ni]ho nem nitwbh eteciri mmwou /aron ncyou niben nje ten[oic nnyb tyren ];eotokoc e;ouab ]agia maria.",
+              "nem pisomt (g) nnis] nreferouwini e;ouab mi,ayl nem gabriyl nem ravayl.",
+              "nem piftoou (d) nzwon nacwmatoc nem pijwt ftoou (kd) mprecbuteroc nem nitagma tyrou nepouranion.",
+              "nem piagioc iwannyc piref]wmc nem pise hme ftoou (rmd) nso nem na[oic nio] napoctoloc nem pisomt (g) nalou nagioc nem piagioc ctevanoc.",
+              "nem pi;ewrimoc neuaggelictyc markoc piapoctoloc e;ouab ouoh mmarturoc.",
+              "nem piagioc gewrgioc nem piagioc ;eodwroc nem vilopatyr markourioc nem piagioc apa myna nem p,oroc tyrf nte nimarturoc.",
+              "nem peniwt ndikeoc pinis] abba antwnioc nem pi;myi abba paule nem pisomt e;ouab abba makari.",
+              "nem peniwt abba iwannyc nem peniwt abba piswi nem peniwt abba paule piremtammoh nem nenio] nrwmeoc maximoc nem dometioc nem peniwt abba mwcy nem pihme qit (m;) mmarturoc.",
+              "nem p,oroc tyrf nte nictaurovoroc nem ni;myi nem nidikeoc nem nicabeu tyrou mpar;enoc nem paggeloc nte paiejwrh etcmarwout.",
+              "nem picmou n];eotokoc e;ouab ]agia maria nsorp nem /ae."
+            ]
+          },
+          {
+            "when": {
+              "weekday": 0
+            },
+            "content": [
+              "nem picmou n]kuriaky nte pencwtyr naga;oc."
+            ]
+          },
+          {
+            "content": [
+              "ere poucmou e;ouab nem pouhmot nem toujom nem tou,aric nem touagapy nem touboy;ia swpi neman tyren sa eneh amyn.",
+              {
+                "speaker": "Priest",
+                "text": "pi,rictoc pennou]."
+              },
+              {
+                "speaker": "People",
+                "text": "amyn eceswpi."
+              },
+              {
+                "speaker": "Priest",
+                "text": "pouro nte ]hiryny moi nan ntekhiryny cemni nan ntekhiryny ,a nennobi nan ebol. je ;wk te ]jom nem piwou nem picmou nem piamahi sa eneh. amyn."
+              },
+              "ariten nempsa njoc /en ousephmot",
+              {
+                "speaker": "People",
+                "text": "je peniwt et /en nivyoui..."
+              },
+              {
+                "speaker": "Priest",
+                "text": "y ,aric tou kuriou de ke ;eou ke cwtyroc ymwn iycou ,rictou meta pantwn umwn."
+              },
+              "masenwten /en ouhiryny p[oic nemwten.",
+              "y agapy tou ;eou ke patroc ke y ,arictou monogenouc uiou kuriou de ke ;eou ke cwtyroc ymwn iycou ,rictou ke y koinwnia ke y dwrea tou agiou pneumatoc iy meta pantwn umwn. masenwten /en ouhiryny thiryny mp[oic nemwten tyrou.",
+              {
+                "speaker": "People",
+                "text": "ke tw pneumati cou."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

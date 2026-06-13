@@ -2,6 +2,7 @@
 
 import type { ReadingSettings, ReadingSettingsActions } from '@/hooks/useReadingSettings'
 import type { ContentLanguage } from '@/i18n/content-languages'
+import type { ReactNode } from 'react'
 import { LanguagePills } from './LanguagePills'
 import { SegmentedButtons } from './SegmentedButtons'
 import { SettingSection } from './SettingSection'
@@ -21,6 +22,9 @@ interface SettingsPanelProps {
 	contentLanguages: ContentLanguage[]
 	onContentLanguagesChange: (languages: ContentLanguage[]) => void
 	onClose: () => void
+	// Optional view-specific controls rendered at the top of the panel (e.g. the Vespers
+	// present/scroll mode switch). Omitted by default, so other views are unaffected.
+	extraSection?: ReactNode
 }
 
 export function SettingsPanel({
@@ -29,6 +33,7 @@ export function SettingsPanel({
 	contentLanguages,
 	onContentLanguagesChange,
 	onClose,
+	extraSection,
 }: SettingsPanelProps) {
 	const {
 		fontFamily,
@@ -59,6 +64,8 @@ export function SettingsPanel({
 
 			{/* Panel */}
 			<div className="absolute top-full mt-3 right-0 z-50 w-80 p-5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-2xl max-h-[85vh] overflow-y-auto">
+				{extraSection}
+
 				{/* Theme */}
 				<SettingSection label="Theme">
 					<ThemePicker value={theme} isAuto={isAutoTheme} onChange={actions.setTheme} />

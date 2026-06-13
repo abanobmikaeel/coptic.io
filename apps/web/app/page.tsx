@@ -20,6 +20,7 @@ import { CalendarIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { ICAL_SUBSCRIBE_URL } from '@/config'
 import {
 	getCalendarData,
+	getFastingForDate,
 	getReadingReferences,
 	getTodayCelebrations,
 	getUpcomingCelebrations,
@@ -45,11 +46,12 @@ export default async function Home({ searchParams }: HomeProps) {
 	const date = params.date
 	const t = await getTranslations('home')
 
-	const [calendar, celebrations, upcoming, readingRefs] = await Promise.all([
+	const [calendar, celebrations, upcoming, readingRefs, fasting] = await Promise.all([
 		getCalendarData(date),
 		getTodayCelebrations(date),
 		getUpcomingCelebrations(60),
 		getReadingReferences(date),
+		getFastingForDate(date),
 	])
 
 	const displayDate = date ? parseDateString(date) : new Date()
@@ -92,6 +94,15 @@ export default async function Home({ searchParams }: HomeProps) {
 							{copticDate}
 						</h2>
 						<p className="text-gray-600 dark:text-gray-400">{gregorianDate}</p>
+
+						{fasting?.isFasting && (
+							<div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 rounded-full">
+								<span className="w-2 h-2 rounded-full bg-purple-500" />
+								<span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+									{fasting.description || t('fastingToday')}
+								</span>
+							</div>
+						)}
 
 						{todayFeast && (
 							<div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">

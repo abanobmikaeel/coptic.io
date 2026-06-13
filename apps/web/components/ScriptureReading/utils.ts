@@ -47,8 +47,9 @@ export function getStyleClasses(
 	const isCoptic = lang === 'cop'
 	return {
 		isRtl,
+		textDir: (isRtl ? 'rtl' : 'ltr') as 'rtl' | 'ltr',
 		sizes: getTextSizeClasses(textSize, isRtl),
-		lineHeight: getLineHeightClass(lineSpacing, isRtl),
+		lineHeight: getLineHeightClass(lineSpacing, isRtl, isCoptic),
 		fontClass: isCoptic ? 'font-coptic' : getFontClass(fontFamily, isRtl),
 		weightClass: getWeightClass(weight, isRtl),
 		wordSpacingClass: getWordSpacingClass(wordSpacing, isRtl),

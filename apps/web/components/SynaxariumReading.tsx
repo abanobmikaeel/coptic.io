@@ -113,6 +113,7 @@ export function SynaxariumReading({
 		const isCoptic = lang === 'cop'
 		return {
 			isRtl,
+			textDir: (isRtl ? 'rtl' : 'ltr') as 'rtl' | 'ltr',
 			sizes: getTextSizeClasses(textSize, isRtl),
 			lineHeight: getLineHeightClass(lineSpacing, isRtl),
 			fontClass: isCoptic ? 'font-coptic' : getFontClass(fontFamily, isRtl),
@@ -204,12 +205,12 @@ export function SynaxariumReading({
 											{orderedLangs.map((lang) => {
 												const langEntry = entries[lang]
 												if (!langEntry) return <div key={lang} />
-												const { isRtl } = getStyleClasses(lang)
+												const { isRtl, textDir } = getStyleClasses(lang)
 												return (
 													<div
 														key={lang}
 														className={`flex items-start gap-3 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'} group`}
-														dir={isRtl ? 'rtl' : 'ltr'}
+														dir={textDir}
 													>
 														<ChevronRightIcon
 															className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
@@ -254,6 +255,7 @@ export function SynaxariumReading({
 														if (!langEntry?.text) return <div key={lang} />
 														const {
 															isRtl,
+															textDir,
 															sizes,
 															lineHeight,
 															fontClass,
@@ -261,7 +263,7 @@ export function SynaxariumReading({
 															wordSpacingClass,
 														} = getStyleClasses(lang)
 														return (
-															<div key={lang} dir={isRtl ? 'rtl' : 'ltr'}>
+															<div key={lang} dir={textDir}>
 																<p
 																	className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} whitespace-pre-line ${isRtl ? 'text-right' : ''}`}
 																>
@@ -286,6 +288,7 @@ export function SynaxariumReading({
 													const firstLang = orderedLangs[0] || 'en'
 													const {
 														isRtl,
+														textDir,
 														sizes,
 														lineHeight,
 														fontClass,
@@ -293,10 +296,7 @@ export function SynaxariumReading({
 														wordSpacingClass,
 													} = getStyleClasses(firstLang)
 													return (
-														<div
-															className={`${isRtl ? 'me-0' : 'ms-8'}`}
-															dir={isRtl ? 'rtl' : 'ltr'}
-														>
+														<div className={`${isRtl ? 'me-0' : 'ms-8'}`} dir={textDir}>
 															<p
 																className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} whitespace-pre-line ${isRtl ? 'text-right' : ''}`}
 															>

@@ -1,5 +1,11 @@
 import { API_BASE_URL } from '@/config'
-import type { CalendarData, CalendarMonth, Celebration, UpcomingCelebration } from './types'
+import type {
+	CalendarData,
+	CalendarMonth,
+	Celebration,
+	FastingInfo,
+	UpcomingCelebration,
+} from './types'
 
 async function fetchApi<T>(endpoint: string, revalidate = 3600): Promise<T | null> {
 	try {
@@ -81,3 +87,6 @@ export const getReadingReferences = (date?: string) => {
 		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 	return fetchApi<ReadingReferences>(`/readings/${today}`)
 }
+
+export const getFastingForDate = (date?: string) =>
+	fetchApi<FastingInfo>(date ? `/fasting/${date}` : '/fasting')

@@ -40,12 +40,21 @@ export const getTextSizeClasses = (size: TextSize, isRtl: boolean) => {
 }
 
 // Line height classes - generous for comfortable reading and podium use
-export const getLineHeightClass = (spacing: LineSpacing, isRtl: boolean) => {
+export const getLineHeightClass = (spacing: LineSpacing, isRtl: boolean, isCoptic = false) => {
 	if (isRtl) {
 		return {
 			compact: 'leading-[2]',
 			normal: 'leading-[2.5]',
 			relaxed: 'leading-[3]',
+		}[spacing]
+	}
+	if (isCoptic) {
+		// CS Avva Shenouda glyphs sit higher in the em square; tighter than the LTR default
+		// looks better while still being readable
+		return {
+			compact: 'leading-[1.6]',
+			normal: 'leading-[1.9]',
+			relaxed: 'leading-[2.3]',
 		}[spacing]
 	}
 	return {

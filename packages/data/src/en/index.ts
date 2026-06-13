@@ -15,6 +15,9 @@ export { default as bibleData } from './bible/books.json'
 export { default as synaxariumIndex } from './synaxarium/indexed.json'
 export { default as synaxariumCanonical } from './synaxarium/canonical.json'
 
+// Incense - Raising of Incense (Vespers)
+export * from './incense'
+
 export const LANGUAGE = 'en' as const
 
 export const AVAILABLE_SOURCES = ['canonical', 'st-takla', 'suscopts'] as const
