@@ -12,12 +12,19 @@ import type {
 } from '@/components/DisplaySettings'
 import {
 	type FlatLine,
+	GearIcon,
+	NoticeBand,
 	PresentationView,
 	type PresentationViewHandle,
 	RoleBadge,
+	SectionDots,
+	SectionListOverlay,
 	ServiceSection,
+	SideArrows,
+	TocIcon,
 	alignByRubric,
 	flattenToLines,
+	useSectionNavigation,
 } from '@/components/LiturgicalSection'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
@@ -33,63 +40,6 @@ import { parseDateString } from '@/lib/utils'
 import { useLocale } from 'next-intl'
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-// ── Icons ───────────────────────────────────────────────────────────────────
-
-function GearIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="16"
-			height="16"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="12" cy="12" r="3" />
-			<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-		</svg>
-	)
-}
-function Chevron({ dir }: { dir: 'left' | 'right' }) {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d={dir === 'left' ? 'm15 18-6-6 6-6' : 'm9 18 6-6-6-6'} />
-		</svg>
-	)
-}
-function TocIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="16"
-			height="16"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-		</svg>
-	)
-}
 // ── Fallback skeleton ───────────────────────────────────────────────────────
 
 export function ServiceReaderFallback() {
@@ -153,12 +103,6 @@ export function LiturgicalServiceReader({
 		isLoaded: langsLoaded,
 	} = useContentLanguages()
 	const locale = useLocale()
-	// The current section, tracked by id so it survives the visible list changing
-	// (adding/removing optional prayers, language switches); null means the first section.
-	const [currentId, setCurrentId] = useState<string | null>(null)
-	// Which end of a section to land on when it mounts: 'first' (forward/jump) or 'last'
-	// (paged backward into it from the next section — PowerPoint-style).
-	const [enterFrom, setEnterFrom] = useState<'first' | 'last'>('first')
 	const [mode, setMode] = useState<'present' | 'scroll'>('present')
 	const [pagination, setPagination] = useState({ index: 0, count: 1 })
 	const [tocOpen, setTocOpen] = useState(false)
@@ -198,81 +142,27 @@ export function LiturgicalServiceReader({
 	const primaryService = servicesByLang[langs[0]] ?? Object.values(servicesByLang)[0]
 	const allSections = useMemo(() => primaryService?.sections ?? [], [primaryService])
 
-	// Optional sections (Matins litanies, out-of-season nature litanies) are hidden from
-	// the service flow unless the user adds them from the section list. The selection is
-	// persisted per service so a parish that always adds them keeps them.
-	const extrasKey = `${basePath}:extras`
-	const [extras, setExtras] = useState<string[]>([])
-	const [extrasLoaded, setExtrasLoaded] = useState(false)
-	useEffect(() => {
-		try {
-			const saved = localStorage.getItem(extrasKey)
-			if (saved) setExtras(JSON.parse(saved))
-		} catch {
-			/* corrupt or unavailable storage — start clean */
-		}
-		setExtrasLoaded(true)
-	}, [extrasKey])
-	const optionalSections = useMemo(() => allSections.filter((s) => s.optional), [allSections])
-	const sections = useMemo(
-		() => allSections.filter((s) => !s.optional || extras.includes(s.id)),
-		[allSections, extras],
-	)
-
-	const lastIndex = sections.length - 1
-	// Index is derived from the id; an unknown id (cleared storage, removed extra) lands
-	// on the first section.
-	const sectionIndex = useMemo(() => {
-		if (!currentId) return 0
-		const i = sections.findIndex((s) => s.id === currentId)
-		return i >= 0 ? i : 0
-	}, [currentId, sections])
-	const currentSection = sections[Math.min(sectionIndex, lastIndex)]
-	const currentSectionId = currentSection?.id
-
-	const toggleExtra = (id: string) => {
-		const enabled = extras.includes(id)
-		const next = enabled ? extras.filter((x) => x !== id) : [...extras, id]
-		try {
-			localStorage.setItem(extrasKey, JSON.stringify(next))
-		} catch {
-			/* best effort */
-		}
-		if (!enabled) {
-			// Adding a prayer jumps straight to it
-			setCurrentId(id)
-			setEnterFrom('first')
-			setTocOpen(false)
-		} else if (currentSectionId === id) {
-			// Removing the section being viewed lands on its neighbor
-			const idx = sections.findIndex((s) => s.id === id)
-			setCurrentId((sections[idx - 1] ?? sections[idx + 1])?.id ?? null)
-		}
-		setExtras(next)
+	// Section state (which section, added optional prayers, last-viewed position) lives in the
+	// hook; closing the TOC on jump/add is UI, so those two are thin wrappers here.
+	const nav = useSectionNavigation(allSections, basePath)
+	const {
+		sections,
+		optionalSections,
+		sectionIndex,
+		currentSection,
+		currentSectionId,
+		lastIndex,
+		extras,
+		enterFrom,
+		stepSection,
+	} = nav
+	const jumpToSection = (i: number) => {
+		nav.jumpTo(i)
+		setTocOpen(false)
 	}
-
-	// Survive the remounts caused by settings changes (language toggles re-render the page
-	// through the Suspense boundary): restore the last-viewed section once per mount.
-	const positionKey = `${basePath}:section`
-	const restored = useRef(false)
-	useEffect(() => {
-		if (restored.current || !extrasLoaded || sections.length === 0) return
-		restored.current = true
-		try {
-			const savedId = sessionStorage.getItem(positionKey)
-			if (savedId && sections.some((s) => s.id === savedId)) setCurrentId(savedId)
-		} catch {
-			/* unavailable storage */
-		}
-	}, [sections, positionKey, extrasLoaded])
-	useEffect(() => {
-		if (!restored.current || !currentSectionId) return
-		try {
-			sessionStorage.setItem(positionKey, currentSectionId)
-		} catch {
-			/* best effort */
-		}
-	}, [currentSectionId, positionKey])
+	const toggleExtra = (id: string) => {
+		if (nav.toggleExtra(id) === 'added') setTocOpen(false)
+	}
 
 	// "Sat, Jun 21 · Paona 14" — the Gregorian day this service belongs to plus its Coptic
 	// date, rendered between the date-navigation chevrons.
@@ -322,17 +212,6 @@ export function LiturgicalServiceReader({
 
 	const isPaginated = mode === 'present' && flatByLang != null
 
-	const stepSection = useCallback(
-		(delta: number, enter: 'first' | 'last' = 'first') => {
-			setCurrentId((prev) => {
-				const i = prev ? sections.findIndex((s) => s.id === prev) : 0
-				const next = Math.max(0, Math.min(Math.max(i, 0) + delta, sections.length - 1))
-				return sections[next]?.id ?? prev
-			})
-			setEnterFrom(enter)
-		},
-		[sections],
-	)
 	const onExitNext = useCallback(() => stepSection(1, 'first'), [stepSection])
 	// Paging backward out of a section lands on the previous section's last page (PowerPoint-style).
 	const onExitPrev = useCallback(() => stepSection(-1, 'last'), [stepSection])
@@ -361,12 +240,6 @@ export function LiturgicalServiceReader({
 	const hasPrev = sectionIndex > 0 || (isPaginated && pagination.index > 0)
 	const hasNext =
 		sectionIndex < lastIndex || (isPaginated && pagination.index < pagination.count - 1)
-
-	const jumpToSection = (i: number) => {
-		setCurrentId(sections[i]?.id ?? null)
-		setEnterFrom('first')
-		setTocOpen(false)
-	}
 
 	// Arrow nav is suspended while the section list is open; Escape closes it.
 	useKeyboardNav({
@@ -406,229 +279,6 @@ export function LiturgicalServiceReader({
 	)
 
 	// Bottom section-dot navigation (shared by both modes; positioned by the wrapper).
-	const sectionNav = (
-		<>
-			<button
-				type="button"
-				onClick={goPrev}
-				disabled={!hasPrev}
-				className={`flex-shrink-0 p-1.5 rounded-lg transition-colors disabled:opacity-25 ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`}
-				aria-label="Previous"
-			>
-				<Chevron dir="left" />
-			</button>
-			<div className="flex-1 flex items-center justify-center gap-1.5 overflow-x-auto">
-				{sections.map((s, i) => (
-					<div key={s.id} className="group relative flex-shrink-0">
-						<button
-							type="button"
-							onClick={() => jumpToSection(i)}
-							className="flex items-center justify-center p-2 -m-2"
-							aria-label={s.title}
-						>
-							<span
-								className={`block h-1.5 rounded-full transition-all duration-200 ${i === sectionIndex ? 'w-6 bg-amber-500' : 'w-1.5 bg-current opacity-20 group-hover:opacity-40'}`}
-							/>
-						</button>
-						<div
-							className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-2 py-1 rounded text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50 ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} border ${themeClasses.border[theme]} shadow-md`}
-						>
-							{s.title}
-						</div>
-					</div>
-				))}
-			</div>
-			<button
-				type="button"
-				onClick={goNext}
-				disabled={!hasNext}
-				className={`flex-shrink-0 p-1.5 rounded-lg transition-colors disabled:opacity-25 ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`}
-				aria-label="Next"
-			>
-				<Chevron dir="right" />
-			</button>
-		</>
-	)
-
-	const sideArrows = (
-		<>
-			{hasPrev && (
-				<button
-					type="button"
-					onClick={goPrev}
-					className={`fixed left-2 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border ${themeClasses.border[theme]} shadow-sm transition-colors ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`}
-					aria-label="Previous"
-				>
-					<Chevron dir="left" />
-				</button>
-			)}
-			{hasNext && (
-				<button
-					type="button"
-					onClick={goNext}
-					className={`fixed right-2 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border ${themeClasses.border[theme]} shadow-sm transition-colors ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`}
-					aria-label="Next"
-				>
-					<Chevron dir="right" />
-				</button>
-			)}
-		</>
-	)
-
-	// Table-of-contents overlay — jump to any section. Opened via the header list icon or `t`.
-	const tocOverlay = tocOpen && (
-		<div
-			// biome-ignore lint/a11y/useSemanticElements: controlled modal overlay with a custom backdrop, not a native <dialog>
-			role="dialog"
-			aria-modal="true"
-			aria-label="Sections"
-			className="fixed inset-0 z-[80] flex items-start justify-center p-4 sm:p-8"
-		>
-			<button
-				type="button"
-				aria-label="Close sections"
-				className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-				onClick={() => setTocOpen(false)}
-			/>
-			<div
-				className={`relative mt-16 w-full max-w-md max-h-[70vh] overflow-y-auto rounded-xl border shadow-2xl ${themeClasses.border[theme]} ${themeClasses.bg[theme]}`}
-			>
-				<div
-					className={`sticky top-0 px-4 py-3 border-b ${themeClasses.border[theme]} ${themeClasses.bg[theme]} flex items-center justify-between`}
-				>
-					<span className={`text-sm font-semibold ${themeClasses.textHeading[theme]}`}>
-						Sections
-					</span>
-					<button
-						type="button"
-						onClick={() => setTocOpen(false)}
-						className={`p-1 rounded ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`}
-						aria-label="Close"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="16"
-							height="16"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							aria-hidden="true"
-						>
-							<path d="M18 6 6 18M6 6l12 12" />
-						</svg>
-					</button>
-				</div>
-				<ul className="py-1">
-					{sections.map((s, i) => (
-						<li key={s.id}>
-							<button
-								type="button"
-								onClick={() => jumpToSection(i)}
-								className={`w-full text-left px-4 py-2.5 flex items-center gap-3 transition-colors ${
-									i === sectionIndex
-										? `bg-amber-500/10 ${themeClasses.textHeading[theme]}`
-										: `${themeClasses.text[theme]} hover:bg-current/5`
-								}`}
-							>
-								<span
-									className={`text-xs font-mono tabular-nums w-5 flex-shrink-0 ${i === sectionIndex ? 'text-amber-500' : themeClasses.muted[theme]}`}
-								>
-									{i + 1}
-								</span>
-								<span className="text-sm">{s.title}</span>
-								{s.optional && (
-									<span
-										className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-current/20 flex-shrink-0 ${themeClasses.muted[theme]}`}
-									>
-										added
-									</span>
-								)}
-								{i === sectionIndex && (
-									<span className="ml-auto block w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
-								)}
-							</button>
-						</li>
-					))}
-				</ul>
-				{optionalSections.length > 0 && (
-					<>
-						<div className={`px-4 pt-3 pb-1 border-t ${themeClasses.border[theme]}`}>
-							<p
-								className={`text-xs font-semibold uppercase tracking-wider ${themeClasses.muted[theme]}`}
-							>
-								Additional prayers
-							</p>
-							<p className={`text-xs mt-0.5 ${themeClasses.muted[theme]}`}>
-								Not part of today's service — tap to add.
-							</p>
-						</div>
-						<ul className="py-1">
-							{optionalSections.map((s) => {
-								const enabled = extras.includes(s.id)
-								return (
-									<li key={s.id}>
-										<button
-											type="button"
-											onClick={() => toggleExtra(s.id)}
-											aria-pressed={enabled}
-											className={`w-full text-left px-4 py-2.5 flex items-center gap-3 transition-colors ${themeClasses.text[theme]} hover:bg-current/5`}
-										>
-											<span
-												className={`w-5 flex-shrink-0 flex items-center justify-center ${enabled ? 'text-amber-500' : themeClasses.muted[theme]}`}
-											>
-												{enabled ? (
-													<svg
-														xmlns="http://www.w3.org/2000/svg"
-														width="14"
-														height="14"
-														viewBox="0 0 24 24"
-														fill="none"
-														stroke="currentColor"
-														strokeWidth="2.5"
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														aria-hidden="true"
-													>
-														<path d="M20 6 9 17l-5-5" />
-													</svg>
-												) : (
-													<svg
-														xmlns="http://www.w3.org/2000/svg"
-														width="14"
-														height="14"
-														viewBox="0 0 24 24"
-														fill="none"
-														stroke="currentColor"
-														strokeWidth="2"
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														aria-hidden="true"
-													>
-														<path d="M12 5v14M5 12h14" />
-													</svg>
-												)}
-											</span>
-											<span className="min-w-0">
-												<span className="block text-sm">{s.title}</span>
-												{s.rubric && (
-													<span className={`block text-xs mt-0.5 ${themeClasses.muted[theme]}`}>
-														{s.rubric}
-													</span>
-												)}
-											</span>
-										</button>
-									</li>
-								)
-							})}
-						</ul>
-					</>
-				)}
-			</div>
-		</div>
-	)
 
 	const header = (
 		<ReadingsHeader theme={theme} layout="between">
@@ -696,33 +346,7 @@ export function LiturgicalServiceReader({
 
 	return (
 		<ReadingPageLayout theme={theme} header={header}>
-			{notice && (
-				// Decorative Coptic textile band instead of a text banner; the message itself
-				// lives in the tooltip and accessible label.
-				<div
-					role="note"
-					aria-label={notice}
-					title={notice}
-					className={`border-b border-current/10 ${themeClasses.bg[theme]} text-amber-600/50 dark:text-amber-500/40`}
-				>
-					<svg className="w-full h-3.5 block" aria-hidden="true">
-						<defs>
-							<pattern id="coptic-band" width="28" height="14" patternUnits="userSpaceOnUse">
-								<path
-									d="M14 2.5 L19.5 7 L14 11.5 L8.5 7 Z"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="1"
-								/>
-								<path d="M12.5 7h3M14 5.5v3" stroke="currentColor" strokeWidth="0.75" />
-								<circle cx="2" cy="7" r="1" fill="currentColor" />
-								<circle cx="26" cy="7" r="1" fill="currentColor" />
-							</pattern>
-						</defs>
-						<rect width="100%" height="100%" fill="url(#coptic-band)" />
-					</svg>
-				</div>
-			)}
+			{notice && <NoticeBand notice={notice} theme={theme} />}
 			{!primaryService || !currentSection ? (
 				<div className="flex items-center justify-center py-32">
 					<p className={themeClasses.muted[theme]}>Unable to load {title} service.</p>
@@ -799,13 +423,39 @@ export function LiturgicalServiceReader({
 					<div
 						className={`flex-none flex items-center gap-4 px-4 py-3 border-t ${themeClasses.border[theme]} ${themeClasses.bg[theme]}`}
 					>
-						{sectionNav}
+						<SectionDots
+							sections={sections}
+							sectionIndex={sectionIndex}
+							theme={theme}
+							hasPrev={hasPrev}
+							hasNext={hasNext}
+							onPrev={goPrev}
+							onNext={goNext}
+							onJump={jumpToSection}
+						/>
 					</div>
 				</div>
 			)}
 
-			{sideArrows}
-			{tocOverlay}
+			<SideArrows
+				hasPrev={hasPrev}
+				hasNext={hasNext}
+				onPrev={goPrev}
+				onNext={goNext}
+				theme={theme}
+			/>
+			{tocOpen && (
+				<SectionListOverlay
+					sections={sections}
+					optionalSections={optionalSections}
+					activeIndex={sectionIndex}
+					extras={extras}
+					theme={theme}
+					onJump={jumpToSection}
+					onToggleExtra={toggleExtra}
+					onClose={() => setTocOpen(false)}
+				/>
+			)}
 		</ReadingPageLayout>
 	)
 }
