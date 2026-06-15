@@ -112,8 +112,26 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 	}
 }
 
+// Raw verse-reference strings returned in non-detailed mode. Fixed days carry an
+// `id`; moveable (Lent/Jonah) days don't, so both fields are optional.
+type ReadingReference = {
+	id?: number
+	Prophecies?: string
+	VPsalm?: string
+	VGospel?: string
+	MPsalm?: string
+	MGospel?: string
+	Pauline?: string
+	Catholic?: string
+	Acts?: string
+	LPsalm?: string
+	LGospel?: string
+	EPPsalm?: string
+	EPGospel?: string
+}
+
 type ReadingResponse = {
-	reference?: Omit<(typeof uniqueReadings)[number], 'Day'>
+	reference?: ReadingReference
 	Synaxarium: SynaxariumEntry[]
 	Prophecies?: Reading[] | null
 	VPsalm?: Reading[] | null
@@ -185,7 +203,13 @@ const buildLentResponse = (
 ): ReadingResponse => {
 	const season = getLiturgicalSeasonForDate(date)
 	if (!isDetailed) {
-		return { Synaxarium: synaxarium, season: season?.name, seasonDay: lentReading.label }
+		const { label, ...reference } = lentReading
+		return {
+			reference,
+			Synaxarium: synaxarium,
+			season: season?.name,
+			seasonDay: lentReading.label,
+		}
 	}
 	return {
 		...transformReading(lentReading, translation),
