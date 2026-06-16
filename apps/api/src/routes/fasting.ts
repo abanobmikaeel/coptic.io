@@ -1,6 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { ErrorSchema, FastingDaySchema, FastingResponseSchema } from '../schemas'
 import * as fastingService from '../services/fasting.service'
+import { parseLocalDate } from '../utils/dateUtils'
 
 const app = new OpenAPIHono()
 
@@ -39,9 +40,8 @@ const getForDateRoute = createRoute({
 
 app.openapi(getForDateRoute, (c) => {
 	const { date } = c.req.valid('param')
-	const parsedDate = date ? new Date(date) : new Date()
-
-	if (Number.isNaN(parsedDate.getTime())) {
+	const parsedDate = date ? parseLocalDate(date) : new Date()
+	if (!parsedDate) {
 		return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 	}
 
