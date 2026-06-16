@@ -23,6 +23,7 @@ export const typeDefs = /* GraphQL */ `
 
 	type Reading {
 		reference: ReadingReference
+		Prophecies: [ReadingDetail]
 		VPsalm: [ReadingDetail]
 		VGospel: [ReadingDetail]
 		MPsalm: [ReadingDetail]
@@ -32,6 +33,10 @@ export const typeDefs = /* GraphQL */ `
 		Acts: [ReadingDetail]
 		LPsalm: [ReadingDetail]
 		LGospel: [ReadingDetail]
+		EPPsalm: [ReadingDetail]
+		EPGospel: [ReadingDetail]
+		season: String
+		seasonDay: String
 		Synaxarium: [SynaxariumEntry!]!
 		celebrations: [Celebration]
 		fullDate: CopticDate!
@@ -39,6 +44,7 @@ export const typeDefs = /* GraphQL */ `
 
 	type ReadingReference {
 		Day: String
+		Prophecies: String
 		VPsalm: String
 		VGospel: String
 		MPsalm: String
@@ -48,17 +54,23 @@ export const typeDefs = /* GraphQL */ `
 		Acts: String
 		LPsalm: String
 		LGospel: String
+		EPPsalm: String
+		EPGospel: String
 		id: Int
 	}
 
 	type ReadingDetail {
 		bookName: String
-		chapter: Int
+		chapters: [ReadingChapter]
+	}
+
+	type ReadingChapter {
+		chapterNum: Int
 		verses: [Verse]
 	}
 
 	type Verse {
-		verseNumber: Int
+		num: Int
 		text: String
 	}
 
@@ -120,7 +132,7 @@ export const typeDefs = /* GraphQL */ `
 		calendarMonth(year: Int!, month: Int!): CalendarMonth!
 
 		# Readings
-		readings(date: String, detailed: Boolean): Reading!
+		readings(date: String, detailed: Boolean, lang: String): Reading!
 
 		# Celebrations
 		allCelebrations: [Celebration!]!
