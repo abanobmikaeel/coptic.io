@@ -253,15 +253,21 @@ describe('Lenten Readings - Accuracy', () => {
 	})
 
 	describe('Detailed vs non-detailed mode', () => {
-		it('should return season info in non-detailed mode for Lent date', () => {
+		it('should return season info and reference strings in non-detailed mode for Lent date', () => {
 			const date = new Date(2026, 1, 16)
 			const result = getByCopticDate(date, false)
 
 			expect(result.season).toBe('Great Lent')
 			expect(result.seasonDay).toBe('Monday of the first week of Great Lent')
 			expect(result.Synaxarium).toBeDefined()
+			// Verse references are exposed under `reference` (like fixed days), not at top level.
 			expect(result.Pauline).toBeUndefined()
 			expect(result.LGospel).toBeUndefined()
+			expect(result.reference).toBeDefined()
+			expect(result.reference?.Pauline).toBe('Romans 1:26-2:7')
+			expect(result.reference?.LGospel).toBe('Mark 9:33-50')
+			// Moveable days have no fixed-calendar reading id.
+			expect(result.reference?.id).toBeUndefined()
 		})
 
 		it('should return full readings in detailed mode for Lent date', () => {
