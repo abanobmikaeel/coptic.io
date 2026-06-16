@@ -135,3 +135,65 @@ export const AgpeyaMidnightHourSchema = z.object({
 
 // Union schema for any hour type
 export const AgpeyaAnyHourSchema = z.union([AgpeyaHourSchema, AgpeyaMidnightHourSchema])
+
+// Incense schemas — derive role enum from the data package type so they can't drift
+import type { IncenseSectionRole } from '@coptic/data/en/incense'
+const INCENSE_ROLES = ['all', 'priest', 'deacon', 'congregation'] as const satisfies [
+	IncenseSectionRole,
+	...IncenseSectionRole[],
+]
+const IncenseSectionRoleSchema = z.enum(INCENSE_ROLES)
+
+export const IncensePrayerSectionSchema = z.object({
+	id: z.string(),
+	type: z.enum(['prayer', 'litany', 'creed']),
+	role: IncenseSectionRoleSchema,
+	title: z.string(),
+	rubric: z.string().optional(),
+	// Offered as an extra (Matins litanies, out-of-season nature litanies) — readers hide
+	// these by default and surface them as addable prayers.
+	optional: z.boolean().optional(),
+	content: z.array(
+		z.union([
+			z.string(),
+			z.object({
+				speaker: z.string().optional(),
+				text: z.string(),
+				isRubric: z.boolean().optional(),
+			}),
+		]),
+	),
+})
+
+export const IncensePsalmSectionSchema = z.object({
+	id: z.string(),
+	type: z.literal('psalm'),
+	role: IncenseSectionRoleSchema,
+	title: z.string(),
+	rubric: z.string().optional(),
+	reference: z.string(),
+	verses: z.array(AgpeyaVerseSchema),
+})
+
+export const IncenseGospelSectionSchema = z.object({
+	id: z.string(),
+	type: z.literal('gospel'),
+	role: IncenseSectionRoleSchema,
+	title: z.string(),
+	reference: z.string(),
+	verses: z.array(AgpeyaVerseSchema),
+})
+
+export const IncenseSectionSchema = z.union([
+	IncensePsalmSectionSchema,
+	IncenseGospelSectionSchema,
+	IncensePrayerSectionSchema,
+])
+
+export const IncenseResponseSchema = z.object({
+	type: z.string(),
+	name: z.string(),
+	date: z.string(),
+	copticDate: CopticDateSchema,
+	sections: z.array(IncenseSectionSchema),
+})

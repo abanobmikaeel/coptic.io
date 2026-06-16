@@ -19,6 +19,7 @@ export function CollapsibleReading({
 	viewMode,
 	id,
 }: CollapsibleReadingProps) {
+	const textDir = isRtl ? ('rtl' as const) : ('ltr' as const)
 	const [isOpen, setIsOpen] = useState(true)
 
 	// Get the reference string for display
@@ -81,7 +82,7 @@ export function CollapsibleReading({
 									{viewMode === 'continuous' ? (
 										<p
 											className={`text-gray-700 dark:text-gray-300 leading-loose text-lg ${isRtl ? 'font-arabic text-right' : ''}`}
-											dir={isRtl ? 'rtl' : 'ltr'}
+											dir={textDir}
 										>
 											{chapter.verses.map((verse, vidx) => (
 												<span key={verse.num}>
@@ -98,7 +99,7 @@ export function CollapsibleReading({
 									) : (
 										<div
 											className={`space-y-3 ${isRtl ? 'font-arabic text-right' : ''}`}
-											dir={isRtl ? 'rtl' : 'ltr'}
+											dir={textDir}
 										>
 											{chapter.verses.map((verse) => (
 												<p

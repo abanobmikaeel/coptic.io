@@ -10,6 +10,7 @@ import agpeyaRoutes from './routes/agpeya'
 import calendarRoutes from './routes/calendar'
 import celebrationsRoutes from './routes/celebrations'
 import fastingRoutes from './routes/fasting'
+import incenseRoutes from './routes/incense'
 import lentRoutes from './routes/lent'
 import readingsRoutes from './routes/readings'
 import searchRoutes from './routes/search'
@@ -65,12 +66,14 @@ app.use('/api/synaxarium/*', cache12h)
 app.use('/api/calendar/*', cache12h)
 app.use('/api/lent/*', cache12h)
 app.use('/api/agpeya/*', cache12h)
+app.use('/api/incense/*', cache12h)
 app.use('/api/fasting/*', cache12h)
 app.use('/api/celebrations/*', cache12h)
 app.use('/api/season/*', cache12h)
 
 // REST Routes
 app.route('/api/agpeya', agpeyaRoutes)
+app.route('/api/incense', incenseRoutes)
 app.route('/api/readings', readingsRoutes)
 app.route('/api/calendar', calendarRoutes)
 app.route('/api/celebrations', celebrationsRoutes)

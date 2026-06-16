@@ -140,6 +140,7 @@ export function AgpeyaPrayer({
 	viewMode = 'verse',
 	allCollapsed = false,
 }: AgpeyaPrayerProps) {
+	const textDir = isRtl ? ('rtl' as const) : ('ltr' as const)
 	const sizes = getTextSizeClasses(textSize, isRtl)
 	const lineHeight = getLineHeightClass(lineSpacing, isRtl)
 	const fontClass = getFontClass(fontFamily, isRtl)
@@ -215,10 +216,7 @@ export function AgpeyaPrayer({
 								defaultOpen
 							>
 								{viewMode === 'continuous' ? (
-									<p
-										className={`${textStyles} ${isRtl ? 'text-right' : ''}`}
-										dir={isRtl ? 'rtl' : 'ltr'}
-									>
+									<p className={`${textStyles} ${isRtl ? 'text-right' : ''}`} dir={textDir}>
 										{hour.introductoryPsalm.verses.map((verse, idx) => (
 											<span key={verse.num}>
 												<sup
@@ -234,7 +232,7 @@ export function AgpeyaPrayer({
 								) : (
 									<div
 										className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
-										dir={isRtl ? 'rtl' : 'ltr'}
+										dir={textDir}
 									>
 										{hour.introductoryPsalm.verses.map((verse) => (
 											<p key={verse.num}>
@@ -395,10 +393,7 @@ export function AgpeyaPrayer({
 							forceCollapsed={allCollapsed}
 						>
 							{viewMode === 'continuous' ? (
-								<p
-									className={`${textStyles} ${isRtl ? 'text-right' : ''}`}
-									dir={isRtl ? 'rtl' : 'ltr'}
-								>
+								<p className={`${textStyles} ${isRtl ? 'text-right' : ''}`} dir={textDir}>
 									{hour.introductoryPsalm.verses.map((verse, idx) => (
 										<span key={verse.num}>
 											<sup
@@ -414,7 +409,7 @@ export function AgpeyaPrayer({
 							) : (
 								<div
 									className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
-									dir={isRtl ? 'rtl' : 'ltr'}
+									dir={textDir}
 								>
 									{hour.introductoryPsalm.verses.map((verse) => (
 										<p key={verse.num}>
@@ -557,8 +552,9 @@ function InlinePrayer({
 	textStyles: string
 	isRtl: boolean
 }) {
+	const textDir = isRtl ? ('rtl' as const) : ('ltr' as const)
 	return (
-		<div className={`space-y-4 ${textStyles}`} dir={isRtl ? 'rtl' : 'ltr'}>
+		<div className={`space-y-4 ${textStyles}`} dir={textDir}>
 			{content.map((paragraph, idx) => (
 				<p key={idx}>{paragraph}</p>
 			))}
@@ -653,10 +649,11 @@ function PsalmContent({
 	defaultOpen?: boolean
 	viewMode?: ViewMode
 }) {
+	const textDir = isRtl ? ('rtl' as const) : ('ltr' as const)
 	const [isOpen, setIsOpen] = useState(defaultOpen)
 
 	return (
-		<div dir={isRtl ? 'rtl' : 'ltr'}>
+		<div dir={textDir}>
 			{/* Psalm header - clickable to collapse */}
 			<button
 				type="button"
@@ -689,7 +686,7 @@ function PsalmContent({
 			{/* Verses - collapsible */}
 			{isOpen &&
 				(viewMode === 'continuous' ? (
-					<p className={`${textStyles} ${isRtl ? 'text-right' : ''}`} dir={isRtl ? 'rtl' : 'ltr'}>
+					<p className={`${textStyles} ${isRtl ? 'text-right' : ''}`} dir={textDir}>
 						{psalm.verses.map((verse, idx) => (
 							<span key={verse.num}>
 								<sup
@@ -703,10 +700,7 @@ function PsalmContent({
 						))}
 					</p>
 				) : (
-					<div
-						className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
-						dir={isRtl ? 'rtl' : 'ltr'}
-					>
+					<div className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`} dir={textDir}>
 						{psalm.verses.map((verse) => (
 							<p key={verse.num}>
 								<span
@@ -739,8 +733,9 @@ function GospelContent({
 	isRtl: boolean
 	viewMode?: ViewMode
 }) {
+	const textDir = isRtl ? ('rtl' as const) : ('ltr' as const)
 	return (
-		<div dir={isRtl ? 'rtl' : 'ltr'}>
+		<div dir={textDir}>
 			{/* Rubric */}
 			{gospel.rubric && (
 				<p className={`text-sm italic mb-6 ${themeClasses.muted[theme]}`}>{gospel.rubric}</p>
@@ -748,7 +743,7 @@ function GospelContent({
 
 			{/* Verses */}
 			{viewMode === 'continuous' ? (
-				<p className={`${textStyles} ${isRtl ? 'text-right' : ''}`} dir={isRtl ? 'rtl' : 'ltr'}>
+				<p className={`${textStyles} ${isRtl ? 'text-right' : ''}`} dir={textDir}>
 					{gospel.verses.map((verse, idx) => (
 						<span key={verse.num}>
 							<sup
@@ -762,10 +757,7 @@ function GospelContent({
 					))}
 				</p>
 			) : (
-				<div
-					className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`}
-					dir={isRtl ? 'rtl' : 'ltr'}
-				>
+				<div className={`space-y-4 ${textStyles} ${isRtl ? 'text-right' : ''}`} dir={textDir}>
 					{gospel.verses.map((verse) => (
 						<p key={verse.num}>
 							<span

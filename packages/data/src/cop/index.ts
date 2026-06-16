@@ -9,6 +9,9 @@
 export * from './bible'
 export { default as bibleData } from './bible'
 
+// Incense - Raising of Incense (Vespers)
+export * from './incense'
+
 export const LANGUAGE = 'cop' as const
 
 // Coptic doesn't have synaxarium data (that's in Arabic/English)

@@ -24,7 +24,7 @@ export function SingleLanguageContent({
 	theme,
 	width,
 }: SingleLanguageContentProps) {
-	const { isRtl, sizes } = styleClasses
+	const { isRtl, textDir, sizes } = styleClasses
 	const widthClass = getWidthClass(width)
 
 	// Count total chapters to determine if we should show chapter headings
@@ -41,7 +41,7 @@ export function SingleLanguageContent({
 							{showChapterHeading && (
 								<h3
 									className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} mb-6 ${isRtl ? 'font-arabic' : 'uppercase'}`}
-									dir={isRtl ? 'rtl' : 'ltr'}
+									dir={textDir}
 								>
 									{getBookName(reading.bookName, lang)}{' '}
 									{isRtl ? toArabicNumerals(chapter.chapterNum) : chapter.chapterNum}
@@ -80,12 +80,13 @@ interface VersesProps {
 }
 
 function ContinuousVerses({ verses, styleClasses, showVerses, theme }: VersesProps) {
-	const { isRtl, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } = styleClasses
+	const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
+		styleClasses
 
 	return (
 		<p
 			className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : !showVerses ? 'first-letter-large' : ''}`}
-			dir={isRtl ? 'rtl' : 'ltr'}
+			dir={textDir}
 		>
 			{verses.map((verse, vidx) => (
 				<span key={verse.num}>
@@ -105,12 +106,13 @@ function ContinuousVerses({ verses, styleClasses, showVerses, theme }: VersesPro
 }
 
 function VerseByVerse({ verses, styleClasses, showVerses, theme }: VersesProps) {
-	const { isRtl, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } = styleClasses
+	const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
+		styleClasses
 
 	return (
 		<div
 			className={`${isRtl ? 'space-y-6' : 'space-y-4'} ${isRtl ? 'text-right' : ''}`}
-			dir={isRtl ? 'rtl' : 'ltr'}
+			dir={textDir}
 		>
 			{verses.map((verse, vidx) => (
 				<p

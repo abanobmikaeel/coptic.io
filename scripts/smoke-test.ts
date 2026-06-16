@@ -48,6 +48,16 @@ const checks: Check[] = [
 			return Array.isArray(watch.psalms) && watch.psalms.length > 0
 		},
 	},
+	{
+		desc: 'incense evening — sections populated with gospel',
+		path: '/api/incense/evening?date=2026-01-15',
+		validate: (b) => {
+			const svc = b as { sections?: { type: string; verses?: unknown[] }[] }
+			if (!Array.isArray(svc.sections) || svc.sections.length === 0) return false
+			const gospel = svc.sections.find((s) => s.type === 'gospel')
+			return Array.isArray(gospel?.verses) && gospel.verses.length > 0
+		},
+	},
 ]
 
 let failed = false

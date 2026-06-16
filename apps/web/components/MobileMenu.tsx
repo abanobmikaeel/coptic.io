@@ -77,7 +77,8 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 		{ label: t('katamaros'), description: t('katamarosDescription'), href: '/readings' },
 		{ label: t('agpeya'), description: t('agpeyaDescription'), href: '/agpeya' },
 		{ label: t('synaxarium'), description: t('synaxariumDescription'), href: '/synaxarium' },
-		{ label: 'Lent Guide', description: 'Great Lent devotional readings', href: '/lent' },
+		{ label: t('vespers'), description: t('vespersDescription'), href: '/vespers' },
+		{ label: t('lent'), description: t('lentDescription'), href: '/lent' },
 	]
 
 	const moreMenuItems = [

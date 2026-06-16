@@ -144,6 +144,38 @@ export interface SynaxariumSearchResult {
 	}
 }
 
+// Incense / Vespers Types
+export type IncenseSectionRole = 'all' | 'priest' | 'deacon' | 'congregation'
+export type IncenseSectionType = 'prayer' | 'psalm' | 'gospel' | 'litany' | 'creed' | 'daily-psalm'
+
+export interface IncenseContentLine {
+	speaker?: 'Priest' | 'Deacon' | 'People'
+	text: string
+	isRubric?: boolean
+}
+
+export interface IncenseSection {
+	id: string
+	type: IncenseSectionType
+	role: IncenseSectionRole
+	title: string
+	rubric?: string
+	// Offered as an extra (Matins litanies, out-of-season nature litanies) — hidden from
+	// the service flow by default, listed under "Additional prayers" in the section list.
+	optional?: boolean
+	content?: (string | IncenseContentLine)[]
+	reference?: string
+	verses?: Verse[]
+}
+
+export interface IncenseService {
+	type: string
+	name: string
+	date: string
+	copticDate: CopticDate
+	sections: IncenseSection[]
+}
+
 // API Response Types
 export interface ApiError {
 	error: string

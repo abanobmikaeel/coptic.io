@@ -3,6 +3,9 @@ node_modules/
 dist/
 .cache
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 # hide dotenv
 .env 
 .env.local

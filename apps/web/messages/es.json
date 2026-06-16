@@ -113,6 +113,10 @@
 		"agpeyaDescription": "Horas de Oración",
 		"synaxarium": "Sinaxario",
 		"synaxariumDescription": "Vidas de Santos",
+		"vespers": "Vísperas",
+		"vespersDescription": "Elevación del incienso vespertino",
+		"lent": "Guía de Cuaresma",
+		"lentDescription": "Lecturas devocionales de la Gran Cuaresma",
 		"settings": "Configuración",
 		"settingsDescription": "Preferencias de lectura",
 		"developers": "Desarrolladores",
@@ -187,7 +191,8 @@
 		"todaysCommemorations": "Conmemoraciones de Hoy",
 		"preferCalendarSync": "¿Prefieres sincronizar calendario?",
 		"addToCalendar": "Añadir a calendario de Apple, Google u Outlook",
-		"footer": "Hecho para la comunidad copta"
+		"footer": "Hecho para la comunidad copta",
+		"fastingToday": "Ayuno hoy"
 	},
 	"library": {
 		"title": "Biblioteca",

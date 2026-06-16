@@ -32,6 +32,7 @@ export interface ScriptureReadingProps {
 
 export interface StyleClasses {
 	isRtl: boolean
+	textDir: 'rtl' | 'ltr'
 	sizes: {
 		verse: string
 		verseNum: string

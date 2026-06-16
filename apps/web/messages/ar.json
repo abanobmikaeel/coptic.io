@@ -113,6 +113,10 @@
 		"agpeyaDescription": "صلوات السواعي",
 		"synaxarium": "السنكسار",
 		"synaxariumDescription": "سير القديسين",
+		"vespers": "رفع بخور عشية",
+		"vespersDescription": "صلاة رفع بخور المساء",
+		"lent": "دليل الصوم",
+		"lentDescription": "قراءات الصوم الكبير",
 		"settings": "الإعدادات",
 		"settingsDescription": "تفضيلات القراءة",
 		"developers": "المطورين",
@@ -187,7 +191,8 @@
 		"todaysCommemorations": "تذكارات اليوم",
 		"preferCalendarSync": "تفضل مزامنة التقويم؟",
 		"addToCalendar": "أضف إلى تقويم Apple أو Google أو Outlook",
-		"footer": "صُنع للمجتمع القبطي"
+		"footer": "صُنع للمجتمع القبطي",
+		"fastingToday": "صوم اليوم"
 	},
 	"library": {
 		"title": "المكتبة",

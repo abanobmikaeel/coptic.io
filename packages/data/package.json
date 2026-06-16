@@ -57,6 +57,18 @@
 		"./en/lent": {
 			"types": "./dist/en/lent/index.d.ts",
 			"import": "./dist/en/lent/index.js"
+		},
+		"./en/incense": {
+			"types": "./dist/en/incense/index.d.ts",
+			"import": "./dist/en/incense/index.js"
+		},
+		"./ar/incense": {
+			"types": "./dist/ar/incense/index.d.ts",
+			"import": "./dist/ar/incense/index.js"
+		},
+		"./cop/incense": {
+			"types": "./dist/cop/incense/index.d.ts",
+			"import": "./dist/cop/incense/index.js"
 		}
 	},
 	"files": [
@@ -75,7 +87,8 @@
 		"check:fix": "biome check --write src",
 		"typecheck": "tsc --noEmit",
 		"bench": "vitest bench",
-		"prepublishOnly": "pnpm run build"
+		"prepublishOnly": "pnpm run build",
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"@coptic/core": "workspace:*"

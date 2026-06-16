@@ -1,5 +1,6 @@
 'use client'
-import { useCallback, useEffect, useState } from 'react'
+import { useActiveSection } from '@/hooks/useActiveSection'
+import { useCallback } from 'react'
 import type { SectionId } from './AgpeyaPrayer'
 import type { ReadingTheme } from './DisplaySettings'
 
@@ -25,33 +26,8 @@ interface AgpeyaProgressProps {
 }
 
 export function AgpeyaProgress({ theme = 'light', psalmsCount = 0 }: AgpeyaProgressProps) {
-	const [activeSection, setActiveSection] = useState<SectionId>('introduction')
-
-	useEffect(() => {
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						const sectionId = entry.target.id.replace('section-', '') as SectionId
-						setActiveSection(sectionId)
-					}
-				}
-			},
-			{
-				rootMargin: '-30% 0px -60% 0px',
-				threshold: 0,
-			},
-		)
-
-		for (const section of SECTIONS) {
-			const element = document.getElementById(`section-${section.id}`)
-			if (element) {
-				observer.observe(element)
-			}
-		}
-
-		return () => observer.disconnect()
-	}, [])
+	const rawActive = useActiveSection(SECTIONS.map((s) => `section-${s.id}`))
+	const activeSection = (rawActive?.replace('section-', '') ?? 'introduction') as SectionId
 
 	const scrollToSection = useCallback((sectionId: SectionId) => {
 		const element = document.getElementById(`section-${sectionId}`)

@@ -119,13 +119,13 @@ function ChapterHeadings({
 				const langChapter = langReading?.chapters[chapterIdx]
 				if (!langChapter) return <div key={lang} />
 
-				const { isRtl, sizes, fontClass } = getStyleClasses(lang)
+				const { isRtl, textDir, sizes, fontClass } = getStyleClasses(lang)
 				const isCoptic = lang === 'cop'
 				return (
 					<h3
 						key={lang}
 						className={`text-center ${sizes.chapter} font-bold tracking-wider ${themeClasses.muted[theme]} ${isRtl ? 'font-arabic' : isCoptic ? fontClass : 'uppercase'}`}
-						dir={isRtl ? 'rtl' : 'ltr'}
+						dir={textDir}
 					>
 						{getBookName(langReading.bookName, lang)}{' '}
 						{isRtl ? toArabicNumerals(langChapter.chapterNum) : langChapter.chapterNum}
@@ -164,14 +164,14 @@ function ContinuousVerses({
 				const langChapter = langReadings?.[readingIdx]?.chapters[chapterIdx]
 				if (!langChapter) return <div key={lang} />
 
-				const { isRtl, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
+				const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
 					getStyleClasses(lang)
 
 				return (
 					<p
 						key={lang}
 						className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : !showVerses ? 'first-letter-large' : ''}`}
-						dir={isRtl ? 'rtl' : 'ltr'}
+						dir={textDir}
 					>
 						{langChapter.verses.map((verse, vidx) => (
 							<span key={verse.num}>
@@ -226,14 +226,14 @@ function VerseByVerseComparison({
 						const langVerse = langChapter?.verses.find((v) => v.num === verse.num)
 						if (!langVerse) return <div key={lang} />
 
-						const { isRtl, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
+						const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
 							getStyleClasses(lang)
 
 						return (
 							<p
 								key={lang}
 								className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''} ${vidx === 0 && !isRtl && !showVerses ? 'first-letter-large' : ''}`}
-								dir={isRtl ? 'rtl' : 'ltr'}
+								dir={textDir}
 							>
 								{showVerses && (
 									<span
