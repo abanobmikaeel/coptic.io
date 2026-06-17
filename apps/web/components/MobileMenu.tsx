@@ -1,5 +1,6 @@
 'use client'
 
+import { getNavGroups } from '@/lib/navConfig'
 import type { MobileReadingItem } from '@/lib/reading-sections'
 import { themeClasses } from '@/lib/reading-styles'
 import { useTranslations } from 'next-intl'
@@ -73,18 +74,38 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 		[closeMenu],
 	)
 
-	const readMenuItems = [
-		{ label: t('katamaros'), description: t('katamarosDescription'), href: '/readings' },
-		{ label: t('agpeya'), description: t('agpeyaDescription'), href: '/agpeya' },
-		{ label: t('synaxarium'), description: t('synaxariumDescription'), href: '/synaxarium' },
-		{ label: t('vespers'), description: t('vespersDescription'), href: '/vespers' },
-		{ label: t('lent'), description: t('lentDescription'), href: '/lent' },
+	const { read, pray, more } = getNavGroups(t)
+	const moreMenuItems = [
+		{ label: t('calendar'), description: t('calendarDescription'), href: '/calendar' },
+		...more,
 	]
 
-	const moreMenuItems = [
-		{ label: t('calendar'), description: 'View the Coptic calendar', href: '/calendar' },
-		{ label: t('settings'), description: t('settingsDescription'), href: '/settings' },
-	]
+	const renderItem = (item: { label: string; description: string; href: string }) => {
+		const isActive = pathname.startsWith(item.href)
+		return (
+			<Link
+				key={item.href}
+				href={item.href}
+				onClick={closeMenu}
+				className={`block px-3 py-1.5 rounded-lg transition-colors ${
+					isActive ? themeClasses.drawerNavActive[theme] : themeClasses.drawerNavInactive[theme]
+				}`}
+			>
+				<span className="block text-sm font-medium">{item.label}</span>
+				<span className={`block text-[11px] ${themeClasses.dropdownMuted[theme]}`}>
+					{item.description}
+				</span>
+			</Link>
+		)
+	}
+
+	const sectionHeading = (label: string) => (
+		<h2
+			className={`text-[10px] font-semibold uppercase tracking-wider ${themeClasses.dropdownMuted[theme]} mb-1`}
+		>
+			{label}
+		</h2>
+	)
 
 	return (
 		<>
@@ -132,33 +153,14 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 					<nav className="py-2 overflow-y-auto max-h-[calc(100vh-56px)]">
 						{/* Read section */}
 						<div className="px-4 mb-2">
-							<h2
-								className={`text-[10px] font-semibold uppercase tracking-wider ${themeClasses.dropdownMuted[theme]} mb-1`}
-							>
-								{t('read')}
-							</h2>
-							<div className="space-y-0.5">
-								{readMenuItems.map((item) => {
-									const isActive = pathname.startsWith(item.href)
-									return (
-										<Link
-											key={item.href}
-											href={item.href}
-											onClick={closeMenu}
-											className={`block px-3 py-1.5 rounded-lg transition-colors ${
-												isActive
-													? themeClasses.drawerNavActive[theme]
-													: themeClasses.drawerNavInactive[theme]
-											}`}
-										>
-											<span className="block text-sm font-medium">{item.label}</span>
-											<span className={`block text-[11px] ${themeClasses.dropdownMuted[theme]}`}>
-												{item.description}
-											</span>
-										</Link>
-									)
-								})}
-							</div>
+							{sectionHeading(t('read'))}
+							<div className="space-y-0.5">{read.map(renderItem)}</div>
+						</div>
+
+						{/* Pray section */}
+						<div className="px-4 mb-2">
+							{sectionHeading(t('pray'))}
+							<div className="space-y-0.5">{pray.map(renderItem)}</div>
 						</div>
 
 						{/* Sections navigation (if available) */}
@@ -198,33 +200,8 @@ export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
 
 						{/* More section */}
 						<div className="px-4">
-							<h2
-								className={`text-[10px] font-semibold uppercase tracking-wider ${themeClasses.dropdownMuted[theme]} mb-1`}
-							>
-								{t('more')}
-							</h2>
-							<div className="space-y-0.5">
-								{moreMenuItems.map((item) => {
-									const isActive = pathname.startsWith(item.href)
-									return (
-										<Link
-											key={item.href}
-											href={item.href}
-											onClick={closeMenu}
-											className={`block px-3 py-1.5 rounded-lg transition-colors ${
-												isActive
-													? themeClasses.drawerNavActive[theme]
-													: themeClasses.drawerNavInactive[theme]
-											}`}
-										>
-											<span className="block text-sm font-medium">{item.label}</span>
-											<span className={`block text-[11px] ${themeClasses.dropdownMuted[theme]}`}>
-												{item.description}
-											</span>
-										</Link>
-									)
-								})}
-							</div>
+							{sectionHeading(t('more'))}
+							<div className="space-y-0.5">{moreMenuItems.map(renderItem)}</div>
 						</div>
 					</nav>
 				</div>
