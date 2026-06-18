@@ -40,6 +40,7 @@ export default function Navbar() {
 					<div className="hidden lg:flex items-center gap-4">
 						<NavDropdown
 							label={t('read')}
+							href="/read"
 							items={read}
 							id="read"
 							onOpen={handleDropdownOpen}
@@ -47,6 +48,7 @@ export default function Navbar() {
 						/>
 						<NavDropdown
 							label={t('pray')}
+							href="/pray"
 							items={pray}
 							id="pray"
 							onOpen={handleDropdownOpen}

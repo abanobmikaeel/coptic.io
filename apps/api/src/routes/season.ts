@@ -1,6 +1,8 @@
 import {
 	getAllSeasonsForYear,
 	getFastingPeriodsForYear,
+	getLiturgicalDescription,
+	getLiturgicalName,
 	getLiturgicalSeasonForDate,
 	isInFastingPeriod,
 } from '@coptic/core'
@@ -23,22 +25,27 @@ season.get('/:date?', async (c) => {
 			}
 		}
 
+		const lang = c.req.query('lang') || 'en'
 		const season = getLiturgicalSeasonForDate(parsedDate)
 		const isFasting = isInFastingPeriod(parsedDate)
 
 		if (!season) {
 			return c.json({
 				date: format(parsedDate, 'yyyy-MM-dd'),
-				season: 'Ordinary Time',
-				description: 'Regular liturgical time outside major seasons',
+				season: getLiturgicalName('Ordinary Time', lang),
+				description: getLiturgicalDescription(
+					'Ordinary Time',
+					'Regular liturgical time outside major seasons',
+					lang,
+				),
 				isFasting: false,
 			})
 		}
 
 		return c.json({
 			date: format(parsedDate, 'yyyy-MM-dd'),
-			season: season.name,
-			description: season.description,
+			season: getLiturgicalName(season.name, lang),
+			description: getLiturgicalDescription(season.name, season.description, lang),
 			startDate: format(season.startDate, 'yyyy-MM-dd'),
 			endDate: format(season.endDate, 'yyyy-MM-dd'),
 			isFasting,

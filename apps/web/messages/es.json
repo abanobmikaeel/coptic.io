@@ -103,6 +103,8 @@
 	"nav": {
 		"read": "Leer",
 		"pray": "Orar",
+		"readTagline": "La Escritura, los santos y los tiempos de la Iglesia.",
+		"prayTagline": "Reza con la Iglesia cada día.",
 		"language": "Idioma",
 		"theme": "Tema",
 		"libraryDescription": "Libros y referencias",
@@ -194,7 +196,9 @@
 		"viewTodaysReadings": "Ver lecturas de hoy",
 		"heroKicker": "Tu compañero en la fe copta ortodoxa",
 		"heroHeadline": "Reza, lee y crece en la fe copta ortodoxa",
-		"heroSubhead": "Lecturas diarias, las horas del Agpeya, el Levantamiento del Incienso y el Sinaxario — todo en un solo lugar.",
+		"psalm": "Salmo",
+		"gospel": "Evangelio",
+		"heroSubhead": "Comienza cada día con la Iglesia copta ortodoxa: sus lecturas, oraciones y santos.",
 		"prayTheHours": "Reza las horas",
 		"explore": "Explorar",
 		"emailStripTitle": "Recibe las lecturas diarias por correo",
@@ -204,7 +208,8 @@
 		"preferCalendarSync": "¿Prefieres sincronizar calendario?",
 		"addToCalendar": "Añadir a calendario de Apple, Google u Outlook",
 		"footer": "Hecho para la comunidad copta",
-		"fastingToday": "Ayuno hoy"
+		"fastingToday": "Ayuno hoy",
+		"season": "Tiempo litúrgico"
 	},
 	"library": {
 		"title": "Biblioteca",

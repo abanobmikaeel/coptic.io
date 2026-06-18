@@ -28,6 +28,44 @@ export function SettingsIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconP
 	)
 }
 
+export function CrossIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+	return (
+		<svg
+			className={className}
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth={strokeWidth}
+				d="M12 3v18M8 8h8"
+			/>
+		</svg>
+	)
+}
+
+export function LibraryIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+	return (
+		<svg
+			className={className}
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth={strokeWidth}
+				d="M3 10l9-6 9 6M5 10v9M9.5 10v9M14.5 10v9M19 10v9M3 20h18"
+			/>
+		</svg>
+	)
+}
+
 export function CalendarIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
 	return (
 		<svg

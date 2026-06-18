@@ -52,3 +52,8 @@ export const getAvailableSources = (language: SupportedLanguage): SynaxariumSour
  * Data loading utilities
  */
 export * from './loader'
+
+/**
+ * Bible book names + reading-reference localization
+ */
+export * from './bookNames'

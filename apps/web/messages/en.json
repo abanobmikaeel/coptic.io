@@ -103,6 +103,8 @@
 	"nav": {
 		"read": "Read",
 		"pray": "Pray",
+		"readTagline": "Scripture, the saints, and the seasons of the Church.",
+		"prayTagline": "Pray with the Church, every day.",
 		"language": "Language",
 		"theme": "Theme",
 		"libraryDescription": "Books & references",
@@ -192,9 +194,11 @@
 		"feast": "Feast",
 		"todaysReadings": "Today's Readings",
 		"viewTodaysReadings": "View today's readings",
+		"psalm": "Psalm",
+		"gospel": "Gospel",
 		"heroKicker": "Your Coptic Orthodox companion",
-		"heroHeadline": "Pray, read, and grow in the Coptic Orthodox faith",
-		"heroSubhead": "Daily readings, the Agpeya hours, the Raising of Incense, and the Synaxarium — all in one place.",
+		"heroHeadline": "Grow in the Coptic Orthodox faith",
+		"heroSubhead": "Begin each day with the Coptic Orthodox Church, its readings, prayers, and saints.",
 		"prayTheHours": "Pray the hours",
 		"explore": "Explore",
 		"emailStripTitle": "Get the daily readings by email",
@@ -204,7 +208,8 @@
 		"preferCalendarSync": "Prefer calendar sync?",
 		"addToCalendar": "Add to Apple, Google, or Outlook Calendar",
 		"footer": "Built for the Coptic community",
-		"fastingToday": "Fasting today"
+		"fastingToday": "Fasting today",
+		"season": "Season"
 	},
 	"library": {
 		"title": "Library",

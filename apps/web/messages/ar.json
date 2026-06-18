@@ -103,6 +103,8 @@
 	"nav": {
 		"read": "القراءات",
 		"pray": "الصلوات",
+		"readTagline": "كلمة الله، سير القديسين، ومواسم الكنيسة.",
+		"prayTagline": "صلِّ مع الكنيسة كل يوم.",
 		"language": "اللغة",
 		"theme": "المظهر",
 		"libraryDescription": "كتب ومراجع",
@@ -191,11 +193,13 @@
 		"today": "اليوم",
 		"feast": "العيد",
 		"todaysReadings": "قراءات اليوم",
-		"viewTodaysReadings": "عرض قراءات اليوم",
-		"heroKicker": "رفيقك في الإيمان القبطي الأرثوذكسي",
-		"heroHeadline": "صلِّ واقرأ وانمُ في الإيمان القبطي الأرثوذكسي",
-		"heroSubhead": "قراءات يومية، صلوات السواعي، رفع بخور عشية، والسنكسار — في مكان واحد.",
-		"prayTheHours": "صلِّ السواعي",
+		"viewTodaysReadings": "قراءات اليوم",
+		"psalm": "مزمور",
+		"gospel": "إنجيل",
+		"heroKicker": "رفيقك الروحي اليومي",
+		"heroHeadline": "ابدأ يومك مع كلمة الله",
+		"heroSubhead": "قراءات اليوم وصلوات الأجبية، ترافقك كل صباح.",
+		"prayTheHours": "صلِّ الأجبية",
 		"explore": "استكشف",
 		"emailStripTitle": "احصل على قراءات اليوم عبر البريد",
 		"upcomingFeasts": "الأعياد القادمة",
@@ -204,7 +208,8 @@
 		"preferCalendarSync": "تفضل مزامنة التقويم؟",
 		"addToCalendar": "أضف إلى تقويم Apple أو Google أو Outlook",
 		"footer": "صُنع للمجتمع القبطي",
-		"fastingToday": "صوم اليوم"
+		"fastingToday": "صوم اليوم",
+		"season": "الموسم"
 	},
 	"library": {
 		"title": "المكتبة",

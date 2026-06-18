@@ -1,8 +1,15 @@
 import { OFFERINGS, type OfferingIcon } from '@/lib/offerings'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
-import CopticCross from './CopticCross'
-import { BookIcon, CalendarIcon, ClockIcon, PersonIcon, SunIcon } from './ui/Icons'
+import {
+	BookIcon,
+	CalendarIcon,
+	ClockIcon,
+	CrossIcon,
+	LibraryIcon,
+	PersonIcon,
+	SunIcon,
+} from './ui/Icons'
 
 function OfferingGlyph({ name }: { name: OfferingIcon }) {
 	const cls = 'w-5 h-5'
@@ -16,7 +23,9 @@ function OfferingGlyph({ name }: { name: OfferingIcon }) {
 		case 'calendar':
 			return <CalendarIcon className={cls} />
 		case 'cross':
-			return <CopticCross size={20} />
+			return <CrossIcon className={cls} />
+		case 'library':
+			return <LibraryIcon className={cls} />
 		default:
 			return <BookIcon className={cls} />
 	}

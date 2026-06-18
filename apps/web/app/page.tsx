@@ -32,7 +32,7 @@ import {
 	filterUpcomingFeasts,
 } from '@/lib/filterUpcomingFeasts'
 import { formatGregorianDate, parseDateString } from '@/lib/utils'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
@@ -46,25 +46,28 @@ export default async function Home({ searchParams }: HomeProps) {
 	const params = await searchParams
 	const date = params.date
 	const t = await getTranslations('home')
+	const locale = await getLocale()
 
 	const [calendar, celebrations, upcoming, readingRefs, fasting] = await Promise.all([
-		getCalendarData(date),
+		getCalendarData(date, locale),
 		getTodayCelebrations(date),
 		getUpcomingCelebrations(60),
-		getReadingReferences(date),
-		getFastingForDate(date),
+		getReadingReferences(date, locale),
+		getFastingForDate(date, locale),
 	])
 
 	const displayDate = date ? parseDateString(date) : new Date()
-	const gregorianDate = formatGregorianDate(displayDate)
+	const gregorianDate = formatGregorianDate(displayDate, locale)
 
 	const copticDate = calendar?.dateString || 'Loading...'
 	const todayFeast = Array.isArray(celebrations) && celebrations.length > 0 ? celebrations[0] : null
 
 	const hasReadingRefs = readingRefs?.reference?.LPsalm || readingRefs?.reference?.LGospel
 	const isLent = !hasReadingRefs && readingRefs?.season
-	// Surface the Lent Guide offering only during Great Lent.
-	const isLentSeason = !!readingRefs?.season && /lent/i.test(readingRefs.season)
+	// Surface the Lent Guide offering only during Great Lent. Use the
+	// language-stable seasonKey so detection works regardless of locale.
+	const seasonKey = readingRefs?.seasonKey ?? readingRefs?.season
+	const isLentSeason = !!seasonKey && /lent/i.test(seasonKey)
 
 	const allEvents = Array.isArray(upcoming) ? filterUpcomingFeasts(upcoming) : []
 	const upcomingFeasts = filterFeastsOnly(allEvents)
@@ -93,7 +96,7 @@ export default async function Home({ searchParams }: HomeProps) {
 								className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-700 hover:bg-amber-600 text-white text-sm font-medium transition-colors"
 							>
 								{t('viewTodaysReadings')}
-								<ChevronRightIcon className="w-4 h-4" />
+								<ChevronRightIcon className="w-4 h-4 rtl:rotate-180" />
 							</Link>
 							<Link
 								href="/agpeya"
@@ -139,13 +142,15 @@ export default async function Home({ searchParams }: HomeProps) {
 								</p>
 								{readingRefs?.reference?.LPsalm && (
 									<p className="text-gray-700 dark:text-gray-300 text-sm">
-										<span className="font-medium text-gray-900 dark:text-white">Psalm:</span>{' '}
+										<span className="font-medium text-gray-900 dark:text-white">{t('psalm')}:</span>{' '}
 										{readingRefs.reference.LPsalm}
 									</p>
 								)}
 								{readingRefs?.reference?.LGospel && (
 									<p className="text-gray-700 dark:text-gray-300 text-sm">
-										<span className="font-medium text-gray-900 dark:text-white">Gospel:</span>{' '}
+										<span className="font-medium text-gray-900 dark:text-white">
+											{t('gospel')}:
+										</span>{' '}
 										{readingRefs.reference.LGospel}
 									</p>
 								)}
@@ -155,7 +160,7 @@ export default async function Home({ searchParams }: HomeProps) {
 						{isLent && (
 							<div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
 								<p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
-									Season
+									{t('season')}
 								</p>
 								<p className="text-gray-900 dark:text-white text-lg">
 									{readingRefs?.season}
