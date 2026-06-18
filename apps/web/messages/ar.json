@@ -219,7 +219,10 @@
 			"lordlyFeast": "عيد سيّدي",
 			"majorFeast": "عيد كبير",
 			"minorFeast": "عيد صغير"
-		}
+		},
+		"emailPlaceholder": "أدخل بريدك الإلكتروني",
+		"getDailyReadings": "اشترك في القراءات",
+		"emailDisclaimer": "رسائل يومية مجانية. يمكنك إلغاء الاشتراك في أي وقت."
 	},
 	"library": {
 		"title": "المكتبة",

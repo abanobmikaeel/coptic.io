@@ -219,7 +219,10 @@
 			"lordlyFeast": "Lordly Feast",
 			"majorFeast": "Major Feast",
 			"minorFeast": "Minor Feast"
-		}
+		},
+		"emailPlaceholder": "Enter your email",
+		"getDailyReadings": "Get Daily Readings",
+		"emailDisclaimer": "Free daily emails. Unsubscribe anytime."
 	},
 	"library": {
 		"title": "Library",

@@ -219,7 +219,10 @@
 			"lordlyFeast": "Fiesta del Señor",
 			"majorFeast": "Fiesta Mayor",
 			"minorFeast": "Fiesta Menor"
-		}
+		},
+		"emailPlaceholder": "Introduce tu correo",
+		"getDailyReadings": "Recibir lecturas diarias",
+		"emailDisclaimer": "Correos diarios gratis. Cancela cuando quieras."
 	},
 	"library": {
 		"title": "Biblioteca",
