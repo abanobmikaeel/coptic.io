@@ -173,7 +173,7 @@ body {
    per-character fallback) and nudge the base size up — Naskh reads small at
    Latin sizes. Reading components set .font-arabic themselves and are unaffected. */
 html[lang="ar"] {
-	font-size: 106.25%;
+	font-size: 112.5%;
 }
 
 html[lang="ar"] body {

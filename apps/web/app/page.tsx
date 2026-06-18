@@ -50,8 +50,8 @@ export default async function Home({ searchParams }: HomeProps) {
 
 	const [calendar, celebrations, upcoming, readingRefs, fasting] = await Promise.all([
 		getCalendarData(date, locale),
-		getTodayCelebrations(date),
-		getUpcomingCelebrations(60),
+		getTodayCelebrations(date, locale),
+		getUpcomingCelebrations(60, locale),
 		getReadingReferences(date, locale),
 		getFastingForDate(date, locale),
 	])

@@ -209,7 +209,17 @@
 		"addToCalendar": "Añadir a calendario de Apple, Google u Outlook",
 		"footer": "Hecho para la comunidad copta",
 		"fastingToday": "Ayuno hoy",
-		"season": "Tiempo litúrgico"
+		"season": "Tiempo litúrgico",
+		"showMore": "Ver más",
+		"noUpcomingFeasts": "No hay fiestas próximas",
+		"noUpcomingFasts": "No hay ayunos próximos",
+		"feastType": {
+			"fast": "Ayuno",
+			"feast": "Fiesta",
+			"lordlyFeast": "Fiesta del Señor",
+			"majorFeast": "Fiesta Mayor",
+			"minorFeast": "Fiesta Menor"
+		}
 	},
 	"library": {
 		"title": "Biblioteca",

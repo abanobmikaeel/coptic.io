@@ -209,7 +209,17 @@
 		"addToCalendar": "Add to Apple, Google, or Outlook Calendar",
 		"footer": "Built for the Coptic community",
 		"fastingToday": "Fasting today",
-		"season": "Season"
+		"season": "Season",
+		"showMore": "Show more",
+		"noUpcomingFeasts": "No upcoming feasts",
+		"noUpcomingFasts": "No upcoming fasts",
+		"feastType": {
+			"fast": "Fast",
+			"feast": "Feast",
+			"lordlyFeast": "Lordly Feast",
+			"majorFeast": "Major Feast",
+			"minorFeast": "Minor Feast"
+		}
 	},
 	"library": {
 		"title": "Library",

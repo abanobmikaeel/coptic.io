@@ -58,10 +58,10 @@ export async function OfferingsGrid({ pillar, lent = false, className = '' }: Of
 					<span className="w-9 h-9 flex items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-500">
 						<OfferingGlyph name={o.icon} />
 					</span>
-					<span className="text-[15px] font-semibold text-gray-900 dark:text-white">
+					<span className="text-[15px] rtl:text-[17px] font-semibold text-gray-900 dark:text-white">
 						{t(o.labelKey)}
 					</span>
-					<span className="text-[13px] text-gray-500 dark:text-gray-400 leading-snug">
+					<span className="text-[13px] rtl:text-[15px] text-gray-500 dark:text-gray-400 leading-snug rtl:leading-relaxed">
 						{t(o.descriptionKey)}
 					</span>
 				</Link>

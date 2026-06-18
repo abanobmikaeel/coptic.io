@@ -25,16 +25,18 @@ const langQuery = (lang?: string) => (lang && lang !== 'en' ? `?lang=${lang}` : 
 export const getCalendarData = (date?: string, lang?: string) =>
 	fetchApi<CalendarData>(`${date ? `/calendar/${date}` : '/calendar'}${langQuery(lang)}`)
 
-export const getTodayCelebrations = (date?: string) => {
+export const getTodayCelebrations = (date?: string, lang?: string) => {
 	const d = new Date()
 	const today =
 		date ||
 		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-	return fetchApi<Celebration[]>(`/celebrations/${today}`)
+	return fetchApi<Celebration[]>(`/celebrations/${today}${langQuery(lang)}`)
 }
 
-export const getUpcomingCelebrations = (days = 60) =>
-	fetchApi<UpcomingCelebration[]>(`/celebrations/upcoming/list?days=${days}`)
+export const getUpcomingCelebrations = (days = 60, lang?: string) =>
+	fetchApi<UpcomingCelebration[]>(
+		`/celebrations/upcoming/list?days=${days}${lang && lang !== 'en' ? `&lang=${lang}` : ''}`,
+	)
 
 export const getCalendarMonth = (year: number, month: number) =>
 	fetchApi<CalendarMonth>(`/calendar/month/${year}/${month}`)

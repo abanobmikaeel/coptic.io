@@ -209,7 +209,17 @@
 		"addToCalendar": "أضف إلى تقويم Apple أو Google أو Outlook",
 		"footer": "صُنع للمجتمع القبطي",
 		"fastingToday": "صوم اليوم",
-		"season": "الموسم"
+		"season": "الموسم",
+		"showMore": "عرض المزيد",
+		"noUpcomingFeasts": "لا توجد أعياد قادمة",
+		"noUpcomingFasts": "لا توجد أصوام قادمة",
+		"feastType": {
+			"fast": "صوم",
+			"feast": "عيد",
+			"lordlyFeast": "عيد سيّدي",
+			"majorFeast": "عيد كبير",
+			"minorFeast": "عيد صغير"
+		}
 	},
 	"library": {
 		"title": "المكتبة",
