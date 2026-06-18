@@ -1,5 +1,8 @@
+// Render Arabic with Arabic-Indic digits so dates match the Coptic date styling.
+const intlLocale = (locale: string) => (locale === 'ar' ? 'ar-u-nu-arab' : locale)
+
 export function formatGregorianDate(date: Date, locale = 'en'): string {
-	return date.toLocaleDateString(locale, {
+	return date.toLocaleDateString(intlLocale(locale), {
 		weekday: 'long',
 		year: 'numeric',
 		month: 'long',
@@ -8,14 +11,14 @@ export function formatGregorianDate(date: Date, locale = 'en'): string {
 }
 
 export function formatDateShort(date: Date, locale = 'en'): string {
-	return date.toLocaleDateString(locale, {
+	return date.toLocaleDateString(intlLocale(locale), {
 		month: 'short',
 		day: 'numeric',
 	})
 }
 
 export function formatDateShortUTC(date: Date, locale = 'en'): string {
-	return date.toLocaleDateString(locale, {
+	return date.toLocaleDateString(intlLocale(locale), {
 		month: 'short',
 		day: 'numeric',
 		timeZone: 'UTC',

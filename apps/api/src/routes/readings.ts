@@ -1,4 +1,5 @@
-import { gregorianToCoptic } from '@coptic/core'
+import { getLiturgicalName, gregorianToCoptic, localizeCopticDate } from '@coptic/core'
+import { localizeReference } from '@coptic/data'
 import { Hono } from 'hono'
 import { getByCopticDate, warmTranslation } from '../models/readings'
 import type { BibleTranslation } from '../types'
@@ -6,6 +7,30 @@ import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCele
 import { parseLocalDate } from '../utils/dateUtils'
 
 const readings = new Hono()
+
+// Reading-reference fields whose values are verse strings ("Psalms 99:6-7").
+const REFERENCE_KEYS = [
+	'Prophecies',
+	'VPsalm',
+	'VGospel',
+	'MPsalm',
+	'MGospel',
+	'Pauline',
+	'Catholic',
+	'Acts',
+	'LPsalm',
+	'LGospel',
+	'EPPsalm',
+	'EPGospel',
+] as const
+
+const localizeReferenceObject = (reference: Record<string, unknown>, lang: string) => {
+	const out: Record<string, unknown> = { ...reference }
+	for (const key of REFERENCE_KEYS) {
+		if (typeof out[key] === 'string') out[key] = localizeReference(out[key] as string, lang)
+	}
+	return out
+}
 
 // Get readings for a specific date or today
 readings.get('/:date?', async (c) => {
@@ -33,14 +58,23 @@ readings.get('/:date?', async (c) => {
 		if (isDetailed) await warmTranslation(translation)
 		const data = getByCopticDate(parsedDate, isDetailed, translation)
 
-		// Add celebrations and coptic date
+		// Add celebrations and the (localized) coptic date. Season name and the
+		// non-detailed reference book names are localized for the requested lang.
 		const celebrations = getStaticCelebrationsForDay(parsedDate)
-		const copticDate = gregorianToCoptic(parsedDate)
+		const fullDate = localizeCopticDate(gregorianToCoptic(parsedDate), translation)
 
 		return c.json({
 			...data,
+			...(data.reference
+				? { reference: localizeReferenceObject(data.reference, translation) }
+				: {}),
+			// `season` is localized for display; `seasonKey` keeps the canonical
+			// English identity so clients can branch on season without parsing copy.
+			...(data.season
+				? { season: getLiturgicalName(data.season, translation), seasonKey: data.season }
+				: {}),
 			celebrations,
-			fullDate: copticDate,
+			fullDate,
 		})
 	} catch (error) {
 		console.error('Error fetching readings:', error)

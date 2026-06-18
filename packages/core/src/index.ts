@@ -23,3 +23,6 @@ export * from './liturgy'
 
 // Date utilities
 export * from './utils/date'
+
+// Localized names (Coptic months, seasons/fasts, Bible book references)
+export * from './i18n'

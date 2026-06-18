@@ -1,4 +1,4 @@
-import { gregorianToCoptic } from '@coptic/core'
+import { gregorianToCoptic, localizeCopticDate } from '@coptic/core'
 import { isValid, parse } from 'date-fns'
 import { Hono } from 'hono'
 import * as calendarService from '../services/calendar.service'
@@ -112,7 +112,8 @@ calendar.get('/:date?', async (c) => {
 			parsedDate = new Date()
 		}
 
-		const copticDate = gregorianToCoptic(parsedDate)
+		const lang = c.req.query('lang') || 'en'
+		const copticDate = localizeCopticDate(gregorianToCoptic(parsedDate), lang)
 		return c.json(copticDate)
 	} catch (error) {
 		console.error('Error converting date:', error)

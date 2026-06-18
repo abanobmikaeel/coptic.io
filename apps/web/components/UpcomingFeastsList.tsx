@@ -1,6 +1,7 @@
 'use client'
 
 import { formatDateShortUTC } from '@/lib/utils'
+import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 interface Feast {
@@ -15,6 +16,8 @@ interface UpcomingFeastsListProps {
 }
 
 export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) {
+	const t = useTranslations('home')
+	const locale = useLocale()
 	const [visibleCount, setVisibleCount] = useState(5)
 
 	const getTypeColor = (type: string) => {
@@ -30,21 +33,15 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 	}
 
 	const formatType = (type: string) => {
-		const typeMap: Record<string, string> = {
-			fast: 'Fast',
-			feast: 'Feast',
-			lordlyFeast: 'Lordly Feast',
-			majorFeast: 'Major Feast',
-			minorFeast: 'Minor Feast',
-		}
-		return typeMap[type] || type
+		const known = ['fast', 'feast', 'lordlyFeast', 'majorFeast', 'minorFeast']
+		return known.includes(type) ? t(`feastType.${type}`) : type
 	}
 
 	const visibleFeasts = feasts.slice(0, visibleCount)
 	const hasMore = visibleCount < feasts.length
 
 	if (visibleFeasts.length === 0) {
-		return <p className="text-gray-500 dark:text-gray-400 text-sm">No upcoming feasts</p>
+		return <p className="text-gray-500 dark:text-gray-400 text-sm">{t('noUpcomingFeasts')}</p>
 	}
 
 	return (
@@ -55,13 +52,15 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 					className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800 last:border-0"
 				>
 					<div className="flex-1 min-w-0">
-						<p className="text-gray-900 dark:text-white font-medium truncate">
+						<p className="text-gray-900 dark:text-white font-medium truncate rtl:text-[17px]">
 							{feast.displayName || feast.name}
 						</p>
-						<p className={`text-xs ${getTypeColor(feast.type)}`}>{formatType(feast.type)}</p>
+						<p className={`text-xs rtl:text-sm ${getTypeColor(feast.type)}`}>
+							{formatType(feast.type)}
+						</p>
 					</div>
-					<p className="text-gray-500 dark:text-gray-400 text-sm ml-4 whitespace-nowrap">
-						{formatDateShortUTC(new Date(feast.date))}
+					<p className="text-gray-500 dark:text-gray-400 text-sm ms-4 whitespace-nowrap">
+						{formatDateShortUTC(new Date(feast.date), locale)}
 					</p>
 				</div>
 			))}
@@ -72,7 +71,7 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 					onClick={() => setVisibleCount((prev) => prev + 5)}
 					className="w-full mt-3 py-2.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors"
 				>
-					Show more
+					{t('showMore')}
 				</button>
 			)}
 		</div>

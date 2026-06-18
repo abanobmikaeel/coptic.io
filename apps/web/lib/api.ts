@@ -20,19 +20,23 @@ async function fetchApi<T>(endpoint: string, revalidate = 3600): Promise<T | nul
 	}
 }
 
-export const getCalendarData = (date?: string) =>
-	fetchApi<CalendarData>(date ? `/calendar/${date}` : '/calendar')
+const langQuery = (lang?: string) => (lang && lang !== 'en' ? `?lang=${lang}` : '')
 
-export const getTodayCelebrations = (date?: string) => {
+export const getCalendarData = (date?: string, lang?: string) =>
+	fetchApi<CalendarData>(`${date ? `/calendar/${date}` : '/calendar'}${langQuery(lang)}`)
+
+export const getTodayCelebrations = (date?: string, lang?: string) => {
 	const d = new Date()
 	const today =
 		date ||
 		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-	return fetchApi<Celebration[]>(`/celebrations/${today}`)
+	return fetchApi<Celebration[]>(`/celebrations/${today}${langQuery(lang)}`)
 }
 
-export const getUpcomingCelebrations = (days = 60) =>
-	fetchApi<UpcomingCelebration[]>(`/celebrations/upcoming/list?days=${days}`)
+export const getUpcomingCelebrations = (days = 60, lang?: string) =>
+	fetchApi<UpcomingCelebration[]>(
+		`/celebrations/upcoming/list?days=${days}${lang && lang !== 'en' ? `&lang=${lang}` : ''}`,
+	)
 
 export const getCalendarMonth = (year: number, month: number) =>
 	fetchApi<CalendarMonth>(`/calendar/month/${year}/${month}`)
@@ -75,18 +79,21 @@ export interface ReadingReferences {
 		LPsalm?: string
 		LGospel?: string
 	}
+	/** Localized season name (depends on lang). */
 	season?: string
+	/** Canonical English season identity — branch on this, not `season`. */
+	seasonKey?: string
 	seasonDay?: string
 	Synaxarium?: string
 }
 
-export const getReadingReferences = (date?: string) => {
+export const getReadingReferences = (date?: string, lang?: string) => {
 	const d = new Date()
 	const today =
 		date ||
 		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-	return fetchApi<ReadingReferences>(`/readings/${today}`)
+	return fetchApi<ReadingReferences>(`/readings/${today}${langQuery(lang)}`)
 }
 
-export const getFastingForDate = (date?: string) =>
-	fetchApi<FastingInfo>(date ? `/fasting/${date}` : '/fasting')
+export const getFastingForDate = (date?: string, lang?: string) =>
+	fetchApi<FastingInfo>(`${date ? `/fasting/${date}` : '/fasting'}${langQuery(lang)}`)

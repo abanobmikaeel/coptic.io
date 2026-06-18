@@ -16,9 +16,11 @@ interface NavDropdownProps {
 	id?: string
 	onOpen?: (id: string) => void
 	forceClose?: boolean
+	/** If set, the trigger label is a link to this landing page; hover still opens the menu. */
+	href?: string
 }
 
-export function NavDropdown({ label, items, id, onOpen, forceClose }: NavDropdownProps) {
+export function NavDropdown({ label, items, id, onOpen, forceClose, href }: NavDropdownProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -74,38 +76,52 @@ export function NavDropdown({ label, items, id, onOpen, forceClose }: NavDropdow
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 		>
-			<button
-				type="button"
-				onClick={() => {
-					const next = !isOpen
-					setIsOpen(next)
-					if (next && id) onOpen?.(id)
-				}}
-				className={`flex items-center gap-1 text-[13px] transition-colors ${
+			{(() => {
+				const triggerClass = `flex items-center gap-1 text-[13px] transition-colors ${
 					isActive
 						? 'text-amber-600 dark:text-amber-500'
 						: 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-				}`}
-				aria-expanded={isOpen}
-				aria-haspopup="true"
-			>
-				{label}
-				<svg
-					width="12"
-					height="12"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth="2"
-					className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
-					aria-hidden="true"
-				>
-					<path d="m6 9 6 6 6-6" />
-				</svg>
-			</button>
+				}`
+				const chevron = (
+					<svg
+						width="12"
+						height="12"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
+						aria-hidden="true"
+					>
+						<path d="m6 9 6 6 6-6" />
+					</svg>
+				)
+				// With href: the label navigates to the landing page; hover opens the menu.
+				return href ? (
+					<Link href={href} className={triggerClass} aria-haspopup="true" aria-expanded={isOpen}>
+						{label}
+						{chevron}
+					</Link>
+				) : (
+					<button
+						type="button"
+						onClick={() => {
+							const next = !isOpen
+							setIsOpen(next)
+							if (next && id) onOpen?.(id)
+						}}
+						className={triggerClass}
+						aria-expanded={isOpen}
+						aria-haspopup="true"
+					>
+						{label}
+						{chevron}
+					</button>
+				)
+			})()}
 
 			{isOpen && (
-				<div className="absolute top-full left-0 mt-2 w-56 py-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 z-50">
+				<div className="absolute top-full start-0 mt-2 w-56 py-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 z-50">
 					{items.map((item) => {
 						const isItemActive = pathname.startsWith(item.href)
 						return (

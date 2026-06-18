@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { DEFAULT_TIMEZONE } from '@/constants'
 import { useFetch } from '@/lib/hooks'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
 export default function EmailSignup() {
 	const router = useRouter()
+	const t = useTranslations('home')
 	const { loading, error, execute } = useFetch()
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -35,18 +37,18 @@ export default function EmailSignup() {
 				<Input
 					type="email"
 					name="email"
-					placeholder="Enter your email"
+					placeholder={t('emailPlaceholder')}
 					required
 					error={!!error}
 					className="flex-1 rounded-xl"
 				/>
 				<Button type="submit" loading={loading} className="px-6 rounded-xl whitespace-nowrap">
-					Get Daily Readings
+					{t('getDailyReadings')}
 				</Button>
 			</div>
 			{error && <p className="mt-2 text-sm text-red-600 dark:text-red-400 text-center">{error}</p>}
-			<p className="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
-				Free daily emails. Unsubscribe anytime.
+			<p className="mt-3 text-xs rtl:text-sm text-gray-500 dark:text-gray-400 text-center">
+				{t('emailDisclaimer')}
 			</p>
 		</form>
 	)

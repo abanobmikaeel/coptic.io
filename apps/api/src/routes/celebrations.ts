@@ -1,9 +1,16 @@
+import { getLiturgicalName } from '@coptic/core'
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { isValid, parse } from 'date-fns'
 import { CelebrationSchema, ErrorSchema, UpcomingCelebrationSchema } from '../schemas'
 import * as celebrationsService from '../services/celebrations.service'
 
 const app = new OpenAPIHono()
+
+// Localize a celebration's name for the requested language (falls back to English).
+const localizeName = <T extends { name: string }>(c: T, lang: string): T => ({
+	...c,
+	name: getLiturgicalName(c.name, lang),
+})
 
 // GET /api/celebrations
 const getAllRoute = createRoute({
@@ -41,6 +48,9 @@ const getForDateRoute = createRoute({
 		params: z.object({
 			date: z.string().optional().openapi({ example: '2025-01-07' }),
 		}),
+		query: z.object({
+			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
+		}),
 	},
 	responses: {
 		200: {
@@ -64,6 +74,7 @@ const getForDateRoute = createRoute({
 
 app.openapi(getForDateRoute, (c) => {
 	const { date } = c.req.valid('param')
+	const { lang } = c.req.valid('query')
 
 	let parsedDate: Date
 	if (date) {
@@ -76,7 +87,8 @@ app.openapi(getForDateRoute, (c) => {
 	}
 
 	const celebrations = celebrationsService.getCelebrationsForDate(parsedDate)
-	return c.json(celebrations, 200)
+	const localized = celebrations?.map((cel) => localizeName(cel, lang ?? 'en')) ?? celebrations
+	return c.json(localized, 200)
 })
 
 // GET /api/celebrations/upcoming/list
@@ -89,6 +101,7 @@ const getUpcomingRoute = createRoute({
 	request: {
 		query: z.object({
 			days: z.string().optional().openapi({ example: '30' }),
+			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
 		}),
 	},
 	responses: {
@@ -104,10 +117,14 @@ const getUpcomingRoute = createRoute({
 })
 
 app.openapi(getUpcomingRoute, (c) => {
-	const { days } = c.req.valid('query')
+	const { days, lang } = c.req.valid('query')
 	const daysNum = Number.parseInt(days || '30')
 	const upcoming = celebrationsService.getUpcomingCelebrations(daysNum)
-	return c.json(upcoming, 200)
+	const localized = upcoming.map((day) => ({
+		...day,
+		celebrations: day.celebrations.map((cel) => localizeName(cel, lang ?? 'en')),
+	}))
+	return c.json(localized, 200)
 })
 
 export default app
