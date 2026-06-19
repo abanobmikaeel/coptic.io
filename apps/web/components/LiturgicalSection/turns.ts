@@ -65,6 +65,8 @@ export function alignByRubric(
 	langs: string[],
 ): Record<string, FlatLine[]> {
 	if (langs.length < 2) return byLang
+	const hasRubrics = langs.some((lang) => byLang[lang]?.some((line) => line.isRubric))
+	if (!hasRubrics) return byLang
 	const ptr: Record<string, number> = {}
 	const out: Record<string, FlatLine[]> = {}
 	for (const l of langs) {

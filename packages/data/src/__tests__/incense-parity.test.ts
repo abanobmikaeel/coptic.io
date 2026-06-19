@@ -54,6 +54,16 @@ describe('incense data cross-language parity', () => {
 		expect(shape('cop')).toEqual(shape('en'))
 	})
 
+	it('stores Coptic prayer text as Unicode rather than legacy font encoding', () => {
+		for (const section of services.cop.sections) {
+			const content = section.content ?? section.blocks?.flatMap((block) => block.content) ?? []
+			for (const item of content.filter((entry) => !isRubric(entry))) {
+				expect(text(item)).toMatch(/[\u2C80-\u2CFF]/u)
+				expect(text(item)).not.toMatch(/(?:\/en|p\[oic|n;ok)/i)
+			}
+		}
+	})
+
 	for (const section of services.en.sections) {
 		if (!section.content && !section.blocks) continue
 
@@ -121,7 +131,7 @@ describe('incense liturgical invariants', () => {
 		const night: Record<Lang, RegExp> = {
 			en: /this night without sin/,
 			ar: /اللَّيْلَة|الليلة/,
-			cop: /paiejwrh/, // ϧⲉⲛ ⲡⲁⲓⲉ̀ϫⲱⲣϩ in the CS Avva Shenouda ASCII encoding
+			cop: /ϧⲉⲛ ⲡⲁⲓⲉ̀?ϫⲱⲣϩ/,
 		}
 		for (const lang of LANGS) {
 			const section = services[lang].sections.find((s) => s.id === 'graciously-o-lord')

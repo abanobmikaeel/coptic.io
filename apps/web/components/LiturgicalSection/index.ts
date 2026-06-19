@@ -1,7 +1,7 @@
 export {
 	ROLE_LABELS,
 	SPEAKER_LABELS,
-	FONT_ENCODES_GLYPHS,
+	PRESERVE_LABEL_CASE,
 	getSpeakerLabel,
 	getRoleLabel,
 } from './speakers'

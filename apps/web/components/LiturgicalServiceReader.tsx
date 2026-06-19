@@ -82,6 +82,9 @@ export interface LiturgicalServiceReaderProps {
 	settingsExtra?: React.ReactNode
 	// One-line banner under the header, e.g. the unsupported-language fallback note.
 	notice?: string
+	// Replaces the date navigation in the header — e.g. an hour switcher for the Agpeya,
+	// which is hour-based rather than date-based.
+	headerCenter?: React.ReactNode
 }
 
 // Generic reader for any multi-language liturgical service (Vespers, Midnight Praises, …).
@@ -95,6 +98,7 @@ export function LiturgicalServiceReader({
 	basePath,
 	settingsExtra,
 	notice,
+	headerCenter,
 }: LiturgicalServiceReaderProps) {
 	const { settings, actions, mounted } = useReadingSettings()
 	const {
@@ -103,7 +107,10 @@ export function LiturgicalServiceReader({
 		isLoaded: langsLoaded,
 	} = useContentLanguages()
 	const locale = useLocale()
-	const [mode, setMode] = useState<'present' | 'scroll'>('present')
+	// Present vs. continuous "Reading" mode is persisted in the URL/preferences via
+	// useReadingSettings, so it survives hour/date navigation (e.g. Agpeya).
+	const mode = mounted ? settings.mode : 'present'
+	const setMode = actions.setMode
 	const [pagination, setPagination] = useState({ index: 0, count: 1 })
 	const [tocOpen, setTocOpen] = useState(false)
 	const [settingsOpen, setSettingsOpen] = useState(false)
@@ -139,7 +146,21 @@ export function LiturgicalServiceReader({
 	const ready = mounted && fontsReady
 
 	const theme = (mounted ? settings.theme : 'light') as ReadingTheme
-	const primaryService = servicesByLang[langs[0]] ?? Object.values(servicesByLang)[0]
+	// Navigation must come from the most complete translation. A scripture-only
+	// language such as Coptic may be displayed first, but must not hide prose
+	// sections that are available in Arabic or English.
+	const { lang: primaryLang, service: primaryService } = useMemo(() => {
+		let best: { lang: BibleTranslation; service?: IncenseService } = {
+			lang: langs[0] ?? 'en',
+		}
+		for (const lang of langs) {
+			const service = servicesByLang[lang]
+			if (service && service.sections.length > (best.service?.sections.length ?? -1)) {
+				best = { lang, service }
+			}
+		}
+		return best
+	}, [langs, servicesByLang])
 	const allSections = useMemo(() => primaryService?.sections ?? [], [primaryService])
 
 	// Section state (which section, added optional prayers, last-viewed position) lives in the
@@ -184,6 +205,8 @@ export function LiturgicalServiceReader({
 		lineSpacing: (settings.lineSpacing as LineSpacing) || 'normal',
 		wordSpacing: (settings.wordSpacing as WordSpacing) || 'normal',
 		weight: (settings.weight as FontWeight) || 'normal',
+		viewMode: settings.viewMode,
+		showVerses: settings.showVerses,
 	}
 
 	// Flattened lines per language for the current section. Prayer/litany sections flatten
@@ -269,7 +292,7 @@ export function LiturgicalServiceReader({
 			<h2 className={`text-sm font-semibold ${themeClasses.textHeading[theme]}`}>
 				{currentSection.title}
 			</h2>
-			<RoleBadge role={currentSection.role} lang={langs[0] ?? 'en'} theme={theme} />
+			<RoleBadge role={currentSection.role} lang={primaryLang} theme={theme} />
 			{currentSection.reference && (
 				<span className={`text-xs font-mono ${themeClasses.accent[theme]}`}>
 					{currentSection.reference}
@@ -284,17 +307,19 @@ export function LiturgicalServiceReader({
 		<ReadingsHeader theme={theme} layout="between">
 			<div className="flex items-center gap-2 min-w-0">
 				<Breadcrumb items={[{ label: title, href: basePath }]} theme={theme} />
-				<Suspense fallback={null}>
-					<DateNavigation theme={theme} basePath={basePath} keepDateParam>
-						{dateLabel && (
-							<span
-								className={`text-xs sm:text-sm whitespace-nowrap tabular-nums ${themeClasses.muted[theme]}`}
-							>
-								{dateLabel}
-							</span>
-						)}
-					</DateNavigation>
-				</Suspense>
+				{headerCenter ?? (
+					<Suspense fallback={null}>
+						<DateNavigation theme={theme} basePath={basePath} keepDateParam>
+							{dateLabel && (
+								<span
+									className={`text-xs sm:text-sm whitespace-nowrap tabular-nums ${themeClasses.muted[theme]}`}
+								>
+									{dateLabel}
+								</span>
+							)}
+						</DateNavigation>
+					</Suspense>
+				)}
 			</div>
 			<div className="flex items-center gap-2 flex-shrink-0">
 				<button
@@ -324,13 +349,13 @@ export function LiturgicalServiceReader({
 							onClose={() => setSettingsOpen(false)}
 							extraSection={
 								<>
-									<SettingSection label="Mode">
+									<SettingSection label="Reader Mode">
 										<SegmentedButtons
 											value={mode}
 											onChange={setMode}
 											options={[
 												{ value: 'present', label: 'Present' },
-												{ value: 'scroll', label: 'Reading' },
+												{ value: 'scroll', label: 'Scroll' },
 											]}
 										/>
 									</SettingSection>

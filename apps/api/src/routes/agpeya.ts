@@ -2,11 +2,18 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { warmTranslation } from '../models/readings'
 import { AgpeyaAnyHourSchema, AgpeyaWatchSchema, ErrorSchema } from '../schemas'
 import * as agpeyaService from '../services/agpeya.service'
+import type { BibleTranslation } from '../types'
 
 const app = new OpenAPIHono()
 
 const validHours = ['prime', 'terce', 'sext', 'none', 'vespers', 'compline', 'midnight'] as const
 const validWatches = ['1', '2', '3'] as const
+const langQuery = z.object({
+	lang: z.enum(['en', 'ar', 'es', 'cop']).optional().openapi({ example: 'ar' }),
+})
+
+const toTranslation = (lang?: string): BibleTranslation =>
+	lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : lang === 'cop' ? 'cop' : 'en'
 
 // GET /api/agpeya - Get current hour
 const getCurrentRoute = createRoute({
@@ -15,6 +22,7 @@ const getCurrentRoute = createRoute({
 	tags: ['Agpeya'],
 	summary: 'Get current Agpeya hour based on time of day',
 	description: 'Returns the Agpeya prayer hour appropriate for the current time of day.',
+	request: { query: langQuery },
 	responses: {
 		200: {
 			description: 'Current Agpeya hour',
@@ -28,9 +36,10 @@ const getCurrentRoute = createRoute({
 })
 
 app.openapi(getCurrentRoute, async (c) => {
-	await warmTranslation('en')
+	const translation = toTranslation(c.req.valid('query').lang)
+	await warmTranslation(translation)
 	const currentHourId = agpeyaService.getCurrentHour()
-	const hour = agpeyaService.getAgpeyaHour(currentHourId)
+	const hour = agpeyaService.getAgpeyaHour(currentHourId, translation)
 	// Current hour always exists since getCurrentHour returns a valid hour ID
 	return c.json(hour!, 200)
 })
@@ -42,6 +51,7 @@ const listHoursRoute = createRoute({
 	tags: ['Agpeya'],
 	summary: 'List all Agpeya prayer hours',
 	description: 'Returns a list of all seven canonical prayer hours.',
+	request: { query: langQuery },
 	responses: {
 		200: {
 			description: 'List of all Agpeya hours',
@@ -55,8 +65,9 @@ const listHoursRoute = createRoute({
 })
 
 app.openapi(listHoursRoute, async (c) => {
-	await warmTranslation('en')
-	const hours = agpeyaService.getAllHours()
+	const translation = toTranslation(c.req.valid('query').lang)
+	await warmTranslation(translation)
+	const hours = agpeyaService.getAllHours(translation)
 	return c.json(hours, 200)
 })
 
@@ -74,6 +85,7 @@ const getMidnightWatchRoute = createRoute({
 				description: 'The watch number (1, 2, or 3)',
 			}),
 		}),
+		query: langQuery,
 	},
 	responses: {
 		200: {
@@ -96,10 +108,14 @@ const getMidnightWatchRoute = createRoute({
 })
 
 app.openapi(getMidnightWatchRoute, async (c) => {
-	await warmTranslation('en')
+	const translation = toTranslation(c.req.valid('query').lang)
+	await warmTranslation(translation)
 	const { watch: watchId } = c.req.valid('param')
 
-	const watch = agpeyaService.getMidnightWatch(watchId as agpeyaService.MidnightWatchId)
+	const watch = agpeyaService.getMidnightWatch(
+		watchId as agpeyaService.MidnightWatchId,
+		translation,
+	)
 
 	if (!watch) {
 		return c.json({ error: `Watch '${watchId}' not found` }, 404)
@@ -123,6 +139,7 @@ const getHourRoute = createRoute({
 				description: 'The canonical hour to retrieve',
 			}),
 		}),
+		query: langQuery,
 	},
 	responses: {
 		200: {
@@ -145,10 +162,11 @@ const getHourRoute = createRoute({
 })
 
 app.openapi(getHourRoute, async (c) => {
-	await warmTranslation('en')
+	const translation = toTranslation(c.req.valid('query').lang)
+	await warmTranslation(translation)
 	const { hour: hourId } = c.req.valid('param')
 
-	const hour = agpeyaService.getAgpeyaHour(hourId)
+	const hour = agpeyaService.getAgpeyaHour(hourId, translation)
 
 	if (!hour) {
 		return c.json({ error: `Hour '${hourId}' not found` }, 404)

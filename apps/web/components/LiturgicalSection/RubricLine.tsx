@@ -1,7 +1,7 @@
 import type { ReadingTheme } from '@/components/DisplaySettings'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { themeClasses } from '@/lib/reading-styles'
-import { FONT_ENCODES_GLYPHS } from './speakers'
+import { PRESERVE_LABEL_CASE } from './speakers'
 
 // Below this length a rubric reads as a small-caps divider (with flanking rules);
 // longer instructions render as a centered note so they stay legible.
@@ -12,20 +12,18 @@ export interface RubricLineProps {
 	lang: BibleTranslation
 	theme: ReadingTheme
 	isRtl: boolean
-	// The language's body font class — applied for glyph-encoded scripts (Coptic) so the
-	// rubric renders in the right typeface rather than the default sans.
+	// The language's body font class, used for non-Latin scripts.
 	fontClass: string
 }
 
 // Instructional text (stage directions like "On Sunday, add:") set apart from the chanted
 // prayer as its own muted divider line, so a reader never mistakes it for text to be said.
 export function RubricLine({ text, lang, theme, isRtl, fontClass }: RubricLineProps) {
-	const glyphFont = FONT_ENCODES_GLYPHS.has(lang)
+	const preserveCase = PRESERVE_LABEL_CASE.has(lang)
 	const muted = themeClasses.muted[theme]
-	// Small-caps only for cased Latin scripts: Arabic has no case and the Coptic glyph
-	// font would mangle an uppercased ASCII payload.
-	const caps = !isRtl && !glyphFont
-	const typeClass = glyphFont ? fontClass : ''
+	// Small-caps only for cased Latin scripts.
+	const caps = !isRtl && !preserveCase
+	const typeClass = preserveCase ? fontClass : ''
 
 	if (text.length <= DIVIDER_MAX) {
 		return (

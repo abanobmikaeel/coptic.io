@@ -8,10 +8,11 @@ import type {
 } from '@/components/DisplaySettings'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { getStyleClasses } from '@/components/ScriptureReading/utils'
+import type { ViewMode } from '@/lib/reading-preferences'
 import { themeClasses } from '@/lib/reading-styles'
 import type { IncenseSection } from '@/lib/types'
 import { RubricLine } from './RubricLine'
-import { FONT_ENCODES_GLYPHS, getSpeakerLabel } from './speakers'
+import { PRESERVE_LABEL_CASE, getSpeakerLabel } from './speakers'
 
 export interface SectionColumnProps {
 	section: IncenseSection | undefined
@@ -22,6 +23,8 @@ export interface SectionColumnProps {
 	lineSpacing: LineSpacing
 	wordSpacing: WordSpacing
 	weight: FontWeight
+	viewMode?: ViewMode
+	showVerses?: boolean
 }
 
 export function SectionColumn({
@@ -33,6 +36,8 @@ export function SectionColumn({
 	lineSpacing,
 	wordSpacing,
 	weight,
+	viewMode = 'verse',
+	showVerses = true,
 }: SectionColumnProps) {
 	if (!section) return <div />
 	const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
@@ -54,18 +59,37 @@ export function SectionColumn({
 				<div
 					className={`pl-4 border-l-2 ${section.role === 'all' ? themeClasses.border[theme] : 'border-amber-500/40'}`}
 				>
-					<div className="space-y-3">
-						{section.verses!.map((verse) => (
-							<p key={verse.num} className={`${proseClass} flex gap-3`}>
-								<span
-									className={`${sizes.verseNum} ${themeClasses.muted[theme]} flex-shrink-0 pt-0.5 font-mono w-6 text-right`}
-								>
-									{verse.num}
+					{viewMode === 'continuous' ? (
+						// Reading mode: verses flow as one paragraph with small inline numbers.
+						<p className={proseClass}>
+							{section.verses!.map((verse) => (
+								<span key={verse.num}>
+									{showVerses && (
+										<sup className={`${themeClasses.muted[theme]} font-mono me-1 text-[0.65em]`}>
+											{verse.num}
+										</sup>
+									)}
+									{verse.text}{' '}
 								</span>
-								<span>{verse.text}</span>
-							</p>
-						))}
-					</div>
+							))}
+						</p>
+					) : (
+						// Study mode: one verse per line with a number column.
+						<div className="space-y-3">
+							{section.verses!.map((verse) => (
+								<p key={verse.num} className={`${proseClass} flex gap-3`}>
+									{showVerses && (
+										<span
+											className={`${sizes.verseNum} ${themeClasses.muted[theme]} flex-shrink-0 pt-0.5 font-mono w-6 text-right`}
+										>
+											{verse.num}
+										</span>
+									)}
+									<span>{verse.text}</span>
+								</p>
+							))}
+						</div>
+					)}
 				</div>
 			) : hasContent ? (
 				<div className={`pl-4 border-l-2 space-y-3 ${themeClasses.border[theme]}`}>
@@ -82,7 +106,7 @@ export function SectionColumn({
 									? 'text-blue-400 dark:text-blue-300'
 									: themeClasses.muted[theme]
 						const labelClass =
-							isRtl || FONT_ENCODES_GLYPHS.has(lang)
+							isRtl || PRESERVE_LABEL_CASE.has(lang)
 								? `text-sm font-semibold ${fontClass} ${speakerColor}`
 								: `text-xs font-semibold tracking-widest uppercase ${speakerColor}`
 						return (

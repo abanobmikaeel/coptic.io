@@ -49,8 +49,7 @@ export const getLineHeightClass = (spacing: LineSpacing, isRtl: boolean, isCopti
 		}[spacing]
 	}
 	if (isCoptic) {
-		// CS Avva Shenouda glyphs sit higher in the em square; tighter than the LTR default
-		// looks better while still being readable
+		// Coptic combining marks benefit from a little more room than Latin text.
 		return {
 			compact: 'leading-[1.6]',
 			normal: 'leading-[1.9]',

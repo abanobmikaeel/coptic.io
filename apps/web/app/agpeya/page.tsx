@@ -1,345 +1,108 @@
-'use client'
-
-import {
-	AGPEYA_HOURS,
-	type AgpeyaHour,
-	MIDNIGHT_WATCHES,
-	type MidnightWatch,
-	getCurrentHour,
-} from '@/components/AgpeyaHourSelector'
-import {
-	type AgpeyaHourData,
-	type AgpeyaMidnightData,
-	AgpeyaPrayer,
-} from '@/components/AgpeyaPrayer'
-import { AgpeyaProgress } from '@/components/AgpeyaProgress'
-import { BackToTop } from '@/components/BackToTop'
-import { Breadcrumb } from '@/components/Breadcrumb'
-import { DisplaySettings } from '@/components/DisplaySettings'
-import { ReadingPageLayout } from '@/components/ReadingPageLayout'
-import { ReadingsHeader } from '@/components/ReadingsHeader'
+import type { AgpeyaHour } from '@/components/AgpeyaHourSelector'
+import type { BibleTranslation } from '@/components/ScriptureReading/types'
+import { orderLanguages } from '@/components/ScriptureReading/utils'
 import { API_BASE_URL } from '@/config'
-import { useNavigation } from '@/contexts/NavigationContext'
-import { useReadingSettings } from '@/hooks/useReadingSettings'
-import { getWidthClass, themeClasses } from '@/lib/reading-styles'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useCallback, useEffect, useState } from 'react'
+import {
+	CONTENT_LANGUAGES_COOKIE,
+	type ContentLanguage,
+	defaultContentLanguages,
+	parseContentLanguages,
+} from '@/i18n/content-languages'
+import { type ResolvedAgpeyaHour, agpeyaToService } from '@/lib/agpeyaToService'
+import type { CopticDate, IncenseService } from '@/lib/types'
+import { getTodayDateString } from '@/lib/utils'
+import type { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import { Suspense } from 'react'
+import { AgpeyaContent, AgpeyaFallback } from './AgpeyaContent'
 
-function AgpeyaSkeleton({ theme }: { theme: 'light' | 'sepia' | 'dark' }) {
-	const shimmer = themeClasses.shimmer[theme]
-
-	return (
-		<div className="space-y-8">
-			{/* Hour title skeleton */}
-			<div className="mb-8">
-				<div className={`h-8 w-32 rounded ${shimmer}`} />
-				<div className={`h-4 w-24 rounded mt-2 ${shimmer}`} />
-				<div className={`h-4 w-full max-w-md rounded mt-3 ${shimmer}`} />
-			</div>
-
-			{/* Opening prayer skeleton */}
-			<div className="space-y-4">
-				<div className={`h-6 w-full rounded ${shimmer}`} />
-				<div className={`h-6 w-11/12 rounded ${shimmer}`} />
-				<div className={`h-6 w-4/5 rounded ${shimmer}`} />
-			</div>
-
-			{/* Psalms section skeleton */}
-			<div>
-				<div
-					className={`flex items-center justify-between py-3 border-b ${themeClasses.border[theme]}`}
-				>
-					<div className={`h-5 w-24 rounded ${shimmer}`} />
-					<div className={`h-4 w-4 rounded ${shimmer}`} />
-				</div>
-				<div className="mt-6 space-y-6">
-					{/* Psalm header */}
-					<div className="flex items-center gap-2 py-2">
-						<div className={`h-5 w-20 rounded ${shimmer}`} />
-						<div className={`h-4 w-28 rounded ${shimmer}`} />
-					</div>
-					{/* Verses */}
-					<div className="space-y-4">
-						{[1, 2, 3, 4].map((i) => (
-							<div key={i} className="flex gap-3">
-								<div className={`h-5 w-5 rounded flex-shrink-0 ${shimmer}`} />
-								<div className={`h-5 flex-1 rounded ${shimmer}`} />
-							</div>
-						))}
-					</div>
-				</div>
-			</div>
-
-			{/* Gospel section skeleton */}
-			<div>
-				<div
-					className={`flex items-center justify-between py-3 border-b ${themeClasses.border[theme]}`}
-				>
-					<div className="flex items-center gap-2">
-						<div className={`h-5 w-16 rounded ${shimmer}`} />
-						<div className={`h-4 w-24 rounded ${shimmer}`} />
-					</div>
-					<div className={`h-4 w-4 rounded ${shimmer}`} />
-				</div>
-				<div className="mt-6 space-y-4">
-					{[1, 2, 3].map((i) => (
-						<div key={i} className="flex gap-3">
-							<div className={`h-5 w-6 rounded flex-shrink-0 ${shimmer}`} />
-							<div className={`h-5 flex-1 rounded ${shimmer}`} />
-						</div>
-					))}
-				</div>
-			</div>
-
-			{/* Litanies section skeleton */}
-			<div>
-				<div
-					className={`flex items-center justify-between py-3 border-b ${themeClasses.border[theme]}`}
-				>
-					<div className={`h-5 w-20 rounded ${shimmer}`} />
-					<div className={`h-4 w-4 rounded ${shimmer}`} />
-				</div>
-				<div className="mt-6 space-y-4">
-					<div className={`h-6 w-full rounded ${shimmer}`} />
-					<div className={`h-6 w-3/4 rounded ${shimmer}`} />
-				</div>
-			</div>
-		</div>
-	)
+export const metadata: Metadata = {
+	title: 'Agpeya — Coptic Book of Hours',
+	description: 'Pray the canonical hours of the Coptic Orthodox Agpeya, in English and Arabic.',
 }
 
-function AgpeyaContent() {
-	const router = useRouter()
-	const searchParams = useSearchParams()
-	const { settings, mounted } = useReadingSettings()
-	const { mode } = useNavigation()
-	const [hourData, setHourData] = useState<AgpeyaHourData | AgpeyaMidnightData | null>(null)
-	const [loading, setLoading] = useState(true)
-	const [showSkeleton, setShowSkeleton] = useState(false)
-	const [error, setError] = useState<string | null>(null)
-	const [recommendedHour, setRecommendedHour] = useState<AgpeyaHour>('prime')
-	const [allCollapsed, setAllCollapsed] = useState(false)
+const AGPEYA_HOUR_IDS = [
+	'prime',
+	'terce',
+	'sext',
+	'none',
+	'vespers',
+	'compline',
+	'midnight',
+] as const
+// Languages whose Agpeya scripture can be resolved (prose currently English-only).
+const AGPEYA_LANGS = ['en', 'ar', 'es', 'cop'] as const satisfies ContentLanguage[]
+type AgpeyaLang = (typeof AGPEYA_LANGS)[number]
 
-	// Auto-detect recommended hour based on local time (runs client-side only)
-	useEffect(() => {
-		setRecommendedHour(getCurrentHour())
-	}, [])
-
-	// Determine current hour and watch from URL or auto-detect
-	const hourParam = searchParams.get('hour') as AgpeyaHour | null
-	const watchParam = searchParams.get('watch') as MidnightWatch | null
-	const currentHour = hourParam || recommendedHour
-	const currentWatch: MidnightWatch = watchParam || '1'
-
-	const theme = settings.theme || 'light'
-	const isRtl = settings.translation === 'ar'
-
-	// Handle hour change from breadcrumb dropdown
-	const handleHourChange = useCallback(
-		(hourId: string) => {
-			const params = new URLSearchParams(searchParams.toString())
-			params.set('hour', hourId)
-			if (hourId === 'midnight') {
-				params.set('watch', '1')
-			} else {
-				params.delete('watch')
-			}
-			router.push(`/agpeya?${params.toString()}`)
-		},
-		[router, searchParams],
-	)
-
-	// Build dropdown options for breadcrumb
-	const hourOptions = AGPEYA_HOURS.map((hour) => ({
-		id: hour.id,
-		label: hour.name,
-		sublabel: `${hour.englishName} · ${hour.traditionalTime}`,
-		badge: hour.id === recommendedHour ? 'NOW' : undefined,
-	}))
-
-	// Fetch hour data with delayed skeleton (only show if loading > 150ms)
-	useEffect(() => {
-		let skeletonTimeout: NodeJS.Timeout | null = null
-
-		async function fetchHourData() {
-			setLoading(true)
-			setShowSkeleton(false)
-			setError(null)
-
-			// Only show skeleton if loading takes more than 150ms
-			skeletonTimeout = setTimeout(() => setShowSkeleton(true), 200)
-
-			try {
-				const response = await fetch(`${API_BASE_URL}/agpeya/${currentHour}`)
-				if (response.ok) {
-					const data = await response.json()
-					setHourData(data)
-				} else {
-					setError('Unable to load prayer content. Please try again later.')
-				}
-			} catch {
-				setError('Unable to load prayer content. Please try again later.')
-			}
-
-			if (skeletonTimeout) clearTimeout(skeletonTimeout)
-			setLoading(false)
-			setShowSkeleton(false)
-		}
-
-		fetchHourData()
-
-		return () => {
-			if (skeletonTimeout) clearTimeout(skeletonTimeout)
-		}
-	}, [currentHour])
-
-	// Show skeleton during SSR/hydration - use light theme as default
-	const effectiveTheme = mounted ? theme : 'light'
-
-	const stickyHeader = (
-		<ReadingsHeader theme={effectiveTheme} layout="between">
-			{/* Breadcrumb with hour selector dropdown */}
-			<div className="flex items-center gap-2">
-				<Breadcrumb
-					items={[{ label: 'Agpeya', href: '/agpeya' }]}
-					theme={effectiveTheme}
-					parentClassName={mode === 'read' ? 'hidden lg:flex' : undefined}
-					dropdown={{
-						current: currentHour,
-						options: hourOptions,
-						onSelect: handleHourChange,
-					}}
-				/>
-				{/* Watch selector for midnight */}
-				{currentHour === 'midnight' && (
-					<div className="flex items-center gap-1 ml-2">
-						{MIDNIGHT_WATCHES.map((watch) => (
-							<button
-								key={watch.id}
-								type="button"
-								onClick={() => {
-									const params = new URLSearchParams(searchParams.toString())
-									params.set('hour', 'midnight')
-									params.set('watch', watch.id)
-									router.push(`/agpeya?${params.toString()}`)
-								}}
-								className={`px-2 py-1 text-xs rounded transition-colors ${
-									currentWatch === watch.id
-										? `${themeClasses.accent[effectiveTheme]} font-medium`
-										: `${themeClasses.muted[effectiveTheme]} hover:text-amber-600`
-								}`}
-								title={watch.theme}
-							>
-								W{watch.id}
-							</button>
-						))}
-					</div>
-				)}
-			</div>
-
-			{/* Collapse toggle and Display settings */}
-			<div className="flex items-center gap-3 flex-shrink-0">
-				<button
-					type="button"
-					onClick={() => setAllCollapsed(!allCollapsed)}
-					className={`text-xs transition-colors hover:text-amber-600 ${themeClasses.muted[effectiveTheme]}`}
-				>
-					{allCollapsed ? 'Expand All' : 'Collapse All'}
-				</button>
-				<Suspense fallback={null}>
-					<DisplaySettings />
-				</Suspense>
-			</div>
-		</ReadingsHeader>
-	)
-
-	return (
-		<ReadingPageLayout theme={effectiveTheme} header={stickyHeader}>
-			{/* Content */}
-			<div
-				className={`${getWidthClass(settings.width || 'normal')} mx-auto px-6 pt-4 pb-32 lg:pb-24`}
-			>
-				{error ? (
-					<section className="py-24 text-center">
-						<p className={themeClasses.muted[effectiveTheme]}>{error}</p>
-					</section>
-				) : loading && showSkeleton ? (
-					<AgpeyaSkeleton theme={effectiveTheme} />
-				) : hourData ? (
-					<AgpeyaPrayer
-						hour={hourData}
-						currentWatch={currentHour === 'midnight' ? currentWatch : undefined}
-						isRtl={isRtl}
-						textSize={settings.textSize}
-						fontFamily={settings.fontFamily}
-						lineSpacing={settings.lineSpacing}
-						wordSpacing={settings.wordSpacing}
-						theme={effectiveTheme}
-						weight={settings.weight}
-						viewMode={settings.viewMode}
-						allCollapsed={allCollapsed}
-					/>
-				) : null}
-			</div>
-
-			{/* Progress navigation */}
-			{hourData && (
-				<AgpeyaProgress
-					theme={effectiveTheme}
-					psalmsCount={
-						'watches' in hourData && hourData.watches
-							? hourData.watches[parseInt(currentWatch, 10) - 1]?.psalms?.length || 0
-							: 'psalms' in hourData
-								? hourData.psalms?.length || 0
-								: 0
-					}
-				/>
-			)}
-
-			{/* Back to top - hidden on mobile since we have progress nav */}
-			<div className="hidden lg:block">
-				<BackToTop />
-			</div>
-		</ReadingPageLayout>
-	)
+async function fetchHour(hour: string, lang: AgpeyaLang): Promise<ResolvedAgpeyaHour | null> {
+	try {
+		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?lang=${lang}`, {
+			next: { revalidate: 43200 },
+		})
+		if (!res.ok) return null
+		return res.json()
+	} catch {
+		return null
+	}
 }
 
-function AgpeyaFallback() {
-	const shimmer = themeClasses.shimmer.light
-
-	return (
-		<main className={`min-h-screen ${themeClasses.bg.light}`}>
-			{/* Header */}
-			<section className="relative pt-4 pb-2 px-6">
-				<div className="max-w-4xl mx-auto">
-					<div className={`h-4 w-16 rounded ${shimmer}`} />
-				</div>
-			</section>
-
-			{/* Sticky header skeleton */}
-			<div
-				className={`sticky top-14 z-30 ${themeClasses.bgTranslucent.light} backdrop-blur-sm border-b ${themeClasses.border.light}`}
-			>
-				<div className="max-w-4xl mx-auto px-6 py-3">
-					<div className="flex items-center justify-between gap-4">
-						<div className={`h-10 w-40 rounded-full ${shimmer}`} />
-						<div className={`h-10 w-10 rounded-lg ${shimmer}`} />
-					</div>
-				</div>
-			</div>
-
-			{/* Content skeleton */}
-			<div className="max-w-2xl mx-auto px-6 pt-8 pb-32">
-				<AgpeyaSkeleton theme="light" />
-			</div>
-		</main>
-	)
+async function fetchCopticDate(date: string, lang: string): Promise<CopticDate | null> {
+	try {
+		const res = await fetch(`${API_BASE_URL}/calendar/${date}?lang=${lang}`, {
+			next: { revalidate: 43200 },
+		})
+		if (!res.ok) return null
+		return res.json()
+	} catch {
+		return null
+	}
 }
 
-export default function AgpeyaPage() {
+interface AgpeyaPageProps {
+	searchParams: Promise<{ hour?: string }>
+}
+
+export default async function AgpeyaPage({ searchParams }: AgpeyaPageProps) {
+	const params = await searchParams
+	const hasHourParam = !!params.hour
+	const hour = (
+		AGPEYA_HOUR_IDS.includes(params.hour as (typeof AGPEYA_HOUR_IDS)[number])
+			? params.hour
+			: 'prime'
+	) as AgpeyaHour
+
+	const cookieStore = await cookies()
+	const contentLanguages = parseContentLanguages(cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value)
+	const selected = (
+		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
+	).filter((l): l is AgpeyaLang => AGPEYA_LANGS.includes(l as AgpeyaLang))
+	const ordered = orderLanguages(selected.length > 0 ? selected : ['en']) as BibleTranslation[]
+
+	const today = getTodayDateString()
+	const copticDate = (await fetchCopticDate(today, ordered[0] ?? 'en')) ?? {
+		dateString: '',
+		day: 0,
+		month: 0,
+		year: 0,
+		monthString: '',
+	}
+
+	const results = await Promise.all(ordered.map((l) => fetchHour(hour, l as AgpeyaLang)))
+	const servicesByLang: Partial<Record<string, IncenseService>> = {}
+	ordered.forEach((l, i) => {
+		const h = results[i]
+		// Coptic has no prayer prose — show its column for scripture (psalms/gospel) only.
+		if (h) servicesByLang[l] = agpeyaToService(h, today, copticDate, { scriptureOnly: l === 'cop' })
+	})
+
 	return (
 		<Suspense fallback={<AgpeyaFallback />}>
-			<AgpeyaContent />
+			<AgpeyaContent
+				servicesByLang={servicesByLang}
+				langs={ordered}
+				hourId={hour}
+				hasHourParam={hasHourParam}
+			/>
 		</Suspense>
 	)
 }

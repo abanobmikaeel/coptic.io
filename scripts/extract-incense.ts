@@ -19,13 +19,14 @@
  * Section titles, rubrics, and conditional blocks are carried from the existing files.
  *
  * Usage:
- *   bun run scripts/extract-incense.ts
+ *   bun run scripts/extract-incense.ts [en|ar|cop ...]
+ *
+ * With no language arguments all translations are regenerated. Pass `cop` to
+ * refresh only the Unicode Coptic data without rewriting English or Arabic.
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { convertCopticItem } from './convert-coptic'
-
 const BASE = 'https://tasbeha.org/hymn_library/view'
 
 type Lang = 'en' | 'ar' | 'cop'
@@ -386,6 +387,11 @@ async function fetchPage(id: number): Promise<string> {
 }
 
 async function main() {
+	const requested = process.argv.slice(2)
+	const languages = (requested.length > 0 ? requested : ['en', 'ar', 'cop']) as Lang[]
+	if (languages.some((lang) => !['en', 'ar', 'cop'].includes(lang))) {
+		throw new Error('Unknown language. Expected one or more of: en, ar, cop')
+	}
 	const sections: Record<Lang, Record<string, ContentItem[]>> = { en: {}, ar: {}, cop: {} }
 	const blockSections: Record<Lang, Record<string, ConditionalBlock[]>> = {
 		en: {},
@@ -447,7 +453,7 @@ async function main() {
 	}
 
 	console.log('\nWriting output files...')
-	for (const lang of ['en', 'ar', 'cop'] as Lang[]) {
+	for (const lang of languages) {
 		writeOutput(lang, sections[lang], blockSections[lang])
 	}
 }
@@ -505,7 +511,14 @@ function writeOutput(
 		? JSON.parse(readFileSync(dataPath(lang), 'utf-8')).evening
 		: { sections: [] }
 
-	const convert = (items: ContentItem[]) => (lang === 'cop' ? items.map(convertCopticItem) : items)
+	const convert = (items: ContentItem[]) =>
+		lang === 'cop'
+			? items.map((item) =>
+					typeof item === 'string'
+						? item.normalize('NFC')
+						: { ...item, text: item.text.normalize('NFC') },
+				)
+			: items
 	const convertBlocks = (blocks: ConditionalBlock[]) =>
 		blocks.map((b) => ({ ...b, content: convert(b.content) }))
 

@@ -492,8 +492,7 @@
           { "psalmNumber": 125, "title": "Psalm 125" },
           { "psalmNumber": 126, "title": "Psalm 126" },
           { "psalmNumber": 127, "title": "Psalm 127" },
-          { "psalmNumber": 128, "title": "Psalm 128" },
-          { "psalmNumber": 129, "title": "Psalm 129" }
+          { "psalmNumber": 128, "title": "Psalm 128" }
         ],
         "gospelRef": {
           "book": "Luke",
@@ -521,6 +520,7 @@
         "theme": "Judgment and Hope",
         "psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
         "psalmRefs": [
+          { "psalmNumber": 129, "title": "Psalm 129" },
           { "psalmNumber": 130, "title": "Psalm 130" },
           { "psalmNumber": 131, "title": "Psalm 131" },
           { "psalmNumber": 132, "title": "Psalm 132" },
