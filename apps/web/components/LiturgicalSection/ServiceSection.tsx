@@ -52,7 +52,16 @@ export function ServiceSection({
 		primarySection.type === 'gospel' ||
 		primarySection.type === 'daily-psalm'
 	const isMultiLang = langs.length > 1
-	const sharedProps = { theme, textSize, fontFamily, lineSpacing, wordSpacing, weight, viewMode, showVerses }
+	const sharedProps = {
+		theme,
+		textSize,
+		fontFamily,
+		lineSpacing,
+		wordSpacing,
+		weight,
+		viewMode,
+		showVerses,
+	}
 
 	if (!isScripture && isMultiLang) {
 		const turnsByLang = Object.fromEntries(

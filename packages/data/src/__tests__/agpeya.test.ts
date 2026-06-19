@@ -1,11 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { getChapter, getMissingBooks } from '../cop/bible'
-import {
-	getAgpeyaHourData,
-	getAgpeyaHourIds,
-	getCommonPrayer,
-} from '../en/agpeya'
 import { getAgpeyaHourData as getArabicAgpeyaHourData } from '../ar/agpeya'
+import { getChapter, getMissingBooks } from '../cop/bible'
+import { getAgpeyaHourData, getAgpeyaHourIds, getCommonPrayer } from '../en/agpeya'
 
 describe('English Agpeya shared prayers', () => {
 	it('uses the complete Thanksgiving Prayer for every hour', () => {

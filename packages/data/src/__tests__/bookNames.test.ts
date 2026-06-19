@@ -16,7 +16,9 @@ describe('Bible book name localization', () => {
 	})
 
 	it('handles multi-part references', () => {
-		expect(localizeReference('Psalms 65:11;Psalms 81:1', 'ar')).toBe('المزامير ٦٥:١١؛ المزامير ٨١:١')
+		expect(localizeReference('Psalms 65:11;Psalms 81:1', 'ar')).toBe(
+			'المزامير ٦٥:١١؛ المزامير ٨١:١',
+		)
 	})
 
 	it('returns empty string for missing input', () => {

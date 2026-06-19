@@ -105,9 +105,7 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 						: 0
 				const available = view.clientHeight - PAGE_VERTICAL_RESERVE - continuousLineReserve
 				const heightsByLang = cols.map((col) => {
-					const inlineRows = Array.from(
-						col.querySelectorAll<HTMLElement>('[data-page-line]'),
-					)
+					const inlineRows = Array.from(col.querySelectorAll<HTMLElement>('[data-page-line]'))
 					if (inlineRows.length > 0) {
 						let previousBottom = col.getBoundingClientRect().top
 						return inlineRows.map((row) => {
@@ -155,7 +153,11 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 		// (e.g. fonts loading can change the page count) until the user actually navigates.
 		const userNavigated = useRef(false)
 		useLayoutEffect(() => {
-			if (initialPage === 'last' && !userNavigated.current && Object.keys(breaksByLang).length > 0) {
+			if (
+				initialPage === 'last' &&
+				!userNavigated.current &&
+				Object.keys(breaksByLang).length > 0
+			) {
 				setPageIndex(pageCount - 1)
 			}
 		}, [initialPage, pageCount, breaksByLang])

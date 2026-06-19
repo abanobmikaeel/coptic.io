@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-	computePageBreaks,
-	mapSharedPage,
-} from '../../components/LiturgicalSection/pagination'
+import { computePageBreaks, mapSharedPage } from '../../components/LiturgicalSection/pagination'
 import { type FlatLine, alignByRubric } from '../../components/LiturgicalSection/turns'
 
 const line = (text: string, isRubric = false): FlatLine => ({
@@ -21,9 +18,7 @@ describe('liturgical pagination', () => {
 	})
 
 	it('moves a trailing rubric to the page containing the text it advises', () => {
-		expect(computePageBreaks([[40, 40, 40]], 100, 3, [false, true, false])).toEqual([
-			0, 1, 3,
-		])
+		expect(computePageBreaks([[40, 40, 40]], 100, 3, [false, true, false])).toEqual([0, 1, 3])
 	})
 
 	it('keeps shorter translations visible across shared navigation', () => {

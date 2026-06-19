@@ -1,4 +1,8 @@
 import {
+	getAgpeyaHourData as getArAgpeyaHourData,
+	getAgpeyaHourIds as getArAgpeyaHourIds,
+} from '@coptic/data/ar/agpeya'
+import {
 	type AgpeyaHourData,
 	type AgpeyaHourId,
 	type AgpeyaMidnightHour,
@@ -8,10 +12,6 @@ import {
 	getAgpeyaHourIds as getEnAgpeyaHourIds,
 	isMidnightHour,
 } from '@coptic/data/en/agpeya'
-import {
-	getAgpeyaHourData as getArAgpeyaHourData,
-	getAgpeyaHourIds as getArAgpeyaHourIds,
-} from '@coptic/data/ar/agpeya'
 import type { BibleTranslation } from '../types'
 import {
 	type ResolvedGospel,

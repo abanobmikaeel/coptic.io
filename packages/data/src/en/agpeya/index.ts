@@ -144,9 +144,7 @@ export function isMidnightHour(
 }
 
 const data = agpeyaData as unknown as AgpeyaDataStored
-const thanksgivingPrayer = (
-	commonPrayers as Record<string, AgpeyaPrayerSection>
-).thanksgivingPrayer
+const thanksgivingPrayer = (commonPrayers as Record<string, AgpeyaPrayerSection>).thanksgivingPrayer
 
 function withCommonThanksgiving<T extends AgpeyaHourData | AgpeyaMidnightHour>(hour: T): T {
 	return {

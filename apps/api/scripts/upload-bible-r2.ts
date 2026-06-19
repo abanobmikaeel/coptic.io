@@ -34,9 +34,7 @@ for (const lang of requested) {
 	}
 }
 const translations =
-	requested.size > 0
-		? allTranslations.filter(({ lang }) => requested.has(lang))
-		: allTranslations
+	requested.size > 0 ? allTranslations.filter(({ lang }) => requested.has(lang)) : allTranslations
 
 for (const { lang, data } of translations) {
 	const file = join(tmpdir(), `bible-${lang}.json`)

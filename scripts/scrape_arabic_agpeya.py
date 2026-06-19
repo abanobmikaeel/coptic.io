@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Scrape Arabic Agpeya prayers from St-Takla.org.
 
-Extracts PRAYER PROSE only (not psalms/gospels which are resolved at runtime
-from the Bible data). Uses English agpeya.json as a structural template,
-replacing only the Arabic prayer text fields.
+Extracts Arabic prayer prose and liturgical Psalm text. Gospel readings remain
+references that are resolved at runtime from the Bible data. Uses English
+agpeya.json as the structural template.
 """
 
 import json

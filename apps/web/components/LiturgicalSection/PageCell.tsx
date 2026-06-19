@@ -76,10 +76,7 @@ export function PageCell({
 
 	if (viewMode === 'continuous' && lines.some((line) => line.num != null)) {
 		return (
-			<div
-				dir={textDir}
-				className="min-w-0 pl-4 border-l-2 border-current/10"
-			>
+			<div dir={textDir} className="min-w-0 pl-4 border-l-2 border-current/10">
 				<p className={proseClass}>
 					{lines.map((line, i) => (
 						<span key={`${line.num ?? 'line'}-${i}`} data-page-line>

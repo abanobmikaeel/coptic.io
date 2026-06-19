@@ -20,9 +20,7 @@ export type {
 	AgpeyaData,
 } from '../../en/agpeya'
 
-export {
-	isMidnightHour,
-} from '../../en/agpeya'
+export { isMidnightHour } from '../../en/agpeya'
 
 const data = agpeyaData as unknown as import('../../en/agpeya').AgpeyaDataStored
 
@@ -35,13 +33,18 @@ export function getAgpeyaHourData(
 	return data.hours[hourId] || null
 }
 
-export function getAgpeyaHour(hourId: import('../../en/agpeya').AgpeyaHourId): import('../../en/agpeya').AgpeyaHour | null {
+export function getAgpeyaHour(
+	hourId: import('../../en/agpeya').AgpeyaHourId,
+): import('../../en/agpeya').AgpeyaHour | null {
 	const hourData = getAgpeyaHourData(hourId)
 	if (!hourData) return null
 	return hourData as unknown as import('../../en/agpeya').AgpeyaHour
 }
 
-export function getAllAgpeyaHours(): (import('../../en/agpeya').AgpeyaHourData | import('../../en/agpeya').AgpeyaMidnightHour)[] {
+export function getAllAgpeyaHours(): (
+	| import('../../en/agpeya').AgpeyaHourData
+	| import('../../en/agpeya').AgpeyaMidnightHour
+)[] {
 	const hours = Object.values(data.hours) as import('../../en/agpeya').AgpeyaHourData[]
 	return [...hours, data.midnight]
 }
@@ -50,11 +53,19 @@ export function getAgpeyaHourIds(): import('../../en/agpeya').AgpeyaHourId[] {
 	return [...Object.keys(data.hours), 'midnight'] as import('../../en/agpeya').AgpeyaHourId[]
 }
 
-export function getCommonPrayer(prayerId: string): import('../../en/agpeya').AgpeyaPrayerSection | null {
-	return (commonPrayers as Record<string, import('../../en/agpeya').AgpeyaPrayerSection>)[prayerId] || null
+export function getCommonPrayer(
+	prayerId: string,
+): import('../../en/agpeya').AgpeyaPrayerSection | null {
+	return (
+		(commonPrayers as Record<string, import('../../en/agpeya').AgpeyaPrayerSection>)[prayerId] ||
+		null
+	)
 }
 
-export function getAllCommonPrayers(): Record<string, import('../../en/agpeya').AgpeyaPrayerSection> {
+export function getAllCommonPrayers(): Record<
+	string,
+	import('../../en/agpeya').AgpeyaPrayerSection
+> {
 	return commonPrayers as Record<string, import('../../en/agpeya').AgpeyaPrayerSection>
 }
 
