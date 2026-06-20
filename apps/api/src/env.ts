@@ -9,4 +9,8 @@ export interface R2Bucket {
 
 export type Bindings = {
 	BIBLE_BUCKET: R2Bucket
+	// Deploy identifier (git SHA) injected at `wrangler deploy --var DATA_VERSION:<sha>`.
+	// Folded into the edge cache key so every deploy serves fresh responses instead of
+	// stale cached ones (e.g. after re-uploading Bible data to R2). Undefined in dev.
+	DATA_VERSION?: string
 }
