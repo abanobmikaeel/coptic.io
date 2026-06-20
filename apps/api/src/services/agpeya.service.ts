@@ -1,11 +1,15 @@
 import {
+	getAgpeyaHourData as getArAgpeyaHourData,
+	getAgpeyaHourIds as getArAgpeyaHourIds,
+} from '@coptic/data/ar/agpeya'
+import {
 	type AgpeyaHourData,
 	type AgpeyaHourId,
 	type AgpeyaMidnightHour,
 	type AgpeyaWatch,
 	type MidnightWatchId,
-	getAgpeyaHourData,
-	getAgpeyaHourIds,
+	getAgpeyaHourData as getEnAgpeyaHourData,
+	getAgpeyaHourIds as getEnAgpeyaHourIds,
 	isMidnightHour,
 } from '@coptic/data/en/agpeya'
 import type { BibleTranslation } from '../types'
@@ -87,7 +91,11 @@ function resolveHour(
 		? resolveAgpeyaPsalms([hourData.introductoryPsalm], translation)[0]
 		: undefined
 
-	const psalms = resolveAgpeyaPsalms(hourData.psalmRefs || [], translation)
+	// For Arabic, use pre-embedded Coptic liturgical psalms from St-Takla
+	const psalms = hourData.psalms?.length
+		? (hourData.psalms as unknown as ResolvedPsalm[])
+		: resolveAgpeyaPsalms(hourData.psalmRefs || [], translation)
+
 	const gospel = resolveAgpeyaGospel(hourData.gospelRef, translation)
 
 	return {
@@ -116,7 +124,9 @@ function resolveWatch(
 	watch: AgpeyaWatch,
 	translation: BibleTranslation = 'en',
 ): ResolvedAgpeyaWatch {
-	const psalms = resolveAgpeyaPsalms(watch.psalmRefs || [], translation)
+	const psalms = watch.psalms?.length
+		? (watch.psalms as unknown as ResolvedPsalm[])
+		: resolveAgpeyaPsalms(watch.psalmRefs || [], translation)
 	const gospel = watch.gospelRef ? resolveAgpeyaGospel(watch.gospelRef, translation) : undefined
 
 	return {
@@ -167,7 +177,8 @@ export function getAgpeyaHour(
 	hourId: AgpeyaHourId,
 	translation: BibleTranslation = 'en',
 ): ResolvedAgpeyaHour | ResolvedMidnightHour | null {
-	const hourData = getAgpeyaHourData(hourId)
+	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
+	const hourData = getData(hourId)
 	if (!hourData) return null
 
 	if (isMidnightHour(hourData)) {
@@ -184,7 +195,8 @@ export function getMidnightWatch(
 	watchId: MidnightWatchId,
 	translation: BibleTranslation = 'en',
 ): ResolvedAgpeyaWatch | null {
-	const midnightData = getAgpeyaHourData('midnight') as AgpeyaMidnightHour
+	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
+	const midnightData = getData('midnight') as AgpeyaMidnightHour
 	if (!midnightData) return null
 
 	const watchIndex = parseInt(watchId, 10) - 1
@@ -200,7 +212,8 @@ export function getMidnightWatch(
 export function getAllHours(
 	translation: BibleTranslation = 'en',
 ): (ResolvedAgpeyaHour | ResolvedMidnightHour)[] {
-	const hourIds = getAgpeyaHourIds()
+	const getIds = translation === 'ar' ? getArAgpeyaHourIds : getEnAgpeyaHourIds
+	const hourIds = getIds()
 	const resolved: (ResolvedAgpeyaHour | ResolvedMidnightHour)[] = []
 
 	for (const hourId of hourIds) {
@@ -214,7 +227,7 @@ export function getAllHours(
 }
 
 export function getHourIds(): AgpeyaHourId[] {
-	return getAgpeyaHourIds()
+	return getEnAgpeyaHourIds()
 }
 
 export function getCurrentHour(): AgpeyaHourId {

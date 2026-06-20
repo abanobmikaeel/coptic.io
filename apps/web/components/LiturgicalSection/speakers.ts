@@ -8,18 +8,15 @@ export const ROLE_LABELS: Record<string, Record<string, string>> = {
 }
 
 // Canonical speaker key is always the English name ('Priest' | 'Deacon' | 'People').
-// Coptic speaker labels use Unicode (for Noto Sans Coptic) so they have normal font
-// metrics and align correctly with EN/AR labels. Body text stays in ASCII (CS Avva Shenouda).
+// Coptic speaker labels and body text use Unicode through Noto Sans Coptic.
 export const SPEAKER_LABELS: Record<string, Record<string, string>> = {
 	en: { Priest: 'Priest', Deacon: 'Deacon', People: 'People' },
 	ar: { Priest: 'الكاهن', Deacon: 'الشماس', People: 'الشعب' },
 	cop: { Priest: 'Ⲡⲓⲟⲩⲏⲃ', Deacon: 'Ⲡⲓⲇⲓⲁⲕⲱⲛ', People: 'Ⲡⲓⲗⲁⲟⲥ' },
 }
 
-// Languages whose font encodes text as glyphs via ASCII mapping (CS Avva Shenouda).
-// For these, CSS text-transform must NOT be applied — it would mangle the ASCII
-// before the font can render it as glyphs.
-export const FONT_ENCODES_GLYPHS = new Set(['cop'])
+// Scripts where uppercasing labels is inappropriate.
+export const PRESERVE_LABEL_CASE = new Set(['cop'])
 
 export function getSpeakerLabel(lang: string, speaker: string): string {
 	return SPEAKER_LABELS[lang]?.[speaker] ?? speaker

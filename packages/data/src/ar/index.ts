@@ -12,6 +12,9 @@ export { default as synaxariumCanonical } from './synaxarium/canonical.json'
 // Incense - Raising of Incense (Vespers)
 export * from './incense'
 
+// Agpeya - Book of Hours
+export * from './agpeya'
+
 export const LANGUAGE = 'ar' as const
 
 export const AVAILABLE_SOURCES = ['canonical', 'st-takla'] as const

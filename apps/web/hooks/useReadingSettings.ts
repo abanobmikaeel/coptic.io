@@ -5,6 +5,7 @@ import {
 	type FontFamily,
 	type FontWeight,
 	type LineSpacing,
+	type ReaderMode,
 	type ReadingPreferences,
 	type ReadingTheme,
 	type ReadingWidth,
@@ -23,6 +24,7 @@ export interface ReadingSettings {
 	showVerses: boolean
 	textSize: TextSize
 	viewMode: ViewMode
+	mode: ReaderMode
 	translation: BibleTranslation
 	fontFamily: FontFamily
 	lineSpacing: LineSpacing
@@ -37,6 +39,7 @@ export interface ReadingSettingsActions {
 	setShowVerses: (show: boolean) => void
 	setTextSize: (size: TextSize) => void
 	setViewMode: (mode: ViewMode) => void
+	setMode: (mode: ReaderMode) => void
 	setTranslation: (lang: BibleTranslation) => void
 	setFontFamily: (font: FontFamily) => void
 	setLineSpacing: (spacing: LineSpacing) => void
@@ -51,6 +54,7 @@ function settingsFromParams(params: URLSearchParams, isAutoTheme: boolean): Read
 		showVerses: params.get('verses') !== 'hide',
 		textSize: (params.get('size') as TextSize) || 'md',
 		viewMode: (params.get('view') as ViewMode) || 'verse',
+		mode: (params.get('mode') as ReaderMode) || 'present',
 		translation: (params.get('lang') as BibleTranslation) || 'en',
 		fontFamily: (params.get('font') as FontFamily) || 'sans',
 		lineSpacing: (params.get('spacing') as LineSpacing) || 'normal',
@@ -167,6 +171,7 @@ export function useReadingSettings(): {
 		setShowVerses: (show) => updateParam('verses', show ? null : 'hide'),
 		setTextSize: (size) => updateParam('size', size === 'md' ? null : size),
 		setViewMode: (mode) => updateParam('view', mode === 'verse' ? null : mode),
+		setMode: (mode) => updateParam('mode', mode === 'present' ? null : mode),
 		setTranslation: (lang) => updateParam('lang', lang === 'en' ? null : lang),
 		setFontFamily: (font) => updateParam('font', font === 'sans' ? null : font),
 		setLineSpacing: (spacing) => updateParam('spacing', spacing === 'normal' ? null : spacing),

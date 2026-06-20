@@ -40,3 +40,11 @@ export function computePageBreaks(
 	}
 	return breaks
 }
+
+// Presentation navigation is shared across columns, but translations may have
+// different page counts. Map the shared progress onto each language so a short
+// translation remains visible while a longer one continues advancing.
+export function mapSharedPage(page: number, sharedCount: number, languageCount: number): number {
+	if (sharedCount <= 1 || languageCount <= 1) return 0
+	return Math.round((page * (languageCount - 1)) / (sharedCount - 1))
+}

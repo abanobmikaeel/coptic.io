@@ -13,8 +13,7 @@ import { COPTIC_MONTHS } from '../types/date'
 
 export type NameLang = 'en' | 'ar' | 'es'
 
-const toLang = (lang: string): NameLang =>
-	lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : 'en'
+const toLang = (lang: string): NameLang => (lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : 'en')
 
 // Coptic months 1–13. Spanish has no distinct Coptic month forms, so it reuses
 // the English transliteration.
@@ -88,12 +87,11 @@ const LITURGICAL_NAMES: Record<Exclude<NameLang, 'en'>, Record<string, string>> 
 		'Theophany Feast': 'عيد الغطاس',
 		'Wedding of Cana of Galilee Feast': 'عيد عرس قانا الجليل',
 		'Entry into Egypt': 'دخول السيد المسيح إلى مصر',
-		'Transfiguration': 'عيد التجلي',
+		Transfiguration: 'عيد التجلي',
 		'Annunciation Feast': 'عيد البشارة',
 		'Annunciation, Nativity, and Resurrection': 'تذكار البشارة والميلاد والقيامة',
 		'Entrance into the Temple Feast': 'عيد دخول الهيكل',
-		'Apostles Feast (Martyrdom of Sts. Peter and Paul)':
-			'عيد الرسل (استشهاد القديسَين بطرس وبولس)',
+		'Apostles Feast (Martyrdom of Sts. Peter and Paul)': 'عيد الرسل (استشهاد القديسَين بطرس وبولس)',
 		'St. Mary Feast (Commemoration of Her Assumption)': 'عيد العذراء (تذكار صعود جسدها)',
 	},
 	es: {
@@ -121,9 +119,10 @@ const LITURGICAL_NAMES: Record<Exclude<NameLang, 'en'>, Record<string, string>> 
 		'Theophany Feast': 'Fiesta de la Teofanía',
 		'Wedding of Cana of Galilee Feast': 'Fiesta de las Bodas de Caná de Galilea',
 		'Entry into Egypt': 'Entrada en Egipto',
-		'Transfiguration': 'Transfiguración',
+		Transfiguration: 'Transfiguración',
 		'Annunciation Feast': 'Fiesta de la Anunciación',
-		'Annunciation, Nativity, and Resurrection': 'Conmemoración de la Anunciación, Natividad y Resurrección',
+		'Annunciation, Nativity, and Resurrection':
+			'Conmemoración de la Anunciación, Natividad y Resurrección',
 		'Entrance into the Temple Feast': 'Fiesta de la Entrada al Templo',
 		'Apostles Feast (Martyrdom of Sts. Peter and Paul)':
 			'Fiesta de los Apóstoles (Martirio de los Santos Pedro y Pablo)',

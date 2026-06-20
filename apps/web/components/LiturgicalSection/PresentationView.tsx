@@ -9,6 +9,7 @@ import type {
 	WordSpacing,
 } from '@/components/DisplaySettings'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
+import type { ViewMode } from '@/lib/reading-preferences'
 import {
 	forwardRef,
 	useEffect,
@@ -19,7 +20,7 @@ import {
 } from 'react'
 import { PageCell } from './PageCell'
 import { GRID_COLS } from './ServiceSection'
-import { computePageBreaks } from './pagination'
+import { computePageBreaks, mapSharedPage } from './pagination'
 import type { FlatLine } from './turns'
 
 export interface PresentationViewHandle {
@@ -36,6 +37,8 @@ interface PresentationViewProps {
 	lineSpacing: LineSpacing
 	wordSpacing: WordSpacing
 	weight: FontWeight
+	viewMode?: ViewMode
+	showVerses?: boolean
 	// Called when paging past the last/first page — parent advances to the adjacent section.
 	onExitNext: () => void
 	onExitPrev: () => void
@@ -66,7 +69,7 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 	) {
 		const viewRef = useRef<HTMLDivElement>(null)
 		const measureRef = useRef<HTMLDivElement>(null)
-		const [breaks, setBreaks] = useState<number[]>([])
+		const [breaksByLang, setBreaksByLang] = useState<Record<string, number[]>>({})
 		const [pageIndex, setPageIndex] = useState(0)
 		// The measurer is a client-only device — never ship its duplicate in the SSR payload.
 		const [isClient, setIsClient] = useState(false)
@@ -74,7 +77,7 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 
 		const gridClass = GRID_COLS[langs.length] ?? ''
 		const maxLines = Math.max(0, ...langs.map((l) => flatByLang[l]?.length ?? 0))
-		const styleSig = `${style.textSize}|${style.lineSpacing}|${style.fontFamily}|${style.weight}|${style.wordSpacing}`
+		const styleSig = `${style.textSize}|${style.lineSpacing}|${style.fontFamily}|${style.weight}|${style.wordSpacing}|${style.viewMode}|${style.showVerses}`
 
 		// Measure rendered heights → compute page breaks. Runs before paint (no flicker).
 		// styleSig/langs/isClient aren't used inside `measure` but are intentional re-measure
@@ -86,21 +89,52 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 				const grid = measureRef.current?.firstElementChild
 				if (!view || !grid) return
 
-				const available = view.clientHeight - PAGE_VERTICAL_RESERVE
 				const cols = Array.from(grid.children) as HTMLElement[]
+				// A continuous page starts on a fresh line, while the full-text measurer may
+				// cross the same verse boundary midway through a line. Reserve one line so
+				// that reflow cannot push the visible page behind the footer.
+				const continuousLineReserve =
+					style.viewMode === 'continuous'
+						? Math.max(
+								0,
+								...cols.map((col) => {
+									const marker = col.querySelector<HTMLElement>('[data-page-line]')
+									return marker ? Number.parseFloat(getComputedStyle(marker).lineHeight) || 0 : 0
+								}),
+							)
+						: 0
+				const available = view.clientHeight - PAGE_VERTICAL_RESERVE - continuousLineReserve
 				const heightsByLang = cols.map((col) => {
-					const rows = Array.from(col.children) as HTMLElement[]
-					return rows.map((row, i) => {
+					const inlineRows = Array.from(col.querySelectorAll<HTMLElement>('[data-page-line]'))
+					if (inlineRows.length > 0) {
+						let previousBottom = col.getBoundingClientRect().top
+						return inlineRows.map((row) => {
+							const bottom = row.getBoundingClientRect().bottom
+							const height = Math.max(0, bottom - previousBottom)
+							previousBottom = Math.max(previousBottom, bottom)
+							return height
+						})
+					}
+
+					const blockRows = Array.from(col.children) as HTMLElement[]
+					return blockRows.map((row, i) => {
 						const top = row.getBoundingClientRect().top
-						const nextTop = rows[i + 1]?.getBoundingClientRect().top
+						const nextTop = blockRows[i + 1]?.getBoundingClientRect().top
 						return nextTop != null ? nextTop - top : row.getBoundingClientRect().height
 					})
 				})
-				// Per-line rubric flag (any column) so a page never ends on an instruction.
-				const isRubric = Array.from({ length: maxLines }, (_, i) =>
-					langs.some((l) => flatByLang[l]?.[i]?.isRubric ?? false),
-				)
-				setBreaks(computePageBreaks(heightsByLang, available, maxLines, isRubric))
+				const nextBreaks: Record<string, number[]> = {}
+				langs.forEach((lang, index) => {
+					const lines = flatByLang[lang] ?? []
+					const isRubric = lines.map((line) => line.isRubric)
+					nextBreaks[lang] = computePageBreaks(
+						[heightsByLang[index] ?? []],
+						available,
+						lines.length,
+						isRubric,
+					)
+				})
+				setBreaksByLang(nextBreaks)
 			}
 
 			measure()
@@ -110,20 +144,25 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 			return () => ro.disconnect()
 		}, [maxLines, styleSig, langs, isClient])
 
-		const pageCount = Math.max(1, breaks.length - 1)
+		const pageCount = Math.max(
+			1,
+			...langs.map((lang) => Math.max(1, (breaksByLang[lang]?.length ?? 1) - 1)),
+		)
 
 		// PowerPoint-style backward entry: pin to the last page. Re-applies on every re-measure
 		// (e.g. fonts loading can change the page count) until the user actually navigates.
 		const userNavigated = useRef(false)
 		useLayoutEffect(() => {
-			if (initialPage === 'last' && !userNavigated.current && breaks.length > 0) {
+			if (
+				initialPage === 'last' &&
+				!userNavigated.current &&
+				Object.keys(breaksByLang).length > 0
+			) {
 				setPageIndex(pageCount - 1)
 			}
-		}, [initialPage, pageCount, breaks.length])
+		}, [initialPage, pageCount, breaksByLang])
 
 		const safePage = Math.min(pageIndex, pageCount - 1)
-		const pageStart = breaks[safePage] ?? 0
-		const pageEnd = breaks[safePage + 1] ?? maxLines
 
 		// Report pagination state upward for the progress indicator (display only).
 		useLayoutEffect(() => {
@@ -151,14 +190,21 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 			<div ref={viewRef} className="relative h-full overflow-hidden">
 				{/* Visible page */}
 				<div className={`grid gap-x-6 pt-2 ${gridClass}`}>
-					{langs.map((lang) => (
-						<PageCell
-							key={lang}
-							lines={(flatByLang[lang] ?? []).slice(pageStart, pageEnd)}
-							lang={lang}
-							{...style}
-						/>
-					))}
+					{langs.map((lang) => {
+						const breaks = breaksByLang[lang] ?? [0, flatByLang[lang]?.length ?? 0]
+						const languageCount = Math.max(1, breaks.length - 1)
+						const languagePage = mapSharedPage(safePage, pageCount, languageCount)
+						const pageStart = breaks[languagePage] ?? 0
+						const pageEnd = breaks[languagePage + 1] ?? flatByLang[lang]?.length ?? 0
+						return (
+							<PageCell
+								key={lang}
+								lines={(flatByLang[lang] ?? []).slice(pageStart, pageEnd)}
+								lang={lang}
+								{...style}
+							/>
+						)
+					})}
 				</div>
 				{/* Hidden full-section measurer — identical width/fonts so heights match exactly.
 			    Client-only: it exists purely to measure, so it never ships in the SSR HTML. */}

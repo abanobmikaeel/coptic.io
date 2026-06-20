@@ -144,14 +144,23 @@ export function isMidnightHour(
 }
 
 const data = agpeyaData as unknown as AgpeyaDataStored
+const thanksgivingPrayer = (commonPrayers as Record<string, AgpeyaPrayerSection>).thanksgivingPrayer
+
+function withCommonThanksgiving<T extends AgpeyaHourData | AgpeyaMidnightHour>(hour: T): T {
+	return {
+		...hour,
+		thanksgiving: thanksgivingPrayer,
+	}
+}
 
 export function getAgpeyaHourData(
 	hourId: AgpeyaHourId,
 ): AgpeyaHourData | AgpeyaMidnightHour | null {
 	if (hourId === 'midnight') {
-		return data.midnight
+		return withCommonThanksgiving(data.midnight)
 	}
-	return data.hours[hourId] || null
+	const hour = data.hours[hourId]
+	return hour ? withCommonThanksgiving(hour) : null
 }
 
 export function getAgpeyaHour(hourId: AgpeyaHourId): AgpeyaHour | null {
@@ -164,8 +173,9 @@ export function getAgpeyaHour(hourId: AgpeyaHourId): AgpeyaHour | null {
 }
 
 export function getAllAgpeyaHours(): (AgpeyaHourData | AgpeyaMidnightHour)[] {
-	const hours = Object.values(data.hours) as AgpeyaHourData[]
-	return [...hours, data.midnight]
+	return getAgpeyaHourIds()
+		.map((hourId) => getAgpeyaHourData(hourId))
+		.filter((hour): hour is AgpeyaHourData | AgpeyaMidnightHour => hour !== null)
 }
 
 export function getAgpeyaHourIds(): AgpeyaHourId[] {

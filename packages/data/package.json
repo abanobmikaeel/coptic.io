@@ -66,6 +66,10 @@
 			"types": "./dist/ar/incense/index.d.ts",
 			"import": "./dist/ar/incense/index.js"
 		},
+		"./ar/agpeya": {
+			"types": "./dist/ar/agpeya/index.d.ts",
+			"import": "./dist/ar/agpeya/index.js"
+		},
 		"./cop/incense": {
 			"types": "./dist/cop/incense/index.d.ts",
 			"import": "./dist/cop/incense/index.js"

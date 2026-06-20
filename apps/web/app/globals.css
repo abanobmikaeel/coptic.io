@@ -148,25 +148,30 @@ body {
 	font-weight: 400;
 }
 
-/* Coptic font - CS Avva Shenouda (ASCII-mapped traditional Coptic font).
-   ascent/descent overrides normalize the font's unusually large built-in ascent metric
-   so labels and body text align correctly with Latin/Arabic at the same font-size. */
 @font-face {
-	font-family: "CS Avva Shenouda";
-	src: url("/fonts/CS Avva Shenouda.ttf") format("truetype");
+	font-family: "FreeSerifAvvaShenouda";
+	src: url("/fonts/FreeSerifAvvaShenouda.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 400;
 	font-display: swap;
-	ascent-override: 80%;
-	descent-override: 20%;
-	line-gap-override: 0%;
 }
 
-/* Coptic font class - CS fonts are ASCII-mapped (display Coptic when typing ASCII)
-   Our Coptic Bible data is in ASCII format for CS Avva Shenouda; incense/liturgy data
-   uses Unicode Coptic, which falls through to Noto Sans Coptic (var --font-coptic).
+/* Coptic font class. Scripture and liturgical content use Unicode Coptic.
    Font size and line-height are intentionally NOT set here — controlled by Tailwind classes
    so the same font renders correctly at all sizes (labels, body text, etc.). */
 .font-coptic {
-	font-family: "CS Avva Shenouda", var(--font-coptic), "Noto Sans Coptic", serif;
+	font-family: "FreeSerifAvvaShenouda", var(--font-coptic), "Noto Sans Coptic", serif;
+}
+
+/* Arabic UI: render chrome/body text in Naskh (Latin still falls to Inter via
+   per-character fallback) and nudge the base size up — Naskh reads small at
+   Latin sizes. Reading components set .font-arabic themselves and are unaffected. */
+html[lang="ar"] {
+	font-size: 112.5%;
+}
+
+html[lang="ar"] body {
+	font-family: var(--font-inter), var(--font-arabic), "Noto Naskh Arabic", system-ui, sans-serif;
 }
 
 /* Arabic UI: render chrome/body text in Naskh (Latin still falls to Inter via

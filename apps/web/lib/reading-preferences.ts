@@ -32,9 +32,13 @@ function migratePreferences(prefs: Record<string, unknown>): Record<string, unkn
 	return changed ? migrated : prefs
 }
 
+export type ReaderMode = 'present' | 'scroll'
+
 export interface ReadingPreferences {
 	size?: TextSize
 	view?: ViewMode
+	/** Presentation (paginated) vs. continuous "Reading" scroll. */
+	mode?: ReaderMode
 	lang?: BibleTranslation
 	font?: FontFamily
 	spacing?: LineSpacing

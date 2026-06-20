@@ -12,7 +12,7 @@ import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { getStyleClasses } from '@/components/ScriptureReading/utils'
 import { themeClasses } from '@/lib/reading-styles'
 import { RubricLine } from './RubricLine'
-import { FONT_ENCODES_GLYPHS, getSpeakerLabel } from './speakers'
+import { PRESERVE_LABEL_CASE, getSpeakerLabel } from './speakers'
 import type { Turn } from './turns'
 
 export interface TurnCellProps {
@@ -46,11 +46,10 @@ export function TurnCell({
 			: turn?.speaker === 'Deacon'
 				? 'text-blue-400 dark:text-blue-300'
 				: themeClasses.muted[theme]
-	// Glyph-encoded fonts (e.g. CS Avva Shenouda) must not have CSS text-transform applied —
-	// the browser would uppercase the ASCII before the font maps it to glyphs.
-	// Also use text-sm for non-Latin scripts since they render smaller optically at text-xs.
+	// Preserve Coptic casing and use text-sm for non-Latin scripts, which render
+	// smaller optically at text-xs.
 	const labelClass =
-		isRtl || FONT_ENCODES_GLYPHS.has(lang)
+		isRtl || PRESERVE_LABEL_CASE.has(lang)
 			? `text-sm font-semibold mb-1.5 ${fontClass} ${speakerColor}`
 			: `text-xs font-semibold tracking-widest uppercase mb-1.5 ${speakerColor}`
 

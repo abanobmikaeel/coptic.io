@@ -40,38 +40,44 @@ export interface ResolvedGospel {
 	verses: BibleVerse[]
 }
 
+interface PsalmSegment {
+	chapter: number
+	startVerse?: number
+	endVerse?: number
+}
+
+function lxxPsalmSegments(lxxPsalm: number): PsalmSegment[] {
+	if (lxxPsalm <= 8) return [{ chapter: lxxPsalm }]
+	if (lxxPsalm === 9) return [{ chapter: 9 }, { chapter: 10 }]
+	if (lxxPsalm <= 112) return [{ chapter: lxxPsalm + 1 }]
+	if (lxxPsalm === 113) return [{ chapter: 114 }, { chapter: 115 }]
+	if (lxxPsalm === 114) return [{ chapter: 116, startVerse: 1, endVerse: 9 }]
+	if (lxxPsalm === 115) return [{ chapter: 116, startVerse: 10, endVerse: 19 }]
+	if (lxxPsalm <= 145) return [{ chapter: lxxPsalm + 1 }]
+	if (lxxPsalm === 146) return [{ chapter: 147, startVerse: 1, endVerse: 11 }]
+	if (lxxPsalm === 147) return [{ chapter: 147, startVerse: 12, endVerse: 20 }]
+	if (lxxPsalm <= 150) return [{ chapter: lxxPsalm }]
+	return []
+}
+
 /**
  * Convert LXX psalm number to Masoretic (standard Bible) psalm number
  */
 export function lxxToMasoretic(lxxPsalm: number): number {
-	// For most practical purposes in the Agpeya:
-	// Psalms 1-8: Same
-	// Psalms 9-146: Add 1
-	// Psalms 147-150: Same (approximately)
-
-	if (lxxPsalm <= 8) {
-		return lxxPsalm
-	}
-
-	if (lxxPsalm >= 9 && lxxPsalm <= 146) {
-		return lxxPsalm + 1
-	}
-
-	return lxxPsalm
+	return lxxPsalmSegments(lxxPsalm)[0]?.chapter ?? lxxPsalm
 }
 
 /**
  * Convert Masoretic psalm number to LXX
  */
 export function masoreticToLxx(masoreticPsalm: number): number {
-	if (masoreticPsalm <= 8) {
-		return masoreticPsalm
-	}
-
-	if (masoreticPsalm >= 10 && masoreticPsalm <= 147) {
-		return masoreticPsalm - 1
-	}
-
+	if (masoreticPsalm <= 8) return masoreticPsalm
+	if (masoreticPsalm <= 10) return 9
+	if (masoreticPsalm <= 113) return masoreticPsalm - 1
+	if (masoreticPsalm <= 115) return 113
+	if (masoreticPsalm === 116) return 114
+	if (masoreticPsalm <= 146) return masoreticPsalm - 1
+	if (masoreticPsalm === 147) return 146
 	return masoreticPsalm
 }
 
@@ -110,18 +116,27 @@ export function resolvePsalm(
 	ref: PsalmReference,
 	translation: BibleTranslation = 'en',
 ): ResolvedPsalm | null {
-	const masoreticNum = lxxToMasoretic(ref.psalmNumber)
-
-	const verses = getVersesFromChapter(
-		'Psalms',
-		masoreticNum,
-		ref.startVerse,
-		ref.endVerse,
-		translation,
+	// The Coptic Psalter is stored in native Septuagint numbering. Other Bible
+	// datasets use Masoretic chapters, including the split/merged Psalm ranges.
+	const segments =
+		translation === 'cop' ? [{ chapter: ref.psalmNumber }] : lxxPsalmSegments(ref.psalmNumber)
+	let verses = segments.flatMap((segment) =>
+		getVersesFromChapter(
+			'Psalms',
+			segment.chapter,
+			segment.startVerse,
+			segment.endVerse,
+			translation,
+		),
 	)
+	// Segment boundaries use Masoretic verse numbers; expose one continuous LXX
+	// sequence to callers, then apply any range expressed in that sequence.
+	verses = verses.map((verse, index) => ({ ...verse, num: index + 1 }))
+	if (ref.startVerse !== undefined) verses = verses.filter((verse) => verse.num >= ref.startVerse!)
+	if (ref.endVerse !== undefined) verses = verses.filter((verse) => verse.num <= ref.endVerse!)
 
 	if (verses.length === 0) {
-		console.warn(`No verses found for Psalm ${ref.psalmNumber} (LXX) / ${masoreticNum} (Masoretic)`)
+		console.warn(`No verses found for Psalm ${ref.psalmNumber} (LXX)`)
 		return null
 	}
 

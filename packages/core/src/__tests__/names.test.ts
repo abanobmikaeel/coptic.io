@@ -11,7 +11,13 @@ describe('Localized names', () => {
 	})
 
 	it('localizes a Coptic date with Arabic month + digits', () => {
-		const date = { dateString: 'Paona 9, 1742', day: 9, month: 10, year: 1742, monthString: 'Paona' }
+		const date = {
+			dateString: 'Paona 9, 1742',
+			day: 9,
+			month: 10,
+			year: 1742,
+			monthString: 'Paona',
+		}
 		expect(localizeCopticDate(date, 'en').dateString).toBe('Paona 9, 1742')
 		expect(localizeCopticDate(date, 'ar').dateString).toBe('بؤونة ٩، ١٧٤٢')
 	})

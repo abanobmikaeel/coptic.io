@@ -55,8 +55,12 @@ jobs:
         with:
           node-version: '24'
           cache: 'pnpm'
+      - uses: oven-sh/setup-bun@v2
       - run: pnpm install
       - run: pnpm build:packages
+      - name: Upload Coptic Bible data
+        working-directory: apps/api
+        run: bun scripts/upload-bible-r2.ts cop
       - name: Deploy to production
         working-directory: apps/api
         run: pnpm exec wrangler deploy

@@ -7,6 +7,7 @@ import type {
 	WordSpacing,
 } from '@/components/DisplaySettings'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
+import type { ViewMode } from '@/lib/reading-preferences'
 import type { IncenseService } from '@/lib/types'
 import { SectionColumn } from './SectionColumn'
 import { TurnCell } from './TurnCell'
@@ -24,6 +25,8 @@ export interface ServiceSectionProps {
 	lineSpacing: LineSpacing
 	wordSpacing: WordSpacing
 	weight: FontWeight
+	viewMode?: ViewMode
+	showVerses?: boolean
 }
 
 export function ServiceSection({
@@ -36,6 +39,8 @@ export function ServiceSection({
 	lineSpacing,
 	wordSpacing,
 	weight,
+	viewMode,
+	showVerses,
 }: ServiceSectionProps) {
 	const primaryLang = langs[0] ?? 'en'
 	const primarySection = servicesByLang[primaryLang]?.sections.find((s) => s.id === sectionId)
@@ -47,7 +52,16 @@ export function ServiceSection({
 		primarySection.type === 'gospel' ||
 		primarySection.type === 'daily-psalm'
 	const isMultiLang = langs.length > 1
-	const sharedProps = { theme, textSize, fontFamily, lineSpacing, wordSpacing, weight }
+	const sharedProps = {
+		theme,
+		textSize,
+		fontFamily,
+		lineSpacing,
+		wordSpacing,
+		weight,
+		viewMode,
+		showVerses,
+	}
 
 	if (!isScripture && isMultiLang) {
 		const turnsByLang = Object.fromEntries(
