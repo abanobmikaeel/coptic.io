@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs'
-import { isAbsolute, relative, resolve } from 'node:path'
+import { resolve, sep } from 'node:path'
 
 const messageFileArg = process.argv[2]
 if (!messageFileArg) {
@@ -8,12 +8,11 @@ if (!messageFileArg) {
 }
 
 // Git invokes this hook from the repository root and passes a path inside the
-// repo. Resolve it and confine it to the working directory so a stray/malicious
-// CLI argument cannot read files elsewhere on the filesystem.
-const repoRoot = process.cwd()
+// repo. Canonicalize the CLI-supplied path and require it to stay within the
+// working directory so a stray/malicious argument cannot read files elsewhere.
+const repoRoot = resolve(process.cwd())
 const messageFile = resolve(repoRoot, messageFileArg)
-const relativeToRepo = relative(repoRoot, messageFile)
-if (!relativeToRepo || relativeToRepo.startsWith('..') || isAbsolute(relativeToRepo)) {
+if (messageFile !== repoRoot && !messageFile.startsWith(repoRoot + sep)) {
 	console.error('Refusing to read commit message file outside the repository.')
 	process.exit(1)
 }
