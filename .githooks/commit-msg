@@ -1,2 +1,4 @@
 #!/bin/sh
-exec node scripts/hooks/validate-commit-message.mjs "$1"
+# Git passes the commit message file as $1. Feed it via stdin so the validator
+# reads trusted input from the shell instead of opening a path it was handed.
+exec node scripts/hooks/validate-commit-message.mjs < "$1"
