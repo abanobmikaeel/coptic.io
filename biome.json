@@ -7,7 +7,16 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"ignore": ["node_modules", "dist", "build", ".next", "coverage", "*.json"]
+		"ignore": [
+			"node_modules",
+			"dist",
+			"dist-workers",
+			"build",
+			".next",
+			"next-env.d.ts",
+			"coverage",
+			"*.json"
+		]
 	},
 	"formatter": {
 		"enabled": true,

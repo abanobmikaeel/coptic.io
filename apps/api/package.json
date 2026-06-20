@@ -11,7 +11,7 @@
 		"deploy": "wrangler deploy",
 		"upload:r2": "bun scripts/upload-bible-r2.ts",
 		"test": "vitest",
-		"test:coverage": "vitest --coverage",
+		"test:coverage": "vitest run --coverage",
 		"railway:start": "bun src/index.ts",
 		"lint": "biome lint src",
 		"lint:fix": "biome lint --write src",
@@ -37,7 +37,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.5",
-		"@vitest/coverage-v8": "3.2.4",
+		"@vitest/coverage-v8": "3.2.6",
 		"autocannon": "^8.0.0",
 		"tsx": "^4.19.2",
 		"typescript": "^5.7.3",
