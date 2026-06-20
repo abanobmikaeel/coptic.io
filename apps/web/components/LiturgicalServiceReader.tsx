@@ -392,7 +392,9 @@ export function LiturgicalServiceReader({
 					>
 						{titleBar}
 						{isPaginated && pagination.count > 1 && (
-							<div className="flex items-center gap-1 ml-auto">
+							// dir=ltr so page indicators always fill left-to-right (matching
+							// next/ArrowRight advancing) and don't reverse under an RTL locale.
+							<div dir="ltr" className="flex items-center gap-1 ml-auto">
 								{Array.from({ length: pagination.count }, (_, i) => (
 									<span
 										key={i}
@@ -444,8 +446,10 @@ export function LiturgicalServiceReader({
 						)}
 					</div>
 
-					{/* Bottom section dots */}
+					{/* Bottom section dots. dir=ltr so dots + prev/next fill left-to-right
+					    (matching next/ArrowRight and the top progress) under an RTL locale. */}
 					<div
+						dir="ltr"
 						className={`flex-none flex items-center gap-4 px-4 py-3 border-t ${themeClasses.border[theme]} ${themeClasses.bg[theme]}`}
 					>
 						<SectionDots

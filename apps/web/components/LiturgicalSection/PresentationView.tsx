@@ -188,8 +188,10 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 
 		return (
 			<div ref={viewRef} className="relative h-full overflow-hidden">
-				{/* Visible page */}
-				<div className={`grid gap-x-6 pt-2 ${gridClass}`}>
+				{/* Visible page. dir=ltr keeps language columns in a fixed order so they
+				    don't swap sides under an RTL (Arabic) UI locale — each PageCell still
+				    sets its own dir for correct per-language text alignment. */}
+				<div dir="ltr" className={`grid gap-x-6 pt-2 ${gridClass}`}>
 					{langs.map((lang) => {
 						const breaks = breaksByLang[lang] ?? [0, flatByLang[lang]?.length ?? 0]
 						const languageCount = Math.max(1, breaks.length - 1)
@@ -214,7 +216,7 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 						aria-hidden
 						className="absolute inset-0 pt-2 invisible pointer-events-none"
 					>
-						<div className={`grid gap-x-6 ${gridClass}`}>
+						<div dir="ltr" className={`grid gap-x-6 ${gridClass}`}>
 							{langs.map((lang) => (
 								<PageCell key={lang} lines={flatByLang[lang] ?? []} lang={lang} {...style} />
 							))}
