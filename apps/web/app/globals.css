@@ -174,6 +174,17 @@ html[lang="ar"] body {
 	font-family: var(--font-inter), var(--font-arabic), "Noto Naskh Arabic", system-ui, sans-serif;
 }
 
+/* Arabic UI: render chrome/body text in Naskh (Latin still falls to Inter via
+   per-character fallback) and nudge the base size up — Naskh reads small at
+   Latin sizes. Reading components set .font-arabic themselves and are unaffected. */
+html[lang="ar"] {
+	font-size: 112.5%;
+}
+
+html[lang="ar"] body {
+	font-family: var(--font-inter), var(--font-arabic), "Noto Naskh Arabic", system-ui, sans-serif;
+}
+
 /* RTL text alignment adjustments */
 [dir="rtl"] .text-left {
 	text-align: right;
