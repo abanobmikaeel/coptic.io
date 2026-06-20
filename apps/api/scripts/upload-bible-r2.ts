@@ -43,7 +43,7 @@ for (const { lang, data } of translations) {
 	const key = `bible-${lang}.json`
 	process.stdout.write(`Uploading ${key} …\n`)
 	execSync(
-		`pnpm exec wrangler r2 object put ${BUCKET}/${key} --file ${file} --content-type application/json`,
+		`pnpm exec wrangler r2 object put ${BUCKET}/${key} --file ${file} --content-type application/json --remote`,
 		{ stdio: 'inherit' },
 	)
 	unlinkSync(file)
