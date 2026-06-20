@@ -5,9 +5,6 @@ export default defineConfig({
 		globals: true,
 		environment: 'node',
 		watch: false,
-		testTimeout: 10000,
-		hookTimeout: 10000,
-		teardownTimeout: 5000,
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'lcov'],
@@ -20,6 +17,7 @@ export default defineConfig({
 				'**/coverage/**',
 				'**/dist/**',
 				'**/node_modules/**',
+				'**/scripts/**',
 			],
 		},
 	},

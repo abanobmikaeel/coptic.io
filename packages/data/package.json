@@ -92,7 +92,8 @@
 		"typecheck": "tsc --noEmit",
 		"bench": "vitest bench",
 		"prepublishOnly": "pnpm run build",
-		"test": "vitest run"
+		"test": "vitest run",
+		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
 		"@coptic/core": "workspace:*"
@@ -100,6 +101,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.5",
+		"@vitest/coverage-v8": "4.1.9",
 		"tsx": "^4.19.0",
 		"typescript": "^5.7.3",
 		"vitest": "^4.0.18"
