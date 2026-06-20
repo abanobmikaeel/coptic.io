@@ -46,6 +46,24 @@ async function fetchHour(hour: string, lang: AgpeyaLang): Promise<ResolvedAgpeya
 	}
 }
 
+// Content languages the Agpeya can actually render. Falls back to all candidates
+// if the endpoint is unreachable, so an outage never hides every language.
+async function fetchAvailableTranslations(): Promise<AgpeyaLang[]> {
+	try {
+		const res = await fetch(`${API_BASE_URL}/agpeya/translations`, {
+			next: { revalidate: 43200 },
+		})
+		if (!res.ok) return [...AGPEYA_LANGS]
+		const data = (await res.json()) as { available?: string[] }
+		const available = (data.available ?? []).filter((l): l is AgpeyaLang =>
+			AGPEYA_LANGS.includes(l as AgpeyaLang),
+		)
+		return available.length > 0 ? available : [...AGPEYA_LANGS]
+	} catch {
+		return [...AGPEYA_LANGS]
+	}
+}
+
 async function fetchCopticDate(date: string, lang: string): Promise<CopticDate | null> {
 	try {
 		const res = await fetch(`${API_BASE_URL}/calendar/${date}?lang=${lang}`, {
@@ -73,9 +91,10 @@ export default async function AgpeyaPage({ searchParams }: AgpeyaPageProps) {
 
 	const cookieStore = await cookies()
 	const contentLanguages = parseContentLanguages(cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value)
+	const available = await fetchAvailableTranslations()
 	const selected = (
 		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
-	).filter((l): l is AgpeyaLang => AGPEYA_LANGS.includes(l as AgpeyaLang))
+	).filter((l): l is AgpeyaLang => available.includes(l as AgpeyaLang))
 	const ordered = orderLanguages(selected.length > 0 ? selected : ['en']) as BibleTranslation[]
 
 	const today = getTodayDateString()
@@ -100,6 +119,7 @@ export default async function AgpeyaPage({ searchParams }: AgpeyaPageProps) {
 			<AgpeyaContent
 				servicesByLang={servicesByLang}
 				langs={ordered}
+				availableLanguages={available as BibleTranslation[]}
 				hourId={hour}
 				hasHourParam={hasHourParam}
 			/>

@@ -230,6 +230,17 @@ export function getHourIds(): AgpeyaHourId[] {
 	return getEnAgpeyaHourIds()
 }
 
+// Content languages the Agpeya can render. English and Arabic have full prayer
+// prose; Coptic is offered as scripture-only columns (psalms/gospel). Spanish has
+// scripture but no prose, so it is intentionally excluded rather than silently
+// falling back to English prayers.
+const AGPEYA_PROSE_LANGS: BibleTranslation[] = ['en', 'ar']
+const AGPEYA_SCRIPTURE_ONLY_LANGS: BibleTranslation[] = ['cop']
+
+export function getAvailableTranslations(): BibleTranslation[] {
+	return [...AGPEYA_PROSE_LANGS, ...AGPEYA_SCRIPTURE_ONLY_LANGS]
+}
+
 export function getCurrentHour(): AgpeyaHourId {
 	const currentHour = new Date().getHours()
 

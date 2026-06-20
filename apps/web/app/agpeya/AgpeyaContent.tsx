@@ -15,6 +15,7 @@ export const AgpeyaFallback = ServiceReaderFallback
 interface AgpeyaContentProps {
 	servicesByLang: Partial<Record<string, IncenseService>>
 	langs: BibleTranslation[]
+	availableLanguages: BibleTranslation[]
 	hourId: AgpeyaHour
 	hasHourParam: boolean
 	notice?: string
@@ -23,6 +24,7 @@ interface AgpeyaContentProps {
 export function AgpeyaContent({
 	servicesByLang,
 	langs,
+	availableLanguages,
 	hourId,
 	hasHourParam,
 	notice,
@@ -142,6 +144,7 @@ export function AgpeyaContent({
 			basePath="/agpeya"
 			servicesByLang={servicesByLang}
 			langs={langs}
+			availableLanguages={availableLanguages}
 			notice={notice}
 			headerCenter={hourSwitcher}
 		/>

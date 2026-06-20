@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addDays, normalizeDate, parseLocalDate } from '../../utils/dateUtils'
+import { addDays, normalizeDate, parseDateInput, parseLocalDate } from '../../utils/dateUtils'
 
 describe('Date Utils', () => {
 	describe('addDays', () => {
@@ -170,6 +170,34 @@ describe('Date Utils', () => {
 			const feb28 = parseLocalDate('2025-02-28')
 			expect(feb28?.getDate()).toBe(28)
 			expect(feb28?.getMonth()).toBe(1)
+		})
+	})
+
+	describe('parseDateInput', () => {
+		it('defaults to "now" when no date is provided', () => {
+			const before = Date.now()
+			const result = parseDateInput()
+			const after = Date.now()
+
+			expect(result.getTime()).toBeGreaterThanOrEqual(before)
+			expect(result.getTime()).toBeLessThanOrEqual(after)
+		})
+
+		// Regression: `new Date('YYYY-MM-DD')` is parsed as UTC and shifts the day
+		// in negative-offset timezones. Entry points must parse request inputs as
+		// local time so the same date resolves to the same day everywhere.
+		it('parses a YYYY-MM-DD string as local time (no UTC shift)', () => {
+			const result = parseDateInput('2025-01-15')
+
+			expect(result.getFullYear()).toBe(2025)
+			expect(result.getMonth()).toBe(0)
+			expect(result.getDate()).toBe(15)
+		})
+
+		it('throws on malformed input so callers surface a validation error', () => {
+			expect(() => parseDateInput('not-a-date')).toThrow()
+			expect(() => parseDateInput('2025')).toThrow()
+			expect(() => parseDateInput('2025-Jan-15')).toThrow()
 		})
 	})
 })

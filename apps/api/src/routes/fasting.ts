@@ -2,6 +2,7 @@ import { getLiturgicalName } from '@coptic/core'
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { ErrorSchema, FastingDaySchema, FastingResponseSchema } from '../schemas'
 import * as fastingService from '../services/fasting.service'
+import { parseDateInput } from '../utils/dateUtils'
 
 const app = new OpenAPIHono()
 
@@ -44,9 +45,11 @@ const getForDateRoute = createRoute({
 app.openapi(getForDateRoute, (c) => {
 	const { date } = c.req.valid('param')
 	const { lang } = c.req.valid('query')
-	const parsedDate = date ? new Date(date) : new Date()
 
-	if (Number.isNaN(parsedDate.getTime())) {
+	let parsedDate: Date
+	try {
+		parsedDate = parseDateInput(date)
+	} catch {
 		return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 	}
 

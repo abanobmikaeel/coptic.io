@@ -21,6 +21,8 @@ interface SettingsPanelProps {
 	actions: ReadingSettingsActions
 	contentLanguages: ContentLanguage[]
 	onContentLanguagesChange: (languages: ContentLanguage[]) => void
+	// Languages the current content can render; unavailable ones are hidden from the pills.
+	availableLanguages?: ContentLanguage[]
 	onClose: () => void
 	// Optional view-specific controls rendered at the top of the panel (e.g. the Vespers
 	// present/scroll mode switch). Omitted by default, so other views are unaffected.
@@ -32,6 +34,7 @@ export function SettingsPanel({
 	actions,
 	contentLanguages,
 	onContentLanguagesChange,
+	availableLanguages,
 	onClose,
 	extraSection,
 }: SettingsPanelProps) {
@@ -73,7 +76,11 @@ export function SettingsPanel({
 
 				{/* Display Languages */}
 				<SettingSection label="Display Languages">
-					<LanguagePills selected={contentLanguages} onChange={onContentLanguagesChange} />
+					<LanguagePills
+						selected={contentLanguages}
+						onChange={onContentLanguagesChange}
+						availableLanguages={availableLanguages}
+					/>
 				</SettingSection>
 
 				{/* Font Family - only for English */}

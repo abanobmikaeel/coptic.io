@@ -85,6 +85,9 @@ export interface LiturgicalServiceReaderProps {
 	// Replaces the date navigation in the header — e.g. an hour switcher for the Agpeya,
 	// which is hour-based rather than date-based.
 	headerCenter?: React.ReactNode
+	// Content languages this service can render; passed to the settings menu so languages
+	// with no content (e.g. Spanish has no Agpeya prose) are hidden from the picker.
+	availableLanguages?: BibleTranslation[]
 }
 
 // Generic reader for any multi-language liturgical service (Vespers, Midnight Praises, …).
@@ -99,6 +102,7 @@ export function LiturgicalServiceReader({
 	settingsExtra,
 	notice,
 	headerCenter,
+	availableLanguages,
 }: LiturgicalServiceReaderProps) {
 	const { settings, actions, mounted } = useReadingSettings()
 	const {
@@ -345,6 +349,7 @@ export function LiturgicalServiceReader({
 							settings={settings}
 							actions={actions}
 							contentLanguages={contentLanguages}
+							availableLanguages={availableLanguages}
 							onContentLanguagesChange={setContentLanguages}
 							onClose={() => setSettingsOpen(false)}
 							extraSection={
