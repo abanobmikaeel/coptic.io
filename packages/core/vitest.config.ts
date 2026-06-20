@@ -10,7 +10,7 @@ export default defineConfig({
 		teardownTimeout: 5000,
 		coverage: {
 			provider: 'v8',
-			reporter: ['text', 'lcov'],
+			reporter: ['text', ['lcov', { projectRoot: '../..' }]],
 			include: ['src/**/*.ts'],
 			exclude: [
 				'**/__benchmarks__/**',

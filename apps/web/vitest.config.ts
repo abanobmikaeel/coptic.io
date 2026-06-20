@@ -8,7 +8,7 @@ export default defineConfig({
 		include: ['lib/**/__tests__/**/*.test.ts'],
 		coverage: {
 			provider: 'v8',
-			reporter: ['text', 'lcov'],
+			reporter: ['text', ['lcov', { projectRoot: '../..' }]],
 			include: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}', 'hooks/**/*.ts', 'lib/**/*.ts'],
 			exclude: [
 				'**/__tests__/**',

@@ -124,6 +124,17 @@ Example of a good commit message:
 `feat(api): add new endpoint for user authentication`
 `This commit introduces a new API endpoint allowing users to use auth tokens`
 
+### Local Quality Hooks
+
+Running `pnpm install` configures the repository-managed hooks in `.githooks/`:
+
+- `pre-commit` checks staged supported files with Biome and rejects whitespace errors.
+- `commit-msg` enforces Conventional Commit subjects.
+- `pre-push` verifies the frozen lockfile, formatting, types, package builds, and unit tests.
+
+Run `pnpm hooks:install` to restore the hooks after changing Git configuration. Use `--no-verify`
+only when a hook itself is broken, and document that exception in the pull request.
+
 ## Message us on Discord
 
 We are on Coptic Devs discord, feel free to message us there.

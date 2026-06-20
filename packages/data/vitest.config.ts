@@ -7,7 +7,7 @@ export default defineConfig({
 		watch: false,
 		coverage: {
 			provider: 'v8',
-			reporter: ['text', 'lcov'],
+			reporter: ['text', ['lcov', { projectRoot: '../..' }]],
 			include: ['src/**/*.ts'],
 			exclude: [
 				'**/__benchmarks__/**',
