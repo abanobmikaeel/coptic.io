@@ -1,4 +1,13 @@
-import { expect, test } from '@playwright/test'
+import { type Page, expect, test } from '@playwright/test'
+
+// The settings selects have no accessible labels or IDs, so target one by its row
+// label text — robust against the page being re-ordered (the old tests used
+// `select.nth(N)` which drifted when rows were added above).
+const settingSelect = (page: Page, label: string) =>
+	page
+		.getByText(label, { exact: true })
+		.locator('xpath=ancestor::*[.//select][1]')
+		.getByRole('combobox')
 
 test.describe('Display Settings - Settings Page', () => {
 	test.beforeEach(async ({ page }) => {
@@ -12,20 +21,12 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have line spacing options with correct values', async ({ page }) => {
-		// Find the line spacing dropdown/select
-		const lineSpacingSelect = page.locator('select').nth(4) // Line spacing is the 5th select
-
-		// Get all options
-		const options = await lineSpacingSelect.locator('option').allTextContents()
-
-		// Should NOT have 'tight' (old incorrect value)
-		expect(options.join(' ').toLowerCase()).not.toContain('tight')
-
-		// Click on the select to verify it has the correct values
-		const optionValues = await lineSpacingSelect
+		const optionValues = await settingSelect(page, 'Line Spacing')
 			.locator('option')
 			.evaluateAll((opts) => opts.map((opt) => (opt as HTMLOptionElement).value))
 
+		// Should NOT have 'tight' (old incorrect value)
+		expect(optionValues).not.toContain('tight')
 		// Should have 'compact', 'normal', 'relaxed'
 		expect(optionValues).toContain('compact')
 		expect(optionValues).toContain('normal')
@@ -33,17 +34,12 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have word spacing options with correct values', async ({ page }) => {
-		// Find the word spacing dropdown/select
-		const wordSpacingSelect = page.locator('select').nth(5) // Word spacing is the 6th select
-
-		// Get option values
-		const optionValues = await wordSpacingSelect
+		const optionValues = await settingSelect(page, 'Word Spacing')
 			.locator('option')
 			.evaluateAll((opts) => opts.map((opt) => (opt as HTMLOptionElement).value))
 
 		// Should NOT have 'wide' (old incorrect value)
 		expect(optionValues).not.toContain('wide')
-
 		// Should have 'compact', 'normal', 'relaxed'
 		expect(optionValues).toContain('compact')
 		expect(optionValues).toContain('normal')
@@ -51,17 +47,12 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should have font weight options with correct values', async ({ page }) => {
-		// Find the font weight dropdown
-		const fontWeightSelect = page.locator('select').nth(3) // Font weight is the 4th select
-
-		// Get option values
-		const optionValues = await fontWeightSelect
+		const optionValues = await settingSelect(page, 'Font Weight')
 			.locator('option')
 			.evaluateAll((opts) => opts.map((opt) => (opt as HTMLOptionElement).value))
 
 		// Should NOT have 'medium' (old incorrect value)
 		expect(optionValues).not.toContain('medium')
-
 		// Should have 'light', 'normal', 'bold'
 		expect(optionValues).toContain('light')
 		expect(optionValues).toContain('normal')
@@ -69,19 +60,16 @@ test.describe('Display Settings - Settings Page', () => {
 	})
 
 	test('should persist settings changes', async ({ page }) => {
-		// Change line spacing to compact
-		const lineSpacingSelect = page.locator('select').nth(4)
+		const lineSpacingSelect = settingSelect(page, 'Line Spacing')
 		await lineSpacingSelect.selectOption('compact')
 
-		// Should show saved message
+		// Should show a saved confirmation
 		await expect(page.getByText(/saved/i)).toBeVisible({ timeout: 3000 })
 
-		// Reload the page
+		// Reload the page — the change should persist
 		await page.reload()
-		await page.waitForLoadState('networkidle')
 
-		// Line spacing should still be compact
-		const selectedValue = await page.locator('select').nth(4).inputValue()
+		const selectedValue = await settingSelect(page, 'Line Spacing').inputValue()
 		expect(selectedValue).toBe('compact')
 	})
 })

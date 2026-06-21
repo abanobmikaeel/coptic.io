@@ -13,7 +13,9 @@ test.describe('Home page', () => {
 
 	test('should have branding', async ({ page }) => {
 		await page.goto('/')
-		await expect(page.getByText(/Coptic/i).first()).toBeVisible()
+		// Branding is the "Coptic IO" logo link in the navbar (scoped so it doesn't
+		// match the many other occurrences of "Coptic" in page copy).
+		await expect(page.locator('nav').getByRole('link', { name: 'Coptic IO' })).toBeVisible()
 	})
 })
 
@@ -22,7 +24,6 @@ test.describe('Home page - Desktop', () => {
 
 	test('should have calendar link in navbar', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
 		// Desktop navbar calendar link
 		const topNav = page.locator('nav.sticky')
@@ -33,22 +34,15 @@ test.describe('Home page - Desktop', () => {
 		await expect(page).toHaveURL(/calendar/)
 	})
 
-	test('should have Read dropdown with content links', async ({ page }) => {
+	test('should open the Read dropdown with content links', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
-		const readDropdown = page.getByText('Read')
-		if ((await readDropdown.count()) > 0) {
-			await readDropdown.first().hover()
-			await page.waitForTimeout(300)
+		const readTrigger = page.locator('nav').getByRole('link', { name: 'Read', exact: true })
+		await readTrigger.hover()
 
-			// Should show dropdown items
-			const agpeyaLink = page.getByText(/Agpeya/i)
-			const synaxariumLink = page.getByText(/Synaxarium/i)
-
-			const hasDropdownItems = (await agpeyaLink.count()) > 0 || (await synaxariumLink.count()) > 0
-			expect(hasDropdownItems).toBeTruthy()
-		}
+		// A dropdown item that only exists in the Read menu (not elsewhere on the
+		// page) becomes visible, confirming the menu opened.
+		await expect(page.locator('nav').getByRole('link', { name: /lent guide/i })).toBeVisible()
 	})
 
 	test('should navigate to subscribe page', async ({ page }) => {
@@ -64,34 +58,39 @@ test.describe('Home page - Desktop', () => {
 test.describe('Home page - Mobile', () => {
 	test.use({ viewport: { width: 375, height: 667 } })
 
-	test('should have bottom navigation tabs', async ({ page }) => {
+	// Mobile uses a hamburger "Open menu" button that opens a dialog with the nav
+	// links (the old bottom-nav tabs were removed in a UI refactor).
+	test('should open menu and show navigation links', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		await expect(bottomNav).toBeVisible()
+		await page.getByRole('button', { name: 'Open menu' }).click()
+		const menu = page.getByRole('dialog')
 
-		// Should have Today, Library, Calendar tabs
-		await expect(bottomNav.getByText('Today')).toBeVisible()
-		await expect(bottomNav.getByText('Library')).toBeVisible()
-		await expect(bottomNav.getByText('Calendar')).toBeVisible()
+		await expect(menu.getByRole('link', { name: /library/i })).toBeVisible()
+		await expect(menu.getByRole('link', { name: /calendar/i })).toBeVisible()
 	})
 
-	test('should navigate to library from bottom nav', async ({ page }) => {
+	test('should navigate to library from menu', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		await bottomNav.getByRole('link', { name: /library/i }).click()
+		await page.getByRole('button', { name: 'Open menu' }).click()
+		await page
+			.getByRole('dialog')
+			.getByRole('link', { name: /library/i })
+			.click()
+
 		await expect(page).toHaveURL(/library/)
 	})
 
-	test('should navigate to calendar from bottom nav', async ({ page }) => {
+	test('should navigate to calendar from menu', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		await bottomNav.getByRole('link', { name: /calendar/i }).click()
+		await page.getByRole('button', { name: 'Open menu' }).click()
+		await page
+			.getByRole('dialog')
+			.getByRole('link', { name: /calendar/i })
+			.click()
+
 		await expect(page).toHaveURL(/calendar/)
 	})
 })

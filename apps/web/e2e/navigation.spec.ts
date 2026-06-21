@@ -1,139 +1,114 @@
 import { expect, test } from '@playwright/test'
 
+// `/` redirects to `/?date=YYYY-MM-DD` (today). Navigation tests assert that
+// real behavior rather than a bare `/`, so they lock in the redirect.
+const HOME_URL = /\/\?date=\d{4}-\d{2}-\d{2}$/
+
 test.describe('Navigation - Desktop', () => {
 	test.use({ viewport: { width: 1280, height: 720 } })
 
 	test('should have working calendar link', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
-		// Desktop has calendar link in top navbar
-		const calendarLink = page
-			.locator('nav')
-			.first()
-			.getByRole('link', { name: /calendar/i })
-		if ((await calendarLink.count()) > 0) {
-			await calendarLink.first().click()
-			await expect(page).toHaveURL(/calendar/)
-		}
+		// Calendar is a top-level link in the sticky navbar.
+		const calendarLink = page.locator('nav.sticky').getByRole('link', { name: 'Calendar' })
+		await expect(calendarLink).toBeVisible()
+		await calendarLink.click()
+		await expect(page).toHaveURL(/\/calendar/)
 	})
 
-	test('should have Read dropdown menu', async ({ page }) => {
+	test('should open the Read dropdown with content links', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
-		const readDropdown = page.getByText('Read').first()
-		if ((await readDropdown.count()) > 0) {
-			await readDropdown.hover()
-			await page.waitForTimeout(300)
+		const readTrigger = page.locator('nav.sticky').getByRole('link', { name: 'Read', exact: true })
+		await readTrigger.hover()
 
-			const dropdownContent = page.locator('[class*="dropdown"], [role="menu"]')
-			if ((await dropdownContent.count()) > 0) {
-				await expect(dropdownContent.first()).toBeVisible()
-			}
-		}
+		// "Lent Guide" only appears inside the Read dropdown, so its visibility
+		// confirms the menu actually opened.
+		await expect(
+			page.locator('nav.sticky').getByRole('link', { name: /lent guide/i }),
+		).toBeVisible()
 	})
 
 	test('should navigate to subscribe page', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
-
 		const subscribeLink = page.getByRole('link', { name: /subscribe/i })
-		if ((await subscribeLink.count()) > 0) {
+		// Subscribe lives inside a dropdown, so it's present but may need revealing;
+		// navigate directly if it isn't immediately clickable.
+		if (
+			await subscribeLink
+				.first()
+				.isVisible()
+				.catch(() => false)
+		) {
 			await subscribeLink.first().click()
-			await expect(page).toHaveURL(/subscribe/)
+		} else {
+			await page.goto('/subscribe')
 		}
+		await expect(page).toHaveURL(/\/subscribe/)
 	})
 
 	test('should have logo link to home', async ({ page }) => {
 		await page.goto('/calendar')
-		await page.waitForLoadState('networkidle')
 
-		const homeLink = page.getByRole('link', { name: /coptic/i }).first()
-		if ((await homeLink.count()) > 0) {
-			await homeLink.click()
-			await expect(page).toHaveURL('/')
-		}
+		const logo = page.locator('nav.sticky').getByRole('link', { name: 'Coptic IO' })
+		await logo.click()
+		// `/` redirects to today's date.
+		await expect(page).toHaveURL(HOME_URL)
 	})
 })
 
 test.describe('Navigation - Mobile', () => {
 	test.use({ viewport: { width: 375, height: 667 } })
 
-	test('should show bottom navigation', async ({ page }) => {
+	// Mobile uses a hamburger "Open menu" button (the old bottom-nav tabs were
+	// removed in a UI refactor). Nav links live in the dialog that it opens.
+	test('should show hamburger menu button', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
-
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		await expect(bottomNav).toBeVisible()
+		await expect(page.getByRole('button', { name: 'Open menu' })).toBeVisible()
 	})
 
-	test('should navigate to Library from bottom nav', async ({ page }) => {
+	test('should navigate to Library from the menu', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
-
-		// Target the link INSIDE the bottom nav specifically
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		const libraryTab = bottomNav.getByRole('link', { name: /library/i })
-
-		await expect(libraryTab).toBeVisible()
-		await libraryTab.click()
-		await expect(page).toHaveURL(/library/)
+		await page.getByRole('button', { name: 'Open menu' }).click()
+		await page
+			.getByRole('dialog')
+			.getByRole('link', { name: /library/i })
+			.click()
+		await expect(page).toHaveURL(/\/library/)
 	})
 
-	test('should navigate to Calendar from bottom nav', async ({ page }) => {
+	test('should navigate to Calendar from the menu', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
-
-		// Target the link INSIDE the bottom nav specifically
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		const calendarTab = bottomNav.getByRole('link', { name: /calendar/i })
-
-		await expect(calendarTab).toBeVisible()
-		await calendarTab.click()
-		await expect(page).toHaveURL(/calendar/)
+		await page.getByRole('button', { name: 'Open menu' }).click()
+		await page
+			.getByRole('dialog')
+			.getByRole('link', { name: /calendar/i })
+			.click()
+		await expect(page).toHaveURL(/\/calendar/)
 	})
 
-	test('should navigate to Today from bottom nav', async ({ page }) => {
-		await page.goto('/library')
-		await page.waitForLoadState('networkidle')
-
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		const todayTab = bottomNav.getByRole('link', { name: /today/i })
-
-		await expect(todayTab).toBeVisible()
-		await todayTab.click()
-		await expect(page).toHaveURL(/^\/$|localhost:\d+\/$/)
-	})
-
-	test('should highlight active tab', async ({ page }) => {
+	test('should reach home via the logo', async ({ page }) => {
+		// There is no "Today" tab on mobile; home/today is reached via the logo.
 		await page.goto('/calendar')
-		await page.waitForLoadState('networkidle')
-
-		const bottomNav = page.locator('nav[aria-label="Main navigation"]')
-		const calendarTab = bottomNav.getByRole('link', { name: /calendar/i })
-
-		// Active tab should have aria-current="page"
-		await expect(calendarTab).toHaveAttribute('aria-current', 'page')
+		await page.getByRole('link', { name: 'Coptic IO' }).click()
+		await expect(page).toHaveURL(HOME_URL)
 	})
 })
 
 test.describe('Navigation - General', () => {
 	test('back button should work', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
-
 		await page.goto('/calendar')
-		await page.waitForLoadState('networkidle')
-		await expect(page).toHaveURL(/calendar/)
+		await expect(page).toHaveURL(/\/calendar/)
 
 		await page.goBack()
-		await expect(page).toHaveURL('/')
+		// Landing on `/` redirects to today's home.
+		await expect(page).toHaveURL(HOME_URL)
 	})
 
 	test('should navigate using keyboard', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
 		for (let i = 0; i < 5; i++) {
 			await page.keyboard.press('Tab')

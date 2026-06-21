@@ -38,36 +38,25 @@ test.describe('Calendar page', () => {
 	})
 
 	test('should display day grid', async ({ page }) => {
-		// Calendar should have clickable day elements
-		const dayElements = page
-			.locator('button, td, [role="gridcell"], [class*="day"]')
-			.filter({ hasText: /^[1-9]$|^[12][0-9]$|^3[01]$/ })
+		// Day cells render as buttons whose label starts with the day number
+		// (e.g. textContent "13P" — number + fasting mark in child spans), one per
+		// day of the month — at least 28 in any month.
+		const dayCells = page.locator('main').getByRole('button').filter({ hasText: /^\d/ })
 
-		expect(await dayElements.count()).toBeGreaterThan(0)
+		expect(await dayCells.count()).toBeGreaterThanOrEqual(28)
 	})
 
 	test('should respond to navigation', async ({ page }) => {
-		// Find a navigation button and click it
-		const nextButton = page.getByRole('button', { name: /next|→|>/i }).first()
-		const prevButton = page.getByRole('button', { name: /prev|←|</i }).first()
+		// Drive navigation via the month selector — the prev/next buttons are
+		// off-viewport on very small screens (iPhone SE). Pick a different month
+		// by index (values are numeric, so index is the value-agnostic choice).
+		const monthSelect = page.getByRole('combobox', { name: /select month/i })
+		const selectedMonth = monthSelect.locator('option:checked')
 
-		if ((await nextButton.count()) > 0) {
-			await nextButton.click()
-			await page.waitForTimeout(300)
-		} else if ((await prevButton.count()) > 0) {
-			await prevButton.click()
-			await page.waitForTimeout(300)
-		}
+		const before = await selectedMonth.textContent()
+		const currentIndex = await monthSelect.evaluate((s: HTMLSelectElement) => s.selectedIndex)
+		await monthSelect.selectOption({ index: currentIndex === 0 ? 1 : 0 })
 
-		// Page should still be on calendar
-		await expect(page).toHaveURL(/calendar/)
-	})
-
-	test('should show Coptic or Gregorian toggle', async ({ page }) => {
-		const toggle = page.getByText(/gregorian|coptic/i)
-		// Toggle is expected but not required
-		if ((await toggle.count()) > 0) {
-			await expect(toggle.first()).toBeVisible()
-		}
+		await expect.poll(() => selectedMonth.textContent()).not.toBe(before)
 	})
 })
