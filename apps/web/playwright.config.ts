@@ -34,14 +34,12 @@ export default defineConfig({
 			use: { ...devices['iPhone SE'] },
 		},
 	],
-	// Expects dev server already running on port 3000
-	// Start with: bun run dev
-	webServer: process.env.CI
-		? {
-				command: 'bun run dev',
-				url: 'http://localhost:3001',
-				reuseExistingServer: false,
-				timeout: 120000,
-			}
-		: undefined,
+	// Auto-boots the web dev server on :3001 (reuses one you already started via
+	// `pnpm dev:web`). The API (Bun) is expected on :3000 — see NEXT_PUBLIC_API_URL.
+	webServer: {
+		command: 'bun run dev',
+		url: 'http://localhost:3001',
+		reuseExistingServer: !process.env.CI,
+		timeout: 120000,
+	},
 })

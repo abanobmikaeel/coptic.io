@@ -51,6 +51,16 @@ project is expected to support many liturgical services, languages, and text edi
   the BFF validates them and retains ownership of eligibility and ordering.
 - Prefer simple functions and explicit contracts. Avoid framework-heavy abstractions and hidden
   control flow.
+- Parse request inputs through shared helpers across every entry point (REST and GraphQL), not
+  ad-hoc parsing per handler. Date strings must be parsed as local time; never use
+  `new Date('YYYY-MM-DD')`, which the spec interprets as UTC and shifts the day in negative-offset
+  timezones.
+- Match cache TTL to each route's volatility. Wall-clock-dependent responses (e.g. "current
+  hour") must not share a date-deterministic cache lifetime, and cache middleware must not
+  clobber a `Cache-Control` header the handler set intentionally.
+- Never return raw `Error.message` or stack traces to clients. Return a public-safe error
+  envelope and log internals server-side only; prefer a single global error handler over
+  per-route try/catch that re-implements it.
 - Business logic requires focused unit tests.
 
 ### Web: `apps/web`

@@ -45,7 +45,8 @@ test.describe('Subscribe page', () => {
 	})
 
 	test('should show description text', async ({ page }) => {
-		const description = page.getByText(/daily|readings|coptic|orthodox/i)
+		// Scope to main so the hidden nav branding ("Coptic IO") isn't matched.
+		const description = page.locator('main').getByText(/daily|readings|coptic|orthodox/i)
 		await expect(description.first()).toBeVisible()
 	})
 })

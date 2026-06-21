@@ -19,6 +19,7 @@ export const VespersFallback = ServiceReaderFallback
 interface VespersContentProps {
 	servicesByLang: Partial<Record<string, IncenseService>>
 	langs: BibleTranslation[]
+	availableLanguages: BibleTranslation[]
 	date?: string
 	commemorations?: string[]
 	notice?: string
@@ -27,6 +28,7 @@ interface VespersContentProps {
 export function VespersContent({
 	servicesByLang,
 	langs,
+	availableLanguages,
 	date,
 	commemorations,
 	notice,
@@ -53,6 +55,7 @@ export function VespersContent({
 			basePath="/vespers"
 			servicesByLang={servicesByLang}
 			langs={langs}
+			availableLanguages={availableLanguages}
 			notice={notice}
 			settingsExtra={
 				<>

@@ -7,10 +7,14 @@ import { useRouter } from 'next/navigation'
 interface LanguagePillsProps {
 	selected: ContentLanguage[]
 	onChange: (languages: ContentLanguage[]) => void
+	// Languages the current content can actually render. When provided, languages
+	// outside this set are hidden (e.g. Spanish has no Agpeya prose). A currently
+	// selected language is always kept visible so it can still be deselected.
+	availableLanguages?: ContentLanguage[]
 }
 
-// Languages with API support for readings
-const displayLanguages: ContentLanguage[] = ['en', 'cop', 'ar', 'es']
+// All languages with API support for readings, in display order.
+const allLanguages: ContentLanguage[] = ['en', 'cop', 'ar', 'es']
 
 const languageKeys: Record<ContentLanguage, string> = {
 	cop: 'coptic',
@@ -19,9 +23,16 @@ const languageKeys: Record<ContentLanguage, string> = {
 	es: 'spanish',
 }
 
-export function LanguagePills({ selected, onChange }: LanguagePillsProps) {
+export function LanguagePills({ selected, onChange, availableLanguages }: LanguagePillsProps) {
 	const t = useTranslations('contentLanguages')
 	const router = useRouter()
+
+	// Hide languages the current content can't render. An unavailable language never
+	// renders a column (the page drops it), so it's hidden here even if still selected;
+	// it stays in the cookie and reappears on content that does support it.
+	const displayLanguages = availableLanguages
+		? allLanguages.filter((l) => availableLanguages.includes(l))
+		: allLanguages
 
 	const handleToggle = (lang: ContentLanguage) => {
 		if (selected.includes(lang)) {

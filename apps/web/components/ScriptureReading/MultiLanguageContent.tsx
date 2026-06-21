@@ -41,7 +41,9 @@ export function MultiLanguageContent({
 	const showChapterHeading = totalChapters > 1
 
 	return (
-		<div className={`mx-auto ${containerWidth} sm:mt-2`}>
+		// dir=ltr keeps language columns in a fixed order so they don't swap sides
+		// under an RTL (Arabic) UI locale; each cell sets its own dir for text.
+		<div dir="ltr" className={`mx-auto ${containerWidth} sm:mt-2`}>
 			{firstReadings.map((reading, idx) => (
 				<div key={idx}>
 					{reading.chapters.map((chapter, cidx) => (

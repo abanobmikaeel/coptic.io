@@ -47,26 +47,14 @@ test.describe('Mobile Menu - Phone', () => {
 		await expect(dialog.getByRole('link', { name: /settings/i })).toBeVisible()
 	})
 
-	test('should show Jump to sections in menu', async ({ page }) => {
+	test('should show collapsible reading sections', async ({ page }) => {
 		await page.goto('/readings')
-		await page.waitForLoadState('networkidle')
 
-		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await menuButton.click()
-
-		// Should have Jump to section with reading labels
-		await expect(page.getByText('Jump to')).toBeVisible()
-
-		// Should have at least some reading sections
-		const sections = ['Pauline', 'Catholic', 'Acts', 'Psalm', 'Gospel']
-		let foundSections = 0
-		for (const section of sections) {
-			const btn = page.locator('dialog button', { hasText: new RegExp(section, 'i') })
-			if ((await btn.count()) > 0) {
-				foundSections++
-			}
-		}
-		expect(foundSections).toBeGreaterThan(0)
+		// Reading sections render as inline collapsible buttons in the page body
+		// (the old in-menu "Jump to" list was removed in a UI refactor).
+		const main = page.locator('main')
+		await expect(main.getByRole('button', { name: /pauline/i })).toBeVisible()
+		await expect(main.getByRole('button', { name: /catholic/i })).toBeVisible()
 	})
 
 	test('should close menu when clicking close button', async ({ page }) => {
@@ -101,34 +89,26 @@ test.describe('Mobile Menu - Phone', () => {
 		await expect(dialog).not.toBeVisible()
 	})
 
-	test('should scroll to section when clicking Jump to button', async ({ page }) => {
+	test('should collapse a section when its header is clicked', async ({ page }) => {
 		await page.goto('/readings')
-		await page.waitForLoadState('networkidle')
 
-		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await menuButton.click()
+		// Sections are expanded by default; clicking the header collapses the body.
+		const pauline = page
+			.locator('article')
+			.filter({ hasText: /pauline/i })
+			.first()
+		await expect(pauline.getByText(/Glory be to God forever/)).toBeVisible()
 
-		// Find and click a section button (e.g., Gospel)
-		const gospelButton = page.locator('dialog button', { hasText: /gospel/i }).first()
-		if ((await gospelButton.count()) > 0) {
-			await gospelButton.click()
-
-			// Menu should close
-			const dialog = page.locator('dialog[open]')
-			await expect(dialog).not.toBeVisible()
-
-			// Should have scrolled (hard to verify exact position)
-			await page.waitForTimeout(500)
-		}
+		await pauline.getByRole('button', { name: /pauline/i }).click()
+		await expect(pauline.getByText(/Glory be to God forever/)).not.toBeVisible()
 	})
 
-	test('should not show burger menu on non-reading pages', async ({ page }) => {
+	test('should show burger menu on non-reading pages', async ({ page }) => {
 		await page.goto('/')
-		await page.waitForLoadState('networkidle')
 
-		// Home page should NOT have burger menu (not in read mode)
-		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await expect(menuButton).not.toBeVisible()
+		// The hamburger menu is now global (not readings-only), so the home page
+		// also exposes it.
+		await expect(page.getByRole('button', { name: /open menu/i })).toBeVisible()
 	})
 
 	test('should highlight current page in menu', async ({ page }) => {
@@ -156,14 +136,12 @@ test.describe('Mobile Menu - Tablet', () => {
 		await expect(menuButton).toBeVisible()
 	})
 
-	test('should show Jump to sections on tablet', async ({ page }) => {
+	test('should show collapsible reading sections on tablet', async ({ page }) => {
 		await page.goto('/readings')
-		await page.waitForLoadState('networkidle')
 
-		const menuButton = page.getByRole('button', { name: /open menu/i })
-		await menuButton.click()
-
-		await expect(page.getByText('Jump to')).toBeVisible()
+		const main = page.locator('main')
+		await expect(main.getByRole('button', { name: /pauline/i })).toBeVisible()
+		await expect(main.getByRole('button', { name: /catholic/i })).toBeVisible()
 	})
 })
 

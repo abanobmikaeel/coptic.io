@@ -34,57 +34,45 @@ const localizeReferenceObject = (reference: Record<string, unknown>, lang: strin
 
 // Get readings for a specific date or today
 readings.get('/:date?', async (c) => {
-	try {
-		const dateParam = c.req.param('date')
-		const isDetailed = c.req.query('detailed') === 'true'
-		const langParam = c.req.query('lang')
+	const dateParam = c.req.param('date')
+	const isDetailed = c.req.query('detailed') === 'true'
+	const langParam = c.req.query('lang')
 
-		// Validate and default language to English
-		const translation: BibleTranslation =
-			langParam === 'ar' ? 'ar' : langParam === 'es' ? 'es' : langParam === 'cop' ? 'cop' : 'en'
+	// Validate and default language to English
+	const translation: BibleTranslation =
+		langParam === 'ar' ? 'ar' : langParam === 'es' ? 'es' : langParam === 'cop' ? 'cop' : 'en'
 
-		// Default to today
-		let parsedDate = new Date()
-		if (dateParam) {
-			const parsed = parseLocalDate(dateParam)
-			if (!parsed) {
-				return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
-			}
-			parsedDate = parsed
+	// Default to today
+	let parsedDate = new Date()
+	if (dateParam) {
+		const parsed = parseLocalDate(dateParam)
+		if (!parsed) {
+			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
 		}
-
-		// In Workers, bible data is lazy-loaded from R2 on first use per isolate.
-		// In Bun dev, warmTranslation is a no-op (pre-loaded at module init).
-		if (isDetailed) await warmTranslation(translation)
-		const data = getByCopticDate(parsedDate, isDetailed, translation)
-
-		// Add celebrations and the (localized) coptic date. Season name and the
-		// non-detailed reference book names are localized for the requested lang.
-		const celebrations = getStaticCelebrationsForDay(parsedDate)
-		const fullDate = localizeCopticDate(gregorianToCoptic(parsedDate), translation)
-
-		return c.json({
-			...data,
-			...(data.reference
-				? { reference: localizeReferenceObject(data.reference, translation) }
-				: {}),
-			// `season` is localized for display; `seasonKey` keeps the canonical
-			// English identity so clients can branch on season without parsing copy.
-			...(data.season
-				? { season: getLiturgicalName(data.season, translation), seasonKey: data.season }
-				: {}),
-			celebrations,
-			fullDate,
-		})
-	} catch (error) {
-		console.error('Error fetching readings:', error)
-		return c.json(
-			{
-				error: error instanceof Error ? error.message : 'Failed to fetch readings',
-			},
-			500,
-		)
+		parsedDate = parsed
 	}
+
+	// In Workers, bible data is lazy-loaded from R2 on first use per isolate.
+	// In Bun dev, warmTranslation is a no-op (pre-loaded at module init).
+	if (isDetailed) await warmTranslation(translation)
+	const data = getByCopticDate(parsedDate, isDetailed, translation)
+
+	// Add celebrations and the (localized) coptic date. Season name and the
+	// non-detailed reference book names are localized for the requested lang.
+	const celebrations = getStaticCelebrationsForDay(parsedDate)
+	const fullDate = localizeCopticDate(gregorianToCoptic(parsedDate), translation)
+
+	return c.json({
+		...data,
+		...(data.reference ? { reference: localizeReferenceObject(data.reference, translation) } : {}),
+		// `season` is localized for display; `seasonKey` keeps the canonical
+		// English identity so clients can branch on season without parsing copy.
+		...(data.season
+			? { season: getLiturgicalName(data.season, translation), seasonKey: data.season }
+			: {}),
+		celebrations,
+		fullDate,
+	})
 })
 
 export default readings

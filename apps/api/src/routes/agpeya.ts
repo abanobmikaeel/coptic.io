@@ -40,6 +40,11 @@ app.openapi(getCurrentRoute, async (c) => {
 	await warmTranslation(translation)
 	const currentHourId = agpeyaService.getCurrentHour()
 	const hour = agpeyaService.getAgpeyaHour(currentHourId, translation)
+	// The "current" hour is wall-clock dependent, so it must not share the 12h
+	// edge-cache TTL used by the deterministic hour routes. Cap it to 2 minutes:
+	// cheap enough to keep origin load low, short enough that the hour transition
+	// is picked up promptly.
+	c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	// Current hour always exists since getCurrentHour returns a valid hour ID
 	return c.json(hour!, 200)
 })
@@ -122,6 +127,36 @@ app.openapi(getMidnightWatchRoute, async (c) => {
 	}
 
 	return c.json(watch, 200)
+})
+
+// GET /api/agpeya/translations - List content languages the Agpeya can render
+const TranslationsSchema = z
+	.object({
+		available: z.array(z.enum(['en', 'ar', 'es', 'cop'])).openapi({ example: ['en', 'ar', 'cop'] }),
+	})
+	.openapi('AgpeyaTranslations')
+
+const getTranslationsRoute = createRoute({
+	method: 'get',
+	path: '/translations',
+	tags: ['Agpeya'],
+	summary: 'List available Agpeya content languages',
+	description:
+		'Returns the content languages the Agpeya can render (prose languages plus scripture-only languages). Used to hide unavailable languages from the reader settings.',
+	responses: {
+		200: {
+			description: 'Available content languages',
+			content: {
+				'application/json': {
+					schema: TranslationsSchema,
+				},
+			},
+		},
+	},
+})
+
+app.openapi(getTranslationsRoute, (c) => {
+	return c.json({ available: agpeyaService.getAvailableTranslations() }, 200)
 })
 
 // GET /api/agpeya/:hour - Get specific hour

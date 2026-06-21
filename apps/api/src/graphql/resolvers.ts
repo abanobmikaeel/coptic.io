@@ -5,12 +5,13 @@ import * as celebrationsService from '../services/celebrations.service'
 import * as fastingService from '../services/fasting.service'
 import * as synaxariumService from '../services/synaxarium.service'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import { parseDateInput } from '../utils/dateUtils'
 
 export const resolvers = {
 	Query: {
 		// Calendar
 		copticDate: (_: unknown, { date }: { date?: string }) => {
-			const parsedDate = date ? new Date(date) : new Date()
+			const parsedDate = parseDateInput(date)
 			return gregorianToCoptic(parsedDate)
 		},
 
@@ -20,7 +21,7 @@ export const resolvers = {
 
 		// Readings
 		readings: async (_: unknown, { date, detailed }: { date?: string; detailed?: boolean }) => {
-			const parsedDate = date ? new Date(date) : new Date()
+			const parsedDate = parseDateInput(date)
 			if (detailed) await warmTranslation('en')
 			const data = getByCopticDate(parsedDate, detailed || false)
 			const celebrations = getStaticCelebrationsForDay(parsedDate)
@@ -39,7 +40,7 @@ export const resolvers = {
 		},
 
 		celebrationsForDate: (_: unknown, { date }: { date?: string }) => {
-			const parsedDate = date ? new Date(date) : new Date()
+			const parsedDate = parseDateInput(date)
 			return celebrationsService.getCelebrationsForDate(parsedDate)
 		},
 
@@ -49,7 +50,7 @@ export const resolvers = {
 
 		// Fasting
 		fastingForDate: (_: unknown, { date }: { date?: string }) => {
-			const parsedDate = date ? new Date(date) : new Date()
+			const parsedDate = parseDateInput(date)
 			return fastingService.getFastingForDate(parsedDate)
 		},
 
@@ -59,7 +60,7 @@ export const resolvers = {
 
 		// Synaxarium
 		synaxariumForDate: (_: unknown, { date, detailed }: { date?: string; detailed?: boolean }) => {
-			const parsedDate = date ? new Date(date) : new Date()
+			const parsedDate = parseDateInput(date)
 			return synaxariumService.getSynaxariumForDate(parsedDate, detailed || false)
 		},
 

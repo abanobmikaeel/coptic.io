@@ -241,9 +241,8 @@ test.describe('Synaxarium page', () => {
 	})
 
 	test('should display page content', async ({ page }) => {
-		// Page should have visible content (not hidden)
-		const content = page.locator('main, [role="main"], h1, h2, article').first()
-		await expect(content).toBeVisible({ timeout: 10000 })
+		// Main content region is rendered (not hidden behind a loading state).
+		await expect(page.getByRole('main')).toBeVisible({ timeout: 10000 })
 	})
 
 	test('should have date navigation', async ({ page }) => {

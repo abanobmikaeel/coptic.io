@@ -16,6 +16,7 @@ import readingsRoutes from './routes/readings'
 import searchRoutes from './routes/search'
 import seasonRoutes from './routes/season'
 import synaxariumRoutes from './routes/synaxarium'
+import { internalError } from './utils/http'
 
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
 
@@ -88,11 +89,8 @@ app.notFound((c) => {
 	return c.json({ error: 'Not Found' }, 404)
 })
 
-// Error handler
-app.onError((err, c) => {
-	console.error(`Error: ${err.message}`, err.stack)
-	return c.json({ error: err.message }, 500)
-})
+// Error handler — logs internals server-side and returns a public-safe envelope.
+app.onError((err, c) => internalError(c, 'unhandled', err))
 
 // Export the app for tests
 export { app }

@@ -85,6 +85,9 @@ export interface LiturgicalServiceReaderProps {
 	// Replaces the date navigation in the header — e.g. an hour switcher for the Agpeya,
 	// which is hour-based rather than date-based.
 	headerCenter?: React.ReactNode
+	// Content languages this service can render; passed to the settings menu so languages
+	// with no content (e.g. Spanish has no Agpeya prose) are hidden from the picker.
+	availableLanguages?: BibleTranslation[]
 }
 
 // Generic reader for any multi-language liturgical service (Vespers, Midnight Praises, …).
@@ -99,6 +102,7 @@ export function LiturgicalServiceReader({
 	settingsExtra,
 	notice,
 	headerCenter,
+	availableLanguages,
 }: LiturgicalServiceReaderProps) {
 	const { settings, actions, mounted } = useReadingSettings()
 	const {
@@ -345,6 +349,7 @@ export function LiturgicalServiceReader({
 							settings={settings}
 							actions={actions}
 							contentLanguages={contentLanguages}
+							availableLanguages={availableLanguages}
 							onContentLanguagesChange={setContentLanguages}
 							onClose={() => setSettingsOpen(false)}
 							extraSection={
@@ -392,7 +397,9 @@ export function LiturgicalServiceReader({
 					>
 						{titleBar}
 						{isPaginated && pagination.count > 1 && (
-							<div className="flex items-center gap-1 ml-auto">
+							// dir=ltr so page indicators always fill left-to-right (matching
+							// next/ArrowRight advancing) and don't reverse under an RTL locale.
+							<div dir="ltr" className="flex items-center gap-1 ml-auto">
 								{Array.from({ length: pagination.count }, (_, i) => (
 									<span
 										key={i}
@@ -444,8 +451,10 @@ export function LiturgicalServiceReader({
 						)}
 					</div>
 
-					{/* Bottom section dots */}
+					{/* Bottom section dots. dir=ltr so dots + prev/next fill left-to-right
+					    (matching next/ArrowRight and the top progress) under an RTL locale. */}
 					<div
+						dir="ltr"
 						className={`flex-none flex items-center gap-4 px-4 py-3 border-t ${themeClasses.border[theme]} ${themeClasses.bg[theme]}`}
 					>
 						<SectionDots

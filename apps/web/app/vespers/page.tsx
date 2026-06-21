@@ -76,6 +76,7 @@ export default async function VespersPage({ searchParams }: VespersPageProps) {
 			<VespersContent
 				servicesByLang={servicesByLang}
 				langs={orderedLangs}
+				availableLanguages={[...INCENSE_LANGS] as BibleTranslation[]}
 				date={params.date}
 				commemorations={commemorations}
 				notice={

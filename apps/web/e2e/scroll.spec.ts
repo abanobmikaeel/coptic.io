@@ -1,7 +1,12 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Scroll behavior', () => {
-	test('should not have scroll-blocking CSS properties', async ({ page }) => {
+	test('should not have scroll-blocking CSS properties', async ({ page, browserName }) => {
+		// WebKit reports the root scroller's overscroll-behavior as `none`
+		// regardless of CSS, so this check (a Chromium/Mac touchpad concern) only
+		// meaningfully applies to Chromium.
+		test.skip(browserName !== 'chromium', 'Chromium-specific overscroll-behavior check')
+
 		await page.goto('/readings')
 		await page.waitForLoadState('networkidle')
 

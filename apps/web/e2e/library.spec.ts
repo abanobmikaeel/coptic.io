@@ -40,14 +40,12 @@ test.describe('Library page', () => {
 		}
 	})
 
-	test('cards should have hover state', async ({ page }) => {
-		const card = page
+	test('cards link to content and are visible', async ({ page }) => {
+		// Cards live in main; scope excludes the nav dropdown's hidden links.
+		const cards = page
+			.locator('main')
 			.locator('a[href*="/readings"], a[href*="/agpeya"], a[href*="/synaxarium"]')
-			.first()
-		if ((await card.count()) > 0) {
-			await card.hover()
-			// Visual hover state - hard to test, but we can verify no errors
-			await page.waitForTimeout(200)
-		}
+		expect(await cards.count()).toBeGreaterThan(0)
+		await expect(cards.first()).toBeVisible()
 	})
 })

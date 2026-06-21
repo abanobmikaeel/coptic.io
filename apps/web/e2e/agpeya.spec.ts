@@ -25,17 +25,12 @@ test.describe('Agpeya page', () => {
 		expect(foundHours).toBeGreaterThan(0)
 	})
 
-	test('should have clickable prayer hour sections', async ({ page }) => {
-		// Look for buttons or links to select prayer hours
-		const hourButtons = page.locator('button, a').filter({
-			hasText: /prime|terce|sext|none|vespers|compline|midnight/i,
-		})
+	test('should expose a prayer hour selector and section controls', async ({ page }) => {
+		// Hour selector dropdown reflects the currently-selected hour.
+		await expect(page.getByRole('button', { name: /current hour/i })).toBeVisible()
 
-		if ((await hourButtons.count()) > 0) {
-			await hourButtons.first().click()
-			await page.waitForTimeout(500)
-			// Should navigate or expand content
-		}
+		// In-page prayer-section navigation is present.
+		await expect(page.getByRole('button', { name: 'Gospel', exact: true })).toBeVisible()
 	})
 
 	test('should have expandable/collapsible sections', async ({ page }) => {

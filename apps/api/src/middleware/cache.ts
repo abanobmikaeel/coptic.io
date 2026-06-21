@@ -6,6 +6,18 @@ declare const IS_WORKERS: boolean | undefined
 // CF Workers exposes caches.default but the type isn't in standard TS libs
 declare const caches: { default: Cache }
 
+// Copy the response headers and apply the default edge-cache directive, unless the
+// handler already set a Cache-Control (e.g. the iCal feed's 1h TTL, or the Agpeya
+// current-hour route's short TTL). Handlers that set their own Cache-Control own
+// their volatility contract; the middleware must not clobber it.
+const withCacheControl = (res: Response, ttlSeconds: number): Headers => {
+	const headers = new Headers(res.headers)
+	if (!headers.has('Cache-Control')) {
+		headers.set('Cache-Control', `public, max-age=${ttlSeconds}, s-maxage=${ttlSeconds}`)
+	}
+	return headers
+}
+
 export const cacheResponse =
 	(ttlSeconds = 43200) =>
 	async (c: Context<{ Bindings: Bindings }>, next: Next): Promise<undefined | Response> => {
@@ -13,8 +25,7 @@ export const cacheResponse =
 			// Bun dev path: run handler then set Cache-Control so any upstream cache respects TTL
 			await next()
 			if (c.res.status === 200) {
-				const headers = new Headers(c.res.headers)
-				headers.set('Cache-Control', `public, max-age=${ttlSeconds}, s-maxage=${ttlSeconds}`)
+				const headers = withCacheControl(c.res, ttlSeconds)
 				c.res = new Response(c.res.body, { status: 200, headers })
 			}
 			return
@@ -31,8 +42,7 @@ export const cacheResponse =
 		await next()
 
 		if (c.res.status === 200) {
-			const headers = new Headers(c.res.headers)
-			headers.set('Cache-Control', `public, max-age=${ttlSeconds}, s-maxage=${ttlSeconds}`)
+			const headers = withCacheControl(c.res, ttlSeconds)
 			const toCache = new Response(c.res.clone().body, { status: 200, headers })
 			c.executionCtx.waitUntil(caches.default.put(cacheKey, toCache))
 		}

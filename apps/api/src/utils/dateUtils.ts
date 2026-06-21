@@ -35,3 +35,18 @@ export const parseLocalDate = (dateString: string): Date | null => {
 	}
 	return date
 }
+
+/**
+ * Parse an optional YYYY-MM-DD request input as a local date, defaulting to "now"
+ * when absent. Shared by entry points (REST and GraphQL) so the same input yields
+ * the same day everywhere. Throws on malformed input so the caller can surface a
+ * validation error rather than silently shifting the day via `new Date(str)`.
+ */
+export const parseDateInput = (date?: string): Date => {
+	if (!date) return new Date()
+	const parsed = parseLocalDate(date)
+	if (!parsed) {
+		throw new Error('Invalid date format. Use YYYY-MM-DD')
+	}
+	return parsed
+}

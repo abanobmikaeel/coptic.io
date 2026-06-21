@@ -73,7 +73,7 @@ export function ServiceSection({
 		const turnCounts = langs.map((l) => turnsByLang[l]?.length ?? 0)
 		if (turnCounts.every((c) => c === turnCounts[0]) && turnCounts[0] > 0) {
 			return (
-				<div className={`grid gap-x-6 ${gridClass}`}>
+				<div dir="ltr" className={`grid gap-x-6 ${gridClass}`}>
 					{Array.from({ length: turnCounts[0] }, (_, i) =>
 						langs.map((lang) => (
 							<TurnCell
@@ -90,7 +90,7 @@ export function ServiceSection({
 	}
 
 	return (
-		<div className={`pt-2 pb-2 grid gap-6 ${gridClass}`}>
+		<div dir="ltr" className={`pt-2 pb-2 grid gap-6 ${gridClass}`}>
 			{langs.map((lang) => (
 				<SectionColumn
 					key={lang}
