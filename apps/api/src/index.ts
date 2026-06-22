@@ -59,6 +59,28 @@ app.get('/health', (c) => {
 	})
 })
 
+// Crawl policy for api.coptic.io
+app.get('/robots.txt', (c) => {
+	return c.text(
+		[
+			'User-agent: GPTBot',
+			'User-agent: ChatGPT-User',
+			'User-agent: OAI-SearchBot',
+			'User-agent: ClaudeBot',
+			'User-agent: Claude-Web',
+			'User-agent: anthropic-ai',
+			'User-agent: PerplexityBot',
+			'Allow: /',
+			'Crawl-delay: 2',
+			'',
+			'User-agent: *',
+			'Allow: /',
+			'',
+			'Sitemap: https://coptic.io/sitemap.xml',
+		].join('\n'),
+	)
+})
+
 // Cache deterministic date-based responses at the CF edge (12h TTL).
 // In Bun dev this is a no-op. Only GET requests with a 200 response are cached.
 const cache12h = cacheResponse(43200)
