@@ -19,7 +19,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://coptic.io'
 
 type PageProps = { params: Promise<{ date: string }> }
 
-// Pre-render every Coptic day at build time → static, CDN-cached, scraper-cheap.
+// Enumerate every valid Coptic day so Next knows the canonical path set (any
+// other date falls through to notFound()). The route renders ISR/dynamic
+// app-wide — next-intl reads cookies/headers for locale — rather than being
+// build-time prerendered, but `revalidate` caches the data and crawlers get
+// full server-rendered HTML.
 export function generateStaticParams() {
 	return copticDateSegments().map((date) => ({ date }))
 }
