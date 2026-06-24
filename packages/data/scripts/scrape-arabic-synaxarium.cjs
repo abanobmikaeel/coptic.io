@@ -28,6 +28,11 @@ const COPTIC_MONTHS = [
 
 const BASE_URL = 'https://www.copticchurch.net/synaxarium'
 
+// Non-saint entries the upstream lists (e.g. seasonal/astronomical notes) that
+// don't belong in a commemorations dataset. Filtered at scrape time so the
+// generated canonical.json stays clean without hand-edits.
+const EXCLUDED_ENTRY_NAMES = new Set(['اول فصل الصيف'])
+
 function parseEntriesFromHtml(html, monthNum, day) {
 	const entries = []
 
@@ -59,7 +64,7 @@ function parseEntriesFromHtml(html, monthNum, day) {
 			}
 		}
 
-		if (name && paragraphs.length > 0) {
+		if (name && paragraphs.length > 0 && !EXCLUDED_ENTRY_NAMES.has(name)) {
 			entries.push({
 				url: `${BASE_URL}/${monthNum}_${day}.html?lang=ar#${entryNum}`,
 				name: name,

@@ -44,6 +44,9 @@ infra/
 *.tfstate*
 *.tfvars
 
+# scratch / dev-only routes (not meant to ship or be committed)
+apps/web/app/og-lab/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

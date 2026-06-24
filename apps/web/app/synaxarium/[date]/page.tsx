@@ -1,72 +1,88 @@
-'use client'
-
 import { Breadcrumb } from '@/components/Breadcrumb'
+import { JsonLd } from '@/components/JsonLd'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { ChevronRightIcon } from '@/components/ui/Icons'
 import { getSynaxariumByCopticDate } from '@/lib/api'
-import type { SynaxariumEntry } from '@/lib/types'
-import { useParams, useSearchParams } from 'next/navigation'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+	canonicalizeCopticDate,
+	copticDateFromSegment,
+	copticDateSegments,
+	copticDateToSegment,
+} from '@/lib/coptic-dates'
+import { buildSynaxariumJsonLd, cleanEntryName, describeSynaxarium } from '@/lib/synaxarium'
+import type { Metadata } from 'next'
+import { notFound, permanentRedirect } from 'next/navigation'
+import { Suspense } from 'react'
+import { ScrollToEntry } from './ScrollToEntry'
 
-export default function SynaxariumDatePage() {
-	const params = useParams()
-	const searchParams = useSearchParams()
-	const dateParam = params.date as string
-	const copticDate = decodeURIComponent(dateParam).replace(/-/g, ' ')
-	const entryParam = searchParams.get('entry')
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://coptic.io'
 
-	const [entries, setEntries] = useState<SynaxariumEntry[]>([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState(false)
-	const [expanded, setExpanded] = useState<number | null>(null)
-	const expandedRef = useRef<HTMLLIElement>(null)
+type PageProps = { params: Promise<{ date: string }> }
 
-	// Find the entry index that matches the query param
-	const initialExpandedIndex = useMemo(() => {
-		if (!entryParam || entries.length === 0) return null
-		const decodedEntry = decodeURIComponent(entryParam)
-		const idx = entries.findIndex((e) => e.name === decodedEntry)
-		return idx >= 0 ? idx : null
-	}, [entryParam, entries])
+// Pre-render every Coptic day at build time → static, CDN-cached, scraper-cheap.
+export function generateStaticParams() {
+	return copticDateSegments().map((date) => ({ date }))
+}
 
-	// Set initial expanded state when entries load
-	useEffect(() => {
-		if (initialExpandedIndex !== null && expanded === null) {
-			setExpanded(initialExpandedIndex)
-		}
-	}, [initialExpandedIndex, expanded])
+function truncate(text: string, max: number): string {
+	return text.length <= max ? text : `${text.slice(0, max - 1).trimEnd()}…`
+}
 
-	// Scroll to expanded entry
-	useEffect(() => {
-		if (expanded !== null && expandedRef.current) {
-			expandedRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-		}
-	}, [expanded])
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+	const { date } = await params
+	// Metadata runs before the page redirects/404s, so fall back to the raw date
+	// for non-canonical/empty URLs — they still emit (noindex) metadata.
+	const copticDate =
+		canonicalizeCopticDate(copticDateFromSegment(date)) ?? copticDateFromSegment(date)
+	const entries = (await getSynaxariumByCopticDate(copticDate)) ?? []
+	const names = entries.map((entry) => cleanEntryName(entry.name))
+	const canonical = `${BASE_URL}/synaxarium/${copticDateToSegment(copticDate)}`
 
-	useEffect(() => {
-		let cancelled = false
-		setLoading(true)
-		setError(false)
+	const title = names.length
+		? `${copticDate}: ${names.slice(0, 2).join('; ')}${names.length > 2 ? ` & ${names.length - 2} more` : ''} — Coptic Synaxarium`
+		: `${copticDate} — Coptic Synaxarium`
 
-		getSynaxariumByCopticDate(copticDate).then((data) => {
-			if (!cancelled) {
-				if (data) {
-					setEntries(data)
-				} else {
-					setError(true)
-				}
-				setLoading(false)
-			}
-		})
+	const description = truncate(describeSynaxarium(copticDate, names), 200)
 
-		return () => {
-			cancelled = true
-		}
-	}, [copticDate])
+	return {
+		title,
+		description,
+		alternates: { canonical },
+		openGraph: { title, description, url: canonical, type: 'article' },
+		// Don't let empty/invalid dates into the index.
+		...(names.length ? {} : { robots: { index: false, follow: true } }),
+	}
+}
+
+export default async function SynaxariumDatePage({ params }: PageProps) {
+	const { date } = await params
+	const copticDate = canonicalizeCopticDate(copticDateFromSegment(date))
+
+	// Genuinely invalid dates → 404; non-canonical casing/format → 308 to canonical.
+	if (!copticDate) notFound()
+	const canonicalSegment = copticDateToSegment(copticDate)
+	if (canonicalSegment !== date) permanentRedirect(`/synaxarium/${canonicalSegment}`)
+
+	const entries = (await getSynaxariumByCopticDate(copticDate)) ?? []
+	const names = entries.map((entry) => cleanEntryName(entry.name))
+	const canonicalUrl = `${BASE_URL}/synaxarium/${canonicalSegment}`
+
+	// Structured data so search engines / AI extractors understand the page and
+	// the saints it commemorates (Article + about) and its place in the site.
+	const jsonLd = buildSynaxariumJsonLd({
+		copticDate,
+		names,
+		canonicalUrl,
+		baseUrl: BASE_URL,
+	})
 
 	return (
 		<ReadingPageLayout theme="light" className="relative">
+			<JsonLd data={jsonLd} />
+			<Suspense fallback={null}>
+				<ScrollToEntry />
+			</Suspense>
+
 			{/* Background */}
 			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
 				<div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-full blur-[100px]" />
@@ -86,11 +102,7 @@ export default function SynaxariumDatePage() {
 			{/* Content */}
 			<section className="relative px-6 pb-16">
 				<div className="max-w-4xl mx-auto">
-					{loading ? (
-						<div className="flex justify-center py-12">
-							<div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-						</div>
-					) : error ? (
+					{entries.length === 0 ? (
 						<Card>
 							<CardContent>
 								<p className="text-gray-500 text-center py-8">
@@ -104,42 +116,30 @@ export default function SynaxariumDatePage() {
 								{entries.length} Commemoration{entries.length !== 1 ? 's' : ''}
 							</CardHeader>
 							<CardContent>
-								<ul className="space-y-3">
+								<ul className="space-y-8">
 									{entries.map((entry, idx) => (
 										<li
-											key={idx}
-											ref={expanded === idx ? expandedRef : null}
-											className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-3 last:pb-0"
+											key={entry.id ?? idx}
+											data-entry={entry.name}
+											className="border-b border-gray-100 dark:border-gray-800 last:border-0 pb-8 last:pb-0 scroll-mt-24"
 										>
-											<button
-												type="button"
-												onClick={() => setExpanded(expanded === idx ? null : idx)}
-												className="w-full flex items-start gap-2 text-left group"
-											>
-												<ChevronRightIcon
-													className={`w-4 h-4 mt-1 flex-shrink-0 text-gray-400 transition-transform duration-200 ${
-														expanded === idx ? 'rotate-90' : ''
-													}`}
-												/>
-												<span className="text-gray-700 dark:text-gray-300 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
-													{entry.name}
-												</span>
-											</button>
-
-											{expanded === idx && entry.text && (
-												<div className="mt-3 ml-6 text-gray-600 dark:text-gray-400 text-sm leading-relaxed whitespace-pre-line animate-in fade-in slide-in-from-top-2 duration-200">
+											<h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+												{entry.name}
+											</h2>
+											{entry.text && (
+												<div className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed whitespace-pre-line">
 													{entry.text}
-													{entry.url && (
-														<a
-															href={entry.url}
-															target="_blank"
-															rel="noopener noreferrer"
-															className="block mt-3 text-amber-600 dark:text-amber-500 hover:underline text-xs"
-														>
-															Source: copticchurch.net
-														</a>
-													)}
 												</div>
+											)}
+											{entry.url && (
+												<a
+													href={entry.url}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="inline-block mt-3 text-amber-600 dark:text-amber-500 hover:underline text-xs"
+												>
+													Source: copticchurch.net
+												</a>
 											)}
 										</li>
 									))}

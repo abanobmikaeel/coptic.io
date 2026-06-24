@@ -3,10 +3,8 @@
 import { SynaxariumSection } from '@/components/SynaxariumSection'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { NoEntriesState } from '@/components/ui/EmptyState'
-import { ChevronRightIcon } from '@/components/ui/Icons'
 import type { SynaxariumEntry } from '@/lib/types'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
 import {
 	CATEGORIES,
 	type CategoryId,
@@ -87,17 +85,6 @@ export function SynaxariumTodayView({
 							)}
 						</CardContent>
 					</Card>
-
-					<div className="mt-6 text-center">
-						<Link
-							href={`/readings?date=${currentDate}`}
-							prefetch={false}
-							className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 font-medium transition-colors"
-						>
-							{t('viewReadings')}
-							<ChevronRightIcon className="w-4 h-4" />
-						</Link>
-					</div>
 				</div>
 			</section>
 		</>

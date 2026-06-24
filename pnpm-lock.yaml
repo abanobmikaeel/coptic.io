@@ -140,6 +140,9 @@ importers:
       '@aws-sdk/client-ses':
         specifier: ^3.1051.0
         version: 3.1051.0
+      '@coptic/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@16.2.6(@playwright/test@1.60.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)

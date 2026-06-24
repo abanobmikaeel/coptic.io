@@ -11,11 +11,9 @@ import type {
 import { BilingualSynaxariumSection } from '@/components/synaxarium/BilingualSynaxariumSection'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { NoEntriesState } from '@/components/ui/EmptyState'
-import { ChevronRightIcon } from '@/components/ui/Icons'
 import type { BilingualEntry } from '@/hooks/useSynaxarium'
 import { themeClasses } from '@/lib/reading-styles'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
 import {
 	CATEGORIES,
 	type CategoryId,
@@ -41,7 +39,6 @@ interface SynaxariumDayViewProps {
 }
 
 export function SynaxariumDayView({
-	currentDate,
 	isToday,
 	bilingualEntries,
 	filteredBilingualEntries,
@@ -65,20 +62,6 @@ export function SynaxariumDayView({
 			{isToday && bilingualEntries.length > 0 && (
 				<FeaturedTodayCard entries={bilingualEntries} theme={theme} />
 			)}
-
-			{/* View Readings Link */}
-			<section className="relative px-4 sm:px-6 pb-4">
-				<div className="max-w-5xl mx-auto text-center">
-					<Link
-						href={`/readings?date=${currentDate}`}
-						prefetch={false}
-						className={`inline-flex items-center gap-2 font-medium transition-colors ${themeClasses.accent[theme]} hover:opacity-80`}
-					>
-						{t('viewReadings')}
-						<ChevronRightIcon className="w-4 h-4" />
-					</Link>
-				</div>
-			</section>
 
 			{/* Entries List */}
 			<section className="relative px-4 sm:px-6 pb-16">

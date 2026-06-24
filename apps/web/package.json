@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1051.0",
+    "@coptic/core": "workspace:*",
     "@vercel/analytics": "^1.6.1",
     "next": "^16.2.6",
     "next-intl": "^4.12.0",
