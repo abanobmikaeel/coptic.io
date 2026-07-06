@@ -34,9 +34,13 @@ const AGPEYA_HOUR_IDS = [
 const AGPEYA_LANGS = ['en', 'ar', 'es', 'cop'] as const satisfies ContentLanguage[]
 type AgpeyaLang = (typeof AGPEYA_LANGS)[number]
 
-async function fetchHour(hour: string, lang: AgpeyaLang): Promise<ResolvedAgpeyaHour | null> {
+async function fetchHour(
+	hour: string,
+	lang: AgpeyaLang,
+	psalms: 'septuagint' | 'bible',
+): Promise<ResolvedAgpeyaHour | null> {
 	try {
-		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?lang=${lang}`, {
+		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?lang=${lang}&psalms=${psalms}`, {
 			next: { revalidate: 43200 },
 		})
 		if (!res.ok) return null
@@ -77,7 +81,7 @@ async function fetchCopticDate(date: string, lang: string): Promise<CopticDate |
 }
 
 interface AgpeyaPageProps {
-	searchParams: Promise<{ hour?: string }>
+	searchParams: Promise<{ hour?: string; psalms?: string }>
 }
 
 export default async function AgpeyaPage({ searchParams }: AgpeyaPageProps) {
@@ -88,6 +92,9 @@ export default async function AgpeyaPage({ searchParams }: AgpeyaPageProps) {
 			? params.hour
 			: 'prime'
 	) as AgpeyaHour
+	// Psalm text source. Default is the Septuagint liturgical psalter (traditional
+	// Agpeya divisions); ?psalms=bible swaps in the reader's Bible translation.
+	const psalms = params.psalms === 'bible' ? 'bible' : 'septuagint'
 
 	const cookieStore = await cookies()
 	const contentLanguages = parseContentLanguages(cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value)
@@ -106,7 +113,7 @@ export default async function AgpeyaPage({ searchParams }: AgpeyaPageProps) {
 		monthString: '',
 	}
 
-	const results = await Promise.all(ordered.map((l) => fetchHour(hour, l as AgpeyaLang)))
+	const results = await Promise.all(ordered.map((l) => fetchHour(hour, l as AgpeyaLang, psalms)))
 	const servicesByLang: Partial<Record<string, IncenseService>> = {}
 	ordered.forEach((l, i) => {
 		const h = results[i]

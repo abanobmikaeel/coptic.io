@@ -42,6 +42,10 @@ export interface ResolvedAgpeyaHour {
 	traditionalTime?: string
 	introduction?: string
 	opening?: AgBlock
+	// "The Beginning of the <hour> Prayer" — the hour's own opening declaration.
+	hourIntro?: AgBlock
+	// Prime only: the "Come, let us worship" prayer, its own section in the hour.
+	comeLetUsWorship?: AgBlock
 	thanksgiving?: AgBlock
 	introductoryPsalm?: AgPsalm
 	psalmsIntro?: string
@@ -121,7 +125,13 @@ export function agpeyaToService(
 		if (s) sections.push(s)
 	}
 
-	add(blockSection('opening', 'prayer', 'Opening Prayer', hour.opening))
+	const opening = blockSection('opening', 'prayer', 'Opening Prayer', hour.opening)
+	// The hour's catechetical note ("We pray the First Hour at sunrise,
+	// commemorating…") rides as the opening section's rubric.
+	if (opening && hour.introduction) opening.rubric = hour.introduction
+	add(opening)
+	add(blockSection('hour-intro', 'prayer', 'The Beginning of the Prayer', hour.hourIntro))
+	add(blockSection('come-let-us-worship', 'prayer', 'Come, Let Us Worship', hour.comeLetUsWorship))
 	add(blockSection('thanksgiving', 'prayer', 'Thanksgiving', hour.thanksgiving))
 	if (hour.introductoryPsalm) add(psalmSection('intro-psalm', hour.introductoryPsalm))
 

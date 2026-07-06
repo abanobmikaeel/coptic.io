@@ -23,21 +23,13 @@ import { getAgpeyaHourIds, getAgpeyaHourData as getEnHour } from '../en/agpeya'
 import enBible from '../en/bible/books.json'
 
 const KNOWN_PROSE_GAPS = new Set([
-	'prime.opening',
 	'prime.litanies',
-	'prime.lordsPrayer',
-	'prime.closing',
-	'terce.opening',
 	'terce.litanies',
 	'terce.closing',
-	'sext.opening',
 	'sext.litanies',
-	'none.opening',
 	'none.litanies',
-	'vespers.opening',
 	'vespers.litanies',
 	'vespers.closing',
-	'compline.opening',
 	'compline.litanies',
 	'compline.closing',
 	'midnight.opening',
@@ -51,25 +43,6 @@ const KNOWN_PROSE_GAPS = new Set([
 ])
 
 const KNOWN_PSALM_GAPS = new Set([
-	'prime/psalm-1',
-	'prime/psalm-2',
-	'prime/psalm-3',
-	'prime/psalm-4',
-	'prime/psalm-5',
-	'prime/psalm-6',
-	'prime/psalm-8',
-	'prime/psalm-11',
-	'prime/psalm-12',
-	'prime/psalm-14',
-	'prime/psalm-15',
-	'prime/psalm-18',
-	'prime/psalm-24',
-	'prime/psalm-26',
-	'prime/psalm-62',
-	'prime/psalm-66',
-	'prime/psalm-69',
-	'prime/psalm-112',
-	'prime/psalm-142',
 	'terce/psalm-19',
 	'terce/psalm-22',
 	'terce/psalm-25',
@@ -224,10 +197,9 @@ for (const { path, en: e, ar: a } of units) {
 		const arCount = a.psalms?.[i]?.verses?.length ?? 0
 		// No Arabic embedding → runtime resolves both languages the same way.
 		if (arCount === 0) return
-		psalmCounts.set(`${path}/psalm-${ref.psalmNumber}`, {
-			en: enVerseCount(ref.psalmNumber),
-			ar: arCount,
-		})
+		// English serves its embedded liturgical psalm when present, else the Bible.
+		const enCount = e.psalms?.[i]?.verses?.length ?? enVerseCount(ref.psalmNumber)
+		psalmCounts.set(`${path}/psalm-${ref.psalmNumber}`, { en: enCount, ar: arCount })
 	})
 	if (e.introductoryPsalm?.psalmNumber != null && a.introductoryPsalm?.verses?.length) {
 		psalmCounts.set(`${path}/intro-psalm`, {

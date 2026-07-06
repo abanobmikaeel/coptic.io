@@ -6,6 +6,7 @@ import {
 	ServiceReaderFallback,
 } from '@/components/LiturgicalServiceReader'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
+import { SegmentedButtons, SettingSection } from '@/components/settings'
 import type { IncenseService } from '@/lib/types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -64,6 +65,34 @@ export function AgpeyaContent({
 	}, [])
 
 	const current = AGPEYA_HOURS.find((h) => h.id === hourId) ?? AGPEYA_HOURS[0]
+
+	// Psalm text source rides in the URL (like the reader's other settings) so it
+	// survives hour switches and reaches the server fetch. Default: the Septuagint
+	// liturgical psalter with traditional Agpeya verse divisions.
+	const psalmSource = searchParams.get('psalms') === 'bible' ? 'bible' : 'septuagint'
+	const setPsalmSource = (source: 'septuagint' | 'bible') => {
+		const p = new URLSearchParams(searchParams.toString())
+		if (source === 'bible') p.set('psalms', 'bible')
+		else p.delete('psalms')
+		router.push(`/agpeya?${p.toString()}`)
+	}
+
+	const psalmSourceSetting = (
+		<SettingSection label="Psalm Text">
+			<SegmentedButtons
+				options={[
+					{ value: 'septuagint' as const, label: 'Septuagint' },
+					{ value: 'bible' as const, label: 'Bible' },
+				]}
+				value={psalmSource}
+				onChange={setPsalmSource}
+			/>
+			<p className="mt-1.5 text-[11px] text-gray-400 dark:text-gray-500">
+				Septuagint uses the traditional Agpeya psalter and verse divisions; Bible uses your Bible
+				translation's wording.
+			</p>
+		</SettingSection>
+	)
 
 	const hourSwitcher = (
 		<div className="flex items-center gap-1.5">
@@ -147,6 +176,7 @@ export function AgpeyaContent({
 			availableLanguages={availableLanguages}
 			notice={notice}
 			headerCenter={hourSwitcher}
+			settingsExtra={psalmSourceSetting}
 		/>
 	)
 }

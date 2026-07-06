@@ -10,10 +10,18 @@ const validHours = ['prime', 'terce', 'sext', 'none', 'vespers', 'compline', 'mi
 const validWatches = ['1', '2', '3'] as const
 const langQuery = z.object({
 	lang: z.enum(['en', 'ar', 'es', 'cop']).optional().openapi({ example: 'ar' }),
+	psalms: z.enum(['septuagint', 'bible']).optional().openapi({
+		example: 'septuagint',
+		description:
+			'Psalm text source: "septuagint" (default) serves the liturgical Septuagint psalter with traditional Agpeya verse divisions; "bible" resolves the same psalms from the Bible translation instead.',
+	}),
 })
 
 const toTranslation = (lang?: string): BibleTranslation =>
 	lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : lang === 'cop' ? 'cop' : 'en'
+
+const toPsalmSource = (psalms?: string): agpeyaService.PsalmSource =>
+	psalms === 'bible' ? 'bible' : 'septuagint'
 
 // GET /api/agpeya - Get current hour
 const getCurrentRoute = createRoute({
@@ -36,10 +44,11 @@ const getCurrentRoute = createRoute({
 })
 
 app.openapi(getCurrentRoute, async (c) => {
-	const translation = toTranslation(c.req.valid('query').lang)
+	const query = c.req.valid('query')
+	const translation = toTranslation(query.lang)
 	await warmTranslation(translation)
 	const currentHourId = agpeyaService.getCurrentHour()
-	const hour = agpeyaService.getAgpeyaHour(currentHourId, translation)
+	const hour = agpeyaService.getAgpeyaHour(currentHourId, translation, toPsalmSource(query.psalms))
 	// The "current" hour is wall-clock dependent, so it must not share the 12h
 	// edge-cache TTL used by the deterministic hour routes. Cap it to 2 minutes:
 	// cheap enough to keep origin load low, short enough that the hour transition
@@ -70,9 +79,10 @@ const listHoursRoute = createRoute({
 })
 
 app.openapi(listHoursRoute, async (c) => {
-	const translation = toTranslation(c.req.valid('query').lang)
+	const query = c.req.valid('query')
+	const translation = toTranslation(query.lang)
 	await warmTranslation(translation)
-	const hours = agpeyaService.getAllHours(translation)
+	const hours = agpeyaService.getAllHours(translation, toPsalmSource(query.psalms))
 	return c.json(hours, 200)
 })
 
@@ -113,13 +123,15 @@ const getMidnightWatchRoute = createRoute({
 })
 
 app.openapi(getMidnightWatchRoute, async (c) => {
-	const translation = toTranslation(c.req.valid('query').lang)
+	const query = c.req.valid('query')
+	const translation = toTranslation(query.lang)
 	await warmTranslation(translation)
 	const { watch: watchId } = c.req.valid('param')
 
 	const watch = agpeyaService.getMidnightWatch(
 		watchId as agpeyaService.MidnightWatchId,
 		translation,
+		toPsalmSource(query.psalms),
 	)
 
 	if (!watch) {
@@ -197,11 +209,12 @@ const getHourRoute = createRoute({
 })
 
 app.openapi(getHourRoute, async (c) => {
-	const translation = toTranslation(c.req.valid('query').lang)
+	const query = c.req.valid('query')
+	const translation = toTranslation(query.lang)
 	await warmTranslation(translation)
 	const { hour: hourId } = c.req.valid('param')
 
-	const hour = agpeyaService.getAgpeyaHour(hourId, translation)
+	const hour = agpeyaService.getAgpeyaHour(hourId, translation, toPsalmSource(query.psalms))
 
 	if (!hour) {
 		return c.json({ error: `Hour '${hourId}' not found` }, 404)

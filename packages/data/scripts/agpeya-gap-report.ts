@@ -88,12 +88,14 @@ function compareUnit(
 		if (e !== a) proseGaps.push(`${path}.${key}`)
 	}
 
-	// Psalm versification: Arabic embedded verses vs English Bible resolution.
+	// Psalm versification: Arabic embedded verses vs what English serves —
+	// its own embedded liturgical psalm when present, else the Bible resolution.
 	const refs = (enUnit as Hour).psalmRefs ?? []
 	const arEmbedded = (arUnit as Hour).psalms ?? []
+	const enEmbedded = (enUnit as Hour).psalms ?? []
 	refs.forEach((ref, i) => {
 		const arCount = arEmbedded[i]?.verses?.length ?? 0
-		const eCount = enVerseCount(ref.psalmNumber)
+		const eCount = enEmbedded[i]?.verses?.length ?? enVerseCount(ref.psalmNumber)
 		if (arCount === 0) return // Arabic not embedded here; runtime uses the same Bible path
 		const mark = eCount === arCount ? '  ✓' : '  ✗'
 		console.log(`${mark} ${path} Psalm ${ref.psalmNumber} (LXX): en=${eCount} ar=${arCount}`)
