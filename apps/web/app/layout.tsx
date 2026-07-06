@@ -120,6 +120,9 @@ export default async function RootLayout({
 			</head>
 			<body
 				className={`${inter.variable} ${ebGaramond.variable} ${notoSansCoptic.variable} ${notoNaskhArabic.variable} antialiased`}
+				// Browser extensions (Grammarly et al.) add attributes to <body> before
+				// React hydrates; without this React logs a hydration mismatch.
+				suppressHydrationWarning
 			>
 				<a
 					href="#main-content"

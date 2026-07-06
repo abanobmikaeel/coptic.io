@@ -1,4 +1,4 @@
-import { themeClasses } from '@/lib/reading-styles'
+import { multiLangGridClass, themeClasses } from '@/lib/reading-styles'
 import { ChevronIcon } from './ChevronIcon'
 import type { ReadingHeaderProps } from './types'
 
@@ -114,14 +114,9 @@ function MultiLangLayout({
 }) {
 	const refColor = themeClasses.refText[theme]
 
-	// Separate LTR langs, RTL (Arabic), and Coptic
-	const ltrLangs = orderedLangs.filter((l) => l !== 'ar' && l !== 'cop')
-	const hasArabic = orderedLangs.includes('ar')
-	const hasCoptic = orderedLangs.includes('cop')
-
 	return (
 		<div className={`border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}>
-			<div className="py-3 pl-3 pr-1 sm:px-3">
+			<div className="py-2 px-2 sm:py-3 sm:pl-3 sm:pr-1 md:px-3">
 				{/* Service label centered above */}
 				{service && (
 					<p
@@ -130,42 +125,43 @@ function MultiLangLayout({
 						{service.toUpperCase()}
 					</p>
 				)}
-				<div className="flex items-center gap-2">
-					<div className="min-w-0 flex-1 flex items-start justify-between gap-4">
-						{/* Left side: LTR titles & references */}
-						<div className="min-w-0">
-							{ltrLangs.map((lang) => (
-								<div key={lang}>
+				<div className="flex items-center gap-1 sm:gap-2">
+					{/* One column per language, mirroring the content grid below so titles
+					    sit above their columns. dir=ltr pins the column order under an RTL
+					    locale; each cell sets its own dir. */}
+					<div
+						dir="ltr"
+						className={`min-w-0 flex-1 grid ${multiLangGridClass(orderedLangs.length)}`}
+					>
+						{orderedLangs.map((lang) => {
+							// Coptic has no translated title (labels.cop mirrors English), so its
+							// column shows the language tag instead of repeating the title.
+							if (lang === 'cop') {
+								return (
+									<p
+										key={lang}
+										className={`min-w-0 self-center text-center text-[10px] sm:text-xs tracking-widest uppercase font-semibold ${themeClasses.muted[theme]}`}
+									>
+										Coptic
+									</p>
+								)
+							}
+							const isAr = lang === 'ar'
+							return (
+								<div key={lang} className="min-w-0 text-center" dir={isAr ? 'rtl' : undefined}>
 									<h2
-										className={`text-base font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors`}
+										className={`text-sm sm:text-base font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors ${isAr ? 'font-arabic' : ''}`}
 									>
 										{labels[lang]}
 									</h2>
-									{references[lang] && <p className={`text-sm ${refColor}`}>{references[lang]}</p>}
+									{references[lang] && (
+										<p className={`text-xs sm:text-sm ${refColor} ${isAr ? 'font-arabic' : ''}`}>
+											{references[lang]}
+										</p>
+									)}
 								</div>
-							))}
-							{hasCoptic && (
-								<p
-									className={`text-xs tracking-widest uppercase font-semibold ${themeClasses.muted[theme]} mt-0.5`}
-								>
-									Coptic
-								</p>
-							)}
-						</div>
-
-						{/* Right side: Arabic title & reference, right-aligned */}
-						{hasArabic && (
-							<div className="text-right min-w-0 shrink-0" dir="rtl">
-								<h2
-									className={`text-base font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors font-arabic`}
-								>
-									{labels.ar}
-								</h2>
-								{references.ar && (
-									<p className={`text-sm ${refColor} font-arabic`}>{references.ar}</p>
-								)}
-							</div>
-						)}
+							)
+						})}
 					</div>
 					<ChevronIcon isOpen={isOpen} theme={theme} rotate="left" />
 				</div>

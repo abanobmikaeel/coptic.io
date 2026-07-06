@@ -54,7 +54,7 @@ export function ScriptureReading({
 		: getWidthClass(width)
 
 	return (
-		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-8' : 'mb-3'}`}>
+		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-5 sm:mb-8' : 'mb-3'}`}>
 			{/* Clickable header - full width on mobile */}
 			<button
 				type="button"
@@ -121,7 +121,9 @@ export function ScriptureReading({
 
 			{/* Liturgical closing marker */}
 			{isOpen && !id?.includes('Synaxarium') && (
-				<p className={`text-center text-sm italic mt-6 ${themeClasses.muted[theme]}`}>
+				<p
+					className={`text-center text-xs sm:text-sm italic mt-4 sm:mt-6 ${themeClasses.muted[theme]}`}
+				>
 					Glory be to God forever. Amen.
 				</p>
 			)}
