@@ -1,13 +1,17 @@
 /**
- * Embeds English liturgical psalms into en/agpeya/agpeya.json for one hour.
+ * Embeds English liturgical psalms into en/agpeya/agpeya.json for one hour
+ * or one midnight watch.
  *
- * The English text is Brenton's Septuagint (1851, public domain, ebible.org)
+ * The English text is the standard church translation from St-Takla.org's
+ * English Agpeya (the same source family as agpeya.org / copticmedia.org),
  * re-split to the Arabic Agpeya psalter's traditional verse divisions, so the
  * two languages pair verse-for-verse in the side-by-side reader. Before
  * writing, every psalm is validated against the Arabic embedding: same psalm
  * set and same verse count.
  *
- * Usage: npx tsx scripts/embed-en-psalms.ts <hourId> <staging.json>
+ * Usage: npx tsx scripts/embed-en-psalms.ts <hourId|watchId> <staging.json>
+ *   hourId: prime|terce|sext|none|vespers|compline, or a midnight watch id
+ *   (midnight-1|midnight-2|midnight-3).
  *   staging.json: { "Psalm 1": ["verse text", ...], ... } keyed by psalmRef title.
  */
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -26,10 +30,16 @@ const en = JSON.parse(readFileSync(enPath, 'utf8'))
 const ar = JSON.parse(readFileSync(join(root, 'ar/agpeya/agpeya.json'), 'utf8'))
 const staged: Record<string, string[]> = JSON.parse(readFileSync(stagingPath, 'utf8'))
 
-const enHour = en.hours[hourId]
-const arHour = ar.hours[hourId]
+interface Watched {
+	watches?: { id: string }[]
+}
+const findUnit = (data: { hours: Record<string, unknown>; midnight: Watched }) =>
+	data.hours[hourId] ?? data.midnight.watches?.find((w) => w.id === hourId)
+
+const enHour = findUnit(en)
+const arHour = findUnit(ar)
 if (!enHour || !arHour) {
-	console.error(`hour '${hourId}' not found`)
+	console.error(`hour or watch '${hourId}' not found`)
 	process.exit(1)
 }
 
@@ -71,4 +81,4 @@ if (failed) process.exit(1)
 
 enHour.psalms = embedded
 writeFileSync(enPath, `${JSON.stringify(en, null, 2)}\n`)
-console.log(`\nembedded ${embedded.length} psalms into en hours.${hourId}`)
+console.log(`\nembedded ${embedded.length} psalms into en ${hourId}`)
