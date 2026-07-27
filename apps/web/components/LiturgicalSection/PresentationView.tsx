@@ -18,10 +18,9 @@ import {
 	useRef,
 	useState,
 } from 'react'
-import { PageCell } from './PageCell'
-import { GRID_COLS } from './ServiceSection'
-import { computePageBreaks, mapSharedPage } from './pagination'
-import type { FlatLine } from './turns'
+import { Row } from './Row'
+import type { AlignedRow } from './align'
+import { computePageBreaks } from './pagination'
 
 export interface PresentationViewHandle {
 	next: () => void
@@ -29,8 +28,8 @@ export interface PresentationViewHandle {
 }
 
 interface PresentationViewProps {
-	flatByLang: Record<string, FlatLine[]>
-	langs: BibleTranslation[]
+	rows: AlignedRow[]
+	activeLangs: BibleTranslation[]
 	theme: ReadingTheme
 	textSize: TextSize
 	fontFamily: FontFamily
@@ -51,14 +50,17 @@ interface PresentationViewProps {
 // Reserve from the measured viewport: pt-2 (8px) above + a little breathing room below.
 const PAGE_VERTICAL_RESERVE = 20
 
-// Fully owns presentation-mode pagination for one section: measures the real rendered
-// line heights, bins lines into screen-sized pages, and exposes next()/prev(). No scrolling.
+// Owns presentation-mode pagination for one section. The section is a list of
+// aligned rows shared by every language column; pages are contiguous row
+// ranges, so every language is always on the same page by construction. The
+// hidden measurer renders all rows at the real width, each row's height is
+// read back, and rows are binned into screen-sized pages.
 // Remount per section (via `key`) to reset to the first page.
 export const PresentationView = forwardRef<PresentationViewHandle, PresentationViewProps>(
 	function PresentationView(
 		{
-			flatByLang,
-			langs,
+			rows,
+			activeLangs,
 			onExitNext,
 			onExitPrev,
 			onPaginationChange,
@@ -69,72 +71,40 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 	) {
 		const viewRef = useRef<HTMLDivElement>(null)
 		const measureRef = useRef<HTMLDivElement>(null)
-		const [breaksByLang, setBreaksByLang] = useState<Record<string, number[]>>({})
+		const [breaks, setBreaks] = useState<number[] | null>(null)
 		const [pageIndex, setPageIndex] = useState(0)
 		// The measurer is a client-only device — never ship its duplicate in the SSR payload.
 		const [isClient, setIsClient] = useState(false)
 		useEffect(() => setIsClient(true), [])
 
-		const gridClass = GRID_COLS[langs.length] ?? ''
-		const maxLines = Math.max(0, ...langs.map((l) => flatByLang[l]?.length ?? 0))
 		const styleSig = `${style.textSize}|${style.lineSpacing}|${style.fontFamily}|${style.weight}|${style.wordSpacing}|${style.viewMode}|${style.showVerses}`
+		const langsSig = activeLangs.join('|')
 
-		// Measure rendered heights → compute page breaks. Runs before paint (no flicker).
-		// styleSig/langs/isClient aren't used inside `measure` but are intentional re-measure
-		// triggers: settings and the client-only measurer mount change the DOM heights we read.
+		// Measure rendered row heights → compute page breaks. Runs before paint (no
+		// flicker). styleSig/langsSig/isClient aren't all used inside `measure` but are
+		// intentional re-measure triggers: settings and the client-only measurer mount
+		// change the DOM heights we read.
 		// biome-ignore lint/correctness/useExhaustiveDependencies: intentional re-measure triggers
 		useLayoutEffect(() => {
 			const measure = () => {
 				const view = viewRef.current
-				const grid = measureRef.current?.firstElementChild
-				if (!view || !grid) return
+				const container = measureRef.current
+				if (!view || !container) return
 
-				const cols = Array.from(grid.children) as HTMLElement[]
-				// A continuous page starts on a fresh line, while the full-text measurer may
-				// cross the same verse boundary midway through a line. Reserve one line so
-				// that reflow cannot push the visible page behind the footer.
-				const continuousLineReserve =
-					style.viewMode === 'continuous'
-						? Math.max(
-								0,
-								...cols.map((col) => {
-									const marker = col.querySelector<HTMLElement>('[data-page-line]')
-									return marker ? Number.parseFloat(getComputedStyle(marker).lineHeight) || 0 : 0
-								}),
-							)
-						: 0
-				const available = view.clientHeight - PAGE_VERTICAL_RESERVE - continuousLineReserve
-				const heightsByLang = cols.map((col) => {
-					const inlineRows = Array.from(col.querySelectorAll<HTMLElement>('[data-page-line]'))
-					if (inlineRows.length > 0) {
-						let previousBottom = col.getBoundingClientRect().top
-						return inlineRows.map((row) => {
-							const bottom = row.getBoundingClientRect().bottom
-							const height = Math.max(0, bottom - previousBottom)
-							previousBottom = Math.max(previousBottom, bottom)
-							return height
-						})
-					}
-
-					const blockRows = Array.from(col.children) as HTMLElement[]
-					return blockRows.map((row, i) => {
-						const top = row.getBoundingClientRect().top
-						const nextTop = blockRows[i + 1]?.getBoundingClientRect().top
-						return nextTop != null ? nextTop - top : row.getBoundingClientRect().height
-					})
+				const rowEls = Array.from(container.children) as HTMLElement[]
+				const rowHeights = rowEls.map((el, i) => {
+					const top = el.getBoundingClientRect().top
+					const nextTop = rowEls[i + 1]?.getBoundingClientRect().top
+					return nextTop != null ? nextTop - top : el.getBoundingClientRect().height
 				})
-				const nextBreaks: Record<string, number[]> = {}
-				langs.forEach((lang, index) => {
-					const lines = flatByLang[lang] ?? []
-					const isRubric = lines.map((line) => line.isRubric)
-					nextBreaks[lang] = computePageBreaks(
-						[heightsByLang[index] ?? []],
+				const available = view.clientHeight - PAGE_VERTICAL_RESERVE
+				setBreaks(
+					computePageBreaks(
+						rowHeights,
 						available,
-						lines.length,
-						isRubric,
-					)
-				})
-				setBreaksByLang(nextBreaks)
+						rows.map((row) => row.isRubric),
+					),
+				)
 			}
 
 			measure()
@@ -142,27 +112,28 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 			if (viewRef.current) ro.observe(viewRef.current)
 			document.fonts?.ready.then(measure).catch(() => {})
 			return () => ro.disconnect()
-		}, [maxLines, styleSig, langs, isClient])
+		}, [rows, styleSig, langsSig, isClient])
 
-		const pageCount = Math.max(
-			1,
-			...langs.map((lang) => Math.max(1, (breaksByLang[lang]?.length ?? 1) - 1)),
-		)
+		const pageCount = Math.max(1, (breaks?.length ?? 2) - 1)
 
 		// PowerPoint-style backward entry: pin to the last page. Re-applies on every re-measure
 		// (e.g. fonts loading can change the page count) until the user actually navigates.
 		const userNavigated = useRef(false)
 		useLayoutEffect(() => {
-			if (
-				initialPage === 'last' &&
-				!userNavigated.current &&
-				Object.keys(breaksByLang).length > 0
-			) {
+			if (initialPage === 'last' && !userNavigated.current && breaks != null) {
 				setPageIndex(pageCount - 1)
 			}
-		}, [initialPage, pageCount, breaksByLang])
+		}, [initialPage, pageCount, breaks])
 
 		const safePage = Math.min(pageIndex, pageCount - 1)
+
+		// A page can still exceed the viewport when a single row (e.g. one long verse
+		// on a narrow column) is taller than the screen — the view scrolls rather than
+		// clipping it. Snap back to the top on page turns.
+		// biome-ignore lint/correctness/useExhaustiveDependencies: safePage is the page-turn trigger
+		useLayoutEffect(() => {
+			viewRef.current?.scrollTo({ top: 0 })
+		}, [safePage])
 
 		// Report pagination state upward for the progress indicator (display only).
 		useLayoutEffect(() => {
@@ -186,41 +157,36 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 			[safePage, pageCount, onExitNext, onExitPrev],
 		)
 
+		const pageStart = breaks?.[safePage] ?? 0
+		const pageEnd = breaks?.[safePage + 1] ?? rows.length
+
 		return (
-			<div ref={viewRef} className="relative h-full overflow-hidden">
-				{/* Visible page. dir=ltr keeps language columns in a fixed order so they
-				    don't swap sides under an RTL (Arabic) UI locale — each PageCell still
-				    sets its own dir for correct per-language text alignment. */}
-				<div dir="ltr" className={`grid gap-x-6 pt-2 ${gridClass}`}>
-					{langs.map((lang) => {
-						const breaks = breaksByLang[lang] ?? [0, flatByLang[lang]?.length ?? 0]
-						const languageCount = Math.max(1, breaks.length - 1)
-						const languagePage = mapSharedPage(safePage, pageCount, languageCount)
-						const pageStart = breaks[languagePage] ?? 0
-						const pageEnd = breaks[languagePage + 1] ?? flatByLang[lang]?.length ?? 0
-						return (
-							<PageCell
-								key={lang}
-								lines={(flatByLang[lang] ?? []).slice(pageStart, pageEnd)}
-								lang={lang}
-								{...style}
-							/>
-						)
-					})}
+			<div ref={viewRef} className="relative h-full overflow-y-auto scrollbar-hide">
+				{/* Visible page: a contiguous slice of the shared rows. */}
+				<div className="pt-2">
+					{rows.slice(pageStart, pageEnd).map((row, i) => (
+						<Row
+							key={pageStart + i}
+							row={row}
+							activeLangs={activeLangs}
+							isPageStart={i === 0}
+							{...style}
+						/>
+					))}
 				</div>
 				{/* Hidden full-section measurer — identical width/fonts so heights match exactly.
-			    Client-only: it exists purely to measure, so it never ships in the SSR HTML. */}
+				    Client-only: it exists purely to measure, so it never ships in the SSR HTML.
+				    overflow-hidden: it is taller than the view; without it the scrollable view
+				    gains phantom scroll range. */}
 				{isClient && (
 					<div
 						ref={measureRef}
 						aria-hidden
-						className="absolute inset-0 pt-2 invisible pointer-events-none"
+						className="absolute inset-0 pt-2 invisible pointer-events-none overflow-hidden"
 					>
-						<div dir="ltr" className={`grid gap-x-6 ${gridClass}`}>
-							{langs.map((lang) => (
-								<PageCell key={lang} lines={flatByLang[lang] ?? []} lang={lang} {...style} />
-							))}
-						</div>
+						{rows.map((row, i) => (
+							<Row key={i} row={row} activeLangs={activeLangs} {...style} />
+						))}
 					</div>
 				)}
 			</div>

@@ -1,6 +1,7 @@
 import type { ReadingTheme } from '@/components/DisplaySettings'
 import { themeClasses } from '@/lib/reading-styles'
 import type { IncenseSection } from '@/lib/types'
+import { useEffect, useRef } from 'react'
 import { ChevronIcon } from './icons'
 
 // Decorative Coptic textile band shown in place of a plain text notice banner; the message
@@ -41,9 +42,11 @@ interface NavProps {
 	theme: ReadingTheme
 }
 
-// Large fixed prev/next arrows pinned to the screen edges.
+// Large fixed prev/next arrows pinned to the screen edges. Hidden below md —
+// on mobile the bottom SectionDots already exposes Prev/Next, and the fixed
+// arrows would force ~56px of side padding that crushes multi-language columns.
 export function SideArrows({ hasPrev, hasNext, onPrev, onNext, theme }: NavProps) {
-	const cls = `fixed top-1/2 -translate-y-1/2 z-30 p-3 rounded-full ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border ${themeClasses.border[theme]} shadow-sm transition-colors ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`
+	const cls = `hidden md:block fixed top-1/2 -translate-y-1/2 z-30 p-3 rounded-full ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border ${themeClasses.border[theme]} shadow-sm transition-colors ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`
 	return (
 		<>
 			{hasPrev && (
@@ -79,6 +82,12 @@ export function SectionDots({
 	onJump,
 }: SectionDotsProps) {
 	const arrowCls = `flex-shrink-0 p-1.5 rounded-lg transition-colors disabled:opacity-25 ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`
+	// Keep the active dot visible when the strip overflows on narrow screens.
+	const activeDotRef = useRef<HTMLDivElement>(null)
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sectionIndex moves the ref to the new active dot
+	useEffect(() => {
+		activeDotRef.current?.scrollIntoView({ block: 'nearest', inline: 'center' })
+	}, [sectionIndex])
 	return (
 		<>
 			<button
@@ -90,26 +99,35 @@ export function SectionDots({
 			>
 				<ChevronIcon dir="left" />
 			</button>
-			<div className="flex-1 flex items-center justify-center gap-1.5 overflow-x-auto">
-				{sections.map((s, i) => (
-					<div key={s.id} className="group relative flex-shrink-0">
-						<button
-							type="button"
-							onClick={() => onJump(i)}
-							className="flex items-center justify-center p-2 -m-2"
-							aria-label={s.title}
-						>
-							<span
-								className={`block h-1.5 rounded-full transition-all duration-200 ${i === sectionIndex ? 'w-6 bg-amber-500' : 'w-1.5 bg-current opacity-20 group-hover:opacity-40'}`}
-							/>
-						</button>
+			{/* w-max + mx-auto centres the dots when they fit and scrolls (scrollbar
+			    hidden) when they overflow — justify-center on the scroller itself would
+			    clip the leading dots unreachably off-screen. */}
+			<div className="flex-1 min-w-0 overflow-x-auto scrollbar-hide">
+				<div className="w-max mx-auto flex items-center gap-1.5 px-1">
+					{sections.map((s, i) => (
 						<div
-							className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-2 py-1 rounded text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50 ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} border ${themeClasses.border[theme]} shadow-md`}
+							key={s.id}
+							ref={i === sectionIndex ? activeDotRef : undefined}
+							className="group relative flex-shrink-0"
 						>
-							{s.title}
+							<button
+								type="button"
+								onClick={() => onJump(i)}
+								className="flex items-center justify-center p-2 -m-2"
+								aria-label={s.title}
+							>
+								<span
+									className={`block h-1.5 rounded-full transition-all duration-200 ${i === sectionIndex ? 'w-6 bg-amber-500' : 'w-1.5 bg-current opacity-20 group-hover:opacity-40'}`}
+								/>
+							</button>
+							<div
+								className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-2 py-1 rounded text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50 ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} border ${themeClasses.border[theme]} shadow-md`}
+							>
+								{s.title}
+							</div>
 						</div>
-					</div>
-				))}
+					))}
+				</div>
 			</div>
 			<button
 				type="button"

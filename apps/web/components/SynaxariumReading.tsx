@@ -7,6 +7,7 @@ import {
 	getWeightClass,
 	getWidthClass,
 	getWordSpacingClass,
+	multiLangGridClass,
 	themeClasses,
 } from '@/lib/reading-styles'
 import type { SynaxariumEntry } from '@/lib/types'
@@ -129,9 +130,10 @@ export function SynaxariumReading({
 		lg: 'text-lg',
 	}
 
-	// Grid columns for multi-language
-	const gridCols =
-		orderedLangs.length >= 3 ? 'grid-cols-3' : orderedLangs.length === 2 ? 'grid-cols-2' : ''
+	// Grid columns for multi-language — always side-by-side (matches desktop).
+	// Mobile compresses gaps and outer padding instead of stacking so users
+	// keep the comparison view. Shared helper keeps Scripture/Synaxarium in sync.
+	const gridClass = multiLangGridClass(orderedLangs.length)
 
 	return (
 		<article id="reading-Synaxarium" className={`scroll-mt-24 ${isOpen ? 'mb-8' : 'mb-3'}`}>
@@ -200,7 +202,7 @@ export function SynaxariumReading({
 										<button
 											type="button"
 											onClick={() => setExpandedEntry(expandedEntry === id ? null : id)}
-											className={`w-full grid ${gridCols} gap-6`}
+											className={`w-full grid ${gridClass}`}
 										>
 											{orderedLangs.map((lang) => {
 												const langEntry = entries[lang]
@@ -249,7 +251,7 @@ export function SynaxariumReading({
 									{expandedEntry === id && (
 										<div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
 											{isMultiLang ? (
-												<div className={`grid ${gridCols} gap-6`}>
+												<div className={`grid ${gridClass}`}>
 													{orderedLangs.map((lang) => {
 														const langEntry = entries[lang]
 														if (!langEntry?.text) return <div key={lang} />

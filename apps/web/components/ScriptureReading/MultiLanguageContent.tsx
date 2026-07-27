@@ -1,5 +1,5 @@
 import { getBookName } from '@/i18n/content-translations'
-import { themeClasses } from '@/lib/reading-styles'
+import { multiLangGridClass, themeClasses } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
 import type { ReadingTheme, ViewMode } from '../DisplaySettings'
 import type { BibleTranslation, StyleClasses } from './types'
@@ -24,13 +24,8 @@ export function MultiLanguageContent({
 	showVerses,
 	theme,
 }: MultiLanguageContentProps) {
-	// Dynamic grid columns based on number of languages
-	const gridCols =
-		orderedLangs.length === 4
-			? 'grid-cols-4'
-			: orderedLangs.length === 3
-				? 'grid-cols-3'
-				: 'grid-cols-2'
+	// Shared responsive grid class (always side-by-side; mobile compresses gaps).
+	const gridClass = multiLangGridClass(orderedLangs.length)
 
 	// Container width - mobile uses full width, larger screens have max-width
 	const containerWidth =
@@ -43,11 +38,13 @@ export function MultiLanguageContent({
 	return (
 		// dir=ltr keeps language columns in a fixed order so they don't swap sides
 		// under an RTL (Arabic) UI locale; each cell sets its own dir for text.
-		<div dir="ltr" className={`mx-auto ${containerWidth} sm:mt-2`}>
+		// -mx-3 sm:mx-auto: extend past the parent's px-3 padding on mobile so
+		// multi-language columns get maximum horizontal real estate.
+		<div dir="ltr" className={`-mx-3 sm:mx-auto ${containerWidth} sm:mt-2 px-2 sm:px-0`}>
 			{firstReadings.map((reading, idx) => (
 				<div key={idx}>
 					{reading.chapters.map((chapter, cidx) => (
-						<div key={cidx} className="mb-8">
+						<div key={cidx} className="mb-5 sm:mb-8">
 							{/* Chapter headings - only show for multi-chapter readings */}
 							{showChapterHeading && (
 								<ChapterHeadings
@@ -57,7 +54,7 @@ export function MultiLanguageContent({
 									chapterIdx={cidx}
 									getStyleClasses={getStyleClasses}
 									theme={theme}
-									gridCols={gridCols}
+									gridClass={gridClass}
 								/>
 							)}
 
@@ -71,7 +68,7 @@ export function MultiLanguageContent({
 									getStyleClasses={getStyleClasses}
 									showVerses={showVerses}
 									theme={theme}
-									gridCols={gridCols}
+									gridClass={gridClass}
 								/>
 							) : (
 								<VerseByVerseComparison
@@ -83,7 +80,7 @@ export function MultiLanguageContent({
 									getStyleClasses={getStyleClasses}
 									showVerses={showVerses}
 									theme={theme}
-									gridCols={gridCols}
+									gridClass={gridClass}
 								/>
 							)}
 						</div>
@@ -101,7 +98,7 @@ interface ChapterHeadingsProps {
 	chapterIdx: number
 	getStyleClasses: (lang: BibleTranslation) => StyleClasses
 	theme: ReadingTheme
-	gridCols: string
+	gridClass: string
 }
 
 function ChapterHeadings({
@@ -111,10 +108,10 @@ function ChapterHeadings({
 	chapterIdx,
 	getStyleClasses,
 	theme,
-	gridCols,
+	gridClass,
 }: ChapterHeadingsProps) {
 	return (
-		<div className={`grid ${gridCols} gap-4 mb-5`}>
+		<div className={`grid ${gridClass} mb-3 sm:mb-5`}>
 			{orderedLangs.map((lang) => {
 				const langReadings = readingsByLang[lang]
 				const langReading = langReadings?.[readingIdx]
@@ -146,7 +143,7 @@ interface ContinuousVersesProps {
 	getStyleClasses: (lang: BibleTranslation) => StyleClasses
 	showVerses: boolean
 	theme: ReadingTheme
-	gridCols: string
+	gridClass: string
 }
 
 function ContinuousVerses({
@@ -157,10 +154,10 @@ function ContinuousVerses({
 	getStyleClasses,
 	showVerses,
 	theme,
-	gridCols,
+	gridClass,
 }: ContinuousVersesProps) {
 	return (
-		<div className={`grid ${gridCols} gap-6`}>
+		<div className={`grid ${gridClass}`}>
 			{orderedLangs.map((lang) => {
 				const langReadings = readingsByLang[lang]
 				const langChapter = langReadings?.[readingIdx]?.chapters[chapterIdx]
@@ -172,7 +169,7 @@ function ContinuousVerses({
 				return (
 					<p
 						key={lang}
-						className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : !showVerses ? 'first-letter-large' : ''}`}
+						className={`min-w-0 break-words ${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : !showVerses ? 'first-letter-large' : ''}`}
 						dir={textDir}
 					>
 						{langChapter.verses.map((verse, vidx) => (
@@ -204,7 +201,7 @@ interface VerseByVerseComparisonProps {
 	getStyleClasses: (lang: BibleTranslation) => StyleClasses
 	showVerses: boolean
 	theme: ReadingTheme
-	gridCols: string
+	gridClass: string
 }
 
 function VerseByVerseComparison({
@@ -216,12 +213,12 @@ function VerseByVerseComparison({
 	getStyleClasses,
 	showVerses,
 	theme,
-	gridCols,
+	gridClass,
 }: VerseByVerseComparisonProps) {
 	return (
-		<div className="space-y-4">
+		<div className="space-y-3 sm:space-y-4">
 			{chapter.verses.map((verse, vidx) => (
-				<div key={verse.num} className={`grid ${gridCols} gap-6`}>
+				<div key={verse.num} className={`grid ${gridClass}`}>
 					{orderedLangs.map((lang) => {
 						const langReadings = readingsByLang[lang]
 						const langChapter = langReadings?.[readingIdx]?.chapters[chapterIdx]
@@ -234,7 +231,7 @@ function VerseByVerseComparison({
 						return (
 							<p
 								key={lang}
-								className={`${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''} ${vidx === 0 && !isRtl && !showVerses ? 'first-letter-large' : ''}`}
+								className={`min-w-0 break-words ${fontClass} ${weightClass} ${wordSpacingClass} ${sizes.verse} ${lineHeight} ${themeClasses.text[theme]} ${isRtl ? 'text-right' : ''} ${vidx === 0 && !isRtl && !showVerses ? 'first-letter-large' : ''}`}
 								dir={textDir}
 							>
 								{showVerses && (

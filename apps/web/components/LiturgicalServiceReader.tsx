@@ -11,7 +11,6 @@ import type {
 	WordSpacing,
 } from '@/components/DisplaySettings'
 import {
-	type FlatLine,
 	GearIcon,
 	NoticeBand,
 	PresentationView,
@@ -22,8 +21,7 @@ import {
 	ServiceSection,
 	SideArrows,
 	TocIcon,
-	alignByRubric,
-	flattenToLines,
+	alignSection,
 	useSectionNavigation,
 } from '@/components/LiturgicalSection'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
@@ -213,31 +211,26 @@ export function LiturgicalServiceReader({
 		showVerses: settings.showVerses,
 	}
 
-	// Flattened lines per language for the current section. Prayer/litany sections flatten
-	// their `content`; scripture sections (psalm/gospel) flatten their resolved `verses` so
-	// they paginate too — present mode never scrolls, regardless of section type.
-	const flatByLang = useMemo(() => {
-		if (!currentSectionId) return null
-		const out: Record<string, FlatLine[]> = {}
-		let total = 0
+	// One aligned-rows structure per section drives BOTH reader modes (scroll and
+	// presentation) — the single place languages are reconciled. See align.ts.
+	const aligned = useMemo(
+		() => (currentSectionId ? alignSection(servicesByLang, currentSectionId, langs) : null),
+		[currentSectionId, langs, servicesByLang],
+	)
+
+	// Per-language scripture reference strings for the scroll-mode header row.
+	const refsByLang = useMemo(() => {
+		if (!currentSectionId) return undefined
+		const scripture = new Set(['psalm', 'gospel', 'daily-psalm'])
+		const out: Partial<Record<BibleTranslation, string>> = {}
 		for (const lang of langs) {
 			const section = servicesByLang[lang]?.sections.find((s) => s.id === currentSectionId)
-			out[lang] = section?.content?.length
-				? flattenToLines(section.content)
-				: (section?.verses ?? []).map((v) => ({
-						text: v.text,
-						num: v.num,
-						isRubric: false,
-						isNewSpeakerGroup: false,
-					}))
-			total += out[lang].length
+			if (section?.reference && scripture.has(section.type)) out[lang] = section.reference
 		}
-		if (total === 0) return null
-		// Keep columns row-aligned where languages differ in rubric count (Coptic has none).
-		return alignByRubric(out, langs)
+		return out
 	}, [currentSectionId, langs, servicesByLang])
 
-	const isPaginated = mode === 'present' && flatByLang != null
+	const isPaginated = mode === 'present' && aligned != null
 
 	const onExitNext = useCallback(() => stepSection(1, 'first'), [stepSection])
 	// Paging backward out of a section lands on the previous section's last page (PowerPoint-style).
@@ -393,26 +386,37 @@ export function LiturgicalServiceReader({
 				>
 					{/* Section title + progress */}
 					<div
-						className={`flex-none flex items-center gap-3 px-14 sm:px-16 py-2 border-b border-current/10 ${themeClasses.bg[theme]}`}
+						className={`flex-none flex items-center gap-3 px-3 sm:px-14 md:px-16 py-2 border-b border-current/10 ${themeClasses.bg[theme]}`}
 					>
 						{titleBar}
-						{isPaginated && pagination.count > 1 && (
+						{isPaginated &&
+							pagination.count > 1 &&
 							// dir=ltr so page indicators always fill left-to-right (matching
 							// next/ArrowRight advancing) and don't reverse under an RTL locale.
-							<div dir="ltr" className="flex items-center gap-1 ml-auto">
-								{Array.from({ length: pagination.count }, (_, i) => (
-									<span
-										key={i}
-										className={`block h-1 rounded-full transition-all duration-200 flex-shrink-0 ${i === pagination.index ? 'w-4 bg-amber-500' : 'w-1.5 bg-current opacity-15'}`}
-									/>
-								))}
-							</div>
-						)}
+							// Long sections on narrow columns can paginate into dozens of pages;
+							// past a dozen the dot strip no longer fits, so fall back to a counter.
+							(pagination.count > 12 ? (
+								<span
+									dir="ltr"
+									className={`ml-auto flex-none text-[11px] font-medium tabular-nums ${themeClasses.muted[theme]}`}
+								>
+									{pagination.index + 1} / {pagination.count}
+								</span>
+							) : (
+								<div dir="ltr" className="flex items-center gap-1 ml-auto">
+									{Array.from({ length: pagination.count }, (_, i) => (
+										<span
+											key={i}
+											className={`block h-1 rounded-full transition-all duration-200 flex-shrink-0 ${i === pagination.index ? 'w-4 bg-amber-500' : 'w-1.5 bg-current opacity-15'}`}
+										/>
+									))}
+								</div>
+							))}
 					</div>
 
 					{currentSection.rubric && (
 						<p
-							className={`flex-none px-14 sm:px-16 pt-2 text-xs italic ${themeClasses.muted[theme]}`}
+							className={`flex-none px-3 sm:px-14 md:px-16 pt-2 text-xs italic ${themeClasses.muted[theme]}`}
 						>
 							{currentSection.rubric}
 						</p>
@@ -422,13 +426,13 @@ export function LiturgicalServiceReader({
 					<div
 						className={`flex-1 min-h-0 transition-opacity duration-200 ${ready ? 'opacity-100' : 'opacity-0'}`}
 					>
-						{isPaginated && flatByLang ? (
-							<div className="h-full px-14 sm:px-16">
+						{isPaginated && aligned ? (
+							<div className="h-full px-2 sm:px-14 md:px-16">
 								<PresentationView
 									key={currentSectionId}
 									ref={presentRef}
-									flatByLang={flatByLang}
-									langs={langs}
+									rows={aligned.rows}
+									activeLangs={aligned.activeLangs}
 									initialPage={enterFrom}
 									onExitNext={onExitNext}
 									onExitPrev={onExitPrev}
@@ -437,13 +441,13 @@ export function LiturgicalServiceReader({
 								/>
 							</div>
 						) : (
-							<div ref={scrollRef} className="h-full overflow-y-auto px-14 sm:px-16 py-4">
-								{currentSectionId && (
+							<div ref={scrollRef} className="h-full overflow-y-auto px-2 sm:px-14 md:px-16 py-4">
+								{aligned && (
 									<ServiceSection
 										key={currentSectionId}
-										sectionId={currentSectionId}
-										servicesByLang={servicesByLang}
-										langs={langs}
+										rows={aligned.rows}
+										activeLangs={aligned.activeLangs}
+										refsByLang={refsByLang}
 										{...styleProps}
 									/>
 								)}

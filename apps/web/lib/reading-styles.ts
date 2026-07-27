@@ -106,6 +106,24 @@ export const getWidthClass = (width: ReadingWidth) => {
 	}[width]
 }
 
+/**
+ * Tailwind grid classes for side-by-side multi-language content.
+ *
+ * Columns are always side-by-side at every breakpoint — mobile keeps the
+ * comparison view (matching desktop) and instead compresses gaps to maximise
+ * per-column line length. Gaps widen at sm/md as more horizontal space becomes
+ * available.
+ *
+ * Used by ScriptureReading, SynaxariumReading, and LiturgicalSection so the
+ * responsive behaviour stays consistent across every multi-language surface.
+ */
+export function multiLangGridClass(langCount: number): string {
+	if (langCount >= 4) return 'grid-cols-4 gap-1 sm:gap-3 md:gap-4'
+	if (langCount === 3) return 'grid-cols-3 gap-1 sm:gap-3 md:gap-4'
+	if (langCount === 2) return 'grid-cols-2 gap-2 sm:gap-4 md:gap-6'
+	return 'grid-cols-1'
+}
+
 // Theme classes
 // Note: 'light' theme uses dark: variants to respect system dark mode preference
 export const themeClasses = {

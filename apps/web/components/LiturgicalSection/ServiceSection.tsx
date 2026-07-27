@@ -7,18 +7,17 @@ import type {
 	WordSpacing,
 } from '@/components/DisplaySettings'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
+import { getStyleClasses } from '@/components/ScriptureReading/utils'
 import type { ViewMode } from '@/lib/reading-preferences'
-import type { IncenseService } from '@/lib/types'
-import { SectionColumn } from './SectionColumn'
-import { TurnCell } from './TurnCell'
-import { groupByTurns } from './turns'
-
-export const GRID_COLS: Record<number, string> = { 1: '', 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3' }
+import { multiLangGridClass, themeClasses } from '@/lib/reading-styles'
+import { Row } from './Row'
+import type { AlignedRow } from './align'
 
 export interface ServiceSectionProps {
-	sectionId: string
-	servicesByLang: Partial<Record<string, IncenseService>>
-	langs: BibleTranslation[]
+	rows: AlignedRow[]
+	activeLangs: BibleTranslation[]
+	// Per-language scripture reference strings, shown as a header row.
+	refsByLang?: Partial<Record<BibleTranslation, string>>
 	theme: ReadingTheme
 	textSize: TextSize
 	fontFamily: FontFamily
@@ -29,75 +28,38 @@ export interface ServiceSectionProps {
 	showVerses?: boolean
 }
 
-export function ServiceSection({
-	sectionId,
-	servicesByLang,
-	langs,
-	theme,
-	textSize,
-	fontFamily,
-	lineSpacing,
-	wordSpacing,
-	weight,
-	viewMode,
-	showVerses,
-}: ServiceSectionProps) {
-	const primaryLang = langs[0] ?? 'en'
-	const primarySection = servicesByLang[primaryLang]?.sections.find((s) => s.id === sectionId)
-	if (!primarySection) return null
-
-	const gridClass = GRID_COLS[langs.length] ?? ''
-	const isScripture =
-		primarySection.type === 'psalm' ||
-		primarySection.type === 'gospel' ||
-		primarySection.type === 'daily-psalm'
-	const isMultiLang = langs.length > 1
-	const sharedProps = {
-		theme,
-		textSize,
-		fontFamily,
-		lineSpacing,
-		wordSpacing,
-		weight,
-		viewMode,
-		showVerses,
-	}
-
-	if (!isScripture && isMultiLang) {
-		const turnsByLang = Object.fromEntries(
-			langs.map((lang) => {
-				const sec = servicesByLang[lang]?.sections.find((s) => s.id === sectionId)
-				return [lang, groupByTurns(sec?.content ?? [])]
-			}),
-		)
-		const turnCounts = langs.map((l) => turnsByLang[l]?.length ?? 0)
-		if (turnCounts.every((c) => c === turnCounts[0]) && turnCounts[0] > 0) {
-			return (
-				<div dir="ltr" className={`grid gap-x-6 ${gridClass}`}>
-					{Array.from({ length: turnCounts[0] }, (_, i) =>
-						langs.map((lang) => (
-							<TurnCell
-								key={`${lang}-${i}`}
-								turn={turnsByLang[lang]?.[i]}
-								lang={lang}
-								{...sharedProps}
-							/>
-						)),
-					).flat()}
-				</div>
-			)
-		}
-	}
-
+// Scroll-mode view of one section: the same aligned rows presentation mode
+// pages through, rendered in full. Sharing the rows is what keeps the language
+// columns level while scrolling.
+export function ServiceSection({ rows, activeLangs, refsByLang, ...style }: ServiceSectionProps) {
+	const hasRefs = activeLangs.some((lang) => refsByLang?.[lang])
 	return (
-		<div dir="ltr" className={`pt-2 pb-2 grid gap-6 ${gridClass}`}>
-			{langs.map((lang) => (
-				<SectionColumn
-					key={lang}
-					section={servicesByLang[lang]?.sections.find((s) => s.id === sectionId)}
-					lang={lang}
-					{...sharedProps}
-				/>
+		<div className="pt-2 pb-2">
+			{hasRefs && (
+				<div dir="ltr" className={`grid ${multiLangGridClass(activeLangs.length)} mb-3`}>
+					{activeLangs.map((lang) => {
+						const { textDir } = getStyleClasses(
+							lang,
+							style.textSize,
+							style.lineSpacing,
+							style.fontFamily,
+							style.weight,
+							style.wordSpacing,
+						)
+						return (
+							<p
+								key={lang}
+								dir={textDir}
+								className={`min-w-0 pl-2 sm:pl-4 text-xs font-medium ${themeClasses.accent[style.theme]} font-mono`}
+							>
+								{refsByLang?.[lang]}
+							</p>
+						)
+					})}
+				</div>
+			)}
+			{rows.map((row, i) => (
+				<Row key={i} row={row} activeLangs={activeLangs} isPageStart={i === 0} {...style} />
 			))}
 		</div>
 	)

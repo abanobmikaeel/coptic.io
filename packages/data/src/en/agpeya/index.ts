@@ -94,6 +94,10 @@ export interface AgpeyaHourData {
 	traditionalTime: string
 	introduction?: string
 	opening: AgpeyaPrayerSection
+	// "The Beginning of the <hour> Prayer" — the hour's own opening declaration.
+	hourIntro?: AgpeyaPrayerSection
+	// Prime only: the "Come, let us worship" prayer, its own section in the hour.
+	comeLetUsWorship?: AgpeyaPrayerSection
 	thanksgiving?: AgpeyaPrayerSection
 	introductoryPsalm?: AgpeyaPsalmRef // Psalm 50 (51) - prayed at every hour
 	psalmsIntro?: string // "From the Psalms of our father David..."

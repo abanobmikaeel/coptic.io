@@ -41,6 +41,8 @@ export interface ResolvedAgpeyaHour {
 	traditionalTime: string
 	introduction?: string
 	opening: { title?: string; content: string[]; inline?: boolean }
+	hourIntro?: { title?: string; content: string[]; inline?: boolean }
+	comeLetUsWorship?: { title?: string; content: string[]; inline?: boolean }
 	thanksgiving?: { title?: string; content: string[]; inline?: boolean }
 	introductoryPsalm?: ResolvedPsalm // Psalm 50 (51)
 	psalmsIntro?: string // "From the Psalms of our father David..."
@@ -79,22 +81,31 @@ export interface ResolvedMidnightHour {
 	closing: { content: string[]; inline?: boolean }
 }
 
+// Which psalm text to serve. 'septuagint' (default) prefers the psalms embedded
+// in the Agpeya data — the Septuagint-based liturgical psalter with the
+// traditional Agpeya phrase divisions (Arabic: St-Takla; English: Brenton).
+// 'bible' always resolves the hour's psalm references against the Bible
+// translation instead (Masoretic-style versification), for readers who want
+// the wording of their own Bible.
+export type PsalmSource = 'septuagint' | 'bible'
+
 /**
  * Resolve a standard hour's psalm and gospel references
  */
 function resolveHour(
 	hourData: AgpeyaHourData,
 	translation: BibleTranslation = 'en',
+	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedAgpeyaHour {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = hourData.introductoryPsalm
 		? resolveAgpeyaPsalms([hourData.introductoryPsalm], translation)[0]
 		: undefined
 
-	// For Arabic, use pre-embedded Coptic liturgical psalms from St-Takla
-	const psalms = hourData.psalms?.length
-		? (hourData.psalms as unknown as ResolvedPsalm[])
-		: resolveAgpeyaPsalms(hourData.psalmRefs || [], translation)
+	const psalms =
+		psalmSource === 'septuagint' && hourData.psalms?.length
+			? (hourData.psalms as unknown as ResolvedPsalm[])
+			: resolveAgpeyaPsalms(hourData.psalmRefs || [], translation)
 
 	const gospel = resolveAgpeyaGospel(hourData.gospelRef, translation)
 
@@ -105,6 +116,8 @@ function resolveHour(
 		traditionalTime: hourData.traditionalTime,
 		introduction: hourData.introduction,
 		opening: hourData.opening,
+		hourIntro: hourData.hourIntro,
+		comeLetUsWorship: hourData.comeLetUsWorship,
 		thanksgiving: hourData.thanksgiving,
 		introductoryPsalm,
 		psalmsIntro: hourData.psalmsIntro,
@@ -123,10 +136,12 @@ function resolveHour(
 function resolveWatch(
 	watch: AgpeyaWatch,
 	translation: BibleTranslation = 'en',
+	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedAgpeyaWatch {
-	const psalms = watch.psalms?.length
-		? (watch.psalms as unknown as ResolvedPsalm[])
-		: resolveAgpeyaPsalms(watch.psalmRefs || [], translation)
+	const psalms =
+		psalmSource === 'septuagint' && watch.psalms?.length
+			? (watch.psalms as unknown as ResolvedPsalm[])
+			: resolveAgpeyaPsalms(watch.psalmRefs || [], translation)
 	const gospel = watch.gospelRef ? resolveAgpeyaGospel(watch.gospelRef, translation) : undefined
 
 	return {
@@ -148,13 +163,14 @@ function resolveWatch(
 function resolveMidnightHour(
 	midnightData: AgpeyaMidnightHour,
 	translation: BibleTranslation = 'en',
+	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedMidnightHour {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = midnightData.introductoryPsalm
 		? resolveAgpeyaPsalms([midnightData.introductoryPsalm], translation)[0]
 		: undefined
 
-	const watches = midnightData.watches.map((watch) => resolveWatch(watch, translation))
+	const watches = midnightData.watches.map((watch) => resolveWatch(watch, translation, psalmSource))
 
 	return {
 		id: 'midnight',
@@ -173,19 +189,29 @@ function resolveMidnightHour(
 /**
  * Get a specific Agpeya hour with resolved psalm and gospel text
  */
+// Embedded psalms are text in the hour data's own language, and Coptic/Spanish
+// requests reuse the English hour data — for those, always resolve psalms from
+// the requested Bible translation instead of leaking English text.
+const effectivePsalmSource = (
+	translation: BibleTranslation,
+	psalmSource: PsalmSource,
+): PsalmSource => (translation === 'en' || translation === 'ar' ? psalmSource : 'bible')
+
 export function getAgpeyaHour(
 	hourId: AgpeyaHourId,
 	translation: BibleTranslation = 'en',
+	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedAgpeyaHour | ResolvedMidnightHour | null {
 	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
 	const hourData = getData(hourId)
 	if (!hourData) return null
 
+	const source = effectivePsalmSource(translation, psalmSource)
 	if (isMidnightHour(hourData)) {
-		return resolveMidnightHour(hourData, translation)
+		return resolveMidnightHour(hourData, translation, source)
 	}
 
-	return resolveHour(hourData as AgpeyaHourData, translation)
+	return resolveHour(hourData as AgpeyaHourData, translation, source)
 }
 
 /**
@@ -194,6 +220,7 @@ export function getAgpeyaHour(
 export function getMidnightWatch(
 	watchId: MidnightWatchId,
 	translation: BibleTranslation = 'en',
+	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedAgpeyaWatch | null {
 	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
 	const midnightData = getData('midnight') as AgpeyaMidnightHour
@@ -203,7 +230,7 @@ export function getMidnightWatch(
 	const watch = midnightData.watches[watchIndex]
 	if (!watch) return null
 
-	return resolveWatch(watch, translation)
+	return resolveWatch(watch, translation, effectivePsalmSource(translation, psalmSource))
 }
 
 /**
@@ -211,13 +238,14 @@ export function getMidnightWatch(
  */
 export function getAllHours(
 	translation: BibleTranslation = 'en',
+	psalmSource: PsalmSource = 'septuagint',
 ): (ResolvedAgpeyaHour | ResolvedMidnightHour)[] {
 	const getIds = translation === 'ar' ? getArAgpeyaHourIds : getEnAgpeyaHourIds
 	const hourIds = getIds()
 	const resolved: (ResolvedAgpeyaHour | ResolvedMidnightHour)[] = []
 
 	for (const hourId of hourIds) {
-		const hour = getAgpeyaHour(hourId, translation)
+		const hour = getAgpeyaHour(hourId, translation, psalmSource)
 		if (hour) {
 			resolved.push(hour)
 		}
