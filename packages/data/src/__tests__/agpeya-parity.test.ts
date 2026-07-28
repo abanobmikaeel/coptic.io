@@ -42,33 +42,16 @@ const KNOWN_PROSE_GAPS = new Set([
 	'midnight.midnight-3.closing',
 ])
 
-const KNOWN_PSALM_GAPS = new Set([
-	'midnight.midnight-1/psalm-3',
-	'midnight.midnight-1/psalm-6',
-	'midnight.midnight-1/psalm-12',
-	'midnight.midnight-1/psalm-69',
-	'midnight.midnight-1/psalm-85',
-	'midnight.midnight-1/psalm-90',
-	'midnight.midnight-1/psalm-117',
-	'midnight.midnight-1/psalm-118',
-	'midnight.midnight-2/psalm-119',
-	'midnight.midnight-2/psalm-120',
-	'midnight.midnight-2/psalm-121',
-	'midnight.midnight-2/psalm-123',
-	'midnight.midnight-2/psalm-124',
-	'midnight.midnight-2/psalm-125',
-	'midnight.midnight-2/psalm-126',
-	'midnight.midnight-2/psalm-127',
-	'midnight.midnight-2/psalm-128',
-	'midnight.midnight-3/psalm-131',
-	'midnight.midnight-3/psalm-132',
-	'midnight.midnight-3/psalm-136',
-	'midnight.midnight-3/psalm-137',
-	'midnight.midnight-3/psalm-140',
-	'midnight.midnight-3/psalm-141',
-	'midnight.midnight-3/psalm-145',
-	'midnight.midnight-3/psalm-146',
-])
+const KNOWN_PSALM_GAPS = new Set<string>([])
+
+// Both languages now divide every psalm identically, but midnight-1's Psalm 118
+// agrees at a division that is itself suspect: the Arabic embeds the stanza
+// doxology ("ذكصاسي فيلا نيثروبي" / "Doxa ci Vilanthrope") plus its stanza
+// number inside 21 of its verses, welding verse pairs together at the stanza
+// boundaries. That is why it has 156 units rather than the canonical 176, and
+// the English was split to match. Separating those doxologies out should take
+// both languages to 176 — until then the two agree, but agree on a scrape
+// artifact rather than the traditional Agpeya division.
 
 // ── data walking ─────────────────────────────────────────────────────────────
 
