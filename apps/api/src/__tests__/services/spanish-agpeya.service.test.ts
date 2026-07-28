@@ -25,4 +25,14 @@ describe('Spanish Agpeya service', () => {
 		expect(liturgical.psalms[0].verses[0].text).not.toBe(bible.psalms[0].verses[0].text)
 		expect(bible.psalms[0].verses[0].num).toBe(1)
 	})
+
+	it('returns localized Midnight watch labels', () => {
+		const midnight = getAgpeyaHour('midnight', 'es')
+		if (!midnight || !('watches' in midnight)) throw new Error('Spanish Midnight is missing')
+		expect(midnight.watches.map(({ name }) => name)).toEqual([
+			'Primera Vigilia',
+			'Segunda Vigilia',
+			'Tercera Vigilia',
+		])
+	})
 })

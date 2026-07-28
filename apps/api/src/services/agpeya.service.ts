@@ -87,9 +87,9 @@ export interface ResolvedMidnightHour {
 
 // Which psalm text to serve. 'septuagint' (default) prefers the psalms embedded
 // in the Agpeya data — the Septuagint-based liturgical psalter with the
-// traditional Agpeya phrase divisions. Both languages come from the St-Takla
-// Agpeya (English is the standard church translation, not a raw Brenton
-// edition); see scripts/embed-en-psalms.ts for the English import pipeline.
+// traditional Agpeya phrase divisions. Each language comes from a printed or
+// published Agpeya edition rather than a generic Bible substitution; see the
+// data-package import scripts and source notes for provenance.
 // 'bible' always resolves the hour's psalm references against the Bible
 // translation instead (Masoretic-style versification), for readers who want
 // the wording of their own Bible.

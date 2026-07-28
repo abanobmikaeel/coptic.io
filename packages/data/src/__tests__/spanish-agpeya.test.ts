@@ -16,6 +16,24 @@ describe('Spanish Agpeya data', () => {
 		])
 	})
 
+	it('localizes Midnight structure without leaking English metadata', () => {
+		const midnight = getSpanishHour('midnight')
+		if (!midnight || !('watches' in midnight)) throw new Error('Spanish Midnight is missing')
+		expect(midnight.watches.map(({ name }) => name)).toEqual([
+			'Primera Vigilia',
+			'Segunda Vigilia',
+			'Tercera Vigilia',
+		])
+		expect(midnight.watches.map(({ theme }) => theme).join(' ')).not.toMatch(
+			/Watchfulness|Repentance|Judgment/,
+		)
+		expect(
+			midnight.watches
+				.flatMap(({ psalmRefs }) => psalmRefs)
+				.every(({ title, rubric, note }) => title?.startsWith('Salmo ') && !rubric && !note),
+		).toBe(true)
+	})
+
 	it('preserves each LXX psalm sequence with embedded Spanish text', () => {
 		for (const hourId of getAgpeyaHourIds()) {
 			const en = getEnglishHour(hourId)
