@@ -12,6 +12,10 @@ import {
 	getAgpeyaHourIds as getEnAgpeyaHourIds,
 	isMidnightHour,
 } from '@coptic/data/en/agpeya'
+import {
+	getAgpeyaHourData as getEsAgpeyaHourData,
+	getAgpeyaHourIds as getEsAgpeyaHourIds,
+} from '@coptic/data/es/agpeya'
 import type { BibleTranslation } from '../types'
 import {
 	type ResolvedGospel,
@@ -100,16 +104,22 @@ function resolveHour(
 	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedAgpeyaHour {
 	// Resolve introductory psalm (Psalm 50/51)
-	const introductoryPsalm = hourData.introductoryPsalm
-		? resolveAgpeyaPsalms([hourData.introductoryPsalm], translation)[0]
-		: undefined
+	const introductoryPsalm =
+		psalmSource === 'septuagint' && hourData.introductoryPsalmText
+			? (hourData.introductoryPsalmText as unknown as ResolvedPsalm)
+			: hourData.introductoryPsalm
+				? resolveAgpeyaPsalms([hourData.introductoryPsalm], translation)[0]
+				: undefined
 
 	const psalms =
 		psalmSource === 'septuagint' && hourData.psalms?.length
 			? (hourData.psalms as unknown as ResolvedPsalm[])
 			: resolveAgpeyaPsalms(hourData.psalmRefs || [], translation)
 
-	const gospel = resolveAgpeyaGospel(hourData.gospelRef, translation)
+	const gospel =
+		psalmSource === 'septuagint' && hourData.gospel
+			? (hourData.gospel as unknown as ResolvedGospel)
+			: resolveAgpeyaGospel(hourData.gospelRef, translation)
 
 	return {
 		id: hourData.id,
@@ -144,7 +154,12 @@ function resolveWatch(
 		psalmSource === 'septuagint' && watch.psalms?.length
 			? (watch.psalms as unknown as ResolvedPsalm[])
 			: resolveAgpeyaPsalms(watch.psalmRefs || [], translation)
-	const gospel = watch.gospelRef ? resolveAgpeyaGospel(watch.gospelRef, translation) : undefined
+	const gospel =
+		psalmSource === 'septuagint' && watch.gospel
+			? (watch.gospel as unknown as ResolvedGospel)
+			: watch.gospelRef
+				? resolveAgpeyaGospel(watch.gospelRef, translation)
+				: undefined
 
 	return {
 		id: watch.id,
@@ -168,9 +183,12 @@ function resolveMidnightHour(
 	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedMidnightHour {
 	// Resolve introductory psalm (Psalm 50/51)
-	const introductoryPsalm = midnightData.introductoryPsalm
-		? resolveAgpeyaPsalms([midnightData.introductoryPsalm], translation)[0]
-		: undefined
+	const introductoryPsalm =
+		psalmSource === 'septuagint' && midnightData.introductoryPsalmText
+			? (midnightData.introductoryPsalmText as unknown as ResolvedPsalm)
+			: midnightData.introductoryPsalm
+				? resolveAgpeyaPsalms([midnightData.introductoryPsalm], translation)[0]
+				: undefined
 
 	const watches = midnightData.watches.map((watch) => resolveWatch(watch, translation, psalmSource))
 
@@ -191,20 +209,33 @@ function resolveMidnightHour(
 /**
  * Get a specific Agpeya hour with resolved psalm and gospel text
  */
-// Embedded psalms are text in the hour data's own language, and Coptic/Spanish
-// requests reuse the English hour data — for those, always resolve psalms from
-// the requested Bible translation instead of leaking English text.
+// Coptic has no prayer-book prose or embedded psalter, so it deliberately uses
+// Bible resolution. English, Arabic, and Spanish each own a liturgical edition.
 const effectivePsalmSource = (
 	translation: BibleTranslation,
 	psalmSource: PsalmSource,
-): PsalmSource => (translation === 'en' || translation === 'ar' ? psalmSource : 'bible')
+): PsalmSource => (translation === 'cop' ? 'bible' : psalmSource)
+
+const getDataLoader = (translation: BibleTranslation) =>
+	translation === 'ar'
+		? getArAgpeyaHourData
+		: translation === 'es'
+			? getEsAgpeyaHourData
+			: getEnAgpeyaHourData
+
+const getIdLoader = (translation: BibleTranslation) =>
+	translation === 'ar'
+		? getArAgpeyaHourIds
+		: translation === 'es'
+			? getEsAgpeyaHourIds
+			: getEnAgpeyaHourIds
 
 export function getAgpeyaHour(
 	hourId: AgpeyaHourId,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedAgpeyaHour | ResolvedMidnightHour | null {
-	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
+	const getData = getDataLoader(translation)
 	const hourData = getData(hourId)
 	if (!hourData) return null
 
@@ -224,7 +255,7 @@ export function getMidnightWatch(
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
 ): ResolvedAgpeyaWatch | null {
-	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
+	const getData = getDataLoader(translation)
 	const midnightData = getData('midnight') as AgpeyaMidnightHour
 	if (!midnightData) return null
 
@@ -242,7 +273,7 @@ export function getAllHours(
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
 ): (ResolvedAgpeyaHour | ResolvedMidnightHour)[] {
-	const getIds = translation === 'ar' ? getArAgpeyaHourIds : getEnAgpeyaHourIds
+	const getIds = getIdLoader(translation)
 	const hourIds = getIds()
 	const resolved: (ResolvedAgpeyaHour | ResolvedMidnightHour)[] = []
 
@@ -260,11 +291,9 @@ export function getHourIds(): AgpeyaHourId[] {
 	return getEnAgpeyaHourIds()
 }
 
-// Content languages the Agpeya can render. English and Arabic have full prayer
-// prose; Coptic is offered as scripture-only columns (psalms/gospel). Spanish has
-// scripture but no prose, so it is intentionally excluded rather than silently
-// falling back to English prayers.
-const AGPEYA_PROSE_LANGS: BibleTranslation[] = ['en', 'ar']
+// English, Arabic, and Spanish have complete prayer-book prose. Coptic remains
+// a scripture-only column until a sourced Coptic prose edition is imported.
+const AGPEYA_PROSE_LANGS: BibleTranslation[] = ['en', 'ar', 'es']
 const AGPEYA_SCRIPTURE_ONLY_LANGS: BibleTranslation[] = ['cop']
 
 export function getAvailableTranslations(): BibleTranslation[] {

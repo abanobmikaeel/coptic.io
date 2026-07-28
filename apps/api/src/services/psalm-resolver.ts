@@ -35,6 +35,7 @@ export interface GospelReference {
 }
 
 export interface ResolvedGospel {
+	title?: string
 	reference: string
 	rubric?: string
 	verses: BibleVerse[]

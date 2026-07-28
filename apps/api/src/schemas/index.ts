@@ -64,7 +64,7 @@ export const SynaxariumSearchResultSchema = z.object({
 
 // Agpeya schemas - new structured format with watches support
 export const AgpeyaVerseSchema = z.object({
-	num: z.number(),
+	num: z.number().optional(),
 	text: z.string(),
 })
 
@@ -76,6 +76,7 @@ export const AgpeyaPsalmSchema = z.object({
 })
 
 export const AgpeyaGospelSchema = z.object({
+	title: z.string().optional(),
 	reference: z.string(),
 	rubric: z.string().optional(),
 	verses: z.array(AgpeyaVerseSchema),

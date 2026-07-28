@@ -11,12 +11,13 @@ import type { CopticDate, IncenseSection, IncenseService, Verse } from './types'
 interface AgPsalm {
 	title: string
 	reference: string
-	verses: Verse[]
+	verses: Array<{ text: string; num?: number }>
 }
 interface AgGospel {
+	title?: string
 	reference: string
 	rubric?: string
-	verses: Verse[]
+	verses: Array<{ text: string; num?: number }>
 }
 interface AgBlock {
 	title?: string
@@ -58,27 +59,33 @@ export interface ResolvedAgpeyaHour {
 	watches?: AgWatch[]
 }
 
-const psalmSection = (id: string, p: AgPsalm, rubric?: string): IncenseSection => ({
-	id,
-	type: 'psalm',
-	role: 'all',
-	title: p.title,
-	// Only keep the reference when it adds info beyond the title (e.g. a verse range);
-	// for psalms the title is already "Psalm 50", so don't repeat it.
-	reference: p.reference && p.reference !== p.title ? p.reference : undefined,
-	rubric,
-	verses: p.verses,
-})
+const psalmSection = (id: string, p: AgPsalm, rubric?: string): IncenseSection => {
+	const numbered = p.verses.every((verse) => verse.num != null)
+	return {
+		id,
+		type: 'psalm',
+		role: 'all',
+		title: p.title,
+		// Only keep the reference when it adds info beyond the title (e.g. a verse range);
+		// for psalms the title is already "Psalm 50", so don't repeat it.
+		reference: p.reference && p.reference !== p.title ? p.reference : undefined,
+		rubric,
+		...(numbered ? { verses: p.verses as Verse[] } : { content: p.verses.map(({ text }) => text) }),
+	}
+}
 
-const gospelSection = (id: string, g: AgGospel): IncenseSection => ({
-	id,
-	type: 'gospel',
-	role: 'all',
-	title: 'Gospel',
-	reference: g.reference,
-	rubric: g.rubric,
-	verses: g.verses,
-})
+const gospelSection = (id: string, g: AgGospel): IncenseSection => {
+	const numbered = g.verses.every((verse) => verse.num != null)
+	return {
+		id,
+		type: 'gospel',
+		role: 'all',
+		title: g.title ?? 'Gospel',
+		reference: g.reference,
+		rubric: g.rubric,
+		...(numbered ? { verses: g.verses as Verse[] } : { content: g.verses.map(({ text }) => text) }),
+	}
+}
 
 const blockSection = (
 	id: string,

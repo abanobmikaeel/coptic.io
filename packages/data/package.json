@@ -34,6 +34,10 @@
 			"types": "./dist/es/bible/index.d.ts",
 			"import": "./dist/es/bible/index.js"
 		},
+		"./es/agpeya": {
+			"types": "./dist/es/agpeya/index.d.ts",
+			"import": "./dist/es/agpeya/index.js"
+		},
 		"./cop": {
 			"types": "./dist/cop/index.d.ts",
 			"import": "./dist/cop/index.js"
@@ -82,6 +86,7 @@
 	"scripts": {
 		"build": "tsc",
 		"build:index": "tsx scripts/build-synaxarium-index.ts",
+		"import:agpeya:es": "tsx scripts/import-spanish-agpeya.ts",
 		"match:synaxarium": "tsx scripts/llm-match-synaxarium.ts",
 		"rematch:synaxarium": "tsx scripts/llm-rematch-synaxarium.ts",
 		"dev": "tsc --watch",
@@ -100,6 +105,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
+		"@playwright/test": "^1.58.1",
 		"@types/node": "^22.10.5",
 		"@vitest/coverage-v8": "4.1.9",
 		"tsx": "^4.19.0",

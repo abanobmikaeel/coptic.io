@@ -18,7 +18,8 @@ import { AgpeyaContent, AgpeyaFallback } from './AgpeyaContent'
 
 export const metadata: Metadata = {
 	title: 'Agpeya — Coptic Book of Hours',
-	description: 'Pray the canonical hours of the Coptic Orthodox Agpeya, in English and Arabic.',
+	description:
+		'Pray the canonical hours of the Coptic Orthodox Agpeya in English, Spanish, Arabic, and Coptic scripture.',
 }
 
 const AGPEYA_HOUR_IDS = [
@@ -30,7 +31,7 @@ const AGPEYA_HOUR_IDS = [
 	'compline',
 	'midnight',
 ] as const
-// Languages whose Agpeya scripture can be resolved (prose currently English-only).
+// Languages the Agpeya route can render; Coptic remains scripture-only.
 const AGPEYA_LANGS = ['en', 'ar', 'es', 'cop'] as const satisfies ContentLanguage[]
 type AgpeyaLang = (typeof AGPEYA_LANGS)[number]
 

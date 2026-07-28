@@ -6,7 +6,8 @@ export type AgpeyaHourId = 'prime' | 'terce' | 'sext' | 'none' | 'vespers' | 'co
 export type MidnightWatchId = '1' | '2' | '3'
 
 export interface AgpeyaVerse {
-	num: number
+	/** Some authorized prayer books print continuous liturgical text without verse labels. */
+	num?: number
 	text: string
 }
 
@@ -39,6 +40,7 @@ export interface AgpeyaGospelRef {
 
 // Resolved gospel with full text (returned from API)
 export interface AgpeyaGospel {
+	title?: string
 	reference: string
 	rubric?: string
 	verses: AgpeyaVerse[]
@@ -82,6 +84,7 @@ export interface AgpeyaMidnightHour {
 	opening: AgpeyaPrayerSection
 	thanksgiving?: AgpeyaPrayerSection
 	introductoryPsalm?: AgpeyaPsalmRef
+	introductoryPsalmText?: AgpeyaPsalm
 	watches: AgpeyaWatch[]
 	closing: AgpeyaPrayerSection
 }
@@ -100,6 +103,7 @@ export interface AgpeyaHourData {
 	comeLetUsWorship?: AgpeyaPrayerSection
 	thanksgiving?: AgpeyaPrayerSection
 	introductoryPsalm?: AgpeyaPsalmRef // Psalm 50 (51) - prayed at every hour
+	introductoryPsalmText?: AgpeyaPsalm // Printed liturgical edition, when available
 	psalmsIntro?: string // "From the Psalms of our father David..."
 	psalmRefs: AgpeyaPsalmRef[] // References to psalms
 	psalms?: AgpeyaPsalm[] // Populated at runtime by API

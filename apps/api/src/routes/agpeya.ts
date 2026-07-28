@@ -144,7 +144,9 @@ app.openapi(getMidnightWatchRoute, async (c) => {
 // GET /api/agpeya/translations - List content languages the Agpeya can render
 const TranslationsSchema = z
 	.object({
-		available: z.array(z.enum(['en', 'ar', 'es', 'cop'])).openapi({ example: ['en', 'ar', 'cop'] }),
+		available: z
+			.array(z.enum(['en', 'ar', 'es', 'cop']))
+			.openapi({ example: ['en', 'ar', 'es', 'cop'] }),
 	})
 	.openapi('AgpeyaTranslations')
 

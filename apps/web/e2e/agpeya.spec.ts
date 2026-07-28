@@ -61,6 +61,21 @@ test.describe('Agpeya page', () => {
 		await expect(content.first()).toBeVisible({ timeout: 10000 })
 	})
 
+	test('renders the sourced Spanish Agpeya with its liturgical psalter', async ({
+		context,
+		page,
+	}) => {
+		await context.addCookies([
+			{ name: 'CONTENT_LANGUAGES', value: 'es', url: 'http://localhost:3001' },
+		])
+		await page.goto('/agpeya?hour=prime')
+		await expect(
+			page.getByText('En el nombre del Padre, del Hijo y del Espíritu Santo, un solo Dios. Amén.'),
+		).toBeVisible()
+		await page.getByTitle('Sections (T)').click()
+		await expect(page.getByRole('button', { name: /^\d+\s+Evangelio$/ })).toBeVisible()
+	})
+
 	test('should have navigation between hours', async ({ page }) => {
 		// Should be able to switch between prayer hours
 		const hourLinks = page.locator('a, button').filter({
