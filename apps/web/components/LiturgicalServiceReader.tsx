@@ -86,6 +86,12 @@ export interface LiturgicalServiceReaderProps {
 	// Content languages this service can render; passed to the settings menu so languages
 	// with no content (e.g. Spanish has no Agpeya prose) are hidden from the picker.
 	availableLanguages?: BibleTranslation[]
+	// Dense hymnody can opt into paired stanza surfaces while prose services
+	// retain the established Agpeya/Vespers presentation.
+	contentLayout?: 'prose' | 'stanzas'
+	// Fixed row groups for hymn forms that should not be packed by viewport height.
+	// Keys correspond to section `kind` values.
+	rowsPerPageByKind?: Partial<Record<string, number>>
 }
 
 // Generic reader for any multi-language liturgical service (Vespers, Midnight Praises, …).
@@ -101,6 +107,8 @@ export function LiturgicalServiceReader({
 	notice,
 	headerCenter,
 	availableLanguages,
+	contentLayout = 'prose',
+	rowsPerPageByKind,
 }: LiturgicalServiceReaderProps) {
 	const { settings, actions, mounted } = useReadingSettings()
 	const {
@@ -209,6 +217,7 @@ export function LiturgicalServiceReader({
 		weight: (settings.weight as FontWeight) || 'normal',
 		viewMode: settings.viewMode,
 		showVerses: settings.showVerses,
+		contentLayout,
 	}
 
 	// One aligned-rows structure per section drives BOTH reader modes (scroll and
@@ -231,6 +240,7 @@ export function LiturgicalServiceReader({
 	}, [currentSectionId, langs, servicesByLang])
 
 	const isPaginated = mode === 'present' && aligned != null
+	const rowsPerPage = currentSection?.kind ? rowsPerPageByKind?.[currentSection.kind] : undefined
 
 	const onExitNext = useCallback(() => stepSection(1, 'first'), [stepSection])
 	// Paging backward out of a section lands on the previous section's last page (PowerPoint-style).
@@ -286,9 +296,21 @@ export function LiturgicalServiceReader({
 
 	const titleBar = currentSection && (
 		<>
+			{contentLayout === 'stanzas' && currentSection.kind && (
+				<span
+					className={`rounded-full border border-current/15 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] ${themeClasses.accent[theme]}`}
+				>
+					{currentSection.kind}
+				</span>
+			)}
 			<h2 className={`text-sm font-semibold ${themeClasses.textHeading[theme]}`}>
 				{currentSection.title}
 			</h2>
+			{currentSection.titleLanguage && currentSection.titleLanguage !== primaryLang && (
+				<span className={`text-[10px] ${themeClasses.muted[theme]}`}>
+					{currentSection.titleLanguage.toUpperCase()} title
+				</span>
+			)}
 			<RoleBadge role={currentSection.role} lang={primaryLang} theme={theme} />
 			{currentSection.reference && (
 				<span className={`text-xs font-mono ${themeClasses.accent[theme]}`}>
@@ -427,7 +449,9 @@ export function LiturgicalServiceReader({
 						className={`flex-1 min-h-0 transition-opacity duration-200 ${ready ? 'opacity-100' : 'opacity-0'}`}
 					>
 						{isPaginated && aligned ? (
-							<div className="h-full px-2 sm:px-14 md:px-16">
+							<div
+								className={`h-full px-2 sm:px-14 md:px-16 ${contentLayout === 'stanzas' ? 'mx-auto w-full max-w-[1480px]' : ''}`}
+							>
 								<PresentationView
 									key={currentSectionId}
 									ref={presentRef}
@@ -437,19 +461,24 @@ export function LiturgicalServiceReader({
 									onExitNext={onExitNext}
 									onExitPrev={onExitPrev}
 									onPaginationChange={onPaginationChange}
+									rowsPerPage={rowsPerPage}
 									{...styleProps}
 								/>
 							</div>
 						) : (
 							<div ref={scrollRef} className="h-full overflow-y-auto px-2 sm:px-14 md:px-16 py-4">
 								{aligned && (
-									<ServiceSection
-										key={currentSectionId}
-										rows={aligned.rows}
-										activeLangs={aligned.activeLangs}
-										refsByLang={refsByLang}
-										{...styleProps}
-									/>
+									<div
+										className={contentLayout === 'stanzas' ? 'mx-auto w-full max-w-[1480px]' : ''}
+									>
+										<ServiceSection
+											key={currentSectionId}
+											rows={aligned.rows}
+											activeLangs={aligned.activeLangs}
+											refsByLang={refsByLang}
+											{...styleProps}
+										/>
+									</div>
 								)}
 							</div>
 						)}
@@ -464,6 +493,7 @@ export function LiturgicalServiceReader({
 						<SectionDots
 							sections={sections}
 							sectionIndex={sectionIndex}
+							compact={contentLayout === 'stanzas'}
 							theme={theme}
 							hasPrev={hasPrev}
 							hasNext={hasNext}

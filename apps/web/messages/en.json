@@ -119,6 +119,8 @@
 		"katamarosDescription": "Daily Lectionary",
 		"agpeya": "Agpeya",
 		"agpeyaDescription": "Prayer Hours",
+		"tasbeha": "Tasbeha",
+		"tasbehaDescription": "Midnight Praises",
 		"synaxarium": "Synaxarium",
 		"synaxariumDescription": "Lives of Saints",
 		"vespers": "Vespers",
@@ -229,6 +231,7 @@
 		"subtitle": "Browse prayers and readings",
 		"katamarosDescription": "Scripture readings for the liturgical calendar",
 		"agpeyaDescription": "The seven canonical hours of prayer",
+		"tasbehaDescription": "The annual Sunday Midnight Praises",
 		"synaxariumDescription": "Daily commemorations and martyrologies"
 	},
 	"calendar": {

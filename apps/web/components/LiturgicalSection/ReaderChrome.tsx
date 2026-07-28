@@ -67,6 +67,7 @@ interface SectionDotsProps extends NavProps {
 	sections: IncenseSection[]
 	sectionIndex: number
 	onJump: (index: number) => void
+	compact?: boolean
 }
 
 // Bottom dot strip: prev/next plus one dot per section (with a hover title), the current
@@ -80,6 +81,7 @@ export function SectionDots({
 	onPrev,
 	onNext,
 	onJump,
+	compact = false,
 }: SectionDotsProps) {
 	const arrowCls = `flex-shrink-0 p-1.5 rounded-lg transition-colors disabled:opacity-25 ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`
 	// Keep the active dot visible when the strip overflows on narrow screens.
@@ -99,36 +101,53 @@ export function SectionDots({
 			>
 				<ChevronIcon dir="left" />
 			</button>
-			{/* w-max + mx-auto centres the dots when they fit and scrolls (scrollbar
-			    hidden) when they overflow — justify-center on the scroller itself would
-			    clip the leading dots unreachably off-screen. */}
-			<div className="flex-1 min-w-0 overflow-x-auto scrollbar-hide">
-				<div className="w-max mx-auto flex items-center gap-1.5 px-1">
-					{sections.map((s, i) => (
+			{compact ? (
+				<div className="flex flex-1 items-center justify-center gap-3 px-2" aria-live="polite">
+					<div className="h-1 w-full max-w-sm overflow-hidden rounded-full bg-current/10">
 						<div
-							key={s.id}
-							ref={i === sectionIndex ? activeDotRef : undefined}
-							className="group relative flex-shrink-0"
-						>
-							<button
-								type="button"
-								onClick={() => onJump(i)}
-								className="flex items-center justify-center p-2 -m-2"
-								aria-label={s.title}
-							>
-								<span
-									className={`block h-1.5 rounded-full transition-all duration-200 ${i === sectionIndex ? 'w-6 bg-amber-500' : 'w-1.5 bg-current opacity-20 group-hover:opacity-40'}`}
-								/>
-							</button>
-							<div
-								className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-2 py-1 rounded text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50 ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} border ${themeClasses.border[theme]} shadow-md`}
-							>
-								{s.title}
-							</div>
-						</div>
-					))}
+							className="h-full rounded-full bg-amber-500 transition-[width] duration-300"
+							style={{ width: `${((sectionIndex + 1) / sections.length) * 100}%` }}
+						/>
+					</div>
+					<span
+						dir="ltr"
+						className={`flex-none text-[11px] font-medium tabular-nums ${themeClasses.muted[theme]}`}
+					>
+						{sectionIndex + 1} / {sections.length}
+					</span>
 				</div>
-			</div>
+			) : (
+				/* w-max + mx-auto centres the dots when they fit and scrolls (scrollbar
+				   hidden) when they overflow — justify-center on the scroller itself would
+				   clip the leading dots unreachably off-screen. */
+				<div className="flex-1 min-w-0 overflow-x-auto scrollbar-hide">
+					<div className="w-max mx-auto flex items-center gap-1.5 px-1">
+						{sections.map((s, i) => (
+							<div
+								key={s.id}
+								ref={i === sectionIndex ? activeDotRef : undefined}
+								className="group relative flex-shrink-0"
+							>
+								<button
+									type="button"
+									onClick={() => onJump(i)}
+									className="flex items-center justify-center p-2 -m-2"
+									aria-label={s.title}
+								>
+									<span
+										className={`block h-1.5 rounded-full transition-all duration-200 ${i === sectionIndex ? 'w-6 bg-amber-500' : 'w-1.5 bg-current opacity-20 group-hover:opacity-40'}`}
+									/>
+								</button>
+								<div
+									className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-2 py-1 rounded text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50 ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} border ${themeClasses.border[theme]} shadow-md`}
+								>
+									{s.title}
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
 			<button
 				type="button"
 				onClick={onNext}

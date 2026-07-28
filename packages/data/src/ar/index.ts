@@ -15,6 +15,9 @@ export * from './incense'
 // Agpeya - Book of Hours
 export * from './agpeya'
 
+// Tasbeha - Sunday Midnight Praises
+export * from './tasbeha'
+
 export const LANGUAGE = 'ar' as const
 
 export const AVAILABLE_SOURCES = ['canonical', 'st-takla'] as const

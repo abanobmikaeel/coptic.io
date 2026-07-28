@@ -19,8 +19,9 @@ import {
 	useState,
 } from 'react'
 import { Row } from './Row'
+import { LanguageColumnsHeader } from './ServiceSection'
 import type { AlignedRow } from './align'
-import { computePageBreaks } from './pagination'
+import { computeFixedPageBreaks, computePageBreaks } from './pagination'
 
 export interface PresentationViewHandle {
 	next: () => void
@@ -38,6 +39,7 @@ interface PresentationViewProps {
 	weight: FontWeight
 	viewMode?: ViewMode
 	showVerses?: boolean
+	contentLayout?: 'prose' | 'stanzas'
 	// Called when paging past the last/first page — parent advances to the adjacent section.
 	onExitNext: () => void
 	onExitPrev: () => void
@@ -45,6 +47,7 @@ interface PresentationViewProps {
 	// 'last' lands on the final page once measured — for PowerPoint-style backward entry
 	// (paging left out of a section into the end of the previous one).
 	initialPage?: 'first' | 'last'
+	rowsPerPage?: number
 }
 
 // Reserve from the measured viewport: pt-2 (8px) above + a little breathing room below.
@@ -65,6 +68,7 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 			onExitPrev,
 			onPaginationChange,
 			initialPage = 'first',
+			rowsPerPage,
 			...style
 		},
 		ref,
@@ -77,7 +81,7 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 		const [isClient, setIsClient] = useState(false)
 		useEffect(() => setIsClient(true), [])
 
-		const styleSig = `${style.textSize}|${style.lineSpacing}|${style.fontFamily}|${style.weight}|${style.wordSpacing}|${style.viewMode}|${style.showVerses}`
+		const styleSig = `${style.textSize}|${style.lineSpacing}|${style.fontFamily}|${style.weight}|${style.wordSpacing}|${style.viewMode}|${style.showVerses}|${style.contentLayout}|${rowsPerPage}`
 		const langsSig = activeLangs.join('|')
 
 		// Measure rendered row heights → compute page breaks. Runs before paint (no
@@ -97,13 +101,16 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 					const nextTop = rowEls[i + 1]?.getBoundingClientRect().top
 					return nextTop != null ? nextTop - top : el.getBoundingClientRect().height
 				})
-				const available = view.clientHeight - PAGE_VERTICAL_RESERVE
+				const languageHeaderReserve = style.contentLayout === 'stanzas' ? 28 : 0
+				const available = view.clientHeight - PAGE_VERTICAL_RESERVE - languageHeaderReserve
 				setBreaks(
-					computePageBreaks(
-						rowHeights,
-						available,
-						rows.map((row) => row.isRubric),
-					),
+					rowsPerPage
+						? computeFixedPageBreaks(rows.length, rowsPerPage)
+						: computePageBreaks(
+								rowHeights,
+								available,
+								rows.map((row) => row.isRubric),
+							),
 				)
 			}
 
@@ -164,6 +171,9 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 			<div ref={viewRef} className="relative h-full overflow-y-auto scrollbar-hide">
 				{/* Visible page: a contiguous slice of the shared rows. */}
 				<div className="pt-2">
+					{style.contentLayout === 'stanzas' && (
+						<LanguageColumnsHeader activeLangs={activeLangs} theme={style.theme} />
+					)}
 					{rows.slice(pageStart, pageEnd).map((row, i) => (
 						<Row
 							key={pageStart + i}

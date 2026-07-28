@@ -148,6 +148,18 @@ const endpointGroups: EndpointGroup[] = [
 		],
 	},
 	{
+		title: 'Tasbeha',
+		description: 'Coptic Orthodox Midnight Praises',
+		endpoints: [
+			{
+				method: 'GET',
+				path: '/tasbeha/sunday',
+				description: 'Get the annual Sunday (Adam) Midnight Praises',
+				params: 'lang?: en|cop|ar',
+			},
+		],
+	},
+	{
 		title: 'Search',
 		description: 'Unified search across all content',
 		endpoints: [

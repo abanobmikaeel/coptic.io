@@ -73,6 +73,18 @@
 		"./cop/incense": {
 			"types": "./dist/cop/incense/index.d.ts",
 			"import": "./dist/cop/incense/index.js"
+		},
+		"./en/tasbeha": {
+			"types": "./dist/en/tasbeha/index.d.ts",
+			"import": "./dist/en/tasbeha/index.js"
+		},
+		"./ar/tasbeha": {
+			"types": "./dist/ar/tasbeha/index.d.ts",
+			"import": "./dist/ar/tasbeha/index.js"
+		},
+		"./cop/tasbeha": {
+			"types": "./dist/cop/tasbeha/index.d.ts",
+			"import": "./dist/cop/tasbeha/index.js"
 		}
 	},
 	"files": [
@@ -82,6 +94,7 @@
 	"scripts": {
 		"build": "tsc",
 		"build:index": "tsx scripts/build-synaxarium-index.ts",
+		"import:tasbeha": "tsx scripts/import-tasbeha.ts",
 		"match:synaxarium": "tsx scripts/llm-match-synaxarium.ts",
 		"rematch:synaxarium": "tsx scripts/llm-rematch-synaxarium.ts",
 		"dev": "tsc --watch",

@@ -1,7 +1,9 @@
 import { gregorianToCoptic } from '../calendar/conversion'
 import { type MoveableFeast, getMoveableFeastsForDate } from '../calendar/moveable'
+import { getEasterDate } from '../calendar/pascha'
 import type { CopticDate } from '../types/date'
 import type { FastingInfo } from '../types/synaxarium'
+import { toMidnight } from '../utils/date'
 import { type FastingLevel, getFastingForDate, getFastingLevel } from './fasting'
 import { type LiturgicalSeason, getLiturgicalSeasonForDate } from './seasons'
 
@@ -110,6 +112,17 @@ export const getLiturgicalContext = (
 export const isInHolyFifty = (date: Date): boolean => {
 	const season = getLiturgicalSeasonForDate(date)
 	return season?.name === 'Paschal Season'
+}
+
+/**
+ * Parts 16–18 of the Sunday Theotokia are said from the Resurrection through
+ * the end of Hathor. This crosses the Coptic new year, so it cannot be modeled
+ * as one simple Coptic-month range.
+ */
+export const includesLateSundayTheotokiaParts = (date: Date): boolean => {
+	const copticDate = gregorianToCoptic(date)
+	if (copticDate.month <= 3) return true
+	return copticDate.month >= 8 && toMidnight(date) >= toMidnight(getEasterDate(date.getFullYear()))
 }
 
 /**

@@ -119,6 +119,8 @@
 		"katamarosDescription": "Leccionario Diario",
 		"agpeya": "Agpeya",
 		"agpeyaDescription": "Horas de Oración",
+		"tasbeha": "Tasbeha",
+		"tasbehaDescription": "Alabanzas de Medianoche",
 		"synaxarium": "Sinaxario",
 		"synaxariumDescription": "Vidas de Santos",
 		"vespers": "Vísperas",
@@ -229,6 +231,7 @@
 		"subtitle": "Explora oraciones y lecturas",
 		"katamarosDescription": "Lecturas bíblicas para el calendario litúrgico",
 		"agpeyaDescription": "Las siete horas canónicas de oración",
+		"tasbehaDescription": "Las alabanzas de medianoche del domingo",
 		"synaxariumDescription": "Conmemoraciones diarias y martirologios"
 	},
 	"calendar": {
