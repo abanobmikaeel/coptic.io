@@ -44,15 +44,6 @@ const KNOWN_PROSE_GAPS = new Set([
 
 const KNOWN_PSALM_GAPS = new Set<string>([])
 
-// Both languages now divide every psalm identically, but midnight-1's Psalm 118
-// agrees at a division that is itself suspect: the Arabic embeds the stanza
-// doxology ("ذكصاسي فيلا نيثروبي" / "Doxa ci Vilanthrope") plus its stanza
-// number inside 21 of its verses, welding verse pairs together at the stanza
-// boundaries. That is why it has 156 units rather than the canonical 176, and
-// the English was split to match. Separating those doxologies out should take
-// both languages to 176 — until then the two agree, but agree on a scrape
-// artifact rather than the traditional Agpeya division.
-
 // ── data walking ─────────────────────────────────────────────────────────────
 
 interface Block {

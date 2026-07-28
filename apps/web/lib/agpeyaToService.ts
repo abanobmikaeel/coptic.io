@@ -143,11 +143,16 @@ export function agpeyaToService(
 				type: 'prayer',
 				role: 'all',
 				title: watch.name,
-				content: watch.theme ? [watch.theme] : [],
+				// The theme ("Watchfulness and Vigilance") names the watch rather than
+				// being prayed, so it rides as the heading's rubric. The heading then
+				// carries the "From the Psalms of David…" intro as its body, which stops
+				// it rendering as a slide holding nothing but a subtitle.
+				rubric: watch.theme,
+				content: watch.psalmsIntro ? [watch.psalmsIntro] : [],
 			})
 			if (watch.opening)
 				add(blockSection(`watch-${watch.id}-opening`, 'prayer', 'Prayer', watch.opening))
-			pushPsalms(sections, watch.psalms, `watch-${wi}-psalm`, watch.psalmsIntro)
+			pushPsalms(sections, watch.psalms, `watch-${wi}-psalm`)
 			if (watch.gospel) add(gospelSection(`watch-${watch.id}-gospel`, watch.gospel))
 			add(blockSection(`watch-${watch.id}-litanies`, 'litany', 'Litanies', watch.litanies))
 			add(blockSection(`watch-${watch.id}-closing`, 'prayer', 'Closing', watch.closing))
