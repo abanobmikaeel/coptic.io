@@ -15,7 +15,7 @@ export * from './incense'
 // Agpeya - Book of Hours
 export * from './agpeya'
 
-// Tasbeha - Sunday Midnight Praises
+// Tasbeha - the weekly Psalmody (Midnight Praises and Saturday Vespers Praise)
 export * from './tasbeha'
 
 export const LANGUAGE = 'ar' as const

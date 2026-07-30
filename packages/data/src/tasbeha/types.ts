@@ -34,16 +34,61 @@ export interface TasbehaSection {
 	availability?: 'resurrection-through-hathor'
 }
 
+/**
+ * One service per day of the week. Saturday is a Vespers Praise rather than a
+ * Midnight Praise: it is prayed on Saturday evening and omits the four canticles
+ * and the morning doxology.
+ */
+export type TasbehaServiceId =
+	| 'sunday-midnight-praises'
+	| 'monday-midnight-praises'
+	| 'tuesday-midnight-praises'
+	| 'wednesday-midnight-praises'
+	| 'thursday-midnight-praises'
+	| 'friday-midnight-praises'
+	| 'saturday-vespers-praises'
+
+export interface TasbehaRite {
+	cycle: TasbehaCycle
+	dayTune: TasbehaDayTune
+	weekdays: number[]
+}
+
+/**
+ * A service with every section resolved — what consumers read. Composed at load
+ * time from a day file plus `common.json`; see the per-language `tasbeha/index.ts`.
+ */
 export interface TasbehaServiceData {
-	id: 'sunday-midnight-praises'
+	id: TasbehaServiceId
 	language: TasbehaLanguage
 	name: string
 	description: string
-	rite: {
-		cycle: TasbehaCycle
-		dayTune: TasbehaDayTune
-		weekdays: number[]
-	}
+	rite: TasbehaRite
 	status: 'complete'
 	sections: TasbehaSection[]
+}
+
+/**
+ * The generated shape of `{day}.json`. Most of the annual Psalmody is shared
+ * between days, so a day file stores only the sections proper to it and refers to
+ * the rest by id. `order` is the full rite in sequence, which also makes the
+ * service readable without expanding it.
+ */
+export interface TasbehaServiceFile {
+	id: TasbehaServiceId
+	language: TasbehaLanguage
+	name: string
+	description: string
+	rite: TasbehaRite
+	status: 'complete'
+	/** Section ids in prayed order, resolved against `sections` then `common.json`. */
+	order: string[]
+	/** Sections prayed by this service alone. */
+	sections: TasbehaSection[]
+}
+
+/** The generated shape of `common.json`: sections prayed by more than one service. */
+export interface TasbehaCommonFile {
+	language: TasbehaLanguage
+	sections: Record<string, TasbehaSection>
 }

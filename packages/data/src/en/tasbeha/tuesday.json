@@ -1,0 +1,146 @@
+{
+	"id": "tuesday-midnight-praises",
+	"language": "en",
+	"name": "Tuesday Midnight Praises",
+	"description": "The complete fixed annual Tuesday (Adam) Midnight Psalmody.",
+	"rite": {
+		"cycle": "annual",
+		"dayTune": "adam",
+		"weekdays": [
+			2
+		]
+	},
+	"status": "complete",
+	"order": [
+		"ten-theno",
+		"first-hoos",
+		"first-hoos-lobsh",
+		"second-hoos",
+		"second-hoos-lobsh",
+		"third-hoos",
+		"third-hoos-esmo-epchois",
+		"three-children-greek-psali",
+		"ten-oueh-ensok",
+		"saints-commemoration",
+		"virgin-mary-doxology",
+		"fourth-hoos",
+		"tuesday-psali",
+		"theotokia-introduction-leebon",
+		"tuesday-theotokia",
+		"tuesday-theotokia-lobsh",
+		"difnar-introduction-adam",
+		"adam-theotokias-conclusion",
+		"concluding-litany",
+		"morning-doxology"
+	],
+	"sections": [
+		{
+			"id": "tuesday-psali",
+			"title": "The Tuesday Psali",
+			"kind": "psali",
+			"content": [
+				"Come to us today, O Christ our Master, shine upon us, with Your exalted divinity.\nSend to us, this great grace, of Your Holy Spirit, the Paraclete.",
+				"So that I may speak, with great honor, about Your holy, and blessed name.\nThis is He who was glorified, by the mouths of, Your righteous saints, who lived upon the earth.",
+				"By those wandering people, in the barren mountains, threatened by hunger and thirst, frost and cold.\nThey were needy and suffering, and afflicted, according to, Paul the apostle.",
+				"But Your holy name, O my Lord Jesus, upheld and delivered them, in all their sufferings.\nYour holy name, O my Lord Jesus, saved them from all, their afflictions.",
+				"For them it was, a living food, which filled their souls, and their bodies too.\nFor them it was, a fountain of living water, sweeter than honey, in their mouths.",
+				"When they call upon it, their hearts rejoiced, and their bodies, blossomed.\nWhen they uttered it, their minds were enlightened, and their hearts ascended, to the heights."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/351",
+				"pageId": 351,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "tuesday-theotokia",
+			"title": "The Tuesday Theotokia — Adam",
+			"kind": "theotokia",
+			"content": [
+				"The First Part",
+				"The crown of our pride, the head of our salvation, the confirmation of our purity, is the Virgin Mary.",
+				"Who for us gave birth to, God the Word, who became man, for our salvation.",
+				"And after He became man, He is also God, therefore she gave birth to Him, while a virgin.",
+				"Exalted is the wonder, of her pregnancy, and her delivery, is unutterable.",
+				"For of His own will, and the pleasure of His Father, and the Holy Spirit, He came and saved us.",
+				"The Second Part",
+				"Great is the glory, of your virginity, O Virgin Mary, the perfect one.",
+				"You have found grace, and the Lord is with you, you are the ladder, which Jacob saw.",
+				"Set firmly on the earth, reaching to heaven, where the angels, come down upon it.",
+				"You are the tree, which Moses has seen, flaming with fire, and was not consumed.",
+				"This is the Son of God, who dwelt in your womb, the fire of His divinity, did not burn your body.",
+				"You are the field, that was not planted, but you did give, the Fruit of life.",
+				"You are the treasure, that Joseph bought, and he found the pearl, hidden in its midst.",
+				"Our Savior Jesus, was found in your womb, you bore Him for the world, that He may save us.",
+				"For of His own will, and the pleasure of His Father, and the Holy Spirit, He came and saved us.",
+				"The Third Part",
+				"Hail to the Mother of God, the rejoicing of angels, hail to the chaste one, the preaching of the prophets.",
+				"Hail to you who has found grace, the Lord is with you, hail to you who accepted, the Joy of the world.",
+				"Hail to her who gave birth, to the Creator of all, hail to her who is worthy, to be called the Mother of Christ.",
+				"Hail to you who brought, salvation to Adam and Eve, hail to her who nursed, the Provider of everyone.",
+				"Hail to the saint, the Mother of all the living, you are the one we pray to, intercede for us.",
+				"For of His own will, and the pleasure of His Father, and the Holy Spirit, He came and saved us.",
+				"The Fourth Part",
+				"If someone contemplates, about you, O holy Virgin, and Mother of God.",
+				"And about the Mystery, full of wonder, which dwelt in you, for our salvation.",
+				"He would keep silent, for he cannot utter, he would make us, rise up for praise.",
+				"Because of the greatness, of the wonderful, Maker of all, good things.",
+				"For the living Word, of God the Father, came down to give the law, on Mount Sinai.",
+				"He covered the peak, of the mountain, with smoke and darkness, mist and storms.",
+				"Through the sound, of the trumpets, He was teaching the people, standing with fear.",
+				"He also descended on you, O speaking mountain, that spoke with humility, and love of mankind.",
+				"And likewise, He took flesh from you, without alteration, a speaking body.",
+				"Co-essential with us, and perfect, and also has, a rational soul.",
+				"He remained God, as He is, and became, a perfect man.",
+				"So as to abolish, the iniquity of Adam, and that He may save, those who perished.",
+				"And to make him, a citizen of heaven, and restore his leadership, according to His great mercy.",
+				"For of His own will, and the pleasure of His Father, and the Holy Spirit, He came and saved us.",
+				"The Fifth Part",
+				"The honor of the Virgin, is unutterable, for God desired her, He came and dwelt in her.",
+				"He who abides in light, that is unapproachable, dwelt in her womb, for nine months.",
+				"Mary gave birth to, the Invisible, and Infinite One, and remained a virgin.",
+				"For this is the Rock, which Daniel saw, which was cut, from a mountain.",
+				"The hands of men, never touched Him, for He is the Word, of the Father.",
+				"He came and took flesh, from the Virgin, without the seed of man, in order to save us.",
+				"For of His own will, and the pleasure of His Father, and the Holy Spirit, He came and saved us.",
+				"The Sixth Part",
+				"You became a branch, of purity, and a vessel, of the faith.",
+				"Of the orthodox, our holy fathers, O chaste Mother of God, the honored Virgin.",
+				"For you gave birth for us, God the Word, our Savior Jesus, He came and saved us.",
+				"For of His own will, and the pleasure of His Father, and the Holy Spirit, He came and saved us.",
+				"The Seventh Part",
+				"You are the Mother of light, the honored Mother of God, you have carried, the infinite Logos.",
+				"After you gave birth to Him, you remained a virgin, with praises and blessings, we magnify you.",
+				"For of His own will, and the pleasure of His Father, and the Holy Spirit, He came and saved us."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/467",
+				"pageId": 467,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "tuesday-theotokia-lobsh",
+			"title": "The Tuesday Theotokia Lobsh",
+			"kind": "lobsh",
+			"content": [
+				"What bodily tongue, can describe you, O holy Virgin, and Mother of God.",
+				"For you became, a royal throne for the One, who is carried, by the Cherubim.",
+				"By what means can we bless you, for you were exalted, above all the highest, and rational natures.",
+				"Your name is remembered, throughout all ages, O beautiful dove, and Mother of Christ.",
+				"Rejoice O Mary, the handmaiden and the Mother, for the angels praise Him, who is on your arms.",
+				"And the Cherubim, worthily worship Him, with the Seraphim, without ceasing.",
+				"They flap their wings saying, “This is the King of glory, who carries the sin of the world, according to His great mercy.”",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/468",
+				"pageId": 468,
+				"accessedAt": "2026-07-30"
+			}
+		}
+	]
+}

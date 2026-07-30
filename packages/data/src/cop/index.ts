@@ -12,7 +12,7 @@ export { default as bibleData } from './bible'
 // Incense - Raising of Incense (Vespers)
 export * from './incense'
 
-// Tasbeha - Sunday Midnight Praises
+// Tasbeha - the weekly Psalmody (Midnight Praises and Saturday Vespers Praise)
 export * from './tasbeha'
 
 export const LANGUAGE = 'cop' as const
