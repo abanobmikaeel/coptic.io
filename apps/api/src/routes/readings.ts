@@ -4,7 +4,7 @@ import { Hono } from 'hono'
 import { getByCopticDate, warmTranslation } from '../models/readings'
 import type { BibleTranslation } from '../types'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
-import { parseLocalDate } from '../utils/dateUtils'
+import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
 
 const readings = new Hono()
 
@@ -47,9 +47,11 @@ readings.get('/:date?', async (c) => {
 	if (dateParam) {
 		const parsed = parseLocalDate(dateParam)
 		if (!parsed) {
-			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
 		}
 		parsedDate = parsed
+	} else {
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
 	// In Workers, bible data is lazy-loaded from R2 on first use per isolate.

@@ -1,7 +1,12 @@
 import { gregorianToCoptic, localizeCopticDate } from '@coptic/core'
-import { isValid, parse } from 'date-fns'
 import { Hono } from 'hono'
 import * as calendarService from '../services/calendar.service'
+import {
+	INVALID_DATE_MESSAGE,
+	INVALID_YEAR_MESSAGE,
+	isSupportedYear,
+	parseLocalDate,
+} from '../utils/dateUtils'
 
 const calendar = new Hono()
 
@@ -11,8 +16,8 @@ calendar.get('/month/:year/:month', async (c) => {
 	const year = Number.parseInt(c.req.param('year'))
 	const month = Number.parseInt(c.req.param('month'))
 
-	if (Number.isNaN(year) || year < 1900 || year > 2199) {
-		return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
+	if (!isSupportedYear(year)) {
+		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 	}
 	if (Number.isNaN(month) || month < 1 || month > 12) {
 		return c.json({ error: 'Invalid month. Must be between 1 and 12' }, 400)
@@ -62,6 +67,10 @@ calendar.get('/ical/:year', async (c) => {
 	const yearParam = c.req.param('year')
 	const year = Number.parseInt(yearParam)
 
+	if (!isSupportedYear(year)) {
+		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
+	}
+
 	const icalContent = calendarService.getYearCalendar(year)
 
 	c.header('Content-Type', 'text/calendar; charset=utf-8')
@@ -76,17 +85,20 @@ calendar.get('/:date?', async (c) => {
 	const dateParam = c.req.param('date')
 
 	// Default to today
-	let parsedDate: Date
+	let parsedDate = new Date()
 	if (dateParam) {
-		parsedDate = parse(dateParam, 'yyyy-MM-dd', new Date())
-		if (!isValid(parsedDate)) {
-			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+		const parsed = parseLocalDate(dateParam)
+		if (!parsed) {
+			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
 		}
+		parsedDate = parsed
 	} else {
-		parsedDate = new Date()
+		// Wall-clock dependent; don't let the 12h edge cache serve stale "today" responses.
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
-	const lang = c.req.query('lang') || 'en'
+	const langQuery = c.req.query('lang')
+	const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
 	const copticDate = localizeCopticDate(gregorianToCoptic(parsedDate), lang)
 	return c.json(copticDate)
 })

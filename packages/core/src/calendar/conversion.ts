@@ -1,4 +1,5 @@
 import type { CopticDate } from '../types/date'
+import { COPTIC_MONTHS } from '../types/date'
 
 /**
  * Pure arithmetic Coptic date conversion
@@ -9,23 +10,6 @@ import type { CopticDate } from '../types/date'
  * ~50x faster than Intl.DateTimeFormat by avoiding ICU library calls
  * and string parsing. Uses integer arithmetic only.
  */
-
-// Month names matching synxarium.json data
-const COPTIC_MONTHS = [
-	'Tout',
-	'Baba',
-	'Hator',
-	'Kiahk',
-	'Toba',
-	'Amshir',
-	'Baramhat',
-	'Baramouda',
-	'Bashans',
-	'Paona',
-	'Epep',
-	'Mesra',
-	'Nasie',
-] as const
 
 /**
  * Julian Day Number for Coptic epoch (Tout 1, Year 1)
@@ -40,6 +24,41 @@ const COPTIC_JD_EPOCH_OFFSET = 1824665
  * Uses the standard astronomical algorithm for JDN calculation.
  * This is a continuous day count since January 1, 4713 BC (Julian calendar).
  */
+/**
+ * Convert Julian Day Number to Gregorian date.
+ * Inverse of the JDN formula used in gregorianToJD.
+ */
+export function jdToGregorian(jd: number): { year: number; month: number; day: number } {
+	const l = jd + 68569
+	const n = Math.floor((4 * l) / 146097)
+	const l2 = l - Math.floor((146097 * n + 3) / 4)
+	const i = Math.floor((4000 * (l2 + 1)) / 1461001)
+	const l3 = l2 - Math.floor((1461 * i) / 4) + 31
+	const j = Math.floor((80 * l3) / 2447)
+	const day = l3 - Math.floor((2447 * j) / 80)
+	const l4 = Math.floor(j / 11)
+	const month = j + 2 - 12 * l4
+	const year = 100 * (n - 49) + i + l4
+	return { year, month, day }
+}
+
+/**
+ * Julian Day Number for a date on the JULIAN calendar.
+ *
+ * Same shape as gregorianToJD but without the century terms, since the Julian
+ * calendar leaps every fourth year with no exceptions. Used to convert dates the
+ * Church reckons on the Julian calendar — Pascha above all — into Gregorian ones
+ * without hardcoding the offset between the two, which grows by a day each
+ * century that is not divisible by 400.
+ */
+export function julianToJD(year: number, month: number, day: number): number {
+	const a = Math.floor((14 - month) / 12)
+	const y = year + 4800 - a
+	const m = month + 12 * a - 3
+
+	return day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - 32083
+}
+
 function gregorianToJD(year: number, month: number, day: number): number {
 	// Adjust for months Jan/Feb being "13th/14th month of previous year"
 	const a = Math.floor((14 - month) / 12)
@@ -113,6 +132,27 @@ export const gregorianToCoptic = (gregorianDate: Date): CopticDate => {
 		year,
 		monthString,
 	}
+}
+
+/**
+ * Convert a Coptic date to a Gregorian Date object (local timezone).
+ *
+ * @param copticDate - The Coptic date to convert
+ * @returns Corresponding Gregorian date at local midnight
+ */
+export const copticToGregorian = (copticDate: {
+	year: number
+	month: number
+	day: number
+}): Date => {
+	const { year, month, day } = copticDate
+	// Mirrors jdToCoptic, where jday 0 is Tout 1 of year 0 — so the year is counted
+	// from the epoch as-is, not offset by one. Leap days land on year % 4 === 3
+	// (Nasie 6), which is exactly floor(year / 4) days inserted before year `year`.
+	const jday =
+		COPTIC_JD_EPOCH_OFFSET + year * 365 + Math.floor(year / 4) + (month - 1) * 30 + (day - 1)
+	const gregorian = jdToGregorian(jday)
+	return new Date(gregorian.year, gregorian.month - 1, gregorian.day)
 }
 
 /**

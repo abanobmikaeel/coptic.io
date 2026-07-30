@@ -1,10 +1,11 @@
 import { getLiturgicalName } from '@coptic/core'
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
-import { isValid, parse } from 'date-fns'
+import { createRoute, z } from '@hono/zod-openapi'
 import { CelebrationSchema, ErrorSchema, UpcomingCelebrationSchema } from '../schemas'
 import * as celebrationsService from '../services/celebrations.service'
+import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
+import { createApiApp } from '../utils/openapi'
 
-const app = new OpenAPIHono()
+const app = createApiApp()
 
 // Localize a celebration's name for the requested language (falls back to English).
 const localizeName = <T extends { name: string }>(c: T, lang: string): T => ({
@@ -76,14 +77,15 @@ app.openapi(getForDateRoute, (c) => {
 	const { date } = c.req.valid('param')
 	const { lang } = c.req.valid('query')
 
-	let parsedDate: Date
+	let parsedDate = new Date()
 	if (date) {
-		parsedDate = parse(date, 'yyyy-MM-dd', new Date())
-		if (!isValid(parsedDate)) {
-			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+		const parsed = parseLocalDate(date)
+		if (!parsed) {
+			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
 		}
+		parsedDate = parsed
 	} else {
-		parsedDate = new Date()
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
 	const celebrations = celebrationsService.getCelebrationsForDate(parsedDate)
@@ -100,7 +102,7 @@ const getUpcomingRoute = createRoute({
 	description: 'Returns celebrations occurring in the next N days',
 	request: {
 		query: z.object({
-			days: z.string().optional().openapi({ example: '30' }),
+			days: z.coerce.number().min(1).max(365).optional().openapi({ example: 30 }),
 			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
 		}),
 	},
@@ -118,8 +120,9 @@ const getUpcomingRoute = createRoute({
 
 app.openapi(getUpcomingRoute, (c) => {
 	const { days, lang } = c.req.valid('query')
-	const daysNum = Number.parseInt(days || '30')
-	const upcoming = celebrationsService.getUpcomingCelebrations(daysNum)
+	// This response is always relative to "today", so it must not be cached for 12h.
+	c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
+	const upcoming = celebrationsService.getUpcomingCelebrations(days ?? 30)
 	const localized = upcoming.map((day) => ({
 		...day,
 		celebrations: day.celebrations.map((cel) => localizeName(cel, lang ?? 'en')),

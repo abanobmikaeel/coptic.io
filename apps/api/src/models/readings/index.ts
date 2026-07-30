@@ -133,6 +133,7 @@ type ReadingReference = {
 type ReadingResponse = {
 	reference?: ReadingReference
 	Synaxarium: SynaxariumEntry[]
+	synaxariumLanguage?: string
 	Prophecies?: Reading[] | null
 	VPsalm?: Reading[] | null
 	VGospel?: Reading[] | null
@@ -200,6 +201,7 @@ const buildLentResponse = (
 	date: Date,
 	isDetailed?: boolean,
 	translation: BibleTranslation = 'en',
+	synaxariumLanguage = 'en',
 ): ReadingResponse => {
 	const season = getLiturgicalSeasonForDate(date)
 	if (!isDetailed) {
@@ -207,6 +209,7 @@ const buildLentResponse = (
 		return {
 			reference,
 			Synaxarium: synaxarium,
+			synaxariumLanguage,
 			season: season?.name,
 			seasonDay: lentReading.label,
 		}
@@ -214,6 +217,7 @@ const buildLentResponse = (
 	return {
 		...transformReading(lentReading, translation),
 		Synaxarium: synaxarium,
+		synaxariumLanguage,
 		season: season?.name,
 		seasonDay: lentReading.label,
 	}
@@ -224,6 +228,7 @@ const buildFixedResponse = (
 	synaxarium: SynaxariumEntry[],
 	isDetailed?: boolean,
 	translation: BibleTranslation = 'en',
+	synaxariumLanguage = 'en',
 ): ReadingResponse => {
 	const copticDate = gregorianToCoptic(gregorianDate)
 	const monthFound = dayReadings[copticDate.month - 1]
@@ -247,9 +252,10 @@ const buildFixedResponse = (
 		return {
 			reference: rest as Omit<(typeof uniqueReadings)[number], 'Day'>,
 			Synaxarium: synaxarium,
+			synaxariumLanguage,
 		}
 	}
-	return { ...transformReading(reading, translation), Synaxarium: synaxarium }
+	return { ...transformReading(reading, translation), Synaxarium: synaxarium, synaxariumLanguage }
 }
 
 // Re-export so route handlers can call warmTranslation before detailed lookups in Workers.
@@ -264,8 +270,10 @@ export const getByCopticDate = (
 		throw new Error('Invalid gregorian date provided')
 	}
 
-	const lang = translation === 'ar' ? 'ar' : 'en'
-	const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, lang)
+	// Synaxarium is only available in English and Arabic. Label the fallback explicitly
+	// so clients know when they received English content for a Spanish/Coptic request.
+	const synaxariumLang: 'en' | 'ar' = translation === 'ar' ? 'ar' : 'en'
+	const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, synaxariumLang)
 	if (!synaxarium) {
 		throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
 	}
@@ -273,8 +281,15 @@ export const getByCopticDate = (
 	// Moveable readings (Lent, Jonah's Fast, etc.) override fixed ones
 	const lentReading = getLentReading(gregorianDate)
 	if (lentReading) {
-		return buildLentResponse(lentReading, synaxarium, gregorianDate, isDetailed, translation)
+		return buildLentResponse(
+			lentReading,
+			synaxarium,
+			gregorianDate,
+			isDetailed,
+			translation,
+			synaxariumLang,
+		)
 	}
 
-	return buildFixedResponse(gregorianDate, synaxarium, isDetailed, translation)
+	return buildFixedResponse(gregorianDate, synaxarium, isDetailed, translation, synaxariumLang)
 }

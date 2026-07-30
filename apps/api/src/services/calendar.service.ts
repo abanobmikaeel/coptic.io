@@ -1,20 +1,8 @@
 import type { CalendarDay, CalendarMonth, CopticMonthInfo } from '@coptic/core'
 import { format } from 'date-fns'
 import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
-import { type DayEntry, getMonthView } from './yearView.service'
-
-const NO_FASTING = { isFasting: false, fastType: null, description: null } as const
-
-const fastingFromDayEntry = (d: DayEntry) => {
-	if (d.moveableFast) {
-		return { isFasting: true, fastType: d.moveableFast.type, description: d.moveableFast.name }
-	}
-	const fast = d.celebrations?.find((c) => c.type.toLowerCase().includes('fast'))
-	if (fast) {
-		return { isFasting: true, fastType: fast.type, description: fast.name }
-	}
-	return NO_FASTING
-}
+import { getFastingForCopticDate } from './fasting.service'
+import { getMonthView } from './yearView.service'
 
 // In-memory cache for generated iCal calendars (24-hour TTL)
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000
@@ -32,7 +20,7 @@ export const getCalendarMonth = (year: number, month: number): CalendarMonth => 
 	const copticMonthsSeen = new Map<string, CopticMonthInfo>()
 
 	const days: CalendarDay[] = monthDays.map((d, i) => {
-		const fasting = fastingFromDayEntry(d)
+		const fasting = getFastingForCopticDate(d.date, d.copticDate)
 
 		const key = `${d.copticDate.year}-${d.copticDate.month}`
 		if (!copticMonthsSeen.has(key)) {

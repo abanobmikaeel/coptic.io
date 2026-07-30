@@ -40,6 +40,13 @@ project is expected to support many liturgical services, languages, and text edi
 
 - Owns pure calendar, season, feast, and liturgical eligibility rules.
 - Domain functions must not depend on React, Next.js, HTTP, storage, or UI state.
+- Calendar maths stays general: no supported-year window, and no fixed offset between the Julian
+  and Gregorian calendars — that gap grows by a day every century not divisible by 400, so hardcoding
+  it makes the result silently wrong outside the window it was tuned for. Convert through a Julian
+  Day Number instead (`julianToJD` / `jdToGregorian` in `calendar/conversion.ts`). Bounds on the
+  years a *request* may ask for belong at the API edge as input sanity, never in the domain.
+- Dates that repeat on the Coptic calendar (the Nativity Fast, fixed feasts) must be derived from
+  the Coptic date, not pinned to Gregorian month/day. They drift.
 - Seasonal and service-ordering rules must be generic enough for all applicable services. Do not
   encode a universal rule inside an Agpeya- or Vespers-specific component.
 

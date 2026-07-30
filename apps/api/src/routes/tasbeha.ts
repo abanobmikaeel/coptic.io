@@ -1,9 +1,10 @@
 import type { TasbehaServiceId } from '@coptic/data/en/tasbeha'
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { createRoute, z } from '@hono/zod-openapi'
 import { getSundayTasbeha, getTasbehaById, getTasbehaForDate } from '../services/tasbeha.service'
-import { parseLocalDate } from '../utils/dateUtils'
+import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
+import { createApiApp } from '../utils/openapi'
 
-const app = new OpenAPIHono()
+const app = createApiApp()
 
 const SERVICE_IDS = [
 	'sunday-midnight-praises',
@@ -113,7 +114,8 @@ const getForDateRoute = createRoute({
 app.openapi(getForDateRoute, (c) => {
 	const { lang = 'en', date: dateParam } = c.req.valid('query')
 	const date = dateParam ? parseLocalDate(dateParam) : new Date()
-	if (!date) return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+	if (!date) return c.json({ error: INVALID_DATE_MESSAGE }, 400)
+	if (!dateParam) c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	return c.json(getTasbehaForDate(date, lang), 200)
 })
 
@@ -137,7 +139,8 @@ const getSundayRoute = createRoute({
 app.openapi(getSundayRoute, (c) => {
 	const { lang = 'en', date: dateParam } = c.req.valid('query')
 	const date = dateParam ? parseLocalDate(dateParam) : new Date()
-	if (!date) return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+	if (!date) return c.json({ error: INVALID_DATE_MESSAGE }, 400)
+	if (!dateParam) c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	return c.json(getSundayTasbeha(lang, date), 200)
 })
 
@@ -171,7 +174,8 @@ app.openapi(getByDayRoute, (c) => {
 	const { day } = c.req.valid('param')
 	const { lang = 'en', date: dateParam } = c.req.valid('query')
 	const date = dateParam ? parseLocalDate(dateParam) : new Date()
-	if (!date) return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+	if (!date) return c.json({ error: INVALID_DATE_MESSAGE }, 400)
+	if (!dateParam) c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	return c.json(getTasbehaById(SERVICE_BY_DAY[day], lang, date), 200)
 })
 

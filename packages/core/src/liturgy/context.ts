@@ -95,7 +95,7 @@ export const getLiturgicalContext = (
 		season: getLiturgicalSeasonForDate(date),
 		moveableFeasts: getMoveableFeastsForDate(date),
 		fasting: getFastingForDate(date, staticCelebrations),
-		fastingLevel: getFastingLevel(date),
+		fastingLevel: getFastingLevel(date, staticCelebrations),
 		isSunday: date.getDay() === 0,
 		dayOfWeek: date.getDay(),
 		dayTune: getDayTune(date),
@@ -122,7 +122,10 @@ export const isInHolyFifty = (date: Date): boolean => {
 export const includesLateSundayTheotokiaParts = (date: Date): boolean => {
 	const copticDate = gregorianToCoptic(date)
 	if (copticDate.month <= 3) return true
-	return copticDate.month >= 8 && toMidnight(date) >= toMidnight(getEasterDate(date.getFullYear()))
+	if (copticDate.month >= 7) {
+		return toMidnight(date) >= toMidnight(getEasterDate(date.getFullYear()))
+	}
+	return false
 }
 
 /**

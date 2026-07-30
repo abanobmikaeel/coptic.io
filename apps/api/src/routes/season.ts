@@ -6,8 +6,14 @@ import {
 	getLiturgicalSeasonForDate,
 	isInFastingPeriod,
 } from '@coptic/core'
-import { format, isValid, parse } from 'date-fns'
+import { format } from 'date-fns'
 import { Hono } from 'hono'
+import {
+	INVALID_DATE_MESSAGE,
+	INVALID_YEAR_MESSAGE,
+	isSupportedYear,
+	parseLocalDate,
+} from '../utils/dateUtils'
 
 const season = new Hono()
 
@@ -18,13 +24,17 @@ season.get('/:date?', async (c) => {
 	// Default to today
 	let parsedDate = new Date()
 	if (dateParam) {
-		parsedDate = parse(dateParam, 'yyyy-MM-dd', new Date())
-		if (!isValid(parsedDate)) {
-			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+		const parsed = parseLocalDate(dateParam)
+		if (!parsed) {
+			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
 		}
+		parsedDate = parsed
+	} else {
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
-	const lang = c.req.query('lang') || 'en'
+	const langQuery = c.req.query('lang')
+	const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
 	const currentSeason = getLiturgicalSeasonForDate(parsedDate)
 	const isFasting = isInFastingPeriod(parsedDate)
 
@@ -57,8 +67,8 @@ season.get('/year/:year', async (c) => {
 	const yearParam = c.req.param('year')
 	const year = Number.parseInt(yearParam)
 
-	if (Number.isNaN(year) || year < 1900 || year > 2199) {
-		return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
+	if (!isSupportedYear(year)) {
+		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 	}
 
 	const seasons = getAllSeasonsForYear(year)
@@ -81,8 +91,8 @@ season.get('/fasting/:year', async (c) => {
 	const yearParam = c.req.param('year')
 	const year = Number.parseInt(yearParam)
 
-	if (Number.isNaN(year) || year < 1900 || year > 2199) {
-		return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
+	if (!isSupportedYear(year)) {
+		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 	}
 
 	const fastingPeriods = getFastingPeriodsForYear(year)
