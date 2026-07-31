@@ -20,6 +20,7 @@
     "hooks:pre-commit": "node scripts/hooks/pre-commit.mjs",
     "hooks:pre-push": "pnpm install --lockfile-only --frozen-lockfile --offline --ignore-scripts && pnpm check && pnpm typecheck && pnpm build:packages && pnpm test:unit",
     "bench": "pnpm --filter @coptic/core --filter @coptic/data bench",
+    "validate:feasts": "bun scripts/validate-against-official.ts",
     "lint": "biome lint .",
     "lint:fix": "biome lint --write .",
     "check": "biome check .",
