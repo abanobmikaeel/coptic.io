@@ -42,7 +42,7 @@ export const getUpcomingCelebrations = (days = 30) => {
 	for (let i = 0; i < days; i++) {
 		const currentDate = addDays(today, i)
 
-		const celebrationsForDay = getStaticCelebrationsForDay(currentDate)
+		const celebrationsForDay = getCelebrationsForDate(currentDate)
 
 		if (celebrationsForDay && celebrationsForDay.length > 0) {
 			upcoming.push({

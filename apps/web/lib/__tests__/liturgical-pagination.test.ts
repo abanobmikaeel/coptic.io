@@ -1,10 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { type AlignedRow, alignSection } from '../../components/LiturgicalSection/align'
-import { computePageBreaks } from '../../components/LiturgicalSection/pagination'
+import {
+	computeFixedPageBreaks,
+	computePageBreaks,
+} from '../../components/LiturgicalSection/pagination'
 import type { LiturgicalContent } from '../../components/LiturgicalSection/turns'
 import type { IncenseService, Verse } from '../types'
 
 describe('liturgical pagination', () => {
+	it('keeps paired hymn rows on fixed two-row pages', () => {
+		expect(computeFixedPageBreaks(5, 2)).toEqual([0, 2, 4, 5])
+	})
+
 	it('fills pages using every measured row', () => {
 		expect(computePageBreaks([30, 30, 30, 30], 100)).toEqual([0, 3, 4])
 	})

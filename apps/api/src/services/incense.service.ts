@@ -15,9 +15,10 @@ import {
 	getIncenseService as getEnIncenseService,
 } from '@coptic/data/en/incense'
 import { getByCopticDate } from '../models/readings'
-import type { BibleTranslation, BibleVerse, CopticDate, Reading } from '../types'
+import type { BibleTranslation, BibleVerse, CopticDate } from '../types'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import { resolvePsalm } from './psalm-resolver'
+import { flattenReadings } from './readings-format'
 
 // Normalize a celebration name into a stable key the JSON block conditions can match.
 const toCommemorationKey = (name: string): string =>
@@ -68,39 +69,6 @@ export interface ResolvedIncenseService {
 	date: string
 	copticDate: CopticDate
 	sections: ResolvedIncenseSection[]
-}
-
-function flattenReadings(readings: Reading[]): { reference: string; verses: BibleVerse[] } {
-	const verses: BibleVerse[] = []
-	const refs: string[] = []
-
-	for (const reading of readings) {
-		const first = reading.chapters[0]
-		const last = reading.chapters[reading.chapters.length - 1]
-
-		if (first && last) {
-			const firstVerse = first.verses[0]?.num
-			const lastVerse = last.verses[last.verses.length - 1]?.num
-
-			if (firstVerse != null && lastVerse != null) {
-				if (reading.chapters.length === 1) {
-					refs.push(`${reading.bookName} ${first.chapterNum}:${firstVerse}-${lastVerse}`)
-				} else {
-					refs.push(
-						`${reading.bookName} ${first.chapterNum}:${firstVerse}-${last.chapterNum}:${lastVerse}`,
-					)
-				}
-			} else {
-				refs.push(reading.bookName)
-			}
-		}
-
-		for (const chapter of reading.chapters) {
-			verses.push(...chapter.verses)
-		}
-	}
-
-	return { reference: refs.join('; '), verses }
 }
 
 // The occasion a service is being prayed on. Drives conditional block resolution.
@@ -164,8 +132,8 @@ export function getIncenseForDate(
 	const readings = getByCopticDate(date, true, translation)
 	const vPsalm = readings.VPsalm ?? []
 	const vGospel = readings.VGospel ?? []
-	const psalm = flattenReadings(vPsalm)
-	const gospel = flattenReadings(vGospel)
+	const psalm = flattenReadings(vPsalm, translation)
+	const gospel = flattenReadings(vGospel, translation)
 
 	// The day's occasion drives conditional block resolution: dayTune (calendar math) plus the
 	// commemorations/feasts of the day, taken from the existing celebration calendar — not
@@ -265,10 +233,13 @@ export function getIncenseForDate(
 		},
 	)
 
+	const formatLocalDate = (d: Date) =>
+		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
 	return {
 		type: service.id,
 		name: service.name,
-		date: date.toISOString().substring(0, 10),
+		date: formatLocalDate(date),
 		copticDate: liturgical.copticDate,
 		sections,
 	}

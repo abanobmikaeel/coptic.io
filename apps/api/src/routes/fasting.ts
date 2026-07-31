@@ -1,10 +1,16 @@
 import { getLiturgicalName } from '@coptic/core'
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { createRoute, z } from '@hono/zod-openapi'
 import { ErrorSchema, FastingDaySchema, FastingResponseSchema } from '../schemas'
 import * as fastingService from '../services/fasting.service'
-import { parseDateInput } from '../utils/dateUtils'
+import {
+	INVALID_DATE_MESSAGE,
+	INVALID_YEAR_MESSAGE,
+	isSupportedYear,
+	parseDateInput,
+} from '../utils/dateUtils'
+import { createApiApp } from '../utils/openapi'
 
-const app = new OpenAPIHono()
+const app = createApiApp()
 
 // GET /api/fasting/:date
 const getForDateRoute = createRoute({
@@ -50,7 +56,11 @@ app.openapi(getForDateRoute, (c) => {
 	try {
 		parsedDate = parseDateInput(date)
 	} catch {
-		return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+		return c.json({ error: INVALID_DATE_MESSAGE }, 400)
+	}
+
+	if (!date) {
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
 	const fastingInfo = fastingService.getFastingForDate(parsedDate)
@@ -101,8 +111,8 @@ app.openapi(getCalendarRoute, (c) => {
 	const { year } = c.req.valid('param')
 	const yearNum = Number.parseInt(year)
 
-	if (Number.isNaN(yearNum) || yearNum < 1900 || yearNum > 2100) {
-		return c.json({ error: 'Invalid year. Must be between 1900-2100' }, 400)
+	if (!isSupportedYear(yearNum)) {
+		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 	}
 
 	const calendar = fastingService.getFastingCalendar(yearNum)

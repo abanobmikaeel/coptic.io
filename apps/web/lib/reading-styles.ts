@@ -191,6 +191,14 @@ export const themeClasses = {
 		dark: 'bg-gray-800/40 hover:bg-gray-800/60',
 	} as Record<ReadingTheme, string>,
 
+	// Paired stanza surface used by dense hymn/psalmody readers. It creates a
+	// single visual unit around aligned translations without changing prose readers.
+	stanzaSurface: {
+		light: 'border-transparent bg-transparent shadow-none',
+		sepia: 'border-transparent bg-transparent shadow-none',
+		dark: 'border-transparent bg-transparent shadow-none',
+	} as Record<ReadingTheme, string>,
+
 	// Shimmer / skeleton pulse
 	shimmer: {
 		light: 'bg-gray-200 dark:bg-gray-800 animate-pulse',

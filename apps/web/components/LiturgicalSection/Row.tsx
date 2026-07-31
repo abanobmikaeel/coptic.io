@@ -29,6 +29,7 @@ export interface RowProps {
 	weight: FontWeight
 	showVerses?: boolean
 	viewMode?: ViewMode
+	contentLayout?: 'prose' | 'stanzas'
 }
 
 // One aligned row: a fixed-order grid with one cell per displayed language.
@@ -36,15 +37,24 @@ export interface RowProps {
 // template, the columns line up from row to row and the row height (the
 // tallest cell) is what keeps translations level with each other.
 export function Row({ row, activeLangs, isPageStart = false, ...style }: RowProps) {
+	const contentLayout = style.contentLayout ?? 'prose'
 	return (
 		// dir=ltr pins the column order under an RTL locale; cells set their own dir.
-		<div dir="ltr" className={`grid ${multiLangGridClass(activeLangs.length)}`}>
-			{activeLangs.map((lang) => (
+		<div
+			dir="ltr"
+			className={`grid ${multiLangGridClass(activeLangs.length)} ${
+				contentLayout === 'stanzas'
+					? `mb-2 overflow-hidden rounded-xl border transition-colors ${themeClasses.stanzaSurface[style.theme]}`
+					: ''
+			}`}
+		>
+			{activeLangs.map((lang, columnIndex) => (
 				<Cell
 					key={lang}
 					lines={row.cells[lang] ?? []}
 					lang={lang}
 					isPageStart={isPageStart}
+					columnIndex={columnIndex}
 					{...style}
 				/>
 			))}
@@ -56,12 +66,14 @@ interface CellProps extends Omit<RowProps, 'row' | 'activeLangs' | 'isPageStart'
 	lines: FlatLine[]
 	lang: BibleTranslation
 	isPageStart: boolean
+	columnIndex: number
 }
 
 function Cell({
 	lines,
 	lang,
 	isPageStart,
+	columnIndex,
 	theme,
 	textSize,
 	fontFamily,
@@ -70,13 +82,17 @@ function Cell({
 	weight,
 	showVerses = true,
 	viewMode = 'verse',
+	contentLayout = 'prose',
 }: CellProps) {
 	const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
 		getStyleClasses(lang, textSize, lineSpacing, fontFamily, weight, wordSpacing)
 
 	// The empty cell keeps its border so the column rule stays continuous when a
 	// language has nothing on this row (e.g. a rubric it doesn't carry).
-	const cellClass = 'min-w-0 break-words pl-2 sm:pl-4 border-l-2 border-current/10 pb-3'
+	const cellClass =
+		contentLayout === 'stanzas'
+			? `min-w-0 break-words px-3 py-3.5 sm:px-5 sm:py-4 ${columnIndex > 0 ? `border-l ${themeClasses.border[theme]}` : ''}`
+			: 'min-w-0 break-words pl-2 sm:pl-4 border-l-2 border-current/10 pb-3'
 	if (!lines.length) return <div className={cellClass} dir={textDir} />
 
 	const proseClass = `${sizes.verse} ${lineHeight} ${fontClass} ${weightClass} ${wordSpacingClass} ${themeClasses.text[theme]}`
@@ -112,7 +128,10 @@ function Cell({
 	}
 
 	return (
-		<div dir={textDir} className={`${cellClass} flex flex-col gap-3`}>
+		<div
+			dir={textDir}
+			className={`${cellClass} flex flex-col ${contentLayout === 'stanzas' ? 'gap-2' : 'gap-3'}`}
+		>
 			{lines.map((line, i) => {
 				const showLabel = !!line.speaker && (line.isNewSpeakerGroup || (isPageStart && i === 0))
 				const label = line.speaker ? getSpeakerLabel(lang, line.speaker) : undefined

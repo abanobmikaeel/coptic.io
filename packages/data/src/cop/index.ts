@@ -12,6 +12,12 @@ export { default as bibleData } from './bible'
 // Incense - Raising of Incense (Vespers)
 export * from './incense'
 
+// Liturgy - the Divine Liturgy (St. Basil)
+export * from './liturgy'
+
+// Tasbeha - the weekly Psalmody (Midnight Praises and Saturday Vespers Praise)
+export * from './tasbeha'
+
 export const LANGUAGE = 'cop' as const
 
 // Coptic doesn't have synaxarium data (that's in Arabic/English)

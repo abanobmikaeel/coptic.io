@@ -1,9 +1,15 @@
 /**
  * Validates our moveable feast calculations against official CopticChurch.net data
  * Fetches multiple years and compares our algorithm output with official dates
+ *
+ *   pnpm validate:feasts
+ *
+ * Imports the core source directly rather than `@coptic/core`: the workspace root
+ * does not depend on the package, and reading the source means the check runs
+ * against working-tree changes instead of a stale `dist`.
  */
 
-import { getMoveableFeastsForYear } from '../src/utils/calculations/getMoveableFeasts'
+import { getMoveableFeastsForYear } from '../packages/core/src/index'
 
 interface OfficialDate {
 	year: number
@@ -17,34 +23,32 @@ async function fetchOfficialData(year: number): Promise<OfficialDate[]> {
 
 	const dates: OfficialDate[] = []
 
-	// Extract dates using specific patterns
-	// The format is: <b>Feast Name</b></div>\n\t\t<div class="col col-md-4">Month Dayth</div>
-	const patterns = [
-		{ name: 'Easter', regex: /<b>Easter<\/b>.*?(\w+ \d+)/is },
-		{ name: 'Palm Sunday', regex: /<b>Palm Sunday<\/b>.*?(\w+ \d+)/is },
-		{ name: 'Ascension', regex: /<b>Ascension<\/b>.*?(\w+ \d+)/is },
-		{ name: 'Pentecost', regex: /<b>Pentecost<\/b>.*?(\w+ \d+)/is },
-		{ name: 'Holy Thursday', regex: /<b>Holy Thursday<\/b>.*?(\w+ \d+)/is },
-		{ name: 'Good Friday', regex: /<b>Good Friday<\/b>.*?(\w+ \d+)/is },
-		{ name: 'Thomas Sunday', regex: /<b>Thomas Sunday<\/b>.*?(\w+ \d+)/is },
-		{
-			name: 'Fast of Nineveh',
-			regex: /<b>Fast of Nineveah?<\/b>.*?(\w+ \d+)/is,
-		},
-		{ name: 'Great Lent', regex: /<b>Great Lent<\/b>.*?(\w+ \d+)/is },
-	]
+	// Rows look like:
+	//   <b>Feast Name</b></div>\n\t\t<div class="col col-md-4">Month Dayth</div>
+	// Anchoring on that structure rather than scanning ahead for the next
+	// "word number" keeps a feast from picking up a neighbouring row's date.
+	// The site spells one feast "Ninevah"/"Nineveah"; ours is "Nineveh".
+	const OFFICIAL_TO_OURS: Record<string, string> = {
+		Easter: 'Easter',
+		'Palm Sunday': 'Palm Sunday',
+		Ascension: 'Ascension',
+		Pentecost: 'Pentecost',
+		'Holy Thursday': 'Holy Thursday',
+		'Good Friday': 'Good Friday',
+		'Thomas Sunday': 'Thomas Sunday',
+		'Fast of Ninevah': 'Fast of Nineveh',
+		'Fast of Nineveah': 'Fast of Nineveh',
+		'Great Lent': 'Great Lent',
+	}
 
-	for (const pattern of patterns) {
-		const match = html.match(pattern.regex)
-		if (match) {
-			// Remove ordinal suffixes (st, nd, rd, th)
-			const dateStr = match[1].replace(/(st|nd|rd|th)/, '')
-			dates.push({
-				year,
-				name: pattern.name,
-				date: dateStr,
-			})
-		}
+	const rowPattern =
+		/<b>([^<]+)<\/b>\s*<\/div>\s*<div class="col col-md-4">\s*([A-Z][a-z]+)\s+(\d+)(?:st|nd|rd|th)?\s*<\/div>/g
+
+	const flattened = html.replace(/[\n\t]/g, ' ')
+	for (const match of flattened.matchAll(rowPattern)) {
+		const ourName = OFFICIAL_TO_OURS[(match[1] ?? '').trim()]
+		if (!ourName) continue
+		dates.push({ year, name: ourName, date: `${match[2]} ${match[3]}` })
 	}
 
 	return dates
@@ -52,7 +56,7 @@ async function fetchOfficialData(year: number): Promise<OfficialDate[]> {
 
 function parseOfficialDate(dateStr: string, year: number): Date {
 	// Parse "Month Day" format
-	const [month, day] = dateStr.split(' ')
+	const [month = '', day = ''] = dateStr.split(' ')
 	const monthMap: Record<string, number> = {
 		January: 0,
 		February: 1,
@@ -68,7 +72,12 @@ function parseOfficialDate(dateStr: string, year: number): Date {
 		December: 11,
 	}
 
-	return new Date(year, monthMap[month], parseInt(day))
+	const monthIndex = monthMap[month]
+	if (monthIndex === undefined) {
+		throw new Error(`Unparseable official date: "${dateStr}"`)
+	}
+
+	return new Date(year, monthIndex, parseInt(day))
 }
 
 function formatDate(date: Date): string {

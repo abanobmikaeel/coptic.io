@@ -1,3 +1,4 @@
+import { copticToGregorian, gregorianToCoptic } from '../calendar/conversion'
 import { getMoveableFeastsForYear } from '../calendar/moveable'
 import { getEasterDate } from '../calendar/pascha'
 import { addDays, toMidnight } from '../utils/date'
@@ -99,29 +100,24 @@ export const getAllSeasonsForYear = (gregorianYear: number): LiturgicalSeason[] 
 		})
 	}
 
-	// Nativity Fast (Advent) - November 25 to January 6 - fixed
-	const nativityStart = new Date(gregorianYear, 10, 25) // November 25
-	const nativityEnd = new Date(gregorianYear + 1, 0, 6) // January 6 of next year
-	seasons.push({
-		name: 'Nativity Fast',
-		description: 'The 43-day fast preparing for Christmas',
-		startDate: nativityStart,
-		endDate: nativityEnd,
-		isFasting: true,
-		type: 'fixed',
-	})
-
-	// Also add previous year's Nativity Fast for early January dates
-	const prevNativityStart = new Date(gregorianYear - 1, 10, 25)
-	const prevNativityEnd = new Date(gregorianYear, 0, 6)
-	seasons.push({
-		name: 'Nativity Fast',
-		description: 'The 43-day fast preparing for Christmas',
-		startDate: prevNativityStart,
-		endDate: prevNativityEnd,
-		isFasting: true,
-		type: 'fixed',
-	})
+	// Nativity Fast (Advent) - Hator 16 to Kiahk 28, the Paramoun. Kiahk 29 is the
+	// Feast of the Nativity itself and is not fasted. Because this drifts against
+	// the Gregorian calendar, derive the dates from the Coptic year that overlaps
+	// the requested Gregorian year.
+	const nativityCopticYear = gregorianToCoptic(new Date(gregorianYear, 10, 25)).year
+	const addNativityFast = (copticYear: number) => {
+		seasons.push({
+			name: 'Nativity Fast',
+			description: 'The 43-day fast preparing for Christmas',
+			startDate: copticToGregorian({ year: copticYear, month: 3, day: 16 }), // Hator 16
+			endDate: copticToGregorian({ year: copticYear, month: 4, day: 28 }), // Kiahk 28 (Paramoun)
+			isFasting: true,
+			type: 'fixed',
+		})
+	}
+	addNativityFast(nativityCopticYear)
+	// Also add the previous year's fast so early January dates are covered.
+	addNativityFast(nativityCopticYear - 1)
 
 	return seasons
 }
@@ -181,31 +177,12 @@ export const getLiturgicalSeasonForDate = (date: Date): LiturgicalSeason | null 
 	const dateTs = toMidnight(date)
 	const year = date.getFullYear()
 
-	// Get seasons from current year and adjacent years to handle year boundaries
-	const prevYear = getCachedSeasonsForYear(year - 1)
-	const currYear = getCachedSeasonsForYear(year)
-	const nextYear = getCachedSeasonsForYear(year + 1)
+	// The current-year list already includes the cross-year Nativity Fast,
+	// so scanning only this year is sufficient.
+	const seasons = getCachedSeasonsForYear(year)
 
-	// Find the highest priority matching season
 	let bestMatch: CachedSeason | null = null
-
-	for (const cached of prevYear) {
-		if (dateTs >= cached.startTs && dateTs <= cached.endTs) {
-			if (!bestMatch || cached.priority < bestMatch.priority) {
-				bestMatch = cached
-			}
-		}
-	}
-
-	for (const cached of currYear) {
-		if (dateTs >= cached.startTs && dateTs <= cached.endTs) {
-			if (!bestMatch || cached.priority < bestMatch.priority) {
-				bestMatch = cached
-			}
-		}
-	}
-
-	for (const cached of nextYear) {
+	for (const cached of seasons) {
 		if (dateTs >= cached.startTs && dateTs <= cached.endTs) {
 			if (!bestMatch || cached.priority < bestMatch.priority) {
 				bestMatch = cached

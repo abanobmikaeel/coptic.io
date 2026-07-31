@@ -148,6 +148,31 @@ const endpointGroups: EndpointGroup[] = [
 		],
 	},
 	{
+		title: 'Tasbeha',
+		description: 'Coptic Orthodox Psalmody — Midnight Praises and the Saturday Vespers Praise',
+		endpoints: [
+			{
+				method: 'GET',
+				path: '/tasbeha',
+				description: "Get the annual Psalmody for a date's day of the week",
+				params: 'lang?: en|cop|ar, date?: YYYY-MM-DD',
+			},
+			{
+				method: 'GET',
+				path: '/tasbeha/{day}',
+				description:
+					'Get a named day: sunday–friday for that day’s Midnight Praises, saturday for the Vespers Praise',
+				params: 'lang?: en|cop|ar, date?: YYYY-MM-DD',
+			},
+			{
+				method: 'GET',
+				path: '/tasbeha/sunday',
+				description: 'Get the annual Sunday (Adam) Midnight Praises',
+				params: 'lang?: en|cop|ar, date?: YYYY-MM-DD',
+			},
+		],
+	},
+	{
 		title: 'Search',
 		description: 'Unified search across all content',
 		endpoints: [

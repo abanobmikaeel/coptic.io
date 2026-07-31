@@ -1,9 +1,10 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { createRoute, z } from '@hono/zod-openapi'
 import { ErrorSchema, SynaxariumEntrySchema, SynaxariumSearchResultSchema } from '../schemas'
 import * as synaxariumService from '../services/synaxarium.service'
-import { parseLocalDate } from '../utils/dateUtils'
+import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
+import { createApiApp } from '../utils/openapi'
 
-const app = new OpenAPIHono()
+const app = createApiApp()
 
 // GET /api/synaxarium/:date
 const getForDateRoute = createRoute({
@@ -58,9 +59,11 @@ app.openapi(getForDateRoute, (c) => {
 	if (date) {
 		const parsed = parseLocalDate(date)
 		if (!parsed) {
-			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
 		}
 		parsedDate = parsed
+	} else {
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
 	const synaxarium = synaxariumService.getSynaxariumForDate(parsedDate, detailed === 'true', lang)

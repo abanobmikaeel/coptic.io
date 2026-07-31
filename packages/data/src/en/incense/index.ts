@@ -1,15 +1,11 @@
+import type { ContentLine } from '../../content/types'
 import incenseData from './incense.json'
 
 export type IncenseSectionType = 'prayer' | 'psalm' | 'gospel' | 'litany' | 'creed' | 'daily-psalm'
 export type IncenseSectionRole = 'all' | 'priest' | 'deacon' | 'congregation'
 export type IncenseServiceType = 'evening'
-export type ContentSpeaker = 'Priest' | 'Deacon' | 'People'
 
-export interface ContentLine {
-	speaker?: ContentSpeaker
-	text: string
-	isRubric?: boolean
-}
+export type { ContentLine, ContentSpeaker } from '../../content/types'
 
 // Content can be a plain string (all speakers) or a structured line with speaker
 export type IncenseContent = string | ContentLine

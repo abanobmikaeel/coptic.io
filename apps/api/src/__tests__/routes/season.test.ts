@@ -121,7 +121,7 @@ describe('Season API Endpoints', () => {
 		})
 
 		it('should return 400 for year out of range', async () => {
-			const res = await app.request('/api/season/year/1800')
+			const res = await app.request('/api/season/year/1200')
 			expect(res.status).toBe(400)
 
 			const json = await res.json()
@@ -172,7 +172,7 @@ describe('Season API Endpoints', () => {
 		})
 
 		it('should return 400 for year out of range', async () => {
-			const res = await app.request('/api/season/fasting/2300')
+			const res = await app.request('/api/season/fasting/99999')
 			expect(res.status).toBe(400)
 
 			const json = await res.json()

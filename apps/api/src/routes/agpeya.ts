@@ -1,10 +1,11 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { createRoute, z } from '@hono/zod-openapi'
 import { warmTranslation } from '../models/readings'
 import { AgpeyaAnyHourSchema, AgpeyaWatchSchema, ErrorSchema } from '../schemas'
 import * as agpeyaService from '../services/agpeya.service'
 import type { BibleTranslation } from '../types'
+import { createApiApp } from '../utils/openapi'
 
-const app = new OpenAPIHono()
+const app = createApiApp()
 
 const validHours = ['prime', 'terce', 'sext', 'none', 'vespers', 'compline', 'midnight'] as const
 const validWatches = ['1', '2', '3'] as const

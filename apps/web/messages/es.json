@@ -119,6 +119,10 @@
 		"katamarosDescription": "Leccionario Diario",
 		"agpeya": "Agpeya",
 		"agpeyaDescription": "Horas de Oración",
+		"tasbeha": "Tasbeha",
+		"tasbehaDescription": "Alabanzas de Medianoche",
+		"liturgy": "Divina Liturgia",
+		"liturgyDescription": "La Liturgia de San Basilio",
 		"synaxarium": "Sinaxario",
 		"synaxariumDescription": "Vidas de Santos",
 		"vespers": "Vísperas",
@@ -229,6 +233,8 @@
 		"subtitle": "Explora oraciones y lecturas",
 		"katamarosDescription": "Lecturas bíblicas para el calendario litúrgico",
 		"agpeyaDescription": "Las siete horas canónicas de oración",
+		"tasbehaDescription": "La Salmodia anual para cada día de la semana",
+		"liturgyDescription": "La Divina Liturgia de San Basilio con las lecturas del día",
 		"synaxariumDescription": "Conmemoraciones diarias y martirologios"
 	},
 	"calendar": {

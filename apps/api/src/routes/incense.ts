@@ -1,10 +1,12 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { createRoute, z } from '@hono/zod-openapi'
 import { warmTranslation } from '../models/readings'
 import { ErrorSchema, IncenseResponseSchema } from '../schemas'
 import { getAvailableCommemorations, getIncenseForDate } from '../services/incense.service'
-import { parseLocalDate } from '../utils/dateUtils'
+import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
+import { INTERNAL_ERROR_MESSAGE } from '../utils/http'
+import { createApiApp } from '../utils/openapi'
 
-const app = new OpenAPIHono()
+const app = createApiApp()
 
 const getEveningRoute = createRoute({
 	method: 'get',
@@ -47,6 +49,14 @@ const getEveningRoute = createRoute({
 				},
 			},
 		},
+		500: {
+			description: 'Internal server error',
+			content: {
+				'application/json': {
+					schema: ErrorSchema,
+				},
+			},
+		},
 	},
 })
 
@@ -60,9 +70,11 @@ app.openapi(getEveningRoute, async (c) => {
 	if (dateParam) {
 		const parsed = parseLocalDate(dateParam)
 		if (!parsed) {
-			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
 		}
 		date = parsed
+	} else {
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
 	const selected = commemorations
@@ -75,8 +87,14 @@ app.openapi(getEveningRoute, async (c) => {
 	try {
 		const service = getIncenseForDate(date, 'evening', translation, selected)
 		return c.json(service, 200)
-	} catch {
-		return c.json({ error: 'No readings available for this date' }, 400)
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error)
+		// Known data-not-found errors are client-facing 400s; everything else is a server error.
+		if (/(not found|no reading|no synaxarium|month not found)/i.test(message)) {
+			return c.json({ error: 'No readings available for this date' }, 400)
+		}
+		console.error('Error in incense:', error)
+		return c.json({ error: INTERNAL_ERROR_MESSAGE }, 500)
 	}
 })
 

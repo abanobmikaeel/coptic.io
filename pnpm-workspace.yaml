@@ -2,6 +2,17 @@ packages:
   - "apps/*"
   - "packages/*"
 
+# Developers may run an arm64 shell with an x64 Node process under Rosetta (or
+# the reverse). Keep native optional binaries for both architectures so tools
+# such as esbuild continue to work when the active Node architecture changes.
+supportedArchitectures:
+  os:
+    - darwin
+    - current
+  cpu:
+    - arm64
+    - x64
+
 overrides:
   uuid: ">=11.1.1"
   postcss: ">=8.5.10"

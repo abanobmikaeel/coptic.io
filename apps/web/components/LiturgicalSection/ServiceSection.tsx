@@ -26,6 +26,7 @@ export interface ServiceSectionProps {
 	weight: FontWeight
 	viewMode?: ViewMode
 	showVerses?: boolean
+	contentLayout?: 'prose' | 'stanzas'
 }
 
 // Scroll-mode view of one section: the same aligned rows presentation mode
@@ -35,6 +36,9 @@ export function ServiceSection({ rows, activeLangs, refsByLang, ...style }: Serv
 	const hasRefs = activeLangs.some((lang) => refsByLang?.[lang])
 	return (
 		<div className="pt-2 pb-2">
+			{style.contentLayout === 'stanzas' && (
+				<LanguageColumnsHeader activeLangs={activeLangs} theme={style.theme} />
+			)}
 			{hasRefs && (
 				<div dir="ltr" className={`grid ${multiLangGridClass(activeLangs.length)} mb-3`}>
 					{activeLangs.map((lang) => {
@@ -60,6 +64,33 @@ export function ServiceSection({ rows, activeLangs, refsByLang, ...style }: Serv
 			)}
 			{rows.map((row, i) => (
 				<Row key={i} row={row} activeLangs={activeLangs} isPageStart={i === 0} {...style} />
+			))}
+		</div>
+	)
+}
+
+export function LanguageColumnsHeader({
+	activeLangs,
+	theme,
+}: Pick<ServiceSectionProps, 'activeLangs' | 'theme'>) {
+	const labels: Partial<Record<BibleTranslation, string>> = {
+		en: 'English',
+		cop: 'Coptic',
+		ar: 'العربية',
+	}
+	return (
+		<div
+			dir="ltr"
+			className={`grid ${multiLangGridClass(activeLangs.length)} mb-2 px-1 ${themeClasses.muted[theme]}`}
+		>
+			{activeLangs.map((lang) => (
+				<p
+					key={lang}
+					dir={lang === 'ar' ? 'rtl' : 'ltr'}
+					className="px-3 sm:px-5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.16em]"
+				>
+					{labels[lang] ?? lang}
+				</p>
 			))}
 		</div>
 	)

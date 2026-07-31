@@ -138,7 +138,7 @@ pnpm release
 
 | Data | Source | Notes |
 |------|--------|-------|
-| **Easter Calculation** | Computus algorithm for Eastern Orthodox Easter | Valid for years 1900-2199 |
+| **Easter Calculation** | Computus algorithm for Eastern Orthodox Easter | Valid for any year — see [Calendar range](#calendar-range) |
 | **Moveable Feasts** | [CopticChurch.net Calendar](https://www.copticchurch.net/calendar/feasts/) | Validated against official dates |
 | **Feast Classifications** | [St-Takla.org](https://st-takla.org/faith/en/terms/feasts.html) | 7 Major + 7 Minor Lord's Feasts |
 | **Synaxarium** | [CopticChurch.net Synaxarium](https://www.copticchurch.net/synaxarium/) | Daily saints commemorations |
@@ -161,6 +161,27 @@ pnpm release
 ### Validation
 
 Moveable feast calculations are validated against official CopticChurch.net data using `scripts/validate-against-official.ts`.
+
+### Calendar range
+
+`@coptic/core` has no supported-year window. Pascha is computed with the Julian
+computus — a rule, not an astronomical prediction, so extrapolating it stays
+liturgically correct — and the result is converted to the Gregorian calendar
+through a Julian Day Number. That matters because the gap between the two
+calendars widens by a day in every century not divisible by 400: it was 13 days
+from 1900, is 14 from 2100, and 15 from 2200. Adding a fixed offset (the previous
+implementation added 13, plus 1 after 2099) is what confined the calculation to
+1900–2199 and made it silently wrong — not throw — outside that window.
+
+**If you touch `calculateEaster`, do not reintroduce a fixed offset or a year
+guard.** `packages/core/src/__tests__/pascha.test.ts` pins observed Pascha dates
+and two properties that catch this class of bug: the result is always a Sunday,
+and always in the year requested.
+
+The API does bound the years it answers for (`MIN_YEAR` / `MAX_YEAR` in
+`apps/api/src/utils/dateUtils.ts`, currently 1583–9999). Those are input sanity —
+the first full Gregorian year, and what fits `YYYY-MM-DD` — not a limit of the
+maths. Widen them freely; the domain will keep up.
 
 ## License
 
