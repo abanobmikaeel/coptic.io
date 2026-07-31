@@ -35,6 +35,7 @@ export function getNavGroups(t: Translate): NavGroups {
 			{ label: t('agpeya'), description: t('agpeyaDescription'), href: '/agpeya' },
 			{ label: t('tasbeha'), description: t('tasbehaDescription'), href: '/tasbeha' },
 			{ label: t('vespers'), description: t('vespersDescription'), href: '/vespers' },
+			{ label: t('liturgy'), description: t('liturgyDescription'), href: '/liturgy' },
 		],
 		more: [
 			{ label: t('subscribe'), description: t('subscribeDescription'), href: '/subscribe' },

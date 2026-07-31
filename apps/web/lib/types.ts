@@ -146,7 +146,17 @@ export interface SynaxariumSearchResult {
 
 // Incense / Vespers Types
 export type IncenseSectionRole = 'all' | 'priest' | 'deacon' | 'congregation'
-export type IncenseSectionType = 'prayer' | 'psalm' | 'gospel' | 'litany' | 'creed' | 'daily-psalm'
+export type IncenseSectionType =
+	| 'prayer'
+	| 'psalm'
+	| 'gospel'
+	| 'litany'
+	| 'creed'
+	| 'daily-psalm'
+	// The Liturgy's Pauline, Catholic and Praxis readings. These carry `reference`
+	// and `verses` like the other scripture sections, so they need no separate
+	// rendering — align.ts keys off content-vs-verses, not off the type.
+	| 'epistle'
 
 export interface IncenseContentLine {
 	speaker?: 'Priest' | 'Deacon' | 'People'

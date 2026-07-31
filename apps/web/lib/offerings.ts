@@ -50,6 +50,13 @@ export const OFFERINGS: Offering[] = [
 		pillar: 'pray',
 	},
 	{
+		labelKey: 'liturgy',
+		descriptionKey: 'liturgyDescription',
+		href: '/liturgy',
+		icon: 'book',
+		pillar: 'pray',
+	},
+	{
 		labelKey: 'synaxarium',
 		descriptionKey: 'synaxariumDescription',
 		href: '/synaxarium',

@@ -14,7 +14,7 @@ const getBasilRoute = createRoute({
 	tags: ['Liturgy'],
 	summary: 'The Divine Liturgy of St. Basil',
 	description:
-		'Returns the Liturgy of St. Basil in prayed order, with the psalm, the Pauline, Catholic and Praxis epistles and the gospel resolved from the day&apos;s Katameros. Defaults to today.',
+		"Returns the Liturgy of St. Basil in prayed order, with the psalm, the Pauline, Catholic and Praxis epistles and the gospel resolved from the day's Katameros. Defaults to today.",
 	request: {
 		query: z.object({
 			date: z.string().optional().openapi({ example: '2026-06-01' }),
@@ -23,7 +23,7 @@ const getBasilRoute = createRoute({
 	},
 	responses: {
 		200: {
-			description: 'The Liturgy with the day&apos;s readings resolved',
+			description: "The Liturgy with the day's readings resolved",
 			content: { 'application/json': { schema: LiturgyResponseSchema } },
 		},
 		400: {

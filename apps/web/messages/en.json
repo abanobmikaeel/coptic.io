@@ -121,6 +121,8 @@
 		"agpeyaDescription": "Prayer Hours",
 		"tasbeha": "Tasbeha",
 		"tasbehaDescription": "Midnight Praises",
+		"liturgy": "Divine Liturgy",
+		"liturgyDescription": "The Liturgy of St. Basil",
 		"synaxarium": "Synaxarium",
 		"synaxariumDescription": "Lives of Saints",
 		"vespers": "Vespers",
@@ -232,6 +234,7 @@
 		"katamarosDescription": "Scripture readings for the liturgical calendar",
 		"agpeyaDescription": "The seven canonical hours of prayer",
 		"tasbehaDescription": "The annual Psalmody for every day of the week",
+		"liturgyDescription": "The Divine Liturgy of St. Basil with the day's readings",
 		"synaxariumDescription": "Daily commemorations and martyrologies"
 	},
 	"calendar": {
