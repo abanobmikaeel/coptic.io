@@ -15,7 +15,7 @@ marked **unverified** is an inventory judgement that no test enforces yet.
 
 | Service | Route | Languages | State |
 |---|---|---|---|
-| Agpeya (7 hours) | `/agpeya` | en, ar | Complete rite; 17 prose gaps in Arabic |
+| Agpeya (7 hours) | `/agpeya` | en, ar | Complete rite; 17 prose gaps, mostly English stubs |
 | Evening Raising of Incense | `/vespers` | en, ar, cop | Complete for Vespers; **Matins missing entirely** |
 | Tasbeha (annual, 7 days) | `/tasbeha` | en, ar, cop | Annual cycle complete; seasonal cycles missing |
 | Divine Liturgy of St. Basil | `/liturgy` | en, ar, cop | **Skeleton — roughly the second half of the rite** |
@@ -105,25 +105,20 @@ English translations are still being improved**.
 ## Agpeya
 
 All seven hours, plus the three midnight watches. English and Arabic. The rite is
-complete; the gaps are Arabic text that has no source yet.
+complete — every hour, every watch — and psalm versification gaps are **0**: the
+psalter aligns verse-for-verse between the two languages.
 
-**17 prose gaps**, all Arabic, regenerate the list with:
+**17 prose gaps**, and the direction matters: in 13 of them the **English is the
+stub and the Arabic is the fuller text** (`prime.litanies` is en=5 against ar=19;
+`midnight.closing` is en=1 against ar=24). Only `midnight.{1,2,3}.closing` are
+missing Arabic outright. So the remaining Agpeya work is largely *translating into
+English*, not sourcing Arabic. See [GAP-REPORT.md](GAP-REPORT.md) for the table.
+
+Regenerate the list with:
 
 ```bash
 cd packages/data && bun scripts/agpeya-gap-report.ts
 ```
-
-They cluster in two places — the litanies of every hour, and the closings:
-
-```
-prime.litanies, terce.litanies, terce.closing, sext.litanies, none.litanies,
-vespers.litanies, vespers.closing, compline.litanies, compline.closing,
-midnight.opening, midnight.closing,
-midnight.{1,2,3}.litanies, midnight.{1,2,3}.closing
-```
-
-Psalm versification gaps: **0** — the psalter is aligned verse-for-verse between
-English and Arabic.
 
 **No Coptic Agpeya at all.** The hours exist only in English and Arabic.
 
@@ -174,7 +169,8 @@ So a realistic reading of coverage is: **the annual skeleton of four services, o
 of which (the Liturgy) is itself half-built**, with seasonal resolution existing in
 one service only. Closing the gap is less about importing more pages than about the
 conditional-text model that lets one service render correctly across the year — see
-the block schema and resolver work tracked as the core product problem.
+the block schema and resolver work tracked as the core product problem, and
+[GAP-REPORT.md](GAP-REPORT.md) for the full backlog with source availability.
 
 ---
 
