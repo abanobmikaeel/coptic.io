@@ -265,10 +265,13 @@ export function getIncenseForDate(
 		},
 	)
 
+	const formatLocalDate = (d: Date) =>
+		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
 	return {
 		type: service.id,
 		name: service.name,
-		date: date.toISOString().substring(0, 10),
+		date: formatLocalDate(date),
 		copticDate: liturgical.copticDate,
 		sections,
 	}

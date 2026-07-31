@@ -61,6 +61,30 @@ export default async function LibraryPage() {
 			color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
 		},
 		{
+			id: 'tasbeha',
+			title: navT('tasbeha'),
+			subtitle: navT('tasbehaDescription'),
+			description: t('tasbehaDescription'),
+			href: '/tasbeha',
+			icon: (
+				<svg
+					className="w-8 h-8"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth={1.5}
+						d="M12 3a6 6 0 009 9 9 9 0 11-9-9z"
+					/>
+				</svg>
+			),
+			color: 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400',
+		},
+		{
 			id: 'synaxarium',
 			title: navT('synaxarium'),
 			subtitle: navT('synaxariumDescription'),

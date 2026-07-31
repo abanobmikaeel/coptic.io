@@ -33,7 +33,10 @@ export const typeDefs = /* GraphQL */ `
 		LPsalm: [ReadingDetail]
 		LGospel: [ReadingDetail]
 		Synaxarium: [SynaxariumEntry!]!
+		synaxariumLanguage: String
 		celebrations: [Celebration]
+		season: String
+		seasonKey: String
 		fullDate: CopticDate!
 	}
 
@@ -81,9 +84,15 @@ export const typeDefs = /* GraphQL */ `
 		celebrations: [Celebration!]!
 	}
 
+	type SynaxariumSearchCopticDate {
+		dateString: String!
+		day: Int!
+		monthString: String!
+	}
+
 	type SynaxariumSearchResult {
 		date: String!
-		copticDate: CopticDate!
+		copticDate: SynaxariumSearchCopticDate!
 		entry: SynaxariumEntry!
 	}
 
@@ -120,7 +129,7 @@ export const typeDefs = /* GraphQL */ `
 		calendarMonth(year: Int!, month: Int!): CalendarMonth!
 
 		# Readings
-		readings(date: String, detailed: Boolean): Reading!
+		readings(date: String, detailed: Boolean, lang: String): Reading!
 
 		# Celebrations
 		allCelebrations: [Celebration!]!

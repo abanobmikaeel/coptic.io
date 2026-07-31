@@ -1,0 +1,164 @@
+{
+	"id": "wednesday-midnight-praises",
+	"language": "en",
+	"name": "Wednesday Midnight Praises",
+	"description": "The complete fixed annual Wednesday (Watos) Midnight Psalmody.",
+	"rite": {
+		"cycle": "annual",
+		"dayTune": "watos",
+		"weekdays": [
+			3
+		]
+	},
+	"status": "complete",
+	"order": [
+		"ten-theno",
+		"first-hoos",
+		"first-hoos-lobsh",
+		"second-hoos",
+		"second-hoos-lobsh",
+		"third-hoos",
+		"third-hoos-esmo-epchois",
+		"three-children-greek-psali",
+		"ten-oueh-ensok",
+		"saints-commemoration",
+		"virgin-mary-doxology",
+		"fourth-hoos",
+		"wednesday-psali",
+		"watos-theotokias-introduction",
+		"wednesday-theotokia",
+		"wednesday-theotokia-ti-galilia",
+		"wednesday-theotokia-lobsh",
+		"difnar-introduction-watos",
+		"watos-theotokias-conclusion",
+		"concluding-litany",
+		"morning-doxology"
+	],
+	"sections": [
+		{
+			"id": "wednesday-psali",
+			"title": "The Wednesday Psali",
+			"kind": "psali",
+			"content": [
+				"Let them rejoice and be happy, those who seek the Lord, who are constantly, calling upon His holy name.\nThese are the trees, that David the psalmist spoke about, for they are planted by the rivers of water, bringing forth perfect fruit.",
+				"The river of water is our Savior, Jesus Christ our Lord, and the souls of those who abide, in Him will live forever.\nThey teach us in the holy books, the breaths of God, to be merciful to the creation, which He has created.",
+				"And also “Love, will never fail,” as said by the wise, Paul the Apostle.\nThe love that, the holy apostle speaks of, is the name of salvation, of our Lord Jesus Christ.",
+				"When we love the name of salvation, of our Lord Jesus Christ, and have mercy upon each other, we fulfill all the law.\nThrough mercy, Abraham was pleased, to host God, and His holy angels.",
+				"Through mercy, the righteous Lot was saved, from the tribulations, that came upon Sodom.\nThrough mercy, Cornelius was worthy, to be baptized, at the hands of our father Peter.",
+				"If we are needy, for the money of this world, and we have nothing, to offer as alms.\nYet we truly have, the precious pearl of great price, which is the sweet name full of glory, of our Lord Jesus Christ.",
+				"When we continue to keep Him, in our inner being, He will make us rich, that we can give to others.\nWe do not ask for, the wealth of this world, but for the salvation of our souls, by calling upon His holy name."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/356",
+				"pageId": 356,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "wednesday-theotokia",
+			"title": "The Wednesday Theotokia — Watos",
+			"kind": "theotokia",
+			"content": [
+				"The First Part",
+				"All the heavenly multitudes, declare your blessedness, for you are the second heaven, upon the earth.",
+				"The door to the East, is the Virgin Mary, the pure bridal chamber, for the pure Bridegroom.",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you.",
+				"The Second Part",
+				"They spoke of you with honor, O city of God, for you are the dwelling place, of all the joyful.",
+				"All the kings of the earth, walk in your light, and the nations in your brightness, O Mary the Mother of God.",
+				"Every generation calls you blessed, and we also worship Him, to whom you gave birth, and we exalt Him.",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you.",
+				"The Third Part",
+				"You are the light cloud, that has lead us to, the rain of the coming, of the only-begotten God.",
+				"The Father created you, and the Holy Spirit came upon you, and the power of the Most High, overshadowed you O Mary.",
+				"For you have given birth, to the true Word, the Son of the ever-existing Father, who came and redeemed us from our sins.",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you.",
+				"The Fourth Part",
+				"Great is the honor, which you are worthy of O Gabriel, the messenger angel, your face beams with joy.",
+				"For you announced to us the birth, of God who came to us, and you declared to Mary, the undefiled Virgin.",
+				"Saying “Hail to you O full of grace, the Lord is with you, you have found grace, the Holy Spirit shall come upon you.",
+				"The power of the Most High, will overshadow you Mary, you shall give birth to the Holy One, the Savior of the whole world.”",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you.",
+				"The Fifth Part",
+				"A virginal feast, today inspires our tongues, to give praise to, Mary the Theotokos.",
+				"On account of Him who was born, for us in the city of David, our Savior Jesus, Christ the Lord.",
+				"Come all you nations, that we may bless her, for she has become a mother, and a virgin.",
+				"Hail to you O Virgin, the pure and incorrupt one, the Word of the Father, came and took flesh from you.",
+				"Hail to the chosen vessel, which is without blemish, that is of your true, and perfect virginity.",
+				"Hail to the paradise, speaking for Christ, who became the second Adam, for the sake of Adam the first man.",
+				"Hail to the uniting place, of the unparted natures, that came together in one place, without ever mingling.",
+				"Hail to the bridal chamber, decorated in every way, for the true Bridegroom, who united with humanity.",
+				"Hail to the soul of human nature, likened to the bush, which the fire of His divinity, did not burn any of it.",
+				"Hail to the handmaiden and Mother, the Virgin and the heaven, who carried in the flesh, He who sits upon the Cherubim.",
+				"For this we rejoice and sing, with the holy angels, and we joyfully proclaim, “Glory to God in the Highest.",
+				"And on earth peace, goodwill towards men, for He who is glorified forever, was pleased with you.”",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you.",
+				"The Sixth Part",
+				"Great is the honor of Mary, above all the saints, for she was found worthy to receive, God the Word.",
+				"The One feared by the angels, Mary the Virgin, has carried, in her womb.",
+				"She is exalted above the Cherubim, more honored than the Seraphim, she became a temple, for the One from the Trinity.",
+				"She is Jerusalem, the city of our God, the joy of all saints, abides in her.",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you.",
+				"The Seventh Part",
+				"The Galilee of the Gentiles, who sit in darkness, and in the shadow of death, had the great Light shine to them.",
+				"God who rests, among His saints, became incarnate of the Virgin, for our salvation.",
+				"Come behold and be amazed, joyfully sing on account, of this mystery, which was revealed unto us.",
+				"For the Incorporeal was incarnate, and the Word became flesh, the One without beginning began, the Eternal came under time.",
+				"The Incomprehensible has been touched, and the Unseen has been seen, and the Son of the living God, truly became the Son of Man.",
+				"Jesus Christ the same yesterday, today and forever, in one hypostasis, we worship and glorify Him.",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/469",
+				"pageId": 469,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "wednesday-theotokia-ti-galilia",
+			"title": "Wednesday Theotokia — Part 7: Ti-galili-a",
+			"kind": "theotokia",
+			"content": [
+				"The Seventh Part",
+				"The Galilee of the Gentiles, who sit in darkness, and in the shadow of death, had the great Light shine to them.",
+				"God who rests, among His saints, became incarnate of the Virgin, for our salvation.",
+				"Come behold and be amazed, joyfully sing on account, of this mystery, which was revealed unto us.",
+				"For the Incorporeal was incarnate, and the Word became flesh, the One without beginning began, the Eternal came under time.",
+				"The Incomprehensible has been touched, and the Unseen has been seen, and the Son of the living God, truly became the Son of Man.",
+				"Jesus Christ the same yesterday, today and forever, in one hypostasis, we worship and glorify Him.",
+				"The Father looked from heaven, and found no one like you, He sent His only-begotten, who came and took flesh from you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/473",
+				"pageId": 473,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "wednesday-theotokia-lobsh",
+			"title": "The Wednesday Theotokia Lobsh",
+			"kind": "lobsh",
+			"content": [
+				"Ezekiel the prophet, has witnessed saying, “I saw a gate to the East, sealed with a mysterious seal.",
+				"And no one else entered it, but the Lord of powers, He entered and went out, and the gate remained sealed.”",
+				"For the gate is the Virgin, who gave birth to our Savior, and after His birth, she remained a virgin.",
+				"Blessed is the Fruit of your womb, O who gave birth to God for the world, so as to redeem us from the hands, of the unmerciful tyrant.",
+				"Blessed and perfect are you, O who has found all grace, before the King of glory, our true Lord.",
+				"You deserved all honor, more than any one on earth, for the Word of the Father, came and was incarnate of you.",
+				"And He walked among men, as a compassionate Lover of Man, that He may save our souls, through His holy appearance.",
+				"Let us worship our Savior, the good Lover of Mankind, for He had compassion upon us, as He came and saved us.",
+				"Hail to you O Virgin, the very and true queen, hail to the pride of our race, who gave birth to Emmanuel.",
+				"We ask you to remember us, O our trusted advocate, before our Lord Jesus Christ, that He may forgive us our sins."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/470",
+				"pageId": 470,
+				"accessedAt": "2026-07-30"
+			}
+		}
+	]
+}

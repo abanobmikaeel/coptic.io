@@ -36,3 +36,13 @@ export function computePageBreaks(
 	}
 	return breaks
 }
+
+/** Fixed-size row groups for hymn forms whose stanzas must stay paired. */
+export function computeFixedPageBreaks(total: number, rowsPerPage: number): number[] {
+	if (total <= 0) return [0, 0]
+	const size = Math.max(1, Math.floor(rowsPerPage))
+	const breaks = [0]
+	for (let end = size; end < total; end += size) breaks.push(end)
+	breaks.push(total)
+	return breaks
+}

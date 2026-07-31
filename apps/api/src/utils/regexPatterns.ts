@@ -6,7 +6,7 @@
  */
 const concatRegexp = (reg: RegExp, exp: RegExp) => {
 	let flags = reg.flags + exp.flags
-	flags = Array.from(new Set(flags.split(''))).join()
+	flags = Array.from(new Set(flags.split(''))).join('')
 	return new RegExp(reg.source + exp.source, flags)
 }
 

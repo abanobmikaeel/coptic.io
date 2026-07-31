@@ -35,9 +35,9 @@ const feastCache = new Map<number, MoveableFeast[]>()
  * @returns Array of Easter-dependent events in chronological order
  */
 export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[] => {
-	// Check cache first
+	// Check cache first. Return shallow clones so callers cannot mutate cached Dates.
 	const cached = feastCache.get(gregorianYear)
-	if (cached) return cached
+	if (cached) return cached.map((f) => ({ ...f, date: new Date(f.date) }))
 
 	const easterDateObj = getEasterDate(gregorianYear)
 

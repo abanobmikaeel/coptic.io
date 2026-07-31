@@ -18,6 +18,9 @@ export { default as synaxariumCanonical } from './synaxarium/canonical.json'
 // Incense - Raising of Incense (Vespers)
 export * from './incense'
 
+// Tasbeha - the weekly Psalmody (Midnight Praises and Saturday Vespers Praise)
+export * from './tasbeha'
+
 export const LANGUAGE = 'en' as const
 
 export const AVAILABLE_SOURCES = ['canonical', 'st-takla', 'suscopts'] as const

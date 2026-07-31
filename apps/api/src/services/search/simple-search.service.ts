@@ -89,10 +89,23 @@ const HOUR_ALIASES: Record<string, AgpeyaHourId> = {
 	'12th': 'midnight',
 }
 
+/** One verse, flattened and pre-lowercased for full-text scanning. */
+interface IndexedVerse {
+	book: string
+	chapter: number
+	verse: number
+	text: string
+	lower: string
+}
+
 export class SimpleSearchService implements SearchService {
 	private bible: BibleType | null = null
 	private bookIndex: Map<string, BibleBook> = new Map()
 	private bookNameLower: Map<string, string> = new Map()
+	// Flat, pre-lowercased verse list. A query that matches little or nothing has
+	// to walk every verse, and lowercasing all ~31k of them per request is the
+	// expensive part; paying it once at startup keeps a miss off the CPU budget.
+	private verseIndex: IndexedVerse[] = []
 	private ready = false
 
 	async initialize(): Promise<void> {
@@ -101,6 +114,17 @@ export class SimpleSearchService implements SearchService {
 		for (const book of this.bible.books) {
 			this.bookIndex.set(book.name.toLowerCase(), book)
 			this.bookNameLower.set(book.name.toLowerCase(), book.name)
+			for (const chapter of book.chapters) {
+				for (const verse of chapter.verses) {
+					this.verseIndex.push({
+						book: book.name,
+						chapter: chapter.num,
+						verse: verse.num,
+						text: verse.text,
+						lower: verse.text.toLowerCase(),
+					})
+				}
+			}
 		}
 		this.ready = true
 	}
@@ -228,33 +252,25 @@ export class SimpleSearchService implements SearchService {
 			return bookMatches.slice(0, limit)
 		}
 
-		// Full-text search on verses (limited for performance)
+		// Full-text search on verses. Stop once we have enough results.
 		// Only search if query is at least 3 characters
 		if (queryLower.length >= 3) {
 			const textResults: BibleSearchResult[] = []
-			const maxVersesToSearch = 10000 // Limit for performance
 
-			let searched = 0
-			outer: for (const book of this.bible.books) {
-				for (const chapter of book.chapters) {
-					for (const verse of chapter.verses) {
-						if (searched++ > maxVersesToSearch) break outer
+			for (const verse of this.verseIndex) {
+				if (!verse.lower.includes(queryLower)) continue
 
-						if (verse.text.toLowerCase().includes(queryLower)) {
-							textResults.push({
-								type: 'verse',
-								book: book.name,
-								chapter: chapter.num,
-								verse: verse.num,
-								text: this.truncateText(verse.text, 100),
-								url: `/bible/${book.name.toLowerCase()}/${chapter.num}#${verse.num}`,
-								score: 60,
-							})
+				textResults.push({
+					type: 'verse',
+					book: verse.book,
+					chapter: verse.chapter,
+					verse: verse.verse,
+					text: this.truncateText(verse.text, 100),
+					url: `/bible/${verse.book.toLowerCase()}/${verse.chapter}#${verse.verse}`,
+					score: 60,
+				})
 
-							if (textResults.length >= limit) break outer
-						}
-					}
-				}
+				if (textResults.length >= limit) break
 			}
 
 			return textResults
@@ -351,29 +367,35 @@ export class SimpleSearchService implements SearchService {
 	}
 
 	private resolveBookName(input: string): string | null {
-		const inputLower = input.toLowerCase().replace(/\s+/g, '')
+		const trimmed = input.trim().toLowerCase()
+		const normalized = trimmed.replace(/\s+/g, '')
+		const leadingNumberMatch = trimmed.match(/^(\d)\s*/)
+		const prefix = leadingNumberMatch?.[1]
+		const withoutPrefix = prefix ? normalized.slice(1) : normalized
 
-		// Check aliases first
-		for (const [alias, fullName] of Object.entries(BOOK_ALIASES)) {
-			if (inputLower === alias || inputLower.startsWith(alias)) {
-				// Handle numbered books like "1 John"
-				const numberMatch = input.match(/^(\d)\s*/)
-				if (numberMatch) {
-					return `${numberMatch[1]} ${fullName}`
-				}
-				return fullName
+		// Check aliases first (longest alias first to avoid "ps" matching "psalm")
+		const aliases = Object.entries(BOOK_ALIASES).sort((a, b) => b[0].length - a[0].length)
+		for (const [alias, fullName] of aliases) {
+			if (withoutPrefix === alias || withoutPrefix.startsWith(alias)) {
+				return prefix ? `${prefix} ${fullName}` : fullName
 			}
 		}
 
-		// Check direct book name match
-		const bookName = this.bookNameLower.get(inputLower)
+		// Check direct book name match (with and without leading number)
+		const bookName = this.bookNameLower.get(normalized)
 		if (bookName) return bookName
+		if (prefix) {
+			const bookNameNoNum = this.bookNameLower.get(
+				`${prefix} ${withoutPrefix.replace(/\d/g, '').trim()}`,
+			)
+			if (bookNameNoNum) return bookNameNoNum
+		}
 
-		// Partial match
+		// Partial match against normalized names
 		for (const [lowerName, originalName] of this.bookNameLower.entries()) {
-			if (lowerName.startsWith(inputLower)) {
-				return originalName
-			}
+			const normalizedLower = lowerName.replace(/\s+/g, '')
+			if (normalizedLower.startsWith(normalized)) return originalName
+			if (prefix && normalizedLower.startsWith(withoutPrefix)) return `${prefix} ${originalName}`
 		}
 
 		return null

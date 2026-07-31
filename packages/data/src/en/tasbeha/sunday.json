@@ -1,0 +1,552 @@
+{
+	"id": "sunday-midnight-praises",
+	"language": "en",
+	"name": "Sunday Midnight Praises",
+	"description": "The complete fixed annual Sunday (Adam) Midnight Psalmody.",
+	"rite": {
+		"cycle": "annual",
+		"dayTune": "adam",
+		"weekdays": [
+			0
+		]
+	},
+	"status": "complete",
+	"order": [
+		"ten-theno",
+		"first-hoos",
+		"first-hoos-lobsh",
+		"second-hoos",
+		"second-hoos-lobsh",
+		"third-hoos",
+		"third-hoos-esmo-epchois",
+		"three-children-greek-psali",
+		"ten-oueh-ensok",
+		"saints-commemoration",
+		"virgin-mary-doxology",
+		"fourth-hoos",
+		"first-sunday-psali",
+		"second-sunday-psali",
+		"theotokia-introduction-leebon",
+		"sunday-theotokia-part-1",
+		"sunday-theotokia-part-2",
+		"sunday-theotokia-part-3",
+		"sunday-theotokia-part-4",
+		"sunday-theotokia-part-5",
+		"sunday-theotokia-part-6",
+		"gospel-of-luke",
+		"sunday-theotokia-part-7-shere-ne-maria",
+		"sunday-theotokia-part-7-semoti",
+		"sunday-theotokia-part-8",
+		"sunday-theotokia-part-9",
+		"sunday-theotokia-part-10",
+		"sunday-theotokia-part-11",
+		"sunday-theotokia-part-12",
+		"sunday-theotokia-part-13",
+		"sunday-theotokia-part-14",
+		"sunday-theotokia-part-15",
+		"sunday-theotokia-part-16",
+		"sunday-theotokia-part-17",
+		"sunday-theotokia-part-18",
+		"difnar-introduction-adam",
+		"adam-theotokias-conclusion",
+		"concluding-litany",
+		"morning-doxology"
+	],
+	"sections": [
+		{
+			"id": "first-sunday-psali",
+			"title": "The First Sunday Psali",
+			"kind": "psali",
+			"content": [
+				"I believe wherefore I spoke, with great strength, about Your great mercy, O Lord of powers.\nHelp me my Lord, Jesus the Compassionate, to glorify my Lady, Your Mother the bride.",
+				"For truly, this Virgin, who is full of honor, was greatly exalted.\nDavid spoke of her saying, \"The Lord has chosen Zion, He came and dwelt in her, in order to save us.\"",
+				"This is Mary, who brought unto us, the eternal, freedom.\nZachariah has said, \"The golden lampstand, which was made, with golden hands.\"",
+				"Isaiah said to us, with a joyful voice, that \"She will give birth to, Emmanuel for us.\"\nThis is Jerusalem, the city of our God, the throne of all ranks, of the Cherubim.",
+				"Ezekiel has witnessed, and revealed this to us, saying \"I saw a door, to the east.\nThe Lord the Savior, entered into it, and it remained, thoroughly shut as before.\"",
+				"All the nations sing, with different tongues, to the Theotokos, the Mother of the Messiah.\nMary the chaste, the joy of the righteous, and truly she is the joy, of the faithful.",
+				"You are the tabernacle, and the ark, which Moses has made, with great honor.\nBeyond all the thoughts, of the heavens, is this mysterious matter, of the mercy seat.",
+				"Great is the glory, of your virginity, O full of glory, O Saint Mary.\nThe honored vessel, and the lampstand, the pure censer, full of blessings.",
+				"All the high names, of the incorporeal, did not reach the height, of your blessedness.\nYou resemble the rod, of Aaron, which blossomed and budded, and produced its fruit.",
+				"You are exalted, more than the Cherubim, and honored more, than the Seraphim.\nThe Son of God our God, you gave birth to, we glorify Him as God, and also worship Him.",
+				"He who abides in light, whom no one can approach, showed us His miracles, and you fed Him.\nHail to you Mary, the beautiful dove, full of wisdom, the Mother of Jesus Christ.",
+				"For the rest of our days, we will praise you, O full of glory, and clothed with purity.\nBe patient O Lover of Man, with Your servant, and forgive us our sins, and accept us."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/112",
+				"pageId": 112,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "second-sunday-psali",
+			"title": "The Second Sunday Psali",
+			"kind": "psali",
+			"content": [
+				"I sought after You, from the depths of my heart, my Lord Jesus, help me.\nLoosen for me, all the bonds of sin, my Lord Jesus Christ, help me.",
+				"Be a help to me, so that You may save me, my Lord Jesus, help me.\nMay Your goodness, come speedily to me, my Lord Jesus Christ, help me.",
+				"Overshadow me, with the shadow of Your wings, my Lord Jesus, help me.\nIn six days You have made, all the creation, my Lord Jesus Christ, help me.",
+				"Seven times everyday, I will praise Your name, my Lord Jesus, help me.\nAll the creation, glorifies Your name, my Lord Jesus Christ, help me.",
+				"Yours is the lordship, and the authority, my Lord Jesus, help me.\nMake haste O my God, so that You may save me, my Lord Jesus Christ, help me.",
+				"Every knee, bows down before You, my Lord Jesus, help me.\nAll the diverse tongues, together bless Your name, my Lord Jesus Christ, help me.",
+				"Turn away Your face, from all of my sins, my Lord Jesus, help me.\nBlot out O God, all my iniquities, my Lord Jesus Christ, help me.",
+				"You know my thoughts, and You search my reins, my Lord Jesus, help me.\nCreate in me, a clean heart, my Lord Jesus Christ, help me.",
+				"Your Holy Spirit, do not take away from me, my Lord Jesus, help me.\nIncline Your ears, make haste and hear me, my Lord Jesus Christ, help me.",
+				"Set before me a law, in the way of Your justice, my Lord Jesus, help me.\nYour kingdom O my God, is an eternal kingdom, my Lord Jesus Christ, help me.",
+				"You are the Son of God, I believe in You, my Lord Jesus, help me.\nYou who carries the sins of the world, have mercy upon me, my Lord Jesus Christ, help me.",
+				"Forgive me the multitude, of my transgressions, my Lord Jesus, help me.\nAll of the souls, together bless Your name, my Lord Jesus Christ, help me.",
+				"Have patience with me, do not hasten to destroy me, my Lord Jesus, help me.\nEarly in the morning, I will rise and bless Your name, my Lord Jesus Christ, help me.",
+				"Your yoke is sweet, and Your burden is light, my Lord Jesus, help me.\nIn the accepted time, hear me, my Lord Jesus Christ, help me.",
+				"O how beloved, is Your holy name, my Lord Jesus, help me.\nDisperse away from me, all of the devils, my Lord Jesus Christ, help me.",
+				"Sow within me, the seed of Your righteousness, my Lord Jesus, help me.\nGrant us Your true peace, and forgive us our sins, my Lord Jesus Christ, help me."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/174",
+				"pageId": 174,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-1",
+			"title": "Sunday Theotokia — Part 1",
+			"kind": "theotokia",
+			"content": [
+				"You are called righteous, O blessed one, among women, the second tabernacle.",
+				"Which is called, the holy of holies, wherein are the tablets, of the covenant.",
+				"Whereupon is, the ten commandments, these which are written, by the finger of God.",
+				"They have directed us, to the Iota, the name of salvation, of Jesus Christ.",
+				"Who was incarnate, of you without change, and became the Mediator, of a new covenant.",
+				"Through the shedding, of His holy Blood, He purified the faithful, to be a justified people.",
+				"Wherefore everyone, magnifies you, O my Lady the Mother of God, the ever-holy.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind.",
+				"Who can speak of, the honor of the tabernacle, which Moses had made, on Mount Sinai.",
+				"He made it with glory, as commanded by the Lord, according to the patterns, shown unto him.",
+				"Therein Aaron, and his sons served, the example of the highest, in the shadow of the heavenly ones.",
+				"They likened it to you, O Virgin Mary, the true tabernacle, wherein dwelt God.",
+				"Wherefore we, magnify you befittingly, with prophetic, hymnology.",
+				"For they spoke of you, with great honor, O holy city, of the great King.",
+				"We entreat and pray, that we may win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/476",
+				"pageId": 476,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-2",
+			"title": "Sunday Theotokia — Part 2",
+			"kind": "theotokia",
+			"content": [
+				"The ark overlaid, roundabout with gold, that was made, with wood that would not decay.",
+				"It foretold the sign, of God the Word, who became man, without separation.",
+				"One nature out of two, a holy divinity, co-essential with the Father, and incorruptible.",
+				"A holy humanity, begotten without seed, co-essential with us, according to the Economy.",
+				"This which He has taken, from you O undefiled, He made one with Him, as a hypostasis.",
+				"Wherefore everyone, magnifies you, O my Lady the Mother of God, the ever-holy.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind.",
+				"All the souls together, of the children of Israel, brought offering unto, the tabernacle of the Lord.",
+				"Gold and silver, and precious stone, purple and scarlet, and fine linen.",
+				"And they made an ark, of wood that would not decay, overlaid with gold, within and without.",
+				"You too O Mary, are clothed with the glory, of the divinity, within and without.",
+				"For you have brought, unto God your Son, many people, through your purity.",
+				"Wherefore we, magnify you befittingly, with prophetic, hymnology.",
+				"For they spoke of you, with great honor, O holy city, of the great King.",
+				"We entreat and pray, that we may win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/476",
+				"pageId": 476,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-3",
+			"title": "Sunday Theotokia — Part 3",
+			"kind": "theotokia",
+			"content": [
+				"The mercy seat, was overshadowed by, the forged Cherubim, from all sides.",
+				"Was a symbol of God the Word, who was incarnate, of you without change, O undefiled.",
+				"He became the purification, of our sins, and the forgiveness, of our iniquities.",
+				"Wherefore everyone, magnifies you, O my Lady the Mother of God, the ever-holy.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind.",
+				"The two golden Cherubim, continually covered, with their wings, the mercy seat.",
+				"Overshadowing, the place of the holy, of the holies, in the second tabernacle.",
+				"You too O Mary, thousands of thousands, and myriads of myriads, overshadow you.",
+				"Praising their Creator, who was in your womb, and took our likeness, without sin or alteration.",
+				"Wherefore we, magnify you befittingly, with prophetic, hymnology.",
+				"For they spoke of you, with great honor, O holy city, of the great King.",
+				"We entreat and pray, that we may win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/476",
+				"pageId": 476,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-4",
+			"title": "Sunday Theotokia — Part 4",
+			"kind": "theotokia",
+			"content": [
+				"You are the pot, made of pure gold, wherein was hidden, the true Manna.",
+				"The Bread of life, which came down from heaven, and gave life, unto the world.",
+				"Wherefore everyone, magnifies you, O my Lady the Mother of God, the ever-holy.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind.",
+				"It befits you, to be called, the golden pot, where the manna was hidden.",
+				"For that was kept, in the tabernacle, as a testimony, to the children of Israel.",
+				"Of the good things, that the Lord God, did unto them, in the wilderness of Sinai.",
+				"You too O Mary, have carried in your womb, the rational Manna, that came from the Father.",
+				"You bore Him without blemish, He gave unto us, His honored Body and Blood, and we lived forever.",
+				"Wherefore we, magnify you befittingly, with prophetic, hymnology.",
+				"For they spoke of you, with great honor, O holy city, of the great King.",
+				"We entreat and pray, that we may win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/476",
+				"pageId": 476,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-5",
+			"title": "Sunday Theotokia — Part 5",
+			"kind": "theotokia",
+			"content": [
+				"You are the lampstand, made of pure gold, carrying, the ever-burning Lamp.",
+				"That is the unapproachable, Light of the world, that proceeds from, the unapproachable Light.",
+				"The true God, out of true God, who was incarnate, of you without change.",
+				"By His appearing, He gave light to us, we who sit in the darkness, and in the shadow of death.",
+				"And He guided our feet, in the path of peace, through the communion, of His holy sacraments.",
+				"Wherefore everyone, magnifies you, O my Lady the Mother of God, the ever-holy.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind.",
+				"All the ranks on high, cannot resemble you, O golden lampstand, that carries the true Light.",
+				"That was made of, pure and elect gold, and was placed in, the tabernacle.",
+				"That was made, by the hands of men, who brought oil for its lamps, by day and by night.",
+				"He who dwells in your womb, O Virgin Mary, gives light to every man, who comes into the world.",
+				"For He whom you have born, is the Sun of righteousness, and He has healed us, of all our sins.",
+				"Wherefore we, magnify you befittingly, with prophetic, hymnology.",
+				"For they spoke of you, with great honor, O holy city, of the great King.",
+				"We entreat and pray, that we may win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/476",
+				"pageId": 476,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-6",
+			"title": "Sunday Theotokia — Part 6",
+			"kind": "theotokia",
+			"content": [
+				"You are the censer, made of pure gold, carrying the blessed, and live coal.",
+				"That is taken, from the altar, to purge the sins, and take away the iniquities.",
+				"Which is God the Word, who took flesh from you, and offered Himself as incense, to God His Father.",
+				"Wherefore everyone, magnifies you, O my Lady the Mother of God, the ever-holy.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind.",
+				"Wherefore truly, I do not err, whenever I call you, the golden censer.",
+				"For therein, is offered, the choice incense, before the Holies.",
+				"Wherein God takes away, the sins of the people, through the burnt offerings, and the aroma of incense.",
+				"You too O Mary, have carried in your womb, the Invisible, Word of the Father.",
+				"He who offered Himself, as an acceptable sacrifice, upon the Cross, for the salvation of our race.",
+				"Wherefore we, magnify you befittingly, with prophetic, hymnology.",
+				"For they spoke of you, with great honor, O holy city, of the great King.",
+				"We entreat and pray, that we may win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/476",
+				"pageId": 476,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "gospel-of-luke",
+			"title": "The Gospel According to Saint Luke",
+			"kind": "gospel",
+			"content": [
+				"Holy, holy, holy, a chapter reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen.",
+				"Luke 2:29-32",
+				"\"Lord, now You are letting Your servant depart in peace, according to Your word. For my eyes have seen Your salvation which You have prepared before the face of all peoples. A light to bring revelation to the Gentiles, and the glory of Your people Israel.\"",
+				"Glory be to God forever. Amen."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/138",
+				"pageId": 138,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-7-shere-ne-maria",
+			"title": "Sunday Theotokia — Part 7: Shere ne Maria",
+			"kind": "theotokia",
+			"content": [
+				"Hail to you Mary, the beautiful dove, who gave birth to, God the Word.",
+				"You are the flower, of incense, that has blossomed, from the root of Jesse.",
+				"The rod of Aaron, which blossomed, without planting or watering, resembles you.",
+				"O who gave birth to Christ, our true God, without the seed of man, and remained a virgin.",
+				"Wherefore everyone, magnifies you, O my Lady the Mother of God, the ever-holy.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/139",
+				"pageId": 139,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-7-semoti",
+			"title": "Sunday Theotokia — Part 7: Semoti",
+			"kind": "theotokia",
+			"content": [
+				"You are called righteous, O Saint Mary, the second tabernacle, belonging to the holies.",
+				"Wherein is placed, the rod of Aaron, and the holy flower, of incense.",
+				"You are clothed with purity, within and without, O pure tabernacle, the dwelling of the righteous.",
+				"The hosts of the high standings, and the chorus of the just, glorify you, and your blessedness.",
+				"Wherefore we, magnify you befittingly, with prophetic, hymnology.",
+				"For they spoke of you, with great honor, O holy city, of the great King.",
+				"We entreat and pray, that we may win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/452",
+				"pageId": 452,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-8",
+			"title": "Sunday Theotokia — Part 8: Shashf Ensop",
+			"kind": "theotokia",
+			"content": [
+				"Seven times every day, I will praise Your name, with all my heart, O God of everyone.",
+				"I remembered Your name, and I was comforted, O King of the ages, and God of all gods.",
+				"Jesus Christ our true God, who has come, for our salvation, was incarnate.",
+				"He was incarnate, of the Holy Spirit, and of Mary, the pure bride.",
+				"And changed our sorrow, and all our troubles, to joy for our hearts, and total rejoicing.",
+				"Let us worship Him, and sing about His Mother, the Virgin Mary, the beautiful dove.",
+				"And let us all proclaim, with a voice of joy, saying hail to you Mary, the Mother of Emmanuel.",
+				"Hail to you Mary, the salvation of our father Adam, hail... the Mother of the Refuge, hail... the rejoicing of Eve, hail... the joy of all generations.",
+				"Hail to you Mary, the joy of the righteous Abel, hail... the true Virgin, hail... the salvation of Noah, hail... the chaste and undefiled.",
+				"Hail to you Mary, the grace of Abraham, hail... the unfading crown, hail... the redemption of St. Isaac, hail... the Mother of the Holy.",
+				"Hail to you Mary, the rejoicing of Jacob, hail... myriads of myriads, hail... the pride of Judah, hail... the Mother of the Master.",
+				"Hail to you Mary, the preaching of Moses, hail... the Mother of the Master, hail... the honor of Samuel, hail... the pride of Israel.",
+				"Hail to you Mary, the steadfastness of Job the righteous, hail... the precious stone, hail... the Mother of the Beloved, hail... the daughter of King David.",
+				"Hail to you Mary, the friend of Solomon, hail... the exaltation of the just, hail... the redemption of Isaiah, hail... the healing of Jeremiah.",
+				"Hail to you Mary, the knowledge of Ezekiel, hail... the grace of Daniel, hail... the power of Elijah, hail... the grace of Elisha.",
+				"Hail to you Mary, the Mother of God, hail... the Mother of Jesus Christ, hail... the beautiful dove, hail... the Mother of the Son of God.",
+				"Hail to you Mary, who was witnessed by, all the prophets, and they said.\nBehold God the Word, took flesh from you, in an undescribable, unity.",
+				"You are truly exalted, more than the rod, of Aaron, O full of grace.\nWhat is the rod, but Mary, for it is the symbol, of her virginity.",
+				"She conceived and gave birth, without a man, to the Son of the Highest, the Word Himself.\nThrough her prayers, and intercessions, O Lord open unto us, the gates of the Church.",
+				"I entreat you, O Mother of God, keep the gates of the church, open to the faithful.\nLet us ask her, to intercede for us, before her Beloved, that He may forgive us."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/140",
+				"pageId": 140,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-9",
+			"title": "Sunday Theotokia — Part 9",
+			"kind": "theotokia",
+			"content": [
+				"You are called, O Virgin Mary, the holy flower, of the incense.",
+				"Which came out, and blossomed, from the roots of the patriarchs, and the prophets.",
+				"Like the rod, of Aaron the priest, which blossomed, and brought forth fruit.",
+				"For you gave birth to the Word, without the seed of man, and your virginity, was not corrupted.",
+				"Wherefore we magnify you, as the Mother of God, ask your Son, to forgive us."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/140",
+				"pageId": 140,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-10",
+			"title": "Sunday Theotokia — Part 10: Teoi Enhekanos",
+			"kind": "theotokia",
+			"content": [
+				"You are more worthy, than all of the saints, to ask on our behalf, O full of grace.",
+				"You are exalted, more than the patriarchs, and honored more, than the prophets.",
+				"And you have a seeking, more special, than the Cherubim, and the Seraphim.",
+				"For you are truly, the pride of our race, and the intercessor, of our souls.",
+				"Intercede for us, before our Savior, that He may keep us firm, in the upright faith.",
+				"That He may grant us, the forgiveness of our sins, in order to win mercy, through your intercessions."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/479",
+				"pageId": 479,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-11",
+			"title": "Sunday Theotokia — Part 11",
+			"kind": "theotokia",
+			"content": [
+				"All the high names, of the incorporeal, thousands of angels, and archangels.",
+				"They did not attain, your high blessedness, O who is clothed in, the glory of the Lord of hosts.",
+				"You are more brighter, than the sun, and more sparkling, than the Cherubim.",
+				"And the Seraphim, with the six wings, which are joyfully, hovering over you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/479",
+				"pageId": 479,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-12",
+			"title": "Sunday Theotokia — Part 12",
+			"kind": "theotokia",
+			"content": [
+				"Your glory O Mary, is higher than the heaven, you are more honored than the earth, and its inhabitants.",
+				"For you are truly, the real path, leading up, to the heavens.",
+				"You are clothed, with joy and gladness, and girdled with power, O daughter of Zion.",
+				"O who was clothed, with the garments of the heavenly, so that you covered Adam, with the garments of grace.",
+				"And restored him again, to the Paradise, the rejoicing place, and dwelling of the righteous."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/479",
+				"pageId": 479,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-13",
+			"title": "Sunday Theotokia — Part 13",
+			"kind": "theotokia",
+			"content": [
+				"A true tabernacle, is Mary the Virgin, placed in its midst, the true testimonies.",
+				"The undefiled ark, overlaid roundabout with gold, and the mercy seat, of the Cherubim.",
+				"The golden vessel, where the manna was hidden, behold the Word of the Father, came and took flesh from you.",
+				"The golden lampstand, carrying the true Light, who is the unapproachable, Light of the world.",
+				"The golden censer, carrying the live coal, and the chosen incense, with a rich aroma.",
+				"The rod of Aaron, that blossomed, and the holy flower, of the incense.",
+				"All these together, direct us to, the miraculous Birth, O Virgin Mary."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/479",
+				"pageId": 479,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-14",
+			"title": "Sunday Theotokia — Part 14",
+			"kind": "theotokia",
+			"content": [
+				"You decorated our souls, O Moses the prophet, by the honor of the tabernacle, which you have adorned.",
+				"The first tabernacle, which Moses had made, was the place of the forgiveness, for the children of Israel.",
+				"He made it with glory, as commanded by the Lord, and according to the patterns, shown unto him.",
+				"There was an ark, in the tabernacle, overlaid with gold, from within and without.",
+				"There was a mercy seat, in the tabernacle, and the golden Cherubim, overshadowed it.",
+				"There was a golden pot, in the tabernacle, and a measure of the manna, was hidden in it.",
+				"There was a golden lampstand, in the tabernacle, and the seven lamps, shone upon it.",
+				"There was a golden censer, in the tabernacle, and the chosen aloe, was in its midst.",
+				"There was a flower of incense, in the tabernacle, inhaled by all, the house of Israel.",
+				"There was the rod of Aaron, in the tabernacle, this which has blossomed, without planting or watering.",
+				"There was a golden table, in the tabernacle, and the oblation bread, was placed upon it.",
+				"There was a high priest, in the tabernacle, offering sacrifices, on account of the peoples sins.",
+				"When the Pantocrator, smelled the aroma, He lifted up the sins, of the people.",
+				"Through Mary, the daughter of Joachim, we learned of the true Sacrifice, for the forgiveness of sin."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/479",
+				"pageId": 479,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-15",
+			"title": "Sunday Theotokia — Part 15: Aven Pi-arshee-erevs",
+			"kind": "theotokia",
+			"content": [
+				"They likened the high priest, to our Savior, the true Sacrifice, for the forgiveness of sins.",
+				"He who offered Himself, as an acceptable sacrifice, upon the Cross, for the salvation of our race.",
+				"His good Father, smelled Him, in the evening, on Golgotha.",
+				"He opened the gate, of Paradise, and restored Adam again, to his authority.",
+				"Through Mary, the daughter of Joachim, we learned of the true Sacrifice, for the forgiveness of sins.",
+				"And we too, hope to win mercy, through your intercessions, with the Lover of Mankind."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/480",
+				"pageId": 480,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "sunday-theotokia-part-16",
+			"title": "Sunday Theotokia — Part 16: Nim Ghar",
+			"kind": "theotokia",
+			"content": [
+				"Who is likened unto You, O Lord among the gods, You are the true God, the Performer of miracles.",
+				"You revealed Your power, to the people, and You saved Your people, with Your arm.",
+				"You descended into Hades, and brought up, those who were captives, in that place.",
+				"And granted us again, the freedom, as a good God, for You have risen and saved us."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/481",
+				"pageId": 481,
+				"accessedAt": "2026-07-30"
+			},
+			"availability": "resurrection-through-hathor"
+		},
+		{
+			"id": "sunday-theotokia-part-17",
+			"title": "Sunday Theotokia — Part 17",
+			"kind": "theotokia",
+			"content": [
+				"Christ our God, has risen from the dead, He is the first-fruit, of those who departed.",
+				"He appeared to Mary, Magdalene, and spoke to her, and likewise said.",
+				"\"Tell My brethren, to proceed, to Galilee, and there they will see Me.\"",
+				"So Mary came forth, to the disciples, and told them she had seen the Lord, and that He told her so."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/481",
+				"pageId": 481,
+				"accessedAt": "2026-07-30"
+			},
+			"availability": "resurrection-through-hathor"
+		},
+		{
+			"id": "sunday-theotokia-part-18",
+			"title": "Sunday Theotokia — Part 18",
+			"kind": "theotokia",
+			"content": [
+				"Truly indeed, it was good caring, of the Saint Mary, Magdalene.",
+				"She came to the grave, on one of the Sabbath days, seeking earnestly, the Resurrection of the Lord.",
+				"She saw the angel, sitting on the stone, proclaiming and saying, \"He is risen He is not here.\"",
+				"Wherefore we glorify Him, proclaiming and saying, \"Blessed are You O my Lord Jesus, for You have risen and saved us.\""
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/481",
+				"pageId": 481,
+				"accessedAt": "2026-07-30"
+			},
+			"availability": "resurrection-through-hathor"
+		}
+	]
+}

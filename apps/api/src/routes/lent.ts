@@ -3,7 +3,13 @@ import { loadLentDevotional } from '@coptic/data/en/lent'
 import { Hono } from 'hono'
 import { parseReadingString } from '../models/readings'
 import type { BibleTranslation } from '../types'
-import { addDays, parseLocalDate } from '../utils/dateUtils'
+import {
+	INVALID_DATE_MESSAGE,
+	INVALID_YEAR_MESSAGE,
+	addDays,
+	isSupportedYear,
+	parseLocalDate,
+} from '../utils/dateUtils'
 
 const lent = new Hono()
 
@@ -32,8 +38,12 @@ lent.get('/schedule/:year?', async (c) => {
 	const yearParam = c.req.param('year')
 	const year = yearParam ? Number.parseInt(yearParam) : new Date().getFullYear()
 
-	if (Number.isNaN(year) || year < 1900 || year > 2199) {
-		return c.json({ error: 'Invalid year. Must be between 1900 and 2199' }, 400)
+	if (!yearParam) {
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
+	}
+
+	if (!isSupportedYear(year)) {
+		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 	}
 
 	const easter = getEasterDate(year)
@@ -66,9 +76,11 @@ lent.get('/:date?', async (c) => {
 	if (dateParam) {
 		const parsed = parseLocalDate(dateParam)
 		if (!parsed) {
-			return c.json({ error: 'Invalid date format. Use YYYY-MM-DD' }, 400)
+			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
 		}
 		parsedDate = parsed
+	} else {
+		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
 	const offset = getDaysFromEaster(parsedDate)

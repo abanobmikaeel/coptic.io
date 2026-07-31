@@ -1,0 +1,164 @@
+{
+	"id": "saturday-vespers-praises",
+	"language": "en",
+	"name": "Saturday Vespers Praises",
+	"description": "The complete fixed annual Saturday (Watos) Vespers Praise, prayed on Saturday evening.",
+	"rite": {
+		"cycle": "annual",
+		"dayTune": "watos",
+		"weekdays": [
+			6
+		]
+	},
+	"status": "complete",
+	"order": [
+		"saturday-ni-ethnos-teero",
+		"fourth-hoos",
+		"saturday-psali",
+		"watos-theotokias-introduction",
+		"saturday-theotokia",
+		"saturday-theotokia-lobsh-sherat",
+		"difnar-introduction-watos",
+		"watos-theotokias-conclusion"
+	],
+	"sections": [
+		{
+			"id": "saturday-ni-ethnos-teero",
+			"title": "The Beginning of the Vespers Praise — Ni-ethnos Teero",
+			"kind": "opening",
+			"content": [
+				"Glory be to You, O our God.",
+				"Praise the Lord all you nations, praise Him all you peoples, for His mercy is confirmed upon us, and the truth of the Lord endures forever, alleluia.",
+				"Glory be to the Father and the Son and the Holy Spirit, now and forever and unto the age of all ages amen, alleluia alleluia.",
+				"Glory be to You, O our God."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/454",
+				"pageId": 454,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "saturday-psali",
+			"title": "The Saturday Psali",
+			"kind": "psali",
+			"content": [
+				"Remembering Your holy name, brings joy to souls, O my Lord Jesus Christ, my good Savior.\nEveryone blesses You, the heavenly and the earthly, O my Lord Jesus Christ, my good Savior.",
+				"For You alone are worthy, to be blessed, O my Lord Jesus Christ, my good Savior.\nTruly You are worthy, of the glory and the honor, O my Lord Jesus Christ, my good Savior.",
+				"All the tribes of the earth, praise Your holy name, O my Lord Jesus Christ, my good Savior.\nSix stone jars, You have changed into choice wine, O my Lord Jesus Christ, my good Savior.",
+				"Seven times everyday, I will praise Your holy name, O my Lord Jesus Christ, my good Savior.\nWith delight we praise You, all of us Your people, O my Lord Jesus Christ, my good Savior.",
+				"The beauty of Your holy name, is on the mouths of Your saints, O my Lord Jesus Christ, my good Savior.\nFrom morning to evening every day, I will praise Your holy name, O my Lord Jesus Christ, my good Savior.",
+				"With every breath that I take, I will praise Your holy name, O my Lord Jesus Christ, my good Savior.\nAll the causes of sin, remove from our souls, O my Lord Jesus Christ, my good Savior.",
+				"All the thoughts of the enemy, may they be cast away from me, O my Lord Jesus Christ, my good Savior.\nEvery breath praises You, as said by the prophet, O my Lord Jesus Christ, my good Savior.",
+				"You are above all principalities, You are the King of kings, O my Lord Jesus Christ, my good Savior.\nYours is the glory with Your Father, and the Holy Spirit, O my Lord Jesus Christ, my good Savior.",
+				"Your name is blessed and sweet, in the mouths of Your saints, O my Lord Jesus Christ, my good Savior.\nMy mouth praises You, and my tongue glorifies You, O my Lord Jesus Christ, my good Savior.",
+				"Yes indeed we praise You, yes indeed we glorify You, O my Lord Jesus Christ, my good Savior.\nWe will never get weary, nor cease to praise You, O my Lord Jesus Christ, my good Savior.",
+				"All the praises of blessings, we send up unto You, O my Lord Jesus Christ, my good Savior.\nYours is the glory, the honor and thanksgiving, O my Lord Jesus Christ, my good Savior.",
+				"Holy O Lord and holy, You are holy indeed O my God, O my Lord Jesus Christ, my good Savior.\nEvery soul praises You, every knee bows to You, O my Lord Jesus Christ, my good Savior.",
+				"O name full of glory, O name full of blessings, O my Lord Jesus Christ, my good Savior.\nForever and ever, we will not cease to praise You, O my Lord Jesus Christ, my good Savior.",
+				"Yours is the blessings, the glory and the honor, O my Lord Jesus Christ, my good Savior.\nWith blessings we bless You, with glory we glorify You, O my Lord Jesus Christ, my good Savior.",
+				"As long as we live we will praise You, as long as we are here we will glorify You, O my Lord Jesus Christ, my good Savior.\nThe perfection of all blessings, is in Your holy name, O my Lord Jesus Christ, my good Savior.",
+				"Receive our prayers, we who are sinners, O my Lord Jesus Christ, my good Savior.\nGrant us Your true peace, and forgive us our sins, O my Lord Jesus Christ, my good Savior."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/362",
+				"pageId": 362,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "saturday-theotokia",
+			"title": "The Saturday Theotokia — Watos",
+			"kind": "theotokia",
+			"content": [
+				"The First Part",
+				"O chaste and undefiled, holy in everything, who brought God for us, carried in her arms.",
+				"The whole creation rejoiced with you, proclaiming and saying, “Hail to you O full of grace, the Lord is with you.”",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Second Part",
+				"We are blessed by your greatness, O prudent Virgin, and send unto you greetings, with Gabriel the angel.",
+				"For through your Fruit, salvation came to our race, and God has reconciled with us once again, through His goodness.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Third Part",
+				"Like a bridal chamber without blemish, the Holy Spirit came upon you, and the power of the Most High, overshadowed you O Mary.",
+				"For you have given birth, to the true Logos, the Son of the ever-existing Father, who came and redeemed us from our sins.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Fourth Part",
+				"You are the offspring, and root of David, who has given birth for us according to the flesh, our Savior Jesus Christ.",
+				"The only-begotten of the Father, before all ages, emptied Himself and took the form of a servant, from you for our salvation.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Fifth Part",
+				"You became a second heaven, on earth O Mother of God, for out of you the Sun of Righteousness, shone upon us.",
+				"You gave birth to Him according to the prophecy, without seed or corruption, for He is the Creator, and the Word of the Father.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Sixth Part",
+				"The tabernacle which is called, the holy of holies, which contains the ark, overlaid roundabout with gold.",
+				"Wherein are the tablets, of the covenant, and the golden vessel, wherein the manna was hidden.",
+				"This is a symbol of the Son of God, who came and dwelt in Mary, the undefiled Virgin, and was incarnate of her.",
+				"She gave birth to Him unto the world, in unity without separation, for He is the King of glory, who came and saved us.",
+				"Paradise rejoiced, at the coming of the Lamb, the Word the Son of the ever-existing Father, who came and redeemed us from our sins.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Seventh Part",
+				"You are called the Mother of God, the true King, and after He was born from you, miraculously you remained a virgin.",
+				"Emmanuel whom you have born, has kept you, without corruption, and your virginity remained sealed.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Eighth Part",
+				"You were likened to the ladder, which Jacob saw, rising up to heaven, with the awesome God standing above it.",
+				"We hail the one who did accept, the Infinite One in her womb, and her virginity, was sealed from all sides.",
+				"You have become our intercessor, before God our Savior, who became incarnate of you, for our salvation.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you.",
+				"The Ninth Part",
+				"Behold the Lord came out of you, O blessed and perfect one, to save the world which He has created, according to His many tender mercies.",
+				"We praise and glorify Him, and exalt Him above all, as a Good One and Lover of Man, have mercy on us according to Your great mercy.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/359",
+				"pageId": 359,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "saturday-theotokia-lobsh-sherat",
+			"title": "The Saturday Theotokia Lobsh — The Sherat",
+			"kind": "lobsh",
+			"content": [
+				"The First Sherat",
+				"Hail to you O full of grace, the undefiled Virgin, the chosen vessel, for all the world.",
+				"The unextinguished lamp, the pride of virginity, the indestructible altar, and the scepter of the faith.",
+				"Ask of Him whom you have born, our good Savior, to take away our troubles, and grant us His peace.",
+				"Hail to you O full of grace, the pure lampstand, the bearer of the Lamp, the fire of the divinity.",
+				"Rejoice O hope of salvation, for all the creation, for through you we have been freed, from the curse of Eve.",
+				"Because of you also we became, a dwelling for the Holy Spirit, who came upon you, and sanctified you.",
+				"Hail to the one, whom Gabriel greeted saying, “Hail to you O full of grace, the Lord is with you.”",
+				"The joy of the Father, was in your conception, and the Coming of the Son, was in your womb.",
+				"The Holy Spirit, filled every part of you, your soul and your body, O Mary the Mother of God.",
+				"Therefore we too celebrate, both a spiritual, and prophetic feast, proclaiming with King David.",
+				"“Arise O Lord to Your rest, You and the ark, of Your sanctuary, which is you O Mary.”",
+				"We ask you to remember us, O our trusted advocate, before our Lord Jesus Christ, that He may forgive us our sins.",
+				"The Second Sherat",
+				"Hail to you O full of grace, the undefiled Virgin, the tabernacle not made by hands, the treasure of righteousness.",
+				"Hail to you O beautiful dove, who declared to us, the peace of God, toward mankind.",
+				"Hail to the Mother of the Incarnated, of His own free will, and the pleasure of His Father, and the Holy Spirit.",
+				"Hail to you O golden vessel, wherein the Manna was hidden, and the almond wooden rod, with which Moses hit the rock.",
+				"Hail to you O full of grace, O the spiritual table, that gives life to everyone, who eats from it.",
+				"Hail to you O incorrupt vessel, of the divinity, which heals everyone, who drinks from it.",
+				"I begin eagerly to move, the strings of my tongue, and speak of the honor of this Virgin, together with her analogies.",
+				"For she is our pride, our hope and confirmation, in the [Second] Coming of our God, our Lord Jesus Christ.",
+				"We magnify you worthily, with Elizabeth your cousin saying, “Blessed are you among women, and blessed is the Fruit of your womb.”",
+				"We send unto you greeting, with Gabriel the angel saying, “Hail to you O full of grace, the Lord is with you.”",
+				"Hail to you O Virgin, the very and true queen, hail to the pride of our race, who gave birth to Emmanuel.",
+				"We ask you to remember us, O our trusted advocate, before our Lord Jesus Christ, that He may forgive us our sins."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/450",
+				"pageId": 450,
+				"accessedAt": "2026-07-30"
+			}
+		}
+	]
+}

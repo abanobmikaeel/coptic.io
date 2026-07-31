@@ -159,6 +159,7 @@ export interface IncenseSection {
 	type: IncenseSectionType
 	role: IncenseSectionRole
 	title: string
+	titleLanguage?: 'en' | 'ar' | 'cop'
 	rubric?: string
 	// Offered as an extra (Matins litanies, out-of-season nature litanies) — hidden from
 	// the service flow by default, listed under "Additional prayers" in the section list.
@@ -166,13 +167,33 @@ export interface IncenseSection {
 	content?: (string | IncenseContentLine)[]
 	reference?: string
 	verses?: Verse[]
+	kind?:
+		| 'opening'
+		| 'canticle'
+		| 'lobsh'
+		| 'psali'
+		| 'commemoration'
+		| 'doxology'
+		| 'theotokia'
+		| 'gospel'
+		| 'difnar'
+		| 'litany'
+		| 'conclusion'
 }
 
 export interface IncenseService {
 	type: string
 	name: string
-	date: string
-	copticDate: CopticDate
+	date?: string
+	copticDate?: CopticDate
+	id?: string
+	description?: string
+	status?: 'partial' | 'complete'
+	rite?: {
+		cycle: string
+		dayTune: 'adam' | 'watos'
+		weekdays: number[]
+	}
 	sections: IncenseSection[]
 }
 

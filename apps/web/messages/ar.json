@@ -119,6 +119,8 @@
 		"katamarosDescription": "القراءات اليومية",
 		"agpeya": "الأجبية",
 		"agpeyaDescription": "صلوات السواعي",
+		"tasbeha": "تسبحة نصف الليل",
+		"tasbehaDescription": "التسبحة السنوية",
 		"synaxarium": "السنكسار",
 		"synaxariumDescription": "سير القديسين",
 		"vespers": "رفع بخور عشية",
@@ -229,6 +231,7 @@
 		"subtitle": "تصفح الصلوات والقراءات",
 		"katamarosDescription": "قراءات الكتاب المقدس للتقويم الكنسي",
 		"agpeyaDescription": "صلوات السواعي السبع",
+		"tasbehaDescription": "الإبصلمودية السنوية لكل أيام الأسبوع",
 		"synaxariumDescription": "تذكارات وسير الشهداء اليومية"
 	},
 	"calendar": {

@@ -143,6 +143,14 @@ describe('Date Utils', () => {
 			expect(parseLocalDate('2025-Jan-15')).toBeNull()
 		})
 
+		it('should reject dates that do not exist', () => {
+			expect(parseLocalDate('2025-02-30')).toBeNull()
+			expect(parseLocalDate('2025-13-01')).toBeNull()
+			expect(parseLocalDate('2025-01-32')).toBeNull()
+			expect(parseLocalDate('2025-04-31')).toBeNull()
+			expect(parseLocalDate('2025-02-29')).toBeNull()
+		})
+
 		it('should handle edge dates correctly', () => {
 			// First day of year
 			const jan1 = parseLocalDate('2025-01-01')
@@ -198,6 +206,7 @@ describe('Date Utils', () => {
 			expect(() => parseDateInput('not-a-date')).toThrow()
 			expect(() => parseDateInput('2025')).toThrow()
 			expect(() => parseDateInput('2025-Jan-15')).toThrow()
+			expect(() => parseDateInput('2025-02-30')).toThrow()
 		})
 	})
 })

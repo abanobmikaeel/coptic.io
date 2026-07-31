@@ -1,8 +1,9 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { createRoute, z } from '@hono/zod-openapi'
 import { ErrorSchema } from '../schemas'
 import { searchService } from '../services/search'
+import { createApiApp } from '../utils/openapi'
 
-const app = new OpenAPIHono()
+const app = createApiApp()
 
 // Schema for individual result types
 const BibleSearchResultSchema = z.object({
@@ -89,15 +90,22 @@ const searchRoute = createRoute({
 	},
 })
 
-// Initialize search service on first request
-let initialized = false
+// Initialize the search service on first request, deduplicated across concurrent
+// ones. A failure clears the cached promise: initialization fetches the Bible from
+// R2, so a transient error must not leave the isolate unable to search until it is
+// recycled.
+let initPromise: Promise<void> | null = null
+
+const ensureInitialized = (): Promise<void> => {
+	initPromise ??= searchService.initialize().catch((error) => {
+		initPromise = null
+		throw error
+	})
+	return initPromise
+}
 
 app.openapi(searchRoute, async (c) => {
-	// Lazy initialization
-	if (!initialized) {
-		await searchService.initialize()
-		initialized = true
-	}
+	await ensureInitialized()
 
 	const { q, limit, categories } = c.req.valid('query')
 

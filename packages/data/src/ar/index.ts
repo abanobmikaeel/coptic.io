@@ -15,6 +15,9 @@ export * from './incense'
 // Agpeya - Book of Hours
 export * from './agpeya'
 
+// Tasbeha - the weekly Psalmody (Midnight Praises and Saturday Vespers Praise)
+export * from './tasbeha'
+
 export const LANGUAGE = 'ar' as const
 
 export const AVAILABLE_SOURCES = ['canonical', 'st-takla'] as const

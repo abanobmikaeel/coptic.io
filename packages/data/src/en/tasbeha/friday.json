@@ -1,0 +1,129 @@
+{
+	"id": "friday-midnight-praises",
+	"language": "en",
+	"name": "Friday Midnight Praises",
+	"description": "The complete fixed annual Friday (Watos) Midnight Psalmody.",
+	"rite": {
+		"cycle": "annual",
+		"dayTune": "watos",
+		"weekdays": [
+			5
+		]
+	},
+	"status": "complete",
+	"order": [
+		"ten-theno",
+		"first-hoos",
+		"first-hoos-lobsh",
+		"second-hoos",
+		"second-hoos-lobsh",
+		"third-hoos",
+		"third-hoos-esmo-epchois",
+		"three-children-greek-psali",
+		"ten-oueh-ensok",
+		"saints-commemoration",
+		"virgin-mary-doxology",
+		"fourth-hoos",
+		"friday-psali",
+		"watos-theotokias-introduction",
+		"friday-theotokia",
+		"friday-theotokia-lobsh",
+		"difnar-introduction-watos",
+		"watos-theotokias-conclusion",
+		"concluding-litany",
+		"morning-doxology"
+	],
+	"sections": [
+		{
+			"id": "friday-psali",
+			"title": "The Friday Psali",
+			"kind": "psali",
+			"content": [
+				"For truly I approached, a great Prince, which is the name of salvation, of our Lord Jesus Christ.\nOur Lord Jesus Christ, gave a sign to His servants, who do fear him, to escape from the face of the bows.",
+				"Our Lord Jesus Christ, gave a sign to His servants, who do fear Him, to shut the mouths of the lions.\nOur Lord Jesus Christ, gave a sign to His servants, who do fear Him, to put out the power of the fire.",
+				"Our Lord Jesus Christ, gave a sign to His servants, who do fear Him, to cast out the devils.\nOur Lord Jesus Christ, gave a sign to His servants, who do fear Him, to prevail over their enemies.",
+				"Our Lord Jesus Christ, gave a sign to His servants, who do fear Him, to heal every sickness.\nTherefore let us glorify, our Lord Jesus Christ, and His good Father, and the Holy Spirit.",
+				"This is the name of salvation, of our Lord Jesus Christ, and His life-giving Cross, which He was crucified upon.\nBlessed is the man who forsakes this life, and its vain pleasures, that are full of suffering, that kill the soul.",
+				"And he who carries his Cross day after day, and keeps his mind and heart, on the name of salvation, of our Lord Jesus Christ.\nOur hearts are happy, and our tongues rejoice, whenever we sing to the name, of salvation of our Lord Jesus Christ."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/384",
+				"pageId": 384,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "friday-theotokia",
+			"title": "The Friday Theotokia — Watos",
+			"kind": "theotokia",
+			"content": [
+				"The First Part",
+				"Blessed are you among women, and blessed is your Fruit, O Mary the Mother of God, the undefiled Virgin.",
+				"For the Sun of Righteousness, shone unto us from you, with healing under His wings, for He is the Creator.",
+				"He took what is ours, and gave us what is His, we praise and glorify Him, and exalt Him.",
+				"The Second Part",
+				"You are blessed more favored than heaven, and more honored than earth, you exceed every thought, who can speak of your honor.",
+				"No one is like you, O Mary the Virgin, the angels honor you, and the Seraphim glorify you.",
+				"For He who sits upon the Cherubim, came and was incarnate of you, and He united us with Him, through His goodness.",
+				"He took what is ours, and gave us what is His, we praise and glorify Him, and exalt Him.",
+				"The Third Part",
+				"Blessed are you O Mary, and blessed is your Fruit, O Virgin Mother of God, the pride of virginity.",
+				"He who existed before all ages, came and was incarnate of you, and the Ancient of Days, came out of your womb.",
+				"He took our body, and gave us His Holy Spirit, and made us one with Him, through His goodness.",
+				"He took what is ours, and gave us what is His, we praise and glorify Him, and exalt Him.",
+				"The Fourth Part",
+				"Many women received honor, yet you exceeded them all, for you are the pride of virgins, O Mary the Theotokos.",
+				"You are the soul's city, where the Most High lived, who sits upon the throne, of the Cherubim.",
+				"The Seraphim glorify Him, and you held Him in your arms, He who gives food to all flesh, through His great kindness.",
+				"He held to your breasts, and you fed Him, for He is our God, and the Savior of everyone.",
+				"He shepherds all of us, forever and ever, we praise and glorify Him, and exalt Him.",
+				"He took what is ours, and gave us what is His, we praise and glorify Him, and exalt Him.",
+				"The Fifth Part",
+				"O Virgin Mary, the wise Mother of God, the garden of fragrance, the holy fountain of the living water.",
+				"The Fruit of your womb, came and saved the world, and He abolished all enmity, and established for us His peace.",
+				"Through His Cross, and His holy Resurrection, He restored man once again, to the Paradise.",
+				"He took what is ours, and gave us what is His, we praise and glorify Him, and exalt Him.",
+				"The Sixth Part",
+				"O Virgin Mary, the holy Mother of God, the trusted advocate, of the human race.",
+				"Intercede on our behalf, before Christ whom you have born, that He may grant unto us, the forgiveness of our sins.",
+				"He took what is ours, and gave us what is His, we praise and glorify Him, and exalt Him.",
+				"The Seventh Part",
+				"The Virgin Mary has proclaimed, in the altar, saying “My peace, God does know.",
+				"For I know nothing, other than the voice of the angel, announcing the joy, coming to me from heaven.”",
+				"He took what is ours, and gave us what is His, we praise and glorify Him, and exalt Him."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/146",
+				"pageId": 146,
+				"accessedAt": "2026-07-30"
+			}
+		},
+		{
+			"id": "friday-theotokia-lobsh",
+			"title": "The Friday Theotokia Lobsh",
+			"kind": "lobsh",
+			"content": [
+				"What do I call you, O all-holy Virgin, who gave birth to the Incomprehensible, and Infinite One.",
+				"Many are your praises, O who is adorned with honor, for you became a dwelling, for the wisdom of God.",
+				"You are the rational net, that catches Christians, and teaches them to worship, the life-giving Trinity.",
+				"You are the one who carried, the Pillar which Moses saw, who is the Son of God, who came and dwelt in your womb.",
+				"You became the ark, for Him who created heaven and earth, you carried Him in your womb, for nine full months.",
+				"You were also entrusted with, the fullness of heaven and earth, and you became our reason, to progress to heaven.",
+				"You are brighter than the sun, you are the East, toward which the righteous look, with happiness and joy.",
+				"Eve was sentenced, to give birth with deep pain, while to you it was said, “Hail to you O full of grace.”",
+				"You gave birth to the King for us, the Lord of all creation, He came and redeemed us from our sins, as a Good One and Lover of Man.",
+				"Therefore we sing, with Elizabeth your cousin saying, “Blessed are you among women, and blessed is the Fruit of your womb.”",
+				"Hail to you O Virgin, the very and true queen, hail to the pride of our race, who gave birth to Emmanuel.",
+				"We ask you to remember us, O our trusted advocate, before our Lord Jesus Christ, that He may forgive us our sins."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/457",
+				"pageId": 457,
+				"accessedAt": "2026-07-30"
+			}
+		}
+	]
+}

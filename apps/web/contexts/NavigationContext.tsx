@@ -30,7 +30,7 @@ interface NavigationContextValue {
 const NavigationContext = createContext<NavigationContextValue | null>(null)
 
 // Pages that should automatically be in read mode
-const READ_MODE_PATHS = ['/readings', '/agpeya', '/synaxarium', '/lent']
+const READ_MODE_PATHS = ['/readings', '/agpeya', '/tasbeha', '/synaxarium', '/lent']
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
 	const pathname = usePathname()
