@@ -615,7 +615,8 @@ async function main() {
 const NAMES: Record<Lang, { name: string; description: string }> = {
 	en: {
 		name: 'The Divine Liturgy of St. Basil',
-		description: 'The Divine Liturgy of St. Basil — the Liturgy of the Word and the Liturgy of the Believers',
+		description:
+			'The Divine Liturgy of St. Basil — the Liturgy of the Word and the Liturgy of the Believers',
 	},
 	ar: {
 		name: 'القداس الباسيلي',
@@ -623,7 +624,8 @@ const NAMES: Record<Lang, { name: string; description: string }> = {
 	},
 	cop: {
 		name: 'The Divine Liturgy of St. Basil',
-		description: 'The Divine Liturgy of St. Basil — the Liturgy of the Word and the Liturgy of the Believers',
+		description:
+			'The Divine Liturgy of St. Basil — the Liturgy of the Word and the Liturgy of the Believers',
 	},
 }
 
@@ -643,7 +645,8 @@ function writeOutput(lang: Lang, sections: Record<string, ContentItem[]>) {
 	const outSections: unknown[] = []
 	for (const meta of SECTIONS) {
 		const titleCop = meta.titleCop
-		const title = lang === 'en' ? meta.title : lang === 'ar' ? meta.titleAr : (titleCop ?? meta.title)
+		const title =
+			lang === 'en' ? meta.title : lang === 'ar' ? meta.titleAr : (titleCop ?? meta.title)
 		const base: Record<string, unknown> = {
 			id: meta.id,
 			type: meta.type,
