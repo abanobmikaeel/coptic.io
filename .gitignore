@@ -86,3 +86,6 @@ Roadmap.md
 # SonarQube for IDE — keep shared binding, ignore local state
 .sonarlint/*
 !.sonarlint/connectedMode.json
+
+# Source PDFs and scans used for structure/rubric research — not redistributed.
+references/
