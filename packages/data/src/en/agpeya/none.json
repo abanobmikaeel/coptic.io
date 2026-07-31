@@ -1,0 +1,639 @@
+{
+	"id": "none",
+	"language": "en",
+	"name": "None",
+	"englishName": "Ninth Hour",
+	"traditionalTime": "3:00 PM",
+	"introduction": "We pray the Ninth Hour commemorating the death of our Lord Jesus Christ on the Cross. At this hour, Christ gave up His spirit.",
+	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"order": [
+		"opening",
+		"none-hour-intro",
+		"thanksgiving-prayer",
+		"psalm-50",
+		"none-psalm-95",
+		"none-psalm-96",
+		"none-psalm-97",
+		"none-psalm-98",
+		"none-psalm-99",
+		"none-psalm-100",
+		"none-psalm-109",
+		"none-psalm-110",
+		"none-psalm-111",
+		"none-psalm-112",
+		"none-psalm-114",
+		"none-psalm-115",
+		"none-gospel",
+		"none-litany",
+		"none-closing"
+	],
+	"sections": [
+		{
+			"id": "none-hour-intro",
+			"kind": "hour-intro",
+			"title": "The Beginning of the Ninth Hour Prayer",
+			"content": [
+				"The praise of the ninth hour of the blessed day, I offer to Christ my King and my God, beseeching Him to forgive me my sins."
+			]
+		},
+		{
+			"id": "none-psalm-95",
+			"kind": "psalm",
+			"psalmNumber": 95,
+			"title": "Psalm 95",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Sing to the Lord a new song; sing to the Lord, all the earth. Sing to the Lord, bless His name."
+				},
+				{
+					"num": 2,
+					"text": "Proclaim His salvation day to day."
+				},
+				{
+					"num": 3,
+					"text": "Declare His glory among the Gentiles, and His wonders among all peoples. For the Lord is great, and greatly praised."
+				},
+				{
+					"num": 4,
+					"text": "He is fearful above all the gods. For all the gods of the nations are devils, but the Lord made the heavens."
+				},
+				{
+					"num": 5,
+					"text": "Majesty and splendor are before Him: holiness and great beauty are in His Holy."
+				},
+				{
+					"num": 6,
+					"text": "Bring to the Lord, O you families of the Gentiles, bring to the Lord glory and honor. Bring to the Lord the glory of His name."
+				},
+				{
+					"num": 7,
+					"text": "Carry offerings, and go into His court. Worship the Lord in His holy court."
+				},
+				{
+					"num": 8,
+					"text": "Let all the earth tremble before His face."
+				},
+				{
+					"num": 9,
+					"text": "Say among the nations, \"The Lord reigned on a wood: for He has established the world that it shall not be moved.\""
+				},
+				{
+					"num": 10,
+					"text": "He will judge the peoples in righteousness."
+				},
+				{
+					"num": 11,
+					"text": "Let the heavens rejoice, and the earth exult; let the sea be moved: and its fullness. The plains shall rejoice, and all things in them: then all the trees of the forest shall exult before the face of the Lord: for He is coming to judge the earth; He will judge the world in justice, and the peoples with His truth. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-96",
+			"kind": "psalm",
+			"psalmNumber": 96,
+			"title": "Psalm 96",
+			"verses": [
+				{
+					"num": 1,
+					"text": "The Lord reigns, let the earth exult, let the many islands rejoice."
+				},
+				{
+					"num": 2,
+					"text": "Cloud and darkness are round about Him; righteousness and judgement are the uprightness of His throne. Fire shall precede Him, and with a flame shall burn up His enemies who surround Him."
+				},
+				{
+					"num": 3,
+					"text": "His lightnings lightened the world."
+				},
+				{
+					"num": 4,
+					"text": "The earth saw, and trembled. The mountains melted like wax before the face of the Lord, before the face of the Lord of the whole earth."
+				},
+				{
+					"num": 5,
+					"text": "The heavens have declared His righteousness, and all the peoples have seen His glory."
+				},
+				{
+					"num": 6,
+					"text": "All those who worship graven images and boast in their idols shall be ashamed."
+				},
+				{
+					"num": 7,
+					"text": "Worship Him all you His angels."
+				},
+				{
+					"num": 8,
+					"text": "Zion heard and rejoiced; and the daughters of Judea exulted, because of Your judgements, O Lord."
+				},
+				{
+					"num": 9,
+					"text": "For You are Lord most high over all the earth; You are greatly exalted above all the gods."
+				},
+				{
+					"num": 10,
+					"text": "You who love the Lord, hate evil."
+				},
+				{
+					"num": 11,
+					"text": "The Lord preserves the souls of His saints; He will deliver them from the hands of the sinners."
+				},
+				{
+					"num": 12,
+					"text": "Light has shined for the righteous, and gladness for the upright in their heart."
+				},
+				{
+					"num": 13,
+					"text": "Rejoice in the Lord, you righteous."
+				},
+				{
+					"num": 14,
+					"text": "And praise the remembrance of His holiness."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-97",
+			"kind": "psalm",
+			"psalmNumber": 97,
+			"title": "Psalm 97",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Sing to the Lord a new song; for the Lord has wrought wonderful works, His right hand and His holy arm, have wrought life for Him. The Lord has made known His salvation; before the nations He has revealed His righteousness."
+				},
+				{
+					"num": 2,
+					"text": "He has remembered His mercy to Jacob, and His truth to the house of Israel."
+				},
+				{
+					"num": 3,
+					"text": "The ends of all the earth have seen the salvation of our God."
+				},
+				{
+					"num": 4,
+					"text": "Shout to the Lord, all the earth; sing and exult, and sing psalms."
+				},
+				{
+					"num": 5,
+					"text": "Sing to the Lord with a harp, with a harp and a voice of psalm."
+				},
+				{
+					"num": 6,
+					"text": "With directed trumpets, and a sound of a trumpet of horn. Shout joyfully before the Lord King."
+				},
+				{
+					"num": 7,
+					"text": "Let the sea be moved, and its fullness, the world and all who dwell in it."
+				},
+				{
+					"num": 8,
+					"text": "The rivers shall clap their hands together; and the mountains shall exult before the Lord. For He comes to judge the earth: He will judge the world with righteousness, and the nations with uprightness. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-98",
+			"kind": "psalm",
+			"psalmNumber": 98,
+			"title": "Psalm 98",
+			"verses": [
+				{
+					"num": 1,
+					"text": "The Lord reigned; let the people rage."
+				},
+				{
+					"num": 2,
+					"text": "He who sits upon the cherubim, let the earth be shaken."
+				},
+				{
+					"num": 3,
+					"text": "The Lord is great in Zion, and is high over all peoples."
+				},
+				{
+					"num": 4,
+					"text": "Let them confess His great name; for it is fearful and holy, and the King's honor loves the judgement. You have prepared uprightness, You have made judgement and justice in Jacob."
+				},
+				{
+					"num": 5,
+					"text": "Exalt the Lord our God, and worship at His footstool; for He is holy."
+				},
+				{
+					"num": 6,
+					"text": "Moses and Aaron among His priests, and Samuel among those who call upon His name; they called upon the Lord, and He heard them. He spoke to them in a pillar of cloud."
+				},
+				{
+					"num": 7,
+					"text": "For they kept His testimonies and the ordinances which He gave them."
+				},
+				{
+					"num": 8,
+					"text": "O Lord our God, You answered them."
+				},
+				{
+					"num": 9,
+					"text": "O God, You became for them a forgiver and an avenger over all their deeds."
+				},
+				{
+					"num": 10,
+					"text": "Exalt the Lord our God, and worship at His holy mountain; for the Lord our God is holy."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-99",
+			"kind": "psalm",
+			"psalmNumber": 99,
+			"title": "Psalm 99",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Shout joyfully to the Lord, all the earth."
+				},
+				{
+					"num": 2,
+					"text": "Serve the Lord with gladness; come into His presence with exultation."
+				},
+				{
+					"num": 3,
+					"text": "Know that the Lord Himself is our God; He made us, and not we ourselves; we are His people, and the sheep of His pasture."
+				},
+				{
+					"num": 4,
+					"text": "Enter into His gates with thanksgiving, and His courts with praise."
+				},
+				{
+					"num": 5,
+					"text": "Give thanks to Him, praise His name."
+				},
+				{
+					"num": 6,
+					"text": "For the Lord is good, His mercy is forever; and His truth is from generation to generation."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-100",
+			"kind": "psalm",
+			"psalmNumber": 100,
+			"title": "Psalm 100",
+			"verses": [
+				{
+					"num": 1,
+					"text": "I will sing of mercy and judgement, to You, O Lord."
+				},
+				{
+					"num": 2,
+					"text": "I will sing a psalm."
+				},
+				{
+					"num": 3,
+					"text": "And I will have understanding in a blameless way."
+				},
+				{
+					"num": 4,
+					"text": "When will You come to me? I walked in the innocence of my heart, in the midst of my house."
+				},
+				{
+					"num": 5,
+					"text": "I have not set before my eyes any unlawful thing."
+				},
+				{
+					"num": 6,
+					"text": "I have hated transgressors."
+				},
+				{
+					"num": 7,
+					"text": "A perverse heart has not cleaved to me; I have not known the evil one, forasmuch as he turns away from me. He who secretly speaks against his neighbor, him I have driven from me: he who is proud in his eyes and haughty in heart, with him I have not eaten."
+				},
+				{
+					"num": 8,
+					"text": "My eyes were upon all the faithful of the land, that they might sit with me."
+				},
+				{
+					"num": 9,
+					"text": "He who walked in a blameless way, he ministered to me."
+				},
+				{
+					"num": 10,
+					"text": "The proud doer did not dwell in the midst of my house."
+				},
+				{
+					"num": 11,
+					"text": "The unjust speaker did not prosper before my eyes."
+				},
+				{
+					"num": 12,
+					"text": "In the morning I slew all the sinners of the land, that I might wipe out from the city of the Lord all who work iniquity. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-109",
+			"kind": "psalm",
+			"psalmNumber": 109,
+			"title": "Psalm 109",
+			"verses": [
+				{
+					"num": 1,
+					"text": "The Lord said to my Lord, \"Sit on My right hand, until I place Your enemies under Your feet.\""
+				},
+				{
+					"num": 2,
+					"text": "A rod of power, the Lord shall send out for You out of Zion: and You shall rule in the midst of Your enemies."
+				},
+				{
+					"num": 3,
+					"text": "With You is dominion in the day of Your power, in the splendor of the saints."
+				},
+				{
+					"num": 4,
+					"text": "From the womb before the morning star I have begotten You."
+				},
+				{
+					"num": 5,
+					"text": "The Lord has sworn and shall not repent: \"You are the Priest forever, after the order of Melchizedek.\""
+				},
+				{
+					"num": 6,
+					"text": "The Lord is at Your right hand; He dashed kings in the day of His wrath. He shall judge among the nations. He shall fill them with dead bodies, He shall crush the heads of many on the earth."
+				},
+				{
+					"num": 7,
+					"text": "He shall drink of the brook in the way."
+				},
+				{
+					"num": 8,
+					"text": "Therefore He shall lift up the head. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-110",
+			"kind": "psalm",
+			"psalmNumber": 110,
+			"title": "Psalm 110",
+			"verses": [
+				{
+					"num": 1,
+					"text": "I will confess You, O Lord, with my whole heart."
+				},
+				{
+					"num": 2,
+					"text": "In the council of the upright, and in their congregation."
+				},
+				{
+					"num": 3,
+					"text": "Great are the works of the Lord, examined are all His wills. Majesty and splendor are His works: and His righteousness endures forever and ever."
+				},
+				{
+					"num": 4,
+					"text": "He has made a remembrance of all His wonders."
+				},
+				{
+					"num": 5,
+					"text": "The Lord is merciful and compassionate. He has given food to those who fear Him: He shall remember His covenant forever."
+				},
+				{
+					"num": 6,
+					"text": "He has declared to His people the power of His works, to give them the inheritance of nations."
+				},
+				{
+					"num": 7,
+					"text": "The works of His hands are truth and justice."
+				},
+				{
+					"num": 8,
+					"text": "All His commandments are faithful: established forever and ever, made in truth and uprightness."
+				},
+				{
+					"num": 9,
+					"text": "He sent redemption to His people: He commanded His covenant forever."
+				},
+				{
+					"num": 10,
+					"text": "Holy and fearful is His name."
+				},
+				{
+					"num": 11,
+					"text": "The fear of the Lord is the beginning of wisdom, and understanding is good to all who do according to it. His praise endures forever and ever. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-111",
+			"kind": "psalm",
+			"psalmNumber": 111,
+			"title": "Psalm 111",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Blessed is the man who fears the Lord, and delights greatly in His commandments."
+				},
+				{
+					"num": 2,
+					"text": "His seed shall be mighty in the earth."
+				},
+				{
+					"num": 3,
+					"text": "The generation of the upright shall be blessed."
+				},
+				{
+					"num": 4,
+					"text": "Glory and riches shall be in his house; and his righteousness endures forever."
+				},
+				{
+					"num": 5,
+					"text": "To the upright, light has sprung up in the darkness."
+				},
+				{
+					"num": 6,
+					"text": "The Lord God is compassionate, merciful, and righteous."
+				},
+				{
+					"num": 7,
+					"text": "A good man is he who pities and lends: he shall direct his words with truth. For he shall not be moved forever."
+				},
+				{
+					"num": 8,
+					"text": "The righteous shall be in everlasting remembrance. He shall not be afraid of any evil tidings."
+				},
+				{
+					"num": 9,
+					"text": "His heart is ready trusting the Lord."
+				},
+				{
+					"num": 10,
+					"text": "His heart is established, he shall not move, till he shall look upon his enemies."
+				},
+				{
+					"num": 11,
+					"text": "He has dispersed abroad; he has given to the poor."
+				},
+				{
+					"num": 12,
+					"text": "His righteousness endures forever and ever."
+				},
+				{
+					"num": 13,
+					"text": "His horn shall be exalted with honor."
+				},
+				{
+					"num": 14,
+					"text": "The sinner shall see and be angry, he shall gnash his teeth, and consume away: the desire of the sinner shall perish."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-112",
+			"kind": "psalm",
+			"psalmNumber": 112,
+			"title": "Psalm 112",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Praise the Lord, O you servants, praise the name of the Lord."
+				},
+				{
+					"num": 2,
+					"text": "Let the name of the Lord be blessed, from now and forever."
+				},
+				{
+					"num": 3,
+					"text": "From the risings of the sun to its settings, praise the name of the Lord."
+				},
+				{
+					"num": 4,
+					"text": "The Lord is high above all the nations; upon the heavens is His glory."
+				},
+				{
+					"num": 5,
+					"text": "Who is like the Lord our God?"
+				},
+				{
+					"num": 6,
+					"text": "Who dwells in the high places, and looks upon the low things in heaven and on the earth: who lifts up a poor person from the earth, and raises up a needy person from the ash heap; to seat him with the princes, even with the princes of his people."
+				},
+				{
+					"num": 7,
+					"text": "Who makes a barren woman in a house, rejoicing as a mother of children. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-114",
+			"kind": "psalm",
+			"psalmNumber": 114,
+			"title": "Psalm 114",
+			"verses": [
+				{
+					"num": 1,
+					"text": "I loved, because the Lord will hear the voice of my supplication."
+				},
+				{
+					"num": 2,
+					"text": "Because He has inclined His ear to me, I will call upon Him in all my days."
+				},
+				{
+					"num": 3,
+					"text": "The pains of death grasped me; the dangers of Hades have found me."
+				},
+				{
+					"num": 4,
+					"text": "I found affliction and sorrow. Then I called on the name of the Lord: \"O Lord, deliver my soul.\""
+				},
+				{
+					"num": 5,
+					"text": "The Lord is merciful and righteous; and our God has mercy."
+				},
+				{
+					"num": 6,
+					"text": "The Lord preserves the infants."
+				},
+				{
+					"num": 7,
+					"text": "I was brought low, and He saved me."
+				},
+				{
+					"num": 8,
+					"text": "Return to your resting place, O my soul, for the Lord has dealt bountifully with you. He has delivered my soul from death, my eyes from tears, and my feet from falling. I shall please the Lord in the land of the living."
+				}
+			]
+		},
+		{
+			"id": "none-psalm-115",
+			"kind": "psalm",
+			"psalmNumber": 115,
+			"title": "Psalm 115",
+			"verses": [
+				{
+					"num": 1,
+					"text": "I believed, therefore, I have spoken."
+				},
+				{
+					"num": 2,
+					"text": "I was exceedingly humbled."
+				},
+				{
+					"num": 3,
+					"text": "I said in my amazement, \"Every man is a liar.\""
+				},
+				{
+					"num": 4,
+					"text": "What shall I render to the Lord for everything which He has done unto me? I shall take the cup of salvation, and call upon the name of the Lord."
+				},
+				{
+					"num": 5,
+					"text": "I will pay my vows to the Lord, in the presence of all His people."
+				},
+				{
+					"num": 6,
+					"text": "Precious in the sight of the Lord is the death of His saints."
+				},
+				{
+					"num": 7,
+					"text": "O Lord, I am Your servant; I am Your servant, and the son of Your handmaid."
+				},
+				{
+					"num": 8,
+					"text": "You have broken my bonds."
+				},
+				{
+					"num": 9,
+					"text": "I will sacrifice to You the sacrifice of praise, and will call upon the name of the Lord."
+				},
+				{
+					"num": 10,
+					"text": "I will pay my vows to the Lord in the presence of all His people, in the courts of the Lord's house, in the midst of Jerusalem."
+				}
+			]
+		},
+		{
+			"id": "none-gospel",
+			"kind": "gospel",
+			"book": "Luke",
+			"chapter": 9,
+			"startVerse": 10,
+			"endVerse": 17,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "none-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"O Lord, Who at the Ninth Hour did taste death in the flesh for us: mortify our carnal desires and deliver us from evil. Lord have mercy.",
+				"We have sinned, we have committed iniquity, we have acted wickedly; have mercy upon us and forgive us. Lord have mercy.",
+				"O God, through a fountain of tears grant us the cleansing from the depth of our hearts, that we may see You, to Whom it is granted to see You on high. Lord have mercy."
+			]
+		},
+		{
+			"id": "none-closing",
+			"kind": "closing",
+			"content": [
+				"O Lord, Who at the Ninth Hour did taste death in the flesh for our sake: mortify our carnal desires and save our souls.",
+				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+			]
+		}
+	]
+}

@@ -4,7 +4,6 @@
 
 // Agpeya - Book of Hours prayers
 export * from './agpeya'
-export { default as agpeyaData } from './agpeya/agpeya.json'
 
 // Bible - Scripture text for verse resolution
 export * from './bible'

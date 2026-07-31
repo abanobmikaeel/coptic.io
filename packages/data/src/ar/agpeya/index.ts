@@ -1,72 +1,65 @@
-import agpeyaData from './agpeya.json'
-import commonPrayers from './common.json'
+import { createAgpeyaLoader } from '../../agpeya/compose'
+import { type AgpeyaHourData, type AgpeyaMidnightHour, toLegacyHour } from '../../agpeya/legacy'
+import type { AgpeyaCommonFile, AgpeyaHourFile, AgpeyaHourId } from '../../agpeya/types'
+import common from './common.json'
+import compline from './compline.json'
+import midnight from './midnight.json'
+import none from './none.json'
+import prime from './prime.json'
+import sext from './sext.json'
+import terce from './terce.json'
+import vespers from './vespers.json'
 
-// Re-export all types from the English module so consumers import from one place.
-export type {
+// Types and the legacy projection are shared with the English module; only the
+// text differs, and the split guarantees both languages resolve the same ids.
+const files = { prime, terce, sext, none, vespers, compline, midnight } as unknown as Record<
 	AgpeyaHourId,
-	MidnightWatchId,
-	AgpeyaVerse,
-	AgpeyaPsalmRef,
-	AgpeyaPsalm,
-	AgpeyaGospelRef,
-	AgpeyaGospel,
-	AgpeyaPrayerSection,
-	AgpeyaLitany,
-	AgpeyaWatch,
-	AgpeyaMidnightHour,
-	AgpeyaHourData,
-	AgpeyaHour,
-	AgpeyaDataStored,
-	AgpeyaData,
-} from '../../en/agpeya'
+	AgpeyaHourFile
+>
 
-export { isMidnightHour } from '../../en/agpeya'
+const loader = createAgpeyaLoader(files, common as unknown as AgpeyaCommonFile)
 
-const data = agpeyaData as unknown as import('../../en/agpeya').AgpeyaDataStored
+export const getAgpeyaHourIds = loader.hourIds
+
+export const getAgpeyaHour = loader.getHour
 
 export function getAgpeyaHourData(
-	hourId: import('../../en/agpeya').AgpeyaHourId,
-): import('../../en/agpeya').AgpeyaHourData | import('../../en/agpeya').AgpeyaMidnightHour | null {
-	if (hourId === 'midnight') {
-		return data.midnight
-	}
-	return data.hours[hourId] || null
+	hourId: AgpeyaHourId,
+): AgpeyaHourData | AgpeyaMidnightHour | null {
+	const hour = loader.getHour(hourId)
+	return hour ? toLegacyHour(hour) : null
 }
 
-export function getAgpeyaHour(
-	hourId: import('../../en/agpeya').AgpeyaHourId,
-): import('../../en/agpeya').AgpeyaHour | null {
-	const hourData = getAgpeyaHourData(hourId)
-	if (!hourData) return null
-	return hourData as unknown as import('../../en/agpeya').AgpeyaHour
+export function getAllAgpeyaHours(): (AgpeyaHourData | AgpeyaMidnightHour)[] {
+	return getAgpeyaHourIds()
+		.map(getAgpeyaHourData)
+		.filter((hour): hour is AgpeyaHourData | AgpeyaMidnightHour => hour !== null)
 }
 
-export function getAllAgpeyaHours(): (
-	| import('../../en/agpeya').AgpeyaHourData
-	| import('../../en/agpeya').AgpeyaMidnightHour
-)[] {
-	const hours = Object.values(data.hours) as import('../../en/agpeya').AgpeyaHourData[]
-	return [...hours, data.midnight]
+export function getCommonPrayer(prayerId: string) {
+	const section = loader.getCommonSection(prayerId)
+	return section && 'content' in section ? section : null
 }
 
-export function getAgpeyaHourIds(): import('../../en/agpeya').AgpeyaHourId[] {
-	return [...Object.keys(data.hours), 'midnight'] as import('../../en/agpeya').AgpeyaHourId[]
+export function getAllCommonPrayers() {
+	return loader.commonSections()
 }
 
-export function getCommonPrayer(
-	prayerId: string,
-): import('../../en/agpeya').AgpeyaPrayerSection | null {
-	return (
-		(commonPrayers as Record<string, import('../../en/agpeya').AgpeyaPrayerSection>)[prayerId] ||
-		null
-	)
-}
-
-export function getAllCommonPrayers(): Record<
-	string,
-	import('../../en/agpeya').AgpeyaPrayerSection
-> {
-	return commonPrayers as Record<string, import('../../en/agpeya').AgpeyaPrayerSection>
-}
-
-export { agpeyaData, commonPrayers }
+export { isMidnightHour } from '../../agpeya/legacy'
+export type {
+	AgpeyaGospelRef,
+	AgpeyaHourData,
+	AgpeyaLitany,
+	AgpeyaMidnightHour,
+	AgpeyaPrayerSection,
+	AgpeyaPsalm,
+	AgpeyaPsalmRef,
+	AgpeyaWatch,
+} from '../../agpeya/legacy'
+export type {
+	AgpeyaHourId,
+	AgpeyaHourService,
+	AgpeyaPart,
+	AgpeyaSection,
+	MidnightWatchId,
+} from '../../agpeya/types'

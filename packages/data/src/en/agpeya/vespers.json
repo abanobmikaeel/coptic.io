@@ -1,0 +1,67 @@
+{
+	"id": "vespers",
+	"language": "en",
+	"name": "Vespers",
+	"englishName": "Eleventh Hour",
+	"traditionalTime": "6:00 PM",
+	"introduction": "We pray the Eleventh Hour commemorating the taking down of our Lord from the Cross and His burial.",
+	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"order": [
+		"opening",
+		"vespers-hour-intro",
+		"thanksgiving-prayer",
+		"psalm-50",
+		"psalm-116",
+		"psalm-117",
+		"psalm-119",
+		"psalm-120",
+		"psalm-121",
+		"psalm-122",
+		"psalm-123",
+		"psalm-124",
+		"psalm-125",
+		"psalm-126",
+		"psalm-127",
+		"psalm-128",
+		"vespers-gospel",
+		"vespers-litany",
+		"vespers-closing"
+	],
+	"sections": [
+		{
+			"id": "vespers-hour-intro",
+			"kind": "hour-intro",
+			"title": "The Beginning of the Vespers Prayer",
+			"content": [
+				"The praise of the blessed Vespers, I offer to Christ my King and my God, beseeching Him to forgive me my sins."
+			]
+		},
+		{
+			"id": "vespers-gospel",
+			"kind": "gospel",
+			"book": "Luke",
+			"chapter": 4,
+			"startVerse": 38,
+			"endVerse": 41,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "vespers-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"O Lord, Who at the Eleventh Hour was taken down from the Cross: take away our sins from us. Lord have mercy.",
+				"We have sinned and committed iniquity, we have acted wickedly; have mercy upon us and forgive us. Lord have mercy.",
+				"O Lord, as the sun sets and the daylight fades, we praise and glorify You, for You have brought us to the evening time. Lord have mercy."
+			]
+		},
+		{
+			"id": "vespers-closing",
+			"kind": "closing",
+			"content": [
+				"O Lord, Who at the Eleventh Hour was taken down from the Cross by Joseph and Nicodemus: take away our sins from us and have mercy upon us.",
+				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+			]
+		}
+	]
+}

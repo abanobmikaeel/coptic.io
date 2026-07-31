@@ -15,11 +15,18 @@
  *     its entry fails the test, so the lists always equal the remaining work.
  */
 import { describe, expect, it } from 'vitest'
-// Compare LOADER output, not raw JSON — the English loader substitutes the
-// shared thanksgiving prayer from common.json, and the loaders are what the
-// API (and therefore the reader) actually serves.
-import { getAgpeyaHourIds as arHourIds, getAgpeyaHourData as getArHour } from '../ar/agpeya'
-import { getAgpeyaHourIds, getAgpeyaHourData as getEnHour } from '../en/agpeya'
+// Compare LOADER output, not raw JSON — an hour file names most of its sections
+// by id, so only the composed hour is the text actually served.
+import {
+	getAgpeyaHourIds as arHourIds,
+	getAgpeyaHour as getArAgpeyaHour,
+	getAgpeyaHourData as getArHour,
+} from '../ar/agpeya'
+import {
+	getAgpeyaHourIds,
+	getAgpeyaHour as getEnAgpeyaHour,
+	getAgpeyaHourData as getEnHour,
+} from '../en/agpeya'
 import enBible from '../en/bible/books.json'
 
 const KNOWN_PROSE_GAPS = new Set([
@@ -135,6 +142,40 @@ for (const { path, en: e, ar: a } of units) {
 }
 
 // ── invariants ───────────────────────────────────────────────────────────────
+
+describe('agpeya rite parity', () => {
+	// The strongest invariant the order-based split buys: both languages name the
+	// same section ids in the same sequence, so the reader can align them by id
+	// instead of by position and a section added to one language but not the
+	// other fails here rather than silently misaligning the columns.
+	const MISSING_ARABIC = new Set(['midnight-1-closing', 'midnight-2-closing', 'midnight-3-closing'])
+
+	it('prays the same sections in the same order in both languages', () => {
+		for (const hourId of getAgpeyaHourIds()) {
+			const ids = (hour: ReturnType<typeof getEnAgpeyaHour>): string[] =>
+				(hour?.parts ?? []).flatMap((part) =>
+					'group' in part ? [part.group, ...part.sections.map((s) => s.id)] : [part.id],
+				)
+			const en = ids(getEnAgpeyaHour(hourId)).filter((id) => !MISSING_ARABIC.has(id))
+			expect(ids(getArAgpeyaHour(hourId)), `${hourId}: order differs`).toEqual(en)
+		}
+	})
+
+	it('lists only still-missing sections in MISSING_ARABIC', () => {
+		const arabic = new Set(
+			getAgpeyaHourIds().flatMap((hourId) =>
+				(getArAgpeyaHour(hourId)?.parts ?? []).flatMap((part) =>
+					'group' in part ? part.sections.map((s) => s.id) : [part.id],
+				),
+			),
+		)
+		for (const id of MISSING_ARABIC) {
+			expect(arabic.has(id), `${id} now exists in Arabic — remove it from MISSING_ARABIC`).toBe(
+				false,
+			)
+		}
+	})
+})
 
 describe('agpeya data cross-language parity', () => {
 	it('has identical hours and psalm sequences', () => {

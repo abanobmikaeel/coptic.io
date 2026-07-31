@@ -1,0 +1,132 @@
+{
+	"id": "compline",
+	"language": "en",
+	"name": "Compline",
+	"englishName": "Twelfth Hour",
+	"traditionalTime": "9:00 PM",
+	"introduction": "We pray the Twelfth Hour commemorating the burial of our Lord Jesus Christ, and we remember the end of life and the Final Judgment.",
+	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"order": [
+		"opening",
+		"compline-hour-intro",
+		"thanksgiving-prayer",
+		"psalm-50",
+		"psalm-129",
+		"psalm-130",
+		"compline-psalm-131",
+		"psalm-132",
+		"psalm-133",
+		"psalm-136",
+		"psalm-137",
+		"psalm-140",
+		"psalm-141",
+		"psalm-145",
+		"psalm-146",
+		"psalm-147",
+		"compline-gospel",
+		"compline-litany",
+		"compline-closing"
+	],
+	"sections": [
+		{
+			"id": "compline-hour-intro",
+			"kind": "hour-intro",
+			"title": "The Beginning of the Compline Prayer",
+			"content": [
+				"The praise of Compline of this blessed day, I offer to Christ my King and my God, beseeching Him to forgive me my sins."
+			]
+		},
+		{
+			"id": "compline-psalm-131",
+			"kind": "psalm",
+			"psalmNumber": 131,
+			"title": "Psalm 131",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Lord, remember David and all his meekness: how he swore to the Lord, and vowed to the God of Jacob, saying, \"I will not go into the dwelling of my house, or go up to the bed of my couch; I will not give sleep to my eyes, nor slumber to my eyelids, nor rest to my temples, until I find a place for the Lord, and a dwelling place for the God of Jacob.\""
+				},
+				{
+					"num": 2,
+					"text": "Behold, we heard of it in Ephratha; we found it in the fields of the wood."
+				},
+				{
+					"num": 3,
+					"text": "Let us enter into His dwelling, and worship at the place where His feet stood."
+				},
+				{
+					"num": 4,
+					"text": "Arise, O Lord, into Your rest; You, and the ark of Your holy place."
+				},
+				{
+					"num": 5,
+					"text": "Your priests shall clothe themselves with righteousness; and Your righteous shall exult."
+				},
+				{
+					"num": 6,
+					"text": "For the sake of Your servant David, do not turn away Your face from Your anointed."
+				},
+				{
+					"num": 7,
+					"text": "The Lord has sworn in truth to David, and He will not turn from it, \"Of the fruit of your loins I will set upon your throne.\""
+				},
+				{
+					"num": 8,
+					"text": "If your children keep My covenant and My testimonies which I will teach them, their children also will sit upon your throne forever."
+				},
+				{
+					"num": 9,
+					"text": "For the Lord has selected Zion, He has chosen her a dwelling for Himself."
+				},
+				{
+					"num": 10,
+					"text": "This is My resting place forever. Here I will dwell; for I have desired it."
+				},
+				{
+					"num": 11,
+					"text": "In blessing I shall bless her hunting. Her poor I shall satisfy with bread. Her priests I shall clothe with salvation; and her saints with rejoicing shall rejoice."
+				},
+				{
+					"num": 12,
+					"text": "There I shall raise a horn to David."
+				},
+				{
+					"num": 13,
+					"text": "I have prepared a lamp for My anointed."
+				},
+				{
+					"num": 14,
+					"text": "His enemies I shall clothe with shame, and My holiness shall flourish upon Him. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "compline-gospel",
+			"kind": "gospel",
+			"book": "Luke",
+			"chapter": 2,
+			"startVerse": 25,
+			"endVerse": 32,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "compline-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"O Lord, Who at the Twelfth Hour was laid in the tomb: grant that we may be buried with You and rise with You. Lord have mercy.",
+				"We have sinned, we have committed iniquity, we have acted wickedly; have mercy upon us and forgive us. Lord have mercy.",
+				"Grant us, O Lord, before the end comes, true repentance and the forgiveness of our sins. Lord have mercy."
+			]
+		},
+		{
+			"id": "compline-closing",
+			"kind": "closing",
+			"content": [
+				"O Lord, as I lie down to sleep, grant me peaceful rest and awaken me again to glorify You. Be with me through the night and protect me from all harm.",
+				"Lord, now let Your servant depart in peace, according to Your word, for my eyes have seen Your salvation, which You have prepared before the face of all peoples, a light to bring revelation to the Gentiles, and the glory of Your people Israel.",
+				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+			]
+		}
+	]
+}

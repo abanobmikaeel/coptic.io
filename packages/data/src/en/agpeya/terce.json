@@ -1,0 +1,792 @@
+{
+	"id": "terce",
+	"language": "en",
+	"name": "Terce",
+	"englishName": "Third Hour",
+	"traditionalTime": "9:00 AM",
+	"introduction": "We pray the Third Hour commemorating the descent of the Holy Spirit upon the apostles at Pentecost, and the trial of our Lord before Pilate.",
+	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"order": [
+		"opening",
+		"terce-hour-intro",
+		"thanksgiving-prayer",
+		"psalm-50",
+		"terce-psalm-19",
+		"terce-psalm-22",
+		"terce-psalm-23",
+		"terce-psalm-25",
+		"terce-psalm-28",
+		"terce-psalm-29",
+		"terce-psalm-33",
+		"terce-psalm-40",
+		"terce-psalm-42",
+		"terce-psalm-44",
+		"terce-psalm-45",
+		"terce-psalm-46",
+		"terce-gospel",
+		"terce-gospel-2",
+		"terce-litany",
+		"terce-closing"
+	],
+	"sections": [
+		{
+			"id": "terce-hour-intro",
+			"kind": "hour-intro",
+			"title": "The Beginning of the Third Hour Prayer",
+			"content": [
+				"The praise of the third hour of the blessed day, I offer to Christ my King and my God, beseeching Him to forgive me my sins."
+			]
+		},
+		{
+			"id": "terce-psalm-19",
+			"kind": "psalm",
+			"psalmNumber": 19,
+			"title": "Psalm 19",
+			"verses": [
+				{
+					"num": 1,
+					"text": "The Lord shall hear you in the day of your trouble, the name of the God of Jacob defend you."
+				},
+				{
+					"num": 2,
+					"text": "He shall send you help from His Holy, and uphold you out of Zion."
+				},
+				{
+					"num": 3,
+					"text": "He shall remember all your sacrifices, and enrich your burnt offerings."
+				},
+				{
+					"num": 4,
+					"text": "The Lord shall grant you according to your heart, and fulfill all your counsel."
+				},
+				{
+					"num": 5,
+					"text": "We will confess your salvation, and in the name of our God we shall grow."
+				},
+				{
+					"num": 6,
+					"text": "The Lord shall fulfill all your petitions."
+				},
+				{
+					"num": 7,
+					"text": "Now I know that the Lord has saved His anointed: He shall hear him from His holy heaven, the salvation of His right hand is in mighty deeds."
+				},
+				{
+					"num": 8,
+					"text": "These in chariots, and these in horses, but in the name of the Lord our God we will grow."
+				},
+				{
+					"num": 9,
+					"text": "They are overthrown and fallen, but we have risen, and set upright."
+				},
+				{
+					"num": 10,
+					"text": "O Lord, save Your king: and hear us in the day we call upon You."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-22",
+			"kind": "psalm",
+			"psalmNumber": 22,
+			"title": "Psalm 22",
+			"verses": [
+				{
+					"num": 1,
+					"text": "The Lord is He who shepherds me; I shall need nothing."
+				},
+				{
+					"num": 2,
+					"text": "In a place of green pasture, there He has made me dwell: by the water of rest, He has tended me."
+				},
+				{
+					"num": 3,
+					"text": "He has restored my soul."
+				},
+				{
+					"num": 4,
+					"text": "He has guided me into the paths of righteousness, for His name's sake."
+				},
+				{
+					"num": 5,
+					"text": "Even if I walk in the midst of the shadow of death, I shall not fear evil things, for You are with me."
+				},
+				{
+					"num": 6,
+					"text": "Your rod and Your staff, these comfort me."
+				},
+				{
+					"num": 7,
+					"text": "You have prepared a table before me in the presence of those who afflict me."
+				},
+				{
+					"num": 8,
+					"text": "You have anointed my head with oil; and Your cup makes me drunk like power."
+				},
+				{
+					"num": 9,
+					"text": "Your mercy shall follow me all the days of my life: and my dwelling shall be in the house of the Lord unto length of days."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-23",
+			"kind": "psalm",
+			"psalmNumber": 23,
+			"title": "Psalm 23",
+			"verses": [
+				{
+					"num": 1,
+					"text": "The earth and its fullness are the Lord's; the world and all that dwell in it."
+				},
+				{
+					"num": 2,
+					"text": "He has founded it upon the seas, and prepared it upon the rivers."
+				},
+				{
+					"num": 3,
+					"text": "Who shall go up to the mountain of the Lord, and who shall stand in His holy place? He that is pure in his hands, and clean in his heart."
+				},
+				{
+					"num": 4,
+					"text": "Who has not lifted up his soul in vanity, nor sworn deceitfully to his neighbor."
+				},
+				{
+					"num": 5,
+					"text": "He shall receive a blessing from the Lord, and mercy from God his Savior. This is the generation of those who seek the Lord, who seek the face of the God of Jacob."
+				},
+				{
+					"num": 6,
+					"text": "Lift up your gates, you princes, and be lifted up, you everlasting doors; and the King of glory shall come in."
+				},
+				{
+					"num": 7,
+					"text": "Who is this King of glory? The Lord who is strong and mighty, the Lord who is mighty in war."
+				},
+				{
+					"num": 8,
+					"text": "Lift up your gates, you princes; and be lifted up, you everlasting doors; and the King of glory shall come in."
+				},
+				{
+					"num": 9,
+					"text": "Who is this King of glory? The Lord of hosts, He is this King of glory."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-25",
+			"kind": "psalm",
+			"psalmNumber": 25,
+			"title": "Psalm 25",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Judge me, O Lord; for I have walked in my innocence: and trusted in the Lord, I shall not be weakened."
+				},
+				{
+					"num": 2,
+					"text": "Prove me, O Lord, and try me; purify my heart and my reins."
+				},
+				{
+					"num": 3,
+					"text": "For Your mercy is before my eyes: and I am pleased with Your truth."
+				},
+				{
+					"num": 4,
+					"text": "I have not sat with the vain council, nor shall I enter in with the transgressors."
+				},
+				{
+					"num": 5,
+					"text": "I have hated the assembly of evil doers; and shall not sit with ungodly men."
+				},
+				{
+					"num": 6,
+					"text": "I will wash my hands in purity, and go around Your altar, O Lord."
+				},
+				{
+					"num": 7,
+					"text": "To hear the voice of Your praise, and to speak of all Your wonderful works."
+				},
+				{
+					"num": 8,
+					"text": "O Lord, I have loved the beauty of Your house, and the dwelling place of Your glory."
+				},
+				{
+					"num": 9,
+					"text": "Do not destroy my soul together with the ungodly, nor my life with bloody men."
+				},
+				{
+					"num": 10,
+					"text": "In whose hands are iniquity, and their right hand is filled with bribe."
+				},
+				{
+					"num": 11,
+					"text": "But I have walked in my innocence."
+				},
+				{
+					"num": 12,
+					"text": "Save me, and have mercy upon me; my foot stood in uprightness."
+				},
+				{
+					"num": 13,
+					"text": "In the congregations I will praise You, O Lord."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-28",
+			"kind": "psalm",
+			"psalmNumber": 28,
+			"title": "Psalm 28",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Bring to the Lord, O sons of God."
+				},
+				{
+					"num": 2,
+					"text": "Bring to the Lord young rams."
+				},
+				{
+					"num": 3,
+					"text": "Bring to the Lord glory and honor."
+				},
+				{
+					"num": 4,
+					"text": "Bring to the Lord glory to His name."
+				},
+				{
+					"num": 5,
+					"text": "Worship the Lord in His holy court."
+				},
+				{
+					"num": 6,
+					"text": "The voice of the Lord is upon the waters."
+				},
+				{
+					"num": 7,
+					"text": "God of glory has thundered."
+				},
+				{
+					"num": 8,
+					"text": "The Lord is upon the many waters."
+				},
+				{
+					"num": 9,
+					"text": "The voice of the Lord is mighty."
+				},
+				{
+					"num": 10,
+					"text": "The voice of the Lord is in great beauty."
+				},
+				{
+					"num": 11,
+					"text": "The voice of the Lord breaks the cedar."
+				},
+				{
+					"num": 12,
+					"text": "The Lord will break the cedar of Lebanon, and He will beat them small like the calf of Lebanon; and the beloved one like a son of the unicorn."
+				},
+				{
+					"num": 13,
+					"text": "The voice of the Lord cuts a flame of fire."
+				},
+				{
+					"num": 14,
+					"text": "The voice of the Lord shakes the wilderness."
+				},
+				{
+					"num": 15,
+					"text": "The Lord will shake the wilderness of Kadesh."
+				},
+				{
+					"num": 16,
+					"text": "The voice of the Lord strengthens the deer, and will uncover the forests."
+				},
+				{
+					"num": 17,
+					"text": "And in His holy temple every one speaks of glory."
+				},
+				{
+					"num": 18,
+					"text": "The Lord dwells in the flood: and the Lord will sit as a king forever."
+				},
+				{
+					"num": 19,
+					"text": "The Lord will give strength to His people; the Lord will bless His people with peace."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-29",
+			"kind": "psalm",
+			"psalmNumber": 29,
+			"title": "Psalm 29",
+			"verses": [
+				{
+					"num": 1,
+					"text": "I will exalt You, O Lord; for You have accepted me, and not caused my enemies to rejoice over me."
+				},
+				{
+					"num": 2,
+					"text": "O Lord, my God, I cried to You, and You have healed me."
+				},
+				{
+					"num": 3,
+					"text": "O Lord, You have brought up my soul from Hades, You have delivered me from the hands of those who will go down to the pit."
+				},
+				{
+					"num": 4,
+					"text": "Sing to the Lord, all you His saints, and confess the remembrance of His holiness."
+				},
+				{
+					"num": 5,
+					"text": "For anger is in His wrath, but life in His favor."
+				},
+				{
+					"num": 6,
+					"text": "Weeping shall be for the evening, but joy shall be in the morning."
+				},
+				{
+					"num": 7,
+					"text": "I said in my prosperity, I shall never be moved. O Lord, in Your will You gave strength to my beauty."
+				},
+				{
+					"num": 8,
+					"text": "But You turned away Your face from me, and I became troubled."
+				},
+				{
+					"num": 9,
+					"text": "To You, O Lord, I shall cry; and to my God I shall make supplication."
+				},
+				{
+					"num": 10,
+					"text": "What profit is there in my blood, when I go down to destruction? Shall the dust confess to You? Or shall it declare Your truth? The Lord heard, and had mercy upon me; the Lord became to me a helper."
+				},
+				{
+					"num": 11,
+					"text": "You have turned my mourning into joy for me: You have rent off my sackcloth, and girded me with gladness."
+				},
+				{
+					"num": 12,
+					"text": "That my glory may sing praise to You, and I shall not be troubled at heart."
+				},
+				{
+					"num": 13,
+					"text": "O Lord, my God, I will confess to You forever."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-33",
+			"kind": "psalm",
+			"psalmNumber": 33,
+			"title": "Psalm 33",
+			"verses": [
+				{
+					"num": 1,
+					"text": "I will bless the Lord at all times: His praise shall be continually in my mouth. My soul shall boast herself in the Lord: let the meek hear and rejoice."
+				},
+				{
+					"num": 2,
+					"text": "Magnify the Lord with me, and let us exalt His name together."
+				},
+				{
+					"num": 3,
+					"text": "I sought the Lord diligently, and He heard me, and delivered me from all my fear."
+				},
+				{
+					"num": 4,
+					"text": "Draw near to Him, and be enlightened: and your faces shall not be ashamed."
+				},
+				{
+					"num": 5,
+					"text": "This poor man cried, and the Lord heard him, and delivered him out of all his afflictions."
+				},
+				{
+					"num": 6,
+					"text": "The angel of the Lord will encamp round about those who fear Him, and will deliver them."
+				},
+				{
+					"num": 7,
+					"text": "Taste and see that the Lord is sweet."
+				},
+				{
+					"num": 8,
+					"text": "Blessed is the man who hopes in Him."
+				},
+				{
+					"num": 9,
+					"text": "Fear the Lord, all you His saints: for there is no want to those who fear Him."
+				},
+				{
+					"num": 10,
+					"text": "The rich have become poor and they hungered: but those who seek the Lord shall not want any good thing."
+				},
+				{
+					"num": 11,
+					"text": "Come, you children, hear me: I will teach you the fear of the Lord."
+				},
+				{
+					"num": 12,
+					"text": "Who is the man that desires life, and is thinking to see good days? Keep your tongue from evil, and your lips from speaking guile."
+				},
+				{
+					"num": 13,
+					"text": "Turn away from evil, and do good; seek peace, and pursue it."
+				},
+				{
+					"num": 14,
+					"text": "For the eyes of the Lord are over the righteous, and His ears are bent to their prayer."
+				},
+				{
+					"num": 15,
+					"text": "But the face of the Lord is against those who do evil, to wipe out their memorial from upon the earth."
+				},
+				{
+					"num": 16,
+					"text": "The righteous cried, and the Lord heard them, and delivered them out of all their afflictions."
+				},
+				{
+					"num": 17,
+					"text": "The Lord is near to those who are contrite in their heart; and will save the lowly in spirit."
+				},
+				{
+					"num": 18,
+					"text": "Many are the afflictions of the righteous: but out of them all the Lord will deliver them."
+				},
+				{
+					"num": 19,
+					"text": "The Lord will keep all their bones: not one of them shall be broken."
+				},
+				{
+					"num": 20,
+					"text": "The death of the sinners is evil: and those who hate righteousness will grieve."
+				},
+				{
+					"num": 21,
+					"text": "The Lord will save the souls of His servants: and none of those who hope in Him shall grieve."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-40",
+			"kind": "psalm",
+			"psalmNumber": 40,
+			"title": "Psalm 40",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Blessed is he who thinks of the poor and needy: the Lord shall deliver him in an evil day."
+				},
+				{
+					"num": 2,
+					"text": "The Lord shall preserve him and keep him alive, and make him blessed on the earth, and not deliver him into the hands of his enemies."
+				},
+				{
+					"num": 3,
+					"text": "The Lord shall help him upon the bed of his pain; You have made all his bed in his sickness."
+				},
+				{
+					"num": 4,
+					"text": "I said, O Lord, have mercy on me; heal my soul; for I have sinned against You."
+				},
+				{
+					"num": 5,
+					"text": "My enemies have spoken evil against me, saying, \"When shall he die, and his name perish?\" And if he came to see me, he spoke in vanity; and his heart gathered unto him iniquity; he went forth and spoke in like manner."
+				},
+				{
+					"num": 6,
+					"text": "All my enemies whispered against me; against me they devised evil."
+				},
+				{
+					"num": 7,
+					"text": "They denounced a wicked word against me, saying, \"Now that he lies, shall he not rise up again?\" For even the man of my peace, he whom I trusted, who ate my bread, lifted up his heel against me."
+				},
+				{
+					"num": 8,
+					"text": "But You, O Lord, have mercy upon me, and raise me up, and I shall compensate them."
+				},
+				{
+					"num": 9,
+					"text": "In this I knew that You were delighted in me, because my enemy shall not rejoice over me."
+				},
+				{
+					"num": 10,
+					"text": "But because of my innocence You accepted me, and have established me before You forever."
+				},
+				{
+					"num": 11,
+					"text": "Blessed be the Lord God of Israel, from everlasting and to everlasting. So be it, so be it."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-42",
+			"kind": "psalm",
+			"psalmNumber": 42,
+			"title": "Psalm 42",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Judge me, O Lord, and avenge my case, against an impure nation."
+				},
+				{
+					"num": 2,
+					"text": "You shall deliver me from the unjust and crafty man. For You are my God and my strength."
+				},
+				{
+					"num": 3,
+					"text": "Why have You cast me off? And why do I walk gloomingly, while the enemy oppresses me? Send forth Your light and Your truth: they have led me, and brought me to Your holy mountain, and to Your dwelling."
+				},
+				{
+					"num": 4,
+					"text": "And I will go into the altar of God, before the face of God who gladdens my youth."
+				},
+				{
+					"num": 5,
+					"text": "I will give praise to You with the harp, O God, my God."
+				},
+				{
+					"num": 6,
+					"text": "Why are you sad, O my soul? And why do you trouble me? Hope in God; for I will give thanks to Him. The salvation of my face is my God."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-44",
+			"kind": "psalm",
+			"psalmNumber": 44,
+			"title": "Psalm 44",
+			"verses": [
+				{
+					"num": 1,
+					"text": "My heart has poured forth a good word."
+				},
+				{
+					"num": 2,
+					"text": "I will declare my works to the King: my tongue is a writer's pen, sharpened for writing."
+				},
+				{
+					"num": 3,
+					"text": "You are comely in beauty more than the sons of men."
+				},
+				{
+					"num": 4,
+					"text": "Grace has been shed forth from Your lips: therefore God has blessed You forever."
+				},
+				{
+					"num": 5,
+					"text": "Gird Your sword upon Your thigh, O Mighty One, in Your comeliness, and in Your beauty."
+				},
+				{
+					"num": 6,
+					"text": "Draw it, prosper, and reign, because of truth and meekness and righteousness; and Your right hand shall guide You wonderfully."
+				},
+				{
+					"num": 7,
+					"text": "Your arrows are sharp, O Mighty One, in the heart of the King's enemies; the nations shall fall under You."
+				},
+				{
+					"num": 8,
+					"text": "Your throne, O God, is for ever and ever: the scepter of Your kingdom is a scepter of uprightness."
+				},
+				{
+					"num": 9,
+					"text": "You have loved righteousness, and hated iniquity."
+				},
+				{
+					"num": 10,
+					"text": "Therefore, God, Your God, has anointed You with the oil of gladness more than Your fellows."
+				},
+				{
+					"num": 11,
+					"text": "Myrrh and stacte and cassia are from Your garments."
+				},
+				{
+					"num": 12,
+					"text": "And out of the ivory palaces, with which they have gladdened You."
+				},
+				{
+					"num": 13,
+					"text": "Kings' daughters for Your honor."
+				},
+				{
+					"num": 14,
+					"text": "The queen stood by on Your right hand, clothed in a vestment wrought with gold work, and adorned in divers manners."
+				},
+				{
+					"num": 15,
+					"text": "Hear, O my daughter, and see, and incline your ear; forget your people, and your father's house."
+				},
+				{
+					"num": 16,
+					"text": "Because the King has desired your beauty; for indeed He is your Lord, and you shall worship Him."
+				},
+				{
+					"num": 17,
+					"text": "The daughters of Tyre shall worship Him with gifts; the rich of the people of the land shall supplicate His favor."
+				},
+				{
+					"num": 18,
+					"text": "All the glory of the daughter of the King is within, robed in golden fringed garments, adorned in various manners."
+				},
+				{
+					"num": 19,
+					"text": "Virgins shall be brought to the King after her: all her fellows shall be brought to Him."
+				},
+				{
+					"num": 20,
+					"text": "They shall be brought with gladness and exultation: they shall be brought into the King's temple."
+				},
+				{
+					"num": 21,
+					"text": "Instead of Your fathers, children shall be unto You: You shall make them princes over all the earth. They shall make mention of Your name from generation to generation."
+				},
+				{
+					"num": 22,
+					"text": "Therefore the nations shall give praise to You, O God, forever, even forever and ever."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-45",
+			"kind": "psalm",
+			"psalmNumber": 45,
+			"title": "Psalm 45",
+			"verses": [
+				{
+					"num": 1,
+					"text": "God is our refuge and our strength; He is our help in the afflictions that have come heavily upon us."
+				},
+				{
+					"num": 2,
+					"text": "Therefore we shall not fear when the earth is troubled, and the mountains are removed into the heart of the seas."
+				},
+				{
+					"num": 3,
+					"text": "The waters have roared and been troubled, the mountains have been troubled by His might."
+				},
+				{
+					"num": 4,
+					"text": "The streams of the river gladden the city of God."
+				},
+				{
+					"num": 5,
+					"text": "The Most High has sanctified His dwelling. God is in the midst of her; she shall not be moved."
+				},
+				{
+					"num": 6,
+					"text": "God shall help her face."
+				},
+				{
+					"num": 7,
+					"text": "The nations were troubled, the kingdoms tottered."
+				},
+				{
+					"num": 8,
+					"text": "He gave forth His voice, the earth shook."
+				},
+				{
+					"num": 9,
+					"text": "The Lord, God of hosts, is with us; the God of Jacob is our helper."
+				},
+				{
+					"num": 10,
+					"text": "Come, you, and behold the works of the Lord, the wonders which He has set upon the earth."
+				},
+				{
+					"num": 11,
+					"text": "Putting an end to wars to the ends of the earth."
+				},
+				{
+					"num": 12,
+					"text": "He will crush their bows, and break their weapons, and burn their bucklers in the fire."
+				},
+				{
+					"num": 13,
+					"text": "Be still, and know that I am God: I will be exalted among the nations, I will be exalted upon the earth."
+				},
+				{
+					"num": 14,
+					"text": "The Lord God of hosts is with us; the God of Jacob is our helper."
+				}
+			]
+		},
+		{
+			"id": "terce-psalm-46",
+			"kind": "psalm",
+			"psalmNumber": 46,
+			"title": "Psalm 46",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Clap your hands, all you nations; shout to God with a voice of exultation."
+				},
+				{
+					"num": 2,
+					"text": "For the Lord is most high and fearful; He is a great King over all the earth."
+				},
+				{
+					"num": 3,
+					"text": "He has subdued peoples under us, and nations under our feet. He has chosen us for His inheritance, the beauty of Jacob He loved."
+				},
+				{
+					"num": 4,
+					"text": "God has ascended with a shout, and the Lord with a sound of a trumpet."
+				},
+				{
+					"num": 5,
+					"text": "Sing praises to our God, sing praises: sing praises to our King, sing praises; for God is King of all the earth."
+				},
+				{
+					"num": 6,
+					"text": "Sing praises with understanding, for the Lord reigned over all the nations."
+				},
+				{
+					"num": 7,
+					"text": "God sits upon His holy throne."
+				},
+				{
+					"num": 8,
+					"text": "Rulers of the people have assembled with God of Abraham: for God's mighty ones have been greatly exalted upon the earth."
+				}
+			]
+		},
+		{
+			"id": "terce-gospel",
+			"kind": "gospel",
+			"book": "John",
+			"chapter": 14,
+			"startVerse": 26,
+			"endVerse": 31,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint John the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "terce-gospel-2",
+			"kind": "gospel",
+			"book": "John",
+			"chapter": 15,
+			"startVerse": 1,
+			"endVerse": 3
+		},
+		{
+			"id": "terce-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"O Lord, Who at the Third Hour did send Your Holy Spirit upon Your apostles: take not that Spirit from us, O Good One, but renew Him within us. Lord have mercy.",
+				"Create in me a clean heart, O God, and renew a steadfast spirit within me. Cast me not away from Your presence, and take not Your Holy Spirit from me. Lord have mercy.",
+				"O Lord, Who at the Third Hour was led to be crucified for our salvation: mortify our carnal desires and deliver us from evil. Lord have mercy."
+			]
+		},
+		{
+			"id": "terce-closing",
+			"kind": "closing",
+			"content": [
+				"O Lord, Who at the Third Hour did send Your Holy Spirit upon Your apostles: take not that Spirit from us, O Good One, but renew Him within us. Create in me a clean heart, O God, and renew a steadfast spirit within me. Cast me not away from Your presence, and take not Your Holy Spirit from me.",
+				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+			]
+		}
+	]
+}

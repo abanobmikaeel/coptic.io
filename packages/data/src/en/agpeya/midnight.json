@@ -1,0 +1,950 @@
+{
+	"id": "midnight",
+	"language": "en",
+	"name": "Midnight",
+	"englishName": "Three Watches",
+	"traditionalTime": "12:00 AM",
+	"introduction": "We pray the Midnight Prayer commemorating the Second Coming of our Lord and the resurrection of the dead. We watch and pray as we await the Bridegroom.",
+	"order": [
+		"midnight-opening",
+		"thanksgiving-prayer",
+		"psalm-50",
+		{
+			"group": "midnight-1",
+			"name": "First Watch",
+			"theme": "Watchfulness and Vigilance",
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+			"order": [
+				"psalm-3",
+				"psalm-6",
+				"psalm-12",
+				"psalm-69",
+				"psalm-85",
+				"psalm-90",
+				"psalm-116",
+				"psalm-117",
+				"midnight-1-psalm-118",
+				"midnight-1-gospel",
+				"midnight-1-litany",
+				"midnight-1-closing"
+			]
+		},
+		{
+			"group": "midnight-2",
+			"name": "Second Watch",
+			"theme": "Repentance and Tears",
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+			"order": [
+				"psalm-119",
+				"psalm-120",
+				"psalm-121",
+				"psalm-122",
+				"psalm-123",
+				"psalm-124",
+				"psalm-125",
+				"psalm-126",
+				"psalm-127",
+				"psalm-128",
+				"midnight-2-gospel",
+				"midnight-2-litany",
+				"midnight-2-closing"
+			]
+		},
+		{
+			"group": "midnight-3",
+			"name": "Third Watch",
+			"theme": "Judgment and Hope",
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+			"order": [
+				"psalm-129",
+				"psalm-130",
+				"midnight-3-psalm-131",
+				"psalm-132",
+				"psalm-133",
+				"psalm-136",
+				"psalm-137",
+				"psalm-140",
+				"psalm-141",
+				"psalm-145",
+				"psalm-146",
+				"psalm-147",
+				"midnight-3-gospel",
+				"midnight-3-litany",
+				"midnight-3-closing"
+			]
+		},
+		"midnight-closing"
+	],
+	"sections": [
+		{
+			"id": "midnight-opening",
+			"kind": "opening",
+			"content": [
+				"In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+				"Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
+				"Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+			],
+			"inline": true
+		},
+		{
+			"id": "midnight-1-psalm-118",
+			"kind": "psalm",
+			"psalmNumber": 118,
+			"title": "Psalm 118",
+			"note": "The Great Psalm - all 22 stanzas",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Blessed are the blameless in the way, who walk in the law of the Lord."
+				},
+				{
+					"num": 2,
+					"text": "Blessed are they who search out His testimonies: seeking Him with their whole heart."
+				},
+				{
+					"num": 3,
+					"text": "For they who work iniquity have not desired to walk in His ways."
+				},
+				{
+					"num": 4,
+					"text": "You have commanded that Your commandments be diligently kept."
+				},
+				{
+					"num": 5,
+					"text": "O that my ways were directed to keep Your ordinances!"
+				},
+				{
+					"num": 6,
+					"text": "Then I shall not be ashamed, when I look on all Your commandments."
+				},
+				{
+					"num": 7,
+					"text": "I will give thanks to You, O Lord, with uprightness of my heart, when I have learned the judgments of Your righteousness."
+				},
+				{
+					"num": 8,
+					"text": "I will keep Your ordinances: do not exceedingly forsake me!"
+				},
+				{
+					"num": 9,
+					"text": "Wherewith shall a young man straighten his way? by keeping Your words."
+				},
+				{
+					"num": 10,
+					"text": "With my whole heart I have sought You: do not cast me away from Your commandments."
+				},
+				{
+					"num": 11,
+					"text": "I have hidden Your words in my heart, that I might not sin against You."
+				},
+				{
+					"num": 12,
+					"text": "Blessed are You, O Lord: teach me Your ordinances."
+				},
+				{
+					"num": 13,
+					"text": "With my lips I have declared all the judgments of Your mouth."
+				},
+				{
+					"num": 14,
+					"text": "I have delighted in the way of Your testimonies, as much as in all richness."
+				},
+				{
+					"num": 15,
+					"text": "I shall speak of Your commandments, and consider Your ways."
+				},
+				{
+					"num": 16,
+					"text": "I will meditate on Your ordinances, and I shall not forget Your words."
+				},
+				{
+					"num": 17,
+					"text": "Render a reward to Your servant: so I shall live, and keep Your words."
+				},
+				{
+					"num": 18,
+					"text": "Unveil my eyes, and I shall perceive wondrous things out of Your law."
+				},
+				{
+					"num": 19,
+					"text": "I am a stranger upon the earth: do not hide Your commandments from me."
+				},
+				{
+					"num": 20,
+					"text": "My soul has longed to desire Your judgments at all times."
+				},
+				{
+					"num": 21,
+					"text": "You have rebuked the proud: cursed are those who turn aside from Your commandments."
+				},
+				{
+					"num": 22,
+					"text": "Remove from me the reproach and the contempt; for I have sought out Your testimonies."
+				},
+				{
+					"num": 23,
+					"text": "For princes sat and spoke against me: but Your servant was meditating on Your ordinances."
+				},
+				{
+					"num": 24,
+					"text": "For Your testimonies are my meditation, and Your ordinances are my counsels."
+				},
+				{
+					"num": 25,
+					"text": "My soul has cleaved to the ground; revive me according to Your word."
+				},
+				{
+					"num": 26,
+					"text": "I declared Your ways, and You heard me: teach me Your ordinances."
+				},
+				{
+					"num": 27,
+					"text": "Instruct me in Your ordinances, and make known to me the way of Your righteousness; and I will meditate on Your wondrous works."
+				},
+				{
+					"num": 28,
+					"text": "My soul has slumbered from sorrow; strengthen me with Your words."
+				},
+				{
+					"num": 29,
+					"text": "Remove from me the way of iniquity; and be merciful to me by Your law."
+				},
+				{
+					"num": 30,
+					"text": "I have chosen the way of truth; and have not forgotten Your judgments."
+				},
+				{
+					"num": 31,
+					"text": "I have cleaved to Your testimonies, O Lord; do not put me to shame."
+				},
+				{
+					"num": 32,
+					"text": "I ran the way of Your commandments, when You enlarged my heart."
+				},
+				{
+					"num": 33,
+					"text": "Set before me, O Lord, a law in the way of Your ordinances, and I will seek it out every time."
+				},
+				{
+					"num": 34,
+					"text": "Give me understanding, and I shall search out Your law, and shall keep it with my whole heart."
+				},
+				{
+					"num": 35,
+					"text": "Guide me in the path of Your commandments; for in this I have delighted."
+				},
+				{
+					"num": 36,
+					"text": "Incline my heart to Your testimonies, and not to covetousness."
+				},
+				{
+					"num": 37,
+					"text": "Turn away my eyes that I may not behold vanity: revive me in Your ways."
+				},
+				{
+					"num": 38,
+					"text": "Set Your word with Your servant in Your fear."
+				},
+				{
+					"num": 39,
+					"text": "Take away from me the reproach which I have feared: for Your judgments are sweet."
+				},
+				{
+					"num": 40,
+					"text": "Behold, I have desired Your commandments: revive me in Your righteousness."
+				},
+				{
+					"num": 41,
+					"text": "Let Your mercy come upon me, O Lord; and Your salvation, according to Your word."
+				},
+				{
+					"num": 42,
+					"text": "So I shall answer with a word those who reproach me: for I have trusted in Your words."
+				},
+				{
+					"num": 43,
+					"text": "Do not take the word of truth exceedingly out of my mouth; for I have hoped in Your judgments."
+				},
+				{
+					"num": 44,
+					"text": "And I will keep Your law every time, forever and ever."
+				},
+				{
+					"num": 45,
+					"text": "I walked also at large: for I sought out Your commandments."
+				},
+				{
+					"num": 46,
+					"text": "And I spoke of Your testimonies before the kings, and was not ashamed."
+				},
+				{
+					"num": 47,
+					"text": "And I meditated on Your commandments, those which I loved exceedingly."
+				},
+				{
+					"num": 48,
+					"text": "And I lifted up my hands up to Your commandments which I exceedingly loved; and I meditated upon Your ordinances."
+				},
+				{
+					"num": 49,
+					"text": "Remember Your words to Your servant, in which You have made me hope."
+				},
+				{
+					"num": 50,
+					"text": "This has comforted me in my affliction: for Your word is that which has revived me."
+				},
+				{
+					"num": 51,
+					"text": "The proud have transgressed exceedingly; but I did not incline away from Your law."
+				},
+				{
+					"num": 52,
+					"text": "I remembered Your judgments from the beginning, O Lord; and was comforted."
+				},
+				{
+					"num": 53,
+					"text": "Despair took hold of me, because of the sinners who forsook Your law."
+				},
+				{
+					"num": 54,
+					"text": "Your ordinances were songs for me in the place of my sojourning."
+				},
+				{
+					"num": 55,
+					"text": "I remembered Your name, O Lord, in the night, and kept Your law."
+				},
+				{
+					"num": 56,
+					"text": "This came unto me, because I sought Your ordinances."
+				},
+				{
+					"num": 57,
+					"text": "You are my portion, O Lord: I said that I would keep Your commandments."
+				},
+				{
+					"num": 58,
+					"text": "I entreated Your face with my whole heart: have mercy on me according to Your word."
+				},
+				{
+					"num": 59,
+					"text": "I meditated on Your ways, and turned my feet to Your testimonies."
+				},
+				{
+					"num": 60,
+					"text": "I prepared myself, and was not troubled, to keep Your commandments."
+				},
+				{
+					"num": 61,
+					"text": "The bonds of sinners entrapped me: but I did not forget Your law."
+				},
+				{
+					"num": 62,
+					"text": "At midnight I usually arise, to give thanks to You for the judgments of Your righteousness."
+				},
+				{
+					"num": 63,
+					"text": "I am the companion of all who fear You, and of all who keep Your commandments."
+				},
+				{
+					"num": 64,
+					"text": "O Lord, the earth is filled of Your mercy: teach me Your ordinances."
+				},
+				{
+					"num": 65,
+					"text": "You have done good with Your servant, O Lord, according to Your word."
+				},
+				{
+					"num": 66,
+					"text": "Teach me kindness, and instruction, and knowledge: for I have believed Your commandments."
+				},
+				{
+					"num": 67,
+					"text": "Before I was humbled, I became lazy; therefore I have kept Your word."
+				},
+				{
+					"num": 68,
+					"text": "Sweet are You, O Lord; and in Your goodness teach me Your ordinances."
+				},
+				{
+					"num": 69,
+					"text": "The injustice of the proud has been multiplied against me: but I shall search out Your commandments with all my heart."
+				},
+				{
+					"num": 70,
+					"text": "Their heart has been curdled like milk; but I have meditated on Your law."
+				},
+				{
+					"num": 71,
+					"text": "It is good for me that You have humbled me; that I might learn Your ordinances."
+				},
+				{
+					"num": 72,
+					"text": "The law of Your mouth is better to me than thousands of gold and silver."
+				},
+				{
+					"num": 73,
+					"text": "Your hands have made me, and fashioned me: instruct me, that I will learn Your commandments."
+				},
+				{
+					"num": 74,
+					"text": "They who fear You shall see me and rejoice: for I have hoped in Your words."
+				},
+				{
+					"num": 75,
+					"text": "I know, O Lord, that Your judgments are righteousness, and that You truly have humbled me."
+				},
+				{
+					"num": 76,
+					"text": "Let, Your mercy come upon me to comfort me, according to Your word to Your servant."
+				},
+				{
+					"num": 77,
+					"text": "Let Your compassion come to me, that I shall live: for Your law is my meditation."
+				},
+				{
+					"num": 78,
+					"text": "Let the proud be ashamed: for they transgressed against me unjustly: but I shall be continually in Your commandments."
+				},
+				{
+					"num": 79,
+					"text": "Let those who fear You, and those who know Your wonders, turn to me."
+				},
+				{
+					"num": 80,
+					"text": "Let my heart be blameless in Your ordinances, that I may not be ashamed."
+				},
+				{
+					"num": 81,
+					"text": "My soul has fainted for Your salvation: and I have hoped in Your words."
+				},
+				{
+					"num": 82,
+					"text": "My eyes failed in waiting for Your word, saying, \"When will You comfort me?\" I have become as a bottle in the frost: but I have not forgotten Your ordinances."
+				},
+				{
+					"num": 83,
+					"text": "How many are the days of Your servant?"
+				},
+				{
+					"num": 84,
+					"text": "When will You execute judgment for me on those who persecute me?"
+				},
+				{
+					"num": 85,
+					"text": "Transgressors told me idle words; but not according to Your law, O Lord."
+				},
+				{
+					"num": 86,
+					"text": "For all Your commandments are truth; they persecuted me unjustly; help me."
+				},
+				{
+					"num": 87,
+					"text": "They nearly destroyed me upon the earth; but I did not forsake Your commandments."
+				},
+				{
+					"num": 88,
+					"text": "Revive me according to Your mercy; so I shall keep the testimonies of Your mouth."
+				},
+				{
+					"num": 89,
+					"text": "Your word, O Lord, abides in the heavens forever."
+				},
+				{
+					"num": 90,
+					"text": "Your truth endures from generation to generation; You have founded the earth, and it abides by Your command."
+				},
+				{
+					"num": 91,
+					"text": "The day also abides; for all things are Your servants."
+				},
+				{
+					"num": 92,
+					"text": "Were it not that Your law was my meditation, I would have perished in my humility."
+				},
+				{
+					"num": 93,
+					"text": "I shall never forget Your ordinances; for with them You have revived me."
+				},
+				{
+					"num": 94,
+					"text": "I am Yours, save me; for I have sought out Your ordinances."
+				},
+				{
+					"num": 95,
+					"text": "The sinners have waited for me to destroy me; but I understood Your testimonies."
+				},
+				{
+					"num": 96,
+					"text": "I have seen an end of every perfection; but Your commandments are very broad."
+				},
+				{
+					"num": 97,
+					"text": "How beloved is Your name, O Lord! It is my meditation the whole day."
+				},
+				{
+					"num": 98,
+					"text": "You have instructed me more than my enemies in Your commandments; for they are mine forever."
+				},
+				{
+					"num": 99,
+					"text": "I have more understanding than all who teach me; for Your testimonies are my meditation."
+				},
+				{
+					"num": 100,
+					"text": "I understood more than the aged; because I sought out Your commandments."
+				},
+				{
+					"num": 101,
+					"text": "I have kept back my feet from every evil way, that I might keep Your words."
+				},
+				{
+					"num": 102,
+					"text": "I have not declined from Your judgments; for You have set a law for me."
+				},
+				{
+					"num": 103,
+					"text": "How sweet are Your words to my throat, more so than honey and honey comb in my mouth!"
+				},
+				{
+					"num": 104,
+					"text": "I gain understanding from Your commandments: therefore I have hated every way of unrighteousness."
+				},
+				{
+					"num": 105,
+					"text": "Your law is a lamp to my feet, and a light to my paths."
+				},
+				{
+					"num": 106,
+					"text": "I have sworn and determined to keep the judgments of Your righteousness."
+				},
+				{
+					"num": 107,
+					"text": "I have been greatly humbled, revive me, O Lord, according to Your word."
+				},
+				{
+					"num": 108,
+					"text": "Bless, O Lord, the promises of my mouth, and teach me Your judgments."
+				},
+				{
+					"num": 109,
+					"text": "My soul is continually in Your hands; and I have not forgotten Your law."
+				},
+				{
+					"num": 110,
+					"text": "The sinners hid a snare for me; and I did not stray from Your commandments."
+				},
+				{
+					"num": 111,
+					"text": "I have inherited Your testimonies forever; for they are the joy of my heart."
+				},
+				{
+					"num": 112,
+					"text": "I have inclined my heart to perform Your righteousness forever, for the sake of a reward."
+				},
+				{
+					"num": 113,
+					"text": "I have hated transgressors; and I have loved Your law."
+				},
+				{
+					"num": 114,
+					"text": "You are my helper and my supporter; I have hoped in Your word."
+				},
+				{
+					"num": 115,
+					"text": "Turn away from me, you evil-doers; for I shall search out the commandments of my God."
+				},
+				{
+					"num": 116,
+					"text": "Uphold me according to Your word, and I shall live; and do not make me ashamed of my hope."
+				},
+				{
+					"num": 117,
+					"text": "Help me, and I shall be saved; and I shall meditate on Your ordinances continually."
+				},
+				{
+					"num": 118,
+					"text": "You have brought to nought all who turn away from Your ordinances; for their thought is an iniquity."
+				},
+				{
+					"num": 119,
+					"text": "I have reckoned all the sinners of the earth as transgressors; therefore I have loved Your testimonies at all times."
+				},
+				{
+					"num": 120,
+					"text": "Nail Your fear to my flesh; for I feared Your judgments."
+				},
+				{
+					"num": 121,
+					"text": "I have done judgment and justice; do not deliver me to the hands of those who injure me."
+				},
+				{
+					"num": 122,
+					"text": "Accept Your servant unto You for good: do not let the proud say falsehood against me."
+				},
+				{
+					"num": 123,
+					"text": "My eyes have failed for Your salvation, and for the word of Your righteousness."
+				},
+				{
+					"num": 124,
+					"text": "Deal with Your servant according to Your mercy, and teach me Your ordinances."
+				},
+				{
+					"num": 125,
+					"text": "I am Your servant; instruct me, and I will know Your testimonies."
+				},
+				{
+					"num": 126,
+					"text": "It is the time to work for the Lord: they have utterly broken Your law."
+				},
+				{
+					"num": 127,
+					"text": "Therefore I have loved Your commandments more than gold and topaz."
+				},
+				{
+					"num": 128,
+					"text": "Therefore I stood for all Your commandments: I have hated every unjust way."
+				},
+				{
+					"num": 129,
+					"text": "Your testimonies are wonderful: therefore my soul has kept them."
+				},
+				{
+					"num": 130,
+					"text": "The manifestation of Your words shall enlighten, and instruct the small children."
+				},
+				{
+					"num": 131,
+					"text": "I opened my mouth, and drew a spirit unto me: for I earnestly longed for Your commandments."
+				},
+				{
+					"num": 132,
+					"text": "Look upon me and have mercy on me, after the manner of those who love Your name."
+				},
+				{
+					"num": 133,
+					"text": "Make straight my steps according to Your word: and let not any iniquity have dominion over me."
+				},
+				{
+					"num": 134,
+					"text": "Deliver me from the false accusation of men: so I shall keep Your commandments."
+				},
+				{
+					"num": 135,
+					"text": "Let Your face shine upon Your servant: and teach me Your ordinances."
+				},
+				{
+					"num": 136,
+					"text": "My eyes have been bathed in the streams of waters, because they did not keep Your law."
+				},
+				{
+					"num": 137,
+					"text": "Righteous are You, O Lord, and upright are Your judgments."
+				},
+				{
+					"num": 138,
+					"text": "You have commanded justice and truth exceedingly, which are Your testimonies."
+				},
+				{
+					"num": 139,
+					"text": "The zeal has eaten me up: because my enemies have forgotten Your commandments."
+				},
+				{
+					"num": 140,
+					"text": "Your word has been very fully tried; and Your servant loves it."
+				},
+				{
+					"num": 141,
+					"text": "I am young and despised: yet I have not forgotten Your ordinances."
+				},
+				{
+					"num": 142,
+					"text": "Your righteousness is an everlasting righteousness, and Your word is truth."
+				},
+				{
+					"num": 143,
+					"text": "Afflictions and distresses found me: but Your commandments are my meditation."
+				},
+				{
+					"num": 144,
+					"text": "Your testimonies are righteousness forever: instruct me, and I shall live."
+				},
+				{
+					"num": 145,
+					"text": "I cried with my whole heart; hear me, O Lord: I shall search out Your ordinances."
+				},
+				{
+					"num": 146,
+					"text": "I cried up to You; save me, and I shall keep Your testimonies."
+				},
+				{
+					"num": 147,
+					"text": "I hastened to arise before the time, and cried: and I hoped in Your word."
+				},
+				{
+					"num": 148,
+					"text": "My eyes hastened to awake before the dawn, that I might meditate on Your words."
+				},
+				{
+					"num": 149,
+					"text": "Hear my voice, O Lord, according to Your mercy; revive me according to Your judgments."
+				},
+				{
+					"num": 150,
+					"text": "They have drawn near who persecuted me in iniquity; and they are far removed from Your law."
+				},
+				{
+					"num": 151,
+					"text": "You are near, O Lord; and all Your commandments are truth."
+				},
+				{
+					"num": 152,
+					"text": "Since the beginning I knew from Your testimonies, that You had founded them forever."
+				},
+				{
+					"num": 153,
+					"text": "Look upon my humiliation, and save me: for I have not forgotten Your law."
+				},
+				{
+					"num": 154,
+					"text": "Plead my cause, and redeem me: revive me for the sake of Your word."
+				},
+				{
+					"num": 155,
+					"text": "Salvation is far from sinners: for they have not searched out Your ordinances."
+				},
+				{
+					"num": 156,
+					"text": "Your mercies, O Lord, are many: revive me according to Your judgments."
+				},
+				{
+					"num": 157,
+					"text": "Many are they who persecute me and distress me: but I did not turn away from Your testimonies."
+				},
+				{
+					"num": 158,
+					"text": "I beheld foolish men, and I suffered; for they did not keep Your words."
+				},
+				{
+					"num": 159,
+					"text": "Behold, O Lord, I have loved Your commandments: revive me in Your mercy."
+				},
+				{
+					"num": 160,
+					"text": "The beginning of Your words is truth; and all judgments of Your righteousness are forever."
+				},
+				{
+					"num": 161,
+					"text": "Princes persecuted me without a cause, my heart was afraid of Your words."
+				},
+				{
+					"num": 162,
+					"text": "I will exult because of Your words, as one who has found a great treasure."
+				},
+				{
+					"num": 163,
+					"text": "I hated and abhorred unrighteousness; but I loved Your law."
+				},
+				{
+					"num": 164,
+					"text": "Seven times a day I have praised You because of the judgments of Your righteousness."
+				},
+				{
+					"num": 165,
+					"text": "Let great peace be for those who love Your law: and there is no stumbling in them."
+				},
+				{
+					"num": 166,
+					"text": "I waited for Your salvation, O Lord, and have loved Your commandments."
+				},
+				{
+					"num": 167,
+					"text": "My soul has kept Your testimonies, and loved them exceedingly."
+				},
+				{
+					"num": 168,
+					"text": "I have kept Your commandments and Your testimonies; and all my ways are before You, O Lord."
+				},
+				{
+					"num": 169,
+					"text": "Let my supplication come near before You; give me understanding according to Your word."
+				},
+				{
+					"num": 170,
+					"text": "Let my petition come before You, revive me according to Your word."
+				},
+				{
+					"num": 171,
+					"text": "Let my lips flow with praise, when You have taught me Your ordinances."
+				},
+				{
+					"num": 172,
+					"text": "Let my tongue speak of Your words; for all Your commandments are righteous."
+				},
+				{
+					"num": 173,
+					"text": "Let Your hand be for saving me; for I have desired Your commandments."
+				},
+				{
+					"num": 174,
+					"text": "I have longed for Your salvation, O Lord; and Your law is my meditation."
+				},
+				{
+					"num": 175,
+					"text": "My soul shall live and praise You; and Your judgments shall help me."
+				},
+				{
+					"num": 176,
+					"text": "I have gone astray like a lost sheep; seek Your servant; for I have not forgotten Your commandments."
+				}
+			]
+		},
+		{
+			"id": "midnight-1-gospel",
+			"kind": "gospel",
+			"book": "Matthew",
+			"chapter": 25,
+			"startVerse": 1,
+			"endVerse": 13,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Matthew the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "midnight-1-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"Behold, the Bridegroom comes at midnight, and blessed is that servant whom He shall find watching. Lord have mercy.",
+				"Make us worthy, O Lord, to watch with the wise virgins, awaiting Your coming with lamps trimmed and burning. Lord have mercy."
+			]
+		},
+		{
+			"id": "midnight-1-closing",
+			"kind": "closing",
+			"content": [
+				"In the middle of the night I rise to give thanks to You, because of Your righteous judgments. Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins."
+			]
+		},
+		{
+			"id": "midnight-2-gospel",
+			"kind": "gospel",
+			"book": "Luke",
+			"chapter": 7,
+			"startVerse": 36,
+			"endVerse": 50,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "midnight-2-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"Grant us, O Lord, tears of repentance, like the sinful woman who washed Your feet with her tears. Lord have mercy.",
+				"Her sins, which were many, were forgiven her, for she loved much. Grant us also this love and forgiveness. Lord have mercy."
+			]
+		},
+		{
+			"id": "midnight-2-closing",
+			"kind": "closing",
+			"content": [
+				"I have sinned, O my Lord, I have sinned, and I know my iniquities. But I ask and beseech You: have compassion on me, and forgive me. Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins."
+			]
+		},
+		{
+			"id": "midnight-3-psalm-131",
+			"kind": "psalm",
+			"psalmNumber": 131,
+			"title": "Psalm 131",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Lord, remember David and all his meekness: how he swore to the Lord, and vowed to the God of Jacob, saying, \"I will not go into the dwelling of my house, or go up to the bed of my couch; I will not give sleep to my eyes, nor slumber to my eyelids, nor rest to my temples, until I find a place for the Lord, and a dwelling place for the God of Jacob.\""
+				},
+				{
+					"num": 2,
+					"text": "Behold, we heard of it in Ephratha; we found it in the fields of the wood."
+				},
+				{
+					"num": 3,
+					"text": "Let us enter into His dwelling, and worship at the place where His feet stood."
+				},
+				{
+					"num": 4,
+					"text": "Arise, O Lord, into Your rest; You, and the ark of Your holy place."
+				},
+				{
+					"num": 5,
+					"text": "Your priests shall clothe themselves with righteousness; and Your righteous shall exult."
+				},
+				{
+					"num": 6,
+					"text": "For the sake of Your servant David, do not turn away Your face from Your anointed."
+				},
+				{
+					"num": 7,
+					"text": "The Lord has sworn in truth to David, and He will not turn from it, \"Of the fruit of your loins I will set upon your throne.\""
+				},
+				{
+					"num": 8,
+					"text": "If your children keep My covenant and My testimonies which I will teach them, their children also will sit upon your throne forever."
+				},
+				{
+					"num": 9,
+					"text": "For the Lord has selected Zion, He has chosen her a dwelling for Himself."
+				},
+				{
+					"num": 10,
+					"text": "This is My resting place forever. Here I will dwell; for I have desired it."
+				},
+				{
+					"num": 11,
+					"text": "In blessing I shall bless her hunting. Her poor I shall satisfy with bread. Her priests I shall clothe with salvation; and her saints with rejoicing shall rejoice."
+				},
+				{
+					"num": 12,
+					"text": "There I shall raise a horn to David."
+				},
+				{
+					"num": 13,
+					"text": "I have prepared a lamp for My anointed."
+				},
+				{
+					"num": 14,
+					"text": "His enemies I shall clothe with shame, and My holiness shall flourish upon Him. Alleluia."
+				}
+			]
+		},
+		{
+			"id": "midnight-3-gospel",
+			"kind": "gospel",
+			"book": "Luke",
+			"chapter": 12,
+			"startVerse": 32,
+			"endVerse": 46,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "midnight-3-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"Blessed are those servants whom the Master finds watching when He comes. Lord have mercy.",
+				"Be ready, for the Son of Man is coming at an hour you do not expect. Lord have mercy."
+			]
+		},
+		{
+			"id": "midnight-3-closing",
+			"kind": "closing",
+			"content": [
+				"Lord, now let Your servant depart in peace, according to Your word, for my eyes have seen Your salvation.",
+				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+			]
+		},
+		{
+			"id": "midnight-closing",
+			"kind": "closing",
+			"content": [
+				"O Lord, Who shall rise at the resurrection of all men, grant us a portion with the righteous in Your kingdom. Through the intercessions of the Theotokos and all Your saints. Amen."
+			]
+		}
+	]
+}

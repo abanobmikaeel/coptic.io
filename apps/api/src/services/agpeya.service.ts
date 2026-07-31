@@ -21,11 +21,9 @@ import {
 } from './psalm-resolver'
 
 export type {
-	AgpeyaHour,
 	AgpeyaHourId,
 	AgpeyaVerse,
 	AgpeyaPsalm,
-	AgpeyaGospel,
 	AgpeyaPrayerSection,
 	AgpeyaLitany,
 	AgpeyaMidnightHour,
