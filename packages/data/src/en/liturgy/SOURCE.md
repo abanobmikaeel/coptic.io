@@ -57,6 +57,20 @@ git diff before committing, and verify with `pnpm --filter @coptic/data test`.
 
 ## Known source gaps
 
+- **The Offertory is partial.** `offering-of-the-lamb` is titled "(Response)" because
+  the source page carries only the congregation's sung Alleluia — the priest's prayers
+  over the selection of the lamb are not on it, and are still missing.
+- **Two Offertory pages are held back.** Their language columns have different row
+  counts, so importing them would misalign the reader: 1959 *Shere Maria Tee-oro*
+  (en=10, cop=10, ar=17) and 1965 *Alleluia Je Efmevee* (en=2, cop=1, ar=1). They need
+  the rows reconciled against the source by hand.
+- **Deacon responses (cat 223) are excluded on purpose.** Which response is sung
+  depends on season and occasion, so they belong to the conditional-block model rather
+  than a flat import.
+- Some Coptic pages carry the prayer text without a speaker label where English and
+  Arabic label it. The parity test compares row counts always but speaker attribution
+  only where the source labels at all — the alternative would be inventing rubric.
+
 - The Three Absolutions page has no Coptic column, so `absolution-to-the-son` is
   English/Arabic only. The parity test pins this so nobody "fixes" it by inventing
   Coptic text.

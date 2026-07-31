@@ -5,6 +5,212 @@
     "description": "The Divine Liturgy of St. Basil — the Liturgy of the Word and the Liturgy of the Believers",
     "sections": [
       {
+        "id": "offertory-ten-ou-osht",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Ten-Ou-Osht",
+        "content": [
+          "We worship the Father of light, and His only-begotten Son, and the Spirit the Paraclete, the co-essential Trinity."
+        ]
+      },
+      {
+        "id": "offertory-apinav-shopi",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Apinav Shopi",
+        "content": [
+          "The time came to send the multitude away. Let the scribes write, let the wise men assemble, and reveal what is in the holy Scriptures.",
+          "The blessing of the holy Trinity, the Father, the Son, and the Holy Spirit,",
+          "The blessing of the Theotokos, Mary, the Mother of Jesus Christ,",
+          "Be upon all the people, being safe in the Lord. Amen, so it shall be."
+        ]
+      },
+      {
+        "id": "offering-of-the-lamb",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "The Offering of the Lamb (Response)",
+        "content": [
+          "Alleluia."
+        ]
+      },
+      {
+        "id": "offertory-kyrie-eleison",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Kyrie Eleison (41 times)",
+        "content": [
+          {
+            "text": "Priest: We ask You O Lamb of God who carries the sin of the world, hear us and have mercy on us, and forgive us our sins.",
+            "isRubric": true
+          },
+          {
+            "speaker": "People",
+            "text": "Keria Leison (41) (Lord have mercy.)"
+          },
+          "Holy, Holy, Holy, is the Lord of Sabaoth. Heaven and earth are full of Your glory and honor. O God, the Father almighty, have mercy upon us, O Holy Trinity, have mercy upon us. O Lord, God of hosts, be with us. For we have no helper in our tribulations and adversities but You.",
+          "O God, absolve, remit, and forgive us our sins which we did willfully and unwillfully, those which we committed knowingly and unknowingly, the concealed ones and manifest ones, O Lord forgive us, for the sake of Your Holy name which is called upon us, according to Your mercy and not according to our sins.",
+          "Make us worthy to pray thankfully: Our Father Who art in heaven ..."
+        ]
+      },
+      {
+        "id": "offertory-glory-and-honour",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Glory and Honour",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Glory and honor, honor and glory to the All-holy Trinity, the Father and the Son and the Holy Spirit."
+          },
+          "Peace and edification to the one, only, holy, Catholic, Apostolic Orthodox Church of God. Amen.",
+          "Remember, O Lord, those who have brought to You these gifts and those on whose behalf they have been brought, and those by whom they have been brought. Give them all the heavenly reward.",
+          {
+            "speaker": "Deacon",
+            "text": "Pray for these holy and Precious gifts, our sacrifices, and those who have brought them. Lord have mercy."
+          }
+        ]
+      },
+      {
+        "id": "offertory-alleluia-this-is-the-day",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Alleluia: This is the Day",
+        "content": [
+          {
+            "speaker": "People",
+            "text": "Alleluia. This is the day that the Lord has made. Let us rejoice and be glad in it. O Lord save us. O Lord straighten our ways. Blessed is He, who comes in the name of the Lord. Alleluia. Said on all days that are not part of a fast, on all major and minor feasts, on the feasts of the cross, and the feast of Nayroz."
+          }
+        ]
+      },
+      {
+        "id": "offertory-in-the-name",
+        "type": "prayer",
+        "role": "priest",
+        "title": "In the Name of the Father",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "In the name of the Father and the Son and the Holy Spirit, one God. Blessed be God the Father, the Pantocrator. Amen."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Blessed be His only-begotten Son, Jesus Christ our Lord. Amen."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Blessed be the Holy Spirit, the Paraclete. Amen."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Amen. One is the holy Father, One is the holy Son, One is the holy Spirit. Amen. Blessed be the Lord God forever. Amen."
+          },
+          "Praise the Lord, all you nations, praise Him all you peoples, for His mercy is confirmed upon us, and the truth of the Lord endures forever. Amen. Alleluia.",
+          {
+            "speaker": "People",
+            "text": "Glory to the Father and to the Son and to the Holy Spirit, now and ever and unto the ages of the ages. Amen. Alleluia."
+          }
+        ]
+      },
+      {
+        "id": "offertory-doxa-patri",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Doxa Patri",
+        "content": [
+          {
+            "speaker": "People",
+            "text": "Glory to the Father and to the Son and to the Holy Spirit, now and ever and unto the ages of the ages. Amen. Alleluia."
+          }
+        ]
+      },
+      {
+        "id": "offertory-thanksgiving",
+        "type": "prayer",
+        "role": "all",
+        "title": "The Thanksgiving Prayer (Offertory)",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Pray."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Stand up for prayer."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Peace be with You all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Let us give thanks to the Beneficent and Merciful God, the Father of our Lord, God, and Savior Jesus Christ."
+          },
+          "For He has covered us, helped us, guarded us, accepted us to Himself, spared us, supported us, and has brought us to this hour.",
+          "Let us also ask Him, the Lord our God, the Pantocrator, to guard us in all peace this holy day and all the days of our life.",
+          {
+            "speaker": "Deacon",
+            "text": "Pray."
+          },
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "O Master, Lord; God the Pantocrator, the Father of our Lord, God, and Savior Jesus Christ."
+          },
+          "we thank You for everything, concerning everything, and in everything. For You have covered us, helped, us guarded us, accepted us to Yourself, spared us, supported us, and have brought us to this hour.",
+          {
+            "speaker": "Deacon",
+            "text": "Pray that God may have mercy and compassion on us, hear us, help us and accept the supplications and prayers of His saints for that which is good on our behalf at all times."
+          },
+          "And make us worthy to partake of the communion of His holy and blessed mysteries, for the remission of our sins.",
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Therefore, we ask and entreat Your goodness, O Lover of Mankind, grant us to complete this Holy day and all the days of our life, in all peace with Your fear."
+          },
+          "All envy, all temptation, all the work of Satan, the council of wicked men and the rising up of enemies, hidden and manifest, take them away from us.",
+          "And from all Your people, and from this church, and from this, Your holy place. But those things, which are good and profitable do provide for us, for it is You who has given us the authority to tread on serpents and scorpions, and upon all the power of the enemy.",
+          "And lead us not into temptation, but deliver us from the evil one...",
+          {
+            "speaker": "People",
+            "text": "(Saved.) Amen. And with your spirit."
+          }
+        ]
+      },
+      {
+        "id": "absolution-of-the-servants",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Absolution of the Servants",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "May Your servants, ministers of this day, the hegomen(s), the priest(s), the deacon(s), the clergy, all the people, and my weak self, be absolved from the mouth of the All- Holy Trinity, the Father and the Son and the Holy Spirit; and from the mouth of the one, only, Holy, Catholic and Apostolic Church."
+          },
+          "And from the mouths of the twelve apostles; and from the mouth of the Beholder of God the Evangelist Saint Mark, the apostle and martyr; the patriarch Saint Severus; our teacher Dioscorus, Saint Athanasius the Apostolic; Saint Peter the holy martyr and the high priest; Saint John Chrysostom; Saint Cyril.",
+          "Saint Basil; and Saint Gregory; and from the mouths of the three hundred and eighteen assembled at Nicea; the one hundred and fifty at Constantinople, and the two hundred at Ephesus; And from the mouth of our Honored father the high priest Pope Abba Shenouda and from the mouth of my abject self.",
+          "For blessed and full of glory is Your holy Name, O Father and Son and Holy Spirit, now and at all times and unto the age of all ages. Amen."
+        ]
+      },
+      {
         "id": "thanksgiving",
         "type": "prayer",
         "role": "all",

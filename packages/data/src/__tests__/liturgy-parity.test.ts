@@ -78,6 +78,16 @@ describe('liturgy data cross-language parity', () => {
 				// A language with no source text (Coptic for absolution-to-the-son) renders no
 				// column — parity is only defined between languages that both have content.
 				if (seq.length === 0) continue
+
+				// Row alignment is the invariant that matters: the reader lays the languages
+				// out turn by turn, so a differing line count misaligns the columns.
+				expect(seq.length, `${lang} line count differs`).toEqual(en.length)
+
+				// Attribution is only comparable where the source labels speakers at all.
+				// Some Coptic pages carry the text without "Ⲡⲓⲟⲩⲏⲃ"/"Ⲡⲓⲡ̀ⲣⲉⲥⲃⲩⲧⲉⲣⲟⲥ" even where
+				// the English and Arabic label it; that is a source convention, not drift,
+				// and inventing the label would be inventing rubric.
+				if (seq.every((s) => s === undefined)) continue
 				expect(seq).toEqual(en)
 			}
 		})
