@@ -34,6 +34,13 @@ function getShimmerClass(theme: ReadingTheme) {
 	return themeClasses.shimmer[theme]
 }
 
+/**
+ * Ragged line lengths, so a block of placeholder verses reads as text rather than
+ * as a solid slab. Fixed rather than random: this renders on the server too, and
+ * a width drawn per render would not match the one React hydrates against.
+ */
+const VERSE_WIDTHS = ['96%', '78%', '88%', '72%', '92%']
+
 export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) {
 	const shimmer = getShimmerClass(theme)
 
@@ -55,7 +62,7 @@ export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) 
 								<div className={`h-5 w-6 rounded flex-shrink-0 ${shimmer}`} />
 								<div
 									className={`h-5 flex-1 rounded ${shimmer}`}
-									style={{ width: `${70 + Math.random() * 30}%` }}
+									style={{ width: VERSE_WIDTHS[(verse - 1) % VERSE_WIDTHS.length] }}
 								/>
 							</div>
 						))}
