@@ -212,7 +212,18 @@ export default async function Home({ searchParams }: HomeProps) {
 			<section className="relative px-6 pb-12">
 				<div className="max-w-4xl mx-auto">
 					<Card>
-						<CardHeader>{t('todaysCommemorations')}</CardHeader>
+						{/* The card shows the day's commemorations by name only; the link is how
+						    you get to the full account of each in the Synaxarium. */}
+						<div className="flex items-center justify-between gap-3 mb-4">
+							<CardHeader className="mb-0">{t('todaysCommemorations')}</CardHeader>
+							<Link
+								href="/synaxarium"
+								className="inline-flex items-center gap-1 shrink-0 text-sm font-medium text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 transition-colors"
+							>
+								{t('viewSynaxarium')}
+								<ChevronRightIcon className="w-4 h-4 rtl:rotate-180" />
+							</Link>
+						</div>
 						<CardContent>
 							<Suspense
 								fallback={
