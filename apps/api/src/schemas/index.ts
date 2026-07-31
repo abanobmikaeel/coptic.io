@@ -199,3 +199,53 @@ export const IncenseResponseSchema = z.object({
 	copticDate: CopticDateSchema,
 	sections: z.array(IncenseSectionSchema),
 })
+
+// ── Liturgy ──────────────────────────────────────────────────────────────────
+
+export const LiturgySectionRoleSchema = z.enum(['all', 'priest', 'deacon', 'congregation'])
+
+export const LiturgyPrayerSectionSchema = z.object({
+	id: z.string(),
+	type: z.enum(['prayer', 'litany', 'creed']),
+	role: LiturgySectionRoleSchema,
+	title: z.string(),
+	// Set when a section's title falls back to another language, so the reader can
+	// label it rather than passing it off as a translation.
+	titleLanguage: z.string().optional(),
+	rubric: z.string().optional(),
+	content: z.array(
+		z.union([
+			z.string(),
+			z.object({
+				speaker: z.string().optional(),
+				text: z.string(),
+				isRubric: z.boolean().optional(),
+			}),
+		]),
+	),
+})
+
+/** Psalm, epistle and gospel all come from the day's Katameros, so they share a shape. */
+export const LiturgyReadingSectionSchema = z.object({
+	id: z.string(),
+	type: z.enum(['psalm', 'epistle', 'gospel']),
+	role: LiturgySectionRoleSchema,
+	title: z.string(),
+	titleLanguage: z.string().optional(),
+	rubric: z.string().optional(),
+	reference: z.string(),
+	verses: z.array(AgpeyaVerseSchema),
+})
+
+export const LiturgySectionSchema = z.union([
+	LiturgyReadingSectionSchema,
+	LiturgyPrayerSectionSchema,
+])
+
+export const LiturgyResponseSchema = z.object({
+	type: z.string(),
+	name: z.string(),
+	date: z.string(),
+	copticDate: CopticDateSchema,
+	sections: z.array(LiturgySectionSchema),
+})

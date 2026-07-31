@@ -65,10 +65,13 @@ describe('liturgy data cross-language parity', () => {
 	})
 
 	for (const enSection of services.en.sections) {
-		if (!enSection.content) continue
+		// Bound outside the closure: narrowing `enSection.content` does not survive
+		// into the callback, since a property could in principle change before it runs.
+		const enContent = enSection.content
+		if (!enContent) continue
 
 		it(`${enSection.id}: speaker sequences match across languages that carry the section`, () => {
-			const en = speakers(enSection.content)
+			const en = speakers(enContent)
 			for (const lang of ['ar', 'cop'] as Lang[]) {
 				const other = section(lang, enSection.id)
 				const seq = speakers(other?.content ?? [])

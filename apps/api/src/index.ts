@@ -12,6 +12,7 @@ import celebrationsRoutes from './routes/celebrations'
 import fastingRoutes from './routes/fasting'
 import incenseRoutes from './routes/incense'
 import lentRoutes from './routes/lent'
+import liturgyRoutes from './routes/liturgy'
 import readingsRoutes from './routes/readings'
 import searchRoutes from './routes/search'
 import seasonRoutes from './routes/season'
@@ -73,6 +74,7 @@ app.use('/api/fasting/*', cache12h)
 app.use('/api/celebrations/*', cache12h)
 app.use('/api/season/*', cache12h)
 app.use('/api/tasbeha/*', cache12h)
+app.use('/api/liturgy/*', cache12h)
 
 // REST Routes
 app.route('/api/agpeya', agpeyaRoutes)
@@ -86,6 +88,7 @@ app.route('/api/search', searchRoutes)
 app.route('/api/synaxarium', synaxariumRoutes)
 app.route('/api/season', seasonRoutes)
 app.route('/api/tasbeha', tasbehaRoutes)
+app.route('/api/liturgy', liturgyRoutes)
 
 // 404 handler
 app.notFound((c) => {

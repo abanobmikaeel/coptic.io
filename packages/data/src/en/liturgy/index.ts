@@ -1,16 +1,18 @@
+import type { ContentLine } from '../../content/types'
 import liturgyData from './liturgy.json'
 
-export type LiturgySectionType = 'prayer' | 'litany' | 'creed' | 'gospel' | 'daily-psalm' | 'epistle'
+export type LiturgySectionType =
+	| 'prayer'
+	| 'litany'
+	| 'creed'
+	| 'gospel'
+	| 'daily-psalm'
+	| 'epistle'
 export type LiturgySectionRole = 'all' | 'priest' | 'deacon' | 'congregation'
 export type LiturgyRite = 'basil'
-export type ContentSpeaker = 'Priest' | 'Deacon' | 'People'
 export type LiturgyLanguage = 'en' | 'ar' | 'cop'
 
-export interface ContentLine {
-	speaker?: ContentSpeaker
-	text: string
-	isRubric?: boolean
-}
+export type { ContentLine, ContentSpeaker } from '../../content/types'
 
 // Content can be a plain string (all speakers) or a structured line with speaker
 export type LiturgyContent = string | ContentLine
