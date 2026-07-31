@@ -1,0 +1,1263 @@
+{
+  "basil": {
+    "id": "basil",
+    "name": "The Divine Liturgy of St. Basil",
+    "description": "The Divine Liturgy of St. Basil — the Liturgy of the Word and the Liturgy of the Believers",
+    "sections": [
+      {
+        "id": "thanksgiving",
+        "type": "prayer",
+        "role": "all",
+        "title": "The Thanksgiving Prayer",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Have mercy on us, O God, the Father, the Pantocrator. All-Holy Trinity, have mercy on us."
+          },
+          "O Lord, God of the powers, be with us, for we have no helper in our tribulations and afflictions but You.",
+          "Make us worthy to pray thankfully:",
+          {
+            "speaker": "People",
+            "text": "Our Father who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from the evil one. In Christ Jesus our Lord, for Thine is the kingdom and the power and the glory forever. Amen."
+          },
+          {
+            "speaker": "People",
+            "text": "In Christ Jesus our Lord."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Pray."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Stand up for prayer."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Peace be with all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Let us give thanks to the beneficent and merciful God, the Father of our Lord, God, and Savior Jesus Christ."
+          },
+          "For He has covered us, helped us, guarded us, accepted us to Himself, spared us, supported us, and has brought us to this hour.",
+          "Let us also ask Him, the Lord our God, the Pantocrator, to guard us in all peace this holy day and all the days of our life.",
+          {
+            "speaker": "Deacon",
+            "text": "Let us pray."
+          },
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "O Master, Lord, God the Pantocrator, the Father of our Lord, God, and Savior Jesus Christ, we thank You for everything, concerning everything, and in everything."
+          },
+          "For You have covered us, helped us, guarded us, accepted us to Yourself, spared us, supported us, and have brought us to this hour.",
+          {
+            "speaker": "Deacon",
+            "text": "Pray that God may have mercy and compassion on us, hear us, help us and accept the supplications and prayers of His saints, for that which is good on our behalf at all times*; and forgive us our sins."
+          },
+          {
+            "text": "* In the presence of a bishop, the following part is added:",
+            "isRubric": true
+          },
+          "And to keep the life and standing of our honored father, Pope Abba (…) and his partner in the liturgy, our father the bishop (metropolitan), Abba (...);",
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Therefore, we ask and entreat Your goodness, O Lover of Mankind, grant us to complete this holy day and all the days of our life in all peace with Your fear."
+          },
+          "All envy, all temptation, all the work of Satan, the counsel of wicked men and the rising up of enemies, hidden and manifest, take them away from us, and from all Your people,",
+          "and from this church,",
+          "(and from this table,)",
+          "and from this, Your holy place.",
+          "But those things which are good and profitable do provide for us, for it is You who have given us the authority to tread on serpents and scorpions, and upon all the power of the enemy.",
+          "And lead us not into temptation, but deliver us from the evil one, by the grace, compassion and love-of-mankind, of Your only-begotten Son, our Lord, God, and Savior, Jesus Christ.",
+          "Through whom the glory, the honor, the dominion, and the worship are due unto You, with Him and the Holy Spirit, the Giver of Life, who is of one essence with You, now and at all times, and unto the age of all ages. Amen.",
+          {
+            "text": "(The priest raises the incense while the Verses of Cymbals are chanted)",
+            "isRubric": true
+          }
+        ]
+      },
+      {
+        "id": "absolution-to-the-son",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Absolution to the Son",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "O Master, Lord Jesus Christ, the only-begotten Son and Logos of God the Father, who has broken every bond of our sins through His saving, life-giving sufferings. Who breathed into the face of His holy Disciples and saintly Apostles, and said to them, “Receive the Holy Spirit. If you forgive the sins of any, they are forgiven. If you retain the sins of any, they are retained.”"
+          },
+          "You also now, O our Master, have given grace through Your holy Apostles to those who for a time labor in the priesthood in Your holy Church to forgive sin upon the earth and to bind and to loose every bond of iniquity.",
+          "Now also we ask and entreat Your goodness, O Lover of Mankind, for Your servants, my fathers and my brothers, and my weakness those who bow their heads before Your holy glory.",
+          "Dispense to us Your mercy and loose every bond of our sins, and if we have committed any sin against You knowingly or unknowingly, or through anguish of heart, or in deed or word, or from faintheartedness, O Master who know the weakness of men, as a Good One and Lover of Mankind, O God, grant us the forgiveness of our sins.",
+          "Bless us, purify us, absolve us, and all Your people. Fill us with Your fear and straighten us for Your holy good will, for You are our God, and the glory, the honor, the dominion, and the worship are due unto You, with Your good Father and the Holy Spirit, the Giver of Life, who is of one essence with You, now and at all times and unto the age of all ages. Amen."
+        ]
+      },
+      {
+        "id": "pauline",
+        "type": "epistle",
+        "role": "deacon",
+        "title": "The Pauline Epistle",
+        "reading": "pauline"
+      },
+      {
+        "id": "catholic",
+        "type": "epistle",
+        "role": "deacon",
+        "title": "The Catholic Epistle",
+        "reading": "catholic"
+      },
+      {
+        "id": "praxis",
+        "type": "epistle",
+        "role": "deacon",
+        "title": "The Praxis",
+        "reading": "praxis"
+      },
+      {
+        "id": "trisagion",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "The Trisagion",
+        "content": [
+          "Holy God, holy Mighty, holy Immortal, who was born of the Virgin, have mercy upon us.",
+          "Holy God, holy Mighty, holy Immortal, who was crucified for us, have mercy upon us.",
+          "Holy God, holy Mighty, holy Immortal, who rose from the dead and ascended into the heavens, have mercy upon us.",
+          "Glory to the Father and to the Son and the Holy Spirit, now and forever and unto the ages of all ages. Amen.",
+          "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
+          "Lord, forgive our sins. Lord, forgive our iniquities. Lord, forgive our transgressions. Lord, be with the sick of Your people, heal them for the sake of Your holy name. Our fathers and brethren who have slept, repose their souls.",
+          "O who are alone is sinless, help us and accept our prayers. For Yours is the glory, dominion, and triple holiness. Lord have mercy. Lord have mercy. Lord bless us. Amen."
+        ]
+      },
+      {
+        "id": "lord-prayer-post-trisagion",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Our Father",
+        "content": [
+          {
+            "speaker": "People",
+            "text": "Our Father who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from the evil one. In Christ Jesus our Lord, for Thine is the kingdom and the power and the glory forever. Amen."
+          }
+        ]
+      },
+      {
+        "id": "litany-gospel",
+        "type": "litany",
+        "role": "all",
+        "title": "Litany for the Gospel",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Pray."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Stand up for prayer."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Peace be with all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          },
+          {
+            "speaker": "Priest",
+            "text": "O Master, Lord Jesus Christ our God, who said to His saintly, honored Disciples and holy Apostles,"
+          },
+          "“Many prophets and righteous men have desired to see the things which you see, and have not seen them, and to hear the things which you hear and have not heard them. But as for you, blessed are your eyes, for they see, and your ears for they hear.”",
+          "May we be worthy to hear and to act according to Your Holy Gospels, through the prayers of Your saints.",
+          {
+            "speaker": "Deacon",
+            "text": "Pray for the Holy Gospel."
+          },
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Remember also, O our Master, all those who have bidden us to remember them in our supplications and prayers which we offer up unto You, O Lord our God. Those who already fallen asleep, repose them."
+          },
+          "Those who are sick, heal them. For You are the life of us all, the salvation of us all, the hope of us all, the healing of us all, and the resurrection of us all."
+        ]
+      },
+      {
+        "id": "daily-psalm",
+        "type": "daily-psalm",
+        "role": "all",
+        "title": "Psalm of the Gospel"
+      },
+      {
+        "id": "gospel",
+        "type": "gospel",
+        "role": "all",
+        "title": "The Holy Gospel"
+      },
+      {
+        "id": "gospel-response",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Gospel Response",
+        "content": [
+          "Let us worship our Savior, the good Lover of Mankind, for He had compassion on us, He has come and saved us.",
+          "Intercede on our behalf, O the Lady of us all the Theotokos, Mary the Mother of our Savior, that He may forgive us our sins.",
+          "Pray to the Lord on our behalf, O beholder of God the Evangelist, Abba Mark the Apostle, that He may forgive us our sins.",
+          "For blessed be the Father and the Son, and the Holy Spirit, the perfect Trinity, we worship Him and glorify Him."
+        ]
+      },
+      {
+        "id": "intro-to-creed",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Introduction to the Creed",
+        "content": [
+          "We exalt you, the Mother of the true Light, and we glorify you, O saint and Theotokos, for you brought forth unto us the Savior of the whole world; He came and saved our souls.",
+          "Glory to You, our Master, our King, Christ, the pride of the Apostles, the crown of the martyrs, the joy of the righteous, the steadfastness of the churches, and the forgiveness of sins.",
+          "We proclaim the Holy Trinity in one Godhead. We worship Him. We glorify Him. Lord have mercy. Lord have mercy. Lord bless. Amen."
+        ]
+      },
+      {
+        "id": "creed",
+        "type": "creed",
+        "role": "congregation",
+        "title": "The Orthodox Creed",
+        "content": [
+          "We believe in one God, God the Father, the Pantocrator, who created heaven and earth, and all things, seen and unseen.",
+          "We believe in one Lord Jesus Christ, the only-begotten Son of God, begotten of the Father before all ages.",
+          "Light out of Light, true God of true God; begotten not created, of one essence with the Father, by whom all things were made; who for us men and for our salvation, came down from heaven, and was incarnate of the Holy Spirit and of the Virgin Mary, and became man.",
+          "And He was crucified for us under Pontius Pilate, suffered and was buried. And on the third day He rose from the dead, according to the Scriptures.",
+          "He ascended into the heavens and sits at the right hand of His Father, and He is coming again in His glory to judge the living and the dead, whose kingdom shall have no end.",
+          "Yes, we believe in the Holy Spirit, the Lord, the Life-Giver, who proceeds from the Father, who, with the Father and the Son, is worshippedand glorified, who spoke by the prophets.",
+          "And in one holy, catholic and apostolic Church. We confess one baptism for the remission of sins.",
+          "We look for the resurrection of the dead, and the life of the age to come. Amen."
+        ]
+      },
+      {
+        "id": "reconciliation",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Prayer of Reconciliation",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Pray."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Stand up for prayer."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Peace be with all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          },
+          {
+            "speaker": "Priest",
+            "text": "O God, the Great, the Eternal, who formed man in incorruption;"
+          },
+          "and death, which entered into the world through the envy of the Devil, You have destroyed by the life-giving manifestation of Your only-begotten Son, our Lord, God, and Savior Jesus Christ.",
+          "You have filled the earth with the heavenly peace",
+          "by which the hosts of angels glorify You, saying,",
+          "“Glory to God in the highest, peace on earth, and good will towards men.”",
+          {
+            "speaker": "Deacon",
+            "text": "Pray for perfect peace, love, and the holy apostolic kisses."
+          },
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "According to Your good will, O God, fill our hearts with Your peace."
+          },
+          "Cleanse us from all blemish, all guile, all hypocrisy, all malice, and the remembrance of evil entailing death.",
+          "And make us all worthy, O our Master, to greet one another with a holy kiss,",
+          "that without falling into condemnation we may partake of Your immortal and heavenly gift in Christ Jesus our Lord.",
+          "Through whom the glory, the honor, the dominion, and the worship are due unto You, with Him and the Holy Spirit, the Giver of Life, who is of one essence with You,",
+          "now and at all times and unto the age of all ages. Amen.",
+          {
+            "text": "(The people may chant the Adam Aspasmos)",
+            "isRubric": true
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Greet one another with a holy kiss."
+          },
+          "Lord have mercy. Lord have mercy. Lord have mercy.",
+          "Yea, Lord, who are Jesus Christ, the Son of God, hear us and have mercy upon us.",
+          "Offer in order. Stand with trembling. Look towards the East. Let us attend.",
+          {
+            "speaker": "People",
+            "text": "Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins."
+          },
+          "We worship You, O Christ, with Your good Father and the Holy Spirit, for You (have come) and saved us.",
+          "A mercy of peace, a sacrifice of praise."
+        ]
+      },
+      {
+        "id": "anaphora",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Anaphora",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "The Lord be with you all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Lift up your hearts."
+          },
+          {
+            "speaker": "People",
+            "text": "We have them with the Lord."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Let us give thanks to the Lord."
+          },
+          {
+            "speaker": "People",
+            "text": "It is meet and right."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Meet and right, meet and right; truly, indeed, it is meet and right."
+          },
+          "O You, THE BEING, Master, Lord, God of Truth,",
+          "being before the ages and reigning forever;",
+          "who dwell in the highest and look upon the lowly;",
+          "who have created the heaven, the earth, the sea, and all that is therein;",
+          "the Father of our Lord, God, and Savior Jesus Christ,",
+          "by whom You have created all things, visible and invisible;",
+          "who sits upon the throne of His glory; and who is worshiped by all the holy powers.",
+          {
+            "speaker": "Deacon",
+            "text": "You who are seated, stand."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Before whom stand the angels, the archangels, the principalities, the authorities, the thrones, the dominions, and the powers."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Look towards the East."
+          },
+          {
+            "speaker": "Priest",
+            "text": "You are He around whom stand the Cherubim full of eyes, and the Seraphim with six wings, praising continuously, without ceasing, saying—"
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Let us attend."
+          },
+          {
+            "text": "(The people may chant the Watos Aspasmos)",
+            "isRubric": true
+          },
+          {
+            "speaker": "People",
+            "text": "The Cherubim worship You, and the Seraphim glorify You, proclaiming and saying,"
+          },
+          "“Holy, holy, holy, Lord of hosts, heaven and earth are full of Your holy glory.”"
+        ]
+      },
+      {
+        "id": "agios",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Agios, Agios, Agios",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Agios, agios, agios."
+          },
+          "Holy, holy, holy, indeed. O Lord our God, who formed us, created us, and placed us in the Paradise of joy,",
+          "when we disobeyed Your commandment by the deception of the serpent, we fell from eternal life and were exiled from the Paradise of joy.",
+          "You have not abandoned us to the end, but have always visited us through Your holy prophets, and in the last days You manifested Yourself to us, who were sitting in darkness and the shadow of death,",
+          "through Your only-begotten Son, our Lord, God, and Savior Jesus Christ,",
+          "who, of the Holy Spirit and of the holy Virgin Mary—",
+          {
+            "speaker": "People",
+            "text": "Amen."
+          }
+        ]
+      },
+      {
+        "id": "was-incarnate",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Was Incarnate and Became Man",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "was incarnate and became man, and taught us the ways of salvation."
+          },
+          "He granted us the birth from on high through water and Spirit.",
+          "He made us unto Himself an assembled people, and sanctified us by Your Holy Spirit. He loved His own who are in the world, and gave Himself up for our salvation unto death, which reigned over us, whereby we were bound and sold on account of our sins.",
+          "He descended into Hades through the Cross.",
+          {
+            "speaker": "People",
+            "text": "Amen. I believe."
+          }
+        ]
+      },
+      {
+        "id": "he-rose",
+        "type": "prayer",
+        "role": "priest",
+        "title": "He Rose from the Dead",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "He rose from the dead on the third day."
+          },
+          "He ascended into the heavens and sat at Your right hand, O Father.",
+          "He has appointed a Day for recompense, on which He will appear to judge the world in righteousness, and give each one according to his deeds.",
+          {
+            "speaker": "People",
+            "text": "According to Your mercy, O Lord, and not according to our sins."
+          }
+        ]
+      },
+      {
+        "id": "institution",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Institution Narrative",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "He instituted for us this great Mystery of godliness."
+          },
+          "For being determined to give Himself up to death for the life of the world—",
+          {
+            "speaker": "People",
+            "text": "We believe."
+          },
+          {
+            "speaker": "Priest",
+            "text": "He took bread into His holy hands, which are without spot or blemish, blessed, and life-giving."
+          },
+          {
+            "speaker": "People",
+            "text": "We believe that this is true. Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "He looked up towards heaven to You, O God, who are His Father and Master of everyone."
+          },
+          "And when He had given thanks—",
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "He blessed it—"
+          },
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "He sanctified it."
+          },
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          "We believe, we confess, and we glorify.",
+          {
+            "speaker": "Priest",
+            "text": "He broke it, and gave it to His own holy disciples and saintly apostles, saying,"
+          },
+          "“Take, eat of it, all of you.",
+          "For this is My Body, which is broken for you and for many, to be given for the remission of sins. This do in remembrance of Me.”",
+          {
+            "speaker": "People",
+            "text": "This is true. Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Likewise also, the cup, after supper, He mixed it of wine and water."
+          },
+          "And when He had given thanks—",
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "He blessed it—"
+          },
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "He sanctified it."
+          },
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          "Again, we believe, we confess, and we glorify.",
+          {
+            "speaker": "Priest",
+            "text": "He tasted, and gave it also to His own holy disciples and saintly apostles, saying,"
+          },
+          "“Take, drink of it, all of you.",
+          "For this is My Blood of the New Covenant, which is shed for you and for many, to be given for the remission of sins. This do in remembrance of Me.”",
+          {
+            "speaker": "People",
+            "text": "This is also true. Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "“For every time you eat of this bread and drink of this cup, you proclaim My Death, confess My Resurrection, and remember Me till I come.”"
+          },
+          {
+            "speaker": "People",
+            "text": "Amen. Amen. Amen. Your Death, O Lord, we proclaim; Your holy Resurrection and Ascension into the heavens, we confess."
+          },
+          "We praise You, we bless You, we thank You, O Lord, and we entreat You, O our God.",
+          {
+            "speaker": "Priest",
+            "text": "Therefore, as we also commemorate His holy Passion, His Resurrection from the dead, His Ascension into the heavens, His Sitting at Your right hand, O Father,"
+          },
+          "and His Second Coming from the heavens, awesome and full of glory,",
+          "we offer unto You Your gifts from what is Yours, for everything, concerning everything, and in everything.",
+          {
+            "speaker": "Deacon",
+            "text": "Worship God in fear and trembling."
+          },
+          {
+            "speaker": "People",
+            "text": "We praise You, we bless You, we serve You, we worship You."
+          }
+        ]
+      },
+      {
+        "id": "epiclesis",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Descent of the Holy Spirit",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "And we ask You, O Lord our God—we Your sinful and unworthy servants,"
+          },
+          "we worship You by the pleasure of Your goodness—",
+          "that Your Holy Spirit descend upon us and upon these gifts set forth, and purify them, change them, and manifest them as a sanctification of Your saints.",
+          {
+            "speaker": "Deacon",
+            "text": "Let us attend. Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "And this bread He makes into His holy Body."
+          },
+          {
+            "speaker": "People",
+            "text": "I believe. Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Our Lord, God, and Savior Jesus Christ,"
+          },
+          "given for the remission of sins and eternal life to those who partake of Him.",
+          "And this cup also, the precious Blood of His New Covenant.",
+          {
+            "speaker": "People",
+            "text": "Again, I believe. Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Our Lord, God, and Savior Jesus Christ, given for the remission of sins"
+          },
+          "and eternal life to those who partake of Him.",
+          {
+            "speaker": "People",
+            "text": "Lord have mercy (3)ز"
+          }
+        ]
+      },
+      {
+        "id": "seven-litanies",
+        "type": "litany",
+        "role": "priest",
+        "title": "The Seven Short Litanies",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Make us all worthy, O our Master, to partake of Your Holies, unto the purification of our souls, our bodies, and our spirits,"
+          },
+          "that we may become one body and one spirit, and may have a share and an inheritance with all the saints who have pleased You since the beginning.",
+          "Remember, O Lord, the peace of Your one, only, holy, catholic, and apostolic Church—",
+          {
+            "speaker": "Deacon",
+            "text": "Pray for the peace of the one holy catholic and apostolic orthodox Church of God."
+          },
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "this, which You have acquired to Yourself with the precious Blood of Your Christ,"
+          },
+          "keep her in peace, with all the orthodox bishops who are in her.",
+          "Foremost remember, O Lord, our blessed and honored father, the archbishop, our patriarch, Abba (…),",
+          "and his spiritual brothers, the Patriarch of Antioch Mar Ignatius (…), and the Patriarch of Eritrea Abouna (…).",
+          {
+            "text": "In the presence of a bishop:",
+            "isRubric": true
+          },
+          "and his partner in the liturgy, our father the bishop (metropolitan), Abba (...).",
+          {
+            "speaker": "Deacon",
+            "text": "Pray for our high priest, Pope Abba (…), pope and patriarch and archbishop of the great city of Alexandria,"
+          },
+          "and his spiritual brothers, the Patriarch of Antioch Mar Ignatius (…), and the Patriarch of Eritrea Abouna (…).",
+          {
+            "text": "In the presence of a bishop:",
+            "isRubric": true
+          },
+          "and his partner in the liturgy, our father the bishop (metropolitan), Abba (...).",
+          {
+            "text": "And concludes with:",
+            "isRubric": true
+          },
+          {
+            "text": "and for our orthodox bishops.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy.",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: And those who rightly divide the word of truth with him,",
+            "isRubric": true
+          },
+          {
+            "text": "grant them unto Your holy Church to shepherd Your flock in peace.",
+            "isRubric": true
+          },
+          {
+            "text": "Remember, O Lord, the orthodox hegumens, priests, and deacons.",
+            "isRubric": true
+          },
+          {
+            "text": "Deacon: Pray for the hegumens, priests, deacons, subdeacons, and the seven orders of the Church of God.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy.",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: And all the servants, and all who are in virginity, and the purity of all Your faithful people.",
+            "isRubric": true
+          },
+          {
+            "text": "(Remember, O Lord, to have mercy upon us all.)",
+            "isRubric": true
+          },
+          {
+            "text": "People: Have mercy upon us, O God, the Father, the Pantocrator.",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: Remember, O Lord, the salvation of this, Your holy place, and every place, and every monastery of our orthodox fathers.",
+            "isRubric": true
+          },
+          {
+            "text": "Deacon: Pray for the salvation of the world and of this city of ours and of all cities, districts, islands, and monasteries.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy.",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: And those who dwell therein in God’s faith.",
+            "isRubric": true
+          },
+          {
+            "text": "The priest says the appropriate litany according to the season, either the Litany of the Waters, the Litany of the Plants, or the Litany of the Fruits, or the combined litany for all three seasons.",
+            "isRubric": true
+          },
+          {
+            "text": "From Paoni 12 to Paapi 9 (June 19 to October 19/20), the Litany of the Waters is said:",
+            "isRubric": true
+          },
+          {
+            "text": "Priest:  Graciously accord, O Lord, to bless the waters of the river this year.",
+            "isRubric": true
+          },
+          {
+            "text": "Deacon: Pray for the rising of the waters of the rivers this year, that Christ our God may bless them and raise them according to their measure, that He may give joy to the face of the earth, sustain us, the sons of men, save the cattle, and forgive us our sins.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy (3).",
+            "isRubric": true
+          },
+          {
+            "text": "From Paapi 10 to Tobi 10 (October 20/21 to January 18/19), the Litany of the Plants is said.",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: Graciously accord, O Lord, to bless the seeds, the herbs, and the plants of the field this year.",
+            "isRubric": true
+          },
+          {
+            "text": "Deacon: Pray for the seeds, the herbs, and the plants of the field this year, that Christ our God may bless them to grow and multiply unto perfection with great fruit, have compassion on His creation which His hands have made, and forgive us our sins.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy (3).",
+            "isRubric": true
+          },
+          {
+            "text": "From Tobi 11 to Paoni 11 (January 19/20 to June 18), the Litany of the Fruits is said.",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: Graciously accord, O Lord, to bless the air of heaven and the fruits of the earth this year.",
+            "isRubric": true
+          },
+          {
+            "text": "Deacon: Pray for the air of heaven, the fruits of the earth, the trees, the vines, and for every fruit-bearing tree in all the world, that Christ our God may bless them, bring them to perfection in peace without harm, and forgive us our sins.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy (3).",
+            "isRubric": true
+          },
+          {
+            "text": "The three litanies may be combined as follows:",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: Graciously accord, O Lord, to bless the air of heaven, the fruits of the earth, the waters of the river, the seeds, the herbs, and the plants of the field this year.",
+            "isRubric": true
+          },
+          {
+            "text": "Deacon: Pray for the air of heaven, the fruits of the earth, the rising of the waters of the rivers, the seeds, the herbs, and the plants of the field, that Christ our God may bless them, have compassion on His creation which His hands have made, and forgive us our sins.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy (3).",
+            "isRubric": true
+          },
+          {
+            "text": "After any one of the litanies, the priest continues with the following:",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: Raise them to their measure according to Your grace. Give joy to the face of the earth. May its furrows be abundantly watered and its fruits be plentiful.",
+            "isRubric": true
+          },
+          {
+            "text": "Prepare it for sowing and harvesting. Manage our lives as deemed fit.",
+            "isRubric": true
+          },
+          {
+            "text": "Bless the crown of the year with Your goodness for the sake of the poor of Your people, the widow, the orphan, the traveler, the stranger, and for the sake of all of us who entreat You and seek Your holy name.",
+            "isRubric": true
+          },
+          {
+            "text": "For the eyes of everyone wait upon You, for You give them their food in due season.",
+            "isRubric": true
+          },
+          {
+            "text": "Deal with us according to Your goodness, O You who give food to all flesh. Fill our hearts with joy and gladness, that we too, having sufficiency in everything always, may abound in every good deed.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy.",
+            "isRubric": true
+          },
+          {
+            "text": "Priest: Remember, O Lord, those who have brought unto You these gifts, those on whose behalf they have been brought, and those by whom they have been brought. Give them all the heavenly reward.",
+            "isRubric": true
+          },
+          {
+            "text": "Deacon: Pray for these holy and precious gifts, our sacrifices, and those who have brought them.",
+            "isRubric": true
+          },
+          {
+            "text": "People: Lord have mercy.",
+            "isRubric": true
+          }
+        ]
+      },
+      {
+        "id": "commemoration-saints",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Commemoration of the Saints",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "As this, O Lord, is the command of Your only-begotten Son, that we share in the commemoration of Your saints, graciously accord, O Lord, to remember all the saints who have pleased You since the beginning:"
+          },
+          "our holy fathers the patriarchs, the prophets, the Apostles, the preachers, the evangelists, the martyrs, the confessors, and all the spirits of the righteous perfected in the faith.",
+          "Most of all, the pure, full-of-glory, ever-virgin, holy Theotokos, Saint Mary, who truly gave birth to God the Logos.",
+          "And Saint John the forerunner, baptist, and martyr; Saint Stephen the archdeacon and protomartyr; the beholder-of-God, Saint Mark the Evangelist, the apostle and martyr;",
+          "the patriarch Saint Severus; our teacher Dioscorus; Saint Athanasius the Apostolic; Saint Peter, the holy martyr and high priest;",
+          "Saint John Chrysostom; Saint Theodosius; Saint Theophilus; Saint Demetrius; Saint Cyril; Saint Basil; Saint Gregory the Theologian; Saint Gregory the Wonderworker; Saint Gregory the Armenian;",
+          "the three hundred and eighteen assembled at Nicea; the one hundred and fifty at Constantinople; and the two hundred at Ephesus;",
+          "our righteous father, the great Abba Anthony; the righteous Abba Paul; the three saints Abba Macarii and all their children, the cross-bearers;",
+          "our father Abba John the hegumen; our righteous father Abba Pishoy, the perfect man, the beloved of our good Savior.",
+          {
+            "text": "If the priest chooses, he may add the following:",
+            "isRubric": true
+          },
+          "Our father Abba Paul of Tammoh and Ezekiel his disciple; my lords, the Roman fathers Saints Maximus and Dometius; the Forty-nine Martyrs; the elders of Shiheet; the strong saint Abba Moses; John Kame the priest; our father Abba Daniel the hegumen; our father Abba Isidore the priest; our father Abba Pachom of the Koinonia, and Theodore his disciple; our father Abba Shenoute the archmandrite, and Abba Wesa his disciple;",
+          "and all the choir of Your saints, through whose prayers and supplications have mercy on us all and save us, for the sake of Your holy name, which is called upon us.",
+          {
+            "speaker": "Deacon",
+            "text": "Let those who read, recite the names of our holy fathers, the patriarchs who have fallen asleep. O Lord repose their souls, and forgive us our sins."
+          },
+          {
+            "speaker": "People",
+            "text": "May their holy blessing be with us. Amen."
+          },
+          "Glory to You, O Lord. Lord have mercy. Lord have mercy. Lord, bless us. Lord, repose them. Amen."
+        ]
+      },
+      {
+        "id": "diptych",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Diptych",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Remember also, O Lord, all those who have fallen asleep and reposed in the priesthood and in all the orders of the laity."
+          },
+          "Graciously, O Lord, repose all their souls in the bosom of our holy fathers Abraham, Isaac, and Jacob.",
+          "Sustain them in a green pasture, by the water of rest in the Paradise of joy,",
+          "the place out of which grief, sorrow, and groaning have fled away in the light of Your saints.",
+          {
+            "text": "(Or the following diptych from St. Cyril’s liturgy)",
+            "isRubric": true
+          },
+          {
+            "speaker": "Priest",
+            "text": "Those, O Lord, and everyone whose names we have mentioned; and those whose names we have not mentioned,"
+          },
+          "those whom each one has in mind and those who are not in our minds;",
+          "and those who have fallen asleep and reposed in the faith of Christ.",
+          {
+            "text": "(The priest mentions the departed)",
+            "isRubric": true
+          },
+          "Graciously, O Lord, repose all their souls in the bosom of our holy fathers Abraham, Isaac, and Jacob.",
+          "Sustain them in a green pasture, by the water of rest in the Paradise of joy,",
+          "the place out of which grief, sorrow, and groaning have fled away in the light of Your saints.",
+          {
+            "speaker": "Deacon",
+            "text": "Pray for our fathers and brethren who have fallen asleep and reposed in the faith of Christ since the beginning our holy fathers, the archbishops, our fathers the bishops, our fathers the hegumens, our fathers the priests, our brethren the deacons, our fathers the monks, and our fathers the laymen, and for the full repose of the Christians."
+          },
+          "That Christ our God may repose all their souls in the Paradise of joy, and we too, accord mercy unto us, and forgive us our sins.",
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          }
+        ]
+      },
+      {
+        "id": "those-o-lord",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Those, O Lord",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Those, O Lord, whose souls You have taken, repose them in the Paradise of joy, in the region of the living forever, in the heavenly Jerusalem—in that place."
+          },
+          "And we too, who are sojourners in this place, keep us in Your faith, and grant us Your peace unto the end.",
+          {
+            "speaker": "People",
+            "text": "As it was and shall be, it is from generation to generation, and unto all the ages of the ages. Amen."
+          }
+        ]
+      },
+      {
+        "id": "lead-us",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Lead Us",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Lead us throughout the way into Your kingdom,"
+          },
+          "that as in this, so also in all things, Your great and holy name be glorified, blessed, and exalted in everything, honored and blessed with Jesus Christ, Your beloved Son, and the Holy Spirit.",
+          "Peace be with all.",
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          }
+        ]
+      },
+      {
+        "id": "intro-fraction",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Introduction to the Fraction",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Again, let us give thanks to God the Pantocrator, the Father of our Lord, God, and Savior Jesus Christ,"
+          },
+          "for He also has made us worthy now to stand in this holy place, to lift up our hands, and to serve His holy name.",
+          "Let us also ask Him to make us worthy of the communion and partaking of His divine and immortal Mysteries.",
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "The holy Body—"
+          },
+          {
+            "speaker": "People",
+            "text": "We worship Your holy Body—"
+          },
+          {
+            "speaker": "Priest",
+            "text": "and the precious Blood—"
+          },
+          {
+            "speaker": "People",
+            "text": "and Your precious Blood."
+          },
+          {
+            "speaker": "Priest",
+            "text": "of His Christ, the Pantocrator, the Lord our God."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Amen. Amen. Pray."
+          },
+          {
+            "speaker": "People",
+            "text": "Lord have mercy."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Peace be with all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          }
+        ]
+      },
+      {
+        "id": "fraction",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Fraction",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "O Master, Lord our God, the Great, the Eternal, wondrous in glory;"
+          },
+          "keeping His covenant and His mercy to those who love Him with all their heart;",
+          "who has given to us redemption from sins through His only-begotten Son, Jesus Christ our Lord, the life of everyone,",
+          "the help of those who flee to Him, the hope of those who cry out to Him;",
+          "before whom stand thousands of thousands and ten thousand times ten thousand holy angels and archangels,",
+          "the Cherubim and the Seraphim, and all the innumerable host of the heavenly powers.",
+          "O God, who have sanctified these gifts which are set forth through the coming down upon them of Your Holy Spirit, You have purified them.",
+          "Purify us also, our Master, from our sins, the hidden and manifest, and every thought which is not pleasing to Your goodness; O God, the Lover of Mankind, may it be far from us.",
+          "Purify our souls, our bodies, our spirits, our hearts, our eyes, our understanding, our thoughts, and our consciences,",
+          "so that, with a pure heart, an enlightened soul, an unashamed face, a faith unfeigned, a perfect love, and a firm hope,",
+          "we may dare with boldness, without fear, to pray to You, O God, the holy Father who are in the heavens, and say:",
+          "“Our Father ....”",
+          {
+            "speaker": "People",
+            "text": "Our Father who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from the evil one. In Christ Jesus our Lord, for Thine is the kingdom and the power and the glory forever. Amen."
+          }
+        ]
+      },
+      {
+        "id": "lords-prayer",
+        "type": "prayer",
+        "role": "congregation",
+        "title": "Our Father",
+        "content": [
+          {
+            "speaker": "People",
+            "text": "Our Father who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from the evil one. In Christ Jesus our Lord, for Thine is the kingdom and the power and the glory forever. Amen."
+          }
+        ]
+      },
+      {
+        "id": "prayers-after-fraction",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Prayers After the Fraction",
+        "content": [
+          {
+            "text": "The Prayer After “Our Father”",
+            "isRubric": true
+          },
+          {
+            "speaker": "Priest",
+            "text": "Yea, we ask You, O good Father who love goodness, lead us not into temptation, nor let any iniquity rule over us,"
+          },
+          "but deliver us from worthless works and from the thoughts, motions, sights, and touch thereof.",
+          "Destroy the tempter and drive him away. Rebuke also his movements implanted in us, and cut off from us all impulses which drag us into sin,",
+          "and deliver us by Your holy power in Christ Jesus our Lord.",
+          "Through whom …",
+          {
+            "speaker": "Deacon",
+            "text": "Bow your heads to the Lord."
+          },
+          {
+            "speaker": "People",
+            "text": "Before You, O Lord."
+          },
+          {
+            "text": "The Prayer of Submission to the Father",
+            "isRubric": true
+          },
+          {
+            "speaker": "Priest",
+            "text": "The graces of the beneficence of Your only-begotten Son, our Lord, God, and Savior Jesus Christ, are now fulfilled."
+          },
+          "We have confessed His saving Passion; we have proclaimed His Death; we have believed in His Resurrection; and the Mystery is accomplished.",
+          "We give thanks to You, O Lord God the Pantocrator, for Your mercy is great upon us, for You have prepared for us those things which the angels desire to behold.",
+          "We ask and entreat Your goodness, O Lover of Mankind, that, since You have purified us all, You join us to Yourself through our partaking of Your divine Mysteries,",
+          "that we may become filled with Your Holy Spirit, confirmed in Your upright faith. Having been filled with the longing for Your true love, may we speak of Your glory at all times in Christ Jesus our Lord.",
+          "Through whom …",
+          {
+            "speaker": "Deacon",
+            "text": "Let us attend in the fear of God. Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Peace be with all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          },
+          {
+            "text": "The Prayer of Absolution to the Father",
+            "isRubric": true
+          },
+          {
+            "speaker": "Priest",
+            "text": "O Master, Lord God the Pantocrator, Healer of our souls, our bodies, and spirits,"
+          },
+          "You are He who said to our father Peter, from the mouth of Your only-begotten Son, our Lord, God, and Savior Jesus Christ,",
+          "“You are Peter, and on this rock I will build My Church, and the gates of Hades shall not prevail against it.",
+          "I will give you the keys of the kingdom of the heavens, and whatever you bind on earth shall be bound in the heavens, and whatever you loose on earth shall be loosed in the heavens.”",
+          "Therefore, O Lord, let Your servants, my fathers and my brethren and my own weakness, be absolved by my mouth, through Your Holy Spirit, O Good One and Lover of Mankind.",
+          "O God, who take away the sin of the world, hasten to accept the repentance of Your servants, for a light of understanding and forgiveness of sins.",
+          "For You are a compassionate and merciful God; You are patient; Your mercy is great and true.",
+          "If we have sinned against You, either by word or by deed, pardon and forgive us, as a Good One and Lover of Mankind.",
+          "O God, absolve us, and absolve all Your people.",
+          {
+            "text": "If he wishes, the priest mentions the living and the dead, then continues, saying:",
+            "isRubric": true
+          },
+          {
+            "speaker": "Priest",
+            "text": "Remember, O Lord, my own weakness and forgive my many sins, and where transgression has abounded, let Your grace be multiplied in abundance. Because of my own sins and the abomination of my heart, deprive not Your people of the grace of Your Holy Spirit."
+          },
+          "O God, absolve us, and absolve all Your people from every sin, and from every curse, and from every denial, and from every false oath, and from every encounter with the heretics and the heathen.",
+          "O our Master, grant us a reason and power and understanding to flee from any evil deed of the adversary, and grant us to do what is pleasing to You at all times.",
+          "Inscribe our names with all the choir of Your saints in the kingdom of the heavens in Christ Jesus our Lord.",
+          "Through whom …",
+          {
+            "speaker": "Priest",
+            "text": "Remember, O Lord, our assemblies; bless them."
+          },
+          {
+            "speaker": "Deacon",
+            "text": "Saved. Amen. And with your spirit. In the fear of God, let us attend."
+          },
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          "Lord have mercy (3)."
+        ]
+      },
+      {
+        "id": "confession",
+        "type": "prayer",
+        "role": "all",
+        "title": "The Confession",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "The Holies for the holy."
+          },
+          "Blessed be the Lord Jesus Christ, the Son of God; the sanctification is by the Holy Spirit. Amen.",
+          {
+            "speaker": "People",
+            "text": "One is the Holy Father, one is the Holy Son, one is the Holy Spirit. Amen."
+          },
+          {
+            "text": "Or they say:",
+            "isRubric": true
+          },
+          "One is the All-Holy Father, one is the All-Holy Son, one is the All-Holy Spirit. Amen.",
+          {
+            "speaker": "Priest",
+            "text": "Peace be with all."
+          },
+          {
+            "speaker": "People",
+            "text": "And with your spirit."
+          },
+          {
+            "speaker": "Priest",
+            "text": "The holy Body and the precious, true Blood of Jesus Christ, the Son of our God. Amen."
+          },
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "The holy, precious Body and the true Blood of Jesus Christ, the Son of our God. Amen."
+          },
+          {
+            "speaker": "People",
+            "text": "Amen."
+          },
+          {
+            "speaker": "Priest",
+            "text": "The Body and the Blood of Emmanuel our God; this is true. Amen."
+          },
+          {
+            "speaker": "People",
+            "text": "Amen. I believe."
+          },
+          {
+            "speaker": "Priest",
+            "text": "Amen. Amen. Amen. I believe, I believe, I believe and confess to the last breath"
+          },
+          "that this is the life-giving Flesh that Your only-begotten Son, our Lord, God, and Savior Jesus Christ, took from our Lady, the Lady of us all, the holy Theotokos, Saint Mary.",
+          "He made It one with His divinity without mingling, without confusion, and without alteration.",
+          "He confessed the good confession before Pontius Pilate.",
+          "He gave It up for us upon the holy wood of the Cross, of His own will, for us all.",
+          "Truly I believe that His divinity parted not from His humanity for a single moment, nor a twinkling of an eye;",
+          "given for us for salvation, remission of sins, and eternal life to those who partake of Him.",
+          "I believe, I believe, I believe that this is true. Amen.",
+          {
+            "speaker": "Deacon",
+            "text": "Amen. Amen. Amen. I believe, I believe, I believe that this is true. Amen."
+          },
+          "Pray for us and for all Christians who said to us concerning them, “Remember us in the house of the Lord.”",
+          "The peace and love of Jesus Christ be with you. Sing, “Alleluia.”",
+          "Pray for the worthy partaking of the immaculate, heavenly, and holy Mysteries.",
+          "Lord have mercy."
+        ]
+      },
+      {
+        "id": "prayers-before-distribution",
+        "type": "prayer",
+        "role": "priest",
+        "title": "Prayers Before the Distribution",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Make us all worthy, O our Master, to partake of Your holy Body and Your precious Blood unto the purification of our souls, bodies, and spirits, and unto the remission of our sins and iniquities, that we may be one body and one spirit with You."
+          },
+          "Glory to You, with Your good Father and the Holy Spirit, forever. Amen.",
+          "Loose, remit, and forgive us, O God, our iniquities which we have committed willingly and which we have committed unwillingly, which we have committed knowingly and which we have committed unknowingly; the hidden and the manifest, O Lord, remit for us, for the sake of Your holy name which is called upon us.",
+          "According to Your mercy, O Lord, and not according to our sins.",
+          {
+            "speaker": "Priest",
+            "text": "Author of life and King of the ages, Logos of God the Father, our Lord, God, and Savior Jesus Christ;"
+          },
+          "the true Bread which came down from heaven; who give life to those who partake of Him;",
+          "make us worthy, without falling into condemnation, to partake of Your holy Body and Your precious Blood.",
+          "May our partaking of Your holy Mysteries make us one with You unto the end; and bless us.",
+          "You are the Son of God; Yours is the glory, with Him and the Holy Spirit, the Giver of Life, forever. Amen.",
+          "Our Father ....",
+          {
+            "speaker": "Priest",
+            "text": "O our Lord Jesus Christ, make us worthy to partake of Your pure Body and Your precious Blood,"
+          },
+          "without it being condemnation for us.",
+          "Rather, as You have said to Your holy disciples, “Take My body and blood for the remission of your sins.”",
+          "Likewise, may we have communion with Your holy disciples, partaking of Your life giving Mysteries",
+          "that we may be granted remission of our sins and forgiveness of our iniquities and purity for our souls, bodies, and spirits, unto firmness in the faith of Your holy name till the last breath,",
+          "through the prayers of our Lady, Saint Mary, and of all Your saints. Amen."
+        ]
+      },
+      {
+        "id": "thanksgiving-after-communion",
+        "type": "prayer",
+        "role": "priest",
+        "title": "A Prayer of Thanksgiving",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Our mouth is filled with gladness and our tongue with rejoicing from our partaking of Your immortal Mysteries, O Lord."
+          },
+          "That which an eye has not seen nor ear heard, neither have entered into the heart of man,",
+          "the things which You, O God, have prepared for those who love Your holy name, and have revealed to the little children of Your holy Church.",
+          "Yea, O Father, this is the pleasure before You, for You are merciful.",
+          "We send up unto You glory and honor, O Father and Son and Holy Spirit,",
+          "now and at all times and unto the age of all ages. Amen."
+        ]
+      },
+      {
+        "id": "prayer-of-submission",
+        "type": "prayer",
+        "role": "priest",
+        "title": "The Prayer of Submission to the Father",
+        "content": [
+          {
+            "speaker": "Priest",
+            "text": "Your servants, O Lord, who are serving You, entreating Your holy name and bowing down their heads to You,"
+          },
+          "dwell in them, O Lord, walk among them, aid them in every good deed,",
+          "wake their heart from every vile earthly thought,",
+          "grant them to live and think of what is pertaining to the living and understand the things that are Yours.",
+          "Through Your only-begotten Son, our Lord, God, and Savior Jesus Christ,",
+          "to whom we and all Your people cry out, saying, “Have mercy upon us, O God, our Savior.”"
+        ]
+      }
+    ]
+  }
+}

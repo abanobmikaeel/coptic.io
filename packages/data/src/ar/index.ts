@@ -12,6 +12,9 @@ export { default as synaxariumCanonical } from './synaxarium/canonical.json'
 // Incense - Raising of Incense (Vespers)
 export * from './incense'
 
+// Liturgy - the Divine Liturgy (St. Basil)
+export * from './liturgy'
+
 // Agpeya - Book of Hours
 export * from './agpeya'
 

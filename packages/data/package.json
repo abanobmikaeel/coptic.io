@@ -74,6 +74,18 @@
 			"types": "./dist/cop/incense/index.d.ts",
 			"import": "./dist/cop/incense/index.js"
 		},
+		"./en/liturgy": {
+			"types": "./dist/en/liturgy/index.d.ts",
+			"import": "./dist/en/liturgy/index.js"
+		},
+		"./ar/liturgy": {
+			"types": "./dist/ar/liturgy/index.d.ts",
+			"import": "./dist/ar/liturgy/index.js"
+		},
+		"./cop/liturgy": {
+			"types": "./dist/cop/liturgy/index.d.ts",
+			"import": "./dist/cop/liturgy/index.js"
+		},
 		"./en/tasbeha": {
 			"types": "./dist/en/tasbeha/index.d.ts",
 			"import": "./dist/en/tasbeha/index.js"
