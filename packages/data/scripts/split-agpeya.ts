@@ -76,6 +76,9 @@ const HANDLED = new Set([
 	...PROSE_SLOTS.map(([slot]) => slot),
 ])
 
+/** Deterministic string order, independent of locale. */
+const byCodePoint = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0)
+
 const kebab = (s: string) => s.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
 
 // ── slot → section ───────────────────────────────────────────────────────────
@@ -275,7 +278,10 @@ for (const [language, { built }] of loaded) {
 	}
 	const perSlot = new Map<SlotKey, SlotKey[]>()
 	for (const group of byFingerprint.values()) {
-		const sorted = [...group].sort()
+		// Code-point order, stated explicitly. The first key of the sorted class picks
+		// the shared id, so the ordering is part of the generated output — locale-aware
+		// collation would reorder punctuation and silently rename common.json entries.
+		const sorted = [...group].sort(byCodePoint)
 		for (const key of sorted) perSlot.set(key, sorted)
 	}
 	classes.set(language, perSlot)
@@ -384,5 +390,5 @@ if (disagreements.length) {
 	console.log(
 		`\n${disagreements.length} sections repeat in one language but not the other, so they stay proper to their hour in both:`,
 	)
-	for (const key of disagreements.sort()) console.log(`  ${key}`)
+	for (const key of disagreements.sort(byCodePoint)) console.log(`  ${key}`)
 }

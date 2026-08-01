@@ -1,3 +1,4 @@
+import { type AgpeyaHourData, type AgpeyaMidnightHour, toLegacyHour } from './legacy'
 import {
 	type AgpeyaCommonFile,
 	type AgpeyaHourFile,
@@ -59,10 +60,30 @@ export function createAgpeyaLoader(
 		return hour
 	}
 
+	const getHour = (id: AgpeyaHourId): AgpeyaHourService | null =>
+		hourIds.includes(id) ? compose(id) : null
+
+	// The legacy projection lives here rather than in each language entry point: the
+	// languages differ only in their text, so duplicating the accessors per language
+	// is how the two drift apart.
+	const getHourData = (id: AgpeyaHourId): AgpeyaHourData | AgpeyaMidnightHour | null => {
+		const hour = getHour(id)
+		return hour ? toLegacyHour(hour) : null
+	}
+
 	return {
 		hourIds: () => [...hourIds],
-		getHour: (id: AgpeyaHourId): AgpeyaHourService | null =>
-			hourIds.includes(id) ? compose(id) : null,
+		getHour,
+		getHourData,
+		getAllHours: (): (AgpeyaHourData | AgpeyaMidnightHour)[] =>
+			hourIds
+				.map(getHourData)
+				.filter((hour): hour is AgpeyaHourData | AgpeyaMidnightHour => hour !== null),
+		/** Only prose prayers are addressable standalone; psalms and gospels carry no `content`. */
+		getCommonPrayer: (prayerId: string) => {
+			const section = common.sections[prayerId] ?? null
+			return section && 'content' in section ? section : null
+		},
 		getCommonSection: (sectionId: string): AgpeyaSection | null =>
 			common.sections[sectionId] ?? null,
 		commonSections: () => common.sections,
