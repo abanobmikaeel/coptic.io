@@ -1,0 +1,559 @@
+{
+	"id": "sext",
+	"language": "en",
+	"name": "Sext",
+	"englishName": "Sixth Hour",
+	"traditionalTime": "12:00 PM",
+	"introduction": "We pray the Sixth Hour commemorating the Crucifixion of our Lord Jesus Christ. At this hour, darkness covered the whole earth.",
+	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"order": [
+		"opening",
+		"sext-hour-intro",
+		"thanksgiving-prayer",
+		"psalm-50",
+		"sext-psalm-53",
+		"sext-psalm-56",
+		"sext-psalm-60",
+		"sext-psalm-62",
+		"sext-psalm-66",
+		"sext-psalm-69",
+		"sext-psalm-83",
+		"sext-psalm-84",
+		"psalm-85",
+		"sext-psalm-86",
+		"psalm-90",
+		"sext-psalm-92",
+		"sext-gospel",
+		"sext-litany",
+		"sext-closing"
+	],
+	"sections": [
+		{
+			"id": "sext-hour-intro",
+			"kind": "hour-intro",
+			"title": "The Beginning of the Sixth Hour Prayer",
+			"content": [
+				"The praise of the sixth hour of the blessed day, I offer to Christ my King and my God, beseeching Him to forgive me my sins."
+			]
+		},
+		{
+			"id": "sext-psalm-53",
+			"kind": "psalm",
+			"psalmNumber": 53,
+			"title": "Psalm 53",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Save me, O God, by Your name, and judge me by Your power."
+				},
+				{
+					"num": 2,
+					"text": "O God, hear my prayer; hearken to the words of my mouth."
+				},
+				{
+					"num": 3,
+					"text": "For strangers have risen up against me, and mighty men have sought my soul."
+				},
+				{
+					"num": 4,
+					"text": "They have not set God before them."
+				},
+				{
+					"num": 5,
+					"text": "For behold, God helped me; and the Lord is the protector of my soul. He shall return the evil things to my enemies; utterly wipe them out by Your truth."
+				},
+				{
+					"num": 6,
+					"text": "I will willingly sacrifice to You: I will confess Your name, O Lord; for it is good."
+				},
+				{
+					"num": 7,
+					"text": "For You have delivered me out of every affliction, and my eye has looked down upon my enemies."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-56",
+			"kind": "psalm",
+			"psalmNumber": 56,
+			"title": "Psalm 56",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Have mercy upon me, O God, have mercy upon me: for my soul has trusted in You."
+				},
+				{
+					"num": 2,
+					"text": "And in the shadow of Your wings I will hope, until the iniquity passes away."
+				},
+				{
+					"num": 3,
+					"text": "I will cry to God Most High; God who has benefitted me."
+				},
+				{
+					"num": 4,
+					"text": "He sent from heaven and saved me; He gave over to reproach those who trampled on me."
+				},
+				{
+					"num": 5,
+					"text": "God has sent forth His mercy and His truth; and He has delivered my soul from the midst of young lions: I laid down to sleep, while troubled."
+				},
+				{
+					"num": 6,
+					"text": "As for the sons of men, their teeth are weapons and arrows, and their tongue a sharp sword."
+				},
+				{
+					"num": 7,
+					"text": "Be You exalted, O God, above the heavens; and Your glory above all the earth."
+				},
+				{
+					"num": 8,
+					"text": "They have prepared snares for my feet, and have bowed down my soul: they have dug a pit before me, and fallen into it."
+				},
+				{
+					"num": 9,
+					"text": "My heart, O God, is ready, my heart is ready: I will sing, and chant in my glory."
+				},
+				{
+					"num": 10,
+					"text": "Arise, my glory; arise, psaltery and harp."
+				},
+				{
+					"num": 11,
+					"text": "I will rise early."
+				},
+				{
+					"num": 12,
+					"text": "O Lord, I will confess You among the peoples: I will sing to You among the nations."
+				},
+				{
+					"num": 13,
+					"text": "For Your mercy has been magnified up to the heavens, and Your truth up to the clouds."
+				},
+				{
+					"num": 14,
+					"text": "Be You exalted, O God, above the heavens; and Your glory above all the earth."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-60",
+			"kind": "psalm",
+			"psalmNumber": 60,
+			"title": "Psalm 60",
+			"verses": [
+				{
+					"num": 1,
+					"text": "Hear, O God, my petition; attend to my prayer."
+				},
+				{
+					"num": 2,
+					"text": "From the ends of the earth I have cried to You, when my heart was in trouble."
+				},
+				{
+					"num": 3,
+					"text": "You elevated me up on a rock, You guided me."
+				},
+				{
+					"num": 4,
+					"text": "You became a hope, a tower of power from the face of an enemy."
+				},
+				{
+					"num": 5,
+					"text": "I shall dwell in Your dwelling place forever; I shall be sheltered under the shadow of Your wings."
+				},
+				{
+					"num": 6,
+					"text": "For You, O God, have heard my prayers; You have given an inheritance to those who fear Your name."
+				},
+				{
+					"num": 7,
+					"text": "Days upon days of the king, You shall lengthen his years."
+				},
+				{
+					"num": 8,
+					"text": "To all generations; he shall endure forever before God."
+				},
+				{
+					"num": 9,
+					"text": "As for His mercy and truth, who will be able to seek them out?"
+				},
+				{
+					"num": 10,
+					"text": "So I will sing to Your name forever and ever, that I may perform my vows day by day."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-62",
+			"kind": "psalm",
+			"psalmNumber": 62,
+			"title": "Psalm 62",
+			"verses": [
+				{
+					"num": 1,
+					"text": "O God, my God, I will rise up early unto You; for my soul has thirsted for You."
+				},
+				{
+					"num": 2,
+					"text": "To make my flesh blossom for You, in a barren land and a trackless and dry place."
+				},
+				{
+					"num": 3,
+					"text": "So I have appeared before You in the Holy, to see Your power and Your glory."
+				},
+				{
+					"num": 4,
+					"text": "For Your mercy is chosen more than life: my lips shall praise You."
+				},
+				{
+					"num": 5,
+					"text": "So I will bless You during my life: I will lift up my hands in Your name."
+				},
+				{
+					"num": 6,
+					"text": "My soul shall be filled as with marrow and fatness."
+				},
+				{
+					"num": 7,
+					"text": "And lips of joy shall praise Your name."
+				},
+				{
+					"num": 8,
+					"text": "I have remembered You on my bed: in the time of early morning I have usually meditated on You."
+				},
+				{
+					"num": 9,
+					"text": "For You have become unto me a helper, and under the shadow of Your wings I shall rejoice."
+				},
+				{
+					"num": 10,
+					"text": "My soul has kept very close behind You: Your right hand has upheld me."
+				},
+				{
+					"num": 11,
+					"text": "But they vainly sought after my soul; they shall go into the lowest parts of the earth."
+				},
+				{
+					"num": 12,
+					"text": "They shall be delivered up to the hand of the sword; they shall be portions for foxes."
+				},
+				{
+					"num": 13,
+					"text": "But the king shall rejoice in God; everyone who swears by him shall be proud."
+				},
+				{
+					"num": 14,
+					"text": "For the mouths of those who speak unjust things shall be shut."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-66",
+			"kind": "psalm",
+			"psalmNumber": 66,
+			"title": "Psalm 66",
+			"verses": [
+				{
+					"num": 1,
+					"text": "God shall pity us, and bless us; and reveal His face upon us and have mercy on us."
+				},
+				{
+					"num": 2,
+					"text": "That Your way may be known on the earth, Your salvation among all nations."
+				},
+				{
+					"num": 3,
+					"text": "Let the peoples, O God, give praise to You; let all the peoples give praise to You."
+				},
+				{
+					"num": 4,
+					"text": "Let the nations rejoice and exult, for You will judge peoples in equity, and guide nations on the earth."
+				},
+				{
+					"num": 5,
+					"text": "Let the peoples, O God, give praise to You; let all the peoples give praise to You."
+				},
+				{
+					"num": 6,
+					"text": "The earth has yielded its fruit. God, our God, shall bless us."
+				},
+				{
+					"num": 7,
+					"text": "God shall bless us; and all the ends of the earth shall fear Him."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-69",
+			"kind": "psalm",
+			"psalmNumber": 69,
+			"title": "Psalm 69",
+			"verses": [
+				{
+					"num": 1,
+					"text": "O God, be mindful of my help; make haste, O Lord, to help me."
+				},
+				{
+					"num": 2,
+					"text": "Let them be ashamed and be scorned, those who seek my soul: let them be turned backward and put to shame, those who wish to do evil unto me."
+				},
+				{
+					"num": 3,
+					"text": "Let those who say to me, \"Aha, aha,\" be turned back in shame immediately."
+				},
+				{
+					"num": 4,
+					"text": "Let all who seek You exult and be glad in You: and let those who love Your salvation say continually, \"Let the Lord be magnified.\""
+				},
+				{
+					"num": 5,
+					"text": "But I am poor and weak; O God, help me."
+				},
+				{
+					"num": 6,
+					"text": "You are my Helper and Savior, O Lord, do not delay."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-83",
+			"kind": "psalm",
+			"psalmNumber": 83,
+			"title": "Psalm 83",
+			"verses": [
+				{
+					"num": 1,
+					"text": "How beloved are Your dwellings, O Lord, God of hosts!"
+				},
+				{
+					"num": 2,
+					"text": "My soul longs, and faints for the courts of the Lord."
+				},
+				{
+					"num": 3,
+					"text": "My heart and my flesh have exulted in the living God."
+				},
+				{
+					"num": 4,
+					"text": "For, the sparrow has found for himself a home, and the turtledove for herself a nest, where she may lay her young."
+				},
+				{
+					"num": 5,
+					"text": "Your altars, O Lord, God of hosts, my King, and my God."
+				},
+				{
+					"num": 6,
+					"text": "Blessed are all who dwell in Your house: they will praise You forever and ever."
+				},
+				{
+					"num": 7,
+					"text": "Blessed is the man whose help is from You, O Lord; he sets paths upward in his heart."
+				},
+				{
+					"num": 8,
+					"text": "In the valley of weeping, in the place which he has appointed."
+				},
+				{
+					"num": 9,
+					"text": "For there the Law-Giver will grant blessings."
+				},
+				{
+					"num": 10,
+					"text": "They shall go from strength to strength: the God of gods shall be revealed in Zion."
+				},
+				{
+					"num": 11,
+					"text": "O Lord, God of hosts, hear my prayer: hearken, O God of Jacob."
+				},
+				{
+					"num": 12,
+					"text": "Behold, O God our defender, and look upon the face of Your anointed."
+				},
+				{
+					"num": 13,
+					"text": "For one day in Your courts is better than thousands."
+				},
+				{
+					"num": 14,
+					"text": "I chose to throw myself down in the house of God, more than to dwell in the tents of the sinners."
+				},
+				{
+					"num": 15,
+					"text": "For the Lord God loves mercy and truth; He shall give grace and glory."
+				},
+				{
+					"num": 16,
+					"text": "The Lord shall not withhold good things from those who walk in innocence."
+				},
+				{
+					"num": 17,
+					"text": "O Lord God of hosts, blessed is the man who hopes in You."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-84",
+			"kind": "psalm",
+			"psalmNumber": 84,
+			"title": "Psalm 84",
+			"verses": [
+				{
+					"num": 1,
+					"text": "O Lord, You have taken pleasure in Your land: You have turned back the captivity of Jacob."
+				},
+				{
+					"num": 2,
+					"text": "You have forgiven the transgressions of Your people: You have covered all their sins."
+				},
+				{
+					"num": 3,
+					"text": "You have dissolved all Your wrath: You have turned from the wrath of Your anger."
+				},
+				{
+					"num": 4,
+					"text": "Turn us, O God of our salvation, and turn Your anger away from us."
+				},
+				{
+					"num": 5,
+					"text": "Would You be angry with us forever? Or will You extend Your wrath from generation to generation? O God, You shall turn back and revive us; and Your people shall rejoice in You."
+				},
+				{
+					"num": 6,
+					"text": "Show us Your mercy, O Lord, and grant us Your salvation."
+				},
+				{
+					"num": 7,
+					"text": "I will hear what the Lord God will speak in me: for He shall speak peace to His people, and to His saints, and to those who turned back to Him with all their heart."
+				},
+				{
+					"num": 8,
+					"text": "Surely His salvation is near to all who fear Him; to make glory dwell in our land."
+				},
+				{
+					"num": 9,
+					"text": "Mercy and truth have met together: righteousness and peace have greeted each other."
+				},
+				{
+					"num": 10,
+					"text": "Truth has sprung out of the earth; and righteousness has looked down from heaven."
+				},
+				{
+					"num": 11,
+					"text": "For the Lord shall give goodness; and our land shall yield its fruit."
+				},
+				{
+					"num": 12,
+					"text": "Righteousness shall go first before Him; and shall set His steps in the way."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-86",
+			"kind": "psalm",
+			"psalmNumber": 86,
+			"title": "Psalm 86",
+			"verses": [
+				{
+					"num": 1,
+					"text": "His foundations are in the holy mountains."
+				},
+				{
+					"num": 2,
+					"text": "The Lord loves the gates of Zion, more than all the dwellings of Jacob."
+				},
+				{
+					"num": 3,
+					"text": "Glorious things have been spoken of You, O city of God."
+				},
+				{
+					"num": 4,
+					"text": "I shall make mention of Raab and Babylon, those who know me."
+				},
+				{
+					"num": 5,
+					"text": "Behold the foreigners, and Tyre, and the people of Ethiopia: these were there."
+				},
+				{
+					"num": 6,
+					"text": "\"My mother Zion,\" a man will say; and a man was living in her: and the Most High Himself has founded her forever."
+				},
+				{
+					"num": 7,
+					"text": "The Lord shall tell it in the writings of peoples and princes, these who were in her."
+				},
+				{
+					"num": 8,
+					"text": "The dwelling of all who rejoice is within you."
+				}
+			]
+		},
+		{
+			"id": "sext-psalm-92",
+			"kind": "psalm",
+			"psalmNumber": 92,
+			"title": "Psalm 92",
+			"verses": [
+				{
+					"num": 1,
+					"text": "The Lord has reigned; He has clothed Himself with beauty."
+				},
+				{
+					"num": 2,
+					"text": "The Lord has clothed and girded Himself with strength."
+				},
+				{
+					"num": 3,
+					"text": "For He has established the world, which shall not be moved."
+				},
+				{
+					"num": 4,
+					"text": "Your throne is prepared from the beginning: You are from everlasting."
+				},
+				{
+					"num": 5,
+					"text": "The rivers have risen, O Lord; the rivers have elevated their voices."
+				},
+				{
+					"num": 6,
+					"text": "The rivers shall elevate their voices, from the voices of many waters."
+				},
+				{
+					"num": 7,
+					"text": "The billows of the waves of the sea are wonderful: the Lord is wonderful in the highest."
+				},
+				{
+					"num": 8,
+					"text": "His testimonies are very faithful: holiness is worthy of Your house, O Lord, unto length of days."
+				}
+			]
+		},
+		{
+			"id": "sext-gospel",
+			"kind": "gospel",
+			"book": "Matthew",
+			"chapter": 5,
+			"startVerse": 1,
+			"endVerse": 16,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Matthew the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "sext-litany",
+			"kind": "litany",
+			"content": [
+				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
+				"O Lord, Who at the Sixth Hour was crucified for our salvation upon the Cross, and did rend the handwriting of our sins: tear away, O Lord, the veil which covers our hearts, that we may worship You in fear and trembling. Lord have mercy.",
+				"Quickly let Your tender mercies overtake us, O Lord. Lord have mercy.",
+				"O God, through a fountain of tears grant us the cleansing from the depth of our hearts, that we may see You, to Whom it is granted to see You on high. Lord have mercy."
+			]
+		},
+		{
+			"id": "sext-closing",
+			"kind": "closing",
+			"content": [
+				"O Lord, Who at the Sixth Hour was crucified for our salvation: tear away the veil which covers our hearts, that we may worship You in fear and trembling. Forgive us our sins, and have mercy upon us.",
+				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+			]
+		}
+	]
+}

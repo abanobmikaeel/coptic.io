@@ -1,17 +1,19 @@
 import { describe, expect, it } from 'vitest'
 import { getAgpeyaHourData as getArabicAgpeyaHourData } from '../ar/agpeya'
 import { getChapter, getMissingBooks } from '../cop/bible'
-import { getAgpeyaHourData, getAgpeyaHourIds, getCommonPrayer } from '../en/agpeya'
+import { getAgpeyaHour, getAgpeyaHourIds, getCommonPrayer } from '../en/agpeya'
 
 describe('English Agpeya shared prayers', () => {
-	it('uses the complete Thanksgiving Prayer for every hour', () => {
-		const thanksgiving = getCommonPrayer('thanksgivingPrayer')
+	it('prays the one shared Thanksgiving Prayer at every hour', () => {
+		const thanksgiving = getCommonPrayer('thanksgiving-prayer')
 
 		expect(thanksgiving).not.toBeNull()
 		expect(thanksgiving?.content).toHaveLength(4)
 
+		// Sharing is by reference since the split: every hour names the same
+		// section id, so the text cannot drift hour to hour the way it once did.
 		for (const hourId of getAgpeyaHourIds()) {
-			expect(getAgpeyaHourData(hourId)?.thanksgiving).toEqual(thanksgiving)
+			expect(getAgpeyaHour(hourId)?.parts).toContainEqual(thanksgiving)
 		}
 	})
 })
