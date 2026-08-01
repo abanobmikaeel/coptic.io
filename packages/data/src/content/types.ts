@@ -1,10 +1,14 @@
 /**
- * How a spoken line is stored, shared by every service that prints one.
+ * The primitives every liturgical service shares: how a line is stored, who says
+ * it, what kind of part a section is, and how a section that varies by occasion
+ * is expressed.
  *
- * The Incense and Liturgy modules each declared these independently and
- * identically. Beyond the duplication, the per-language barrels `export *` from
- * both, and two same-named declarations from different modules are ambiguous —
- * re-exporting one shared declaration is not.
+ * These began inside the Incense module and are not incense-specific. The Liturgy
+ * had redeclared several of them identically, which the per-language barrels then
+ * re-exported ambiguously. Declared once here, the Incense, Liturgy and Tasbeha
+ * modules re-export the same symbols instead of competing declarations.
+ *
+ * See docs/CONDITIONAL-RESOLUTION.md for what these are building toward.
  */
 
 /** Who says the line. Sections prayed by everyone store a plain string instead. */
@@ -15,4 +19,43 @@ export interface ContentLine {
 	text: string
 	/** A staging direction rather than text to pray — rendered, but never aligned across languages. */
 	isRubric?: boolean
+}
+
+/** A line is either prayed by everyone (plain string) or attributed to a speaker. */
+export type LiturgicalContent = string | ContentLine
+
+/** Who a section belongs to in the rite. */
+export type LiturgicalSectionRole = 'all' | 'priest' | 'deacon' | 'congregation'
+
+/**
+ * What a section varies by.
+ *
+ * Two vocabularies in one object: the calendar half is derived from the date by
+ * the resolver, the service half is supplied by the caller — a parish setting or a
+ * reader choice, not a fact about the day. Authors write them together; only the
+ * resolver cares where each value came from.
+ */
+export interface LiturgicalCondition {
+	// ── Calendar ──
+	dayTune?: 'adam' | 'watos'
+	/**
+	 * Agricultural season of the Litany for the Nature, resolved from the Coptic date:
+	 * waters (Paoni 12 – Paopi 9), plants (Paopi 10 – Tobi 10), fruits (Tobi 11 – Paoni 11)
+	 */
+	season?: 'waters' | 'plants' | 'fruits'
+	/** Weekday(s) of the liturgical day the service belongs to (0 = Sunday … 6 = Saturday). */
+	weekday?: number | number[]
+	commemoration?: string | string[]
+	feast?: string | string[]
+}
+
+export interface LiturgicalConditionalBlock {
+	/** Absent ⇒ always matches. In a `one` section this marks the default, and must come last. */
+	when?: LiturgicalCondition
+	/**
+	 * Localized display title, used when the block is surfaced standalone — e.g. an
+	 * out-of-season nature litany offered as an optional extra ("Litany of the Waters").
+	 */
+	title?: string
+	content: LiturgicalContent[]
 }

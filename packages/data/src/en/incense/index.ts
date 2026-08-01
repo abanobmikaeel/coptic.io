@@ -1,14 +1,21 @@
-import type { ContentLine } from '../../content/types'
+import type {
+	LiturgicalCondition,
+	LiturgicalConditionalBlock,
+	LiturgicalContent,
+	LiturgicalSectionRole,
+} from '../../content/types'
 import incenseData from './incense.json'
 
 export type IncenseSectionType = 'prayer' | 'psalm' | 'gospel' | 'litany' | 'creed' | 'daily-psalm'
-export type IncenseSectionRole = 'all' | 'priest' | 'deacon' | 'congregation'
 export type IncenseServiceType = 'evening'
 
 export type { ContentLine, ContentSpeaker } from '../../content/types'
 
-// Content can be a plain string (all speakers) or a structured line with speaker
-export type IncenseContent = string | ContentLine
+// The Incense-prefixed names are kept as aliases of the shared primitives: nothing
+// about a role, a line, or a condition is incense-specific, and the Liturgy and
+// Tasbeha resolve against the same shapes.
+export type IncenseSectionRole = LiturgicalSectionRole
+export type IncenseContent = LiturgicalContent
 
 export interface IncensePsalmRef {
 	psalmNumber: number // LXX numbering
@@ -32,25 +39,9 @@ interface IncenseSectionBase {
 // Resolution is additive: every block whose condition matches the day's context is
 // included, in order. Mutually-exclusive variants (e.g. the Adam vs Watos intro) are
 // expressed as mutually-exclusive conditions, so exactly one matches.
-export interface IncenseCondition {
-	dayTune?: 'adam' | 'watos'
-	// Agricultural season of the Litany for the Nature, resolved from the Coptic date:
-	// waters (Paoni 12 – Paopi 9), plants (Paopi 10 – Tobi 10), fruits (Tobi 11 – Paoni 11)
-	season?: 'waters' | 'plants' | 'fruits'
-	// Weekday(s) of the liturgical day the service belongs to (0 = Sunday … 6 = Saturday).
-	// e.g. the Lord's-Day blessing in the Short Blessing applies only on Sunday (0).
-	weekday?: number | number[]
-	commemoration?: string | string[] // e.g. 'apostles' | 'martyrs' | 'saints' (future)
-	feast?: string | string[] // feast key (future)
-}
+export type IncenseCondition = LiturgicalCondition
 
-export interface IncenseConditionalBlock {
-	when?: IncenseCondition // no `when` ⇒ always included
-	// Localized display title, used when the block is surfaced standalone — e.g. an
-	// out-of-season nature litany offered as an optional extra ("Litany of the Waters").
-	title?: string
-	content: IncenseContent[]
-}
+export type IncenseConditionalBlock = LiturgicalConditionalBlock
 
 export interface IncensePrayerSection extends IncenseSectionBase {
 	type: 'prayer' | 'litany' | 'creed'

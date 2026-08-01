@@ -86,3 +86,5 @@ Roadmap.md
 # SonarQube for IDE — keep shared binding, ignore local state
 .sonarlint/*
 !.sonarlint/connectedMode.json
+
+references/*
