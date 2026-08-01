@@ -49,6 +49,21 @@ export interface LiturgicalCondition {
 	feast?: string | string[]
 }
 
+/**
+ * How a section's blocks combine.
+ *
+ * `all` is the default and the common case: every matching block is included, in
+ * order. Composition is the point — a saint's verses and a feast's verses both
+ * appear because both matched — and exclusivity needs no mechanism where the
+ * conditions are themselves exclusive, as with Adam and Watos.
+ *
+ * `one` is for slots that must yield exactly one where the conditions *overlap*
+ * and so cannot be made exclusive. The Fraction prayer is chosen from thirteen
+ * occasions, and Theophany is also a Lord's feast: under `all` both would print.
+ * Blocks are authored most-specific-first and the first match wins.
+ */
+export type ResolutionMode = 'all' | 'one'
+
 export interface LiturgicalConditionalBlock {
 	/** Absent ⇒ always matches. In a `one` section this marks the default, and must come last. */
 	when?: LiturgicalCondition

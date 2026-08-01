@@ -172,7 +172,7 @@ export function getIncenseForDate(
 				title: s.title,
 				rubric: s.rubric,
 				...(s.optional ? { optional: true } : {}),
-				content: s.blocks ? resolveBlocks(s.blocks, occasion) : (s.content ?? []),
+				content: s.blocks ? resolveBlocks(s.blocks, occasion, s.mode) : (s.content ?? []),
 			}
 
 			// Season-keyed blocks that don't match today (the out-of-season nature litanies)

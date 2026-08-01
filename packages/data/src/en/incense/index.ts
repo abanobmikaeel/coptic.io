@@ -3,6 +3,7 @@ import type {
 	LiturgicalConditionalBlock,
 	LiturgicalContent,
 	LiturgicalSectionRole,
+	ResolutionMode,
 } from '../../content/types'
 import { type IncenseDataFile, createIncenseLoader } from '../../incense/compose'
 import incenseData from './incense.json'
@@ -10,7 +11,7 @@ import incenseData from './incense.json'
 export type IncenseSectionType = 'prayer' | 'psalm' | 'gospel' | 'litany' | 'creed' | 'daily-psalm'
 export type IncenseServiceType = 'evening' | 'morning'
 
-export type { ContentLine, ContentSpeaker } from '../../content/types'
+export type { ContentLine, ContentSpeaker, ResolutionMode } from '../../content/types'
 
 // The Incense-prefixed names are kept as aliases of the shared primitives: nothing
 // about a role, a line, or a condition is incense-specific, and the Liturgy and
@@ -49,6 +50,8 @@ export interface IncensePrayerSection extends IncenseSectionBase {
 	// A section has either fixed `content` or conditional `blocks` (resolved by the API).
 	content?: IncenseContent[]
 	blocks?: IncenseConditionalBlock[]
+	/** How `blocks` combine. Defaults to 'all' — see docs/CONDITIONAL-RESOLUTION.md. */
+	mode?: ResolutionMode
 }
 
 export interface IncensePsalmSection extends IncenseSectionBase {
