@@ -136,6 +136,9 @@ pnpm release
 
 ## Data Sources
 
+> **What's actually covered:** [docs/COVERAGE.md](docs/COVERAGE.md) tracks what each
+> service contains, what is missing from it, and which services don't exist yet.
+
 | Data | Source | Notes |
 |------|--------|-------|
 | **Easter Calculation** | Computus algorithm for Eastern Orthodox Easter | Valid for any year — see [Calendar range](#calendar-range) |
