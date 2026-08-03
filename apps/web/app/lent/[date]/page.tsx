@@ -256,7 +256,7 @@ export default async function LentDayPage({ params, searchParams }: LentDayPageP
 				{/* Display settings - absolute right */}
 				<div className="absolute right-2 sm:right-4">
 					<Suspense fallback={null}>
-						<DisplaySettings />
+						<DisplaySettings availableLanguages={['en', 'ar']} />
 					</Suspense>
 				</div>
 			</ReadingsHeader>
