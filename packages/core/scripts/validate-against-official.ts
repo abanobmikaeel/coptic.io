@@ -2,14 +2,13 @@
  * Validates our moveable feast calculations against official CopticChurch.net data
  * Fetches multiple years and compares our algorithm output with official dates
  *
- *   pnpm validate:feasts
+ *   pnpm --filter @coptic/core validate:feasts
  *
- * Imports the core source directly rather than `@coptic/core`: the workspace root
- * does not depend on the package, and reading the source means the check runs
- * against working-tree changes instead of a stale `dist`.
+ * Imports the source directly rather than the built `dist`: reading the source
+ * means the check runs against working-tree changes instead of a stale build.
  */
 
-import { getMoveableFeastsForYear } from '../packages/core/src/index'
+import { getMoveableFeastsForYear } from '../src/index'
 
 interface OfficialDate {
 	year: number

@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 
-// The commit-msg hook pipes the message file into stdin (`node validate… < $1`),
+// The commit-msg hook pipes the message file into stdin (`bun validate… < $1`),
 // so we read fd 0 rather than opening a path supplied on the command line.
 const subject = readFileSync(0, 'utf8')
 	.split('\n')

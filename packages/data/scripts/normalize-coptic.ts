@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Normalize Coptic text to lowercase while preserving diacritics
  *
@@ -8,19 +7,22 @@
  * - To convert upper to lower: add 1
  */
 
-const fs = require('node:fs')
-const path = require('node:path')
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 
-const COPTIC_DIR = path.join(__dirname, '../src/cop')
+const COPTIC_DIR = join(import.meta.dirname, '..', 'src', 'cop')
+
+// biome-ignore lint/suspicious/noExplicitAny: verse/chapter/book shapes vary per Bible source file
+type JsonRecord = Record<string, any>
 
 // Coptic letters exist in TWO Unicode blocks:
 // 1. Coptic block: U+2C80 to U+2CFF (main block)
 // 2. Greek and Coptic block: U+03E2 to U+03EF (legacy Coptic letters)
 // Pattern: even = uppercase, odd = lowercase
-function copticToLowerCase(text) {
+function copticToLowerCase(text: string): string {
 	let result = ''
 	for (const char of text) {
-		const code = char.codePointAt(0)
+		const code = char.codePointAt(0) ?? 0
 
 		// Main Coptic block (U+2C80 to U+2CE4) - even = uppercase
 		if (code >= 0x2c80 && code <= 0x2ce4 && code % 2 === 0) {
@@ -38,12 +40,12 @@ function copticToLowerCase(text) {
 	return result
 }
 
-function normalizeBook(book) {
+function normalizeBook(book: JsonRecord): JsonRecord {
 	return {
 		...book,
-		chapters: book.chapters.map((chapter) => ({
+		chapters: book.chapters.map((chapter: JsonRecord) => ({
 			...chapter,
-			verses: chapter.verses.map((verse) => ({
+			verses: chapter.verses.map((verse: JsonRecord) => ({
 				...verse,
 				text: copticToLowerCase(verse.text),
 			})),
@@ -51,24 +53,24 @@ function normalizeBook(book) {
 	}
 }
 
-function processFile(filePath, backupFirst = true) {
+function processFile(filePath: string, backupFirst = true): void {
 	console.log(`Processing: ${filePath}`)
 
 	// Read backup if exists, otherwise original
 	const backupPath = `${filePath}.backup`
 	let sourcePath = filePath
 
-	if (backupFirst && !fs.existsSync(backupPath)) {
+	if (backupFirst && !existsSync(backupPath)) {
 		// Create backup from original
-		fs.copyFileSync(filePath, backupPath)
+		copyFileSync(filePath, backupPath)
 		console.log(`  Backup created: ${backupPath}`)
-	} else if (fs.existsSync(backupPath)) {
+	} else if (existsSync(backupPath)) {
 		// Use backup as source to allow re-running
 		sourcePath = backupPath
 		console.log('  Using backup as source')
 	}
 
-	const data = JSON.parse(fs.readFileSync(sourcePath, 'utf8'))
+	const data: JsonRecord = JSON.parse(readFileSync(sourcePath, 'utf8'))
 
 	// Normalize all books
 	const normalizedBooks = data.books.map(normalizeBook)
@@ -86,21 +88,21 @@ function processFile(filePath, backupFirst = true) {
 
 	// Write back
 	const output = { ...data, books: normalizedBooks }
-	fs.writeFileSync(filePath, JSON.stringify(output, null, '\t'))
+	writeFileSync(filePath, JSON.stringify(output, null, '\t'))
 	console.log(`  Written: ${normalizedBooks.length} books normalized`)
 }
 
 // Process all Coptic JSON files
 const files = [
-	path.join(COPTIC_DIR, 'bohairic', 'books.json'),
-	path.join(COPTIC_DIR, 'sahidic', 'books.json'),
-	path.join(COPTIC_DIR, 'canonical.json'),
+	join(COPTIC_DIR, 'bohairic', 'books.json'),
+	join(COPTIC_DIR, 'sahidic', 'books.json'),
+	join(COPTIC_DIR, 'canonical.json'),
 ]
 
 console.log('Normalizing Coptic text to lowercase (preserving diacritics)...\n')
 
 for (const file of files) {
-	if (fs.existsSync(file)) {
+	if (existsSync(file)) {
 		processFile(file)
 		console.log()
 	} else {
