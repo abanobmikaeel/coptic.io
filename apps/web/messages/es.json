@@ -127,6 +127,8 @@
 		"synaxariumDescription": "Vidas de Santos",
 		"vespers": "Vísperas",
 		"vespersDescription": "Elevación del incienso vespertino",
+		"matins": "Maitines",
+		"matinsDescription": "Alzamiento del Incienso Matutino",
 		"lent": "Guía de Cuaresma",
 		"lentDescription": "Lecturas devocionales de la Gran Cuaresma",
 		"settings": "Configuración",
