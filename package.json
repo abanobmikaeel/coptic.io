@@ -18,7 +18,7 @@
     "test:coverage": "pnpm --filter @coptic/api test:coverage && pnpm --filter @coptic/web test:coverage && pnpm --filter @coptic/core test:coverage && pnpm --filter @coptic/data test:coverage",
     "hooks:install": "tsx scripts/install-git-hooks.ts",
     "hooks:pre-commit": "tsx scripts/hooks/pre-commit.ts",
-    "hooks:pre-push": "pnpm install --lockfile-only --frozen-lockfile --offline --ignore-scripts && pnpm check && pnpm typecheck && pnpm build:packages && pnpm test:unit",
+    "hooks:pre-push": "pnpm install --lockfile-only --frozen-lockfile --offline --ignore-scripts && pnpm build:packages && pnpm check && pnpm typecheck && pnpm test:unit",
     "bench": "pnpm --filter @coptic/core --filter @coptic/data bench",
     "validate:feasts": "pnpm --filter @coptic/core validate:feasts",
     "lint": "biome lint .",
