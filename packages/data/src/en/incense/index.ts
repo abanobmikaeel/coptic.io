@@ -4,10 +4,11 @@ import type {
 	LiturgicalContent,
 	LiturgicalSectionRole,
 } from '../../content/types'
+import { type IncenseDataFile, createIncenseLoader } from '../../incense/compose'
 import incenseData from './incense.json'
 
 export type IncenseSectionType = 'prayer' | 'psalm' | 'gospel' | 'litany' | 'creed' | 'daily-psalm'
-export type IncenseServiceType = 'evening'
+export type IncenseServiceType = 'evening' | 'morning'
 
 export type { ContentLine, ContentSpeaker } from '../../content/types'
 
@@ -76,8 +77,7 @@ export interface IncenseServiceData {
 	sections: IncenseSectionData[]
 }
 
-const data = incenseData as Record<IncenseServiceType, IncenseServiceData>
+const loader = createIncenseLoader(incenseData as unknown as IncenseDataFile)
 
-export function getIncenseService(serviceType: IncenseServiceType): IncenseServiceData {
-	return data[serviceType]
-}
+export const getIncenseService = loader.getService
+export const getIncenseServiceTypes = loader.serviceTypes

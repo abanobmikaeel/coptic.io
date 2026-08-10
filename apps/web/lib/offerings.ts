@@ -36,6 +36,13 @@ export const OFFERINGS: Offering[] = [
 		pillar: 'pray',
 	},
 	{
+		labelKey: 'matins',
+		descriptionKey: 'matinsDescription',
+		href: '/matins',
+		icon: 'sun',
+		pillar: 'pray',
+	},
+	{
 		labelKey: 'vespers',
 		descriptionKey: 'vespersDescription',
 		href: '/vespers',

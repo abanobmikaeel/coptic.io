@@ -4,12 +4,12 @@ import type {
 	IncenseServiceData,
 	IncenseServiceType,
 } from '../../en/incense'
+import { type IncenseDataFile, createIncenseLoader } from '../../incense/compose'
 import incenseData from './incense.json'
 
 export type { IncenseSectionRole, IncenseSectionData, IncenseServiceData, IncenseServiceType }
 
-const data = incenseData as Record<IncenseServiceType, IncenseServiceData>
+const loader = createIncenseLoader(incenseData as unknown as IncenseDataFile)
 
-export function getIncenseService(serviceType: IncenseServiceType): IncenseServiceData {
-	return data[serviceType]
-}
+export const getIncenseService = loader.getService
+export const getIncenseServiceTypes = loader.serviceTypes

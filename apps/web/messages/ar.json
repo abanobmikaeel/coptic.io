@@ -127,6 +127,8 @@
 		"synaxariumDescription": "سير القديسين",
 		"vespers": "رفع بخور عشية",
 		"vespersDescription": "صلاة رفع بخور المساء",
+		"matins": "باكر",
+		"matinsDescription": "رفع بخور باكر",
 		"lent": "دليل الصوم",
 		"lentDescription": "قراءات الصوم الكبير",
 		"settings": "الإعدادات",

@@ -10,6 +10,7 @@
 import { describe, expect, it } from 'vitest'
 import arData from '../ar/incense/incense.json'
 import copData from '../cop/incense/incense.json'
+import { getIncenseService } from '../en/incense'
 import enData from '../en/incense/incense.json'
 
 type Lang = 'en' | 'ar' | 'cop'
@@ -35,10 +36,16 @@ interface Section {
 	blocks?: Block[]
 }
 
+// Sections live in one pool now, shared by Vespers and Matins; parity is a property
+// of the pool, so checking it covers both services at once.
+const pool = (data: unknown): { sections: Section[] } => ({
+	sections: Object.values((data as { sections: Record<string, Section> }).sections),
+})
+
 const services: Record<Lang, { sections: Section[] }> = {
-	en: enData.evening as { sections: Section[] },
-	ar: arData.evening as { sections: Section[] },
-	cop: copData.evening as { sections: Section[] },
+	en: pool(enData),
+	ar: pool(arData),
+	cop: pool(copData),
 }
 const LANGS: Lang[] = ['en', 'ar', 'cop']
 
@@ -119,12 +126,31 @@ describe('incense data cross-language parity', () => {
 })
 
 describe('incense liturgical invariants', () => {
-	it('Vespers prays the Departed litany; Sick/Travelers/Oblations are optional Matins extras', () => {
-		const byId = new Map(services.en.sections.map((s) => [s.id, s]))
+	// Asserted against the resolved services rather than the pool: which litanies are
+	// proper is exactly what differs between the two, and `optional` is now a property
+	// of the order entry, so the same section is proper at Matins and an extra at Vespers.
+	const MATINS_LITANIES = ['litany-sick', 'litany-travelers', 'litany-oblations']
+
+	it('Vespers prays the Departed litany, and offers the Matins litanies as extras', () => {
+		const byId = new Map(getIncenseService('evening').sections.map((s) => [s.id, s]))
 		expect(byId.get('litany-departed')?.optional).toBeUndefined()
-		for (const id of ['litany-sick', 'litany-travelers', 'litany-oblations']) {
-			expect(byId.get(id)?.optional).toBe(true)
+		for (const id of MATINS_LITANIES) expect(byId.get(id)?.optional).toBe(true)
+	})
+
+	it('Matins prays those litanies as proper, and omits the Departed litany', () => {
+		const byId = new Map(getIncenseService('morning').sections.map((s) => [s.id, s]))
+		expect(byId.has('litany-departed')).toBe(false)
+		for (const id of MATINS_LITANIES) {
+			expect(byId.get(id), `${id} missing from Matins`).toBeDefined()
+			expect(byId.get(id)?.optional).toBeUndefined()
 		}
+	})
+
+	it('Matins sings its own Gospel response, not the Vespers one', () => {
+		const ids = (t: 'evening' | 'morning') => getIncenseService(t).sections.map((s) => s.id)
+		expect(ids('evening')).toContain('gospel-response')
+		expect(ids('morning')).toContain('gospel-response-matins')
+		expect(ids('morning')).not.toContain('gospel-response')
 	})
 
 	it('Graciously accord uses the evening wording ("this night") in every language', () => {

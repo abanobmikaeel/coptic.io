@@ -93,10 +93,12 @@ export function getIncenseForDate(
 				? getCopIncenseService(serviceType)
 				: getEnIncenseService(serviceType)
 	const readings = getByCopticDate(date, true, translation)
-	const vPsalm = readings.VPsalm ?? []
-	const vGospel = readings.VGospel ?? []
-	const psalm = flattenReadings(vPsalm, translation)
-	const gospel = flattenReadings(vGospel, translation)
+	// Matins and Vespers read different slots of the same day's Katameros — the rite is
+	// shared, the readings are not.
+	const [psalmKey, gospelKey] =
+		serviceType === 'morning' ? (['MPsalm', 'MGospel'] as const) : (['VPsalm', 'VGospel'] as const)
+	const psalm = flattenReadings(readings[psalmKey] ?? [], translation)
+	const gospel = flattenReadings(readings[gospelKey] ?? [], translation)
 
 	// The day's occasion drives conditional block resolution: dayTune (calendar math) plus the
 	// commemorations/feasts of the day, taken from the existing celebration calendar — not
