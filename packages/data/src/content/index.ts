@@ -11,5 +11,11 @@ export type {
 	LiturgicalConditionalBlock,
 	LiturgicalContent,
 	LiturgicalSectionRole,
+	ResolutionMode,
 } from './types'
-export { type OccasionContext, matchesCondition, resolveBlocks } from './resolve'
+export {
+	type OccasionContext,
+	findOneModeAuthoringErrors,
+	matchesCondition,
+	resolveBlocks,
+} from './resolve'
