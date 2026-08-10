@@ -95,7 +95,7 @@ jobs:
       - name: Run smoke tests against production
         env:
           API_URL: https://api.coptic.io
-        run: bun scripts/smoke-test.ts
+        run: bun apps/api/scripts/smoke-test.ts
 
   deploy-preview:
     needs: [test]
@@ -181,7 +181,7 @@ jobs:
           API_URL: ${{ needs.deploy-preview.outputs.preview_url }}
         run: |
           sleep 5
-          bun scripts/smoke-test.ts
+          bun apps/api/scripts/smoke-test.ts
 
   teardown-preview:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
