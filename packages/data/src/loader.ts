@@ -23,10 +23,15 @@ export const loadSynaxarium = async (
 	_source: SynaxariumSource = 'canonical',
 ): Promise<RawSynaxariumData> => {
 	switch (language) {
+		case 'en':
+			return (await import('./en/synaxarium/canonical.json')).default as RawSynaxariumData
 		case 'ar':
 			return (await import('./ar/synaxarium/canonical.json')).default as RawSynaxariumData
-		default:
-			return (await import('./en/synaxarium/canonical.json')).default as RawSynaxariumData
+		// Coptic and Spanish have no synaxarium data yet — no data beats silently
+		// substituting a different language's saints.
+		case 'cop':
+		case 'es':
+			return {}
 	}
 }
 

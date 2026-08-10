@@ -9,7 +9,7 @@
 		"build": "echo 'No build needed - using Bun runtime'",
 		"start": "bun src/index.ts",
 		"deploy": "wrangler deploy",
-		"upload:r2": "bun scripts/upload-bible-r2.ts",
+		"smoke-test": "bun scripts/smoke-test.ts",
 		"test": "vitest",
 		"test:coverage": "vitest run --coverage",
 		"railway:start": "bun src/index.ts",

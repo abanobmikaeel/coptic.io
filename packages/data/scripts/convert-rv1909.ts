@@ -1,17 +1,16 @@
-#!/usr/bin/env node
 /**
  * Convert RV1909 Bible data from aruljohn/Reina-Valera format to our format
  */
 
-const fs = require('node:fs')
-const path = require('node:path')
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 
 const SOURCE_DIR = '/tmp/rv1909'
-const OUTPUT_FILE = path.join(__dirname, '../src/es/bible/books.json')
+const OUTPUT_FILE = join(import.meta.dirname, '..', 'src', 'es', 'bible', 'books.json')
 
 // Spanish to English book name mapping (for API consistency)
 // Includes alternate spellings/accents found in the source data
-const BOOK_NAME_MAP = {
+const BOOK_NAME_MAP: Record<string, string> = {
 	Génesis: 'Genesis',
 	Éxodo: 'Exodus',
 	Levítico: 'Leviticus',
@@ -161,7 +160,27 @@ const BOOK_ORDER = [
 	'Revelation',
 ]
 
-function convertBook(sourceData) {
+interface SourceVerse {
+	verse: number
+	text: string
+}
+
+interface SourceChapter {
+	chapter: number
+	verses: SourceVerse[]
+}
+
+interface SourceBook {
+	book: string
+	chapters: SourceChapter[]
+}
+
+interface ConvertedBook {
+	name: string
+	chapters: Array<{ num: number; verses: Array<{ num: number; text: string }> }>
+}
+
+function convertBook(sourceData: SourceBook): ConvertedBook | null {
 	const englishName = BOOK_NAME_MAP[sourceData.book]
 	if (!englishName) {
 		console.warn(`Unknown book: ${sourceData.book}`)
@@ -184,16 +203,16 @@ function main() {
 	console.log('Converting RV1909 Bible data...')
 
 	// Read all JSON files from source
-	const files = fs.readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.json'))
+	const files = readdirSync(SOURCE_DIR).filter((f) => f.endsWith('.json'))
 	console.log(`Found ${files.length} book files`)
 
-	const books = []
-	const unmapped = []
+	const books: ConvertedBook[] = []
+	const unmapped: string[] = []
 
 	for (const file of files) {
-		const filePath = path.join(SOURCE_DIR, file)
-		const content = fs.readFileSync(filePath, 'utf8')
-		const sourceData = JSON.parse(content)
+		const filePath = join(SOURCE_DIR, file)
+		const content = readFileSync(filePath, 'utf8')
+		const sourceData: SourceBook = JSON.parse(content)
 
 		const converted = convertBook(sourceData)
 		if (converted) {
@@ -204,11 +223,7 @@ function main() {
 	}
 
 	// Sort books by canonical order
-	books.sort((a, b) => {
-		const aIdx = BOOK_ORDER.indexOf(a.name)
-		const bIdx = BOOK_ORDER.indexOf(b.name)
-		return aIdx - bIdx
-	})
+	books.sort((a, b) => BOOK_ORDER.indexOf(a.name) - BOOK_ORDER.indexOf(b.name))
 
 	console.log(`Converted ${books.length} books`)
 	if (unmapped.length > 0) {
@@ -216,14 +231,14 @@ function main() {
 	}
 
 	// Ensure output directory exists
-	const outputDir = path.dirname(OUTPUT_FILE)
-	if (!fs.existsSync(outputDir)) {
-		fs.mkdirSync(outputDir, { recursive: true })
+	const outputDir = dirname(OUTPUT_FILE)
+	if (!existsSync(outputDir)) {
+		mkdirSync(outputDir, { recursive: true })
 	}
 
 	// Write output
 	const output = { books }
-	fs.writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, '\t'))
+	writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, '\t'))
 
 	console.log(`Written to ${OUTPUT_FILE}`)
 

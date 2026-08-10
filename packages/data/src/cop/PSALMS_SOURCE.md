@@ -12,7 +12,7 @@ The `Psalms` book in `canonical.json` is derived from the Coptic SCRIPTORIUM
 The source uses Septuagint numbering and includes Psalms 1-151. Import with:
 
 ```sh
-node packages/data/scripts/import-bohairic-psalms.cjs /path/to/bohairic.ot_CONLLU
+tsx packages/data/scripts/import-bohairic-psalms.ts /path/to/bohairic.ot_CONLLU
 ```
 
 The importer stores the corpus text directly as Unicode Coptic in `canonical.json`.

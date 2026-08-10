@@ -1,21 +1,24 @@
-import { execSync } from 'node:child_process'
-import { unlinkSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
 // @ts-nocheck — utility script run directly by Bun, not compiled by the project tsconfig
 /**
  * Uploads all four bible translation JSONs to the coptic-io-readings R2 bucket.
- * Run once (or after a @coptic/data package update):
+ * Reads from this package's own `dist/`, so it always uploads exactly what the
+ * built `@coptic/data` package ships — run `pnpm build` here first.
+ *
+ * Run once (or after a @coptic/data content update):
  *
  *   bun scripts/upload-bible-r2.ts          # all translations
  *   bun scripts/upload-bible-r2.ts cop      # selected translations
  *
  * Requires wrangler to be authenticated:  wrangler login
  */
-import { bibleData as bibleAr } from '@coptic/data/ar'
-import { bibleData as bibleCop } from '@coptic/data/cop'
-import { bibleData as bibleEn } from '@coptic/data/en'
-import { bibleData as bibleEs } from '@coptic/data/es'
+import { execSync } from 'node:child_process'
+import { unlinkSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { bibleData as bibleAr } from '../dist/ar/index.js'
+import { bibleData as bibleCop } from '../dist/cop/index.js'
+import { bibleData as bibleEn } from '../dist/en/index.js'
+import { bibleData as bibleEs } from '../dist/es/index.js'
 
 const BUCKET = 'coptic-io-readings'
 

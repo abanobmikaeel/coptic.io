@@ -18,7 +18,7 @@ Books to import:
 
 Requirements:
 
-- Extend or generalize `packages/data/scripts/import-bohairic-psalms.cjs` into a reproducible Bohairic OT importer.
+- Extend or generalize `packages/data/scripts/import-bohairic-psalms.ts` into a reproducible Bohairic OT importer.
 - Parse the corpus’s CoNLL-U files while excluding headings/superscriptions marked by `# text_en = ...`.
 - Preserve the source chapter and verse numbering.
 - Insert books into the correct canonical order in:

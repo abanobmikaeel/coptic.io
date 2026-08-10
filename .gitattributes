@@ -1,0 +1,15 @@
+# Normalize all text files to LF in the repo, regardless of a contributor's
+# local core.autocrlf setting. Keeps Biome's format check (LF-only) consistent
+# across macOS/Linux/Windows checkouts.
+* text=auto eol=lf
+
+# Binary files - never touch line endings
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

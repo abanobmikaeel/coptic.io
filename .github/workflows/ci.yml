@@ -79,7 +79,7 @@ jobs:
           echo "Bible languages to re-upload: ${langs:-(none)}"
       - name: Upload changed Bible data to R2
         if: steps.bible.outputs.langs != ''
-        working-directory: apps/api
+        working-directory: packages/data
         run: bun scripts/upload-bible-r2.ts ${{ steps.bible.outputs.langs }}
       - name: Deploy to production
         working-directory: apps/api

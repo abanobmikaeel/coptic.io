@@ -1,7 +1,9 @@
+export {}
+
 const API_URL = process.env.API_URL ?? process.argv[2]
 
 if (!API_URL) {
-	console.error('Usage: API_URL=https://... tsx scripts/smoke-test.ts')
+	console.error('Usage: API_URL=https://... bun scripts/smoke-test.ts')
 	process.exit(1)
 }
 
