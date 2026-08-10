@@ -1,9 +1,8 @@
-import { type DayTune, type NatureSeason, getLiturgicalContext } from '@coptic/core'
+import { getLiturgicalContext } from '@coptic/core'
 import { getIncenseService as getArIncenseService } from '@coptic/data/ar/incense'
+import { type OccasionContext, resolveBlocks } from '@coptic/data/content'
 import { getIncenseService as getCopIncenseService } from '@coptic/data/cop/incense'
 import {
-	type IncenseCondition,
-	type IncenseConditionalBlock,
 	type IncenseContent,
 	type IncenseDailyPsalmSection,
 	type IncenseGospelSection,
@@ -69,42 +68,6 @@ export interface ResolvedIncenseService {
 	date: string
 	copticDate: CopticDate
 	sections: ResolvedIncenseSection[]
-}
-
-// The occasion a service is being prayed on. Drives conditional block resolution.
-// dayTune and season come from the calendar; commemorations/feasts are placeholders for
-// the next stages (saint-of-day, feast overrides).
-interface OccasionContext {
-	dayTune: DayTune
-	season: NatureSeason
-	// Weekday of the liturgical day (0 = Sunday … 6 = Saturday).
-	weekday: number
-	commemorations: string[]
-	feasts: string[]
-}
-
-function matchesCondition(when: IncenseCondition | undefined, ctx: OccasionContext): boolean {
-	if (!when) return true
-	if (when.dayTune && when.dayTune !== ctx.dayTune) return false
-	if (when.season && when.season !== ctx.season) return false
-	if (when.weekday != null) {
-		const wanted = Array.isArray(when.weekday) ? when.weekday : [when.weekday]
-		if (!wanted.includes(ctx.weekday)) return false
-	}
-	if (when.commemoration) {
-		const wanted = Array.isArray(when.commemoration) ? when.commemoration : [when.commemoration]
-		if (!wanted.some((w) => ctx.commemorations.includes(w))) return false
-	}
-	if (when.feast) {
-		const wanted = Array.isArray(when.feast) ? when.feast : [when.feast]
-		if (!wanted.some((w) => ctx.feasts.includes(w))) return false
-	}
-	return true
-}
-
-// Additive resolution — every block whose condition matches is included, in order.
-function resolveBlocks(blocks: IncenseConditionalBlock[], ctx: OccasionContext): IncenseContent[] {
-	return blocks.filter((b) => matchesCondition(b.when, ctx)).flatMap((b) => b.content)
 }
 
 // Rubric for an out-of-season nature litany offered as an optional extra, in the

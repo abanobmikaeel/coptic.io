@@ -59,6 +59,9 @@ const SPEAKER_LABELS: Record<Lang, Record<string, Speaker>> = {
 	},
 	cop: {
 		Ⲡⲓⲟⲩⲏⲃ: 'Priest',
+		// The Offertory pages label the celebrant "the presbyter" rather than "the
+		// priest"; both render as Priest so the columns align with en/ar.
+		Ⲡⲓⲡ̀ⲣⲉⲥⲃⲩⲧⲉⲣⲟⲥ: 'Priest',
 		Ⲡⲓⲇⲓⲁⲕⲱⲛ: 'Deacon',
 		Ⲡⲓⲗⲁⲟⲥ: 'People',
 		Ⲡⲓⲁ̀ⲛⲁⲅⲛⲱⲥⲧⲏⲥ: 'Deacon',
@@ -75,6 +78,26 @@ interface Mapping {
 }
 
 const MAPPINGS: Mapping[] = [
+	// ── The Offering of the Lamb (cat 225). Deacon responses (cat 223) are
+	// deliberately excluded: which response is sung depends on season and occasion,
+	// which needs the conditional-block model rather than a flat import.
+	//
+	// Two pages are held back because their language columns do not have the same
+	// number of rows, so importing them would misalign the reader's columns:
+	//   1959 Shere Maria Tee-oro   en=10 cop=10 ar=17
+	//   1965 Alleluia Je Efmevee   en=2  cop=1  ar=1
+	// They need the rows reconciled by hand against the source before they land.
+	{ id: 1958, sectionIds: ['offertory-ten-ou-osht'] },
+	{ id: 1960, sectionIds: ['offertory-apinav-shopi'] },
+	{ id: 1961, sectionIds: ['offering-of-the-lamb'] },
+	{ id: 1962, sectionIds: ['offertory-kyrie-eleison'] },
+	{ id: 1963, sectionIds: ['offertory-glory-and-honour'] },
+	{ id: 1964, sectionIds: ['offertory-alleluia-this-is-the-day'] },
+	{ id: 1966, sectionIds: ['offertory-in-the-name'] },
+	{ id: 1967, sectionIds: ['offertory-doxa-patri'] },
+	{ id: 1968, sectionIds: ['offertory-thanksgiving'] },
+	{ id: 1973, sectionIds: ['absolution-of-the-servants'] },
+
 	{ id: 1833, sectionIds: ['thanksgiving'] },
 	{ id: 2594, sectionIds: ['absolution-to-the-son'], noRubrics: true },
 	{ id: 1836, sectionIds: ['trisagion'] },
@@ -123,6 +146,84 @@ interface SectionMeta {
 }
 
 const SECTIONS: SectionMeta[] = [
+	// ── The Offering of the Lamb (Prothesis) ──
+	// Order follows the source category listing. Arabic titles are the standard
+	// liturgical names; hymns known by their Coptic incipit keep it transliterated,
+	// as the source carries no Arabic title of its own.
+	{
+		id: 'offertory-ten-ou-osht',
+		type: 'prayer',
+		role: 'congregation',
+		title: 'Ten-Ou-Osht',
+		titleAr: 'تين أو أوشت',
+	},
+	{
+		id: 'offertory-apinav-shopi',
+		type: 'prayer',
+		role: 'congregation',
+		title: 'Apinav Shopi',
+		titleAr: 'إبي نافشوبي',
+	},
+	{
+		// The source page carries only the congregation's sung response; the priest's
+		// prayers over the selection of the lamb are not on it. Titled for what it is
+		// rather than for the part of the rite it sits in — see SOURCE.md.
+		id: 'offering-of-the-lamb',
+		type: 'prayer',
+		role: 'congregation',
+		title: 'The Offering of the Lamb (Response)',
+		titleAr: 'مرد تقديم الحمل',
+	},
+	{
+		id: 'offertory-kyrie-eleison',
+		type: 'prayer',
+		role: 'congregation',
+		title: 'Kyrie Eleison (41 times)',
+		titleAr: 'كيرياليسون (41 مرة)',
+	},
+	{
+		id: 'offertory-glory-and-honour',
+		type: 'prayer',
+		role: 'priest',
+		title: 'Glory and Honour',
+		titleAr: 'مجدا وكرامة',
+	},
+	{
+		id: 'offertory-alleluia-this-is-the-day',
+		type: 'prayer',
+		role: 'congregation',
+		title: 'Alleluia: This is the Day',
+		titleAr: 'الليلويا: هذا هو اليوم',
+	},
+	{
+		id: 'offertory-in-the-name',
+		type: 'prayer',
+		role: 'priest',
+		title: 'In the Name of the Father',
+		titleAr: 'باسم الآب',
+	},
+	{
+		id: 'offertory-doxa-patri',
+		type: 'prayer',
+		role: 'congregation',
+		title: 'Doxa Patri',
+		titleAr: 'ذوكصا باترى',
+	},
+	{
+		id: 'offertory-thanksgiving',
+		type: 'prayer',
+		role: 'all',
+		title: 'The Thanksgiving Prayer (Offertory)',
+		titleAr: 'صلاة الشكر (تقديم الحمل)',
+	},
+	{
+		id: 'absolution-of-the-servants',
+		type: 'prayer',
+		role: 'priest',
+		title: 'The Absolution of the Servants',
+		titleAr: 'تحليل الخدام',
+	},
+
 	// ── Liturgy of the Word ──
 	{
 		id: 'thanksgiving',

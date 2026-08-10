@@ -29,6 +29,7 @@
 	],
 	"scripts": {
 		"build": "tsc",
+		"validate:feasts": "tsx scripts/validate-against-official.ts",
 		"dev": "tsc --watch",
 		"lint": "biome lint src",
 		"lint:fix": "biome lint --write src",
@@ -45,6 +46,7 @@
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.5",
 		"@vitest/coverage-v8": "3.2.6",
+		"tsx": "^4.19.2",
 		"typescript": "^5.7.3",
 		"vitest": "^3.2.6"
 	},

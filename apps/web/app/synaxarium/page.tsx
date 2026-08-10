@@ -58,7 +58,7 @@ function SynaxariumPageContent() {
 	const stickyHeader = (
 		<ReadingsHeader theme={effectiveTheme} layout="between">
 			<Breadcrumb items={[{ label: tNav('synaxarium') }]} theme={effectiveTheme} />
-			<DisplaySettings />
+			<DisplaySettings availableLanguages={['en', 'ar']} />
 		</ReadingsHeader>
 	)
 

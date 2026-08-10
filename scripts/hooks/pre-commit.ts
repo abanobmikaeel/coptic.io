@@ -17,6 +17,9 @@ if (files.length > 0) {
 		['exec', 'biome', 'check', '--no-errors-on-unmatched', ...files],
 		{
 			stdio: 'inherit',
+			// pnpm resolves to a .cmd shim on Windows, which spawnSync can't exec directly
+			// without a shell.
+			shell: true,
 		},
 	)
 	if (biome.status !== 0) {

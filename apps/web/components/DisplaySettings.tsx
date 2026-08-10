@@ -2,6 +2,7 @@
 
 import { useContentLanguages } from '@/hooks/useContentLanguages'
 import { useReadingSettings } from '@/hooks/useReadingSettings'
+import type { ContentLanguage } from '@/i18n/content-languages'
 import { useState } from 'react'
 import { ChevronIcon, SettingsPanel } from './settings'
 
@@ -19,7 +20,13 @@ export type {
 	WordSpacing,
 } from '@/lib/reading-preferences'
 
-export function DisplaySettings() {
+interface DisplaySettingsProps {
+	/** Languages the current content can render. When provided, languages
+	 * outside this set are hidden from the selector. */
+	availableLanguages?: ContentLanguage[]
+}
+
+export function DisplaySettings({ availableLanguages }: DisplaySettingsProps) {
 	const { settings, actions, mounted } = useReadingSettings()
 	const { languages, setLanguages, isLoaded } = useContentLanguages()
 	const [isOpen, setIsOpen] = useState(false)
@@ -55,6 +62,7 @@ export function DisplaySettings() {
 					actions={actions}
 					contentLanguages={languages}
 					onContentLanguagesChange={setLanguages}
+					availableLanguages={availableLanguages}
 					onClose={() => setIsOpen(false)}
 				/>
 			)}
