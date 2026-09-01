@@ -5,7 +5,7 @@ export default defineConfig({
 		globals: true,
 		environment: 'node',
 		watch: false,
-		include: ['lib/**/__tests__/**/*.test.ts'],
+		include: ['{lib,config,components,hooks}/**/__tests__/**/*.test.ts'],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', ['lcov', { projectRoot: '../..' }]],

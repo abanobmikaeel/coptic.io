@@ -1,6 +1,7 @@
 'use client'
 
 import { CheckIcon } from '@/components/ui/Icons'
+import { copyToClipboard } from '@/lib/clipboard'
 import { useEffect, useState } from 'react'
 
 type CopyButtonProps = {
@@ -12,9 +13,6 @@ type CopyButtonProps = {
 
 /**
  * Copies a value to the clipboard and confirms it inline.
- *
- * Falls back to selecting the text in a hidden textarea when the async clipboard API is
- * unavailable, which is the case on http origins and older mobile browsers.
  */
 export default function CopyButton({ value, label, copiedLabel, className }: CopyButtonProps) {
 	const [copied, setCopied] = useState(false)
@@ -26,19 +24,7 @@ export default function CopyButton({ value, label, copiedLabel, className }: Cop
 	}, [copied])
 
 	const copy = async () => {
-		try {
-			await navigator.clipboard.writeText(value)
-		} catch {
-			const field = document.createElement('textarea')
-			field.value = value
-			field.setAttribute('readonly', '')
-			field.style.position = 'fixed'
-			field.style.opacity = '0'
-			document.body.appendChild(field)
-			field.select()
-			document.execCommand('copy')
-			document.body.removeChild(field)
-		}
+		await copyToClipboard(value)
 		setCopied(true)
 	}
 
