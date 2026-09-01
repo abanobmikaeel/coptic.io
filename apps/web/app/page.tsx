@@ -1,3 +1,4 @@
+import CalendarSubscribeLinks from '@/components/CalendarSubscribeLinks'
 import DeveloperSection from '@/components/DeveloperSection'
 import type { Metadata } from 'next'
 
@@ -17,8 +18,7 @@ import { OfferingsGrid } from '@/components/OfferingsGrid'
 import UpcomingFastsList from '@/components/UpcomingFastsList'
 import UpcomingFeastsList from '@/components/UpcomingFeastsList'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { CalendarIcon, ChevronRightIcon } from '@/components/ui/Icons'
-import { ICAL_SUBSCRIBE_URL } from '@/config'
+import { ChevronRightIcon } from '@/components/ui/Icons'
 import {
 	getCalendarData,
 	getFastingForDate,
@@ -252,14 +252,8 @@ export default async function Home({ searchParams }: HomeProps) {
 			{/* Calendar Sync Option */}
 			<section className="relative px-6 pb-16">
 				<div className="max-w-4xl mx-auto text-center">
-					<p className="text-gray-500 dark:text-gray-400 text-sm mb-3">{t('preferCalendarSync')}</p>
-					<a
-						href={ICAL_SUBSCRIBE_URL}
-						className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
-					>
-						<CalendarIcon />
-						{t('addToCalendar')}
-					</a>
+					<p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{t('preferCalendarSync')}</p>
+					<CalendarSubscribeLinks />
 				</div>
 			</section>
 

@@ -1,10 +1,8 @@
 import { getAllSeasonsForYear, getMoveableFeastsForYear } from '@coptic/core'
 import { getYearView } from '../services/yearView.service'
 
-// Celebrations that span multiple consecutive days - only show "begins" marker
-const MULTI_DAY_CELEBRATIONS = new Set(['St. Mary Fast', 'Advent Fast', 'Nativity Fast', 'Kiahk'])
-
-// Fasts already covered by liturgical seasons (avoid duplicates)
+// Days already covered by a liturgical season, so the feed does not announce them twice.
+// Good Friday is not a standalone occasion - it falls inside Holy Week, which is announced.
 const SEASON_COVERED_FASTS = new Set([
 	'Fast of Nineveh',
 	'Great Lent',
@@ -29,20 +27,69 @@ const formatICalDateTime = (date: Date): string => {
 	return `${date.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`
 }
 
+// RFC 5545 3.3.11: backslash, semicolon and comma are not TSAFE-CHARs and must be escaped;
+// newlines become the literal two-character sequence \n.
+const ICAL_TEXT_ESCAPES: Record<string, string> = {
+	'\\': '\\\\',
+	';': '\\;',
+	',': '\\,',
+}
+
 /**
  * Escape special characters in iCal text (single regex pass)
  */
 const escapeICalText = (text: string): string => {
-	return text.replace(/[\\;\n]/g, (char) => (char === '\\' ? '\\\\' : char === ';' ? '\\;' : '\\n'))
+	return text.replace(/\r\n|[\\;,\n\r]/g, (char) => ICAL_TEXT_ESCAPES[char] ?? '\\n')
+}
+
+const MAX_LINE_OCTETS = 75
+const encoder = new TextEncoder()
+const decoder = new TextDecoder()
+
+/**
+ * Fold a content line to at most 75 octets per RFC 5545 3.1. Continuation lines are
+ * prefixed with a single space, which counts toward their own octet budget, and a
+ * multi-byte UTF-8 sequence is never split across a fold.
+ */
+const foldICalLine = (line: string): string => {
+	const bytes = encoder.encode(line)
+	if (bytes.length <= MAX_LINE_OCTETS) return line
+
+	const chunks: string[] = []
+	let start = 0
+	let limit = MAX_LINE_OCTETS
+
+	while (start < bytes.length) {
+		let end = Math.min(start + limit, bytes.length)
+		// 0b10xxxxxx marks a UTF-8 continuation byte; back off so it stays with its lead byte.
+		while (end > start && end < bytes.length && (bytes[end]! & 0xc0) === 0x80) end--
+		chunks.push(decoder.decode(bytes.subarray(start, end)))
+		start = end
+		limit = MAX_LINE_OCTETS - 1
+	}
+
+	return chunks.join('\r\n ')
 }
 
 /**
- * Generate a unique ID for an event
+ * Fold every content line and terminate the document with CRLF
+ */
+const serializeICal = (lines: string[]): string => {
+	return `${lines.map(foldICalLine).join('\r\n')}\r\n`
+}
+
+const slugify = (value: string): string =>
+	value
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '')
+
+/**
+ * Generate a unique ID for an event. Both halves are slugified so the UID carries no spaces
+ * or trailing punctuation from a category like "Fasting Period" or a parenthesised feast name.
  */
 const generateEventId = (type: string, date: Date, name: string): string => {
-	const dateStr = formatICalDate(date)
-	const nameSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
-	return `${type}-${dateStr}-${nameSlug}@coptic.io`
+	return `${slugify(type)}-${formatICalDate(date)}-${slugify(name)}@coptic.io`
 }
 
 // Shared timestamp for all events in a single generation run (avoid repeated Date allocations)
@@ -57,6 +104,7 @@ const pushEvent = (
 	date: Date,
 	description?: string,
 	eventType?: string,
+	endDate?: Date,
 ): void => {
 	lines.push(
 		'BEGIN:VEVENT',
@@ -65,6 +113,12 @@ const pushEvent = (
 		`DTSTART;VALUE=DATE:${formatICalDate(date)}`,
 		`SUMMARY:${escapeICalText(summary)}`,
 	)
+
+	// RFC 5545 3.8.2.2: DTEND is exclusive for DATE values, so a span ends the day after its
+	// last day. A single-day event carries no DTEND at all.
+	if (endDate && endDate.getTime() > date.getTime()) {
+		lines.push(`DTEND;VALUE=DATE:${formatICalDate(addDays(endDate, 1))}`)
+	}
 
 	if (description) {
 		lines.push(`DESCRIPTION:${escapeICalText(description)}`)
@@ -77,69 +131,70 @@ const pushEvent = (
 	lines.push('END:VEVENT')
 }
 
+type CelebrationRun = {
+	name: string
+	type: string
+	start: Date
+	end: Date
+}
+
+const addDays = (date: Date, days: number): Date => {
+	const next = new Date(date)
+	next.setDate(next.getDate() + days)
+	return next
+}
+
 /**
- * Get static celebrations for a year, consolidating multi-day celebrations
- * into a single "begins" marker instead of repeated daily events.
- * No "ends" marker needed since the ending feast marks the end.
+ * Group each celebration into runs of consecutive days across the whole requested range.
+ *
+ * The source data authors a season - Nayrouz across Tout 1-16, the three Paramoun days - by
+ * repeating the same celebration on every day it covers. A run is therefore one liturgical
+ * occurrence, not one event per day. Runs are detected across the full range rather than per
+ * year so a fast spanning 31 December is not re-announced on 1 January.
  */
-const getConsolidatedCelebrations = (
-	year: number,
-): Array<{ name: string; date: Date; marker?: 'begins' }> => {
-	const yearView = getYearView(year)
-	const result: Array<{ name: string; date: Date; marker?: 'begins' }> = []
+const getCelebrationRuns = (startYear: number, endYear: number): CelebrationRun[] => {
+	const runs: CelebrationRun[] = []
+	const open = new Map<string, CelebrationRun>()
 
-	// Track which multi-day celebrations we've already added a "begins" for
-	const addedMultiDay = new Set<string>()
-	let previousDayCelebrations = new Set<string>()
+	// A run already under way on the first day started before this range, where its event
+	// already lives; track it so it does not reopen, but do not announce it again here.
+	const carriedIn = new Set(
+		(getYearView(startYear - 1).at(-1)?.celebrations ?? []).map((c) => c.name),
+	)
+	let onFirstDay = true
 
-	for (const day of yearView) {
-		if (!day.celebrations) {
-			// Reset tracking when a multi-day celebration ends
-			for (const name of previousDayCelebrations) {
-				if (MULTI_DAY_CELEBRATIONS.has(name)) {
-					addedMultiDay.delete(name)
+	for (let year = startYear; year <= endYear; year++) {
+		for (const day of getYearView(year)) {
+			const todays = new Map(
+				(day.celebrations ?? []).filter((c) => c?.name).map((c) => [c.name, c]),
+			)
+
+			for (const name of open.keys()) {
+				if (!todays.has(name)) open.delete(name)
+			}
+
+			for (const [name, celebration] of todays) {
+				const existing = open.get(name)
+				if (existing) {
+					existing.end = day.date
+					continue
 				}
-			}
-			previousDayCelebrations = new Set()
-			continue
-		}
 
-		const todayCelebrations = new Set<string>()
-
-		for (const celebration of day.celebrations) {
-			if (!celebration?.name) continue
-			todayCelebrations.add(celebration.name)
-
-			if (MULTI_DAY_CELEBRATIONS.has(celebration.name)) {
-				// Multi-day celebration - only add "begins" on first day
-				if (
-					!previousDayCelebrations.has(celebration.name) &&
-					!addedMultiDay.has(celebration.name)
-				) {
-					result.push({
-						name: celebration.name,
-						date: day.date,
-						marker: 'begins',
-					})
-					addedMultiDay.add(celebration.name)
+				const run: CelebrationRun = {
+					name,
+					type: celebration.type,
+					start: day.date,
+					end: day.date,
 				}
-			} else {
-				// Single-day celebration - add directly
-				result.push({ name: celebration.name, date: day.date })
+				open.set(name, run)
+				if (!(onFirstDay && carriedIn.has(name))) runs.push(run)
 			}
-		}
 
-		// Reset tracking when a multi-day celebration ends (so it can begin again later in year)
-		for (const name of previousDayCelebrations) {
-			if (MULTI_DAY_CELEBRATIONS.has(name) && !todayCelebrations.has(name)) {
-				addedMultiDay.delete(name)
-			}
+			onFirstDay = false
 		}
-
-		previousDayCelebrations = todayCelebrations
 	}
 
-	return result
+	return runs
 }
 
 const ICAL_HEADER = [
@@ -172,14 +227,26 @@ const pushYearEvents = (lines: string[], year: number): void => {
 			pushEvent(lines, `${season.name} begins`, startDate, season.description, category)
 		}
 	}
+}
 
-	// Add static celebrations (consolidated for multi-day celebrations)
-	const celebrations = getConsolidatedCelebrations(year)
-	for (const celebration of celebrations) {
-		const summary = celebration.marker
-			? `${celebration.name} ${celebration.marker}`
-			: celebration.name
-		pushEvent(lines, summary, celebration.date, celebration.name, 'Feast')
+/**
+ * Emit one event per celebration run. A fast reads as a band across the days it covers plus a
+ * marker for the day it opens; a feast is a single dated event on the day the run starts.
+ */
+const pushCelebrationEvents = (lines: string[], startYear: number, endYear: number): void => {
+	for (const run of getCelebrationRuns(startYear, endYear)) {
+		if (run.type !== 'fast') {
+			pushEvent(lines, run.name, run.start, run.name, 'Feast')
+			continue
+		}
+
+		pushEvent(lines, run.name, run.start, run.name, 'Fasting Period', run.end)
+
+		// A fast the data authors on a single day is already its own marker; only a fast that
+		// spans days needs a separate event announcing the day it opens.
+		if (run.end.getTime() > run.start.getTime()) {
+			pushEvent(lines, `${run.name} begins`, run.start, run.name, 'Fasting Period')
+		}
 	}
 }
 
@@ -194,8 +261,9 @@ export const generateYearCalendar = (year: number): string => {
 		...ICAL_FOOTER,
 	]
 	pushYearEvents(lines, year)
+	pushCelebrationEvents(lines, year, year)
 	lines.push('END:VCALENDAR')
-	return `${lines.join('\r\n')}\r\n`
+	return serializeICal(lines)
 }
 
 /**
@@ -211,6 +279,7 @@ export const generateMultiYearCalendar = (startYear: number, endYear: number): s
 	for (let year = startYear; year <= endYear; year++) {
 		pushYearEvents(lines, year)
 	}
+	pushCelebrationEvents(lines, startYear, endYear)
 	lines.push('END:VCALENDAR')
-	return `${lines.join('\r\n')}\r\n`
+	return serializeICal(lines)
 }

@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { generateMultiYearCalendar, generateYearCalendar } from '../../utils/icalGenerator'
 
+// Reverse RFC 5545 3.1 folding: a CRLF followed by a single space is a continuation
+const unfold = (ical: string): string => ical.replace(/\r\n /g, '')
+
 describe('iCalendar Generator', () => {
 	describe('generateYearCalendar', () => {
 		it('should generate valid iCalendar format', () => {
@@ -46,11 +49,53 @@ describe('iCalendar Generator', () => {
 			expect(ical).toMatch(/UID:.*@coptic\.io/g)
 		})
 
-		it('should not escape commas in event titles', () => {
+		it('should emit slug-safe UIDs with no spaces or edge punctuation', () => {
+			const uids = unfold(generateMultiYearCalendar(2025, 2028))
+				.split('\r\n')
+				.filter((l) => l.startsWith('UID:'))
+				.map((l) => l.slice('UID:'.length))
+
+			expect(uids.length).toBeGreaterThan(0)
+			for (const uid of uids) {
+				expect(uid).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*@coptic\.io$/)
+			}
+
+			// The category half is slugified too, not left as "Fasting Period"
+			expect(uids).toContain('fasting-period-20260216-great-lent-begins@coptic.io')
+			// A parenthesised name no longer leaves a trailing dash
+			expect(uids).toContain(
+				'feast-20250712-apostles-feast-martyrdom-of-sts-peter-and-paul@coptic.io',
+			)
+		})
+
+		it('should escape commas in event titles', () => {
 			const ical = generateYearCalendar(2025)
 
-			// Commas should NOT be escaped in SUMMARY (RFC 5545 only requires escaping ; \ and newlines)
-			expect(ical).toContain('Annunciation, Nativity, and Resurrection')
+			// RFC 5545 3.3.11 excludes COMMA from TSAFE-CHAR, so it must be escaped in TEXT values
+			expect(ical).toContain('SUMMARY:Annunciation\\, Nativity\\, and Resurrection')
+			expect(ical).not.toContain('SUMMARY:Annunciation, Nativity, and Resurrection')
+		})
+
+		it('should fold content lines longer than 75 octets', () => {
+			const ical = generateYearCalendar(2025)
+			const lines = ical.split('\r\n')
+
+			// A folded line is continued by a following line starting with a single space
+			const overlong = lines.filter((line) => new TextEncoder().encode(line).length > 75)
+			expect(overlong).toEqual([])
+
+			// Content survives once unfolding is undone
+			expect(unfold(ical)).toContain(
+				'UID:feast-20250712-apostles-feast-martyrdom-of-sts-peter-and-paul@coptic.io',
+			)
+		})
+
+		it('should keep folded continuation lines under the limit including the leading space', () => {
+			const ical = generateYearCalendar(2025)
+
+			for (const line of ical.split('\r\n')) {
+				expect(new TextEncoder().encode(line).length).toBeLessThanOrEqual(75)
+			}
 		})
 
 		it('should include all VEVENT components properly closed', () => {
@@ -75,6 +120,120 @@ describe('iCalendar Generator', () => {
 				expect(date).toMatch(/^\d{8}$/)
 				expect(date.substring(0, 4)).toBe('2025')
 			})
+		})
+	})
+
+	describe('multi-day celebrations', () => {
+		const summariesOf = (ical: string) =>
+			unfold(ical)
+				.split('\r\n')
+				.filter((l) => l.startsWith('SUMMARY:'))
+				.map((l) => l.slice('SUMMARY:'.length))
+
+		it('should emit a season authored across many days as a single event', () => {
+			// Nayrouz is authored on Tout 1-16, which previously produced 16 duplicate events
+			const occurrences = summariesOf(generateYearCalendar(2026)).filter(
+				(s) => s === 'Coptic New Year (Nayrouz)',
+			)
+
+			expect(occurrences).toHaveLength(1)
+		})
+
+		it('should collapse a multi-day feast to its first day without a DTEND', () => {
+			const ical = unfold(generateYearCalendar(2026))
+			// The Paramoun is authored across three days; it is a feast, so it stays single-day
+			const paramoun = summariesOf(ical).filter((s) => s === 'Nativity Paramoun')
+
+			expect(paramoun).toHaveLength(1)
+			expect(ical).toContain('SUMMARY:Nativity Paramoun')
+		})
+
+		it('should give a multi-day fast both a dated span and a begins marker', () => {
+			const ical = unfold(generateYearCalendar(2026))
+			const summaries = summariesOf(ical)
+
+			expect(summaries).toContain('St. Mary Fast')
+			expect(summaries).toContain('St. Mary Fast begins')
+
+			// The fast runs 7-21 August and the feast falls on the 22nd, so the exclusive DTEND
+			// lands on the feast day rather than a day later
+			const span = ical
+				.split('BEGIN:VEVENT')
+				.find((block) => block.includes('SUMMARY:St. Mary Fast\r\n'))
+			expect(span).toContain('DTSTART;VALUE=DATE:20260807')
+			expect(span).toContain('DTEND;VALUE=DATE:20260822')
+			expect(summaries).toContain('St. Mary Feast (Commemoration of Her Assumption)')
+		})
+
+		it('should not add a begins marker to a fast authored on a single day', () => {
+			const summaries = summariesOf(generateYearCalendar(2026))
+
+			// Kiahk occupies one authored day, so the event is already its own marker
+			expect(summaries).toContain('Kiahk')
+			expect(summaries).not.toContain('Kiahk begins')
+		})
+
+		it('should not re-announce a fast that carried over from the previous year', () => {
+			// The Advent Fast is still running on 1 January, and previously produced a second
+			// spurious "begins" event on that date
+			const ical = unfold(generateYearCalendar(2026))
+			const januaryFirstBegins = ical
+				.split('BEGIN:VEVENT')
+				.filter((block) => block.includes('DTSTART;VALUE=DATE:20260101'))
+				.filter((block) => block.includes('begins'))
+
+			expect(januaryFirstBegins).toEqual([])
+		})
+
+		it('should not duplicate a celebration across a multi-year feed', () => {
+			const occurrences = summariesOf(generateMultiYearCalendar(2025, 2028)).filter(
+				(s) => s === 'Coptic New Year (Nayrouz)',
+			)
+
+			// One per year, not one per authored day
+			expect(occurrences).toHaveLength(4)
+		})
+
+		it('should not carry leading whitespace in celebration names', () => {
+			expect(generateYearCalendar(2026)).not.toContain('SUMMARY: ')
+		})
+	})
+
+	describe('against published diocesan dates', () => {
+		// Cross-checked against copticchurch.net/calendar/feasts/2026
+		const PUBLISHED_2026: Array<[string, string]> = [
+			['20260107', 'Nativity Feast'],
+			['20260114', 'Circumcision Feast'],
+			['20260119', 'Theophany Feast'],
+			['20260121', 'Wedding of Cana of Galilee Feast'],
+			['20260215', 'Entrance into the Temple Feast'],
+			['20260405', 'Palm Sunday'],
+			['20260407', 'Annunciation Feast'],
+			['20260409', 'Holy Thursday'],
+			['20260412', 'Easter'],
+			['20260419', 'Thomas Sunday'],
+			['20260521', 'Ascension'],
+			['20260531', 'Pentecost'],
+			['20260601', 'Entry into Egypt'],
+			['20260819', 'Transfiguration'],
+			['20260911', 'Coptic New Year (Nayrouz)'],
+			['20260927', 'Feast of the Cross'],
+		]
+
+		it.each(PUBLISHED_2026)('should place %s as %s', (date, name) => {
+			const block = unfold(generateYearCalendar(2026))
+				.split('BEGIN:VEVENT')
+				.find((b) => b.includes(`SUMMARY:${name}\r\n`))
+
+			expect(block).toBeDefined()
+			expect(block).toContain(`DTSTART;VALUE=DATE:${date}`)
+		})
+
+		it('should leave Good Friday to Holy Week rather than listing it separately', () => {
+			const ical = unfold(generateYearCalendar(2026))
+
+			expect(ical).not.toContain('SUMMARY:Good Friday')
+			expect(ical).toContain('SUMMARY:Holy Week begins')
 		})
 	})
 
