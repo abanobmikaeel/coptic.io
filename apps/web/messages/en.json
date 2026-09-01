@@ -215,6 +215,8 @@
 		"preferCalendarSync": "Prefer calendar sync?",
 		"addToGoogleCalendar": "Add to Google Calendar",
 		"addToAppleOutlook": "Apple or Outlook",
+		"copyFeedUrl": "Copy feed URL",
+		"copiedFeedUrl": "Copied",
 		"footer": "Built for the Coptic community",
 		"fastingToday": "Fasting today",
 		"season": "Season",
