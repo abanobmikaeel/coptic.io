@@ -93,6 +93,7 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       - name: Run smoke tests against production
+        working-directory: apps/api
         env:
           API_URL: https://api.coptic.io
         run: bun scripts/smoke-test.ts
@@ -177,6 +178,7 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       - name: Run smoke tests against preview
+        working-directory: apps/api
         env:
           API_URL: ${{ needs.deploy-preview.outputs.preview_url }}
         run: |
