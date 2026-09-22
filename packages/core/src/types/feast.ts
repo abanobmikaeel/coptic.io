@@ -19,6 +19,8 @@ export interface Feast {
 	isMoveable: boolean
 	/** Days from Easter (for moveable feasts) */
 	daysFromEaster?: number
+	/** Celebrated from its eve (Nativity, Theophany, Resurrection) */
+	celebratedOnEve?: boolean
 }
 
 /**

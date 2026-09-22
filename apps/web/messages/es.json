@@ -222,6 +222,7 @@
 		"noUpcomingFeasts": "No hay fiestas próximas",
 		"noUpcomingFasts": "No hay ayunos próximos",
 		"feastType": {
+			"commemoration": "Conmemoración",
 			"fast": "Ayuno",
 			"feast": "Fiesta",
 			"lordlyFeast": "Fiesta del Señor",

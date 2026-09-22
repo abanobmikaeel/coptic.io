@@ -222,6 +222,7 @@
 		"noUpcomingFeasts": "No upcoming feasts",
 		"noUpcomingFasts": "No upcoming fasts",
 		"feastType": {
+			"commemoration": "Commemoration",
 			"fast": "Fast",
 			"feast": "Feast",
 			"lordlyFeast": "Lordly Feast",

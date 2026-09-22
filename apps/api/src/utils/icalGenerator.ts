@@ -236,7 +236,8 @@ const pushYearEvents = (lines: string[], year: number): void => {
 const pushCelebrationEvents = (lines: string[], startYear: number, endYear: number): void => {
 	for (const run of getCelebrationRuns(startYear, endYear)) {
 		if (run.type !== 'fast') {
-			pushEvent(lines, run.name, run.start, run.name, 'Feast')
+			const category = run.type === 'commemoration' ? 'Commemoration' : 'Feast'
+			pushEvent(lines, run.name, run.start, run.name, category)
 			continue
 		}
 

@@ -300,6 +300,18 @@ describe('iCalendar Generator', () => {
 			expect(ical).toContain('SUMMARY:Palm Sunday')
 		})
 
+		it('should categorize the monthly commemoration on the 29th separately from feasts', () => {
+			const ical = unfold(generateYearCalendar(2026))
+			const commemorations = ical
+				.split('BEGIN:VEVENT')
+				.filter((event) => event.includes('SUMMARY:Annunciation\\, Nativity\\, and Resurrection'))
+
+			expect(commemorations.length).toBeGreaterThan(0)
+			for (const event of commemorations) {
+				expect(event).toContain('CATEGORIES:Commemoration')
+			}
+		})
+
 		it('should categorize fasting periods correctly', () => {
 			const ical = generateYearCalendar(2025)
 
