@@ -42,13 +42,13 @@
 		"prepublishOnly": "pnpm run build"
 	},
 	"devDependencies": {
-		"date-fns": "^4.1.0",
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.5",
-		"@vitest/coverage-v8": "3.2.6",
+		"@vitest/coverage-v8": "4.1.11",
+		"date-fns": "^4.1.0",
 		"tsx": "^4.19.2",
 		"typescript": "^5.7.3",
-		"vitest": "^3.2.6"
+		"vitest": "^4.1.11"
 	},
 	"keywords": [
 		"coptic",

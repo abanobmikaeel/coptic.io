@@ -131,10 +131,10 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.10.5",
-		"@vitest/coverage-v8": "4.1.9",
+		"@vitest/coverage-v8": "4.1.11",
 		"tsx": "^4.19.0",
 		"typescript": "^5.7.3",
-		"vitest": "^4.0.18"
+		"vitest": "^4.1.11"
 	},
 	"keywords": [
 		"coptic",
