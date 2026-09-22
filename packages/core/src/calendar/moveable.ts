@@ -46,6 +46,7 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 		name: string,
 		type: FeastType,
 		daysFromEaster: number,
+		celebratedOnEve = false,
 	): MoveableFeast => ({
 		id,
 		name,
@@ -53,6 +54,7 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 		date: addDays(easterDateObj, daysFromEaster),
 		isMoveable: true,
 		daysFromEaster,
+		...(celebratedOnEve ? { celebratedOnEve } : {}),
 	})
 
 	const feasts = [
@@ -67,7 +69,7 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 		// Good Friday - 2 days before Easter
 		createFeast(1005, 'Good Friday', 'fast', -2),
 		// Easter Sunday
-		createFeast(1006, 'Easter', 'majorFeast', 0),
+		createFeast(1006, 'Easter', 'majorFeast', 0, true),
 		// Thomas Sunday - 7 days after Easter
 		createFeast(1007, 'Thomas Sunday', 'minorFeast', 7),
 		// Ascension - 39 days after Easter (40th day)

@@ -14,7 +14,7 @@
 		{
 			"id": 3,
 			"name": "Annunciation, Nativity, and Resurrection",
-			"type": "lordlyFeast"
+			"type": "commemoration"
 		},
 		{
 			"id": 4,
@@ -34,7 +34,8 @@
 		{
 			"id": 7,
 			"name": "Nativity Feast",
-			"type": "feast"
+			"type": "feast",
+			"celebratedOnEve": true
 		},
 		{
 			"id": 8,
@@ -44,7 +45,8 @@
 		{
 			"id": 9,
 			"name": "Theophany Feast",
-			"type": "feast"
+			"type": "feast",
+			"celebratedOnEve": true
 		},
 		{
 			"id": 10,
@@ -53,7 +55,7 @@
 		},
 		{
 			"id": 11,
-			"name": " Entrance into the Temple Feast",
+			"name": "Entrance into the Temple Feast",
 			"type": "feast"
 		},
 		{

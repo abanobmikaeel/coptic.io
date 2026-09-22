@@ -8,6 +8,7 @@ export interface Celebration {
 	type: string
 	month?: string
 	isMoveable: boolean
+	celebratedOnEve?: boolean
 }
 
 // Map for O(1) lookups

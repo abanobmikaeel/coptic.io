@@ -33,7 +33,7 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 	}
 
 	const formatType = (type: string) => {
-		const known = ['fast', 'feast', 'lordlyFeast', 'majorFeast', 'minorFeast']
+		const known = ['commemoration', 'fast', 'feast', 'lordlyFeast', 'majorFeast', 'minorFeast']
 		return known.includes(type) ? t(`feastType.${type}`) : type
 	}
 

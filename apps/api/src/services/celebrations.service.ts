@@ -14,6 +14,7 @@ export const getAllCelebrations = () => {
 		name: feast.name,
 		type: feast.type,
 		isMoveable: true,
+		...(feast.celebratedOnEve ? { celebratedOnEve: true } : {}),
 	}))
 
 	return [...celebrations, ...moveableCelebrations]
@@ -29,6 +30,7 @@ export const getCelebrationsForDate = (date: Date) => {
 		name: feast.name,
 		type: feast.type,
 		isMoveable: true,
+		...(feast.celebratedOnEve ? { celebratedOnEve: true } : {}),
 	}))
 
 	const allCelebrations = [...staticCelebrations, ...moveableAsCelebrations]

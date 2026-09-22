@@ -15,6 +15,8 @@ export const CelebrationSchema = z.object({
 	type: z.string(),
 	isMoveable: z.boolean().optional(),
 	month: z.string().optional(),
+	/** Celebrated from its eve (Nativity, Theophany, Resurrection) */
+	celebratedOnEve: z.boolean().optional(),
 })
 
 export const SynaxariumEntrySchema = z

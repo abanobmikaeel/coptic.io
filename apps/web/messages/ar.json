@@ -222,6 +222,7 @@
 		"noUpcomingFeasts": "لا توجد أعياد قادمة",
 		"noUpcomingFasts": "لا توجد أصوام قادمة",
 		"feastType": {
+			"commemoration": "تذكار",
 			"fast": "صوم",
 			"feast": "عيد",
 			"lordlyFeast": "عيد سيّدي",

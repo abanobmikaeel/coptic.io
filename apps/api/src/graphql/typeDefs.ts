@@ -13,6 +13,7 @@ export const typeDefs = /* GraphQL */ `
 		type: String!
 		isMoveable: Boolean
 		month: String
+		celebratedOnEve: Boolean
 	}
 
 	type SynaxariumEntry {
