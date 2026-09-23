@@ -166,32 +166,19 @@ test.describe('Synaxarium and Readings date consistency', () => {
 	test('View readings link should update after clicking upcoming entry', async ({ page }) => {
 		// Go to upcoming view
 		await page.goto('/synaxarium?view=upcoming')
-		await page.waitForLoadState('networkidle')
-		await page.waitForTimeout(1500)
 
-		// Find an entry link and get its date
-		const entryLinks = page.locator('a[href*="/synaxarium?date="]')
-		const count = await entryLinks.count()
+		// Get the date from the first entry's href
+		const entryLink = page.locator('a[href*="/synaxarium?date="]').first()
+		await expect(entryLink).toBeVisible()
+		const entryHref = await entryLink.getAttribute('href')
+		const expectedDate = entryHref?.match(/date=(\d{4}-\d{2}-\d{2})/)?.[1]
+		expect(expectedDate).toBeTruthy()
 
-		if (count > 0) {
-			// Get the date from the first entry's href
-			const entryHref = await entryLinks.first().getAttribute('href')
-			const dateMatch = entryHref?.match(/date=(\d{4}-\d{2}-\d{2})/)
-			expect(dateMatch).toBeTruthy()
-			const expectedDate = dateMatch![1]
+		// Click the entry to go to that date's day view, then on to its readings
+		await entryLink.click()
+		await page.getByText('View readings for this date').click()
 
-			// Click the entry to go to that date's day view
-			await entryLinks.first().click()
-			await page.waitForLoadState('networkidle')
-
-			// Click "View readings for this date"
-			await page.click('text=View readings for this date')
-			await page.waitForLoadState('networkidle')
-
-			// Should navigate to readings with the correct date
-			await expect(page).toHaveURL(/\/readings/)
-			await expect(page).toHaveURL(new RegExp(`date=${expectedDate}`))
-		}
+		await expect(page).toHaveURL(new RegExp(`/readings\\?date=${expectedDate}`))
 	})
 
 	test('should show same date on both pages when accessed directly', async ({ page }) => {
