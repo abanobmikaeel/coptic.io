@@ -44,6 +44,7 @@ export type {
 	DailyReadings,
 	Feast,
 	FeastType,
+	CelebrationCategory,
 	Celebration,
 	SynaxariumEntry,
 	FastingInfo,

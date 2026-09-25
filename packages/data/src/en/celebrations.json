@@ -3,105 +3,124 @@
 		{
 			"id": 1,
 			"name": "Coptic New Year (Nayrouz)",
-			"type": "feast"
+			"type": "feast",
+			"category": "otherFeast"
 		},
 		{
 			"id": 2,
 			"name": "Feast of the Cross",
 			"month": "Tout",
-			"type": "feast"
+			"type": "feast",
+			"category": "otherFeast"
 		},
 		{
 			"id": 3,
 			"name": "Annunciation, Nativity, and Resurrection",
-			"type": "commemoration"
+			"type": "commemoration",
+			"category": "commemoration"
 		},
 		{
 			"id": 4,
 			"name": "Advent Fast",
-			"type": "fast"
+			"type": "fast",
+			"category": "fast"
 		},
 		{
 			"id": 5,
 			"name": "Kiahk",
-			"type": "fast"
+			"type": "fast",
+			"category": "fast"
 		},
 		{
 			"id": 6,
 			"name": "Nativity Paramoun",
-			"type": "fast"
+			"type": "fast",
+			"category": "fast"
 		},
 		{
 			"id": 7,
 			"name": "Nativity Feast",
 			"type": "feast",
+			"category": "majorFeast",
 			"celebratedOnEve": true
 		},
 		{
 			"id": 8,
 			"name": "Theophany Paramoun",
-			"type": "fast"
+			"type": "fast",
+			"category": "fast"
 		},
 		{
 			"id": 9,
 			"name": "Theophany Feast",
 			"type": "feast",
+			"category": "majorFeast",
 			"celebratedOnEve": true
 		},
 		{
 			"id": 10,
 			"name": "Wedding of Cana of Galilee Feast",
-			"type": "feast"
+			"type": "feast",
+			"category": "minorFeast"
 		},
 		{
 			"id": 11,
 			"name": "Entrance into the Temple Feast",
-			"type": "feast"
+			"type": "feast",
+			"category": "minorFeast"
 		},
 		{
 			"id": 12,
 			"name": "Appearance of the Cross",
-			"type": "feast"
+			"type": "feast",
+			"category": "otherFeast"
 		},
 		{
 			"id": 13,
 			"name": "Annunciation Feast",
-			"type": "lordlyFeast"
+			"type": "lordlyFeast",
+			"category": "majorFeast"
 		},
 		{
 			"id": 14,
 			"name": "Entry into Egypt",
 			"periodType": "single",
-			"type": "feast"
+			"type": "feast",
+			"category": "minorFeast"
 		},
 		{
 			"id": 15,
 			"name": "Apostles Feast (Martyrdom of Sts. Peter and Paul)",
 			"periodType": "single",
-			"type": "feast"
+			"type": "feast",
+			"category": "otherFeast"
 		},
 		{
 			"id": 16,
 			"name": "St. Mary Fast",
 			"periodType": "single",
-			"type": "fast"
+			"type": "fast",
+			"category": "fast"
 		},
 		{
 			"id": 17,
 			"name": "Transfiguration",
 			"periodType": "single",
-			"type": "feast"
+			"type": "feast",
+			"category": "minorFeast"
 		},
 		{
 			"id": 18,
 			"name": "St. Mary Feast (Commemoration of Her Assumption)",
 			"periodType": "single",
-			"type": "feast"
+			"type": "feast",
+			"category": "otherFeast"
 		},
 		{
 			"id": 19,
 			"name": "Circumcision Feast",
-			"type": "feast"
+			"type": "feast",
+			"category": "minorFeast"
 		}
 	]
 }

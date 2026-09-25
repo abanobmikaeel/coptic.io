@@ -4,6 +4,18 @@
 export type FeastType = 'majorFeast' | 'minorFeast' | 'fast' | 'commemoration'
 
 /**
+ * Where a celebration ranks in the Church's calendar. The seven major and seven minor feasts
+ * of the Lord are majorFeast and minorFeast; every other feast (St. Mary, the saints, the Cross,
+ * Nayrouz) is otherFeast; the monthly observance of the 29th is a commemoration.
+ */
+export type CelebrationCategory =
+	| 'majorFeast'
+	| 'minorFeast'
+	| 'otherFeast'
+	| 'fast'
+	| 'commemoration'
+
+/**
  * A feast or celebration in the Coptic calendar
  */
 export interface Feast {
@@ -13,6 +25,8 @@ export interface Feast {
 	name: string
 	/** Type of celebration */
 	type: FeastType
+	/** Rank in the Church's calendar */
+	category: CelebrationCategory
 	/** Date of the feast */
 	date: Date
 	/** Whether this feast moves based on Easter */
@@ -31,8 +45,10 @@ export interface Celebration {
 	id: number
 	/** Name of the celebration */
 	name: string
-	/** Type of celebration */
+	/** @deprecated Inconsistent across fixed and moveable feasts; use `category` */
 	type: string
+	/** Rank in the Church's calendar */
+	category: CelebrationCategory
 	/** Description or additional information */
 	description?: string
 }

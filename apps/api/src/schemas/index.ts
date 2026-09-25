@@ -12,7 +12,15 @@ export const CopticDateSchema = z.object({
 export const CelebrationSchema = z.object({
 	id: z.number(),
 	name: z.string(),
-	type: z.string(),
+	type: z.string().meta({
+		deprecated: true,
+		description:
+			"Kept for existing clients; use `category`. Values are inconsistent: most fixed feasts are 'feast', the Annunciation is 'lordlyFeast', moveable feasts are 'majorFeast' or 'minorFeast'.",
+	}),
+	category: z.enum(['majorFeast', 'minorFeast', 'otherFeast', 'fast', 'commemoration']).meta({
+		description:
+			'majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.',
+	}),
 	isMoveable: z.boolean().optional(),
 	month: z.string().optional(),
 	/** Celebrated from its eve (Nativity, Theophany, Resurrection) */

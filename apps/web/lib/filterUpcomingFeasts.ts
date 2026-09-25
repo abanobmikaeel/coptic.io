@@ -1,6 +1,7 @@
 type Celebration = {
 	name: string
 	type: string
+	category: string
 	id?: number
 	displayName?: string
 }
@@ -28,7 +29,7 @@ export function filterUpcomingFeasts(upcoming: DayCelebration[]): EventWithDate[
 			allEvents.push(eventWithDate)
 
 			// Track fast periods
-			if (cel.type === 'fast') {
+			if (cel.category === 'fast') {
 				const existing = fastTracking.get(cel.name)
 				if (!existing) {
 					fastTracking.set(cel.name, { firstDate: day.date, lastDate: day.date })
@@ -42,7 +43,7 @@ export function filterUpcomingFeasts(upcoming: DayCelebration[]): EventWithDate[
 	// Second pass: filter events and add labels
 	const seen = new Set<string>()
 	const filtered = allEvents.filter((event) => {
-		if (event.type !== 'fast') {
+		if (event.category !== 'fast') {
 			return true // Keep all non-fast events
 		}
 
@@ -85,7 +86,7 @@ export function filterUpcomingFasts(upcoming: DayCelebration[]): EventWithDate[]
 	// First pass: collect all fasts and track periods
 	upcoming.forEach((day) => {
 		day.celebrations.forEach((cel) => {
-			if (cel.type === 'fast') {
+			if (cel.category === 'fast') {
 				const eventWithDate: EventWithDate = { ...cel, date: day.date }
 				allFasts.push(eventWithDate)
 
@@ -134,5 +135,5 @@ export function filterUpcomingFasts(upcoming: DayCelebration[]): EventWithDate[]
  * Filters upcoming celebrations to exclude fasts (feasts only)
  */
 export function filterFeastsOnly(events: EventWithDate[]): EventWithDate[] {
-	return events.filter((event) => event.type !== 'fast')
+	return events.filter((event) => event.category !== 'fast')
 }

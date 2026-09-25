@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 interface Feast {
 	name: string
-	type: string
+	category: string
 	date: string
 	displayName?: string
 }
@@ -20,9 +20,8 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 	const locale = useLocale()
 	const [visibleCount, setVisibleCount] = useState(5)
 
-	const getTypeColor = (type: string) => {
-		switch (type) {
-			case 'lordlyFeast':
+	const getCategoryColor = (category: string) => {
+		switch (category) {
 			case 'majorFeast':
 				return 'text-amber-600 dark:text-amber-500'
 			case 'fast':
@@ -32,9 +31,9 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 		}
 	}
 
-	const formatType = (type: string) => {
-		const known = ['commemoration', 'fast', 'feast', 'lordlyFeast', 'majorFeast', 'minorFeast']
-		return known.includes(type) ? t(`feastType.${type}`) : type
+	const formatCategory = (category: string) => {
+		const known = ['commemoration', 'fast', 'majorFeast', 'minorFeast', 'otherFeast']
+		return known.includes(category) ? t(`feastType.${category}`) : category
 	}
 
 	const visibleFeasts = feasts.slice(0, visibleCount)
@@ -55,8 +54,8 @@ export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) 
 						<p className="text-gray-900 dark:text-white font-medium truncate rtl:text-[17px]">
 							{feast.displayName || feast.name}
 						</p>
-						<p className={`text-xs rtl:text-sm ${getTypeColor(feast.type)}`}>
-							{formatType(feast.type)}
+						<p className={`text-xs rtl:text-sm ${getCategoryColor(feast.category)}`}>
+							{formatCategory(feast.category)}
 						</p>
 					</div>
 					<p className="text-gray-500 dark:text-gray-400 text-sm ms-4 whitespace-nowrap">

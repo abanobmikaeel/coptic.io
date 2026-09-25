@@ -10,7 +10,8 @@ export const typeDefs = /* GraphQL */ `
 	type Celebration {
 		id: Int!
 		name: String!
-		type: String!
+		type: String! @deprecated(reason: "Use category")
+		category: String!
 		isMoveable: Boolean
 		month: String
 		celebratedOnEve: Boolean
