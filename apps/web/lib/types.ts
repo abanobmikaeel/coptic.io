@@ -31,6 +31,7 @@ export interface Celebration {
 	id: number
 	name: string
 	type: string
+	category: string
 	story?: string
 }
 

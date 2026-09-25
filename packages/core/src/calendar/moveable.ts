@@ -51,6 +51,7 @@ export const getMoveableFeastsForYear = (gregorianYear: number): MoveableFeast[]
 		id,
 		name,
 		type,
+		category: type,
 		date: addDays(easterDateObj, daysFromEaster),
 		isMoveable: true,
 		daysFromEaster,

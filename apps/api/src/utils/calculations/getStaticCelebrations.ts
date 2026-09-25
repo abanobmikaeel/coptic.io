@@ -1,18 +1,22 @@
-import { gregorianToCoptic } from '@coptic/core'
+import { type CelebrationCategory, gregorianToCoptic } from '@coptic/core'
 import dayCelebrations from '../../resources/dayReadings.json'
-import { celebrations } from '../../resources/nonMoveableCelebrations.json'
+import nonMoveable from '../../resources/nonMoveableCelebrations.json'
 
 export interface Celebration {
 	id: number
 	name: string
 	type: string
+	category: CelebrationCategory
 	month?: string
 	isMoveable: boolean
 	celebratedOnEve?: boolean
 }
 
+// The JSON infers `category` as a plain string; its values are checked by the celebrations tests
+export const staticCelebrations = nonMoveable.celebrations as Omit<Celebration, 'isMoveable'>[]
+
 // Map for O(1) lookups
-const celebrationsById = new Map(celebrations.map((c) => [c.id, c]))
+const celebrationsById = new Map(staticCelebrations.map((c) => [c.id, c]))
 
 /**
  * Get static celebrations for a Coptic day (avoids redundant date conversion)

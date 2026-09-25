@@ -1,7 +1,9 @@
 import { getMoveableFeastsForDate, getMoveableFeastsForYear, gregorianToCoptic } from '@coptic/core'
 import { addDays, format } from 'date-fns'
-import { celebrations } from '../resources/nonMoveableCelebrations.json'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import {
+	getStaticCelebrationsForDay,
+	staticCelebrations,
+} from '../utils/calculations/getStaticCelebrations'
 
 export const getAllCelebrations = () => {
 	// Combine static celebrations with moveable feasts for current year
@@ -13,11 +15,12 @@ export const getAllCelebrations = () => {
 		id: feast.id,
 		name: feast.name,
 		type: feast.type,
+		category: feast.category,
 		isMoveable: true,
 		...(feast.celebratedOnEve ? { celebratedOnEve: true } : {}),
 	}))
 
-	return [...celebrations, ...moveableCelebrations]
+	return [...staticCelebrations, ...moveableCelebrations]
 }
 
 export const getCelebrationsForDate = (date: Date) => {
@@ -29,6 +32,7 @@ export const getCelebrationsForDate = (date: Date) => {
 		id: feast.id,
 		name: feast.name,
 		type: feast.type,
+		category: feast.category,
 		isMoveable: true,
 		...(feast.celebratedOnEve ? { celebratedOnEve: true } : {}),
 	}))
