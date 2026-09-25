@@ -60,7 +60,12 @@ test.describe('Tasbeha page', () => {
 		await expect(
 			page.getByText('Ⲧⲉⲛⲑⲏⲛⲟⲩ ⲉ̀ⲡ̀ϣⲱⲓ ⲛⲓϣⲏⲣⲓ ⲛ̀ⲧⲉ ⲡⲓⲟⲩⲱⲓⲛⲓ: ⲛ̀ⲧⲉⲛϩⲱⲥ ⲉ̀Ⲡ̀ϭⲟⲓⲥ ⲛ̀ⲧⲉ ⲛⲓϫⲟⲙ.').first(),
 		).toBeVisible()
-		await expect(page.locator('p').filter({ hasText: /^Coptic$/ })).toBeVisible()
+		await expect(
+			page
+				.locator('p')
+				.filter({ hasText: /^Coptic$/ })
+				.first(),
+		).toBeVisible()
 	})
 
 	test('does not overflow on mobile', async ({ page }) => {
