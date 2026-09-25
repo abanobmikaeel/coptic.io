@@ -195,7 +195,9 @@ jobs:
         with:
           node-version: '24'
           cache: 'pnpm'
-      - run: pnpm install --filter @coptic/api --ignore-scripts && pnpm rebuild
+      # Only wrangler is needed here; a root `pnpm rebuild` would trigger `prepare`, which
+      # builds packages whose devDependencies this filtered install skips
+      - run: pnpm install --filter @coptic/api --ignore-scripts
       - name: Delete preview worker
         working-directory: apps/api
         run: |
