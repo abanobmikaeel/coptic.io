@@ -3,9 +3,9 @@
 	"changelog": "@changesets/cli/changelog",
 	"commit": false,
 	"fixed": [],
-	"linked": [["@coptic/core", "@coptic/client", "@coptic/data"]],
+	"linked": [["@coptic/core", "@coptic/client"]],
 	"access": "public",
 	"baseBranch": "main",
 	"updateInternalDependencies": "patch",
-	"ignore": ["@coptic/api", "@coptic/web", "@coptic/admin"]
+	"ignore": ["@coptic/api", "@coptic/web", "@coptic/admin", "@coptic/data"]
 }

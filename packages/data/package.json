@@ -1,6 +1,7 @@
 {
 	"name": "@coptic/data",
 	"version": "0.1.0",
+	"private": true,
 	"description": "Coptic Orthodox Church - Offline data bundle with multi-language support",
 	"type": "module",
 	"main": "dist/index.js",
