@@ -64,9 +64,17 @@ export const writeJson = (path: string, value: unknown) =>
 // Arabic pages inline Coptic responses in a legacy ASCII font encoding ("Doxa Patri
 // ke Uiw ke `agiw `Pneumati"), which reads as gibberish in Unicode. The Arabic
 // transliteration and translation beside it carry the same response, so drop it.
-const ASCII_COPTIC_RUN = /\s*[A-Za-z`][A-Za-z`@.\s]*[A-Za-z`@.]/g
-export const stripAsciiCoptic = (line: string) =>
-	line
-		.replace(ASCII_COPTIC_RUN, '')
-		.replace(/\s{2,}/g, ' ')
-		.trim()
+// Whitespace is trimmed in code rather than matched by the regex: letting the pattern
+// start or end on spaces makes it backtrack. A lone letter is not a Coptic response.
+const ASCII_COPTIC_RUN = /[A-Za-z`][A-Za-z`@.\s]*/g
+export function stripAsciiCoptic(line: string): string {
+	let kept = ''
+	let from = 0
+	for (const match of line.matchAll(ASCII_COPTIC_RUN)) {
+		const run = match[0].trimEnd()
+		if (run.length < 2) continue
+		kept += line.slice(from, match.index).trimEnd()
+		from = match.index + run.length
+	}
+	return `${kept}${line.slice(from)}`.replace(/\s{2,}/g, ' ').trim()
+}
