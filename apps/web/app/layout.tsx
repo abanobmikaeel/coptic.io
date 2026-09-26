@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './fonts/fonts.css'
+import { fontPreloads } from './fonts/preload'
 import './globals.css'
 import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
@@ -91,6 +92,16 @@ export default async function RootLayout({
 			<head>
 				<link rel="preconnect" href={apiDomain} />
 				<link rel="dns-prefetch" href={apiDomain} />
+				{fontPreloads.map((href) => (
+					<link
+						key={href}
+						rel="preload"
+						href={href}
+						as="font"
+						type="font/woff2"
+						crossOrigin="anonymous"
+					/>
+				))}
 			</head>
 			<body
 				className="antialiased"
