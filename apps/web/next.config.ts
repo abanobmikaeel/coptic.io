@@ -27,6 +27,15 @@ const nextConfig: NextConfig = {
 	transpilePackages: [],
 	poweredByHeader: false,
 	compress: true,
+	async headers() {
+		return [
+			{
+				// Vendored font files are content-addressed, so they never change in place
+				source: '/fonts/google/:file*',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+			},
+		]
+	},
 }
 
 export default withBundleAnalyzer(withNextIntl(nextConfig))
