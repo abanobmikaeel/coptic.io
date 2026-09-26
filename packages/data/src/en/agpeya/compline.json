@@ -25,7 +25,10 @@
 		"psalm-147",
 		"compline-gospel",
 		"compline-litany",
-		"compline-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"compline-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -120,12 +123,11 @@
 			]
 		},
 		{
-			"id": "compline-closing",
-			"kind": "closing",
+			"id": "compline-absolution",
+			"kind": "conclusion",
+			"title": "Absolution",
 			"content": [
-				"O Lord, as I lie down to sleep, grant me peaceful rest and awaken me again to glorify You. Be with me through the night and protect me from all harm.",
-				"Lord, now let Your servant depart in peace, according to Your word, for my eyes have seen Your salvation, which You have prepared before the face of all peoples, a light to bring revelation to the Gentiles, and the glory of Your people Israel.",
-				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+				"Lord, all our sins which we committed against You in this day, whether in deeds or in words or in thoughts or through all senses, please remit and forgive us, for the sake of Your holy name, as You are Good and Lover of mankind. God, grant us a peaceful night and a sleep free from all anxiety. And send us an angel of peace to protect us from every evil, and every affliction, and every temptation of the enemy; through the Grace, compassion and love of mankind of Your Only-Begotten Son, our Lord, God and Savior Jesus Christ, to Whom is due, with You and with the Holy Spirit, the Life-Giver Who is of one essence with You, all glory, honor and dominion, now and forever and unto the ages of all ages. Amen."
 			]
 		}
 	]

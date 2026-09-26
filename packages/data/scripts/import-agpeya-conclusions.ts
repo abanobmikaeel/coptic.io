@@ -1,5 +1,5 @@
 /**
- * Imports the concluding prayers of terce, sext, none and vespers (Kyrie, Holy Holy
+ * Imports the concluding prayers of terce, sext, none, vespers and compline (Kyrie, Holy Holy
  * Holy, the hour's Absolution, the Conclusion of Every Hour) in English and Arabic.
  *
  *   npx tsx scripts/import-agpeya-conclusions.ts [--check]
@@ -14,6 +14,7 @@ const HOURS = [
 	{ id: 'sext', page: '06_Sext' },
 	{ id: 'none', page: '09_None' },
 	{ id: 'vespers', page: '11_Vespers' },
+	{ id: 'compline', page: '12_Compline' },
 ] as const
 type HourId = (typeof HOURS)[number]['id']
 
