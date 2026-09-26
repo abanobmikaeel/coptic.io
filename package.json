@@ -16,6 +16,7 @@
     "test:api": "pnpm --filter @coptic/api test",
     "test:unit": "pnpm --filter @coptic/api test run && pnpm --filter @coptic/web test:unit && pnpm --filter @coptic/core test run && pnpm --filter @coptic/data test",
     "test:coverage": "pnpm --filter @coptic/api test:coverage && pnpm --filter @coptic/web test:coverage && pnpm --filter @coptic/core test:coverage && pnpm --filter @coptic/data test:coverage",
+    "fonts:fetch": "tsx scripts/fetch-web-fonts.ts && biome format --write apps/web/app/fonts/fonts.css",
     "hooks:install": "tsx scripts/install-git-hooks.ts",
     "hooks:pre-commit": "tsx scripts/hooks/pre-commit.ts",
     "hooks:pre-push": "pnpm install --lockfile-only --frozen-lockfile --offline --ignore-scripts && pnpm check && pnpm typecheck && pnpm build:packages && pnpm test:unit",
@@ -49,7 +50,7 @@
     "@types/node": "^22.10.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
-    "wrangler": "^4.94.0"
+    "wrangler": "^4.136.1"
   },
   "optionalDependencies": {
     "@esbuild/darwin-x64": "0.28.1",

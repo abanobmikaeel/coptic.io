@@ -13,3 +13,6 @@
 *.woff2 binary
 *.ttf binary
 *.eot binary
+
+# Vendored font licenses are kept verbatim from upstream
+apps/web/app/fonts/licenses/*.txt -whitespace

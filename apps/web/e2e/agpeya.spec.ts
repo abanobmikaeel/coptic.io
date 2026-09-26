@@ -29,8 +29,8 @@ test.describe('Agpeya page', () => {
 		// Hour selector dropdown reflects the currently-selected hour.
 		await expect(page.getByRole('button', { name: /current hour/i })).toBeVisible()
 
-		// In-page prayer-section navigation is present.
-		await expect(page.getByRole('button', { name: 'Gospel', exact: true })).toBeVisible()
+		// In-page prayer-section navigation is present. The Midnight hour has a Gospel per watch.
+		await expect(page.getByRole('button', { name: 'Gospel', exact: true }).first()).toBeVisible()
 	})
 
 	test('should have expandable/collapsible sections', async ({ page }) => {

@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test'
 
-// `/` redirects to `/?date=YYYY-MM-DD` (today). Navigation tests assert that
-// real behavior rather than a bare `/`, so they lock in the redirect.
-const HOME_URL = /\/\?date=\d{4}-\d{2}-\d{2}$/
+// The home page resolves today itself, so its URL is a bare `/`. Matching the whole URL
+// also catches router internals such as `_rsc` leaking into the address bar.
+const HOME_URL = /^https?:\/\/[^/]+\/$/
 
 test.describe('Navigation - Desktop', () => {
 	test.use({ viewport: { width: 1280, height: 720 } })
@@ -53,7 +53,6 @@ test.describe('Navigation - Desktop', () => {
 
 		const logo = page.locator('nav.sticky').getByRole('link', { name: 'Coptic IO' })
 		await logo.click()
-		// `/` redirects to today's date.
 		await expect(page).toHaveURL(HOME_URL)
 	})
 })
@@ -103,7 +102,6 @@ test.describe('Navigation - General', () => {
 		await expect(page).toHaveURL(/\/calendar/)
 
 		await page.goBack()
-		// Landing on `/` redirects to today's home.
 		await expect(page).toHaveURL(HOME_URL)
 	})
 

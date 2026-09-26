@@ -29,8 +29,9 @@ import {
 import { getSectionLabels } from '@/i18n/content-translations'
 import { getAvailableSections } from '@/lib/reading-sections'
 import { themeClasses } from '@/lib/reading-styles'
+import { getRequestToday } from '@/lib/requestToday'
 import type { ReadingsData } from '@/lib/types'
-import { formatGregorianDate, getTodayDateString, parseDateString } from '@/lib/utils'
+import { formatGregorianDate, parseDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
@@ -69,15 +70,13 @@ const readingSections = [
 ] as const
 type ReadingSection = (typeof readingSections)[number]
 
-async function getReadings(date?: string, lang?: string): Promise<ReadingsData | null> {
+async function getReadings(date: string, lang?: string): Promise<ReadingsData | null> {
 	try {
 		const params = new URLSearchParams({ detailed: 'true' })
 		if (lang && lang !== 'en') {
 			params.set('lang', lang)
 		}
-		// Always send a date to ensure consistency with synaxarium page
-		const effectiveDate = date || getTodayDateString()
-		const endpoint = `${API_BASE_URL}/readings/${effectiveDate}?${params}`
+		const endpoint = `${API_BASE_URL}/readings/${date}?${params}`
 		// Readings don't change - cache for 1 hour
 		const res = await fetch(endpoint, { next: { revalidate: 300 } })
 		if (!res.ok) return null
@@ -105,6 +104,8 @@ interface ReadingsPageProps {
 
 export default async function ReadingsPage({ searchParams }: ReadingsPageProps) {
 	const params = await searchParams
+	const today = await getRequestToday()
+	const date = params.date ?? today
 
 	// Read content languages from cookie
 	const cookieStore = await cookies()
@@ -133,7 +134,7 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 	const readingsResults = await Promise.all(
 		languagesToFetch.map(async (lang) => ({
 			lang,
-			data: await getReadings(params.date, lang === 'en' ? undefined : lang),
+			data: await getReadings(date, lang === 'en' ? undefined : lang),
 		})),
 	)
 
@@ -162,10 +163,9 @@ export default async function ReadingsPage({ searchParams }: ReadingsPageProps) 
 		}
 	}
 
-	const displayDate = params.date ? parseDateString(params.date) : new Date()
+	const displayDate = parseDateString(date)
 	const gregorianDate = formatGregorianDate(displayDate)
-	const serverToday = getTodayDateString()
-	const isToday = !params.date || params.date === serverToday
+	const isToday = date === today
 
 	// Preserve settings when navigating back to today
 	const backToTodayParams = new URLSearchParams()

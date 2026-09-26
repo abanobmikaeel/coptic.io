@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { EB_Garamond, Inter, Noto_Naskh_Arabic, Noto_Sans_Coptic } from 'next/font/google'
+import './fonts/fonts.css'
 import './globals.css'
 import { CommandPaletteProvider } from '@/components/CommandPalette'
 import Navbar from '@/components/Navbar'
@@ -9,33 +9,6 @@ import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
-
-const inter = Inter({
-	variable: '--font-inter',
-	subsets: ['latin'],
-	display: 'swap',
-})
-
-// EB Garamond - Classic, elegant serif with traditional biblical feel
-const ebGaramond = EB_Garamond({
-	variable: '--font-serif',
-	subsets: ['latin'],
-	display: 'swap',
-})
-
-const notoSansCoptic = Noto_Sans_Coptic({
-	variable: '--font-coptic',
-	weight: '400',
-	subsets: ['coptic'],
-	display: 'swap',
-})
-
-const notoNaskhArabic = Noto_Naskh_Arabic({
-	variable: '--font-arabic',
-	weight: ['400', '500', '600'],
-	subsets: ['arabic'],
-	display: 'swap',
-})
 
 const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://coptic.io'
 
@@ -120,7 +93,7 @@ export default async function RootLayout({
 				<link rel="dns-prefetch" href={apiDomain} />
 			</head>
 			<body
-				className={`${inter.variable} ${ebGaramond.variable} ${notoSansCoptic.variable} ${notoNaskhArabic.variable} antialiased`}
+				className="antialiased"
 				// Browser extensions (Grammarly et al.) add attributes to <body> before
 				// React hydrates; without this React logs a hydration mismatch.
 				suppressHydrationWarning

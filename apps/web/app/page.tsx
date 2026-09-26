@@ -31,6 +31,7 @@ import {
 	filterUpcomingFasts,
 	filterUpcomingFeasts,
 } from '@/lib/filterUpcomingFeasts'
+import { getRequestToday } from '@/lib/requestToday'
 import { formatGregorianDate, parseDateString } from '@/lib/utils'
 import { getLocale, getTranslations } from 'next-intl/server'
 import Link from 'next/link'
@@ -44,7 +45,7 @@ interface HomeProps {
 
 export default async function Home({ searchParams }: HomeProps) {
 	const params = await searchParams
-	const date = params.date
+	const date = params.date ?? (await getRequestToday())
 	const t = await getTranslations('home')
 	const locale = await getLocale()
 
@@ -56,7 +57,7 @@ export default async function Home({ searchParams }: HomeProps) {
 		getFastingForDate(date, locale),
 	])
 
-	const displayDate = date ? parseDateString(date) : new Date()
+	const displayDate = parseDateString(date)
 	const gregorianDate = formatGregorianDate(displayDate, locale)
 
 	const copticDate = calendar?.dateString || 'Loading...'
