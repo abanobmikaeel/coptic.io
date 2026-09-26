@@ -35,3 +35,18 @@ invocation_logs = true
 enabled = false
 persist = true
 head_sampling_rate = 1
+
+# PR previews (`--env preview --name coptic-api-pr-N`). Routes are inherited from the top
+# level, so clear them: otherwise every preview deploy moves api.coptic.io off production,
+# and deleting the preview deletes the domain. Bindings and `define` are not inherited.
+[env.preview]
+routes = []
+
+[env.preview.vars]
+
+[env.preview.define]
+IS_WORKERS = "true"
+
+[[env.preview.r2_buckets]]
+binding = "BIBLE_BUCKET"
+bucket_name = "coptic-io-readings"
