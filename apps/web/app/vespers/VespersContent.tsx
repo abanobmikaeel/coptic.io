@@ -32,7 +32,7 @@ export function VespersContent({
 	date,
 	commemorations,
 	notice,
-}: VespersContentProps) {
+}: Readonly<VespersContentProps>) {
 	const router = useRouter()
 
 	// No explicit ?date= — the server guessed from its own clock. Correct it to the user's

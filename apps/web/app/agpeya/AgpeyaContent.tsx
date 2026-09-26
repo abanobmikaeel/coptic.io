@@ -29,7 +29,7 @@ export function AgpeyaContent({
 	hourId,
 	hasHourParam,
 	notice,
-}: AgpeyaContentProps) {
+}: Readonly<AgpeyaContentProps>) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const [open, setOpen] = useState(false)

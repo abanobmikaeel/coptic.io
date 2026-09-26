@@ -20,7 +20,7 @@ interface SynaxariumUpcomingViewProps {
 export function SynaxariumUpcomingView({
 	startDate,
 	selectedCategory,
-}: SynaxariumUpcomingViewProps) {
+}: Readonly<SynaxariumUpcomingViewProps>) {
 	const t = useTranslations('synaxarium')
 	const tCommon = useTranslations('common')
 	const tCategories = useTranslations('categories')

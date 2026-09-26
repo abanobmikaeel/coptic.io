@@ -111,10 +111,11 @@ export const searchSynaxarium = (searchTerm: string, limit = 50): SynaxariumSear
 
 		if (wordMatches.length === searchWords.length) {
 			// Intersect results - entries must match all words
-			candidates = wordMatches.reduce((acc, matches) => {
+			const [first = [], ...rest] = wordMatches
+			candidates = rest.reduce((acc, matches) => {
 				const matchSet = new Set(matches)
 				return acc.filter((entry) => matchSet.has(entry))
-			})
+			}, first)
 		} else {
 			// Fallback to substring search if word not in index
 			candidates = allEntries.filter((e) => e.nameLower.includes(searchLower))

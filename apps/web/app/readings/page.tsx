@@ -102,7 +102,7 @@ interface ReadingsPageProps {
 	}>
 }
 
-export default async function ReadingsPage({ searchParams }: ReadingsPageProps) {
+export default async function ReadingsPage({ searchParams }: Readonly<ReadingsPageProps>) {
 	const params = await searchParams
 	const today = await getRequestToday()
 	const date = params.date ?? today

@@ -30,7 +30,7 @@ const themeStyles = {
 	},
 }
 
-function DefaultIcon({ className }: { className?: string }) {
+function DefaultIcon({ className }: Readonly<{ className?: string }>) {
 	return (
 		<svg
 			className={className}
@@ -49,7 +49,7 @@ function DefaultIcon({ className }: { className?: string }) {
 	)
 }
 
-function SearchIcon({ className }: { className?: string }) {
+function SearchIcon({ className }: Readonly<{ className?: string }>) {
 	return (
 		<svg
 			className={className}
@@ -68,7 +68,7 @@ function SearchIcon({ className }: { className?: string }) {
 	)
 }
 
-function BookIcon({ className }: { className?: string }) {
+function BookIcon({ className }: Readonly<{ className?: string }>) {
 	return (
 		<svg
 			className={className}
@@ -87,7 +87,7 @@ function BookIcon({ className }: { className?: string }) {
 	)
 }
 
-function CalendarIcon({ className }: { className?: string }) {
+function CalendarIcon({ className }: Readonly<{ className?: string }>) {
 	return (
 		<svg
 			className={className}
@@ -113,7 +113,7 @@ export function EmptyState({
 	action,
 	theme = 'light',
 	className = '',
-}: EmptyStateProps) {
+}: Readonly<EmptyStateProps>) {
 	const styles = themeStyles[theme]
 
 	return (
@@ -133,11 +133,11 @@ export function NoResultsState({
 	query,
 	theme = 'light',
 	onClear,
-}: {
+}: Readonly<{
 	query?: string
 	theme?: 'light' | 'sepia' | 'dark'
 	onClear?: () => void
-}) {
+}>) {
 	const t = useTranslations('emptyStates')
 	const tCommon = useTranslations('common')
 
@@ -162,7 +162,9 @@ export function NoResultsState({
 	)
 }
 
-export function NoReadingsState({ theme = 'light' }: { theme?: 'light' | 'sepia' | 'dark' }) {
+export function NoReadingsState({
+	theme = 'light',
+}: Readonly<{ theme?: 'light' | 'sepia' | 'dark' }>) {
 	const t = useTranslations('emptyStates')
 
 	return (
@@ -178,10 +180,10 @@ export function NoReadingsState({ theme = 'light' }: { theme?: 'light' | 'sepia'
 export function NoEntriesState({
 	type = 'entries',
 	theme = 'light',
-}: {
+}: Readonly<{
 	type?: string
 	theme?: 'light' | 'sepia' | 'dark'
-}) {
+}>) {
 	const t = useTranslations('emptyStates')
 
 	return (

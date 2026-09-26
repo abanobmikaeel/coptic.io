@@ -104,7 +104,7 @@ export default function CompareSourcesPage() {
 	)
 }
 
-function SourcePanel({ source, date }: { source: string; date: string }) {
+function SourcePanel({ source, date }: Readonly<{ source: string; date: string }>) {
 	return (
 		<div className="bg-white dark:bg-gray-800 rounded-lg shadow">
 			<div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">

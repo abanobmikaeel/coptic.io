@@ -23,7 +23,7 @@ export function SynaxariumHeader({
 	onViewModeChange,
 	onPrevious,
 	onNext,
-}: SynaxariumHeaderProps) {
+}: Readonly<SynaxariumHeaderProps>) {
 	const t = useTranslations('synaxarium')
 	const tCommon = useTranslations('common')
 	const isDayView = viewMode === 'day'

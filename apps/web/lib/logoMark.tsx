@@ -1,14 +1,14 @@
-interface CopticCrossProps {
-	className?: string
-	size?: number
-}
-
-export default function CopticCross({ className = '', size = 20 }: Readonly<CopticCrossProps>) {
+/** The app mark (calendar with a Coptic cross), for image routes rendered by next/og. */
+export function LogoMark({ size }: Readonly<{ size: number }>) {
 	return (
-		<svg width={size} height={size} viewBox="0 0 100 100" className={className} aria-hidden="true">
-			<rect width="100" height="100" rx="18" fill="#d97706" />
-
-			{/* Calendar with connected pins */}
+		<svg
+			viewBox="0 0 100 100"
+			width={size}
+			height={size}
+			style={{ display: 'flex' }}
+			role="img"
+			aria-label="Coptic Calendar"
+		>
 			<g
 				transform="translate(50, 52)"
 				fill="none"
@@ -17,17 +17,11 @@ export default function CopticCross({ className = '', size = 20 }: Readonly<Copt
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			>
-				{/* Calendar body */}
 				<rect x="-28" y="-18" width="56" height="48" rx="6" />
-				{/* Top bar */}
 				<line x1="-28" y1="-8" x2="28" y2="-8" />
-				{/* Left pin */}
 				<line x1="-12" y1="-28" x2="-12" y2="-14" />
-				{/* Right pin */}
 				<line x1="12" y1="-28" x2="12" y2="-14" />
 			</g>
-
-			{/* Coptic cross inside calendar */}
 			<g transform="translate(50, 62) scale(0.10) translate(-63.9, -85.2)">
 				<polygon
 					fill="white"

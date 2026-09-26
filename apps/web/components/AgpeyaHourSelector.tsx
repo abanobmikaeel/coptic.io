@@ -122,7 +122,7 @@ export function AgpeyaHourSelector({
 	currentWatch,
 	recommendedHour,
 	theme = 'light',
-}: AgpeyaHourSelectorProps) {
+}: Readonly<AgpeyaHourSelectorProps>) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const [isOpen, setIsOpen] = useState(false)

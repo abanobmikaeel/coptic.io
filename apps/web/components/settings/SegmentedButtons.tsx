@@ -24,7 +24,7 @@ export function SegmentedButtons<T extends string>({
 	value,
 	onChange,
 	className = '',
-}: SegmentedButtonsProps<T>) {
+}: Readonly<SegmentedButtonsProps<T>>) {
 	return (
 		<div className={`flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1 ${className}`}>
 			{options.map((option) => (

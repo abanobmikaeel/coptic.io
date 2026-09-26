@@ -15,7 +15,7 @@ interface MobileMenuProps {
 	sections?: MobileReadingItem[]
 }
 
-export function MobileMenu({ theme = 'light', sections }: MobileMenuProps) {
+export function MobileMenu({ theme = 'light', sections }: Readonly<MobileMenuProps>) {
 	const dialogRef = useRef<HTMLDialogElement>(null)
 	const pathname = usePathname()
 	const t = useTranslations('nav')

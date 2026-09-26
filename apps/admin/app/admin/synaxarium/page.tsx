@@ -102,11 +102,11 @@ function SynaxariumEntry({
 	name,
 	status,
 	source,
-}: {
+}: Readonly<{
 	name: string
 	status: 'raw' | 'reviewed' | 'canonical'
 	source: string
-}) {
+}>) {
 	const statusColors = {
 		raw: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
 		reviewed: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',

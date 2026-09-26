@@ -26,7 +26,7 @@ interface DisplaySettingsProps {
 	availableLanguages?: ContentLanguage[]
 }
 
-export function DisplaySettings({ availableLanguages }: DisplaySettingsProps) {
+export function DisplaySettings({ availableLanguages }: Readonly<DisplaySettingsProps>) {
 	const { settings, actions, mounted } = useReadingSettings()
 	const { languages, setLanguages, isLoaded } = useContentLanguages()
 	const [isOpen, setIsOpen] = useState(false)

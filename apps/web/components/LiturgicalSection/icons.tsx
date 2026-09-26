@@ -33,7 +33,7 @@ export function GearIcon() {
 	)
 }
 
-export function ChevronIcon({ dir }: { dir: 'left' | 'right' }) {
+export function ChevronIcon({ dir }: Readonly<{ dir: 'left' | 'right' }>) {
 	return (
 		<Svg size={18}>
 			<path d={dir === 'left' ? 'm15 18-6-6 6-6' : 'm9 18 6-6-6-6'} />

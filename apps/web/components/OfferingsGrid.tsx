@@ -11,7 +11,7 @@ import {
 	SunIcon,
 } from './ui/Icons'
 
-function OfferingGlyph({ name }: { name: OfferingIcon }) {
+function OfferingGlyph({ name }: Readonly<{ name: OfferingIcon }>) {
 	const cls = 'w-5 h-5'
 	switch (name) {
 		case 'clock':
@@ -39,7 +39,11 @@ interface OfferingsGridProps {
 	className?: string
 }
 
-export async function OfferingsGrid({ pillar, lent = false, className = '' }: OfferingsGridProps) {
+export async function OfferingsGrid({
+	pillar,
+	lent = false,
+	className = '',
+}: Readonly<OfferingsGridProps>) {
 	const t = await getTranslations('nav')
 	const items = OFFERINGS.filter((o) => {
 		if (pillar && o.pillar !== pillar) return false

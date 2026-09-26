@@ -2,7 +2,7 @@ interface SkeletonProps {
 	className?: string
 }
 
-export function Skeleton({ className = '' }: SkeletonProps) {
+export function Skeleton({ className = '' }: Readonly<SkeletonProps>) {
 	return <div className={`animate-pulse bg-gray-200 dark:bg-gray-700 rounded ${className}`} />
 }
 
@@ -41,7 +41,7 @@ function getShimmerClass(theme: ReadingTheme) {
  */
 const VERSE_WIDTHS = ['96%', '78%', '88%', '72%', '92%']
 
-export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) {
+export function ReadingsSkeleton({ theme = 'light' }: Readonly<{ theme?: ReadingTheme }>) {
 	const shimmer = getShimmerClass(theme)
 
 	return (
@@ -73,7 +73,7 @@ export function ReadingsSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) 
 	)
 }
 
-export function SynaxariumSkeleton({ theme = 'light' }: { theme?: ReadingTheme }) {
+export function SynaxariumSkeleton({ theme = 'light' }: Readonly<{ theme?: ReadingTheme }>) {
 	const shimmer = getShimmerClass(theme)
 
 	return (

@@ -43,7 +43,7 @@ interface HomeProps {
 	searchParams: Promise<{ date?: string }>
 }
 
-export default async function Home({ searchParams }: HomeProps) {
+export default async function Home({ searchParams }: Readonly<HomeProps>) {
 	const params = await searchParams
 	const date = params.date ?? (await getRequestToday())
 	const t = await getTranslations('home')

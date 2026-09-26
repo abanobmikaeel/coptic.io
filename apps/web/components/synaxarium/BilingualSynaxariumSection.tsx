@@ -42,7 +42,7 @@ export function BilingualSynaxariumSection({
 	weight = 'normal',
 	lineSpacing = 'normal',
 	wordSpacing = 'normal',
-}: BilingualSynaxariumSectionProps) {
+}: Readonly<BilingualSynaxariumSectionProps>) {
 	const t = useTranslations('synaxarium')
 
 	// Get style classes for English (LTR)

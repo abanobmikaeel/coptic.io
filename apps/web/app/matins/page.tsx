@@ -49,7 +49,7 @@ async function fetchMatins(
 	}
 }
 
-export default async function MatinsPage({ searchParams }: MatinsPageProps) {
+export default async function MatinsPage({ searchParams }: Readonly<MatinsPageProps>) {
 	const { date: dateParam } = await searchParams
 	// Unlike Vespers there is no evening rollover here: Matins belongs to the calendar
 	// day it is prayed on.

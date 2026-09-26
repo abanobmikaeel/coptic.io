@@ -32,7 +32,12 @@ export interface ServiceSectionProps {
 // Scroll-mode view of one section: the same aligned rows presentation mode
 // pages through, rendered in full. Sharing the rows is what keeps the language
 // columns level while scrolling.
-export function ServiceSection({ rows, activeLangs, refsByLang, ...style }: ServiceSectionProps) {
+export function ServiceSection({
+	rows,
+	activeLangs,
+	refsByLang,
+	...style
+}: Readonly<ServiceSectionProps>) {
 	const hasRefs = activeLangs.some((lang) => refsByLang?.[lang])
 	return (
 		<div className="pt-2 pb-2">
@@ -72,7 +77,7 @@ export function ServiceSection({ rows, activeLangs, refsByLang, ...style }: Serv
 export function LanguageColumnsHeader({
 	activeLangs,
 	theme,
-}: Pick<ServiceSectionProps, 'activeLangs' | 'theme'>) {
+}: Readonly<Pick<ServiceSectionProps, 'activeLangs' | 'theme'>>) {
 	const labels: Partial<Record<BibleTranslation, string>> = {
 		en: 'English',
 		cop: 'Coptic',

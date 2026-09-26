@@ -39,7 +39,7 @@ export function SynaxariumTodayView({
 	expandedEntry,
 	onNavigateDate,
 	onGoToToday,
-}: SynaxariumTodayViewProps) {
+}: Readonly<SynaxariumTodayViewProps>) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
 
@@ -104,7 +104,7 @@ export function SynaxariumTodayView({
 	)
 }
 
-function FeaturedTodayCard({ entries }: { entries: SynaxariumEntry[] }) {
+function FeaturedTodayCard({ entries }: Readonly<{ entries: SynaxariumEntry[] }>) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
 

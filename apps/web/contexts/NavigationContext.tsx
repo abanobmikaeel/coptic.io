@@ -32,7 +32,7 @@ const NavigationContext = createContext<NavigationContextValue | null>(null)
 // Pages that should automatically be in read mode
 const READ_MODE_PATHS = ['/readings', '/agpeya', '/tasbeha', '/synaxarium', '/lent']
 
-export function NavigationProvider({ children }: { children: ReactNode }) {
+export function NavigationProvider({ children }: Readonly<{ children: ReactNode }>) {
 	const pathname = usePathname()
 	const [mode, setMode] = useState<NavigationMode>('browse')
 	const [readModeTitle, setReadModeTitle] = useState<string | undefined>()

@@ -12,7 +12,7 @@ export function ReadingHeader({
 	isOpen,
 	theme,
 	isRtl,
-}: ReadingHeaderProps) {
+}: Readonly<ReadingHeaderProps>) {
 	const isMultiLang = !!orderedLangs
 
 	if (isMultiLang) {
@@ -59,14 +59,14 @@ function SingleLangLayout({
 	isOpen,
 	theme,
 	isRtl,
-}: {
+}: Readonly<{
 	title: string
 	reference: string
 	service?: string
 	isOpen: boolean
 	theme: ReadingHeaderProps['theme']
 	isRtl?: boolean
-}) {
+}>) {
 	const refColor = themeClasses.refText[theme]
 
 	return (
@@ -104,14 +104,14 @@ function MultiLangLayout({
 	service,
 	isOpen,
 	theme,
-}: {
-	orderedLangs: ReadingHeaderProps['orderedLangs'] & {}
+}: Readonly<{
+	orderedLangs: NonNullable<ReadingHeaderProps['orderedLangs']>
 	labels: NonNullable<ReadingHeaderProps['labels']>
 	references: NonNullable<ReadingHeaderProps['references']>
 	service?: string
 	isOpen: boolean
 	theme: ReadingHeaderProps['theme']
-}) {
+}>) {
 	const refColor = themeClasses.refText[theme]
 
 	return (

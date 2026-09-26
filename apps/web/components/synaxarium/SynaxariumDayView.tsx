@@ -55,7 +55,7 @@ export function SynaxariumDayView({
 	weight = 'normal',
 	lineSpacing = 'normal',
 	wordSpacing = 'normal',
-}: SynaxariumDayViewProps) {
+}: Readonly<SynaxariumDayViewProps>) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
 
@@ -126,7 +126,10 @@ export function SynaxariumDayView({
 	)
 }
 
-function FeaturedTodayCard({ entries, theme }: { entries: BilingualEntry[]; theme: ReadingTheme }) {
+function FeaturedTodayCard({
+	entries,
+	theme,
+}: Readonly<{ entries: BilingualEntry[]; theme: ReadingTheme }>) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
 

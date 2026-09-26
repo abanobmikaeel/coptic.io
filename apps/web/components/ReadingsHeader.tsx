@@ -17,7 +17,7 @@ export function ReadingsHeader({
 	theme,
 	sections,
 	layout = 'center',
-}: ReadingsHeaderProps) {
+}: Readonly<ReadingsHeaderProps>) {
 	const { setMobileSections, setReadingTheme } = useNavigation()
 
 	// Register sections and theme so the global MobileMenu can use them

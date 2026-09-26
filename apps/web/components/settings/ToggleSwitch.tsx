@@ -6,7 +6,7 @@ interface ToggleSwitchProps {
 	onChange: () => void
 }
 
-export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
+export function ToggleSwitch({ label, checked, onChange }: Readonly<ToggleSwitchProps>) {
 	return (
 		<button
 			type="button"

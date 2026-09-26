@@ -43,7 +43,7 @@ export function SynaxariumSection({
 	lineSpacing = 'normal',
 	wordSpacing = 'normal',
 	isRtl = false,
-}: SynaxariumSectionProps) {
+}: Readonly<SynaxariumSectionProps>) {
 	const t = useTranslations('synaxarium')
 	const [expanded, setExpanded] = useState<number | null>(initialExpanded)
 

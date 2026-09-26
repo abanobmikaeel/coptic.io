@@ -425,7 +425,7 @@ function CommandPaletteModal({
 	return createPortal(content, document.body)
 }
 
-export function CommandPaletteProvider({ children }: { children: React.ReactNode }) {
+export function CommandPaletteProvider({ children }: Readonly<{ children: React.ReactNode }>) {
 	const [isOpen, setIsOpen] = useState(false)
 
 	const open = useCallback(() => setIsOpen(true), [])

@@ -23,7 +23,11 @@ const languageKeys: Record<ContentLanguage, string> = {
 	es: 'spanish',
 }
 
-export function LanguagePills({ selected, onChange, availableLanguages }: LanguagePillsProps) {
+export function LanguagePills({
+	selected,
+	onChange,
+	availableLanguages,
+}: Readonly<LanguagePillsProps>) {
 	const t = useTranslations('contentLanguages')
 	const router = useRouter()
 

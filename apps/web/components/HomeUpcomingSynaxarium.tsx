@@ -7,7 +7,9 @@ interface HomeUpcomingSynaxariumProps {
 	limit?: number
 }
 
-export default async function HomeUpcomingSynaxarium({ limit = 5 }: HomeUpcomingSynaxariumProps) {
+export default async function HomeUpcomingSynaxarium({
+	limit = 5,
+}: Readonly<HomeUpcomingSynaxariumProps>) {
 	const today = getTodayDateString()
 	const entries = await getSynaxariumByDate(today, false)
 

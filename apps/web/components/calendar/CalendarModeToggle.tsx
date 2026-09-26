@@ -6,7 +6,11 @@ interface CalendarModeToggleProps {
 	copticEnabled: boolean
 }
 
-export function CalendarModeToggle({ mode, onModeChange, copticEnabled }: CalendarModeToggleProps) {
+export function CalendarModeToggle({
+	mode,
+	onModeChange,
+	copticEnabled,
+}: Readonly<CalendarModeToggleProps>) {
 	return (
 		<div className="flex justify-center mb-4">
 			<div className="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 p-1 bg-gray-100 dark:bg-gray-800">

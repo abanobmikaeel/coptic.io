@@ -18,7 +18,7 @@ export interface RubricLineProps {
 
 // Instructional text (stage directions like "On Sunday, add:") set apart from the chanted
 // prayer as its own muted divider line, so a reader never mistakes it for text to be said.
-export function RubricLine({ text, lang, theme, isRtl, fontClass }: RubricLineProps) {
+export function RubricLine({ text, lang, theme, isRtl, fontClass }: Readonly<RubricLineProps>) {
 	const preserveCase = PRESERVE_LABEL_CASE.has(lang)
 	const muted = themeClasses.muted[theme]
 	// Small-caps only for cased Latin scripts.

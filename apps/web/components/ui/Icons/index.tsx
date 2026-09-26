@@ -3,7 +3,7 @@ interface IconProps {
 	strokeWidth?: number
 }
 
-export function SettingsIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function SettingsIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -28,7 +28,7 @@ export function SettingsIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconP
 	)
 }
 
-export function CrossIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function CrossIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -47,7 +47,7 @@ export function CrossIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProp
 	)
 }
 
-export function LibraryIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function LibraryIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -66,7 +66,7 @@ export function LibraryIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconPr
 	)
 }
 
-export function CalendarIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function CalendarIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -85,7 +85,7 @@ export function CalendarIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconP
 	)
 }
 
-export function ChevronLeftIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps) {
+export function ChevronLeftIcon({ className = 'w-5 h-5', strokeWidth = 2 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -104,7 +104,7 @@ export function ChevronLeftIcon({ className = 'w-5 h-5', strokeWidth = 2 }: Icon
 	)
 }
 
-export function ChevronRightIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps) {
+export function ChevronRightIcon({ className = 'w-5 h-5', strokeWidth = 2 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -123,7 +123,7 @@ export function ChevronRightIcon({ className = 'w-5 h-5', strokeWidth = 2 }: Ico
 	)
 }
 
-export function CloseIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps) {
+export function CloseIcon({ className = 'w-5 h-5', strokeWidth = 2 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -142,7 +142,7 @@ export function CloseIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps)
 	)
 }
 
-export function CheckIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps) {
+export function CheckIcon({ className = 'w-5 h-5', strokeWidth = 2 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -161,7 +161,7 @@ export function CheckIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps)
 	)
 }
 
-export function BookIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function BookIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -180,7 +180,7 @@ export function BookIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps
 	)
 }
 
-export function CodeIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function CodeIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -199,7 +199,7 @@ export function CodeIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps
 	)
 }
 
-export function MailIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function MailIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -218,7 +218,7 @@ export function MailIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps
 	)
 }
 
-export function GitHubIcon({ className = 'w-4 h-4' }: IconProps) {
+export function GitHubIcon({ className = 'w-4 h-4' }: Readonly<IconProps>) {
 	return (
 		<svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 			<path
@@ -230,7 +230,7 @@ export function GitHubIcon({ className = 'w-4 h-4' }: IconProps) {
 	)
 }
 
-export function SearchIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps) {
+export function SearchIcon({ className = 'w-5 h-5', strokeWidth = 2 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -249,7 +249,7 @@ export function SearchIcon({ className = 'w-5 h-5', strokeWidth = 2 }: IconProps
 	)
 }
 
-export function SunIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function SunIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -268,7 +268,7 @@ export function SunIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps)
 	)
 }
 
-export function MenuIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps) {
+export function MenuIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -287,7 +287,7 @@ export function MenuIcon({ className = 'w-5 h-5', strokeWidth = 1.5 }: IconProps
 	)
 }
 
-export function LoadingSpinner({ className = 'w-5 h-5' }: IconProps) {
+export function LoadingSpinner({ className = 'w-5 h-5' }: Readonly<IconProps>) {
 	return (
 		<svg className={`animate-spin ${className}`} viewBox="0 0 24 24" aria-hidden="true">
 			<circle
@@ -308,7 +308,7 @@ export function LoadingSpinner({ className = 'w-5 h-5' }: IconProps) {
 	)
 }
 
-export function PersonIcon({ className = 'w-4 h-4', strokeWidth = 1.5 }: IconProps) {
+export function PersonIcon({ className = 'w-4 h-4', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -327,7 +327,7 @@ export function PersonIcon({ className = 'w-4 h-4', strokeWidth = 1.5 }: IconPro
 	)
 }
 
-export function ClockIcon({ className = 'w-4 h-4', strokeWidth = 1.5 }: IconProps) {
+export function ClockIcon({ className = 'w-4 h-4', strokeWidth = 1.5 }: Readonly<IconProps>) {
 	return (
 		<svg
 			className={className}
@@ -346,7 +346,7 @@ export function ClockIcon({ className = 'w-4 h-4', strokeWidth = 1.5 }: IconProp
 	)
 }
 
-export function GoogleIcon({ className = 'w-5 h-5' }: IconProps) {
+export function GoogleIcon({ className = 'w-5 h-5' }: Readonly<IconProps>) {
 	return (
 		<svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 			<path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.344-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />

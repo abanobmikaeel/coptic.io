@@ -7,7 +7,7 @@ interface ChevronIconProps {
 	rotate?: 'left' | 'right'
 }
 
-export function ChevronIcon({ isOpen, theme, rotate }: ChevronIconProps) {
+export function ChevronIcon({ isOpen, theme, rotate }: Readonly<ChevronIconProps>) {
 	const rotationClass = isOpen ? '' : rotate === 'right' ? 'rotate-90' : '-rotate-90'
 
 	return (

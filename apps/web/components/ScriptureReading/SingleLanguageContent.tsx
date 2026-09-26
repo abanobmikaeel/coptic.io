@@ -23,7 +23,7 @@ export function SingleLanguageContent({
 	showVerses,
 	theme,
 	width,
-}: SingleLanguageContentProps) {
+}: Readonly<SingleLanguageContentProps>) {
 	const { isRtl, textDir, sizes } = styleClasses
 	const widthClass = getWidthClass(width)
 
@@ -79,7 +79,7 @@ interface VersesProps {
 	theme: ReadingTheme
 }
 
-function ContinuousVerses({ verses, styleClasses, showVerses, theme }: VersesProps) {
+function ContinuousVerses({ verses, styleClasses, showVerses, theme }: Readonly<VersesProps>) {
 	const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
 		styleClasses
 
@@ -105,7 +105,7 @@ function ContinuousVerses({ verses, styleClasses, showVerses, theme }: VersesPro
 	)
 }
 
-function VerseByVerse({ verses, styleClasses, showVerses, theme }: VersesProps) {
+function VerseByVerse({ verses, styleClasses, showVerses, theme }: Readonly<VersesProps>) {
 	const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
 		styleClasses
 

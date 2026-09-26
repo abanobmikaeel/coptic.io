@@ -43,7 +43,7 @@ export function UpcomingSynaxarium({
 	getCategoryLabelKey,
 	getCategoryColor,
 	matchesCategory,
-}: UpcomingSynaxariumProps) {
+}: Readonly<UpcomingSynaxariumProps>) {
 	const locale = useLocale()
 	const _t = useTranslations('synaxarium')
 	const [days, setDays] = useState<DayData[]>([])

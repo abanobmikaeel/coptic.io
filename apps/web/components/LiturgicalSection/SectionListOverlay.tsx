@@ -27,7 +27,7 @@ export function SectionListOverlay({
 	onJump,
 	onToggleExtra,
 	onClose,
-}: SectionListOverlayProps) {
+}: Readonly<SectionListOverlayProps>) {
 	return (
 		<div
 			// biome-ignore lint/a11y/useSemanticElements: controlled modal overlay with a custom backdrop, not a native <dialog>

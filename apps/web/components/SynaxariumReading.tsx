@@ -86,7 +86,7 @@ export function SynaxariumReading({
 	weight = 'normal',
 	lineSpacing = 'normal',
 	wordSpacing = 'normal',
-}: SynaxariumReadingProps) {
+}: Readonly<SynaxariumReadingProps>) {
 	const [isOpen, setIsOpen] = useState(true)
 	const [expandedEntry, setExpandedEntry] = useState<string | null>(null)
 

@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/Button'
 
 export default function CalendarError({
 	reset,
-}: {
+}: Readonly<{
 	error: Error & { digest?: string }
 	reset: () => void
-}) {
+}>) {
 	return (
 		<main className="min-h-screen relative">
 			<section className="relative pt-20 pb-8 px-6">

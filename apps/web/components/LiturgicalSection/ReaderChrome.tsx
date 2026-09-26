@@ -6,7 +6,7 @@ import { ChevronIcon } from './icons'
 
 // Decorative Coptic textile band shown in place of a plain text notice banner; the message
 // itself lives in the tooltip and accessible label.
-export function NoticeBand({ notice, theme }: { notice: string; theme: ReadingTheme }) {
+export function NoticeBand({ notice, theme }: Readonly<{ notice: string; theme: ReadingTheme }>) {
 	return (
 		<div
 			role="note"
@@ -45,7 +45,7 @@ interface NavProps {
 // Large fixed prev/next arrows pinned to the screen edges. Hidden below md —
 // on mobile the bottom SectionDots already exposes Prev/Next, and the fixed
 // arrows would force ~56px of side padding that crushes multi-language columns.
-export function SideArrows({ hasPrev, hasNext, onPrev, onNext, theme }: NavProps) {
+export function SideArrows({ hasPrev, hasNext, onPrev, onNext, theme }: Readonly<NavProps>) {
 	const cls = `hidden md:block fixed top-1/2 -translate-y-1/2 z-30 p-3 rounded-full ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border ${themeClasses.border[theme]} shadow-sm transition-colors ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`
 	return (
 		<>
@@ -82,7 +82,7 @@ export function SectionDots({
 	onNext,
 	onJump,
 	compact = false,
-}: SectionDotsProps) {
+}: Readonly<SectionDotsProps>) {
 	const arrowCls = `flex-shrink-0 p-1.5 rounded-lg transition-colors disabled:opacity-25 ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`
 	// Keep the active dot visible when the strip overflows on narrow screens.
 	const activeDotRef = useRef<HTMLDivElement>(null)

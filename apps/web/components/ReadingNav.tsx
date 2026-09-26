@@ -10,7 +10,7 @@ const readingOrder = [
 	{ key: 'LGospel', label: 'Gospel' },
 ] as const
 
-export function ReadingNav({ readings }: { readings: ReadingsData }) {
+export function ReadingNav({ readings }: Readonly<{ readings: ReadingsData }>) {
 	const availableReadings = readingOrder.filter((r) => {
 		const data = readings[r.key as keyof ReadingsData]
 		return data && Array.isArray(data) && data.length > 0

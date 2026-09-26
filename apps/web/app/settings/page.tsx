@@ -285,11 +285,11 @@ function SettingRow({
 	label,
 	description,
 	children,
-}: {
+}: Readonly<{
 	label: string
 	description: string
 	children: React.ReactNode
-}) {
+}>) {
 	return (
 		<div className="flex items-center justify-between gap-4">
 			<div>
@@ -306,12 +306,12 @@ function Select({
 	onChange,
 	options,
 	disabled,
-}: {
+}: Readonly<{
 	value: string
 	onChange: (value: string) => void
 	options: { value: string; label: string }[]
 	disabled?: boolean
-}) {
+}>) {
 	return (
 		<select
 			value={value}
