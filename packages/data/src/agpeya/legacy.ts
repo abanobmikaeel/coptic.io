@@ -163,9 +163,6 @@ function toSlots(sections: AgpeyaSection[]): Partial<AgpeyaSlots> {
 	const psalmRefs: AgpeyaPsalmRef[] = []
 	const psalms: AgpeyaPsalm[] = []
 	const gospels: AgpeyaGospelRef[] = []
-	const conclusion = sections
-		.filter((s): s is AgpeyaProseSection => s.kind === 'conclusion')
-		.map((s) => ({ id: s.id, ...prayer(s) }))
 
 	for (const section of sections) {
 		if (section.kind === 'gospel') {
@@ -187,8 +184,14 @@ function toSlots(sections: AgpeyaSection[]): Partial<AgpeyaSlots> {
 		...(psalms.length ? { psalms } : {}),
 		...(gospels[0] ? { gospelRef: gospels[0] } : {}),
 		...(gospels[1] ? { gospelRef2: gospels[1] } : {}),
-		...(conclusion.length ? { conclusion } : {}),
 	}
+}
+
+function toConclusion(sections: AgpeyaSection[]): Pick<AgpeyaSlots, 'conclusion'> {
+	const conclusion = sections
+		.filter((s): s is AgpeyaProseSection => s.kind === 'conclusion')
+		.map((s) => ({ id: s.id, ...prayer(s) }))
+	return conclusion.length ? { conclusion } : {}
 }
 
 const identity = (hour: AgpeyaHourService) => ({
@@ -231,5 +234,6 @@ export function toLegacyHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMi
 		...identity(hour),
 		...(hour.psalmsIntro ? { psalmsIntro: hour.psalmsIntro } : {}),
 		...toSlots(hour.parts as AgpeyaSection[]),
+		...toConclusion(hour.parts as AgpeyaSection[]),
 	} as AgpeyaHourData
 }
