@@ -34,7 +34,7 @@
  */
 
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 const BASE = 'https://tasbeha.org/hymn_library/view'
 
 type Lang = 'en' | 'ar' | 'cop'
@@ -731,7 +731,7 @@ const NAMES: Record<Lang, { name: string; description: string }> = {
 }
 
 const dataPath = (lang: Lang) =>
-	join(import.meta.dirname, '..', 'packages', 'data', 'src', lang, 'liturgy', 'liturgy.json')
+	join(import.meta.dirname, '..', 'src', lang, 'liturgy', 'liturgy.json')
 
 function writeOutput(lang: Lang, sections: Record<string, ContentItem[]>) {
 	const convert = (items: ContentItem[]) =>
@@ -773,7 +773,7 @@ function writeOutput(lang: Lang, sections: Record<string, ContentItem[]>) {
 		},
 	}
 
-	const outDir = join(import.meta.dirname, '..', 'packages', 'data', 'src', lang, 'liturgy')
+	const outDir = dirname(dataPath(lang))
 	if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true })
 	writeFileSync(dataPath(lang), `${JSON.stringify(outData, null, 2)}\n`, 'utf-8')
 

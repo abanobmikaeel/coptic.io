@@ -3,13 +3,14 @@
 ## Provenance
 
 All liturgical text is imported from the [tasbeha.org hymn library](https://tasbeha.org/hymn_library/)
-by `scripts/extract-liturgy.ts` (repo root). Each source page lays English, Unicode
+by `packages/data/scripts/extract-liturgy.ts`. Each source page lays English, Unicode
 Coptic, and Arabic out as parallel rows, and the importer parses them as aligned
 triples so the three languages stay turn-by-turn identical.
 
 To regenerate:
 
 ```bash
+cd packages/data
 bun run scripts/extract-liturgy.ts        # all three languages
 bun run scripts/extract-liturgy.ts cop    # one language only
 ```
