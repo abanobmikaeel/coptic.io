@@ -15,4 +15,4 @@
 *.eot binary
 
 # Vendored font licenses are kept verbatim from upstream
-apps/web/app/fonts/licenses/*.txt -whitespace
+apps/web/public/fonts/google/licenses/*.txt -whitespace
