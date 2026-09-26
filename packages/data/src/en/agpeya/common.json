@@ -1352,7 +1352,7 @@
 		},
 		"kyrie41": {
 			"id": "kyrie41",
-			"kind": "opening",
+			"kind": "conclusion",
 			"title": "Lord Have Mercy (41 times)",
 			"content": [
 				"Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy. Lord have mercy.",
@@ -1422,6 +1422,26 @@
 			"content": [
 				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins.",
 				"We worship You, O Christ, with Your good Father and the Holy Spirit, for You have come and saved us."
+			]
+		},
+		"holy-holy-holy": {
+			"id": "holy-holy-holy",
+			"kind": "conclusion",
+			"title": "Holy, Holy, Holy",
+			"content": [
+				"Holy Holy Holy. Lord of hosts. Heaven and earth are full of Your glory and honor. Have mercy on us, O God the Father, the Almighty O Holy Trinity, have mercy on us. O Lord, God of hosts, be with us. For we have no helper in our hardships and tribulations but You. Absolve, forgive, and remit, O God, our transgressions; those which we have committed willingly and those we have committed unwillingly, those which we have committed knowingly and those which we have committed unknowingly, the hidden and manifest, O Lord forgive us, for the sake of Your Holy name which is called upon us.",
+				"Let it be according to Your mercy, O Lord, and not according to our sins.",
+				"Make us worthy to pray thankfully:",
+				"Our Father who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done on earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from the evil one, in Christ Jesus our Lord. For Thine is the kingdom, the power, and the glory, forever. Amen."
+			]
+		},
+		"conclusion-of-every-hour": {
+			"id": "conclusion-of-every-hour",
+			"kind": "conclusion",
+			"title": "Conclusion of Every Hour",
+			"content": [
+				"Have mercy on us, O God, and have mercy on us, who, at all times and in every hour, in heaven and on earth, is worshipped and glorified, Christ our God, the good, the long suffering, the abundant in mercy, and the great in compassion, who loves the righteous and has mercy on the sinners of whom I am chief; who does not wish the death of the sinner but rather that he returns and lives, who calls all to salvation for the promise of the blessings to come.",
+				"Lord receive from us our prayers in this hour and in every hour. Ease our life and guide us to fulfill Your commandments. Sanctify our spirits. Cleanse our bodies. Conduct our thoughts. Purify our intentions. Heal our diseases. Forgive our sins. Deliver us from every evil grief and distress of heart. Surround us by Your holy angels, that, by their camp, we may be guarded and guided, and attain the unity of faith, and the knowledge of Your imperceptible and infinite glory. For You are blessed forever. Amen."
 			]
 		}
 	}

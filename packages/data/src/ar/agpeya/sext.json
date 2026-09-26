@@ -4,8 +4,7 @@
 	"name": "الساعة السادسة",
 	"englishName": "Sixth Hour",
 	"traditionalTime": "12:00 PM",
-	"introduction": "We pray the Sixth Hour commemorating the Crucifixion of our Lord Jesus Christ. At this hour, darkness covered the whole earth.",
-	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"psalmsIntro": "من مزامير معلمنا داود النبي بركاته علينا أمين.",
 	"order": [
 		"opening",
 		"sext-hour-intro",
@@ -25,7 +24,10 @@
 		"sext-psalm-92",
 		"sext-gospel",
 		"sext-litany",
-		"sext-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"sext-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -40,7 +42,7 @@
 			"id": "sext-psalm-53",
 			"kind": "psalm",
 			"psalmNumber": 53,
-			"title": "Psalm 53",
+			"title": "المزمور الثالث والخمسون",
 			"verses": [
 				{
 					"num": 1,
@@ -76,7 +78,7 @@
 			"id": "sext-psalm-56",
 			"kind": "psalm",
 			"psalmNumber": 56,
-			"title": "Psalm 56",
+			"title": "المزمور السادس والخمسون",
 			"verses": [
 				{
 					"num": 1,
@@ -140,7 +142,7 @@
 			"id": "sext-psalm-60",
 			"kind": "psalm",
 			"psalmNumber": 60,
-			"title": "Psalm 60",
+			"title": "المزمور الستون",
 			"verses": [
 				{
 					"num": 1,
@@ -188,7 +190,7 @@
 			"id": "sext-psalm-62",
 			"kind": "psalm",
 			"psalmNumber": 62,
-			"title": "Psalm 62",
+			"title": "المزمور الثاني والستون",
 			"verses": [
 				{
 					"num": 1,
@@ -252,7 +254,7 @@
 			"id": "sext-psalm-66",
 			"kind": "psalm",
 			"psalmNumber": 66,
-			"title": "Psalm 66",
+			"title": "المزمور السادس والستون",
 			"verses": [
 				{
 					"num": 1,
@@ -288,7 +290,7 @@
 			"id": "sext-psalm-69",
 			"kind": "psalm",
 			"psalmNumber": 69,
-			"title": "Psalm 69",
+			"title": "المزمور التاسع والستون",
 			"verses": [
 				{
 					"num": 1,
@@ -320,7 +322,7 @@
 			"id": "sext-psalm-83",
 			"kind": "psalm",
 			"psalmNumber": 83,
-			"title": "Psalm 83",
+			"title": "المزمور الثالث والثمانون",
 			"verses": [
 				{
 					"num": 1,
@@ -396,7 +398,7 @@
 			"id": "sext-psalm-84",
 			"kind": "psalm",
 			"psalmNumber": 84,
-			"title": "Psalm 84",
+			"title": "المزمور الرابع والثمانون",
 			"verses": [
 				{
 					"num": 1,
@@ -452,7 +454,7 @@
 			"id": "sext-psalm-86",
 			"kind": "psalm",
 			"psalmNumber": 86,
-			"title": "Psalm 86",
+			"title": "المزمور السادس والثمانون",
 			"verses": [
 				{
 					"num": 1,
@@ -492,7 +494,7 @@
 			"id": "sext-psalm-92",
 			"kind": "psalm",
 			"psalmNumber": 92,
-			"title": "Psalm 92",
+			"title": "المزمور الثاني والتسعون",
 			"verses": [
 				{
 					"num": 1,
@@ -534,8 +536,7 @@
 			"book": "Matthew",
 			"chapter": 5,
 			"startVerse": 1,
-			"endVerse": 16,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Matthew the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 16
 		},
 		{
 			"id": "sext-litany",
@@ -571,9 +572,9 @@
 			]
 		},
 		{
-			"id": "sext-closing",
-			"kind": "closing",
-			"title": "الختام",
+			"id": "sext-absolution",
+			"kind": "conclusion",
+			"title": "التحليل",
 			"content": [
 				"نشكرك يا ملكنا ضابط الكل أبا ربنا وإلهنا مخلصنا يسوع المسيح ونمجدك، لأنك جعلت أوقات الآلام أبنك الوحيد أوقات عزاء وصلاة. اقبل إليك تضرعنا، وامح عنا صك خطايانا المكتوبة علينا، كما مزقته في هذه الساعة المقدسة بصليب ابنك الوحيد يسوع المسيح ربنا ومخلص نفوسنا، هذا الذي به هدمتَ كل قوة العدو.",
 				"أعطنا يا الله وقتا بهيا، وسيرة بلا عيب، وحياة هادئة، لنرضي اسمك القدوس المسجود له، ونقف أمام المنبر المخوف العادل الذي لابنك الوحيد يسوع المسيح ربنا بغير وقوع في دينونة، ونمجدك مع كافة قديسيك. أنت الآب غير المبتدئ والابن المساوي لك، والروح القدس المحيى، الآن وكل أوان وإلى دهر الدهور كلها. أمين."

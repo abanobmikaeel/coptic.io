@@ -49,7 +49,8 @@ export interface ResolvedAgpeyaHour {
 	litanies: { title?: string; content: string[] }
 	lordsPrayer?: { title?: string; content: string[]; inline?: boolean }
 	thanksgivingAfter?: { title?: string; content: string[]; inline?: boolean }
-	closing: { title?: string; content: string[]; inline?: boolean }
+	closing?: { title?: string; content: string[]; inline?: boolean }
+	conclusion?: { id: string; title?: string; content: string[]; inline?: boolean }[]
 }
 
 // Resolved watch with populated psalms and gospel
@@ -127,6 +128,7 @@ function resolveHour(
 		lordsPrayer: hourData.lordsPrayer,
 		thanksgivingAfter: hourData.thanksgivingAfter,
 		closing: hourData.closing,
+		conclusion: hourData.conclusion,
 	}
 }
 

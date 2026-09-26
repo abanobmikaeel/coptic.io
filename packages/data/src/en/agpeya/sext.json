@@ -25,7 +25,10 @@
 		"sext-psalm-92",
 		"sext-gospel",
 		"sext-litany",
-		"sext-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"sext-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -548,11 +551,12 @@
 			]
 		},
 		{
-			"id": "sext-closing",
-			"kind": "closing",
+			"id": "sext-absolution",
+			"kind": "conclusion",
+			"title": "Absolution",
 			"content": [
-				"O Lord, Who at the Sixth Hour was crucified for our salvation: tear away the veil which covers our hearts, that we may worship You in fear and trembling. Forgive us our sins, and have mercy upon us.",
-				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+				"We thank You, our King, the Almighty, the Father of our Lord God and Savior Jesus Christ, and glorify You, for You have made the times of the passions of Your Only-Begotten Son, to be times of comfort and prayer. Accept our supplication and abolish the handwriting of our sins that is written against us, just as You tore it in this holy hour, by the cross of Your Only-Begotten Son, Jesus Christ, our Lord and Savior of our souls, this is by which you destroyed all the power of the enemy.",
+				"Grant us, O God, a glorious time, a spotless conduct, and a peaceful life, so that we may please Your holy and worshipped name, and that, without falling into condemnation, we may stand before the fearful and just throne of Your Only-Begotten Son Jesus Christ our Lord, and that we, together with all Your saints, glorify You, our Father, who is without beginning, and the Son who is of one essence with You, and the Holy Spirit the Life-Giver, now and forever and unto the ages of all ages. Amen."
 			]
 		}
 	]

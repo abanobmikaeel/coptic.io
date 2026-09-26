@@ -32,11 +32,17 @@ import enBible from '../en/bible/books.json'
 const KNOWN_PROSE_GAPS = new Set([
 	'prime.litanies',
 	'terce.litanies',
-	'terce.closing',
 	'sext.litanies',
 	'none.litanies',
 	'vespers.litanies',
-	'vespers.closing',
+	// The source breaks these into different paragraphs per language
+	'terce.conclusion.terce-absolution',
+	'none.conclusion.none-absolution',
+	// Only the Arabic source ends the Conclusion with the Lord's Prayer
+	'terce.conclusion.conclusion-of-every-hour',
+	'sext.conclusion.conclusion-of-every-hour',
+	'none.conclusion.conclusion-of-every-hour',
+	'vespers.conclusion.conclusion-of-every-hour',
 	'compline.litanies',
 	'compline.closing',
 	'midnight.opening',
@@ -123,6 +129,20 @@ for (const { path, en: e, ar: a } of units) {
 		proseCounts.set(`${path}.${key}`, {
 			en: isBlock(e[key]) ? (e[key] as Block).content!.length : 0,
 			ar: isBlock(a[key]) ? (a[key] as Block).content!.length : 0,
+		})
+	}
+	const conclusion = (u: Unit) =>
+		new Map(
+			((u.conclusion ?? []) as (Block & { id: string })[]).map((b) => [
+				b.id,
+				b.content?.length ?? 0,
+			]),
+		)
+	const [enConclusion, arConclusion] = [conclusion(e), conclusion(a)]
+	for (const id of new Set([...enConclusion.keys(), ...arConclusion.keys()])) {
+		proseCounts.set(`${path}.conclusion.${id}`, {
+			en: enConclusion.get(id) ?? 0,
+			ar: arConclusion.get(id) ?? 0,
 		})
 	}
 	;(e.psalmRefs ?? []).forEach((ref, i) => {

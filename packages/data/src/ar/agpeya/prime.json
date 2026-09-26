@@ -57,14 +57,13 @@
 			"id": "prime-intro-psalm",
 			"kind": "intro-psalm",
 			"psalmNumber": 50,
-			"title": "Psalm 50",
-			"rubric": "A Psalm of David when Nathan the prophet came to him after he had gone in to Bathsheba"
+			"title": "المزمور الخمسون"
 		},
 		{
 			"id": "prime-psalm-1",
 			"kind": "psalm",
 			"psalmNumber": 1,
-			"title": "Psalm 1",
+			"title": "المزمور الأول",
 			"verses": [
 				{
 					"num": 1,
@@ -108,7 +107,7 @@
 			"id": "prime-psalm-2",
 			"kind": "psalm",
 			"psalmNumber": 2,
-			"title": "Psalm 2",
+			"title": "المزمور الثاني",
 			"verses": [
 				{
 					"num": 1,
@@ -168,7 +167,7 @@
 			"id": "prime-psalm-4",
 			"kind": "psalm",
 			"psalmNumber": 4,
-			"title": "Psalm 4",
+			"title": "المزمور الرابع",
 			"verses": [
 				{
 					"num": 1,
@@ -216,7 +215,7 @@
 			"id": "prime-psalm-5",
 			"kind": "psalm",
 			"psalmNumber": 5,
-			"title": "Psalm 5",
+			"title": "المزمور الخامس",
 			"verses": [
 				{
 					"num": 1,
@@ -304,7 +303,7 @@
 			"id": "prime-psalm-8",
 			"kind": "psalm",
 			"psalmNumber": 8,
-			"title": "Psalm 8",
+			"title": "المزمور الثامن",
 			"verses": [
 				{
 					"num": 1,
@@ -356,7 +355,7 @@
 			"id": "prime-psalm-11",
 			"kind": "psalm",
 			"psalmNumber": 11,
-			"title": "Psalm 11",
+			"title": "المزمور الحادي عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -404,7 +403,7 @@
 			"id": "prime-psalm-14",
 			"kind": "psalm",
 			"psalmNumber": 14,
-			"title": "Psalm 14",
+			"title": "المزمور الرابع عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -432,7 +431,7 @@
 			"id": "prime-psalm-15",
 			"kind": "psalm",
 			"psalmNumber": 15,
-			"title": "Psalm 15",
+			"title": "المزمور الخامس عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -512,7 +511,7 @@
 			"id": "prime-psalm-18",
 			"kind": "psalm",
 			"psalmNumber": 18,
-			"title": "Psalm 18",
+			"title": "المزمور الثامن عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -608,7 +607,7 @@
 			"id": "prime-psalm-24",
 			"kind": "psalm",
 			"psalmNumber": 24,
-			"title": "Psalm 24",
+			"title": "المزمور الرابع والعشرون",
 			"verses": [
 				{
 					"num": 1,
@@ -724,7 +723,7 @@
 			"id": "prime-psalm-26",
 			"kind": "psalm",
 			"psalmNumber": 26,
-			"title": "Psalm 26",
+			"title": "المزمور السادس والعشرون",
 			"verses": [
 				{
 					"num": 1,
@@ -820,7 +819,7 @@
 			"id": "prime-psalm-62",
 			"kind": "psalm",
 			"psalmNumber": 62,
-			"title": "Psalm 62",
+			"title": "المزمور الثاني والستون",
 			"verses": [
 				{
 					"num": 1,
@@ -888,7 +887,7 @@
 			"id": "prime-psalm-66",
 			"kind": "psalm",
 			"psalmNumber": 66,
-			"title": "Psalm 66",
+			"title": "المزمور السادس والستون",
 			"verses": [
 				{
 					"num": 1,
@@ -924,7 +923,7 @@
 			"id": "prime-psalm-112",
 			"kind": "psalm",
 			"psalmNumber": 112,
-			"title": "Psalm 112",
+			"title": "المزمور المائة والثاني عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -960,7 +959,7 @@
 			"id": "prime-psalm-142",
 			"kind": "psalm",
 			"psalmNumber": 142,
-			"title": "Psalm 142",
+			"title": "المزمور المائة والثاني والأربعون",
 			"verses": [
 				{
 					"num": 1,
@@ -1038,8 +1037,7 @@
 			"book": "John",
 			"chapter": 1,
 			"startVerse": 1,
-			"endVerse": 17,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A psalm of David. A reading from the Gospel according to our teacher Saint John the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 17
 		},
 		{
 			"id": "prime-litany",

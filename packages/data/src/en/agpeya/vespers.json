@@ -25,7 +25,10 @@
 		"psalm-128",
 		"vespers-gospel",
 		"vespers-litany",
-		"vespers-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"vespers-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -56,11 +59,11 @@
 			]
 		},
 		{
-			"id": "vespers-closing",
-			"kind": "closing",
+			"id": "vespers-absolution",
+			"kind": "conclusion",
+			"title": "Absolution",
 			"content": [
-				"O Lord, Who at the Eleventh Hour was taken down from the Cross by Joseph and Nicodemus: take away our sins from us and have mercy upon us.",
-				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+				"We thank You, our compassionate king, for You have granted us to pass this day in peace, and brought us to the evening thankfully, and made us worthy to behold daylight until evening. Lord, accept our glorification which is offered now, and save us from the trickeries of the adversary, and abolish all the snares which are set against us. Grant us, in this coming night, peace without pain, or anxiety, or unrest, or illusion; so that we may pass it in peace and chastity, and rise up for praises and prayers. And thus, at all times and everywhere, we glorify Your holy name, together with the Father, who is incomprehensible and without beginning, and the Holy Spirit, the Life-Giver, Who is in one essence with You, now and at all times, and unto the ages of all ages. Amen."
 			]
 		}
 	]

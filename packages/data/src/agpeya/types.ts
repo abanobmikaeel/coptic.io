@@ -26,6 +26,7 @@ export type AgpeyaSectionKind =
 	| 'lords-prayer'
 	| 'thanksgiving-after'
 	| 'closing'
+	| 'conclusion'
 
 interface AgpeyaSectionBase {
 	id: string

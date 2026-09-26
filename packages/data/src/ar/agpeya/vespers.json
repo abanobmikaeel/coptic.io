@@ -4,8 +4,7 @@
 	"name": "الغروب",
 	"englishName": "Eleventh Hour",
 	"traditionalTime": "6:00 PM",
-	"introduction": "We pray the Eleventh Hour commemorating the taking down of our Lord from the Cross and His burial.",
-	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"psalmsIntro": "من مزامير معلمنا داود النبي بركاته علينا أمين.",
 	"order": [
 		"opening",
 		"vespers-hour-intro",
@@ -25,7 +24,10 @@
 		"psalm-128",
 		"vespers-gospel",
 		"vespers-litany",
-		"vespers-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"vespers-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -42,8 +44,7 @@
 			"book": "Luke",
 			"chapter": 4,
 			"startVerse": 38,
-			"endVerse": 41,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 41
 		},
 		{
 			"id": "vespers-litany",
@@ -70,9 +71,9 @@
 			]
 		},
 		{
-			"id": "vespers-closing",
-			"kind": "closing",
-			"title": "الختام",
+			"id": "vespers-absolution",
+			"kind": "conclusion",
+			"title": "التحليل",
 			"content": [
 				"نشكرك يا ملكنا المتحنن لأنك منحتنا أن نعبر هذا اليوم بسلام وأتيت بنا إلى المساء شاكرين، وجعلتنا مستحقين أن ننظر النور إلى المساء. اللهم اقبل تمجيدنا هذا الذي صار الآن. ونجنا من حيل المضاد وأبطل سائر فخاخه المنصوبة لنا. هب لنا في هذه الليلة المقبلة سلامة بغير ألم ولا قلق ولا تعب ولا خيال. لنجتازها أيضا بسلام وعفاف، وننهض للتسابيح والصلوات كل حين وفي كل مكان، نمجد اسمك القدوس في كل شيء، مع الآب غير المدرك ولا المبتدئ، والروح القدس المحيي المساوي لك الآن وكل أوان والى دهر الدهور أمين."
 			]

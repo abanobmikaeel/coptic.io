@@ -130,7 +130,8 @@ export const AgpeyaHourSchema = z.object({
 	litanies: AgpeyaLitanySchema,
 	lordsPrayer: AgpeyaPrayerSectionSchema.optional(),
 	thanksgivingAfter: AgpeyaPrayerSectionSchema.optional(),
-	closing: AgpeyaPrayerSectionSchema,
+	closing: AgpeyaPrayerSectionSchema.optional(),
+	conclusion: z.array(AgpeyaPrayerSectionSchema.extend({ id: z.string() })).optional(),
 })
 
 // Midnight hour schema with watches

@@ -88,3 +88,7 @@ Roadmap.md
 !.sonarlint/connectedMode.json
 
 references/*
+
+# Written by `next dev` when an AI agent runs it; not project instructions
+apps/web/AGENTS.md
+apps/web/CLAUDE.md

@@ -91,7 +91,6 @@
 			"kind": "psalm",
 			"psalmNumber": 118,
 			"title": "Psalm 118",
-			"note": "The Great Psalm - all 22 stanzas",
 			"verses": [
 				{
 					"num": 1,
@@ -805,8 +804,7 @@
 			"book": "Matthew",
 			"chapter": 25,
 			"startVerse": 1,
-			"endVerse": 13,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Matthew the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 13
 		},
 		{
 			"id": "midnight-1-litany",
@@ -838,8 +836,7 @@
 			"book": "Luke",
 			"chapter": 7,
 			"startVerse": 36,
-			"endVerse": 50,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 50
 		},
 		{
 			"id": "midnight-2-litany",
@@ -869,7 +866,7 @@
 			"id": "midnight-3-psalm-131",
 			"kind": "psalm",
 			"psalmNumber": 131,
-			"title": "Psalm 131",
+			"title": "المزمور المائة والحادي والثلاثون",
 			"verses": [
 				{
 					"num": 1,
@@ -935,8 +932,7 @@
 			"book": "Luke",
 			"chapter": 12,
 			"startVerse": 32,
-			"endVerse": 46,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 46
 		},
 		{
 			"id": "midnight-3-litany",

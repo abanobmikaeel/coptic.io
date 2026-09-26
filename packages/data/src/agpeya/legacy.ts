@@ -81,7 +81,8 @@ interface AgpeyaSlots {
 	litanies: AgpeyaLitany
 	lordsPrayer?: AgpeyaPrayerSection
 	thanksgivingAfter?: AgpeyaPrayerSection
-	closing: AgpeyaPrayerSection
+	closing?: AgpeyaPrayerSection
+	conclusion?: (AgpeyaPrayerSection & { id: string })[]
 }
 
 export interface AgpeyaHourData extends AgpeyaSlots {
@@ -162,6 +163,7 @@ function toSlots(sections: AgpeyaSection[]): Partial<AgpeyaSlots> {
 	const psalmRefs: AgpeyaPsalmRef[] = []
 	const psalms: AgpeyaPsalm[] = []
 	const gospels: AgpeyaGospelRef[] = []
+	const conclusion: (AgpeyaPrayerSection & { id: string })[] = []
 
 	for (const section of sections) {
 		if (section.kind === 'gospel') {
@@ -171,6 +173,8 @@ function toSlots(sections: AgpeyaSection[]): Partial<AgpeyaSlots> {
 		} else if (section.kind === 'psalm') {
 			psalmRefs.push(psalmRef(section))
 			if (section.verses) psalms.push(psalm(section))
+		} else if (section.kind === 'conclusion') {
+			conclusion.push({ id: section.id, ...prayer(section) })
 		} else if ('content' in section) {
 			const slot = PROSE_SLOT[section.kind]
 			if (slot) Object.assign(slots, { [slot]: prayer(section) })
@@ -183,6 +187,7 @@ function toSlots(sections: AgpeyaSection[]): Partial<AgpeyaSlots> {
 		...(psalms.length ? { psalms } : {}),
 		...(gospels[0] ? { gospelRef: gospels[0] } : {}),
 		...(gospels[1] ? { gospelRef2: gospels[1] } : {}),
+		...(conclusion.length ? { conclusion } : {}),
 	}
 }
 
