@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { getAgpeyaHourData as getArabicAgpeyaHourData } from '../ar/agpeya'
 import { getChapter, getMissingBooks } from '../cop/bible'
-import { getAgpeyaHour, getAgpeyaHourIds, getCommonPrayer } from '../en/agpeya'
+import {
+	getAgpeyaHour,
+	getAgpeyaHourIds,
+	getCommonPrayer,
+	getAgpeyaHourData as getEnglishAgpeyaHourData,
+} from '../en/agpeya'
 
 describe('English Agpeya shared prayers', () => {
 	it('prays the one shared Thanksgiving Prayer at every hour', () => {
@@ -46,5 +51,49 @@ describe('Arabic Agpeya', () => {
 			119, 120, 121, 122, 123, 124, 125, 126, 127, 128,
 		])
 		expect(midnight.watches[2].psalmRefs[0].psalmNumber).toBe(129)
+	})
+})
+
+describe('Agpeya concluding sequence', () => {
+	const DAY_HOURS = ['terce', 'sext', 'none', 'vespers'] as const
+	const hours = { en: getEnglishAgpeyaHourData, ar: getArabicAgpeyaHourData }
+
+	it('ends each daytime hour with Kyrie, Holy Holy Holy, its Absolution and the Conclusion, in both languages', () => {
+		for (const [lang, getHour] of Object.entries(hours)) {
+			for (const hourId of DAY_HOURS) {
+				const hour = getHour(hourId)
+				if (!hour || 'watches' in hour) throw new Error(`${lang} ${hourId} missing`)
+
+				expect(
+					hour.conclusion?.map((s) => s.id),
+					`${lang} ${hourId}`,
+				).toEqual(['kyrie41', 'holy-holy-holy', `${hourId}-absolution`, 'conclusion-of-every-hour'])
+				expect(hour.closing, `${lang} ${hourId}`).toBeUndefined()
+			}
+		}
+	})
+
+	it('prays the Kyrie forty-one times', () => {
+		for (const [lang, getHour] of Object.entries(hours)) {
+			const kyrie = (
+				getHour('terce') as { conclusion?: { id: string; content: string[] }[] }
+			).conclusion?.find((s) => s.id === 'kyrie41')
+			const phrase = lang === 'en' ? /Lord have mercy\./g : /يا رب ارحم\./g
+			expect(kyrie?.content.join(' ').match(phrase), lang).toHaveLength(41)
+		}
+	})
+
+	// Regression: English once ended these hours in prayers that aren't the absolutions
+	it.each([
+		['terce', /^O God of all compassion, and Lord of all comfort/],
+		['sext', /^We thank You, our King, the Almighty/],
+		['none', /^God, Father, the Father of our Lord/],
+		['vespers', /^We thank You, our compassionate king/],
+	] as const)('prays the %s absolution from the source', (hourId, opening) => {
+		const hour = getEnglishAgpeyaHourData(hourId) as {
+			conclusion?: { id: string; content: string[] }[]
+		}
+		const absolution = hour.conclusion?.find((s) => s.id === `${hourId}-absolution`)
+		expect(absolution?.content[0]).toMatch(opening)
 	})
 })

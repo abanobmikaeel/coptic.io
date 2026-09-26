@@ -26,7 +26,10 @@
 		"terce-gospel",
 		"terce-gospel-2",
 		"terce-litany",
-		"terce-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"terce-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -781,11 +784,13 @@
 			]
 		},
 		{
-			"id": "terce-closing",
-			"kind": "closing",
+			"id": "terce-absolution",
+			"kind": "conclusion",
+			"title": "Absolution",
 			"content": [
-				"O Lord, Who at the Third Hour did send Your Holy Spirit upon Your apostles: take not that Spirit from us, O Good One, but renew Him within us. Create in me a clean heart, O God, and renew a steadfast spirit within me. Cast me not away from Your presence, and take not Your Holy Spirit from me.",
-				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+				"O God of all compassion, and Lord of all comfort, who comforted us at all times with the comfort of Your Holy Spirit, we thank You for You raised us for prayer in this holy hour, in which You abundantly poured the grace of Your Holy Spirit upon Your holy disciples and honorable and blessed apostles, like tongues of fire.",
+				"We ask and entreat You, O lover of mankind, to accept our prayers, and forgive our sins, and send forth upon us the grace of Your Holy Spirit, and purify us from all defilement of body and spirit.",
+				"Change us into a spiritual manner of life, that we may walk in the Spirit and not fulfill the lusts of the flesh. And make us worthy to serve You with purity and righteousness all the days of our life. For unto You is due glory, honor, and dominion, with Your good Father and the Holy Spirit, now and forever and unto the ages of all ages. Amen."
 			]
 		}
 	]

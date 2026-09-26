@@ -4,8 +4,7 @@
 	"name": "الساعة التاسعة",
 	"englishName": "Ninth Hour",
 	"traditionalTime": "3:00 PM",
-	"introduction": "We pray the Ninth Hour commemorating the death of our Lord Jesus Christ on the Cross. At this hour, Christ gave up His spirit.",
-	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"psalmsIntro": "من مزامير معلمنا داود النبي بركاته علينا أمين.",
 	"order": [
 		"opening",
 		"none-hour-intro",
@@ -25,7 +24,10 @@
 		"none-psalm-115",
 		"none-gospel",
 		"none-litany",
-		"none-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"none-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -40,7 +42,7 @@
 			"id": "none-psalm-95",
 			"kind": "psalm",
 			"psalmNumber": 95,
-			"title": "Psalm 95",
+			"title": "المزمور الخامس والتسعون",
 			"verses": [
 				{
 					"num": 1,
@@ -92,7 +94,7 @@
 			"id": "none-psalm-96",
 			"kind": "psalm",
 			"psalmNumber": 96,
-			"title": "Psalm 96",
+			"title": "المزمور السادس والتسعون",
 			"verses": [
 				{
 					"num": 1,
@@ -156,7 +158,7 @@
 			"id": "none-psalm-97",
 			"kind": "psalm",
 			"psalmNumber": 97,
-			"title": "Psalm 97",
+			"title": "المزمور السابع والتسعون",
 			"verses": [
 				{
 					"num": 1,
@@ -196,7 +198,7 @@
 			"id": "none-psalm-98",
 			"kind": "psalm",
 			"psalmNumber": 98,
-			"title": "Psalm 98",
+			"title": "المزمور الثامن والتسعون",
 			"verses": [
 				{
 					"num": 1,
@@ -244,7 +246,7 @@
 			"id": "none-psalm-99",
 			"kind": "psalm",
 			"psalmNumber": 99,
-			"title": "Psalm 99",
+			"title": "المزمور التاسع والتسعون",
 			"verses": [
 				{
 					"num": 1,
@@ -276,7 +278,7 @@
 			"id": "none-psalm-100",
 			"kind": "psalm",
 			"psalmNumber": 100,
-			"title": "Psalm 100",
+			"title": "المزمور المائة",
 			"verses": [
 				{
 					"num": 1,
@@ -332,7 +334,7 @@
 			"id": "none-psalm-109",
 			"kind": "psalm",
 			"psalmNumber": 109,
-			"title": "Psalm 109",
+			"title": "المزمور المائة والتاسع",
 			"verses": [
 				{
 					"num": 1,
@@ -372,7 +374,7 @@
 			"id": "none-psalm-110",
 			"kind": "psalm",
 			"psalmNumber": 110,
-			"title": "Psalm 110",
+			"title": "المزمور المائة والعاشر",
 			"verses": [
 				{
 					"num": 1,
@@ -424,7 +426,7 @@
 			"id": "none-psalm-111",
 			"kind": "psalm",
 			"psalmNumber": 111,
-			"title": "Psalm 111",
+			"title": "المزمور المائة والحادي عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -488,7 +490,7 @@
 			"id": "none-psalm-112",
 			"kind": "psalm",
 			"psalmNumber": 112,
-			"title": "Psalm 112",
+			"title": "المزمور المائة والثاني عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -524,7 +526,7 @@
 			"id": "none-psalm-114",
 			"kind": "psalm",
 			"psalmNumber": 114,
-			"title": "Psalm 114",
+			"title": "المزمور المائة والرابع عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -564,7 +566,7 @@
 			"id": "none-psalm-115",
 			"kind": "psalm",
 			"psalmNumber": 115,
-			"title": "Psalm 115",
+			"title": "المزمور المائة والخامس عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -614,8 +616,7 @@
 			"book": "Luke",
 			"chapter": 9,
 			"startVerse": 10,
-			"endVerse": 17,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 17
 		},
 		{
 			"id": "none-litany",
@@ -653,9 +654,9 @@
 			]
 		},
 		{
-			"id": "none-closing",
-			"kind": "closing",
-			"title": "الختام",
+			"id": "none-absolution",
+			"kind": "conclusion",
+			"title": "التحليل",
 			"content": [
 				"يا الله الآب أبو ربنا وإلهنا ومخلصنا يسوع المسيح هذا الذي بظهوره خلصتنا وأنقذتنا من عبودية العدو. نسألك باسمه المبارك العظيم أنقل عقولنا من الاهتمام العالمي والشهوات الجسدية، إلى تذكار أحكامك السمائية وكمل لنا محبتك للبشر أيها الصالح. ولتكن صلواتنا كل حين وصلاة هذه الساعة التاسعة مقبولة أمامك. وامنحنا أن نسلك كما يليق بالدعوة التي دعينا إليها. لكي إذا خرجنا من هذا الجسد نحسب مع الساجدين المستحقين لآلام ابنك الوحيد يسوع المسيح ربنا، ونظفر بالرحمة وغفران خطايانا والخلاص مع مصاف القديسين الذين أرضَوك بالحقيقة منذ الدهر والي الأبد.",
 				"اللهم أبطل عنا كل قوة المعاند وجميع جنوده الرديئة، كما داسهم ابنك الوحيد بقوة صليبه المحيي. واقبلنا إليك يا سيدي يسوع المسيح كما قبلت اللص اليمين وأنت معلق على عود الصليب. وأنر علينا كما أنرت على الذين كانوا في ظلمة الجحيم. وردنا جميعا إلى فردوس النعيم لأنك يا سيدي إله مبارك. وينبغي لك مع أبيك الصالح والروح القدس، المجد والإكرام والعزة والسلطان والسجود إلى الأبد أمين."

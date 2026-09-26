@@ -81,7 +81,8 @@ interface AgpeyaSlots {
 	litanies: AgpeyaLitany
 	lordsPrayer?: AgpeyaPrayerSection
 	thanksgivingAfter?: AgpeyaPrayerSection
-	closing: AgpeyaPrayerSection
+	closing?: AgpeyaPrayerSection
+	conclusion?: (AgpeyaPrayerSection & { id: string })[]
 }
 
 export interface AgpeyaHourData extends AgpeyaSlots {
@@ -186,6 +187,13 @@ function toSlots(sections: AgpeyaSection[]): Partial<AgpeyaSlots> {
 	}
 }
 
+function toConclusion(sections: AgpeyaSection[]): Pick<AgpeyaSlots, 'conclusion'> {
+	const conclusion = sections
+		.filter((s): s is AgpeyaProseSection => s.kind === 'conclusion')
+		.map((s) => ({ id: s.id, ...prayer(s) }))
+	return conclusion.length ? { conclusion } : {}
+}
+
 const identity = (hour: AgpeyaHourService) => ({
 	id: hour.id,
 	name: hour.name,
@@ -226,5 +234,6 @@ export function toLegacyHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMi
 		...identity(hour),
 		...(hour.psalmsIntro ? { psalmsIntro: hour.psalmsIntro } : {}),
 		...toSlots(hour.parts as AgpeyaSection[]),
+		...toConclusion(hour.parts as AgpeyaSection[]),
 	} as AgpeyaHourData
 }

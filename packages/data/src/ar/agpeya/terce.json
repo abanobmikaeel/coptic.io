@@ -4,8 +4,7 @@
 	"name": "الساعة الثالثة",
 	"englishName": "Third Hour",
 	"traditionalTime": "9:00 AM",
-	"introduction": "We pray the Third Hour commemorating the descent of the Holy Spirit upon the apostles at Pentecost, and the trial of our Lord before Pilate.",
-	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"psalmsIntro": "من مزامير معلمنا داود النبي بركاته علينا أمين.",
 	"order": [
 		"opening",
 		"terce-hour-intro",
@@ -26,7 +25,10 @@
 		"terce-gospel",
 		"terce-gospel-2",
 		"terce-litany",
-		"terce-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"terce-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -41,7 +43,7 @@
 			"id": "terce-psalm-19",
 			"kind": "psalm",
 			"psalmNumber": 19,
-			"title": "Psalm 19",
+			"title": "المزمور التاسع عشر",
 			"verses": [
 				{
 					"num": 1,
@@ -89,7 +91,7 @@
 			"id": "terce-psalm-22",
 			"kind": "psalm",
 			"psalmNumber": 22,
-			"title": "Psalm 22",
+			"title": "المزمور الثاني والعشرون",
 			"verses": [
 				{
 					"num": 1,
@@ -133,7 +135,7 @@
 			"id": "terce-psalm-23",
 			"kind": "psalm",
 			"psalmNumber": 23,
-			"title": "Psalm 23",
+			"title": "المزمور الثالث والعشرون",
 			"verses": [
 				{
 					"num": 1,
@@ -177,7 +179,7 @@
 			"id": "terce-psalm-25",
 			"kind": "psalm",
 			"psalmNumber": 25,
-			"title": "Psalm 25",
+			"title": "المزمور الخامس والعشرون",
 			"verses": [
 				{
 					"num": 1,
@@ -237,7 +239,7 @@
 			"id": "terce-psalm-28",
 			"kind": "psalm",
 			"psalmNumber": 28,
-			"title": "Psalm 28",
+			"title": "المزمور الثامن والعشرون",
 			"verses": [
 				{
 					"num": 1,
@@ -321,7 +323,7 @@
 			"id": "terce-psalm-29",
 			"kind": "psalm",
 			"psalmNumber": 29,
-			"title": "Psalm 29",
+			"title": "المزمور التاسع والعشرون",
 			"verses": [
 				{
 					"num": 1,
@@ -381,7 +383,7 @@
 			"id": "terce-psalm-33",
 			"kind": "psalm",
 			"psalmNumber": 33,
-			"title": "Psalm 33",
+			"title": "المزمور الثالث والثلاثون",
 			"verses": [
 				{
 					"num": 1,
@@ -473,7 +475,7 @@
 			"id": "terce-psalm-40",
 			"kind": "psalm",
 			"psalmNumber": 40,
-			"title": "Psalm 40",
+			"title": "المزمور الأربعون",
 			"verses": [
 				{
 					"num": 1,
@@ -525,7 +527,7 @@
 			"id": "terce-psalm-42",
 			"kind": "psalm",
 			"psalmNumber": 42,
-			"title": "Psalm 42",
+			"title": "المزمور الثاني والأربعون",
 			"verses": [
 				{
 					"num": 1,
@@ -557,7 +559,7 @@
 			"id": "terce-psalm-44",
 			"kind": "psalm",
 			"psalmNumber": 44,
-			"title": "Psalm 44",
+			"title": "المزمور الرابع والأربعون",
 			"verses": [
 				{
 					"num": 1,
@@ -653,7 +655,7 @@
 			"id": "terce-psalm-45",
 			"kind": "psalm",
 			"psalmNumber": 45,
-			"title": "Psalm 45",
+			"title": "المزمور الخامس والأربعون",
 			"verses": [
 				{
 					"num": 1,
@@ -717,7 +719,7 @@
 			"id": "terce-psalm-46",
 			"kind": "psalm",
 			"psalmNumber": 46,
-			"title": "Psalm 46",
+			"title": "المزمور السادس والأربعون",
 			"verses": [
 				{
 					"num": 1,
@@ -759,8 +761,7 @@
 			"book": "John",
 			"chapter": 14,
 			"startVerse": 26,
-			"endVerse": 31,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint John the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 31
 		},
 		{
 			"id": "terce-gospel-2",
@@ -803,9 +804,9 @@
 			]
 		},
 		{
-			"id": "terce-closing",
-			"kind": "closing",
-			"title": "الختام",
+			"id": "terce-absolution",
+			"kind": "conclusion",
+			"title": "التحليل",
 			"content": [
 				"يا إله كل الرأفات ورب كل عزاء، الذي عزانا كل حين بعزاء روحك القدوس، نشكرك لأنك أقمتنا للصلاة في هذه الساعة المقدسة، التي فيها أفضت نعمة روحك القدوس بغنى على تلاميذك القديسين ورسلك المكرمين الطوباويين مثل ألسنة نار. نسأل ونطلب منك يا محب البشر، اقبل إليك صلواتنا، واغفر خطايانا، وأرسل علينا نعمة روحك القدوس، وطهرنا من كل دنس الجسد والروح، وانقلنا إلى سيرة روحانية، لكي نسلك بالروح ولا نكمل شهوة الجسد. واجعلنا مستحقين أن نخدمك بطهارة وبر كل أيام حياتنا. لأنه يليق بك المجد والكرامة والعزة، مع أبيك الصالح والروح القدس، الآن وكل أوان وإلى الأبد أمين."
 			]

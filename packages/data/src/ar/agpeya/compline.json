@@ -4,8 +4,7 @@
 	"name": "النوم",
 	"englishName": "Twelfth Hour",
 	"traditionalTime": "9:00 PM",
-	"introduction": "We pray the Twelfth Hour commemorating the burial of our Lord Jesus Christ, and we remember the end of life and the Final Judgment.",
-	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+	"psalmsIntro": "من مزامير معلمنا داود النبي بركاته علينا أمين.",
 	"order": [
 		"opening",
 		"compline-hour-intro",
@@ -40,7 +39,7 @@
 			"id": "compline-psalm-131",
 			"kind": "psalm",
 			"psalmNumber": 131,
-			"title": "Psalm 131",
+			"title": "المزمور المائة والحادي والثلاثون",
 			"verses": [
 				{
 					"num": 1,
@@ -106,8 +105,7 @@
 			"book": "Luke",
 			"chapter": 2,
 			"startVerse": 25,
-			"endVerse": 32,
-			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+			"endVerse": 32
 		},
 		{
 			"id": "compline-litany",

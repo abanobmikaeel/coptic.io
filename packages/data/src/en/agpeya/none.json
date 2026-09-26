@@ -25,7 +25,10 @@
 		"none-psalm-115",
 		"none-gospel",
 		"none-litany",
-		"none-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"none-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -628,11 +631,13 @@
 			]
 		},
 		{
-			"id": "none-closing",
-			"kind": "closing",
+			"id": "none-absolution",
+			"kind": "conclusion",
+			"title": "Absolution",
 			"content": [
-				"O Lord, Who at the Ninth Hour did taste death in the flesh for our sake: mortify our carnal desires and save our souls.",
-				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
+				"God, Father, the Father of our Lord, God and Savior, Jesus Christ, who, through His manifestation saved us and delivered us from the bondage of the enemy, we ask You, in His blessed and great name, turn our minds away from worldly cares and carnal lusts, to the remembrance of Your heavenly statutes; and reveal to us Your love for mankind, O Good One.",
+				"May our prayers at all times, and specially the prayer of this ninth hour, be favorably accepted by You. And grant us to walk worthy of the calling with which we were called, so that when we depart from this world, we may be counted with the worshippers worthy of the passions of Your Only-Begotten Son Jesus Christ, our Lord. Thus, we gain mercy, and forgiveness of our sins, and salvation with the choir of saints who truly pleased You since the beginning and forever.",
+				"Lord, abolish for us the power of the adversary and all his evil armies, as Your Only-Begotten Son has trampled on them by the power of His life‑giving cross. Accept us unto You, O our Lord, Jesus Christ, as You accepted the Thief at Your right, while You were hung on the cross. And shine upon us as You have shone upon those who were in the darkness of Hades, and restore us all to the paradise of joy. For You, our Master, are blessed God, and unto You is due all the glory, honor, majesty, dominion, and worship, with Your good Father and the Holy Spirit, forever. Amen."
 			]
 		}
 	]

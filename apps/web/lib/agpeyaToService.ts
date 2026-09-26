@@ -55,6 +55,7 @@ export interface ResolvedAgpeyaHour {
 	lordsPrayer?: AgBlock
 	thanksgivingAfter?: AgBlock
 	closing?: AgBlock
+	conclusion?: (AgBlock & { id: string })[]
 	watches?: AgWatch[]
 }
 
@@ -163,6 +164,7 @@ export function agpeyaToService(
 		add(blockSection('litanies', 'litany', 'Litanies', hour.litanies))
 		add(blockSection('lords-prayer', 'prayer', "The Lord's Prayer", hour.lordsPrayer))
 		add(blockSection('thanksgiving-after', 'prayer', 'Thanksgiving', hour.thanksgivingAfter))
+		for (const part of hour.conclusion ?? []) add(blockSection(part.id, 'prayer', 'Prayer', part))
 	}
 
 	add(blockSection('closing', 'prayer', 'Closing Prayer', hour.closing))
