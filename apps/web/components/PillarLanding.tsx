@@ -9,7 +9,12 @@ interface PillarLandingProps {
 }
 
 /** Shared layout for the Read / Pray pillar landing pages. */
-export function PillarLanding({ pillar, title, tagline, lent = false }: PillarLandingProps) {
+export function PillarLanding({
+	pillar,
+	title,
+	tagline,
+	lent = false,
+}: Readonly<PillarLandingProps>) {
 	return (
 		<main className="min-h-screen px-6 pt-16 pb-20">
 			<div className="max-w-4xl mx-auto">

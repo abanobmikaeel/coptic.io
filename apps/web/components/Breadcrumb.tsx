@@ -31,7 +31,12 @@ interface BreadcrumbProps {
 	parentClassName?: string
 }
 
-export function Breadcrumb({ items, theme = 'light', dropdown, parentClassName }: BreadcrumbProps) {
+export function Breadcrumb({
+	items,
+	theme = 'light',
+	dropdown,
+	parentClassName,
+}: Readonly<BreadcrumbProps>) {
 	const [isOpen, setIsOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
 

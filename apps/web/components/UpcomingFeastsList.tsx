@@ -15,7 +15,7 @@ interface UpcomingFeastsListProps {
 	feasts: Feast[]
 }
 
-export default function UpcomingFeastsList({ feasts }: UpcomingFeastsListProps) {
+export default function UpcomingFeastsList({ feasts }: Readonly<UpcomingFeastsListProps>) {
 	const t = useTranslations('home')
 	const locale = useLocale()
 	const [visibleCount, setVisibleCount] = useState(5)

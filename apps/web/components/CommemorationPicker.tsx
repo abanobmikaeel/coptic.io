@@ -14,7 +14,7 @@ interface CommemorationPickerProps {
 // Lets the user pick their church's patron saint (or any commemorated saint) so its verses are
 // added to the service. Options come from the API catalog, so the list grows as verses are added.
 // Writes the selection to a cookie and refreshes so the server re-fetches the resolved service.
-export function CommemorationPicker({ selected }: CommemorationPickerProps) {
+export function CommemorationPicker({ selected }: Readonly<CommemorationPickerProps>) {
 	const router = useRouter()
 	const [options, setOptions] = useState<string[]>([])
 

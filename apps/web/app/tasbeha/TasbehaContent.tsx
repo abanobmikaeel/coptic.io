@@ -32,7 +32,7 @@ export function TasbehaContent({
 	langs,
 	dayId,
 	unsupportedLanguage,
-}: TasbehaContentProps) {
+}: Readonly<TasbehaContentProps>) {
 	const locale = useLocale()
 	const isArabic = locale === 'ar'
 	const router = useRouter()

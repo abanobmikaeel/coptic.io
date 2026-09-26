@@ -6,7 +6,7 @@ interface FastingLegendProps {
 	visibleFasts: Set<string>
 }
 
-export function FastingLegend({ visibleFasts }: FastingLegendProps) {
+export function FastingLegend({ visibleFasts }: Readonly<FastingLegendProps>) {
 	if (visibleFasts.size === 0) return null
 
 	return (

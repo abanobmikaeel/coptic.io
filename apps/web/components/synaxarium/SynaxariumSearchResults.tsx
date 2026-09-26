@@ -22,7 +22,7 @@ export function SynaxariumSearchResults({
 	isSearching,
 	searchQuery,
 	onClearSearch,
-}: SynaxariumSearchResultsProps) {
+}: Readonly<SynaxariumSearchResultsProps>) {
 	const t = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')
 

@@ -24,7 +24,7 @@ export function ScriptureReading({
 	width = 'normal',
 	weight = 'normal',
 	service,
-}: ScriptureReadingProps) {
+}: Readonly<ScriptureReadingProps>) {
 	const [isOpen, setIsOpen] = useState(true)
 
 	// Get available languages with data

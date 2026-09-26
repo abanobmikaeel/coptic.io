@@ -9,7 +9,11 @@ interface SynaxariumSearchProps {
 	isSearching: boolean
 }
 
-export function SynaxariumSearch({ value, onChange, isSearching }: SynaxariumSearchProps) {
+export function SynaxariumSearch({
+	value,
+	onChange,
+	isSearching,
+}: Readonly<SynaxariumSearchProps>) {
 	const t = useTranslations('synaxarium')
 
 	return (

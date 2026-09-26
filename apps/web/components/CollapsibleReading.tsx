@@ -18,7 +18,7 @@ export function CollapsibleReading({
 	isRtl,
 	viewMode,
 	id,
-}: CollapsibleReadingProps) {
+}: Readonly<CollapsibleReadingProps>) {
 	const textDir = isRtl ? ('rtl' as const) : ('ltr' as const)
 	const [isOpen, setIsOpen] = useState(true)
 

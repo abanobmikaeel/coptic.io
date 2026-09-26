@@ -22,7 +22,7 @@ export function SynaxariumEntryCompact({
 	onToggle,
 	isLoadingDetail,
 	detailsUrl,
-}: SynaxariumEntryCompactProps) {
+}: Readonly<SynaxariumEntryCompactProps>) {
 	const content = (
 		<>
 			<span

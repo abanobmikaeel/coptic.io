@@ -12,7 +12,7 @@ export function SynaxariumViewToggle({
 	viewMode,
 	onViewModeChange,
 	isToday = true,
-}: SynaxariumViewToggleProps) {
+}: Readonly<SynaxariumViewToggleProps>) {
 	return (
 		<div className="flex w-full sm:w-auto">
 			<button

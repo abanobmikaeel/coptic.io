@@ -14,7 +14,7 @@ interface UpcomingFastsListProps {
 	fasts: Fast[]
 }
 
-export default function UpcomingFastsList({ fasts }: UpcomingFastsListProps) {
+export default function UpcomingFastsList({ fasts }: Readonly<UpcomingFastsListProps>) {
 	const [visibleCount, setVisibleCount] = useState(5)
 
 	const visibleFasts = fasts.slice(0, visibleCount)

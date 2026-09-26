@@ -22,7 +22,7 @@ export function CalendarGrid({
 	mode,
 	onSelectDay,
 	loading,
-}: CalendarGridProps) {
+}: Readonly<CalendarGridProps>) {
 	return (
 		<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 mb-4 shadow-sm dark:shadow-none">
 			<div className="grid grid-cols-7 mb-2">

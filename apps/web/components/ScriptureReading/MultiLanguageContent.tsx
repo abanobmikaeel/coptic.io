@@ -23,7 +23,7 @@ export function MultiLanguageContent({
 	viewMode,
 	showVerses,
 	theme,
-}: MultiLanguageContentProps) {
+}: Readonly<MultiLanguageContentProps>) {
 	// Shared responsive grid class (always side-by-side; mobile compresses gaps).
 	const gridClass = multiLangGridClass(orderedLangs.length)
 
@@ -109,7 +109,7 @@ function ChapterHeadings({
 	getStyleClasses,
 	theme,
 	gridClass,
-}: ChapterHeadingsProps) {
+}: Readonly<ChapterHeadingsProps>) {
 	return (
 		<div className={`grid ${gridClass} mb-3 sm:mb-5`}>
 			{orderedLangs.map((lang) => {
@@ -155,7 +155,7 @@ function ContinuousVerses({
 	showVerses,
 	theme,
 	gridClass,
-}: ContinuousVersesProps) {
+}: Readonly<ContinuousVersesProps>) {
 	return (
 		<div className={`grid ${gridClass}`}>
 			{orderedLangs.map((lang) => {
@@ -214,7 +214,7 @@ function VerseByVerseComparison({
 	showVerses,
 	theme,
 	gridClass,
-}: VerseByVerseComparisonProps) {
+}: Readonly<VerseByVerseComparisonProps>) {
 	return (
 		<div className="space-y-3 sm:space-y-4">
 			{chapter.verses.map((verse, vidx) => (

@@ -17,11 +17,11 @@ function ResultItem({
 	item,
 	isSelected,
 	onClick,
-}: {
+}: Readonly<{
 	item: SearchResultItem
 	isSelected: boolean
 	onClick: () => void
-}) {
+}>) {
 	const ref = useRef<HTMLButtonElement>(null)
 
 	// Scroll into view when selected
@@ -130,7 +130,7 @@ function ResultItem({
 }
 
 // Category header
-function CategoryHeader({ title }: { title: string }) {
+function CategoryHeader({ title }: Readonly<{ title: string }>) {
 	return (
 		<div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700">
 			{title}

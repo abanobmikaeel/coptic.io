@@ -53,7 +53,7 @@ async function fetchTasbeha(
 	}
 }
 
-export default async function TasbehaPage({ searchParams }: TasbehaPageProps) {
+export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPageProps>) {
 	const { day: dayParam } = await searchParams
 	// An unrecognised or absent ?day= falls back to the service prayed today, so
 	// /tasbeha is always the day you are actually in.

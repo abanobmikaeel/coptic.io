@@ -40,7 +40,7 @@ interface VespersPageProps {
 	searchParams: Promise<{ date?: string }>
 }
 
-export default async function VespersPage({ searchParams }: VespersPageProps) {
+export default async function VespersPage({ searchParams }: Readonly<VespersPageProps>) {
 	const params = await searchParams
 	const date = params.date ?? getTodayDateString()
 

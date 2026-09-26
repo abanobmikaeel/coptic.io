@@ -20,7 +20,7 @@ export function SwipeableContainer({
 	children,
 	basePath,
 	className = '',
-}: SwipeableContainerProps) {
+}: Readonly<SwipeableContainerProps>) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 

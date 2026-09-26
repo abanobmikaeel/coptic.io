@@ -3,14 +3,13 @@
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
 
-// biome-ignore lint/suspicious/noShadowRestrictedNames: Next.js error page convention
-export default function Error({
+export default function ErrorPage({
 	error: _error,
 	reset,
-}: {
-	error: globalThis.Error & { digest?: string }
+}: Readonly<{
+	error: Error & { digest?: string }
 	reset: () => void
-}) {
+}>) {
 	return (
 		<main className="min-h-screen relative overflow-hidden">
 			<section className="relative pt-24 pb-12 px-6">

@@ -13,7 +13,7 @@ interface ReadingTimelineProps {
 	sections: AvailableSections
 }
 
-export function ReadingTimeline({ sections }: ReadingTimelineProps) {
+export function ReadingTimeline({ sections }: Readonly<ReadingTimelineProps>) {
 	const { groups, allReadings } = sections
 	const [activeSection, setActiveSection] = useState<string | null>(null)
 

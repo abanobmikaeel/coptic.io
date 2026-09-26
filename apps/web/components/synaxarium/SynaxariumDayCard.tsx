@@ -34,7 +34,7 @@ export function SynaxariumDayCard({
 	onEntryExpand,
 	expandedEntries,
 	loadingEntries,
-}: SynaxariumDayCardProps) {
+}: Readonly<SynaxariumDayCardProps>) {
 	const tCommon = useTranslations('common')
 	const tSynaxarium = useTranslations('synaxarium')
 	const tCategories = useTranslations('categories')

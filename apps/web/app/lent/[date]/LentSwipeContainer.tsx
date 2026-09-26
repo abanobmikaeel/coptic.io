@@ -17,7 +17,7 @@ export function LentSwipeContainer({
 	prevDate,
 	nextDate,
 	className = '',
-}: LentSwipeContainerProps) {
+}: Readonly<LentSwipeContainerProps>) {
 	const router = useRouter()
 
 	const navigateToPrev = useCallback(() => {

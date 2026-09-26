@@ -37,7 +37,7 @@ export function SettingsPanel({
 	availableLanguages,
 	onClose,
 	extraSection,
-}: SettingsPanelProps) {
+}: Readonly<SettingsPanelProps>) {
 	const {
 		fontFamily,
 		textSize,

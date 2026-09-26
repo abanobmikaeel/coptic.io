@@ -45,11 +45,11 @@ function DashboardCard({
 	title,
 	value,
 	description,
-}: {
+}: Readonly<{
 	title: string
 	value: string
 	description: string
-}) {
+}>) {
 	return (
 		<div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
 			<h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</h3>

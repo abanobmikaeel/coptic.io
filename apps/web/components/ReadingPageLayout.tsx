@@ -9,7 +9,12 @@ interface ReadingPageLayoutProps {
 	className?: string
 }
 
-export function ReadingPageLayout({ theme, header, children, className }: ReadingPageLayoutProps) {
+export function ReadingPageLayout({
+	theme,
+	header,
+	children,
+	className,
+}: Readonly<ReadingPageLayoutProps>) {
 	return (
 		<main
 			className={`min-h-screen ${themeClasses.bg[theme]} ${themeClasses.textHeading[theme]} transition-colors duration-300 ${className || ''}`}

@@ -11,7 +11,7 @@ interface RoleBadgeProps {
 	theme: ReadingTheme
 }
 
-export function RoleBadge({ role, lang, theme }: RoleBadgeProps) {
+export function RoleBadge({ role, lang, theme }: Readonly<RoleBadgeProps>) {
 	const { isRtl, textDir, fontClass } = getStyleClasses(
 		lang as BibleTranslation,
 		'md',

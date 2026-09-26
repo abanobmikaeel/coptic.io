@@ -11,7 +11,7 @@ interface ThemePickerProps {
 const selectedClass = 'border-amber-500 ring-2 ring-amber-500/30'
 const unselectedClass = 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
 
-export function ThemePicker({ value, isAuto, onChange }: ThemePickerProps) {
+export function ThemePicker({ value, isAuto, onChange }: Readonly<ThemePickerProps>) {
 	return (
 		<div className="flex items-center justify-center gap-3">
 			{/* Auto - half light/half dark */}

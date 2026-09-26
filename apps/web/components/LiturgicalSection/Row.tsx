@@ -36,7 +36,7 @@ export interface RowProps {
 // Stacked rows form the whole section; because every row shares the same grid
 // template, the columns line up from row to row and the row height (the
 // tallest cell) is what keeps translations level with each other.
-export function Row({ row, activeLangs, isPageStart = false, ...style }: RowProps) {
+export function Row({ row, activeLangs, isPageStart = false, ...style }: Readonly<RowProps>) {
 	const contentLayout = style.contentLayout ?? 'prose'
 	return (
 		// dir=ltr pins the column order under an RTL locale; cells set their own dir.
@@ -83,7 +83,7 @@ function Cell({
 	showVerses = true,
 	viewMode = 'verse',
 	contentLayout = 'prose',
-}: CellProps) {
+}: Readonly<CellProps>) {
 	const { isRtl, textDir, sizes, lineHeight, fontClass, weightClass, wordSpacingClass } =
 		getStyleClasses(lang, textSize, lineSpacing, fontFamily, weight, wordSpacing)
 

@@ -119,7 +119,7 @@ interface LentDayPageProps {
 	}>
 }
 
-export default async function LentDayPage({ params, searchParams }: LentDayPageProps) {
+export default async function LentDayPage({ params, searchParams }: Readonly<LentDayPageProps>) {
 	const { date } = await params
 	const sp = await searchParams
 

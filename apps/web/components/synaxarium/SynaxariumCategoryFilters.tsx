@@ -69,7 +69,7 @@ export function SynaxariumCategoryFilters({
 	onCategoryChange,
 	counts,
 	showCounts,
-}: SynaxariumCategoryFiltersProps) {
+}: Readonly<SynaxariumCategoryFiltersProps>) {
 	const t = useTranslations('categories')
 
 	return (

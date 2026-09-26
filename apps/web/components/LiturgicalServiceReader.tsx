@@ -109,7 +109,7 @@ export function LiturgicalServiceReader({
 	availableLanguages,
 	contentLayout = 'prose',
 	rowsPerPageByKind,
-}: LiturgicalServiceReaderProps) {
+}: Readonly<LiturgicalServiceReaderProps>) {
 	const { settings, actions, mounted } = useReadingSettings()
 	const {
 		languages: contentLanguages,
@@ -148,7 +148,8 @@ export function LiturgicalServiceReader({
 		const done = () => {
 			if (!cancelled) setFontsReady(true)
 		}
-		document.fonts?.ready ? document.fonts.ready.then(done).catch(done) : done()
+		if (document.fonts) document.fonts.ready.then(done).catch(done)
+		else done()
 		return () => {
 			cancelled = true
 		}

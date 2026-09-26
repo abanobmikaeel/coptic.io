@@ -18,7 +18,7 @@ export function SynaxariumDateNav({
 	onPrevious,
 	onNext,
 	onGoToToday,
-}: SynaxariumDateNavProps) {
+}: Readonly<SynaxariumDateNavProps>) {
 	const t = useTranslations('synaxarium')
 	const tCommon = useTranslations('common')
 

@@ -84,7 +84,7 @@ interface AgpeyaPageProps {
 	searchParams: Promise<{ hour?: string; psalms?: string }>
 }
 
-export default async function AgpeyaPage({ searchParams }: AgpeyaPageProps) {
+export default async function AgpeyaPage({ searchParams }: Readonly<AgpeyaPageProps>) {
 	const params = await searchParams
 	const hasHourParam = !!params.hour
 	const hour = (

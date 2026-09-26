@@ -22,7 +22,7 @@ export function DateNavigation({
 	basePath = '/readings',
 	children,
 	keepDateParam = false,
-}: DateNavigationProps) {
+}: Readonly<DateNavigationProps>) {
 	const searchParams = useSearchParams()
 
 	// Read current date from URL params (client-side source of truth)

@@ -224,5 +224,5 @@ export function getAvailableCommemorations(serviceType: IncenseServiceType = 'ev
 			for (const key of Array.isArray(c) ? c : [c]) keys.add(key)
 		}
 	}
-	return [...keys].sort()
+	return [...keys].sort((a, b) => a.localeCompare(b))
 }

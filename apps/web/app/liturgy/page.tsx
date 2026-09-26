@@ -42,7 +42,7 @@ async function fetchLiturgy(lang: LiturgyLang, date: string): Promise<IncenseSer
 	}
 }
 
-export default async function LiturgyPage({ searchParams }: LiturgyPageProps) {
+export default async function LiturgyPage({ searchParams }: Readonly<LiturgyPageProps>) {
 	const { date: dateParam } = await searchParams
 
 	const now = new Date()

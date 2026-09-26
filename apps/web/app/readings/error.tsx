@@ -5,10 +5,10 @@ import { Card } from '@/components/ui/Card'
 
 export default function ReadingsError({
 	reset,
-}: {
+}: Readonly<{
 	error: Error & { digest?: string }
 	reset: () => void
-}) {
+}>) {
 	return (
 		<main className="min-h-screen relative">
 			<section className="relative pt-20 pb-8 px-6">
