@@ -174,7 +174,8 @@ jobs:
         working-directory: apps/api
         run: |
           WORKER_NAME="coptic-api-pr-${{ github.event.pull_request.number }}"
-          DEPLOY_OUTPUT=$(pnpm exec wrangler deploy --env preview --name "$WORKER_NAME" --var DATA_VERSION:${{ github.sha }} 2>&1)
+          # Print wrangler's output even when it fails; bash -e would otherwise exit first
+          DEPLOY_OUTPUT=$(pnpm exec wrangler deploy --env preview --name "$WORKER_NAME" --var DATA_VERSION:${{ github.sha }} 2>&1) || { echo "$DEPLOY_OUTPUT"; exit 1; }
           echo "$DEPLOY_OUTPUT"
           PREVIEW_URL=$(echo "$DEPLOY_OUTPUT" | grep -o 'https://[^ ]*\.workers\.dev' | tail -1)
           echo "worker_name=$WORKER_NAME" >> "$GITHUB_OUTPUT"
