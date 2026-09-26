@@ -55,7 +55,7 @@ describe('Arabic Agpeya', () => {
 })
 
 describe('Agpeya concluding sequence', () => {
-	const DAY_HOURS = ['terce', 'sext', 'none', 'vespers'] as const
+	const DAY_HOURS = ['terce', 'sext', 'none', 'vespers', 'compline'] as const
 	const hours = { en: getEnglishAgpeyaHourData, ar: getArabicAgpeyaHourData }
 
 	it('ends each daytime hour with Kyrie, Holy Holy Holy, its Absolution and the Conclusion, in both languages', () => {
@@ -89,6 +89,7 @@ describe('Agpeya concluding sequence', () => {
 		['sext', /^We thank You, our King, the Almighty/],
 		['none', /^God, Father, the Father of our Lord/],
 		['vespers', /^We thank You, our compassionate king/],
+		['compline', /^Lord, all our sins which we committed against You in this day/],
 	] as const)('prays the %s absolution from the source', (hourId, opening) => {
 		const hour = getEnglishAgpeyaHourData(hourId) as {
 			conclusion?: { id: string; content: string[] }[]
