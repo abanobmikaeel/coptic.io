@@ -18,7 +18,7 @@ const PAGES = {
 	midnight: 'Midnight',
 } as const
 type HourId = keyof typeof PAGES
-const DAY_HOURS: HourId[] = ['terce', 'sext', 'none', 'vespers', 'compline']
+const DAY_HOURS = new Set<HourId>(['terce', 'sext', 'none', 'vespers', 'compline'])
 
 interface Section {
 	id: string
@@ -49,8 +49,8 @@ async function psalmHeadings(page: string): Promise<string[]> {
 		.split(/<\/p>|<p\b[^>]*>|<br\s*\/?>/i)
 		.map((chunk) =>
 			chunk
-				.replace(/<[^>]+>/g, '')
-				.replace(/&nbsp;/g, ' ')
+				.replace(/<[^<>]*>/g, '')
+				.replaceAll('&nbsp;', ' ')
 				.replace(/\s+/g, ' ')
 				.trim(),
 		)
@@ -129,7 +129,7 @@ for (const [hourId, hour] of Object.entries(hours) as [HourId, HourFile][]) {
 		drop(`${hourId} ${section.id}`, section, 'note')
 	}
 	drop(hourId, hour, 'introduction')
-	if (DAY_HOURS.includes(hourId) && hour.psalmsIntro && ASCII.test(hour.psalmsIntro)) {
+	if (DAY_HOURS.has(hourId) && hour.psalmsIntro && ASCII.test(hour.psalmsIntro)) {
 		changes.push(`${hourId}: psalmsIntro → "${arabicPsalmsIntro}"`)
 		hour.psalmsIntro = arabicPsalmsIntro
 	}

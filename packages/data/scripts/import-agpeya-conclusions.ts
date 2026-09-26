@@ -73,7 +73,7 @@ function paragraphs(html: string): string[] {
 		.replace(/\s+/g, ' ')
 		.split(/<\/p>|<p\b[^>]*>|<br\s*\/?>/i)
 		.map((chunk) =>
-			decodeEntities(chunk.replace(/<[^>]+>/g, ''))
+			decodeEntities(chunk.replace(/<[^<>]*>/g, ''))
 				.replace(/\s+/g, ' ')
 				.trim(),
 		)
@@ -125,7 +125,7 @@ const writeJson = (path: string, value: unknown) =>
 	writeFileSync(path, `${JSON.stringify(value, null, '\t')}\n`)
 
 const kyrieRows = (lang: AgpeyaLanguage) =>
-	[10, 10, 10, 10, 1].map((n) => Array(n).fill(KYRIE_PHRASE[lang]).join(' '))
+	[10, 10, 10, 10, 1].map((n) => new Array(n).fill(KYRIE_PHRASE[lang]).join(' '))
 
 async function importLanguage(lang: AgpeyaLanguage, check: boolean) {
 	const commonPath = join(DATA_DIR, lang, 'agpeya', 'common.json')
@@ -142,7 +142,7 @@ async function importLanguage(lang: AgpeyaLanguage, check: boolean) {
 		const text = (lines: string[]) => lines.join(' ').replace(/\s+/g, ' ')
 		if (new Set(copies.map(text)).size > 1)
 			throw new Error(`${lang}: "${part}" differs between hours; expected it shared`)
-		return copies.reduce((a, b) => (b.length > a.length ? b : a))
+		return copies.reduce<string[]>((a, b) => (b.length > a.length ? b : a), [])
 	}
 
 	const t = TITLES[lang]
