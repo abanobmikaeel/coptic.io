@@ -1,4 +1,13 @@
-import { expect, test } from '@playwright/test'
+import { type Page, expect, test } from '@playwright/test'
+
+// Opens the upcoming view and waits for its entries, which only render after hydration.
+// Don't wait for `networkidle` here: Next 16.3 holds link prefetches open on this view.
+async function gotoUpcoming(page: Page) {
+	await page.goto('/synaxarium?view=upcoming')
+	const firstEntry = page.locator('a[href*="/synaxarium?date="]').first()
+	await expect(firstEntry).toBeVisible()
+	return firstEntry
+}
 
 test.describe('Synaxarium and Readings date consistency', () => {
 	test('should navigate from synaxarium to readings with correct date', async ({ page }) => {
@@ -362,19 +371,15 @@ test.describe('Synaxarium date navigation', () => {
 		await expect(todayToggle).toBeVisible()
 	})
 
-	// FIXME: waits for networkidle, which Next 16.3 never reaches on the upcoming view
-	test.fixme('clicking Today from upcoming should return to today', async ({ page }) => {
-		await page.goto('/synaxarium?view=upcoming')
-		await page.waitForLoadState('networkidle')
+	test('clicking Today from upcoming should return to today', async ({ page }) => {
+		await gotoUpcoming(page)
 
 		// Click Today toggle
 		const todayToggle = page.getByRole('button', { name: /Today/i }).first()
 		await todayToggle.click()
-		await page.waitForTimeout(500)
 
 		// Should be on day view for today
-		const url = page.url()
-		expect(url).not.toContain('view=upcoming')
+		await expect(page).not.toHaveURL(/view=upcoming/)
 
 		// Toggle should show "Today"
 		const toggleWithToday = page.locator('button').filter({ hasText: /Today/ }).first()
@@ -416,10 +421,8 @@ test.describe('Synaxarium view toggle', () => {
 		await expect(tomorrowLabel).toBeVisible({ timeout: 10000 })
 	})
 
-	// FIXME: waits for networkidle, which Next 16.3 never reaches on the upcoming view
-	test.fixme('should switch back to day view', async ({ page }) => {
-		await page.goto('/synaxarium?view=upcoming')
-		await page.waitForLoadState('networkidle')
+	test('should switch back to day view', async ({ page }) => {
+		await gotoUpcoming(page)
 
 		// Click the left toggle (Today/day view)
 		const dayToggle = page.getByRole('button', { name: /Today/i }).first()
@@ -434,28 +437,12 @@ test.describe('Synaxarium view toggle', () => {
 		await expect(page).not.toHaveURL(/view=upcoming/)
 	})
 
-	// FIXME: waits for networkidle, which Next 16.3 never reaches on the upcoming view
-	test.fixme('upcoming view entries should link to detail page', async ({ page }) => {
-		await page.goto('/synaxarium?view=upcoming')
-		await page.waitForLoadState('networkidle')
+	test('upcoming view entries should link to detail page', async ({ page }) => {
+		const firstEntry = await gotoUpcoming(page)
+		await firstEntry.click()
 
-		// Wait for entries to load
-		await page.waitForTimeout(1500)
-
-		// Find an entry link (they should be anchor tags in upcoming view)
-		const entryLinks = page.locator('a[href*="/synaxarium?date="]')
-
-		if ((await entryLinks.count()) > 0) {
-			const firstLink = entryLinks.first()
-			await expect(firstLink).toBeVisible()
-
-			// Click the link
-			await firstLink.click()
-			await page.waitForLoadState('networkidle')
-
-			// Should navigate to synaxarium with date param
-			await expect(page).toHaveURL(/\/synaxarium\?date=/)
-		}
+		// Should navigate to synaxarium with date param
+		await expect(page).toHaveURL(/\/synaxarium\?date=/)
 	})
 })
 
@@ -483,38 +470,24 @@ test.describe('Synaxarium header navigation', () => {
 		await expect(dayToggle).toBeVisible()
 	})
 
-	// FIXME: waits for networkidle, which Next 16.3 never reaches on the upcoming view
-	test.fixme('clicking upcoming entry should show day view for that date', async ({ page }) => {
-		await page.goto('/synaxarium?view=upcoming')
-		await page.waitForLoadState('networkidle')
-		await page.waitForTimeout(1500)
+	test('clicking upcoming entry should show day view for that date', async ({ page }) => {
+		const firstEntry = await gotoUpcoming(page)
+		await firstEntry.click()
 
-		const entryLinks = page.locator('a[href*="/synaxarium?date="]')
-		const count = await entryLinks.count()
-
-		if (count > 0) {
-			await entryLinks.first().click()
-			await page.waitForLoadState('networkidle')
-
-			// Should show "Day" in toggle since it's not today
-			const dayToggle = page.locator('button').filter({ hasText: /^Day$/ })
-			await expect(dayToggle).toBeVisible()
-		}
+		// Should show "Day" in toggle since it's not today
+		const dayToggle = page.locator('button').filter({ hasText: /^Day$/ })
+		await expect(dayToggle).toBeVisible()
 	})
 
-	// FIXME: waits for networkidle, which Next 16.3 never reaches on the upcoming view
-	test.fixme('clicking Today from Upcoming view should go to today', async ({ page }) => {
-		await page.goto('/synaxarium?view=upcoming')
-		await page.waitForLoadState('networkidle')
+	test('clicking Today from Upcoming view should go to today', async ({ page }) => {
+		await gotoUpcoming(page)
 
 		// Click Today toggle from upcoming view
 		const todayToggle = page.getByRole('button', { name: /Today/i }).first()
 		await todayToggle.click()
-		await page.waitForTimeout(1000)
 
 		// Should be on day view with today's date
-		const url = page.url()
-		expect(url).not.toContain('view=upcoming')
+		await expect(page).not.toHaveURL(/view=upcoming/)
 
 		// Toggle should show "Today"
 		const toggleWithToday = page.locator('button').filter({ hasText: /Today/ }).first()
