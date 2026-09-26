@@ -33,8 +33,16 @@
 		"prime-psalm-142",
 		"prime-gospel",
 		"prime-litany",
-		"prime-lords-prayer",
-		"prime-closing"
+		"gloria",
+		"trisagion",
+		"hail-to-you",
+		"creed-introduction",
+		"creed",
+		"kyrie41",
+		"holy-holy-holy",
+		"prime-absolution",
+		"prime-second-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -1046,32 +1054,31 @@
 			"kind": "litany",
 			"title": "Litanies",
 			"content": [
-				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
-				"A crown of blessing is the First Hour, which You grant to us, O Christ our God, for the forgiveness of our sins. Lord have mercy.",
-				"O Lord, Who at the First Hour did send Your Holy Spirit upon Your apostles, take not that Spirit from us, O Good One, but renew Him within us. Lord have mercy.",
-				"Create in me a clean heart, O God, and renew a steadfast spirit within me. Cast me not away from Your presence, and take not Your Holy Spirit from me.",
-				"Blessed is the Lord God, for He has visited and redeemed His people. Lord have mercy."
+				"Tenoo oasht emmok o piekhristos nem pekyot en aghathos nem pi epnevma ethowab je akee ak soati emmon nai nan",
+				"We worship You O Christ with Your Good Father and the Holy Spirit, for You have come and saved us.",
+				"1. O the true Light Who gives light to every man coming into the world, You came into the world through Your love for mankind, and all creation rejoiced in Your coming. You saved our father, Adam, from the seduction, and delivered our mother, Eve, from the pangs of death, and gave us the spirit of sonship. Let us, therefore, praise You and bless You saying:",
+				"Doxa Patri ke Eioa ke Agio Pnevmati",
+				"Glory to the Father, and the Son, and the Holy Spirit.",
+				"2. As the daylight shines upon us, O Christ Our God, the true Light, let the luminous senses and the bright thoughts shine within us, and do not let the darkness of passions hover over us, that mindfully we may praise You with David saying, “My eyes have awaken before the morning watch, that I might meditate on Your sayings.\" Hear our voices according to your great mercy, and deliver us, O Lord our God, through Your compassion.",
+				"Ke nin ke a ee ke ees toos e onas toan e oa noan ameen.",
+				"Now and forever and unto the ages of all ages, Amen.",
+				"3. You are the honored Mother of the Light; from the risings of the sun to its settings praises are offered to you, O Theotokos, the second heaven, as you are the bright and unchanging flower, and the ever virgin mother; for the Father chose you, and the Holy Spirit overshadowed you, and the Son condescended and took flesh from you. Wherefore, ask Him to give salvation to the world which He created, and to deliver it from all tribulations. Let us praise Him a new praise, and bless Him, now and forever and unto the ages of all ages. Amen."
 			]
 		},
 		{
-			"id": "prime-lords-prayer",
-			"kind": "lords-prayer",
-			"title": "The Lord's Prayer",
+			"id": "prime-absolution",
+			"kind": "conclusion",
+			"title": "First Absolution",
 			"content": [
-				"The Lord's Prayer",
-				"Make us worthy to say with thankfulness:",
-				"Our Father Who art in heaven, hallowed be Thy Name. Thy kingdom come. Thy will be done on earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from the evil one. In Christ Jesus our Lord. For Thine is the kingdom, the power and the glory, forever. Amen."
-			],
-			"inline": true
+				"O Lord, God of hosts, who exists before all ages and abides forever, who created the sun for daylight, and the night as rest for all men; we thank You, O King of ages, for You have let us pass through the night in peace, and brought us to the daybreak. Therefore, we ask You, O our Master, the King of all ages, to let Your face shine upon us, and the light of Your divine knowledge enlighten us. Grant us, O our Master, to be sons of light and sons of day, to pass this day in righteousness, chastity and good conduct, that we may complete all the rest of the days of our life without offence; through the grace, the compassion and the love of mankind of Your Only-Begotten Son Jesus Christ, and the gift of Your Holy Spirit, now and at all times and forever. Amen."
+			]
 		},
 		{
-			"id": "prime-closing",
-			"kind": "closing",
-			"title": "Concluding Prayer",
+			"id": "prime-second-absolution",
+			"kind": "conclusion",
+			"title": "Second Absolution",
 			"content": [
-				"O Lord, God of hosts, who exists before all ages and endures forever, who created the sun for the light of day, and the night for the rest of all mankind: we thank You, O King of the ages, for You have brought us through this night in peace and brought us to the beginning of the day.",
-				"Therefore we ask You, our King, the King of all ages: let the light of Your face shine upon us, and let the light of Your divine knowledge illumine us. Grant, our Master, that we may be children of the light and children of the day, that we may pass this day in righteousness, purity, and good order, and complete the rest of the days of our life without stumbling; through the grace, compassion, and love of mankind of Your only-begotten Son, Jesus Christ, and the gift of Your Holy Spirit, now and at all times and forever. Amen.",
-				"O Sender of the light, who causes it to go forth, who makes His sun rise upon the righteous and the wicked, who made the light that shines upon the whole world: enlighten our minds, our hearts, and our understanding, O Master of all. Grant us to please You this present day; guard us from every evil thing, from every sin, and from every adverse power; through Jesus Christ our Lord, with whom You are blessed, together with the life-giving Holy Spirit who is co-essential with You, now and at all times and unto the age of ages. Amen."
+				"O God Who causes the light to burst forth, Who lets His sun shine upon the righteous and the wicked, Who created the light which illuminates the whole world, enlighten our minds, our hearts and our understandings, O Master of all, and grant us to please You this present day. Guard us from every bad thing, from every sin, and from every adversitive power; through Christ Jesus our Lord, with whom You are blessed, with the Holy Spirit, the Life-Giver and one essence with You, now and at all times and unto the ages of all ages. Amen."
 			]
 		}
 	]

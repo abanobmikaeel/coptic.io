@@ -83,6 +83,38 @@ describe('Agpeya concluding sequence', () => {
 		}
 	})
 
+	it('prays Prime from the litanies through both absolutions and the Conclusion', () => {
+		for (const [lang, getHour] of Object.entries(hours)) {
+			const prime = getHour('prime') as { conclusion?: { id: string }[]; lordsPrayer?: unknown }
+			expect(
+				prime.conclusion?.map((s) => s.id),
+				lang,
+			).toEqual([
+				'gloria',
+				'trisagion',
+				'hail-to-you',
+				'creed-introduction',
+				'creed',
+				'kyrie41',
+				'holy-holy-holy',
+				'prime-absolution',
+				'prime-second-absolution',
+				'conclusion-of-every-hour',
+			])
+			// The Lord's Prayer is prayed within the Trisagion and Holy Holy Holy now
+			expect(prime.lordsPrayer, lang).toBeUndefined()
+		}
+	})
+
+	it('keeps the Arabic free of legacy ASCII-font Coptic', () => {
+		const prime = getArabicAgpeyaHourData('prime') as {
+			litanies: { content: string[] }
+			conclusion?: { content: string[] }[]
+		}
+		const text = [...prime.litanies.content, ...(prime.conclusion ?? []).flatMap((s) => s.content)]
+		expect(text.filter((line) => /[A-Za-z`]/.test(line))).toEqual([])
+	})
+
 	// Regression: English once ended these hours in prayers that aren't the absolutions
 	it.each([
 		['terce', /^O God of all compassion, and Lord of all comfort/],
