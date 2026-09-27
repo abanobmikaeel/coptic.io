@@ -55,7 +55,7 @@ test.describe('Synaxarium and Readings date consistency', () => {
 		const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
 
 		// Navigate forward one day
-		const nextButton = page.getByRole('button', { name: /next day/i })
+		const nextButton = page.getByRole('link', { name: /next day/i })
 		await nextButton.click()
 
 		// Wait for URL to update with a date different from today
@@ -337,7 +337,7 @@ test.describe('Synaxarium date navigation', () => {
 		await expect(todayToggle).toBeVisible()
 
 		// Click the forward/next day button (right chevron)
-		const nextButton = page.getByRole('button', { name: /next day/i })
+		const nextButton = page.getByRole('link', { name: /next day/i })
 		await expect(nextButton).toBeVisible()
 		await nextButton.click()
 
@@ -354,12 +354,12 @@ test.describe('Synaxarium date navigation', () => {
 		await page.waitForLoadState('networkidle')
 
 		// First navigate forward so we can go back
-		const nextButton = page.getByRole('button', { name: /next day/i })
+		const nextButton = page.getByRole('link', { name: /next day/i })
 		await nextButton.click()
 		await page.waitForTimeout(500)
 
 		// Click the backward/previous day button (left chevron)
-		const prevButton = page.getByRole('button', { name: /previous day/i })
+		const prevButton = page.getByRole('link', { name: /previous day/i })
 		await expect(prevButton).toBeVisible()
 		await prevButton.click()
 
@@ -393,8 +393,8 @@ test.describe('Synaxarium view toggle', () => {
 		await page.waitForLoadState('networkidle')
 
 		// Should have prev/next buttons
-		const prevButton = page.getByRole('button', { name: /previous day/i })
-		const nextButton = page.getByRole('button', { name: /next day/i })
+		const prevButton = page.getByRole('link', { name: /previous day/i })
+		const nextButton = page.getByRole('link', { name: /next day/i })
 		const upcomingToggle = page.getByRole('button', { name: /Upcoming/i })
 
 		await expect(prevButton).toBeVisible()
@@ -428,8 +428,8 @@ test.describe('Synaxarium view toggle', () => {
 		const dayToggle = page.getByRole('button', { name: /Today/i }).first()
 		await dayToggle.click()
 
-		// Wait for day view UI elements to appear (nav buttons only visible in day view)
-		const nextButton = page.getByRole('button', { name: /next day/i })
+		// The date arrows sit in the sticky header and work again once back in day view
+		const nextButton = page.getByRole('link', { name: /next day/i })
 		await expect(nextButton).toBeVisible({ timeout: 5000 })
 		await expect(nextButton).toBeEnabled()
 
@@ -503,7 +503,7 @@ test.describe('Synaxarium header navigation', () => {
 		await expect(toggleWithToday).toBeVisible()
 
 		// Navigate forward one day
-		const nextButton = page.getByRole('button', { name: /next day/i })
+		const nextButton = page.getByRole('link', { name: /next day/i })
 		await nextButton.click()
 		await page.waitForTimeout(500)
 
@@ -517,12 +517,12 @@ test.describe('Synaxarium header navigation', () => {
 		await page.waitForLoadState('networkidle')
 
 		// Navigate forward
-		const nextButton = page.getByRole('button', { name: /next day/i })
+		const nextButton = page.getByRole('link', { name: /next day/i })
 		await nextButton.click()
 		await page.waitForTimeout(500)
 
 		// Navigate back
-		const prevButton = page.getByRole('button', { name: /previous day/i })
+		const prevButton = page.getByRole('link', { name: /previous day/i })
 		await prevButton.click()
 		await page.waitForTimeout(500)
 
