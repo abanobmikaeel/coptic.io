@@ -1,20 +1,22 @@
 import {
 	getAgpeyaHourData as getArAgpeyaHourData,
 	getAgpeyaHourIds as getArAgpeyaHourIds,
+	getAgpeyaHour as getArAgpeyaHourParts,
 } from '@coptic/data/ar/agpeya'
 import {
 	type AgpeyaHourData,
 	type AgpeyaHourId,
 	type AgpeyaMidnightHour,
 	type AgpeyaMidnightTailSection,
-	type AgpeyaProseSection,
 	type AgpeyaWatch,
 	type MidnightWatchId,
 	getAgpeyaHourData as getEnAgpeyaHourData,
 	getAgpeyaHourIds as getEnAgpeyaHourIds,
+	getAgpeyaHour as getEnAgpeyaHourParts,
 	isMidnightHour,
 } from '@coptic/data/en/agpeya'
 import type { BibleTranslation } from '../types'
+import { type PsalmSource, type ServedSection, toServedSections } from './agpeya-sections'
 import {
 	type ResolvedGospel,
 	type ResolvedPsalm,
@@ -54,6 +56,8 @@ export interface ResolvedAgpeyaHour {
 	thanksgivingAfter?: { title?: string; content: string[]; inline?: boolean }
 	closing?: { title?: string; content: string[]; inline?: boolean }
 	conclusion?: { id: string; title?: string; content: string[]; inline?: boolean }[]
+	/** The whole hour in prayed order, when requested with `include=sections`. */
+	sections?: ServedSection[]
 }
 
 // Resolved watch with populated psalms and gospel
@@ -88,23 +92,17 @@ export interface ResolvedMidnightHour {
 	// The shared ending prayed after the third watch, in order. Prose sections carry
 	// `content`; the midnight Gospel carries a resolved `reference`/`verses`.
 	conclusion?: MidnightTailSection[]
+	/** The whole hour in prayed order, each watch as a group; see ResolvedAgpeyaHour. */
+	sections?: ServedSection[]
 }
 
 // A section in midnight's ending tail: a prose prayer, or the midnight Gospel with
 // its text resolved in the requested translation.
 export type MidnightTailSection =
-	| AgpeyaProseSection
+	| Exclude<AgpeyaMidnightTailSection, { kind: 'gospel' }>
 	| ({ id: string; kind: 'gospel'; title?: string } & ResolvedGospel)
 
-// Which psalm text to serve. 'septuagint' (default) prefers the psalms embedded
-// in the Agpeya data — the Septuagint-based liturgical psalter with the
-// traditional Agpeya phrase divisions. Both languages come from the St-Takla
-// Agpeya (English is the standard church translation, not a raw Brenton
-// edition); see scripts/embed-en-psalms.ts for the English import pipeline.
-// 'bible' always resolves the hour's psalm references against the Bible
-// translation instead (Masoretic-style versification), for readers who want
-// the wording of their own Bible.
-export type PsalmSource = 'septuagint' | 'bible'
+export type { PsalmSource }
 
 /**
  * Resolve a standard hour's psalm and gospel references
@@ -113,7 +111,7 @@ function resolveHour(
 	hourData: AgpeyaHourData,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
-): ResolvedAgpeyaHour {
+): Omit<ResolvedAgpeyaHour, 'sections'> {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = hourData.introductoryPsalm
 		? resolveAgpeyaPsalms([hourData.introductoryPsalm], translation)[0]
@@ -199,7 +197,7 @@ function resolveMidnightHour(
 	midnightData: AgpeyaMidnightHour,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
-): ResolvedMidnightHour {
+): Omit<ResolvedMidnightHour, 'sections'> {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = midnightData.introductoryPsalm
 		? resolveAgpeyaPsalms([midnightData.introductoryPsalm], translation)[0]
@@ -238,17 +236,21 @@ export function getAgpeyaHour(
 	hourId: AgpeyaHourId,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
+	{ sections: withSections = false }: { sections?: boolean } = {},
 ): ResolvedAgpeyaHour | ResolvedMidnightHour | null {
 	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
 	const hourData = getData(hourId)
 	if (!hourData) return null
 
 	const source = effectivePsalmSource(translation, psalmSource)
+	const getParts = translation === 'ar' ? getArAgpeyaHourParts : getEnAgpeyaHourParts
+	const parts = withSections ? getParts(hourId) : null
+	const sections = parts ? { sections: toServedSections(parts, translation, source) } : {}
 	if (isMidnightHour(hourData)) {
-		return resolveMidnightHour(hourData, translation, source)
+		return { ...resolveMidnightHour(hourData, translation, source), ...sections }
 	}
 
-	return resolveHour(hourData as AgpeyaHourData, translation, source)
+	return { ...resolveHour(hourData as AgpeyaHourData, translation, source), ...sections }
 }
 
 /**

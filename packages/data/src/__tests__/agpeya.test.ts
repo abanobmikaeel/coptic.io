@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { getAgpeyaHourData as getArabicAgpeyaHourData } from '../ar/agpeya'
+import type { AgpeyaHourId } from '../agpeya/types'
+import {
+	getAgpeyaHour as getArabicAgpeyaHour,
+	getAgpeyaHourData as getArabicAgpeyaHourData,
+} from '../ar/agpeya'
 import arCommon from '../ar/agpeya/common.json'
 import { getChapter, getMissingBooks } from '../cop/bible'
 import {
@@ -269,5 +273,70 @@ describe('Gospel conclusion', () => {
 				lang === 'en' ? 'Glory to God forever. Amen.' : 'والمجد لله دائما. أمين.',
 			])
 		}
+	})
+})
+
+describe('Litany responses', () => {
+	// Responses are marked in the data, never inferred from their wording, so both
+	// languages must mark the same lines, with the same Coptic.
+	it('marks the same responses, with the same Coptic, in English and Arabic', () => {
+		const responses = (getHour: typeof getAgpeyaHour, hourId: AgpeyaHourId) =>
+			(getHour(hourId)?.parts ?? [])
+				.flatMap((p) => ('group' in p ? p.sections : [p]))
+				.flatMap((s) =>
+					'content' in s
+						? s.content.flatMap((line, i) =>
+								typeof line !== 'string' && line.isResponse ? [`${s.id}[${i}] ${line.coptic}`] : [],
+							)
+						: [],
+				)
+		let total = 0
+		for (const hourId of getAgpeyaHourIds()) {
+			const en = responses(getAgpeyaHour, hourId)
+			expect(responses(getArabicAgpeyaHour, hourId), hourId).toEqual(en)
+			total += en.length
+		}
+		expect(total).toBeGreaterThan(0)
+	})
+
+	// The Coptic sits beside the translation, not inside the prose around it.
+	it('keeps Coptic script out of prayer prose', () => {
+		for (const getHour of [getAgpeyaHour, getArabicAgpeyaHour]) {
+			for (const hourId of getAgpeyaHourIds()) {
+				for (const part of getHour(hourId)?.parts ?? []) {
+					for (const s of 'group' in part ? part.sections : [part]) {
+						if (!('content' in s)) continue
+						for (const line of s.content) {
+							const text = typeof line === 'string' ? line : line.text
+							expect(/[Ⲁ-⳿]/.test(text), `${hourId} ${s.id}: ${text.slice(0, 60)}`).toBe(false)
+						}
+					}
+				}
+			}
+		}
+	})
+})
+
+describe('Midnight watch headings', () => {
+	// Each watch opens with its offering and "From the Psalms…", then says which
+	// psalms are prayed; both languages carry the same parts so the rows pair.
+	it('opens every watch with the same parts in English and Arabic', () => {
+		const parts = (getHour: typeof getAgpeyaHour) =>
+			(getHour('midnight')?.parts ?? []).flatMap((p) =>
+				'group' in p
+					? [
+							{
+								group: p.group,
+								prayer: !!p.prayer,
+								psalmsIntro: !!p.psalmsIntro,
+								psalmsRubric: !!p.psalmsRubric,
+							},
+						]
+					: [],
+			)
+		const en = parts(getAgpeyaHour)
+		expect(en).toHaveLength(3)
+		expect(en.every((w) => w.prayer && w.psalmsIntro)).toBe(true)
+		expect(parts(getArabicAgpeyaHour)).toEqual(en)
 	})
 })

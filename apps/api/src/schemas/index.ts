@@ -102,30 +102,78 @@ export const AgpeyaLitanySchema = z.object({
 	content: z.array(z.string()),
 })
 
+const AgpeyaProseKindSchema = z.enum([
+	'opening',
+	'hour-intro',
+	'come-let-us-worship',
+	'thanksgiving',
+	'litany',
+	'lords-prayer',
+	'thanksgiving-after',
+	'gospel-conclusion',
+	'closing',
+	'conclusion',
+])
+
+const AgpeyaProseEntrySchema = AgpeyaPrayerSectionSchema.extend({
+	id: z.string(),
+	kind: AgpeyaProseKindSchema,
+	rubric: z.string().optional(),
+})
+
 // A section of midnight's ending: a prose prayer or the resolved midnight Gospel.
 const AgpeyaMidnightTailSchema = z.discriminatedUnion('kind', [
-	AgpeyaPrayerSectionSchema.extend({
-		id: z.string(),
-		kind: z.enum([
-			'opening',
-			'hour-intro',
-			'come-let-us-worship',
-			'thanksgiving',
-			'litany',
-			'lords-prayer',
-			'thanksgiving-after',
-			'gospel-conclusion',
-			'closing',
-			'conclusion',
-		]),
-		rubric: z.string().optional(),
-	}),
+	AgpeyaProseEntrySchema,
 	AgpeyaGospelSchema.extend({
 		id: z.string(),
 		kind: z.literal('gospel'),
 		title: z.string().optional(),
 	}),
 ])
+
+const AgpeyaScriptureEntrySchema = AgpeyaGospelSchema.extend({
+	id: z.string(),
+	kind: z.enum(['psalm', 'intro-psalm', 'gospel']),
+	title: z.string().optional(),
+})
+
+// A line in `sections`: plain text, or an attributed line; a litany response carries
+// its Coptic form beside the translation.
+const AgpeyaLineSchema = z.union([
+	z.string(),
+	z.object({
+		text: z.string(),
+		speaker: z.enum(['Priest', 'Deacon', 'People']).optional(),
+		isRubric: z.boolean().optional(),
+		isResponse: z.boolean().optional(),
+		coptic: z.string().optional(),
+	}),
+])
+
+const AgpeyaLeafEntrySchema = z.union([
+	AgpeyaProseEntrySchema.extend({ content: z.array(AgpeyaLineSchema) }),
+	AgpeyaScriptureEntrySchema,
+])
+
+// The hour in prayed order: prose carries `content`, scripture carries `verses`, and a
+// Midnight watch is a group of both.
+const AgpeyaSectionsSchema = z
+	.array(
+		z.union([
+			AgpeyaLeafEntrySchema,
+			z.object({
+				id: z.string(),
+				kind: z.literal('watch'),
+				title: z.string(),
+				theme: z.string().optional(),
+				prayer: z.string().optional(),
+				psalmsIntro: z.string().optional(),
+				psalmsRubric: z.string().optional(),
+				sections: z.array(AgpeyaLeafEntrySchema),
+			}),
+		]),
+	)
+	.describe('The whole hour in prayed order.')
 
 // Watch schema for midnight prayers
 export const AgpeyaWatchSchema = z.object({
@@ -161,6 +209,7 @@ export const AgpeyaHourSchema = z.object({
 	thanksgivingAfter: AgpeyaPrayerSectionSchema.optional(),
 	closing: AgpeyaPrayerSectionSchema.optional(),
 	conclusion: z.array(AgpeyaPrayerSectionSchema.extend({ id: z.string() })).optional(),
+	sections: AgpeyaSectionsSchema.optional(),
 })
 
 // Midnight hour schema with watches
@@ -175,6 +224,7 @@ export const AgpeyaMidnightHourSchema = z.object({
 	closing: AgpeyaPrayerSectionSchema.optional(),
 	// The ending tail: prose prayers and the midnight Gospel, in order.
 	conclusion: z.array(AgpeyaMidnightTailSchema).optional(),
+	sections: AgpeyaSectionsSchema.optional(),
 })
 
 // Union schema for any hour type

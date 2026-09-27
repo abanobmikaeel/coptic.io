@@ -5,98 +5,33 @@
 	"englishName": "Three Watches",
 	"traditionalTime": "12:00 AM",
 	"introduction": "We pray the Midnight Prayer commemorating the Second Coming of our Lord and the resurrection of the dead. We watch and pray as we await the Bridegroom.",
-	"order": [
-		"midnight-opening",
-		"thanksgiving-prayer",
-		"psalm-50",
-		{
-			"group": "midnight-1",
+	"groups": {
+		"midnight-1": {
 			"name": "First Watch",
 			"theme": "Watchfulness and Vigilance",
-			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-			"order": [
-				"psalm-3",
-				"psalm-6",
-				"psalm-12",
-				"psalm-69",
-				"psalm-85",
-				"psalm-90",
-				"psalm-116",
-				"psalm-117",
-				"midnight-1-psalm-118",
-				"midnight-1-gospel",
-				"gospel-conclusion",
-				"midnight-1-litany",
-				"kyrie41",
-				"holy-holy-holy",
-				"lords-prayer"
-			]
+			"prayer": "The praise of the first watch of the blessed Midnight Hour, we offer unto Christ our King and our God, beseeching Him to forgive us our sins.",
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen."
 		},
-		{
-			"group": "midnight-2",
+		"midnight-2": {
 			"name": "Second Watch",
 			"theme": "Repentance and Tears",
+			"prayer": "The service of the second watch of the blessed Midnight Hour, we offer unto Christ our King and our God, beseeching Him to forgive us our sins.",
 			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-			"order": [
-				"psalm-119",
-				"psalm-120",
-				"psalm-121",
-				"psalm-122",
-				"psalm-123",
-				"psalm-124",
-				"psalm-125",
-				"psalm-126",
-				"psalm-127",
-				"psalm-128",
-				"midnight-2-gospel",
-				"gospel-conclusion",
-				"midnight-2-litany",
-				"kyrie41",
-				"holy-holy-holy",
-				"lords-prayer"
-			]
+			"psalmsRubric": "All the psalms of the eleventh hour (vespers) are prayed except psalms 116 and 117."
 		},
-		{
-			"group": "midnight-3",
+		"midnight-3": {
 			"name": "Third Watch",
 			"theme": "Judgment and Hope",
+			"prayer": "The service of the third watch of the blessed Midnight Hour, we offer unto Christ our King and our God, beseeching Him to forgive us our sins.",
 			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-			"order": [
-				"psalm-129",
-				"psalm-130",
-				"midnight-3-psalm-131",
-				"psalm-132",
-				"psalm-133",
-				"psalm-136",
-				"psalm-137",
-				"psalm-140",
-				"psalm-141",
-				"psalm-145",
-				"psalm-146",
-				"psalm-147",
-				"midnight-3-gospel",
-				"gospel-conclusion",
-				"midnight-3-litany"
-			]
-		},
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"midnight-gospel-2",
-		"midnight-tenouwst",
-		"creed-introduction",
-		"creed",
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"midnight-absolution",
-		"conclusion-of-every-hour",
-		"lords-prayer"
-	],
+			"psalmsRubric": "All the psalms of the twelfth hour (compline) are prayed."
+		}
+	},
 	"sections": [
 		{
 			"id": "midnight-opening",
 			"kind": "opening",
+			"title": "The Introduction to Every Hour",
 			"content": [
 				"In the name of the Father, and the Son, and the Holy Spirit,",
 				"the one God. Amen.",
@@ -823,6 +758,7 @@
 		{
 			"id": "midnight-1-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Matthew",
 			"chapter": 25,
 			"startVerse": 1,
@@ -832,28 +768,45 @@
 		{
 			"id": "midnight-1-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"Behold the Bridegroom is coming at the middle of the night. Blessed is the servant whom He finds watchful, but he whom shall be found slothful shall be unworthy of going with Him. Therefore, take heed, O my soul, lest you may not slumber and hence be cast out of the kingdom of God. Rather, stay awake and watchful, and cry out saying, “Holy, holy, holy are You, O God, have mercy on us for the sake of the Mother of God.”",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"O my soul, consider that awesome Day of Judgment, wake up and be watchful, and keep your lamp burning with the oil of joy. For you do not know at what time that crying voice will come upon you saying, “Behold, the Bridegroom has come!” Therefore, take heed my soul that you would not slumber lest you would be kept outside knocking at the door in vain just as the five foolish virgins did. But rather, watch and stay awake in prayer and supplication in order to meet the Lord Christ with rich oil, and that He grant you to partake in His glorious and truly divine wedding.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O holy Virgin, Theotokos, Mother of God, you are the fortification of our salvation, and our impregnable fortress that cannot be vanquished. Abolish the conspiracies of the adversaries, and turn our sadness into joy. Fortify our city, defend our governors, and intercede for the peace of the world; for you are our hope, O Mother of God.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O heavenly King, the Comforter, the Spirit of truth, who is present everywhere and fills all; You are the treasure of goodness and the Life-Giver, graciously come and abide in us, O Good One, purify us of all iniquities and save our souls.",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"Just as You did abide with Your Disciples, O Savior, and gave them peace, come also now, abide with us and give us Your peace, save us and deliver our souls.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"Whenever we stand in Your holy sanctuary, we are indeed considered as those who abide in heaven. O Mother of God, you are the gate of heaven, open for us the door of mercy."
 			]
 		},
 		{
 			"id": "midnight-2-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 7,
 			"startVerse": 36,
@@ -863,22 +816,38 @@
 		{
 			"id": "midnight-2-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"Grant me, O Lord, fountains of plentiful tears, even as You had given long ago to the sinful woman. Make me worthy to wash Your feet with my tears, which delivered me from going astray in the way of deception, and to offer You sublime fragrant oil, and to attain a pure life of repentance. So that I also may hear that voice full of joy, saying: “Your faith has saved you.”",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"When I consider the multitude of my evil deeds, and my heart reflects on that awesome judgment, I tremble with fear, so I quickly take refuge in You, O God, the Lover of Mankind. Hence, I beseech You O Lord, not to turn Your face away from me, O You who are the only One without sin. Grant my poor soul a true godly fear, and save me before the end of ages comes.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"The heavens venerate you, O you full-of-grace and the ever-virgin bride. And we too glorify your incomprehensible giving-birth to Christ, O Theotokos, the Mother of mercy and salvation, intercede on our behalf for the salvation of our souls.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O heavenly King, the Comforter, the Spirit of truth, who is present everywhere and fills all; You are the treasure of goodness and the Life-Giver, graciously come and abide in us, O Good One, purify us of all iniquities and save our souls.",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"Just as You did abide with Your Disciples, O Savior, and gave them peace, come also now, abide with us and give us Your peace, save us and deliver our souls.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"Whenever we stand in Your holy sanctuary, we are indeed considered as those who abide in heaven. O Mother of God, you are the gate of heaven, open for us the door of mercy."
 			]
 		},
@@ -949,6 +918,7 @@
 		{
 			"id": "midnight-3-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 12,
 			"startVerse": 32,
@@ -958,28 +928,45 @@
 		{
 			"id": "midnight-3-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"With a compassionate eye consider my weakness, O Lord. For very soon my life will come to end, and by my deeds I shall have no salvation. Therefore, I beseech You, O Lord, with a merciful eye look at my weakness, my affliction, my poverty, and my sojourning, and deliver me.",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"Since the Judge is assuredly present before me, therefore take heed, O my soul, be watchful and sober, and consider that awesome hour of judgment. For there shall be no mercy in the Judgment for those who have shown no mercy. Therefore, have compassion on me, O Savior, for You are the Lover of Mankind.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"You are the gate of life, O Theotokos, the honored Mother of God, rescue those who faithfully took refuge in you from hardships and afflictions. We glorify the immaculate giving-birth that you gave to our Lord Jesus Christ, who was incarnate for the salvation of our souls.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O heavenly King, the Comforter, the Spirit of truth, who is present everywhere and fills all; You are the treasure of goodness and the Life-Giver, graciously come and abide in us, O Good One, purify us of all iniquities and save our souls.",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"Just as You did abide with Your Disciples, O Savior, and gave them peace, come also now, abide with us and give us Your peace, save us and deliver our souls.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"Whenever we stand in Your holy sanctuary, we are indeed considered as those who abide in heaven. O Mother of God, you are the gate of heaven, open for us the door of mercy."
 			]
 		},
 		{
 			"id": "midnight-gospel-2",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 2,
 			"startVerse": 29,

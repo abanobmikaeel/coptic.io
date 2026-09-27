@@ -33,6 +33,7 @@ function SynaxariumPageContent() {
 		searchResults,
 		filteredSearchResults,
 		isSearching,
+		isToday,
 		loading,
 		selectedCategory,
 		expandedEntry,
@@ -93,7 +94,11 @@ function SynaxariumPageContent() {
 		<ReadingPageLayout theme={effectiveTheme} header={stickyHeader}>
 			<div ref={swipeRef as React.RefObject<HTMLDivElement>}>
 				{/* View toggle (day vs upcoming) + search + category filters, just below the header. */}
-				<SynaxariumHeader viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+				<SynaxariumHeader
+					viewMode={viewMode}
+					isToday={isToday}
+					onViewModeChange={handleViewModeChange}
+				/>
 
 				<SynaxariumSearch value={searchQuery} onChange={setSearchQuery} isSearching={isSearching} />
 

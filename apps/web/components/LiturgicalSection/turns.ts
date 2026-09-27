@@ -15,85 +15,43 @@ export interface FlatLine {
 	num?: number
 }
 
-// The fixed liturgical responses that recur inside the litanies, in Coptic script.
-// A Coptic line is paired with the vernacular line that follows it into one response.
-const COPTIC_RESPONSE_PATTERNS = [
-	/^\u2C86\u2C9F\u2C9D\u2C81 \u2CA0\u2C81\u2CA7\u2CA3\u2C93/, // Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ (Doxa)
-	/^\u2C95\u2C89 \u2C9B\u2CA9\u2C9B/, // ⲕⲉ ⲛⲩⲛ (Ke nin)
-]
-
-// The vernacular translations of the same responses, when they appear on their own.
-const VERNACULAR_RESPONSE_PATTERNS = [
-	/^Glory to the Father and the Son and the Holy Spirit\.?$/i,
-	/^Now and forever and unto the age of all ages\.?\s*Amen\.?$/i,
-	/^\u0627\u0644\u0645\u062c\u062f \u0644\u0644\u0622\u0628/, // المجد للآب (Glory be)
-	/^\u0627\u0644\u0622\u0646 \u0648\u0643\u0644 \u0623\u0648\u0627\u0646/, // الآن وكل أوان (Now and forever)
-]
-
-const isCopticResponse = (text: string): boolean => {
-	const t = text.trim()
-	return COPTIC_RESPONSE_PATTERNS.some((re) => re.test(t))
-}
-const isVernacularResponse = (text: string): boolean => {
-	const t = text.trim()
-	return VERNACULAR_RESPONSE_PATTERNS.some((re) => re.test(t))
-}
-
 export interface LiturgicalLine {
 	speaker?: Speaker
 	text: string
 	isRubric?: boolean
+	// Marked in the data; the reader never infers a response from the text.
+	isResponse?: boolean
+	coptic?: string
 }
 
 export type LiturgicalContent = string | LiturgicalLine
 
 // Flattens content into individual lines, propagating speaker context to following
 // plain-string lines so each line knows who is speaking even without explicit attribution.
-// A Coptic response line and the vernacular line that follows it collapse into one
-// response (translation as `text`, Coptic script as `responseCoptic`).
 export function flattenToLines(content: LiturgicalContent[]): FlatLine[] {
-	const texts = content.map((item) => (typeof item === 'string' ? item : item.text))
 	const result: FlatLine[] = []
 	let currentSpeaker: Speaker | undefined
-	for (let i = 0; i < content.length; i++) {
-		const item = content[i]
-		const raw = typeof item === 'string' ? item : item.text
-		const trimmed = raw.trim()
-
-		// A Coptic response directly followed by its vernacular translation becomes a
-		// single bilingual response.
-		if (isCopticResponse(trimmed) && isVernacularResponse(texts[i + 1] ?? '')) {
-			result.push({
-				text: (texts[i + 1] ?? '').trim(),
-				responseCoptic: trimmed,
-				speaker: currentSpeaker,
-				isRubric: false,
-				isNewSpeakerGroup: false,
-				isResponse: true,
-			})
-			i++ // consume the vernacular line
-			continue
-		}
-
+	for (const item of content) {
 		if (typeof item === 'string') {
 			result.push({
 				text: item,
 				speaker: currentSpeaker,
 				isRubric: false,
 				isNewSpeakerGroup: false,
-				isResponse: isVernacularResponse(item),
+				isResponse: false,
 			})
-		} else {
-			const isNew = item.speaker !== undefined && item.speaker !== currentSpeaker
-			if (item.speaker !== undefined) currentSpeaker = item.speaker
-			result.push({
-				text: item.text,
-				speaker: item.speaker ?? currentSpeaker,
-				isRubric: item.isRubric ?? false,
-				isNewSpeakerGroup: isNew,
-				isResponse: isVernacularResponse(item.text),
-			})
+			continue
 		}
+		const isNew = item.speaker !== undefined && item.speaker !== currentSpeaker
+		if (item.speaker !== undefined) currentSpeaker = item.speaker
+		result.push({
+			text: item.text,
+			speaker: item.speaker ?? currentSpeaker,
+			isRubric: item.isRubric ?? false,
+			isNewSpeakerGroup: isNew,
+			isResponse: item.isResponse ?? false,
+			...(item.coptic ? { responseCoptic: item.coptic } : {}),
+		})
 	}
 	return result
 }

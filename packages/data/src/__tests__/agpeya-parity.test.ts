@@ -15,6 +15,8 @@
  * When you fix a section by hand, delete its entry here.
  */
 import { describe, expect, it } from 'vitest'
+import order from '../agpeya/order.json'
+import type { AgpeyaOrder, AgpeyaOrderEntry } from '../agpeya/types'
 // Compare LOADER output, not raw JSON — an hour file names most of its sections
 // by id, so only the composed hour is the text actually served.
 import {
@@ -22,12 +24,33 @@ import {
 	getAgpeyaHour as getArAgpeyaHour,
 	getAgpeyaHourData as getArHour,
 } from '../ar/agpeya'
+import arCommon from '../ar/agpeya/common.json'
+import arCompline from '../ar/agpeya/compline.json'
+import arMidnight from '../ar/agpeya/midnight.json'
+import arNone from '../ar/agpeya/none.json'
+import arPrime from '../ar/agpeya/prime.json'
+import arSext from '../ar/agpeya/sext.json'
+import arTerce from '../ar/agpeya/terce.json'
+import arVespers from '../ar/agpeya/vespers.json'
 import {
 	getAgpeyaHourIds,
 	getAgpeyaHour as getEnAgpeyaHour,
 	getAgpeyaHourData as getEnHour,
 } from '../en/agpeya'
+import enCommon from '../en/agpeya/common.json'
+import enCompline from '../en/agpeya/compline.json'
+import enMidnight from '../en/agpeya/midnight.json'
+import enNone from '../en/agpeya/none.json'
+import enPrime from '../en/agpeya/prime.json'
+import enSext from '../en/agpeya/sext.json'
+import enTerce from '../en/agpeya/terce.json'
+import enVespers from '../en/agpeya/vespers.json'
 import enBible from '../en/bible/books.json'
+
+const hourFiles = {
+	en: [enPrime, enTerce, enSext, enNone, enVespers, enCompline, enMidnight],
+	ar: [arPrime, arTerce, arSext, arNone, arVespers, arCompline, arMidnight],
+}
 
 // Empty: every prose section now matches line-for-line in both languages.
 const KNOWN_PROSE_GAPS = new Set<string>()
@@ -141,11 +164,9 @@ for (const { path, en: e, ar: a } of units) {
 // ── invariants ───────────────────────────────────────────────────────────────
 
 describe('agpeya rite parity', () => {
-	// The strongest invariant the order-based split buys: both languages name the
-	// same section ids in the same sequence, so the reader can align them by id
-	// instead of by position and a section added to one language but not the
-	// other fails here rather than silently misaligning the columns. Every section
-	// is prayed in both languages — there is no English-only or Arabic-only part.
+	// Both languages compose from one shared order (agpeya/order.json), so the reader
+	// can align them by id; a section missing from either language fails to load
+	// rather than misaligning the columns.
 	it('prays the same sections in the same order in both languages', () => {
 		for (const hourId of getAgpeyaHourIds()) {
 			const ids = (hour: ReturnType<typeof getEnAgpeyaHour>): string[] =>
@@ -196,6 +217,25 @@ describe('agpeya data cross-language parity', () => {
 		}
 		for (const id of KNOWN_PSALM_GAPS) {
 			expect(psalmCounts.has(id), `${id} not found — remove it from KNOWN_PSALM_GAPS`).toBe(true)
+		}
+	})
+
+	// With the order stored apart from the text, a section dropped from the order
+	// would linger unprayed in the language files. Every stored section is used.
+	it('prays every section each language stores', () => {
+		const flat = (entries: AgpeyaOrderEntry[]) =>
+			entries.flatMap((e) => (typeof e === 'string' ? [e] : e.order))
+		const used = new Set(Object.values(order as AgpeyaOrder).flatMap(flat))
+		for (const [lang, files] of Object.entries(hourFiles)) {
+			for (const file of files) {
+				for (const section of file.sections) {
+					expect(used.has(section.id), `${lang} ${file.id}: ${section.id}`).toBe(true)
+				}
+			}
+			const common = lang === 'en' ? enCommon : arCommon
+			for (const id of Object.keys(common.sections)) {
+				expect(used.has(id), `${lang} common: ${id}`).toBe(true)
+			}
 		}
 	})
 })

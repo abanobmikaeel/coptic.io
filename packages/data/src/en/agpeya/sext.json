@@ -6,33 +6,6 @@
 	"traditionalTime": "12:00 PM",
 	"introduction": "We pray the Sixth Hour commemorating the Crucifixion of our Lord Jesus Christ. At this hour, darkness covered the whole earth.",
 	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-	"order": [
-		"opening",
-		"sext-hour-intro",
-		"thanksgiving-prayer",
-		"psalm-50",
-		"sext-psalm-53",
-		"sext-psalm-56",
-		"sext-psalm-60",
-		"sext-psalm-62",
-		"sext-psalm-66",
-		"sext-psalm-69",
-		"sext-psalm-83",
-		"sext-psalm-84",
-		"psalm-85",
-		"sext-psalm-86",
-		"psalm-90",
-		"sext-psalm-92",
-		"sext-gospel",
-		"gospel-conclusion",
-		"sext-litany",
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"sext-absolution",
-		"conclusion-of-every-hour",
-		"lords-prayer"
-	],
 	"sections": [
 		{
 			"id": "sext-hour-intro",
@@ -537,6 +510,7 @@
 		{
 			"id": "sext-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Matthew",
 			"chapter": 5,
 			"startVerse": 1,
@@ -546,22 +520,38 @@
 		{
 			"id": "sext-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"O Lord who on the sixth day and at the sixth hour, were nailed to the Cross on account of the sin that our father Adam dared to commit in Paradise. Wipe out the handwriting of our sins, O Christ our God, and save us. I cried out unto God and the Lord heard me. O Lord, answer my prayer and do not dismiss my supplication. Attend to me and hear me in the evening, in the morning, and at mid-day. I will plead with the Lord and He will hear my voice and peacefully save my soul.",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"O Jesus Christ, our God, who was nailed to the Cross at the sixth hour, You have put away sin by Your Cross. And through Your Death You revived man who was dead by sin, whom You had created with Your own hands. O Lord, put to death our sinful passions by Your healing and life-giving Passion. And through the nails of Your Crucifixion, rescue our minds from all foolishness of earthly deeds and desires, to the remembrance of Your heavenly commandments, according to Your great compassion.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"Since we have no favor, excuse, nor justification, because of our many sins, O Theotokos, the Mother of God, we plead through you to Him who was born of you, for your intercession is abundant, powerful, and acceptable to our Savior. O pure mother, do not exclude us, sinners, from your intercession with Him who was born of you. For He is merciful and able to save us, because He suffered for our sake in order to deliver us. O Lord, let Your compassion reach us quickly, for we sincerely humbled ourselves. Help us, O God our Savior, for the sake of Your glorious name. O Lord, deliver us and forgive us our sins, for the sake of Your holy name.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"You wrought salvation in the midst of whole world, O Christ our Lord, when You stretched out Your holy arms on the Cross. Therefore, all nations cry out saying: “Glory be to You, O Lord.”",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"We worship Your incorruptible person, O good Lord, asking for the forgiveness of our sins, O Christ our God. For of Your own will, You were pleased to be lifted up on the Cross to deliver those whom You created from the bondage of the enemy. We cry out unto You and give thanks to You, O Savior, for You have filled everyone with joy, when You came to save the world. O Lord, glory be to You.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"You are full-of-grace O Theotokos, the Mother of God, the holy Virgin. We magnify you for through the Cross of your Son, Hades was cast down, and death was abolished. Assuredly, we were dead before, but now we are raised, and made worthy to inherit eternal life, and to attain the joy of Paradise. Therefore, we thankfully glorify the Immortal, Christ our God."
 			]
 		},

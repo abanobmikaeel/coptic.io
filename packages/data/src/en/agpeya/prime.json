@@ -6,48 +6,6 @@
 	"traditionalTime": "6:00 AM",
 	"introduction": "We pray the First Hour at sunrise, commemorating the Resurrection of our Lord Jesus Christ. At this hour, Christ rose from the dead and appeared to the women at the tomb.",
 	"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-	"order": [
-		"opening",
-		"prime-hour-intro",
-		"prime-come-let-us-worship",
-		"thanksgiving-prayer",
-		"prime-intro-psalm",
-		"prime-psalm-1",
-		"prime-psalm-2",
-		"psalm-3",
-		"prime-psalm-4",
-		"prime-psalm-5",
-		"psalm-6",
-		"prime-psalm-8",
-		"prime-psalm-11",
-		"psalm-12",
-		"prime-psalm-14",
-		"prime-psalm-15",
-		"prime-psalm-18",
-		"prime-psalm-24",
-		"prime-psalm-26",
-		"prime-psalm-62",
-		"prime-psalm-66",
-		"psalm-69",
-		"prime-psalm-112",
-		"prime-psalm-142",
-		"prime-gospel",
-		"gospel-conclusion",
-		"prime-litany",
-		"gloria",
-		"trisagion",
-		"lords-prayer",
-		"hail-to-you",
-		"creed-introduction",
-		"creed",
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"prime-absolution",
-		"prime-second-absolution",
-		"conclusion-of-every-hour",
-		"lords-prayer"
-	],
 	"sections": [
 		{
 			"id": "prime-hour-intro",
@@ -1047,6 +1005,7 @@
 		{
 			"id": "prime-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "John",
 			"chapter": 1,
 			"startVerse": 1,
@@ -1058,8 +1017,18 @@
 			"kind": "litany",
 			"title": "Litanies",
 			"content": [
-				"O true Light that gives light to every man who comes into the world, You have come to the world because of Your love-of-mankind, and all creation rejoiced in Your coming. You saved our father, Adam, from the deception of the serpent, You delivered our mother, Eve, from the pangs of death, and You gave us the Spirit of adoption. Let us therefore praise You and bless You saying: (Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ: — Glory to the Father and the Son and the Holy Spirit.",
-				"O Christ, our Lord, the true Light, as daylight shines upon us, let the bright senses and the luminous thoughts shine within us, and do not let the darkness of sinful passions overtake us, so that we may praise You with David, saying: “My eyes are awake even before the dawn, that I may meditate on Your word.” Hear our voices according to Your great mercy and revive us, O Lord, according to Your lovingkindness. (ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ. — Now and forever and unto the age of all ages. Amen.",
+				"O true Light that gives light to every man who comes into the world, You have come to the world because of Your love-of-mankind, and all creation rejoiced in Your coming. You saved our father, Adam, from the deception of the serpent, You delivered our mother, Eve, from the pangs of death, and You gave us the Spirit of adoption. Let us therefore praise You and bless You saying:",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
+				"O Christ, our Lord, the true Light, as daylight shines upon us, let the bright senses and the luminous thoughts shine within us, and do not let the darkness of sinful passions overtake us, so that we may praise You with David, saying: “My eyes are awake even before the dawn, that I may meditate on Your word.” Hear our voices according to Your great mercy and revive us, O Lord, according to Your lovingkindness.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O Theotokos, the Mother of God, the second heaven, you are the honored Mother of the Light who is blessed and praised from sunrise to sunset by all generations, for you are the bright and unchanging blossom, and the ever-virgin mother. For the Father chose you, and the Holy Spirit overshadowed you, and the Son humbled Himself to take flesh from you and to become man. Therefore, we implore you to intercede with Him to save the world that He created and to deliver it from tribulations. Let us praise Him a new hymn, and bless Him, now and at all times and forevermore. Amen."
 			]
 		},

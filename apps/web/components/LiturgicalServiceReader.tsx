@@ -82,8 +82,9 @@ export interface LiturgicalServiceReaderProps {
 	// One-line banner under the header, e.g. the unsupported-language fallback note.
 	notice?: string
 	// Replaces the date navigation in the header — e.g. an hour switcher for the Agpeya,
-	// which is hour-based rather than date-based.
-	headerCenter?: React.ReactNode
+	// which is hour-based rather than date-based. Given the reader's theme, which can
+	// differ from the site's, so it matches the breadcrumb beside it.
+	headerCenter?: (theme: ReadingTheme) => React.ReactNode
 	// Content languages this service can render; passed to the settings menu so languages
 	// with no content (e.g. Spanish has no Agpeya prose) are hidden from the picker.
 	availableLanguages?: BibleTranslation[]
@@ -335,7 +336,7 @@ export function LiturgicalServiceReader({
 		<ReadingsHeader theme={theme} layout="between">
 			<div className="flex items-center gap-2 min-w-0">
 				<Breadcrumb items={[{ label: title, href: basePath }]} theme={theme} />
-				{headerCenter ?? (
+				{headerCenter?.(theme) ?? (
 					<Suspense fallback={null}>
 						<DateNavigation theme={theme} basePath={basePath} keepDateParam>
 							{dateLabel && (

@@ -48,7 +48,7 @@ export const AGPEYA_HOURS: HourInfo[] = [
 	},
 	{
 		id: 'none',
-		name: 'Ninth Hour',
+		name: 'None',
 		englishName: 'None (Ninth Hour)',
 		traditionalTime: '3pm',
 		startHour: 15,

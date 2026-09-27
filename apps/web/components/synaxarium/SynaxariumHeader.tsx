@@ -6,13 +6,19 @@ export type ViewMode = 'day' | 'upcoming'
 
 interface SynaxariumHeaderProps {
 	viewMode: ViewMode
+	isToday: boolean
 	onViewModeChange: (mode: ViewMode) => void
 }
 
 // Day vs upcoming view toggle. Date navigation now lives in the shared sticky
 // ReadingsHeader (with the breadcrumb + display settings), so this header only
 // owns the view switch — keeping it aligned with the rest of the reader pages.
-export function SynaxariumHeader({ viewMode, onViewModeChange }: Readonly<SynaxariumHeaderProps>) {
+export function SynaxariumHeader({
+	viewMode,
+	isToday,
+	onViewModeChange,
+}: Readonly<SynaxariumHeaderProps>) {
+	const t = useTranslations('synaxarium')
 	const tCommon = useTranslations('common')
 	const isDayView = viewMode === 'day'
 
@@ -30,7 +36,7 @@ export function SynaxariumHeader({ viewMode, onViewModeChange }: Readonly<Synaxa
 									: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
 							}`}
 						>
-							{tCommon('today')}
+							{isDayView && !isToday ? t('day') : tCommon('today')}
 						</button>
 						<button
 							type="button"

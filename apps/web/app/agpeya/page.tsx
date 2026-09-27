@@ -30,8 +30,9 @@ const AGPEYA_HOUR_IDS = [
 	'compline',
 	'midnight',
 ] as const
-// Languages whose Agpeya scripture can be resolved (prose currently English-only).
-const AGPEYA_LANGS = ['en', 'ar', 'es', 'cop'] as const satisfies ContentLanguage[]
+// Languages the Agpeya may offer; the API's list narrows this further (Spanish has
+// no prayer text yet). The Agpeya has no Coptic text, so Coptic is never offered.
+const AGPEYA_LANGS = ['en', 'ar', 'es'] as const satisfies ContentLanguage[]
 type AgpeyaLang = (typeof AGPEYA_LANGS)[number]
 
 async function fetchHour(
@@ -40,7 +41,8 @@ async function fetchHour(
 	psalms: 'septuagint' | 'bible',
 ): Promise<ResolvedAgpeyaHour | null> {
 	try {
-		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?lang=${lang}&psalms=${psalms}`, {
+		const query = `lang=${lang}&psalms=${psalms}&include=sections`
+		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?${query}`, {
 			next: { revalidate: 43200 },
 		})
 		if (!res.ok) return null
@@ -120,8 +122,7 @@ export default async function AgpeyaPage({ searchParams }: Readonly<AgpeyaPagePr
 	const servicesByLang: Partial<Record<string, IncenseService>> = {}
 	ordered.forEach((l, i) => {
 		const h = results[i]
-		// Coptic has no prayer prose — show its column for scripture (psalms/gospel) only.
-		if (h) servicesByLang[l] = agpeyaToService(h, today, copticDate, { scriptureOnly: l === 'cop' })
+		if (h) servicesByLang[l] = agpeyaToService(h, today, copticDate)
 	})
 
 	return (

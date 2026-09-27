@@ -1,242 +1,158 @@
-import type { CopticDate, IncenseSection, IncenseService, Verse } from './types'
+import type { CopticDate, IncenseContentLine, IncenseSection, IncenseService, Verse } from './types'
 
 /**
- * Adapts a resolved Agpeya hour (from /api/agpeya) into the generic
- * IncenseService shape so it can render through LiturgicalServiceReader, the
- * same presentation reader used by Vespers. The hour's ordered parts become a
- * flat list of sections (prayers, psalms, gospel, litanies); the midnight hour
- * flattens its three watches with a heading before each.
+ * Adapts an Agpeya hour from /api/agpeya into the IncenseService shape the shared
+ * LiturgicalServiceReader renders. The API sends the hour in prayed order, so this
+ * is a map: prose keeps its lines, scripture keeps its verses, and each Midnight
+ * watch becomes a heading followed by its own sections.
  */
 
-interface AgPsalm {
-	title: string
-	reference: string
-	verses: Verse[]
-}
-interface AgGospel {
-	reference: string
-	rubric?: string
-	verses: Verse[]
-}
-interface AgBlock {
-	title?: string
-	content: string[]
-	inline?: boolean
-}
-// A section of an ending, in prayed order: prose (`content`) or, at Midnight, a
-// gospel (`verses`).
-type AgEndingSection = AgBlock & {
+interface AgProse {
 	id: string
-	kind?: string
+	kind: string
+	title?: string
 	rubric?: string
-	reference?: string
-	verses?: Verse[]
+	content: (string | IncenseContentLine)[]
 }
+interface AgScripture {
+	id: string
+	kind: 'psalm' | 'intro-psalm' | 'gospel'
+	title?: string
+	reference: string
+	rubric?: string
+	verses: Verse[]
+}
+type AgLeaf = AgProse | AgScripture
 interface AgWatch {
 	id: string
-	name: string
+	kind: 'watch'
+	title: string
 	theme?: string
-	opening?: AgBlock
+	/** The watch's offering: "The praise of the first watch… we offer unto Christ…". */
+	prayer?: string
 	psalmsIntro?: string
-	psalms?: AgPsalm[]
-	gospel?: AgGospel
-	gospelConclusion?: AgBlock
-	litanies?: AgBlock
-	closing?: AgBlock
-	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
-	conclusion?: AgEndingSection[]
+	/** Which psalms are prayed; shown on the watch's first psalm. */
+	psalmsRubric?: string
+	sections: AgLeaf[]
 }
 
 export interface ResolvedAgpeyaHour {
 	id: string
 	name: string
-	englishName?: string
-	traditionalTime?: string
+	/** Why the hour is prayed; shown as the opening's rubric. */
 	introduction?: string
-	opening?: AgBlock
-	// "The Beginning of the <hour> Prayer" — the hour's own opening declaration.
-	hourIntro?: AgBlock
-	// Prime only: the "Come, let us worship" prayer, its own section in the hour.
-	comeLetUsWorship?: AgBlock
-	thanksgiving?: AgBlock
-	introductoryPsalm?: AgPsalm
+	/** "From the Psalms of our father David…"; shown on the hour's first psalm. */
 	psalmsIntro?: string
-	psalms?: AgPsalm[]
-	gospel?: AgGospel
-	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
-	gospelConclusion?: AgBlock
-	litanies?: AgBlock
-	lordsPrayer?: AgBlock
-	thanksgivingAfter?: AgBlock
-	closing?: AgBlock
-	// Regular hours: the concluding prose prayers. Midnight: the ending tail, which
-	// also carries the midnight Gospel, so a section may hold `content` or `verses`.
-	conclusion?: AgEndingSection[]
-	watches?: AgWatch[]
+	sections: (AgLeaf | AgWatch)[]
 }
 
-const psalmSection = (id: string, p: AgPsalm, rubric?: string): IncenseSection => ({
-	id,
-	type: 'psalm',
-	role: 'all',
-	title: p.title,
-	// Only keep the reference when it adds info beyond the title (e.g. a verse range);
-	// for psalms the title is already "Psalm 50", so don't repeat it.
-	reference: p.reference && p.reference !== p.title ? p.reference : undefined,
-	rubric,
-	verses: p.verses,
-})
+// Untitled sections are named by what they are.
+const FALLBACK_TITLE: Record<string, string> = {
+	opening: 'Opening Prayer',
+	'hour-intro': 'The Beginning of the Prayer',
+	'come-let-us-worship': 'Come, Let Us Worship',
+	thanksgiving: 'Thanksgiving',
+	litany: 'Litanies',
+	'lords-prayer': "The Lord's Prayer",
+	'gospel-conclusion': 'Gospel Conclusion',
+	'thanksgiving-after': 'Thanksgiving',
+	closing: 'Closing Prayer',
+}
 
-const gospelSection = (id: string, g: AgGospel): IncenseSection => ({
-	id,
-	type: 'gospel',
-	role: 'all',
-	title: 'Gospel',
-	reference: g.reference,
-	rubric: g.rubric,
-	verses: g.verses,
-})
+const isScripture = (s: AgLeaf): s is AgScripture => 'verses' in s
 
-const blockSection = (
-	id: string,
-	type: IncenseSection['type'],
-	fallbackTitle: string,
-	block?: AgBlock,
-): IncenseSection | null => {
-	if (!block?.content?.length) return null
+function toSection(id: string, s: AgLeaf, rubric?: string): IncenseSection | null {
+	if (isScripture(s)) {
+		if (s.kind === 'gospel') {
+			return {
+				id,
+				type: 'gospel',
+				role: 'all',
+				title: s.title ?? 'Gospel',
+				reference: s.reference,
+				rubric: s.rubric,
+				verses: s.verses,
+			}
+		}
+		const title = s.title ?? s.reference
+		return {
+			id,
+			type: 'psalm',
+			role: 'all',
+			title,
+			// A psalm's title is already "Psalm 50"; keep the reference only when it adds a range.
+			reference: s.reference !== title ? s.reference : undefined,
+			rubric: rubric ?? s.rubric,
+			verses: s.verses,
+		}
+	}
+	if (!s.content.length) return null
 	return {
 		id,
-		type,
+		type: s.kind === 'litany' ? 'litany' : 'prayer',
 		role: 'all',
-		title: block.title ?? fallbackTitle,
-		content: block.content,
+		title: s.title ?? FALLBACK_TITLE[s.kind] ?? 'Prayer',
+		...((rubric ?? s.rubric) ? { rubric: rubric ?? s.rubric } : {}),
+		content: s.content,
 	}
 }
-
-const endingSection = (id: string, part: AgEndingSection): IncenseSection | null =>
-	part.kind === 'gospel'
-		? gospelSection(id, {
-				reference: part.reference ?? '',
-				rubric: part.rubric,
-				verses: part.verses ?? [],
-			})
-		: blockSection(id, 'prayer', 'Prayer', part)
-
-const psalmSections = (
-	psalms: AgPsalm[] | undefined,
-	idPrefix: string,
-	intro?: string,
-): IncenseSection[] =>
-	// The "From the Psalms of David…" intro rides as a rubric on the first psalm.
-	(psalms ?? []).map((p, i) => psalmSection(`${idPrefix}-${i}`, p, i === 0 ? intro : undefined))
-
-const SCRIPTURE_TYPES: ReadonlySet<IncenseSection['type']> = new Set([
-	'psalm',
-	'gospel',
-	'daily-psalm',
-])
 
 export function agpeyaToService(
 	hour: ResolvedAgpeyaHour,
 	date: string,
 	copticDate: CopticDate,
-	opts: { scriptureOnly?: boolean } = {},
 ): IncenseService {
 	const sections: IncenseSection[] = []
-	// The section list is addressed by id (the reader scrolls to `sections.find(s => s.id
-	// === currentSectionId)`), so ids must be unique. Midnight prays Kyrie, Holy Holy
-	// Holy and the Lord's Prayer twice, so the tail would otherwise collide with the
-	// first copy. Keep the first occurrence's id stable and suffix later ones.
+	// The reader addresses sections by id, and Midnight repeats shared prayers in its
+	// ending, so a repeat keeps the first id and later ones get a suffix.
 	const used = new Set<string>()
-	const uniqueId = (id: string): string => {
-		if (!used.has(id)) {
-			used.add(id)
-			return id
-		}
-		let n = 2
-		while (used.has(`${id}-${n}`)) n++
-		const next = `${id}-${n}`
-		used.add(next)
-		return next
-	}
 	const add = (s: IncenseSection | null) => {
 		if (!s) return
-		sections.push({ ...s, id: uniqueId(s.id) })
+		let id = s.id
+		for (let n = 2; used.has(id); n++) id = `${s.id}-${n}`
+		used.add(id)
+		sections.push({ ...s, id })
 	}
 
-	const opening = blockSection('opening', 'prayer', 'Opening Prayer', hour.opening)
-	// The hour's catechetical note ("We pray the First Hour at sunrise,
-	// commemorating…") rides as the opening section's rubric.
-	if (opening && hour.introduction) opening.rubric = hour.introduction
-	add(opening)
-	add(blockSection('hour-intro', 'prayer', 'The Beginning of the Prayer', hour.hourIntro))
-	add(blockSection('come-let-us-worship', 'prayer', 'Come, Let Us Worship', hour.comeLetUsWorship))
-	add(blockSection('thanksgiving', 'prayer', 'Thanksgiving', hour.thanksgiving))
-	if (hour.introductoryPsalm) add(psalmSection('intro-psalm', hour.introductoryPsalm))
-
-	if (hour.watches?.length) {
-		// Midnight: flatten each watch behind a heading section.
-		hour.watches.forEach((watch, wi) => {
+	let openingSeen = false
+	let psalmsSeen = false
+	for (const part of hour.sections) {
+		if (part.kind === 'watch') {
+			const watch = part as AgWatch
+			// The theme names the watch rather than being prayed, so it rides as the
+			// heading's rubric; the offering and "From the Psalms…" are its body.
 			add({
 				id: `watch-${watch.id}`,
 				type: 'prayer',
 				role: 'all',
-				title: watch.name,
-				// The theme ("Watchfulness and Vigilance") names the watch rather than
-				// being prayed, so it rides as the heading's rubric. The heading then
-				// carries the "From the Psalms of David…" intro as its body, which stops
-				// it rendering as a slide holding nothing but a subtitle.
+				title: watch.title,
 				rubric: watch.theme,
-				content: watch.psalmsIntro ? [watch.psalmsIntro] : [],
+				content: [watch.prayer, watch.psalmsIntro].filter((line): line is string => !!line),
 			})
-			if (watch.opening)
-				add(blockSection(`watch-${watch.id}-opening`, 'prayer', 'Prayer', watch.opening))
-			for (const p of psalmSections(watch.psalms, `watch-${wi}-psalm`)) add(p)
-			if (watch.gospel) add(gospelSection(`watch-${watch.id}-gospel`, watch.gospel))
-			add(
-				blockSection(
-					`watch-${watch.id}-gospel-conclusion`,
-					'prayer',
-					'Gospel Conclusion',
-					watch.gospelConclusion,
-				),
-			)
-			add(blockSection(`watch-${watch.id}-litanies`, 'litany', 'Litanies', watch.litanies))
-			add(blockSection(`watch-${watch.id}-closing`, 'prayer', 'Closing', watch.closing))
-			// Each watch's own ending, prefixed so the same shared prayer in two
-			// watches keeps a distinct, stable id.
-			for (const part of watch.conclusion ?? []) {
-				add(endingSection(`watch-${watch.id}-${part.id}`, part))
+			const firstPsalm = watch.sections.find((s) => s.kind === 'psalm')
+			for (const s of watch.sections) {
+				const rubric = s === firstPsalm ? watch.psalmsRubric : undefined
+				add(toSection(`watch-${watch.id}-${s.id}`, s, rubric))
 			}
-		})
-		// The shared ending prayed after the third watch (Kyrie, Holy Holy Holy, the
-		// Lord's Prayer, the midnight Gospel, the Creed, the Absolution, the Conclusion).
-		for (const part of hour.conclusion ?? []) {
-			add(endingSection(part.id, part))
+			continue
 		}
-	} else {
-		for (const p of psalmSections(hour.psalms, 'psalm', hour.psalmsIntro)) add(p)
-		if (hour.gospel) add(gospelSection('gospel', hour.gospel))
-		add(blockSection('gospel-conclusion', 'prayer', 'Gospel Conclusion', hour.gospelConclusion))
-		add(blockSection('litanies', 'litany', 'Litanies', hour.litanies))
-		add(blockSection('lords-prayer', 'prayer', "The Lord's Prayer", hour.lordsPrayer))
-		add(blockSection('thanksgiving-after', 'prayer', 'Thanksgiving', hour.thanksgivingAfter))
-		for (const part of hour.conclusion ?? []) add(blockSection(part.id, 'prayer', 'Prayer', part))
+		const s = part as AgLeaf
+		let rubric: string | undefined
+		if (s.kind === 'opening' && !openingSeen) {
+			openingSeen = true
+			rubric = hour.introduction
+		} else if (s.kind === 'psalm' && !psalmsSeen) {
+			psalmsSeen = true
+			rubric = hour.psalmsIntro
+		}
+		add(toSection(s.id, s, rubric))
 	}
-
-	add(blockSection('closing', 'prayer', 'Closing Prayer', hour.closing))
-
-	// Coptic prose isn't available, so a Coptic column only makes sense for
-	// scripture (psalms + gospel) — drop everything else for that language.
-	const finalSections = opts.scriptureOnly
-		? sections.filter((s) => SCRIPTURE_TYPES.has(s.type))
-		: sections
 
 	return {
 		type: 'agpeya',
 		name: hour.name,
 		date,
 		copticDate,
-		sections: finalSections,
+		sections,
 	}
 }

@@ -50,6 +50,17 @@ interface PresentationViewProps {
 	rowsPerPage?: number
 }
 
+// Next/previous first move through a page taller than the screen, so no text is
+// skipped, keeping a line of overlap so the reader doesn't lose their place.
+// Returns whether it moved.
+function scrollWithinPage(view: HTMLElement | null, direction: 1 | -1): boolean {
+	if (!view) return false
+	const max = view.scrollHeight - view.clientHeight
+	const canMove = direction === 1 ? view.scrollTop < max - 1 : view.scrollTop > 1
+	if (canMove) view.scrollBy({ top: direction * (view.clientHeight - 48), behavior: 'smooth' })
+	return canMove
+}
+
 // Reserve from the measured viewport: pt-2 (8px) above + a little breathing room below.
 const PAGE_VERTICAL_RESERVE = 20
 
@@ -134,12 +145,17 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 
 		const safePage = Math.min(pageIndex, pageCount - 1)
 
-		// A page can still exceed the viewport when a single row (e.g. one long verse
-		// on a narrow column) is taller than the screen — the view scrolls rather than
-		// clipping it. Snap back to the top on page turns.
+		// A page can still exceed the viewport when a single row (e.g. one long prayer
+		// on a narrow column) is taller than the screen, so the view scrolls. Paging
+		// forward enters a page at its top; paging back enters it at its bottom.
+		const enterAtBottom = useRef(false)
 		// biome-ignore lint/correctness/useExhaustiveDependencies: safePage is the page-turn trigger
 		useLayoutEffect(() => {
-			viewRef.current?.scrollTo({ top: 0 })
+			const view = viewRef.current
+			if (!view) return
+			const atBottom = enterAtBottom.current || (initialPage === 'last' && !userNavigated.current)
+			view.scrollTo({ top: atBottom ? view.scrollHeight : 0 })
+			enterAtBottom.current = false
 		}, [safePage])
 
 		// Report pagination state upward for the progress indicator (display only).
@@ -152,13 +168,17 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 			() => ({
 				next: () => {
 					userNavigated.current = true
+					if (scrollWithinPage(viewRef.current, 1)) return
 					if (safePage < pageCount - 1) setPageIndex(safePage + 1)
 					else onExitNext()
 				},
 				prev: () => {
 					userNavigated.current = true
-					if (safePage > 0) setPageIndex(safePage - 1)
-					else onExitPrev()
+					if (scrollWithinPage(viewRef.current, -1)) return
+					if (safePage > 0) {
+						enterAtBottom.current = true
+						setPageIndex(safePage - 1)
+					} else onExitPrev()
 				},
 			}),
 			[safePage, pageCount, onExitNext, onExitPrev],
@@ -168,7 +188,7 @@ export const PresentationView = forwardRef<PresentationViewHandle, PresentationV
 		const pageEnd = breaks?.[safePage + 1] ?? rows.length
 
 		return (
-			<div ref={viewRef} className="relative h-full overflow-y-auto scrollbar-hide">
+			<div ref={viewRef} className="relative h-full overflow-y-auto">
 				{/* Visible page: a contiguous slice of the shared rows. */}
 				<div className="pt-2">
 					{style.contentLayout === 'stanzas' && (

@@ -341,14 +341,14 @@ export const themeClasses = {
 
 	// Expanded content background (synaxarium bilingual sections, featured cards)
 	expandedBg: {
-		light: 'bg-gray-50',
+		light: 'bg-gray-50 dark:bg-gray-800/50',
 		sepia: 'bg-amber-100/50',
 		dark: 'bg-gray-800/50',
 	} as Record<ReadingTheme, string>,
 
 	// Expanded content inner border (md divider between columns)
 	expandedBorder: {
-		light: 'md:border-gray-200',
+		light: 'md:border-gray-200 dark:md:border-gray-700',
 		sepia: 'md:border-amber-200',
 		dark: 'md:border-gray-700',
 	} as Record<ReadingTheme, string>,

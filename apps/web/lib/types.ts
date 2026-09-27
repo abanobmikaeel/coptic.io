@@ -163,6 +163,9 @@ export interface IncenseContentLine {
 	speaker?: 'Priest' | 'Deacon' | 'People'
 	text: string
 	isRubric?: boolean
+	// A congregational response (Doxa, Ke-nin): `text` translated, `coptic` in Coptic script.
+	isResponse?: boolean
+	coptic?: string
 }
 
 export interface IncenseSection {
