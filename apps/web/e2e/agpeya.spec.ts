@@ -174,13 +174,16 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 			[18, 'Litanies'],
 			[19, 'Graciously O Lord'],
 			[20, 'The Trisagion'],
-			[21, 'Hail to Saint Mary'],
-			[22, 'Introduction to the Creed'],
-			[23, 'The Orthodox Creed'],
-			[24, 'Lord Have Mercy (41 times)'],
-			[25, 'Holy, Holy, Holy'],
-			[26, 'Absolution'],
-			[27, 'Conclusion of Every Hour'],
+			[21, "The Lord's Prayer"],
+			[22, 'Hail to Saint Mary'],
+			[23, 'Introduction to the Creed'],
+			[24, 'The Orthodox Creed'],
+			[25, 'Lord Have Mercy (41 times)'],
+			[26, 'Holy, Holy, Holy'],
+			[27, "The Lord's Prayer"],
+			[28, 'Absolution'],
+			[29, 'Conclusion of Every Hour'],
+			[30, "The Lord's Prayer"],
 		] as const) {
 			await expect(sectionButton(page, index, label)).toBeVisible()
 		}
@@ -222,7 +225,7 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 		page,
 	}) => {
 		await context.addCookies([LANGS_2])
-		await jumpTo(page, 'prime', [33, 'Holy, Holy, Holy'])
+		await jumpTo(page, 'prime', [34, 'Holy, Holy, Holy'])
 
 		// The Arabic "Absolve, forgive..." clause must sit in the same row as its
 		// English counterpart (the first row), not merged into the second.

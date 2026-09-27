@@ -200,10 +200,24 @@ function toSlots(sections: AgpeyaSection[]): Partial<AgpeyaSlots> {
 	}
 }
 
-function toConclusion(sections: AgpeyaSection[]): Pick<AgpeyaSlots, 'conclusion'> {
-	const conclusion = sections
-		.filter((s): s is AgpeyaProseSection => s.kind === 'conclusion')
-		.map((s) => ({ id: s.id, ...prayer(s) }))
+// An hour's (or a watch's) own parts run through its litanies; what follows is its
+// ending, prayed in order. The ending repeats shared prayers (Kyrie, Holy Holy Holy,
+// the Lord's Prayer), so folding it into the named slots would misplace them.
+function splitAtLitany(sections: AgpeyaSection[]): {
+	body: AgpeyaSection[]
+	ending: AgpeyaSection[]
+} {
+	const litanyAt = sections.findIndex((s) => s.kind === 'litany')
+	const bodyEnd = litanyAt === -1 ? sections.length : litanyAt + 1
+	return { body: sections.slice(0, bodyEnd), ending: sections.slice(bodyEnd) }
+}
+
+// A daytime hour's ending is prose only; anything else there has no slot to render in.
+function toConclusion(ending: AgpeyaSection[]): Pick<AgpeyaSlots, 'conclusion'> {
+	const conclusion = ending.map((s) => {
+		if (!('content' in s)) throw new Error(`"${s.id}" cannot be prayed in an hour's ending`)
+		return { id: s.id, ...prayer(s) }
+	})
 	return conclusion.length ? { conclusion } : {}
 }
 
@@ -222,14 +236,10 @@ function toTailSection(section: AgpeyaSection): AgpeyaMidnightTailSection {
 	throw new Error(`Psalm "${section.id}" cannot be prayed in a midnight ending`)
 }
 
-// A watch's own parts run through its litanies; what follows is its ending, prayed
-// in order. Folding the ending into slots would misplace shared prayers — the Lord's
-// Prayer is authored as an `opening`, so it would replace the watch's opening.
 function toWatch(group: AgpeyaResolvedGroup): AgpeyaWatch {
-	const litanyAt = group.sections.findIndex((s) => s.kind === 'litany')
-	const bodyEnd = litanyAt === -1 ? group.sections.length : litanyAt + 1
-	const slots = toSlots(group.sections.slice(0, bodyEnd))
-	const conclusion = group.sections.slice(bodyEnd).map(toTailSection)
+	const { body, ending } = splitAtLitany(group.sections)
+	const slots = toSlots(body)
+	const conclusion = ending.map(toTailSection)
 	return {
 		id: group.group,
 		name: group.name,
@@ -268,10 +278,11 @@ export function toLegacyHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMi
 		}
 	}
 
+	const { body, ending } = splitAtLitany(hour.parts as AgpeyaSection[])
 	return {
 		...identity(hour),
 		...(hour.psalmsIntro ? { psalmsIntro: hour.psalmsIntro } : {}),
-		...toSlots(hour.parts as AgpeyaSection[]),
-		...toConclusion(hour.parts as AgpeyaSection[]),
+		...toSlots(body),
+		...toConclusion(ending),
 	} as AgpeyaHourData
 }

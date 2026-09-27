@@ -56,8 +56,10 @@ describe('GET /api/agpeya/:hour', () => {
 		expect(terce.conclusion?.map((s) => s.id)).toEqual([
 			'kyrie41',
 			'holy-holy-holy',
+			'lords-prayer',
 			'terce-absolution',
 			'conclusion-of-every-hour',
+			'lords-prayer',
 		])
 		expect(terce.closing).toBeUndefined()
 	})

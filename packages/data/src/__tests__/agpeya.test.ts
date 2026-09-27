@@ -61,7 +61,7 @@ describe('Agpeya concluding sequence', () => {
 	const DAY_HOURS = ['terce', 'sext', 'none', 'vespers', 'compline'] as const
 	const hours = { en: getEnglishAgpeyaHourData, ar: getArabicAgpeyaHourData }
 
-	it('ends each daytime hour with Kyrie, Holy Holy Holy, its Absolution and the Conclusion, in both languages', () => {
+	it("ends each daytime hour with Kyrie, Holy Holy Holy, the Lord's Prayer, its Absolution and the Conclusion, in both languages", () => {
 		for (const [lang, getHour] of Object.entries(hours)) {
 			for (const hourId of DAY_HOURS) {
 				const hour = getHour(hourId)
@@ -74,15 +74,25 @@ describe('Agpeya concluding sequence', () => {
 						? [
 								'compline-graciously',
 								'trisagion',
+								'lords-prayer',
 								'hail-to-you',
 								'creed-introduction',
 								'creed',
 								'kyrie41',
 								'holy-holy-holy',
+								'lords-prayer',
 								'compline-absolution',
 								'conclusion-of-every-hour',
+								'lords-prayer',
 							]
-						: ['kyrie41', 'holy-holy-holy', `${hourId}-absolution`, 'conclusion-of-every-hour']
+						: [
+								'kyrie41',
+								'holy-holy-holy',
+								'lords-prayer',
+								`${hourId}-absolution`,
+								'conclusion-of-every-hour',
+								'lords-prayer',
+							]
 				expect(
 					hour.conclusion?.map((s) => s.id),
 					`${lang} ${hourId}`,
@@ -111,17 +121,37 @@ describe('Agpeya concluding sequence', () => {
 			).toEqual([
 				'gloria',
 				'trisagion',
+				'lords-prayer',
 				'hail-to-you',
 				'creed-introduction',
 				'creed',
 				'kyrie41',
 				'holy-holy-holy',
+				'lords-prayer',
 				'prime-absolution',
 				'prime-second-absolution',
 				'conclusion-of-every-hour',
+				'lords-prayer',
 			])
-			// The Lord's Prayer is prayed within the Trisagion and Holy Holy Holy now
+			// The Lord's Prayer is its own section in the ending, not a separate slot.
 			expect(prime.lordsPrayer, lang).toBeUndefined()
+		}
+	})
+
+	// agpeya.org prays the Lord's Prayer once, as its own section, after Holy Holy Holy
+	// and the Trisagion; neither may still carry it inline.
+	it("prays the Lord's Prayer once, as its own section", () => {
+		for (const [lang, getHour] of Object.entries(hours)) {
+			for (const hourId of ['prime', ...DAY_HOURS] as const) {
+				const hour = getHour(hourId) as { conclusion?: { id: string; content: string[] }[] }
+				const ours = /^(Our Father|أبانا الذي)/
+				for (const section of hour.conclusion ?? []) {
+					const count = section.content.filter((line) => ours.test(line)).length
+					expect(count, `${lang} ${hourId} ${section.id}`).toBe(
+						section.id === 'lords-prayer' ? 1 : 0,
+					)
+				}
+			}
 		}
 	})
 
@@ -173,8 +203,8 @@ describe('Midnight ending', () => {
 		}
 	})
 
-	// The Lord's Prayer is authored with the `opening` kind; it must not displace the
-	// hour's own opening prayer or a watch's opening.
+	// Shared prayers repeated in an ending (such as the Lord's Prayer) must not
+	// displace the hour's own opening prayer or a watch's opening.
 	it('keeps the hour opening as the Midnight opening, not a repeated shared prayer', () => {
 		for (const lang of ['en', 'ar'] as const) {
 			const hour = midnight(lang)

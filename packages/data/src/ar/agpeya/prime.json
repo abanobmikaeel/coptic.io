@@ -35,14 +35,17 @@
 		"prime-litany",
 		"gloria",
 		"trisagion",
+		"lords-prayer",
 		"hail-to-you",
 		"creed-introduction",
 		"creed",
 		"kyrie41",
 		"holy-holy-holy",
+		"lords-prayer",
 		"prime-absolution",
 		"prime-second-absolution",
-		"conclusion-of-every-hour"
+		"conclusion-of-every-hour",
+		"lords-prayer"
 	],
 	"sections": [
 		{
