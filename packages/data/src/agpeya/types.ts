@@ -1,3 +1,4 @@
+import type { LiturgicalContent } from '../content/types'
 export type AgpeyaLanguage = 'en' | 'ar'
 
 export type AgpeyaHourId = 'prime' | 'terce' | 'sext' | 'none' | 'vespers' | 'compline' | 'midnight'
@@ -39,7 +40,7 @@ interface AgpeyaSectionBase {
 /** Prose prayed as written — openings, litanies, absolutions, closings. */
 export interface AgpeyaProseSection extends AgpeyaSectionBase {
 	kind: Exclude<AgpeyaSectionKind, 'psalm' | 'intro-psalm' | 'gospel'>
-	content: string[]
+	content: LiturgicalContent[]
 	/** Render continuously with its neighbours instead of as its own slide. */
 	inline?: boolean
 }

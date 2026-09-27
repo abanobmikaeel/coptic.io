@@ -9,6 +9,7 @@
  * (an hour's or a watch's ending) are carried in order rather than folded into
  * slots, which is what keeps shared prayers from overwriting each other.
  */
+import type { LiturgicalContent } from '../content/types'
 import type {
 	AgpeyaGospelSection,
 	AgpeyaHourService,
@@ -125,7 +126,9 @@ export interface AgpeyaMidnightHour {
 }
 
 /** A section of midnight's ending: a prose prayer or the midnight Gospel. */
-export type AgpeyaMidnightTailSection = AgpeyaProseSection | AgpeyaGospelSection
+export type AgpeyaMidnightTailSection =
+	| (Omit<AgpeyaProseSection, 'content'> & { content: string[] })
+	| AgpeyaGospelSection
 
 export const isMidnightHour = (
 	hour: AgpeyaHourData | AgpeyaMidnightHour,
@@ -145,9 +148,17 @@ const PROSE_SLOT: Partial<Record<AgpeyaSectionKind, keyof AgpeyaSlots>> = {
 	closing: 'closing',
 }
 
+// The slot fields serve every line as a plain string, as they always have: a
+// response goes out as its Coptic line followed by its translation.
+const plainLines = (content: LiturgicalContent[]): string[] =>
+	content.flatMap((line) => {
+		if (typeof line === 'string') return [line]
+		return line.isResponse && line.coptic ? [line.coptic, line.text] : [line.text]
+	})
+
 const prayer = (section: AgpeyaProseSection): AgpeyaPrayerSection => ({
 	...(section.title ? { title: section.title } : {}),
-	content: section.content,
+	content: plainLines(section.content),
 	...(section.inline ? { inline: true } : {}),
 	...(section.rubric ? { rubric: section.rubric } : {}),
 })
@@ -240,7 +251,8 @@ const identity = (hour: AgpeyaHourService) => ({
 // The API carries prose and gospels in an ending; a psalm authored there has
 // nowhere to go, so fail loudly rather than drop it from the prayed order.
 function toTailSection(section: AgpeyaSection): AgpeyaMidnightTailSection {
-	if (section.kind === 'gospel' || 'content' in section) return section
+	if ('content' in section) return { ...section, content: plainLines(section.content) }
+	if (section.kind === 'gospel') return section
 	throw new Error(`Psalm "${section.id}" cannot be prayed in a midnight ending`)
 }
 

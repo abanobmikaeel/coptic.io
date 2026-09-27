@@ -1,4 +1,4 @@
-import type { CopticDate, IncenseSection, IncenseService, Verse } from './types'
+import type { CopticDate, IncenseContentLine, IncenseSection, IncenseService, Verse } from './types'
 
 /**
  * Adapts an Agpeya hour from /api/agpeya into the IncenseService shape the shared
@@ -12,7 +12,7 @@ interface AgProse {
 	kind: string
 	title?: string
 	rubric?: string
-	content: string[]
+	content: (string | IncenseContentLine)[]
 }
 interface AgScripture {
 	id: string

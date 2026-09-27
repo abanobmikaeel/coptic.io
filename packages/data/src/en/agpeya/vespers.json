@@ -29,11 +29,17 @@
 			"kind": "litany",
 			"content": [
 				"If the righteous one is hardly saved, where shall I, a sinner, appear?! The burden and the heat of the day I could not bear because of the weakness of my human nature. But, O merciful God, count me among the laborers of the eleventh hour. For behold, I was brought forth in iniquities, and in sin my mother conceived me. Therefore, I dare not lift my eyes unto heaven. But rather I rely on the abundance of Your mercy and love-of-mankind, crying to You and saying, “Lord, forgive me, a sinner, and have mercy on me.”",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"O my Savior, hasten to open Your fatherly bosom to me. For I have wasted my life in worldly desires and pleasures, whereas the day has been consumed and far spent. Therefore, now I rely on the abundance of Your infinite compassion. So, then, do not disregard my revering heart which is exceedingly in need of Your mercy. For I cry out to You, O Lord, with reverence, saying, “Father, I have sinned against heaven and in Your sight, and am no longer worthy to be called Your son, make me like one of Your hired servants.”",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"With full awareness and enthusiasm did I pursue every transgression, with all eagerness and diligence did I commit every sin, and of all judgment and torment I deserve. Hence, I beseech you, our Lady the Virgin, to lead me to repentance. For to you I plead and through you I seek intercession, and upon you I call to help me that I should not be put to shame. And when my soul departs from my body, please be present and attend to me, and defeat the conspiracies of the enemies, and shut the gates of Hades, lest they might swallow my soul. O you bride without blemish of the true Bridegroom."
 			]
 		},

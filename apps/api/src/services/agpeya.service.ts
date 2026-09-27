@@ -8,7 +8,6 @@ import {
 	type AgpeyaHourId,
 	type AgpeyaMidnightHour,
 	type AgpeyaMidnightTailSection,
-	type AgpeyaProseSection,
 	type AgpeyaWatch,
 	type MidnightWatchId,
 	getAgpeyaHourData as getEnAgpeyaHourData,
@@ -100,7 +99,7 @@ export interface ResolvedMidnightHour {
 // A section in midnight's ending tail: a prose prayer, or the midnight Gospel with
 // its text resolved in the requested translation.
 export type MidnightTailSection =
-	| AgpeyaProseSection
+	| Exclude<AgpeyaMidnightTailSection, { kind: 'gospel' }>
 	| ({ id: string; kind: 'gospel'; title?: string } & ResolvedGospel)
 
 export type { PsalmSource }

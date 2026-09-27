@@ -93,11 +93,17 @@
 			"kind": "litany",
 			"content": [
 				"Behold, I am about to stand before the just and righteous Judge, terrified and trembling because of my numerous sins. For a life wasted in worldly pleasures deserves condemnation. So repent therefore, O my soul, as long as you dwell on this earth. For the dust in the grave cannot offer any praise, and among the dead no one can remember, nor can anyone in Hades give thanks. Therefore, arise O my soul from the slumber of your laziness, and implore the Savior in repentance saying, “O God have mercy on me and save me.”",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"Were this life on earth everlasting, and this world ever-existing, you would have had an excuse, O my soul. But now, if your wicked deeds and repulsive evils were to be exposed before the righteous Judge, what answer would you be giving while you are lying on the bed of sins and negligent in disciplining your body?! O Christ our God, before Your awesome seat of judgment I am terrified, and before Your counsel of judgment I am dreadful, and from the radiant light of Your divinity I tremble. For I am a wretched and defiled person who lies in bed, careless of the ways of my life. Yet, I take example of the tax collector’s penance, beating my chest and saying, “O God be merciful to me, a sinner.”",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O pure Virgin, overshadow your servant speedily with your help, keep the waves of evil thoughts away from me, and raise my ailing soul to pray and watch, for it has gone into deep slumber. For you are a capable and compassionate helper, the Mother of the Fountain of life, my King and my God, Jesus Christ my hope."
 			]
 		},

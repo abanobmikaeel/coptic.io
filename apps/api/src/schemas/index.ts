@@ -137,7 +137,23 @@ const AgpeyaScriptureEntrySchema = AgpeyaGospelSchema.extend({
 	title: z.string().optional(),
 })
 
-const AgpeyaLeafEntrySchema = z.union([AgpeyaProseEntrySchema, AgpeyaScriptureEntrySchema])
+// A line in `sections`: plain text, or an attributed line; a litany response carries
+// its Coptic form beside the translation.
+const AgpeyaLineSchema = z.union([
+	z.string(),
+	z.object({
+		text: z.string(),
+		speaker: z.enum(['Priest', 'Deacon', 'People']).optional(),
+		isRubric: z.boolean().optional(),
+		isResponse: z.boolean().optional(),
+		coptic: z.string().optional(),
+	}),
+])
+
+const AgpeyaLeafEntrySchema = z.union([
+	AgpeyaProseEntrySchema.extend({ content: z.array(AgpeyaLineSchema) }),
+	AgpeyaScriptureEntrySchema,
+])
 
 // The hour in prayed order: prose carries `content`, scripture carries `verses`, and a
 // Midnight watch is a group of both.

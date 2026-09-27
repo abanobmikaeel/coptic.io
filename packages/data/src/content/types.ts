@@ -19,6 +19,12 @@ export interface ContentLine {
 	text: string
 	/** A staging direction rather than text to pray — rendered, but never aligned across languages. */
 	isRubric?: boolean
+	/**
+	 * A congregational response between petitions (the Doxa, Ke-nin). It is prayed in
+	 * one form or the other: `text` in the reader's language, `coptic` in Coptic script.
+	 */
+	isResponse?: boolean
+	coptic?: string
 }
 
 /** A line is either prayed by everyone (plain string) or attributed to a speaker. */

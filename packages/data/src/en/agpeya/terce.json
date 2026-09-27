@@ -753,20 +753,35 @@
 			"kind": "litany",
 			"content": [
 				"Your Holy Spirit, O Lord, whom You had sent forth upon Your holy Disciples and honorable Apostles at the third hour, we ask You our good Lord, not to take Him away from us, but rather to renew Him within us. A pure heart create in me, O God, and a steadfast spirit renew within me. Do not cast me away from Your presence and do not take Your Holy Spirit from me.",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"O Lord, who sent Your Holy Spirit upon Your holy Disciples and honorable Apostles at the third hour, do not take Him away from us, O Good One; but we ask You our Lord Jesus Christ, the Logos, Son of God, to renew Him within us: The Spirit of uprightness and life-giving, the Spirit of prophecy and chastity, the Spirit of holiness, justice and authority. Our almighty God, the Light of our souls illuminating every person who comes into this world, have mercy on us.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O Theotokos, Mother of God, you are the true vine who carries Christ, the Fruit of life—we ask you, O full-of-grace, together with the Apostles, to intercede for the sake of our salvation. Blessed be the Lord our God whom we praise every day; He prepares our way for He is the God of our salvation.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"O heavenly King, the Comforter, the Spirit of truth, who is present everywhere and fills all; You are the treasure of goodness and the Life-Giver, graciously come and abide in us, O Good One, purify us of all iniquities and save our souls.",
-				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
-				"Glory to the Father and the Son and the Holy Spirit.",
+				{
+					"text": "Glory to the Father and the Son and the Holy Spirit.",
+					"isResponse": true,
+					"coptic": "Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:"
+				},
 				"Just as You did abide with Your Disciples, O Savior, and gave them peace, come also now, abide with us and give us Your peace, save us and deliver our souls.",
-				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
-				"Now and forever and unto the age of all ages. Amen.",
+				{
+					"text": "Now and forever and unto the age of all ages. Amen.",
+					"isResponse": true,
+					"coptic": "ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ."
+				},
 				"Whenever we stand in Your holy sanctuary, we are indeed considered as those who abide in heaven. O Mother of God, you are the gate of heaven, open for us the door of mercy."
 			]
 		},
