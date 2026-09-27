@@ -143,7 +143,22 @@ export const AgpeyaMidnightHourSchema = z.object({
 	introduction: z.string().optional(),
 	opening: AgpeyaPrayerSectionSchema,
 	watches: z.array(AgpeyaWatchSchema),
-	closing: AgpeyaPrayerSectionSchema,
+	closing: AgpeyaPrayerSectionSchema.optional(),
+	// The ending tail: prose prayers and the midnight Gospel, in order.
+	conclusion: z
+		.array(
+			z.object({
+				id: z.string(),
+				kind: z.string(),
+				title: z.string().optional(),
+				rubric: z.string().optional(),
+				inline: z.boolean().optional(),
+				content: z.array(z.string()).optional(),
+				reference: z.string().optional(),
+				verses: z.array(z.object({ num: z.number(), text: z.string() })).optional(),
+			}),
+		)
+		.optional(),
 })
 
 // Union schema for any hour type

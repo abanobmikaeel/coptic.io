@@ -3,6 +3,7 @@ import {
 	getAgpeyaHourIds as getArAgpeyaHourIds,
 } from '@coptic/data/ar/agpeya'
 import {
+	type AgpeyaGospelRef,
 	type AgpeyaHourData,
 	type AgpeyaHourId,
 	type AgpeyaMidnightHour,
@@ -77,7 +78,22 @@ export interface ResolvedMidnightHour {
 	thanksgiving?: { title?: string; content: string[]; inline?: boolean }
 	introductoryPsalm?: ResolvedPsalm // Psalm 50 (51)
 	watches: ResolvedAgpeyaWatch[]
-	closing: { content: string[]; inline?: boolean }
+	closing?: { content: string[]; inline?: boolean }
+	// The shared ending prayed after the third watch, in order. Prose sections carry
+	// `content`; the midnight Gospel carries a resolved `reference`/`verses`.
+	conclusion?: MidnightTailSection[]
+}
+
+// A section in midnight's ending tail: prose (`content`) or a resolved gospel.
+export type MidnightTailSection = {
+	id: string
+	kind: string
+	title?: string
+	rubric?: string
+	inline?: boolean
+	content?: string[]
+	reference?: string
+	verses?: { num: number; text: string }[]
 }
 
 // Which psalm text to serve. 'septuagint' (default) prefers the psalms embedded
@@ -174,6 +190,15 @@ function resolveMidnightHour(
 
 	const watches = midnightData.watches.map((watch) => resolveWatch(watch, translation, psalmSource))
 
+	// The tail is authored in order; gospels resolve their text, prose passes through.
+	const conclusion = midnightData.conclusion?.map((section) => {
+		if (section.kind === 'gospel') {
+			const g = resolveAgpeyaGospel(section as unknown as AgpeyaGospelRef, translation)
+			return { ...section, ...g }
+		}
+		return section
+	})
+
 	return {
 		id: 'midnight',
 		name: midnightData.name,
@@ -184,7 +209,8 @@ function resolveMidnightHour(
 		thanksgiving: midnightData.thanksgiving,
 		introductoryPsalm,
 		watches,
-		closing: midnightData.closing,
+		...(midnightData.closing ? { closing: midnightData.closing } : {}),
+		conclusion,
 	}
 }
 

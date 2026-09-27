@@ -55,7 +55,15 @@ export interface ResolvedAgpeyaHour {
 	lordsPrayer?: AgBlock
 	thanksgivingAfter?: AgBlock
 	closing?: AgBlock
-	conclusion?: (AgBlock & { id: string })[]
+	// Regular hours: the concluding prose prayers. Midnight: the ending tail, which
+	// also carries the midnight Gospel, so a section may hold `content` or `verses`.
+	conclusion?: (AgBlock & {
+		id: string
+		kind?: string
+		rubric?: string
+		reference?: string
+		verses?: Verse[]
+	})[]
 	watches?: AgWatch[]
 }
 
@@ -87,7 +95,7 @@ const blockSection = (
 	fallbackTitle: string,
 	block?: AgBlock,
 ): IncenseSection | null => {
-	if (!block || block.content.length === 0) return null
+	if (!block?.content?.length) return null
 	return {
 		id,
 		type,
@@ -158,6 +166,18 @@ export function agpeyaToService(
 			add(blockSection(`watch-${watch.id}-litanies`, 'litany', 'Litanies', watch.litanies))
 			add(blockSection(`watch-${watch.id}-closing`, 'prayer', 'Closing', watch.closing))
 		})
+		// The shared ending prayed after the third watch (Kyrie, Holy Holy Holy, the
+		// Lord's Prayer, the midnight Gospel, the Creed, the Absolution, the Conclusion).
+		for (const part of hour.conclusion ?? [])
+			if (part.verses?.length)
+				add(
+					gospelSection(part.id, {
+						reference: part.reference ?? '',
+						rubric: part.rubric,
+						verses: part.verses,
+					}),
+				)
+			else if (part.content?.length) add(blockSection(part.id, 'prayer', 'Prayer', part))
 	} else {
 		pushPsalms(sections, hour.psalms, 'psalm', hour.psalmsIntro)
 		if (hour.gospel) add(gospelSection('gospel', hour.gospel))

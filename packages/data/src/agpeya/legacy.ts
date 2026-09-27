@@ -104,7 +104,12 @@ export interface AgpeyaMidnightHour {
 	thanksgiving?: AgpeyaPrayerSection
 	introductoryPsalm?: AgpeyaPsalmRef
 	watches: AgpeyaWatch[]
-	closing: AgpeyaPrayerSection
+	closing?: AgpeyaPrayerSection
+	// The shared closing sequence prayed after the third watch (Kyrie, Holy Holy Holy,
+	// the Lord's Prayer, the midnight Gospel, the Creed, the Absolution, and the
+	// Conclusion of Every Hour), in order. Carries whole sections — prose and gospel
+	// alike — so the reader renders the tail exactly as authored.
+	conclusion?: AgpeyaSection[]
 }
 
 export const isMidnightHour = (
@@ -204,7 +209,19 @@ const identity = (hour: AgpeyaHourService) => ({
 
 export function toLegacyHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMidnightHour {
 	if (hour.id === 'midnight') {
-		const frame = toSlots(hour.parts.filter((p): p is AgpeyaSection => !isResolvedGroup(p)))
+		const flat = hour.parts.filter((p): p is AgpeyaSection => !isResolvedGroup(p))
+		let lastGroup = -1
+		hour.parts.forEach((p, i) => {
+			if (isResolvedGroup(p)) lastGroup = i
+		})
+		// The shared ending, authored after the last watch, in order.
+		const conclusion = hour.parts
+			.slice(lastGroup + 1)
+			.filter((p): p is AgpeyaSection => !isResolvedGroup(p))
+		const tailIds = new Set(conclusion.map((s) => s.id))
+		// `frame` fills the leading slots (opening/thanksgiving/intro Psalm). A closing in the
+		// tail must not also surface as the hour's single `closing`.
+		const frame = toSlots(flat.filter((s) => !(s.kind === 'closing' && tailIds.has(s.id))))
 		return {
 			...identity(hour),
 			id: 'midnight',
@@ -226,7 +243,8 @@ export function toLegacyHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMi
 					...(slots.closing ? { closing: slots.closing } : {}),
 				} satisfies AgpeyaWatch
 			}),
-			closing: frame.closing as AgpeyaPrayerSection,
+			...(frame.closing ? { closing: frame.closing } : {}),
+			...(conclusion.length ? { conclusion } : {}),
 		}
 	}
 

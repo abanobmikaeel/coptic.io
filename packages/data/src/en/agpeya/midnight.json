@@ -73,7 +73,18 @@
 				"midnight-3-closing"
 			]
 		},
-		"midnight-closing"
+		"kyrie41",
+		"holy-holy-holy",
+		"lords-prayer",
+		"midnight-gospel-2",
+		"midnight-tenouwst",
+		"creed-introduction",
+		"creed",
+		"kyrie41",
+		"holy-holy-holy",
+		"lords-prayer",
+		"midnight-absolution",
+		"conclusion-of-every-hour"
 	],
 	"sections": [
 		{
@@ -979,10 +990,34 @@
 			]
 		},
 		{
-			"id": "midnight-closing",
+			"id": "midnight-gospel-2",
+			"kind": "gospel",
+			"book": "Luke",
+			"chapter": 2,
+			"startVerse": 29,
+			"endVerse": 32,
+			"rubric": "Glory to You, O our God. Holy, holy, holy. A reading from the Gospel according to our teacher Saint Luke the Evangelist. May his blessings be with us all. Amen."
+		},
+		{
+			"id": "midnight-tenouwst",
 			"kind": "closing",
+			"title": "Gospel Conclusion",
 			"content": [
-				"O Lord, Who shall rise at the resurrection of all men, grant us a portion with the righteous in Your kingdom. Through the intercessions of the Theotokos and all Your saints. Amen."
+				"Glory to God forever. Amen.",
+				"We worship You, O Christ, with Your good Father and the Holy Spirit, for You have come and saved us."
+			]
+		},
+		{
+			"id": "midnight-absolution",
+			"kind": "conclusion",
+			"title": "Absolution (Midnight)",
+			"content": [
+				"O Lord, Jesus Christ, Son of our eternal living God, enlighten our minds to understand Your life-giving words.",
+				"Raise us up from the darkness of sin which ruins the soul, and make us worthy of being steady in virtue.",
+				"When You come to judge the world, grant us to hear Your joyful voice saying: “Come, you blessed of My Father, inherit the kingdom prepared for you since the foundation of the world.”",
+				"O Lord, grant unto us to attend at that hour without fear, anxiety or condemnation.",
+				"Do not judge us according to our sins, for You alone have loving kindness, longsuffering and great mercy.",
+				"May You accept these prayers through the intercession of our Lady, the Mother of God, St. Mary and all of Your saints. Amen."
 			]
 		}
 	]

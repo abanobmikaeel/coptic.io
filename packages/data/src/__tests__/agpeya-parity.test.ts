@@ -30,25 +30,30 @@ import {
 import enBible from '../en/bible/books.json'
 
 const KNOWN_PROSE_GAPS = new Set([
-	// The source breaks these into different paragraphs per language
-	'terce.conclusion.terce-absolution',
-	'none.conclusion.none-absolution',
-	// Only the Arabic source ends the Conclusion with the Lord's Prayer
-	'terce.conclusion.conclusion-of-every-hour',
-	'sext.conclusion.conclusion-of-every-hour',
-	'none.conclusion.conclusion-of-every-hour',
-	'vespers.conclusion.conclusion-of-every-hour',
-	'compline.conclusion.conclusion-of-every-hour',
-	'prime.conclusion.conclusion-of-every-hour',
-	// Prime's pages break these prayers into different paragraphs per language
+	// The English and Arabic sources break the same prayers into different paragraphs
+	// (and the Arabic sometimes folds the Lord's Prayer into the end of a prayer).
+	// Re-segmenting these by hand is tracked in docs/ui-audit.md; until then the
+	// counts differ even though the text is parallel.
 	'prime.conclusion.gloria',
 	'prime.conclusion.trisagion',
 	'prime.conclusion.hail-to-you',
 	'prime.conclusion.creed-introduction',
 	'prime.conclusion.creed',
 	'prime.conclusion.prime-absolution',
+	'prime.conclusion.conclusion-of-every-hour',
+	'terce.conclusion.terce-absolution',
+	'terce.conclusion.conclusion-of-every-hour',
+	'sext.conclusion.conclusion-of-every-hour',
+	'none.conclusion.none-absolution',
+	'none.conclusion.conclusion-of-every-hour',
+	'vespers.conclusion.conclusion-of-every-hour',
+	'compline.conclusion.conclusion-of-every-hour',
+	'midnight.conclusion.lords-prayer',
+	'midnight.conclusion.creed-introduction',
+	'midnight.conclusion.creed',
+	'midnight.conclusion.conclusion-of-every-hour',
+	// Midnight's opening and the per-watch closing prayers exist only in English.
 	'midnight.opening',
-	'midnight.closing',
 	'midnight.midnight-1.closing',
 	'midnight.midnight-2.closing',
 	'midnight.midnight-3.closing',
