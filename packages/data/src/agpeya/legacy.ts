@@ -11,6 +11,7 @@ import type {
 	AgpeyaHourService,
 	AgpeyaProseSection,
 	AgpeyaPsalmSection,
+	AgpeyaResolvedGroup,
 	AgpeyaSection,
 	AgpeyaSectionKind,
 	AgpeyaVerse,
@@ -65,6 +66,10 @@ export interface AgpeyaWatch {
 	gospelRef?: AgpeyaGospelRef
 	litanies?: AgpeyaLitany
 	closing?: AgpeyaPrayerSection
+	// What the watch prays after its litanies (Kyrie, Holy Holy Holy, the Lord's
+	// Prayer), in order. These are shared prayers, so they carry their own kinds and
+	// must not be folded into the watch's slots.
+	conclusion?: AgpeyaMidnightTailSection[]
 }
 
 interface AgpeyaSlots {
@@ -109,8 +114,11 @@ export interface AgpeyaMidnightHour {
 	// the Lord's Prayer, the midnight Gospel, the Creed, the Absolution, and the
 	// Conclusion of Every Hour), in order. Carries whole sections — prose and gospel
 	// alike — so the reader renders the tail exactly as authored.
-	conclusion?: AgpeyaSection[]
+	conclusion?: AgpeyaMidnightTailSection[]
 }
+
+/** A section of midnight's ending: a prose prayer or the midnight Gospel. */
+export type AgpeyaMidnightTailSection = AgpeyaProseSection | AgpeyaGospelSection
 
 export const isMidnightHour = (
 	hour: AgpeyaHourData | AgpeyaMidnightHour,
@@ -207,43 +215,55 @@ const identity = (hour: AgpeyaHourService) => ({
 	...(hour.introduction ? { introduction: hour.introduction } : {}),
 })
 
+// The API carries prose and gospels in an ending; a psalm authored there has
+// nowhere to go, so fail loudly rather than drop it from the prayed order.
+function toTailSection(section: AgpeyaSection): AgpeyaMidnightTailSection {
+	if (section.kind === 'gospel' || 'content' in section) return section
+	throw new Error(`Psalm "${section.id}" cannot be prayed in a midnight ending`)
+}
+
+// A watch's own parts run through its litanies; what follows is its ending, prayed
+// in order. Folding the ending into slots would misplace shared prayers — the Lord's
+// Prayer is authored as an `opening`, so it would replace the watch's opening.
+function toWatch(group: AgpeyaResolvedGroup): AgpeyaWatch {
+	const litanyAt = group.sections.findIndex((s) => s.kind === 'litany')
+	const bodyEnd = litanyAt === -1 ? group.sections.length : litanyAt + 1
+	const slots = toSlots(group.sections.slice(0, bodyEnd))
+	const conclusion = group.sections.slice(bodyEnd).map(toTailSection)
+	return {
+		id: group.group,
+		name: group.name,
+		theme: group.theme ?? '',
+		...(group.psalmsIntro ? { psalmsIntro: group.psalmsIntro } : {}),
+		...(slots.opening ? { opening: slots.opening } : {}),
+		psalmRefs: slots.psalmRefs ?? [],
+		...(slots.psalms ? { psalms: slots.psalms } : {}),
+		...(slots.gospelRef ? { gospelRef: slots.gospelRef } : {}),
+		...(slots.litanies ? { litanies: slots.litanies } : {}),
+		...(slots.closing ? { closing: slots.closing } : {}),
+		...(conclusion.length ? { conclusion } : {}),
+	}
+}
+
 export function toLegacyHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMidnightHour {
 	if (hour.id === 'midnight') {
-		const flat = hour.parts.filter((p): p is AgpeyaSection => !isResolvedGroup(p))
-		let lastGroup = -1
-		hour.parts.forEach((p, i) => {
-			if (isResolvedGroup(p)) lastGroup = i
-		})
+		const firstGroup = hour.parts.findIndex(isResolvedGroup)
+		const lastGroup = hour.parts.length - 1 - [...hour.parts].reverse().findIndex(isResolvedGroup)
+		const sectionsIn = (parts: AgpeyaHourService['parts']) =>
+			parts.filter((p): p is AgpeyaSection => !isResolvedGroup(p))
+		// Only what precedes the first watch fills the hour's leading slots (opening,
+		// thanksgiving, Psalm 50) — the ending repeats shared prayers that would
+		// otherwise overwrite them.
+		const frame = toSlots(sectionsIn(hour.parts.slice(0, firstGroup)))
 		// The shared ending, authored after the last watch, in order.
-		const conclusion = hour.parts
-			.slice(lastGroup + 1)
-			.filter((p): p is AgpeyaSection => !isResolvedGroup(p))
-		const tailIds = new Set(conclusion.map((s) => s.id))
-		// `frame` fills the leading slots (opening/thanksgiving/intro Psalm). A closing in the
-		// tail must not also surface as the hour's single `closing`.
-		const frame = toSlots(flat.filter((s) => !(s.kind === 'closing' && tailIds.has(s.id))))
+		const conclusion = sectionsIn(hour.parts.slice(lastGroup + 1)).map(toTailSection)
 		return {
 			...identity(hour),
 			id: 'midnight',
 			opening: frame.opening as AgpeyaPrayerSection,
 			...(frame.thanksgiving ? { thanksgiving: frame.thanksgiving } : {}),
 			...(frame.introductoryPsalm ? { introductoryPsalm: frame.introductoryPsalm } : {}),
-			watches: hour.parts.filter(isResolvedGroup).map((group) => {
-				const slots = toSlots(group.sections)
-				return {
-					id: group.group,
-					name: group.name,
-					theme: group.theme ?? '',
-					...(group.psalmsIntro ? { psalmsIntro: group.psalmsIntro } : {}),
-					...(slots.opening ? { opening: slots.opening } : {}),
-					psalmRefs: slots.psalmRefs ?? [],
-					...(slots.psalms ? { psalms: slots.psalms } : {}),
-					...(slots.gospelRef ? { gospelRef: slots.gospelRef } : {}),
-					...(slots.litanies ? { litanies: slots.litanies } : {}),
-					...(slots.closing ? { closing: slots.closing } : {}),
-				} satisfies AgpeyaWatch
-			}),
-			...(frame.closing ? { closing: frame.closing } : {}),
+			watches: hour.parts.filter(isResolvedGroup).map(toWatch),
 			...(conclusion.length ? { conclusion } : {}),
 		}
 	}

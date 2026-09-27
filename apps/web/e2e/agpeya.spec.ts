@@ -127,20 +127,39 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 		})
 	}
 
+	test('Midnight closes the first two watches with Kyrie, Holy Holy Holy and the Lord’s Prayer', async ({
+		page,
+	}) => {
+		await openSections(page, 'midnight', 'Lord Have Mercy (41 times)')
+		for (const [index, label] of [
+			[15, 'Litanies'],
+			[16, 'Lord Have Mercy (41 times)'],
+			[17, 'Holy, Holy, Holy'],
+			[18, "The Lord's Prayer"],
+			[19, 'Second Watch'],
+			[31, 'Litanies'],
+			[32, 'Lord Have Mercy (41 times)'],
+			[33, 'Holy, Holy, Holy'],
+			[34, "The Lord's Prayer"],
+			[35, 'Third Watch'],
+		] as const) {
+			await expect(sectionButton(page, index, label)).toBeVisible()
+		}
+	})
+
 	test('Midnight ends with the full closing sequence after the third watch', async ({ page }) => {
 		await openSections(page, 'midnight', 'Lord Have Mercy (41 times)')
 		for (const [index, label] of [
-			[44, 'Gospel'],
-			[45, 'Litanies'],
-			[46, 'Closing'],
-			[47, 'Lord Have Mercy (41 times)'],
-			[48, 'Holy, Holy, Holy'],
-			[49, "The Lord's Prayer"],
-			[50, 'Gospel'],
-			[52, 'Introduction to the Creed'],
-			[53, 'The Orthodox Creed'],
-			[57, 'Absolution (Midnight)'],
-			[58, 'Conclusion of Every Hour'],
+			[48, 'Gospel'],
+			[49, 'Litanies'],
+			[50, 'Lord Have Mercy (41 times)'],
+			[51, 'Holy, Holy, Holy'],
+			[52, "The Lord's Prayer"],
+			[53, 'Gospel'],
+			[55, 'Introduction to the Creed'],
+			[56, 'The Orthodox Creed'],
+			[60, 'Absolution (Midnight)'],
+			[61, 'Conclusion of Every Hour'],
 		] as const) {
 			await expect(sectionButton(page, index, label)).toBeVisible()
 		}
@@ -168,7 +187,7 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 	})
 
 	test('renders the litany responses in Coptic script, not transliteration', async ({ page }) => {
-		await jumpTo(page, 'midnight', [45, 'Litanies'])
+		await jumpTo(page, 'midnight', [49, 'Litanies'])
 		const body = page.locator('body')
 		await expect(body).toContainText('Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:')
 		await expect(body).toContainText('ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.')
@@ -181,7 +200,7 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 		page,
 	}) => {
 		await context.addCookies([LANGS_2])
-		await jumpTo(page, 'midnight', [45, 'Litanies'])
+		await jumpTo(page, 'midnight', [49, 'Litanies'])
 		const body = page.locator('body')
 		// English column: the vernacular response, with the Coptic script beneath.
 		await expect(body).toContainText('Glory to the Father and the Son and the Holy Spirit.')

@@ -1,12 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { getAgpeyaHourData as getArabicAgpeyaHourData } from '../ar/agpeya'
+import arCommon from '../ar/agpeya/common.json'
 import { getChapter, getMissingBooks } from '../cop/bible'
 import {
 	getAgpeyaHour,
 	getAgpeyaHourIds,
 	getCommonPrayer,
 	getAgpeyaHourData as getEnglishAgpeyaHourData,
+	isMidnightHour,
 } from '../en/agpeya'
+import enCommon from '../en/agpeya/common.json'
 
 describe('English Agpeya shared prayers', () => {
 	it('prays the one shared Thanksgiving Prayer at every hour', () => {
@@ -144,5 +147,63 @@ describe('Agpeya concluding sequence', () => {
 		}
 		const absolution = hour.conclusion?.find((s) => s.id === `${hourId}-absolution`)
 		expect(absolution?.content[0]).toMatch(opening)
+	})
+})
+
+describe('Midnight ending', () => {
+	const loaders = { en: getEnglishAgpeyaHourData, ar: getArabicAgpeyaHourData } as const
+	const commonOpening = { en: enCommon.sections.opening, ar: arCommon.sections.opening }
+	const midnight = (lang: keyof typeof loaders) => {
+		const hour = loaders[lang]('midnight')
+		if (!hour || !isMidnightHour(hour)) throw new Error(`${lang} midnight missing`)
+		return hour
+	}
+
+	// agpeya.org and copticchurch.net both close the first and second watches with
+	// the 41 Kyrie, Holy Holy Holy and the Lord's Prayer after the litanies; the third
+	// watch flows straight into the hour's own ending.
+	it('closes the first two watches with Kyrie, Holy Holy Holy and the Lord’s Prayer', () => {
+		for (const lang of ['en', 'ar'] as const) {
+			const endings = midnight(lang).watches.map((w) => w.conclusion?.map((s) => s.id) ?? [])
+			expect(endings, lang).toEqual([
+				['kyrie41', 'holy-holy-holy', 'lords-prayer'],
+				['kyrie41', 'holy-holy-holy', 'lords-prayer'],
+				[],
+			])
+		}
+	})
+
+	// The Lord's Prayer is authored with the `opening` kind; it must not displace the
+	// hour's own opening prayer or a watch's opening.
+	it('keeps the hour opening as the Midnight opening, not a repeated shared prayer', () => {
+		for (const lang of ['en', 'ar'] as const) {
+			const hour = midnight(lang)
+			// It begins with the Sign of the Cross, as every hour's introduction does.
+			expect(hour.opening.content[0], lang).toBe(commonOpening[lang].content[0])
+			for (const watch of hour.watches) expect(watch.opening, `${lang} ${watch.id}`).toBeUndefined()
+		}
+	})
+
+	it('prays the same ending, in the same order, in English and Arabic', () => {
+		const ids = Object.values(loaders).map((getHour) => {
+			const hour = getHour('midnight')
+			if (!hour || !isMidnightHour(hour)) throw new Error('midnight missing')
+			return hour.conclusion?.map((s) => `${s.kind}:${s.id}`)
+		})
+		expect(ids[0]?.length).toBeGreaterThan(0)
+		expect(ids[1]).toEqual(ids[0])
+	})
+
+	// The reader titles a section from the data; an untitled prose section would fall
+	// back to an English label even in Arabic.
+	it('titles every prose section in its own language', () => {
+		for (const [lang, getHour] of Object.entries(loaders)) {
+			const hour = getHour('midnight')
+			if (!hour || !isMidnightHour(hour)) throw new Error(`${lang} midnight missing`)
+			for (const section of hour.conclusion ?? []) {
+				if (section.kind === 'gospel') continue
+				expect(section.title, `${lang} ${section.id}`).toBeTruthy()
+			}
+		}
 	})
 })

@@ -25,7 +25,10 @@
 				"psalm-117",
 				"midnight-1-psalm-118",
 				"midnight-1-gospel",
-				"midnight-1-litany"
+				"midnight-1-litany",
+				"kyrie41",
+				"holy-holy-holy",
+				"lords-prayer"
 			]
 		},
 		{
@@ -45,7 +48,10 @@
 				"psalm-127",
 				"psalm-128",
 				"midnight-2-gospel",
-				"midnight-2-litany"
+				"midnight-2-litany",
+				"kyrie41",
+				"holy-holy-holy",
+				"lords-prayer"
 			]
 		},
 		{
@@ -88,9 +94,12 @@
 			"id": "midnight-opening",
 			"kind": "opening",
 			"content": [
-				"In the Name of the Father, and the Son, and the Holy Spirit, one God. Amen.",
+				"In the name of the Father, and the Son, and the Holy Spirit,",
+				"the one God. Amen.",
 				"Kyrie eleison. Lord have mercy, Lord have mercy, Lord bless us. Amen.",
-				"Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen."
+				"Glory be to the Father, and to the Son, and to the Holy Spirit, now and forever and unto the ages of ages. Amen.",
+				"Make us worthy to pray thankfully:",
+				"Our Father who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done on earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from the evil one, in Christ Jesus our Lord. For Thine is the kingdom, the power, and the glory, forever. Amen."
 			],
 			"inline": true
 		},
