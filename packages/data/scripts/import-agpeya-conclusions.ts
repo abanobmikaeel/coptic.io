@@ -4,9 +4,16 @@
  *
  *   npx tsx scripts/import-agpeya-conclusions.ts [--check]
  */
-import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { AgpeyaLanguage } from '../src/agpeya/types'
+import {
+	expandOurFather,
+	fetchPage,
+	indexOf,
+	kyrieRows,
+	readJson,
+	writeJson,
+} from './agpeya-source'
 
 const DATA_DIR = join(import.meta.dirname, '../src')
 const HOURS = [
@@ -17,10 +24,6 @@ const HOURS = [
 	{ id: 'compline', page: '12_Compline' },
 ] as const
 type HourId = (typeof HOURS)[number]['id']
-
-// Arabic pages are windows-1256, at the English name plus a trailing underscore
-const pageUrl = (page: string, lang: AgpeyaLanguage) =>
-	`https://st-takla.org/Agpeya/Agbeya_${page}${lang === 'ar' ? '_' : ''}.html`
 
 const MARKERS = {
 	en: {
@@ -56,44 +59,6 @@ const TITLES = {
 	},
 } satisfies Record<AgpeyaLanguage, Record<string, string>>
 
-const KYRIE_PHRASE = { en: 'Lord have mercy.', ar: 'يا رب ارحم.' }
-
-const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', nbsp: ' ' }
-
-function decodeEntities(text: string): string {
-	return text
-		.replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
-		.replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(Number.parseInt(code, 16)))
-		.replace(/&([a-z]+);/gi, (match, name) => ENTITIES[name.toLowerCase()] ?? match)
-}
-
-// Pages sometimes open a <p> without closing the last, so opening tags split too
-function paragraphs(html: string): string[] {
-	return html
-		.replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/gi, '')
-		.replace(/\s+/g, ' ')
-		.split(/<\/p>|<p\b[^>]*>|<br\s*\/?>/i)
-		.map((chunk) =>
-			decodeEntities(chunk.replace(/<[^<>]*>/g, ''))
-				.replace(/\s+/g, ' ')
-				.trim(),
-		)
-		.filter(Boolean)
-}
-
-async function fetchPage(page: string, lang: AgpeyaLanguage): Promise<string[]> {
-	const res = await fetch(pageUrl(page, lang), { headers: { 'User-Agent': 'Mozilla/5.0' } })
-	if (!res.ok) throw new Error(`${res.status} fetching ${pageUrl(page, lang)}`)
-	const bytes = new Uint8Array(await res.arrayBuffer())
-	return paragraphs(new TextDecoder(lang === 'ar' ? 'windows-1256' : 'utf-8').decode(bytes))
-}
-
-function indexOf(lines: string[], pattern: RegExp, from: number, label: string): number {
-	const i = lines.findIndex((line, n) => n >= from && pattern.test(line))
-	if (i === -1) throw new Error(`Marker not found: ${label} (${pattern})`)
-	return i
-}
-
 interface Conclusion {
 	holy: string[]
 	absolution: string[]
@@ -109,24 +74,13 @@ function extract(lines: string[], lang: AgpeyaLanguage, lordsPrayer: string): Co
 	const conclusion = indexOf(lines, m.conclusion, absolution, 'conclusion')
 	const end = indexOf(lines, m.end, conclusion + 1, 'end')
 
-	// Pages abbreviate the Lord's Prayer; pray it in full
-	const expandOurFather = (line: string): string[] => {
-		const at = line.search(m.ourFather)
-		return at === -1 ? [line] : [line.slice(0, at).trim(), lordsPrayer].filter(Boolean)
-	}
+	const expand = expandOurFather(lang, lordsPrayer)
 	return {
-		holy: [...lines.slice(holy + 1, ourFather), ...expandOurFather(lines[ourFather])],
+		holy: [...lines.slice(holy + 1, ourFather), ...expand(lines[ourFather])],
 		absolution: lines.slice(absolution + 1, conclusion),
-		conclusion: lines.slice(conclusion + 1, end + 1).flatMap(expandOurFather),
+		conclusion: lines.slice(conclusion + 1, end + 1).flatMap(expand),
 	}
 }
-
-const readJson = (path: string) => JSON.parse(readFileSync(path, 'utf8'))
-const writeJson = (path: string, value: unknown) =>
-	writeFileSync(path, `${JSON.stringify(value, null, '\t')}\n`)
-
-const kyrieRows = (lang: AgpeyaLanguage) =>
-	[10, 10, 10, 10, 1].map((n) => new Array(n).fill(KYRIE_PHRASE[lang]).join(' '))
 
 async function importLanguage(lang: AgpeyaLanguage, check: boolean) {
 	const commonPath = join(DATA_DIR, lang, 'agpeya', 'common.json')
