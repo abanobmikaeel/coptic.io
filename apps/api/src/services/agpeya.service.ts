@@ -6,6 +6,8 @@ import {
 	type AgpeyaHourData,
 	type AgpeyaHourId,
 	type AgpeyaMidnightHour,
+	type AgpeyaMidnightTailSection,
+	type AgpeyaProseSection,
 	type AgpeyaWatch,
 	type MidnightWatchId,
 	getAgpeyaHourData as getEnAgpeyaHourData,
@@ -46,6 +48,7 @@ export interface ResolvedAgpeyaHour {
 	psalmsIntro?: string // "From the Psalms of our father David..."
 	psalms: ResolvedPsalm[]
 	gospel: ResolvedGospel
+	gospelConclusion?: { title?: string; content: string[] }
 	litanies: { title?: string; content: string[] }
 	lordsPrayer?: { title?: string; content: string[]; inline?: boolean }
 	thanksgivingAfter?: { title?: string; content: string[]; inline?: boolean }
@@ -62,8 +65,12 @@ export interface ResolvedAgpeyaWatch {
 	psalmsIntro?: string
 	psalms: ResolvedPsalm[]
 	gospel?: ResolvedGospel
+	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
+	gospelConclusion?: { title?: string; content: string[] }
 	litanies?: { content: string[] }
 	closing?: { content: string[]; inline?: boolean }
+	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
+	conclusion?: MidnightTailSection[]
 }
 
 // Resolved midnight hour with watches
@@ -77,8 +84,17 @@ export interface ResolvedMidnightHour {
 	thanksgiving?: { title?: string; content: string[]; inline?: boolean }
 	introductoryPsalm?: ResolvedPsalm // Psalm 50 (51)
 	watches: ResolvedAgpeyaWatch[]
-	closing: { content: string[]; inline?: boolean }
+	closing?: { content: string[]; inline?: boolean }
+	// The shared ending prayed after the third watch, in order. Prose sections carry
+	// `content`; the midnight Gospel carries a resolved `reference`/`verses`.
+	conclusion?: MidnightTailSection[]
 }
+
+// A section in midnight's ending tail: a prose prayer, or the midnight Gospel with
+// its text resolved in the requested translation.
+export type MidnightTailSection =
+	| AgpeyaProseSection
+	| ({ id: string; kind: 'gospel'; title?: string } & ResolvedGospel)
 
 // Which psalm text to serve. 'septuagint' (default) prefers the psalms embedded
 // in the Agpeya data — the Septuagint-based liturgical psalter with the
@@ -124,6 +140,7 @@ function resolveHour(
 		psalmsIntro: hourData.psalmsIntro,
 		psalms,
 		gospel: gospel || { reference: '', verses: [] },
+		gospelConclusion: hourData.gospelConclusion,
 		litanies: hourData.litanies,
 		lordsPrayer: hourData.lordsPrayer,
 		thanksgivingAfter: hourData.thanksgivingAfter,
@@ -154,9 +171,25 @@ function resolveWatch(
 		psalmsIntro: watch.psalmsIntro,
 		psalms,
 		gospel: gospel || undefined,
+		gospelConclusion: watch.gospelConclusion,
 		litanies: watch.litanies,
 		closing: watch.closing,
+		conclusion: resolveTail(watch.conclusion, translation),
 	}
+}
+
+// A midnight ending (after a watch, or after the last one) is authored in order:
+// gospels resolve their text in the requested translation, prose passes through.
+// A gospel whose text this translation lacks is left out of that language.
+function resolveTail(
+	sections: AgpeyaMidnightTailSection[] | undefined,
+	translation: BibleTranslation,
+): MidnightTailSection[] | undefined {
+	return sections?.flatMap((section): MidnightTailSection[] => {
+		if (section.kind !== 'gospel') return [section]
+		const gospel = resolveAgpeyaGospel(section, translation)
+		return gospel ? [{ id: section.id, kind: 'gospel', title: section.title, ...gospel }] : []
+	})
 }
 
 /**
@@ -173,6 +206,7 @@ function resolveMidnightHour(
 		: undefined
 
 	const watches = midnightData.watches.map((watch) => resolveWatch(watch, translation, psalmSource))
+	const conclusion = resolveTail(midnightData.conclusion, translation)
 
 	return {
 		id: 'midnight',
@@ -184,7 +218,8 @@ function resolveMidnightHour(
 		thanksgiving: midnightData.thanksgiving,
 		introductoryPsalm,
 		watches,
-		closing: midnightData.closing,
+		...(midnightData.closing ? { closing: midnightData.closing } : {}),
+		conclusion,
 	}
 }
 

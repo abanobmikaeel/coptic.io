@@ -23,6 +23,15 @@ interface AgBlock {
 	content: string[]
 	inline?: boolean
 }
+// A section of an ending, in prayed order: prose (`content`) or, at Midnight, a
+// gospel (`verses`).
+type AgEndingSection = AgBlock & {
+	id: string
+	kind?: string
+	rubric?: string
+	reference?: string
+	verses?: Verse[]
+}
 interface AgWatch {
 	id: string
 	name: string
@@ -31,8 +40,11 @@ interface AgWatch {
 	psalmsIntro?: string
 	psalms?: AgPsalm[]
 	gospel?: AgGospel
+	gospelConclusion?: AgBlock
 	litanies?: AgBlock
 	closing?: AgBlock
+	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
+	conclusion?: AgEndingSection[]
 }
 
 export interface ResolvedAgpeyaHour {
@@ -51,11 +63,15 @@ export interface ResolvedAgpeyaHour {
 	psalmsIntro?: string
 	psalms?: AgPsalm[]
 	gospel?: AgGospel
+	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
+	gospelConclusion?: AgBlock
 	litanies?: AgBlock
 	lordsPrayer?: AgBlock
 	thanksgivingAfter?: AgBlock
 	closing?: AgBlock
-	conclusion?: (AgBlock & { id: string })[]
+	// Regular hours: the concluding prose prayers. Midnight: the ending tail, which
+	// also carries the midnight Gospel, so a section may hold `content` or `verses`.
+	conclusion?: AgEndingSection[]
 	watches?: AgWatch[]
 }
 
@@ -87,7 +103,7 @@ const blockSection = (
 	fallbackTitle: string,
 	block?: AgBlock,
 ): IncenseSection | null => {
-	if (!block || block.content.length === 0) return null
+	if (!block?.content?.length) return null
 	return {
 		id,
 		type,
@@ -97,17 +113,22 @@ const blockSection = (
 	}
 }
 
-const pushPsalms = (
-	sections: IncenseSection[],
+const endingSection = (id: string, part: AgEndingSection): IncenseSection | null =>
+	part.kind === 'gospel'
+		? gospelSection(id, {
+				reference: part.reference ?? '',
+				rubric: part.rubric,
+				verses: part.verses ?? [],
+			})
+		: blockSection(id, 'prayer', 'Prayer', part)
+
+const psalmSections = (
 	psalms: AgPsalm[] | undefined,
 	idPrefix: string,
 	intro?: string,
-) => {
-	psalms?.forEach((p, i) => {
-		// The "From the Psalms of David…" intro rides as a rubric on the first psalm.
-		sections.push(psalmSection(`${idPrefix}-${i}`, p, i === 0 ? intro : undefined))
-	})
-}
+): IncenseSection[] =>
+	// The "From the Psalms of David…" intro rides as a rubric on the first psalm.
+	(psalms ?? []).map((p, i) => psalmSection(`${idPrefix}-${i}`, p, i === 0 ? intro : undefined))
 
 const SCRIPTURE_TYPES: ReadonlySet<IncenseSection['type']> = new Set([
 	'psalm',
@@ -122,8 +143,25 @@ export function agpeyaToService(
 	opts: { scriptureOnly?: boolean } = {},
 ): IncenseService {
 	const sections: IncenseSection[] = []
+	// The section list is addressed by id (the reader scrolls to `sections.find(s => s.id
+	// === currentSectionId)`), so ids must be unique. Midnight prays Kyrie, Holy Holy
+	// Holy and the Lord's Prayer twice, so the tail would otherwise collide with the
+	// first copy. Keep the first occurrence's id stable and suffix later ones.
+	const used = new Set<string>()
+	const uniqueId = (id: string): string => {
+		if (!used.has(id)) {
+			used.add(id)
+			return id
+		}
+		let n = 2
+		while (used.has(`${id}-${n}`)) n++
+		const next = `${id}-${n}`
+		used.add(next)
+		return next
+	}
 	const add = (s: IncenseSection | null) => {
-		if (s) sections.push(s)
+		if (!s) return
+		sections.push({ ...s, id: uniqueId(s.id) })
 	}
 
 	const opening = blockSection('opening', 'prayer', 'Opening Prayer', hour.opening)
@@ -153,14 +191,33 @@ export function agpeyaToService(
 			})
 			if (watch.opening)
 				add(blockSection(`watch-${watch.id}-opening`, 'prayer', 'Prayer', watch.opening))
-			pushPsalms(sections, watch.psalms, `watch-${wi}-psalm`)
+			for (const p of psalmSections(watch.psalms, `watch-${wi}-psalm`)) add(p)
 			if (watch.gospel) add(gospelSection(`watch-${watch.id}-gospel`, watch.gospel))
+			add(
+				blockSection(
+					`watch-${watch.id}-gospel-conclusion`,
+					'prayer',
+					'Gospel Conclusion',
+					watch.gospelConclusion,
+				),
+			)
 			add(blockSection(`watch-${watch.id}-litanies`, 'litany', 'Litanies', watch.litanies))
 			add(blockSection(`watch-${watch.id}-closing`, 'prayer', 'Closing', watch.closing))
+			// Each watch's own ending, prefixed so the same shared prayer in two
+			// watches keeps a distinct, stable id.
+			for (const part of watch.conclusion ?? []) {
+				add(endingSection(`watch-${watch.id}-${part.id}`, part))
+			}
 		})
+		// The shared ending prayed after the third watch (Kyrie, Holy Holy Holy, the
+		// Lord's Prayer, the midnight Gospel, the Creed, the Absolution, the Conclusion).
+		for (const part of hour.conclusion ?? []) {
+			add(endingSection(part.id, part))
+		}
 	} else {
-		pushPsalms(sections, hour.psalms, 'psalm', hour.psalmsIntro)
+		for (const p of psalmSections(hour.psalms, 'psalm', hour.psalmsIntro)) add(p)
 		if (hour.gospel) add(gospelSection('gospel', hour.gospel))
+		add(blockSection('gospel-conclusion', 'prayer', 'Gospel Conclusion', hour.gospelConclusion))
 		add(blockSection('litanies', 'litany', 'Litanies', hour.litanies))
 		add(blockSection('lords-prayer', 'prayer', "The Lord's Prayer", hour.lordsPrayer))
 		add(blockSection('thanksgiving-after', 'prayer', 'Thanksgiving', hour.thanksgivingAfter))

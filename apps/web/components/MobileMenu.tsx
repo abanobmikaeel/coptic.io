@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { RemoveScroll } from 'react-remove-scroll'
 import CopticCross from './CopticCross'
 import { CloseIcon, MenuIcon } from './ui/Icons'
 
@@ -20,9 +21,11 @@ export function MobileMenu({ theme = 'light', sections }: Readonly<MobileMenuPro
 	const pathname = usePathname()
 	const t = useTranslations('nav')
 	const [activeSection, setActiveSection] = useState<string | null>(null)
+	const [open, setOpen] = useState(false)
 
 	const openMenu = useCallback(() => {
 		dialogRef.current?.showModal()
+		setOpen(true)
 	}, [])
 
 	const closeMenu = useCallback(() => {
@@ -127,8 +130,12 @@ export function MobileMenu({ theme = 'light', sections }: Readonly<MobileMenuPro
 				onKeyDown={(e) => {
 					if (e.key === 'Escape') closeMenu()
 				}}
+				onClose={() => setOpen(false)}
 			>
-				<div className={`h-full ${themeClasses.drawerBg[theme]} shadow-xl`}>
+				{/* Its own scroll lock while open: a page that already holds one (the liturgical
+				    reader) would otherwise swallow scrolling inside the drawer, which renders
+				    outside that page's tree. The newest lock is the one that lets scroll through. */}
+				<RemoveScroll enabled={open} className={`h-full ${themeClasses.drawerBg[theme]} shadow-xl`}>
 					{/* Header */}
 					<div
 						className={`flex items-center justify-between px-4 py-3 border-b ${themeClasses.drawerBorder[theme]}`}
@@ -204,7 +211,7 @@ export function MobileMenu({ theme = 'light', sections }: Readonly<MobileMenuPro
 							<div className="space-y-0.5">{moreMenuItems.map(renderItem)}</div>
 						</div>
 					</nav>
-				</div>
+				</RemoveScroll>
 			</dialog>
 		</>
 	)

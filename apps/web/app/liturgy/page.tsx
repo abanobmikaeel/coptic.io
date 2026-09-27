@@ -8,11 +8,11 @@ import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
+	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import type { IncenseService } from '@/lib/types'
 import type { Metadata } from 'next'
+import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
 
@@ -56,10 +56,13 @@ export default async function LiturgyPage({ searchParams }: Readonly<LiturgyPage
 	const date = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam) ? dateParam : today
 
 	const cookieStore = await cookies()
-	const contentLanguages = parseContentLanguages(cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value)
-	const selected = (
-		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
-	).filter((language): language is LiturgyLang => LITURGY_LANGS.includes(language as LiturgyLang))
+	const contentLanguages = resolveContentLanguages(
+		cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value,
+		await getLocale(),
+	)
+	const selected = contentLanguages.filter((language): language is LiturgyLang =>
+		LITURGY_LANGS.includes(language as LiturgyLang),
+	)
 	// Someone reading only in a language the Liturgy has no text for still gets the
 	// service, in English, with a note rather than an empty page.
 	const unsupportedOnly = selected.length === 0

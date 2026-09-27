@@ -4,12 +4,12 @@ import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
+	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import { INCENSE_COMMEMORATIONS_COOKIE, parseCommemorations } from '@/lib/commemorations'
 import type { IncenseService } from '@/lib/types'
 import { getTodayDateString } from '@/lib/utils'
+import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
 import { VespersContent, VespersFallback } from './VespersContent'
@@ -46,12 +46,12 @@ export default async function VespersPage({ searchParams }: Readonly<VespersPage
 
 	const cookieStore = await cookies()
 	const contentLangCookie = cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value
-	const contentLanguages = parseContentLanguages(contentLangCookie)
+	const contentLanguages = resolveContentLanguages(contentLangCookie, await getLocale())
 	const commemorations = parseCommemorations(cookieStore.get(INCENSE_COMMEMORATIONS_COOKIE)?.value)
 	const commemorationsParam = commemorations.join(',')
-	const selected = (
-		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
-	).filter((l): l is IncenseLang => INCENSE_LANGS.includes(l as IncenseLang))
+	const selected = contentLanguages.filter((l): l is IncenseLang =>
+		INCENSE_LANGS.includes(l as IncenseLang),
+	)
 
 	// All chosen display languages lack Vespers data (e.g. Spanish only) — fall back to
 	// English with a notice rather than a dead end.

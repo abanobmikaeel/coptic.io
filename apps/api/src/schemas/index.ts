@@ -102,6 +102,31 @@ export const AgpeyaLitanySchema = z.object({
 	content: z.array(z.string()),
 })
 
+// A section of midnight's ending: a prose prayer or the resolved midnight Gospel.
+const AgpeyaMidnightTailSchema = z.discriminatedUnion('kind', [
+	AgpeyaPrayerSectionSchema.extend({
+		id: z.string(),
+		kind: z.enum([
+			'opening',
+			'hour-intro',
+			'come-let-us-worship',
+			'thanksgiving',
+			'litany',
+			'lords-prayer',
+			'thanksgiving-after',
+			'gospel-conclusion',
+			'closing',
+			'conclusion',
+		]),
+		rubric: z.string().optional(),
+	}),
+	AgpeyaGospelSchema.extend({
+		id: z.string(),
+		kind: z.literal('gospel'),
+		title: z.string().optional(),
+	}),
+])
+
 // Watch schema for midnight prayers
 export const AgpeyaWatchSchema = z.object({
 	id: z.string(),
@@ -110,8 +135,11 @@ export const AgpeyaWatchSchema = z.object({
 	opening: AgpeyaPrayerSectionSchema.optional(),
 	psalms: z.array(AgpeyaPsalmSchema),
 	gospel: AgpeyaGospelSchema.optional(),
+	gospelConclusion: AgpeyaPrayerSectionSchema.optional(),
 	litanies: AgpeyaLitanySchema.optional(),
 	closing: AgpeyaPrayerSectionSchema.optional(),
+	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
+	conclusion: z.array(AgpeyaMidnightTailSchema).optional(),
 })
 
 // Standard hour schema (non-midnight)
@@ -127,6 +155,7 @@ export const AgpeyaHourSchema = z.object({
 	thanksgiving: AgpeyaPrayerSectionSchema.optional(),
 	psalms: z.array(AgpeyaPsalmSchema),
 	gospel: AgpeyaGospelSchema,
+	gospelConclusion: AgpeyaPrayerSectionSchema.optional(),
 	litanies: AgpeyaLitanySchema,
 	lordsPrayer: AgpeyaPrayerSectionSchema.optional(),
 	thanksgivingAfter: AgpeyaPrayerSectionSchema.optional(),
@@ -143,7 +172,9 @@ export const AgpeyaMidnightHourSchema = z.object({
 	introduction: z.string().optional(),
 	opening: AgpeyaPrayerSectionSchema,
 	watches: z.array(AgpeyaWatchSchema),
-	closing: AgpeyaPrayerSectionSchema,
+	closing: AgpeyaPrayerSectionSchema.optional(),
+	// The ending tail: prose prayers and the midnight Gospel, in order.
+	conclusion: z.array(AgpeyaMidnightTailSchema).optional(),
 })
 
 // Union schema for any hour type

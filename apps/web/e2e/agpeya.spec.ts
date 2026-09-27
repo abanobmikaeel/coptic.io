@@ -85,3 +85,159 @@ test.describe('Agpeya page', () => {
 		expect(hasHorizontalScroll).toBe(false)
 	})
 })
+
+// The closing sequences and bilingual alignment are the parts of the Agpeya that
+// data-only tests cannot see: they assert what the reader actually renders. Pin
+// the hour with ?hour= so the page does not jump to the hour for the clock.
+test.describe('Agpeya closing sequences and bilingual rendering', () => {
+	const LANGS_2 = { name: 'CONTENT_LANGUAGES', value: 'en,ar', url: 'http://localhost:3001' }
+
+	// Section-nav buttons render as "<n><Label>" with no separating space, so match
+	// the label (and its leading index) within the button text. Labels carry regex
+	// metacharacters (parentheses), so escape them.
+	const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+	function sectionButton(page: import('@playwright/test').Page, index: number, label: string) {
+		return page.locator('button').filter({ hasText: new RegExp(`^${index}${escapeRe(label)}$`) })
+	}
+
+	async function openSections(page: import('@playwright/test').Page, hour: string, marker: string) {
+		await page.goto(`/agpeya?hour=${hour}`)
+		await page.waitForLoadState('networkidle')
+		await page.getByTitle('Sections (T)').click()
+		await expect(
+			page
+				.locator('button')
+				.filter({ hasText: new RegExp(`^\\d+${escapeRe(marker)}$`) })
+				.first(),
+		).toBeVisible()
+	}
+
+	// Jump to a section: the reader mounts only the current page, so content is not
+	// in the DOM until its page is shown. The header shows the destination title.
+	async function jumpTo(
+		page: import('@playwright/test').Page,
+		hour: string,
+		section: [number, string],
+	) {
+		await openSections(page, hour, section[1])
+		await sectionButton(page, section[0], section[1]).first().click()
+		// The section nav is a modal; clicking an entry closes it and mounts the page.
+		await expect(sectionButton(page, section[0], section[1])).toHaveCount(0, {
+			timeout: 3000,
+		})
+	}
+
+	test('Midnight closes the first two watches with Kyrie, Holy Holy Holy and the Lord’s Prayer', async ({
+		page,
+	}) => {
+		await openSections(page, 'midnight', 'Lord Have Mercy (41 times)')
+		for (const [index, label] of [
+			[15, 'Gospel Conclusion'],
+			[16, 'Litanies'],
+			[17, 'Lord Have Mercy (41 times)'],
+			[18, 'Holy, Holy, Holy'],
+			[19, "The Lord's Prayer"],
+			[20, 'Second Watch'],
+			[32, 'Gospel Conclusion'],
+			[33, 'Litanies'],
+			[34, 'Lord Have Mercy (41 times)'],
+			[35, 'Holy, Holy, Holy'],
+			[36, "The Lord's Prayer"],
+			[37, 'Third Watch'],
+		] as const) {
+			await expect(sectionButton(page, index, label)).toBeVisible()
+		}
+	})
+
+	test('Midnight ends with the full closing sequence after the third watch', async ({ page }) => {
+		await openSections(page, 'midnight', 'Lord Have Mercy (41 times)')
+		for (const [index, label] of [
+			[50, 'Gospel'],
+			[51, 'Gospel Conclusion'],
+			[52, 'Litanies'],
+			[53, 'Lord Have Mercy (41 times)'],
+			[54, 'Holy, Holy, Holy'],
+			[55, "The Lord's Prayer"],
+			[56, 'Gospel'],
+			[57, 'Gospel Conclusion'],
+			[58, 'Introduction to the Creed'],
+			[59, 'The Orthodox Creed'],
+			[63, 'Absolution (Midnight)'],
+			[64, 'Conclusion of Every Hour'],
+		] as const) {
+			await expect(sectionButton(page, index, label)).toBeVisible()
+		}
+	})
+
+	test('Compline prays Graciously O Lord, Trisagion, Hail to You and the Creed', async ({
+		page,
+	}) => {
+		await openSections(page, 'compline', 'Graciously O Lord')
+		for (const [index, label] of [
+			[17, 'Gospel'],
+			[18, 'Gospel Conclusion'],
+			[19, 'Litanies'],
+			[20, 'Graciously O Lord'],
+			[21, 'The Trisagion'],
+			[22, "The Lord's Prayer"],
+			[23, 'Hail to Saint Mary'],
+			[24, 'Introduction to the Creed'],
+			[25, 'The Orthodox Creed'],
+			[26, 'Lord Have Mercy (41 times)'],
+			[27, 'Holy, Holy, Holy'],
+			[28, "The Lord's Prayer"],
+			[29, 'Absolution'],
+			[30, 'Conclusion of Every Hour'],
+			[31, "The Lord's Prayer"],
+		] as const) {
+			await expect(sectionButton(page, index, label)).toBeVisible()
+		}
+	})
+
+	test('renders the litany responses in Coptic script, not transliteration', async ({ page }) => {
+		await jumpTo(page, 'midnight', [52, 'Litanies'])
+		const body = page.locator('body')
+		await expect(body).toContainText('Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:')
+		await expect(body).toContainText('ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.')
+		// The old Latin transliteration must not reappear anywhere.
+		await expect(body).not.toContainText('Dthoxa Patri ke Eiou')
+	})
+
+	test('shows the vernacular and the Coptic response in both languages', async ({
+		context,
+		page,
+	}) => {
+		await context.addCookies([LANGS_2])
+		await jumpTo(page, 'midnight', [52, 'Litanies'])
+		const body = page.locator('body')
+		// English column: the vernacular response, with the Coptic script beneath.
+		await expect(body).toContainText('Glory to the Father and the Son and the Holy Spirit.')
+		await expect(body).toContainText('Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:')
+		// Arabic column: the same response in Arabic.
+		await expect(body).toContainText('المجد للآب والابن والروح القدس')
+	})
+
+	test('Compline prayers the Graciously prayer at night, not in the day form', async ({ page }) => {
+		await jumpTo(page, 'compline', [20, 'Graciously O Lord'])
+		const body = page.locator('body')
+		await expect(body).toContainText('Graciously O Lord')
+		await expect(body).toContainText('keep this night without sin')
+		await expect(body).not.toContainText('keep this day without sin')
+	})
+
+	test('keeps the shared concluding prayers aligned row-for-row in both languages', async ({
+		context,
+		page,
+	}) => {
+		await context.addCookies([LANGS_2])
+		await jumpTo(page, 'prime', [35, 'Holy, Holy, Holy'])
+
+		// The Arabic "Absolve, forgive..." clause must sit in the same row as its
+		// English counterpart (the first row), not merged into the second.
+		const body = page.locator('body')
+		await expect(body).toContainText('name which is called upon us.')
+		await expect(body).toContainText('الذي دعي علينا.')
+		await expect(body).toContainText('Let it be according to Your mercy')
+		await expect(body).toContainText('كرحمتك يا رب وليس كخطايانا.')
+	})
+})

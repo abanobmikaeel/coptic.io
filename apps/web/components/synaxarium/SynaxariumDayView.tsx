@@ -16,17 +16,10 @@ import type { BilingualEntry } from '@/hooks/useSynaxarium'
 import { themeClasses } from '@/lib/reading-styles'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import {
-	CATEGORIES,
-	type CategoryId,
-	getCategoryColor,
-	getCategoryForEntry,
-} from './SynaxariumCategoryFilters'
+import { CATEGORIES, type CategoryId } from './SynaxariumCategoryFilters'
 
 interface SynaxariumDayViewProps {
 	currentDate: string
-	isToday: boolean
-	bilingualEntries: BilingualEntry[]
 	filteredBilingualEntries: BilingualEntry[]
 	loading: boolean
 	selectedCategory: CategoryId
@@ -42,8 +35,6 @@ interface SynaxariumDayViewProps {
 
 export function SynaxariumDayView({
 	currentDate,
-	isToday,
-	bilingualEntries,
 	filteredBilingualEntries,
 	loading,
 	selectedCategory,
@@ -61,11 +52,6 @@ export function SynaxariumDayView({
 
 	return (
 		<>
-			{/* Featured Today */}
-			{isToday && bilingualEntries.length > 0 && (
-				<FeaturedTodayCard entries={bilingualEntries} theme={theme} />
-			)}
-
 			{/* View Readings Link */}
 			<section className="relative px-4 sm:px-6 pb-4">
 				<div className="max-w-5xl mx-auto text-center">
@@ -123,77 +109,6 @@ export function SynaxariumDayView({
 				</div>
 			</section>
 		</>
-	)
-}
-
-function FeaturedTodayCard({
-	entries,
-	theme,
-}: Readonly<{ entries: BilingualEntry[]; theme: ReadingTheme }>) {
-	const t = useTranslations('synaxarium')
-	const tCategories = useTranslations('categories')
-
-	return (
-		<section className="relative px-4 sm:px-6 pb-8">
-			<div className="max-w-5xl mx-auto">
-				<Card
-					className={`relative overflow-hidden border-amber-300/50 dark:border-amber-700/50 ${themeClasses.featuredCardBg[theme]} shadow-sm`}
-				>
-					{/* Decorative corner accents */}
-					<div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-amber-400/30 dark:border-amber-600/30 rounded-tl-lg" />
-					<div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-amber-400/30 dark:border-amber-600/30 rounded-tr-lg" />
-					<div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-amber-400/30 dark:border-amber-600/30 rounded-bl-lg" />
-					<div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-amber-400/30 dark:border-amber-600/30 rounded-br-lg" />
-
-					<CardHeader className="flex items-center gap-3 relative z-10">
-						<span className="text-amber-600 dark:text-amber-500 font-serif text-lg tracking-wide">
-							{t('todaysSaints')}
-						</span>
-						<span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-							{entries.length}{' '}
-							{entries.length !== 1 ? t('commemorationsPlural') : t('commemorations')}
-						</span>
-					</CardHeader>
-					<CardContent className="relative z-10">
-						<div className="grid gap-4 sm:grid-cols-2">
-							{entries.slice(0, 4).map((entry) => {
-								const name = entry.en?.name || entry.ar?.name || ''
-								const category = getCategoryForEntry(name)
-								return (
-									<div
-										key={entry.id}
-										className={`p-4 rounded-xl border ${themeClasses.featuredCardItem[theme]} transition-all duration-200 hover:shadow-sm hover:border-amber-200/80 dark:hover:border-amber-800/80`}
-									>
-										<span
-											className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium mb-3 ${getCategoryColor(category)}`}
-										>
-											{tCategories(CATEGORIES.find((c) => c.id === category)?.labelKey || 'other')}
-										</span>
-										{/* English name */}
-										{entry.en && (
-											<p
-												className={`font-serif text-base font-medium line-clamp-2 ${themeClasses.featuredCardText[theme]}`}
-											>
-												{entry.en.name}
-											</p>
-										)}
-										{/* Arabic name */}
-										{entry.ar && (
-											<p
-												className={`text-sm line-clamp-2 mt-2 ${themeClasses.featuredCardMuted[theme]}`}
-												dir="rtl"
-											>
-												{entry.ar.name}
-											</p>
-										)}
-									</div>
-								)
-							})}
-						</div>
-					</CardContent>
-				</Card>
-			</div>
-		</section>
 	)
 }
 

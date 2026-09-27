@@ -157,6 +157,22 @@ function Cell({
 								isRtl={isRtl}
 								fontClass={fontClass}
 							/>
+						) : line.isResponse ? (
+							// Congregational response (Doxa / Ke-nin): quieter and set in from the
+							// petitions so it reads as a reply. The reader prays one form or the
+							// other, so the vernacular leads on its own line and the Coptic script
+							// sits beneath it.
+							<div className={`ps-2 ms-1 ${themeClasses.muted[theme]}`}>
+								<p className={`${sizes.verse} ${lineHeight} ${fontClass} italic`}>{line.text}</p>
+								{line.responseCoptic && (
+									<p
+										dir="ltr"
+										className={`${sizes.verse} ${lineHeight} font-coptic opacity-80 mt-0.5`}
+									>
+										{line.responseCoptic}
+									</p>
+								)}
+							</div>
 						) : (
 							<p className={proseClass}>{line.text}</p>
 						)}

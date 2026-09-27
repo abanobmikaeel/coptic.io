@@ -3,8 +3,7 @@
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
+	resolveContentLanguages,
 	serializeContentLanguages,
 } from '@/i18n/content-languages'
 import { useLocale } from 'next-intl'
@@ -29,14 +28,7 @@ export function useContentLanguages() {
 			.find((row) => row.startsWith(`${CONTENT_LANGUAGES_COOKIE}=`))
 			?.split('=')[1]
 
-		const parsed = parseContentLanguages(cookieValue)
-
-		if (parsed.length > 0) {
-			setLanguagesState(parsed)
-		} else {
-			// Use defaults based on UI locale
-			setLanguagesState(defaultContentLanguages[locale] || defaultContentLanguages.en)
-		}
+		setLanguagesState(resolveContentLanguages(cookieValue, locale))
 		setIsLoaded(true)
 	}, [locale])
 

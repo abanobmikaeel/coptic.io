@@ -37,6 +37,7 @@ import type { IncenseService } from '@/lib/types'
 import { parseDateString } from '@/lib/utils'
 import { useLocale } from 'next-intl'
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { RemoveScroll } from 'react-remove-scroll'
 
 // ── Fallback skeleton ───────────────────────────────────────────────────────
 
@@ -131,13 +132,16 @@ export function LiturgicalServiceReader({
 	const [containerRef, containerHeight] = useViewportFillHeight<HTMLDivElement>()
 
 	// Lock page scroll — the reader fills the viewport below the header and owns all scrolling
-	// internally (present mode: none; scroll mode: inside the content region).
+	// internally (present mode: none; scroll mode: inside the content region). `RemoveScroll`
+	// (via react-remove-scroll) scopes the lock and restores it cleanly on unmount, unlike a
+	// manual `document.documentElement.style.overflow` toggle that can strand the page
+	// unscrollable if the component doesn't unmount cleanly.
+	//
+	// Reset the page scroll to the top before the lock engages. RemoveScroll sets body
+	// `overflow: hidden` without resetting the existing offset, so arriving from a scrolled
+	// route would leave the reader offset and its title bar tucked under the sticky header.
 	useEffect(() => {
-		const prev = document.documentElement.style.overflow
-		document.documentElement.style.overflow = 'hidden'
-		return () => {
-			document.documentElement.style.overflow = prev
-		}
+		window.scrollTo(0, 0)
 	}, [])
 
 	// Fade content in once settings are applied and web fonts are loaded — avoids the
@@ -148,10 +152,14 @@ export function LiturgicalServiceReader({
 		const done = () => {
 			if (!cancelled) setFontsReady(true)
 		}
-		if (document.fonts) document.fonts.ready.then(done).catch(done)
-		else done()
+		// Always reveal content, even if a custom font stalls or fails to load: race the
+		// font promise against a timeout so presentation mode can never stay invisible.
+		const fontPromise = document.fonts ? document.fonts.ready : Promise.resolve()
+		const timeout = setTimeout(done, 2000)
+		fontPromise.then(done).catch(done)
 		return () => {
 			cancelled = true
+			clearTimeout(timeout)
 		}
 	}, [])
 	const ready = mounted && fontsReady
@@ -346,6 +354,7 @@ export function LiturgicalServiceReader({
 					type="button"
 					onClick={() => setTocOpen(true)}
 					title="Sections (T)"
+					aria-label="Sections (T)"
 					className={`p-1.5 rounded-md transition-colors ${themeClasses.muted[theme]} hover:text-amber-600 dark:hover:text-amber-500`}
 				>
 					<TocIcon />
@@ -391,140 +400,146 @@ export function LiturgicalServiceReader({
 	)
 
 	return (
-		<ReadingPageLayout theme={theme} header={header}>
-			{notice && <NoticeBand notice={notice} theme={theme} />}
-			{!primaryService || !currentSection ? (
-				<div className="flex items-center justify-center py-32">
-					<p className={themeClasses.muted[theme]}>Unable to load {title} service.</p>
-				</div>
-			) : (
-				<div
-					ref={containerRef}
-					className="flex flex-col"
-					style={{ height: containerHeight ?? 'calc(100dvh - 116px)' }}
-					onTouchStart={(e) => {
-						touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-					}}
-					onTouchEnd={onTouchEnd}
-				>
-					{/* Section title + progress */}
-					<div
-						className={`flex-none flex items-center gap-3 px-3 sm:px-14 md:px-16 py-2 border-b border-current/10 ${themeClasses.bg[theme]}`}
-					>
-						{titleBar}
-						{isPaginated &&
-							pagination.count > 1 &&
-							// dir=ltr so page indicators always fill left-to-right (matching
-							// next/ArrowRight advancing) and don't reverse under an RTL locale.
-							// Long sections on narrow columns can paginate into dozens of pages;
-							// past a dozen the dot strip no longer fits, so fall back to a counter.
-							(pagination.count > 12 ? (
-								<span
-									dir="ltr"
-									className={`ml-auto flex-none text-[11px] font-medium tabular-nums ${themeClasses.muted[theme]}`}
-								>
-									{pagination.index + 1} / {pagination.count}
-								</span>
-							) : (
-								<div dir="ltr" className="flex items-center gap-1 ml-auto">
-									{Array.from({ length: pagination.count }, (_, i) => (
-										<span
-											key={i}
-											className={`block h-1 rounded-full transition-all duration-200 flex-shrink-0 ${i === pagination.index ? 'w-4 bg-amber-500' : 'w-1.5 bg-current opacity-15'}`}
-										/>
-									))}
-								</div>
-							))}
+		<RemoveScroll>
+			<ReadingPageLayout theme={theme} header={header}>
+				{notice && <NoticeBand notice={notice} theme={theme} />}
+				{!primaryService || !currentSection ? (
+					<div className="flex items-center justify-center py-32">
+						<p className={themeClasses.muted[theme]}>Unable to load {title} service.</p>
 					</div>
-
-					{currentSection.rubric && (
-						<p
-							className={`flex-none px-3 sm:px-14 md:px-16 pt-2 text-xs italic ${themeClasses.muted[theme]}`}
+				) : (
+					<div
+						ref={containerRef}
+						className="flex flex-col"
+						// Replaced the magic `calc(100dvh - 116px)` with a full-viewport fallback.
+						// `useViewportFillHeight` measures synchronously in a layout effect (before
+						// paint), so this only serves the very first frame; using the full height
+						// avoids clipping the sticky chrome when the real overhead differs.
+						style={{ height: containerHeight ?? '100dvh' }}
+						onTouchStart={(e) => {
+							touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+						}}
+						onTouchEnd={onTouchEnd}
+					>
+						{/* Section title + progress */}
+						<div
+							className={`flex-none flex items-center gap-3 px-3 sm:px-14 md:px-16 py-2 border-b border-current/10 ${themeClasses.bg[theme]}`}
 						>
-							{currentSection.rubric}
-						</p>
-					)}
-
-					{/* Content region — fills remaining height. Faded in once fully settled. */}
-					<div
-						className={`flex-1 min-h-0 transition-opacity duration-200 ${ready ? 'opacity-100' : 'opacity-0'}`}
-					>
-						{isPaginated && aligned ? (
-							<div
-								className={`h-full px-2 sm:px-14 md:px-16 ${contentLayout === 'stanzas' ? 'mx-auto w-full max-w-[1480px]' : ''}`}
-							>
-								<PresentationView
-									key={currentSectionId}
-									ref={presentRef}
-									rows={aligned.rows}
-									activeLangs={aligned.activeLangs}
-									initialPage={enterFrom}
-									onExitNext={onExitNext}
-									onExitPrev={onExitPrev}
-									onPaginationChange={onPaginationChange}
-									rowsPerPage={rowsPerPage}
-									{...styleProps}
-								/>
-							</div>
-						) : (
-							<div ref={scrollRef} className="h-full overflow-y-auto px-2 sm:px-14 md:px-16 py-4">
-								{aligned && (
-									<div
-										className={contentLayout === 'stanzas' ? 'mx-auto w-full max-w-[1480px]' : ''}
+							{titleBar}
+							{isPaginated &&
+								pagination.count > 1 &&
+								// dir=ltr so page indicators always fill left-to-right (matching
+								// next/ArrowRight advancing) and don't reverse under an RTL locale.
+								// Long sections on narrow columns can paginate into dozens of pages;
+								// past a dozen the dot strip no longer fits, so fall back to a counter.
+								(pagination.count > 12 ? (
+									<span
+										dir="ltr"
+										className={`ml-auto flex-none text-[11px] font-medium tabular-nums ${themeClasses.muted[theme]}`}
 									>
-										<ServiceSection
-											key={currentSectionId}
-											rows={aligned.rows}
-											activeLangs={aligned.activeLangs}
-											refsByLang={refsByLang}
-											{...styleProps}
-										/>
+										{pagination.index + 1} / {pagination.count}
+									</span>
+								) : (
+									<div dir="ltr" className="flex items-center gap-1 ml-auto">
+										{Array.from({ length: pagination.count }, (_, i) => (
+											<span
+												key={i}
+												className={`block h-1 rounded-full transition-all duration-200 flex-shrink-0 ${i === pagination.index ? 'w-4 bg-amber-500' : 'w-1.5 bg-current opacity-15'}`}
+											/>
+										))}
 									</div>
-								)}
-							</div>
+								))}
+						</div>
+
+						{currentSection.rubric && (
+							<p
+								className={`flex-none px-3 sm:px-14 md:px-16 pt-2 text-xs italic ${themeClasses.muted[theme]}`}
+							>
+								{currentSection.rubric}
+							</p>
 						)}
-					</div>
 
-					{/* Bottom section dots. dir=ltr so dots + prev/next fill left-to-right
+						{/* Content region — fills remaining height. Faded in once fully settled. */}
+						<div
+							className={`flex-1 min-h-0 transition-opacity duration-200 ${ready ? 'opacity-100' : 'opacity-0'}`}
+						>
+							{isPaginated && aligned ? (
+								<div
+									className={`h-full px-2 sm:px-14 md:px-16 ${contentLayout === 'stanzas' ? 'mx-auto w-full max-w-[1480px]' : ''}`}
+								>
+									<PresentationView
+										key={currentSectionId}
+										ref={presentRef}
+										rows={aligned.rows}
+										activeLangs={aligned.activeLangs}
+										initialPage={enterFrom}
+										onExitNext={onExitNext}
+										onExitPrev={onExitPrev}
+										onPaginationChange={onPaginationChange}
+										rowsPerPage={rowsPerPage}
+										{...styleProps}
+									/>
+								</div>
+							) : (
+								<div ref={scrollRef} className="h-full overflow-y-auto px-2 sm:px-14 md:px-16 py-4">
+									{aligned && (
+										<div
+											className={contentLayout === 'stanzas' ? 'mx-auto w-full max-w-[1480px]' : ''}
+										>
+											<ServiceSection
+												key={currentSectionId}
+												rows={aligned.rows}
+												activeLangs={aligned.activeLangs}
+												refsByLang={refsByLang}
+												{...styleProps}
+											/>
+										</div>
+									)}
+								</div>
+							)}
+						</div>
+
+						{/* Bottom section dots. dir=ltr so dots + prev/next fill left-to-right
 					    (matching next/ArrowRight and the top progress) under an RTL locale. */}
-					<div
-						dir="ltr"
-						className={`flex-none flex items-center gap-4 px-4 py-3 border-t ${themeClasses.border[theme]} ${themeClasses.bg[theme]}`}
-					>
-						<SectionDots
-							sections={sections}
-							sectionIndex={sectionIndex}
-							compact={contentLayout === 'stanzas'}
-							theme={theme}
-							hasPrev={hasPrev}
-							hasNext={hasNext}
-							onPrev={goPrev}
-							onNext={goNext}
-							onJump={jumpToSection}
-						/>
+						<div
+							dir="ltr"
+							className={`flex-none flex items-center gap-4 px-4 py-3 border-t ${themeClasses.border[theme]} ${themeClasses.bg[theme]}`}
+						>
+							<SectionDots
+								sections={sections}
+								sectionIndex={sectionIndex}
+								compact={contentLayout === 'stanzas'}
+								theme={theme}
+								hasPrev={hasPrev}
+								hasNext={hasNext}
+								onPrev={goPrev}
+								onNext={goNext}
+								onJump={jumpToSection}
+							/>
+						</div>
 					</div>
-				</div>
-			)}
+				)}
 
-			<SideArrows
-				hasPrev={hasPrev}
-				hasNext={hasNext}
-				onPrev={goPrev}
-				onNext={goNext}
-				theme={theme}
-			/>
-			{tocOpen && (
-				<SectionListOverlay
-					sections={sections}
-					optionalSections={optionalSections}
-					activeIndex={sectionIndex}
-					extras={extras}
+				<SideArrows
+					hasPrev={hasPrev}
+					hasNext={hasNext}
+					onPrev={goPrev}
+					onNext={goNext}
 					theme={theme}
-					onJump={jumpToSection}
-					onToggleExtra={toggleExtra}
-					onClose={() => setTocOpen(false)}
 				/>
-			)}
-		</ReadingPageLayout>
+				{tocOpen && (
+					<SectionListOverlay
+						sections={sections}
+						optionalSections={optionalSections}
+						activeIndex={sectionIndex}
+						extras={extras}
+						theme={theme}
+						onJump={jumpToSection}
+						onToggleExtra={toggleExtra}
+						onClose={() => setTocOpen(false)}
+					/>
+				)}
+			</ReadingPageLayout>
+		</RemoveScroll>
 	)
 }

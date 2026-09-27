@@ -24,11 +24,20 @@
 		"psalm-146",
 		"psalm-147",
 		"compline-gospel",
+		"gospel-conclusion",
 		"compline-litany",
+		"compline-graciously",
+		"trisagion",
+		"lords-prayer",
+		"hail-to-you",
+		"creed-introduction",
+		"creed",
 		"kyrie41",
 		"holy-holy-holy",
+		"lords-prayer",
 		"compline-absolution",
-		"conclusion-of-every-hour"
+		"conclusion-of-every-hour",
+		"lords-prayer"
 	],
 	"sections": [
 		{
@@ -116,10 +125,13 @@
 			"id": "compline-litany",
 			"kind": "litany",
 			"content": [
-				"We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Lord have mercy.",
-				"O Lord, Who at the Twelfth Hour was laid in the tomb: grant that we may be buried with You and rise with You. Lord have mercy.",
-				"We have sinned, we have committed iniquity, we have acted wickedly; have mercy upon us and forgive us. Lord have mercy.",
-				"Grant us, O Lord, before the end comes, true repentance and the forgiveness of our sins. Lord have mercy."
+				"Behold, I am about to stand before the just and righteous Judge, terrified and trembling because of my numerous sins. For a life wasted in worldly pleasures deserves condemnation. So repent therefore, O my soul, as long as you dwell on this earth. For the dust in the grave cannot offer any praise, and among the dead no one can remember, nor can anyone in Hades give thanks. Therefore, arise O my soul from the slumber of your laziness, and implore the Savior in repentance saying, “O God have mercy on me and save me.”",
+				"Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:",
+				"Glory to the Father and the Son and the Holy Spirit.",
+				"Were this life on earth everlasting, and this world ever-existing, you would have had an excuse, O my soul. But now, if your wicked deeds and repulsive evils were to be exposed before the righteous Judge, what answer would you be giving while you are lying on the bed of sins and negligent in disciplining your body?! O Christ our God, before Your awesome seat of judgment I am terrified, and before Your counsel of judgment I am dreadful, and from the radiant light of Your divinity I tremble. For I am a wretched and defiled person who lies in bed, careless of the ways of my life. Yet, I take example of the tax collector’s penance, beating my chest and saying, “O God be merciful to me, a sinner.”",
+				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
+				"Now and forever and unto the age of all ages. Amen.",
+				"O pure Virgin, overshadow your servant speedily with your help, keep the waves of evil thoughts away from me, and raise my ailing soul to pray and watch, for it has gone into deep slumber. For you are a capable and compassionate helper, the Mother of the Fountain of life, my King and my God, Jesus Christ my hope."
 			]
 		},
 		{
@@ -128,6 +140,23 @@
 			"title": "Absolution",
 			"content": [
 				"Lord, all our sins which we committed against You in this day, whether in deeds or in words or in thoughts or through all senses, please remit and forgive us, for the sake of Your holy name, as You are Good and Lover of mankind. God, grant us a peaceful night and a sleep free from all anxiety. And send us an angel of peace to protect us from every evil, and every affliction, and every temptation of the enemy; through the Grace, compassion and love of mankind of Your Only-Begotten Son, our Lord, God and Savior Jesus Christ, to Whom is due, with You and with the Holy Spirit, the Life-Giver Who is of one essence with You, all glory, honor and dominion, now and forever and unto the ages of all ages. Amen."
+			]
+		},
+		{
+			"id": "compline-graciously",
+			"kind": "conclusion",
+			"title": "Graciously O Lord",
+			"content": [
+				"Graciously O Lord, keep this night without sin. Blessed are You, O Lord the God of our fathers and exceedingly blessed, and Your holy name is full of glory forever. Amen.",
+				"Let Your mercies be upon us, O Lord, even as we rely on You. For the eyes of all hope in You, for You give them their food in due season.",
+				"Hear us, O God our Savior, the hope of the regions of the whole earth. And You O Lord, keep us and deliver us, from this generation and forever. Amen.",
+				"Blessed are You O Lord, teach me Your justice. Blessed are You O Lord, make me to understand Your rights. Blessed are You O Lord, enlighten me in Your righteousness.",
+				"O Lord, Your mercy is forever. Do not reject the works of Your hands. For You, O Lord, have become my refuge from generation to generation.",
+				"I asked the Lord and said, “Have mercy on me and save my soul, for I have sinned against You.” Lord, I take refuge in You, so save me and teach me to carry out Your will. For You are my God, and with You is the fountain of life. And through Your light we see the light.",
+				"Let Your mercies be for those who know You, and Your righteousness to the upright in heart.",
+				"Unto You is due blessing, unto You is due praise, unto You is due all glory. O Father, Son and Holy Spirit, existing from the beginning, now and forever and ever. Amen.",
+				"It is good to confess to the Lord, and praise Your name, O Most High to declare Your mercies by day and Your truth by night.",
+				"We ask You O Lord, hear us, have mercy on us and forgive us our sins. Amen."
 			]
 		}
 	]

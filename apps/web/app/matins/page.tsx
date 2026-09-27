@@ -8,13 +8,13 @@ import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
+	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import { INCENSE_COMMEMORATIONS_COOKIE, parseCommemorations } from '@/lib/commemorations'
 import type { IncenseService } from '@/lib/types'
 import { getTodayDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
+import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
 
@@ -56,14 +56,17 @@ export default async function MatinsPage({ searchParams }: Readonly<MatinsPagePr
 	const date = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam) ? dateParam : getTodayDateString()
 
 	const cookieStore = await cookies()
-	const contentLanguages = parseContentLanguages(cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value)
+	const contentLanguages = resolveContentLanguages(
+		cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value,
+		await getLocale(),
+	)
 	const commemorations = parseCommemorations(
 		cookieStore.get(INCENSE_COMMEMORATIONS_COOKIE)?.value,
 	).join(',')
 
-	const selected = (
-		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
-	).filter((language): language is IncenseLang => INCENSE_LANGS.includes(language as IncenseLang))
+	const selected = contentLanguages.filter((language): language is IncenseLang =>
+		INCENSE_LANGS.includes(language as IncenseLang),
+	)
 	const unsupportedOnly = selected.length === 0
 	const langs = orderLanguages(unsupportedOnly ? ['en'] : selected) as BibleTranslation[]
 

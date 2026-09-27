@@ -51,6 +51,21 @@ export function parseContentLanguages(cookieValue: string | undefined): ContentL
 }
 
 /**
+ * The content languages to render: the saved preference, or the UI locale's
+ * defaults when none is saved. Server pages and the client hook both resolve
+ * through here so the first render and hydration agree.
+ */
+export function resolveContentLanguages(
+	cookieValue: string | undefined,
+	locale: string,
+): ContentLanguage[] {
+	const parsed = parseContentLanguages(cookieValue)
+	return parsed.length > 0
+		? parsed
+		: (defaultContentLanguages[locale] ?? defaultContentLanguages.en)
+}
+
+/**
  * Serialize content languages to cookie value
  */
 export function serializeContentLanguages(languages: ContentLanguage[]): string {

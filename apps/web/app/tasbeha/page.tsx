@@ -4,8 +4,7 @@ import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
+	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import {
 	type TasbehaDayId,
@@ -16,6 +15,7 @@ import {
 } from '@/lib/tasbehaDays'
 import type { IncenseService } from '@/lib/types'
 import type { Metadata } from 'next'
+import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
 import { TasbehaContent, TasbehaFallback } from './TasbehaContent'
@@ -61,10 +61,13 @@ export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPage
 	const dayId = hasDayParam ? dayParam : getCurrentTasbehaDay()
 
 	const cookieStore = await cookies()
-	const contentLanguages = parseContentLanguages(cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value)
-	const selected = (
-		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
-	).filter((language): language is TasbehaLang => TASBEHA_LANGS.includes(language as TasbehaLang))
+	const contentLanguages = resolveContentLanguages(
+		cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value,
+		await getLocale(),
+	)
+	const selected = contentLanguages.filter((language): language is TasbehaLang =>
+		TASBEHA_LANGS.includes(language as TasbehaLang),
+	)
 	const unsupportedOnly = selected.length === 0
 	const langs = orderLanguages(unsupportedOnly ? ['en'] : selected) as BibleTranslation[]
 
