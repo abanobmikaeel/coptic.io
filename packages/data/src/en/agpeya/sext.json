@@ -510,6 +510,7 @@
 		{
 			"id": "sext-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Matthew",
 			"chapter": 5,
 			"startVerse": 1,
@@ -519,6 +520,7 @@
 		{
 			"id": "sext-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"O Lord who on the sixth day and at the sixth hour, were nailed to the Cross on account of the sin that our father Adam dared to commit in Paradise. Wipe out the handwriting of our sins, O Christ our God, and save us. I cried out unto God and the Lord heard me. O Lord, answer my prayer and do not dismiss my supplication. Attend to me and hear me in the evening, in the morning, and at mid-day. I will plead with the Lord and He will hear my voice and peacefully save my soul.",
 				{

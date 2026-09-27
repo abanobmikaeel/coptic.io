@@ -31,6 +31,7 @@
 		{
 			"id": "midnight-opening",
 			"kind": "opening",
+			"title": "The Introduction to Every Hour",
 			"content": [
 				"In the name of the Father, and the Son, and the Holy Spirit,",
 				"the one God. Amen.",
@@ -757,6 +758,7 @@
 		{
 			"id": "midnight-1-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Matthew",
 			"chapter": 25,
 			"startVerse": 1,
@@ -766,6 +768,7 @@
 		{
 			"id": "midnight-1-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"Behold the Bridegroom is coming at the middle of the night. Blessed is the servant whom He finds watchful, but he whom shall be found slothful shall be unworthy of going with Him. Therefore, take heed, O my soul, lest you may not slumber and hence be cast out of the kingdom of God. Rather, stay awake and watchful, and cry out saying, “Holy, holy, holy are You, O God, have mercy on us for the sake of the Mother of God.”",
 				{
@@ -803,6 +806,7 @@
 		{
 			"id": "midnight-2-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 7,
 			"startVerse": 36,
@@ -812,6 +816,7 @@
 		{
 			"id": "midnight-2-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"Grant me, O Lord, fountains of plentiful tears, even as You had given long ago to the sinful woman. Make me worthy to wash Your feet with my tears, which delivered me from going astray in the way of deception, and to offer You sublime fragrant oil, and to attain a pure life of repentance. So that I also may hear that voice full of joy, saying: “Your faith has saved you.”",
 				{
@@ -913,6 +918,7 @@
 		{
 			"id": "midnight-3-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 12,
 			"startVerse": 32,
@@ -922,6 +928,7 @@
 		{
 			"id": "midnight-3-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"With a compassionate eye consider my weakness, O Lord. For very soon my life will come to end, and by my deeds I shall have no salvation. Therefore, I beseech You, O Lord, with a merciful eye look at my weakness, my affliction, my poverty, and my sojourning, and deliver me.",
 				{
@@ -959,6 +966,7 @@
 		{
 			"id": "midnight-gospel-2",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 2,
 			"startVerse": 29,

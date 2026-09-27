@@ -1004,6 +1004,7 @@
 		{
 			"id": "prime-gospel",
 			"kind": "gospel",
+			"title": "الإنجيل",
 			"book": "John",
 			"chapter": 1,
 			"startVerse": 1,

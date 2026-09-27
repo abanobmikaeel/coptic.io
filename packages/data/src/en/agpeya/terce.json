@@ -734,6 +734,7 @@
 		{
 			"id": "terce-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "John",
 			"chapter": 14,
 			"startVerse": 26,
@@ -743,6 +744,7 @@
 		{
 			"id": "terce-gospel-2",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "John",
 			"chapter": 15,
 			"startVerse": 1,
@@ -751,6 +753,7 @@
 		{
 			"id": "terce-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"Your Holy Spirit, O Lord, whom You had sent forth upon Your holy Disciples and honorable Apostles at the third hour, we ask You our good Lord, not to take Him away from us, but rather to renew Him within us. A pure heart create in me, O God, and a steadfast spirit renew within me. Do not cast me away from Your presence and do not take Your Holy Spirit from me.",
 				{

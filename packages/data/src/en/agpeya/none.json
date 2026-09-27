@@ -590,6 +590,7 @@
 		{
 			"id": "none-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 9,
 			"startVerse": 10,
@@ -599,6 +600,7 @@
 		{
 			"id": "none-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"O Lord, who tasted death in the flesh at the ninth hour for our sake, us sinners, put to death our carnal desires, O Christ our God, and deliver us. Let my supplication draw close before You, O Lord. According to Your word, give me understanding. Let my prayer come before You and revive me according to Your word.",
 				{

@@ -82,6 +82,7 @@
 		{
 			"id": "compline-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 2,
 			"startVerse": 25,
@@ -91,6 +92,7 @@
 		{
 			"id": "compline-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"Behold, I am about to stand before the just and righteous Judge, terrified and trembling because of my numerous sins. For a life wasted in worldly pleasures deserves condemnation. So repent therefore, O my soul, as long as you dwell on this earth. For the dust in the grave cannot offer any praise, and among the dead no one can remember, nor can anyone in Hades give thanks. Therefore, arise O my soul from the slumber of your laziness, and implore the Savior in repentance saying, “O God have mercy on me and save me.”",
 				{

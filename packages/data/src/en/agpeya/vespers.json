@@ -18,6 +18,7 @@
 		{
 			"id": "vespers-gospel",
 			"kind": "gospel",
+			"title": "Gospel",
 			"book": "Luke",
 			"chapter": 4,
 			"startVerse": 38,
@@ -27,6 +28,7 @@
 		{
 			"id": "vespers-litany",
 			"kind": "litany",
+			"title": "Litanies",
 			"content": [
 				"If the righteous one is hardly saved, where shall I, a sinner, appear?! The burden and the heat of the day I could not bear because of the weakness of my human nature. But, O merciful God, count me among the laborers of the eleventh hour. For behold, I was brought forth in iniquities, and in sin my mother conceived me. Therefore, I dare not lift my eyes unto heaven. But rather I rely on the abundance of Your mercy and love-of-mankind, crying to You and saying, “Lord, forgive me, a sinner, and have mercy on me.”",
 				{

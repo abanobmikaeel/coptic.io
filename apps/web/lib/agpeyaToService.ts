@@ -68,7 +68,7 @@ function toSection(id: string, s: AgLeaf, rubric?: string): IncenseSection | nul
 				id,
 				type: 'gospel',
 				role: 'all',
-				title: 'Gospel',
+				title: s.title ?? 'Gospel',
 				reference: s.reference,
 				rubric: s.rubric,
 				verses: s.verses,
