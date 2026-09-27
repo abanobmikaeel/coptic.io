@@ -18,6 +18,14 @@ const langQuery = z.object({
 	}),
 })
 
+const hourQuery = langQuery.extend({
+	include: z.enum(['sections']).optional().openapi({
+		example: 'sections',
+		description:
+			'"sections" adds `sections`: the whole hour in prayed order, each Midnight watch as a group of its sections. The named fields are always present.',
+	}),
+})
+
 const toTranslation = (lang?: string): BibleTranslation =>
 	lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : lang === 'cop' ? 'cop' : 'en'
 
@@ -187,7 +195,7 @@ const getHourRoute = createRoute({
 				description: 'The canonical hour to retrieve',
 			}),
 		}),
-		query: langQuery,
+		query: hourQuery,
 	},
 	responses: {
 		200: {
@@ -215,7 +223,9 @@ app.openapi(getHourRoute, async (c) => {
 	await warmTranslation(translation)
 	const { hour: hourId } = c.req.valid('param')
 
-	const hour = agpeyaService.getAgpeyaHour(hourId, translation, toPsalmSource(query.psalms))
+	const hour = agpeyaService.getAgpeyaHour(hourId, translation, toPsalmSource(query.psalms), {
+		sections: query.include === 'sections',
+	})
 
 	if (!hour) {
 		return c.json({ error: `Hour '${hourId}' not found` }, 404)

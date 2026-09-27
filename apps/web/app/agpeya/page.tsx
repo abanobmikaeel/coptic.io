@@ -40,7 +40,8 @@ async function fetchHour(
 	psalms: 'septuagint' | 'bible',
 ): Promise<ResolvedAgpeyaHour | null> {
 	try {
-		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?lang=${lang}&psalms=${psalms}`, {
+		const query = `lang=${lang}&psalms=${psalms}&include=sections`
+		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?${query}`, {
 			next: { revalidate: 43200 },
 		})
 		if (!res.ok) return null
