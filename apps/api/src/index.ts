@@ -19,6 +19,7 @@ import seasonRoutes from './routes/season'
 import synaxariumRoutes from './routes/synaxarium'
 import tasbehaRoutes from './routes/tasbeha'
 import { internalError } from './utils/http'
+import { VERSION } from './version'
 
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
 
@@ -40,7 +41,7 @@ app.on(['GET', 'POST'], '/graphql', async (c) => {
 app.doc('/openapi.json', {
 	openapi: '3.0.0',
 	info: {
-		version: '2.0.0',
+		version: VERSION,
 		title: 'Coptic.IO API',
 		description:
 			'A modern API for Coptic Orthodox readings, calendar, and liturgical information. Available as REST and GraphQL.',
@@ -57,6 +58,9 @@ app.doc('/openapi.json', {
 app.get('/health', (c) => {
 	return c.json({
 		success: true,
+		version: VERSION,
+		// The deployed commit; "dev" when running locally
+		build: c.env?.DATA_VERSION ?? 'dev',
 		timestamp: new Date().toISOString(),
 	})
 })

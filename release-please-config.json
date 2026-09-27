@@ -1,0 +1,17 @@
+{
+	"$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+	"bootstrap-sha": "d4ec222f30c336222e64badd5ff76debcd1b30f4",
+	"include-component-in-tag": false,
+	"packages": {
+		".": {
+			"release-type": "node",
+			"package-name": "coptic.io",
+			"changelog-path": "CHANGELOG.md",
+			"extra-files": [
+				{ "type": "json", "path": "apps/api/package.json", "jsonpath": "$.version" },
+				{ "type": "json", "path": "apps/web/package.json", "jsonpath": "$.version" },
+				"apps/api/src/version.ts"
+			]
+		}
+	}
+}
