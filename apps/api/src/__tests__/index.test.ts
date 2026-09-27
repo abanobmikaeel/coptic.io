@@ -11,6 +11,19 @@ describe('API Endpoints', () => {
 			expect(json).toHaveProperty('success', true)
 			expect(json).toHaveProperty('timestamp')
 		})
+
+		it('reports the release version and the build it came from', async () => {
+			const res = await app.request('/health')
+			const json = await res.json()
+			expect(json.version).toMatch(/^\d+\.\d+\.\d+$/)
+			expect(json.build).toBe('dev')
+		})
+
+		it('reports the deployed commit as the build', async () => {
+			const res = await app.request('/health', {}, { DATA_VERSION: 'abc1234' })
+			const json = await res.json()
+			expect(json.build).toBe('abc1234')
+		})
 	})
 
 	describe('GET /api/calendar', () => {

@@ -1,6 +1,7 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
 import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
+import packageJson from './package.json' with { type: 'json' }
 
 const withBundleAnalyzer = bundleAnalyzer({
 	enabled: process.env.ANALYZE === 'true',
@@ -9,6 +10,11 @@ const withBundleAnalyzer = bundleAnalyzer({
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 const nextConfig: NextConfig = {
+	// Release version (bumped by release-please) and the commit Vercel built, shown in the footer
+	env: {
+		NEXT_PUBLIC_APP_VERSION: packageJson.version,
+		NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA ?? '',
+	},
 	images: {
 		remotePatterns: [
 			{
