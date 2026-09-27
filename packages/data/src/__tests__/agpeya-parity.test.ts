@@ -29,14 +29,8 @@ import {
 } from '../en/agpeya'
 import enBible from '../en/bible/books.json'
 
-const KNOWN_PROSE_GAPS = new Set([
-	// Midnight's per-watch closing prayers exist only in English. The Arabic order
-	// has no counterpart, so there is nothing to pair them with (the shared ending
-	// after the third watch is what both languages actually pray together).
-	'midnight.midnight-1.closing',
-	'midnight.midnight-2.closing',
-	'midnight.midnight-3.closing',
-])
+// Empty: every prose section now matches line-for-line in both languages.
+const KNOWN_PROSE_GAPS = new Set<string>()
 
 const KNOWN_PSALM_GAPS = new Set<string>([])
 
@@ -150,31 +144,16 @@ describe('agpeya rite parity', () => {
 	// The strongest invariant the order-based split buys: both languages name the
 	// same section ids in the same sequence, so the reader can align them by id
 	// instead of by position and a section added to one language but not the
-	// other fails here rather than silently misaligning the columns.
-	const MISSING_ARABIC = new Set(['midnight-1-closing', 'midnight-2-closing', 'midnight-3-closing'])
-
+	// other fails here rather than silently misaligning the columns. Every section
+	// is prayed in both languages — there is no English-only or Arabic-only part.
 	it('prays the same sections in the same order in both languages', () => {
 		for (const hourId of getAgpeyaHourIds()) {
 			const ids = (hour: ReturnType<typeof getEnAgpeyaHour>): string[] =>
 				(hour?.parts ?? []).flatMap((part) =>
 					'group' in part ? [part.group, ...part.sections.map((s) => s.id)] : [part.id],
 				)
-			const en = ids(getEnAgpeyaHour(hourId)).filter((id) => !MISSING_ARABIC.has(id))
-			expect(ids(getArAgpeyaHour(hourId)), `${hourId}: order differs`).toEqual(en)
-		}
-	})
-
-	it('lists only still-missing sections in MISSING_ARABIC', () => {
-		const arabic = new Set(
-			getAgpeyaHourIds().flatMap((hourId) =>
-				(getArAgpeyaHour(hourId)?.parts ?? []).flatMap((part) =>
-					'group' in part ? part.sections.map((s) => s.id) : [part.id],
-				),
-			),
-		)
-		for (const id of MISSING_ARABIC) {
-			expect(arabic.has(id), `${id} now exists in Arabic — remove it from MISSING_ARABIC`).toBe(
-				false,
+			expect(ids(getArAgpeyaHour(hourId)), `${hourId}: order differs`).toEqual(
+				ids(getEnAgpeyaHour(hourId)),
 			)
 		}
 	})

@@ -25,8 +25,7 @@
 				"psalm-117",
 				"midnight-1-psalm-118",
 				"midnight-1-gospel",
-				"midnight-1-litany",
-				"midnight-1-closing"
+				"midnight-1-litany"
 			]
 		},
 		{
@@ -46,8 +45,7 @@
 				"psalm-127",
 				"psalm-128",
 				"midnight-2-gospel",
-				"midnight-2-litany",
-				"midnight-2-closing"
+				"midnight-2-litany"
 			]
 		},
 		{
@@ -69,8 +67,7 @@
 				"psalm-146",
 				"psalm-147",
 				"midnight-3-gospel",
-				"midnight-3-litany",
-				"midnight-3-closing"
+				"midnight-3-litany"
 			]
 		},
 		"kyrie41",
@@ -842,13 +839,6 @@
 			]
 		},
 		{
-			"id": "midnight-1-closing",
-			"kind": "closing",
-			"content": [
-				"In the middle of the night I rise to give thanks to You, because of Your righteous judgments. Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins."
-			]
-		},
-		{
 			"id": "midnight-2-gospel",
 			"kind": "gospel",
 			"book": "Luke",
@@ -877,13 +867,6 @@
 				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
 				"Now and forever and unto the age of all ages. Amen.",
 				"Whenever we stand in Your holy sanctuary, we are indeed considered as those who abide in heaven. O Mother of God, you are the gate of heaven, open for us the door of mercy."
-			]
-		},
-		{
-			"id": "midnight-2-closing",
-			"kind": "closing",
-			"content": [
-				"I have sinned, O my Lord, I have sinned, and I know my iniquities. But I ask and beseech You: have compassion on me, and forgive me. Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins."
 			]
 		},
 		{
@@ -979,14 +962,6 @@
 				"ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.",
 				"Now and forever and unto the age of all ages. Amen.",
 				"Whenever we stand in Your holy sanctuary, we are indeed considered as those who abide in heaven. O Mother of God, you are the gate of heaven, open for us the door of mercy."
-			]
-		},
-		{
-			"id": "midnight-3-closing",
-			"kind": "closing",
-			"content": [
-				"Lord, now let Your servant depart in peace, according to Your word, for my eyes have seen Your salvation.",
-				"Through the intercessions of the Theotokos, Saint Mary, O Lord, grant us the forgiveness of our sins. We worship You, O Christ, with Your Good Father and the Holy Spirit, for You have come and saved us. Amen."
 			]
 		},
 		{
