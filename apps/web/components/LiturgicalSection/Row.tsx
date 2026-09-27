@@ -157,6 +157,14 @@ function Cell({
 								isRtl={isRtl}
 								fontClass={fontClass}
 							/>
+						) : line.isResponse ? (
+							// Congregational response (Doxa / Ke-nin): quieter and set in from the
+							// petitions so it reads as a reply, not more prayer text.
+							<p
+								className={`${sizes.verse} ${lineHeight} ${fontClass} italic ${themeClasses.muted[theme]} border-s-2 ps-2 ms-1 border-current/30`}
+							>
+								{line.text}
+							</p>
 						) : (
 							<p className={proseClass}>{line.text}</p>
 						)}

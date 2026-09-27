@@ -46,6 +46,7 @@ export function alignSection(
 					num: v.num,
 					isRubric: false,
 					isNewSpeakerGroup: false,
+					isResponse: false,
 				}))
 	}
 
