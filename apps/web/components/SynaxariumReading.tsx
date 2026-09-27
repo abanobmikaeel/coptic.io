@@ -21,6 +21,7 @@ import type {
 	TextSize,
 	WordSpacing,
 } from './DisplaySettings'
+import { ReadingHeader } from './ScriptureReading/ReadingHeader'
 import { ChevronRightIcon } from './ui/Icons'
 
 type BibleTranslation = 'en' | 'ar' | 'es' | 'cop'
@@ -144,42 +145,13 @@ export function SynaxariumReading({
 				className="w-full group cursor-pointer -mx-3 sm:mx-0"
 			>
 				<div className={`${widthClass} sm:mx-auto`}>
-					<div
-						className={`border-l-4 border-amber-500/60 transition-all ${themeClasses.cardBg[theme]}`}
-					>
-						<div className="py-1.5 pl-2 pr-1 sm:px-0 flex items-center justify-between">
-							<div>
-								{service && (
-									<p
-										className={`text-[9px] font-semibold tracking-widest uppercase ${themeClasses.muted[theme]}`}
-									>
-										{service}
-									</p>
-								)}
-								<h2
-									className={`text-sm font-bold ${themeClasses.text[theme]} group-hover:text-amber-600 transition-colors leading-tight`}
-								>
-									Synaxarium
-								</h2>
-								<p className={`text-[11px] ${themeClasses.refText[theme]} leading-tight`}>
-									{count} {count === 1 ? 'commemoration' : 'commemorations'}
-								</p>
-							</div>
-							{/* Collapse indicator */}
-							<svg
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="2"
-								className={`${themeClasses.muted[theme]} transition-transform ${isOpen ? 'rotate-180' : ''} mr-2`}
-								aria-hidden="true"
-							>
-								<path d="m6 9 6 6 6-6" />
-							</svg>
-						</div>
-					</div>
+					<ReadingHeader
+						title="Synaxarium"
+						reference={`${count} ${count === 1 ? 'commemoration' : 'commemorations'}`}
+						service={service}
+						isOpen={isOpen}
+						theme={theme}
+					/>
 				</div>
 			</button>
 
@@ -211,12 +183,12 @@ export function SynaxariumReading({
 												return (
 													<div
 														key={lang}
-														className={`flex items-start gap-3 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'} group`}
+														className={`flex items-start gap-3 ${isRtl ? 'text-right' : 'text-left'} group`}
 														dir={textDir}
 													>
 														<ChevronRightIcon
 															className={`w-5 h-5 mt-0.5 flex-shrink-0 ${themeClasses.muted[theme]} transition-transform duration-200 ${
-																expandedEntry === id ? 'rotate-90' : ''
+																expandedEntry === id ? 'rotate-90' : isRtl ? 'rotate-180' : ''
 															}`}
 														/>
 														<span
@@ -276,7 +248,7 @@ export function SynaxariumReading({
 																		href={langEntry.url}
 																		target="_blank"
 																		rel="noopener noreferrer"
-																		className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm`}
+																		className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm ${isRtl ? 'text-right' : ''}`}
 																	>
 																		Read on CopticChurch.net
 																	</a>
@@ -309,7 +281,7 @@ export function SynaxariumReading({
 																	href={firstEntry.url}
 																	target="_blank"
 																	rel="noopener noreferrer"
-																	className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm`}
+																	className={`block mt-4 ${themeClasses.accent[theme]} hover:underline text-sm ${isRtl ? 'text-right' : ''}`}
 																>
 																	Read on CopticChurch.net
 																</a>
