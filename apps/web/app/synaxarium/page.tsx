@@ -1,6 +1,7 @@
 'use client'
 
 import { Breadcrumb } from '@/components/Breadcrumb'
+import { DateNavigation } from '@/components/DateNavigation'
 import { DisplaySettings } from '@/components/DisplaySettings'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
@@ -19,7 +20,6 @@ import { useTranslations } from 'next-intl'
 import { Suspense } from 'react'
 
 function SynaxariumPageContent() {
-	const t = useTranslations('synaxarium')
 	const tNav = useTranslations('nav')
 	const { settings, mounted } = useReadingSettings()
 
@@ -28,7 +28,6 @@ function SynaxariumPageContent() {
 		currentDate,
 		copticDate,
 		displayDate,
-		bilingualEntries,
 		filteredBilingualEntries,
 		searchQuery,
 		searchResults,
@@ -38,7 +37,6 @@ function SynaxariumPageContent() {
 		selectedCategory,
 		expandedEntry,
 		setExpandedEntry,
-		isToday,
 		showingSearch,
 		categoryCounts,
 		setSearchQuery,
@@ -57,55 +55,45 @@ function SynaxariumPageContent() {
 
 	const stickyHeader = (
 		<ReadingsHeader theme={effectiveTheme} layout="between">
-			<Breadcrumb items={[{ label: tNav('synaxarium') }]} theme={effectiveTheme} />
-			<DisplaySettings availableLanguages={['en', 'ar']} />
+			<div className="flex items-center gap-2 min-w-0">
+				<Breadcrumb items={[{ label: tNav('synaxarium') }]} theme={effectiveTheme} />
+			</div>
+			{/* Date navigation — centered, mirroring the readings page. */}
+			<Suspense
+				fallback={
+					<span
+						className={`text-sm sm:text-base font-semibold ${themeClasses.textHeading[effectiveTheme]}`}
+					>
+						{displayDate}
+					</span>
+				}
+			>
+				<DateNavigation theme={effectiveTheme} basePath="/synaxarium" keepDateParam>
+					<div className="text-center min-w-0 px-1">
+						<p
+							className={`text-sm sm:text-base font-semibold truncate ${themeClasses.textHeading[effectiveTheme]}`}
+						>
+							{displayDate}
+						</p>
+						{copticDate && (
+							<p className={`text-[10px] sm:text-xs ${themeClasses.muted[effectiveTheme]}`}>
+								{copticDate}
+							</p>
+						)}
+					</div>
+				</DateNavigation>
+			</Suspense>
+			<div className="relative">
+				<DisplaySettings availableLanguages={['en', 'ar']} />
+			</div>
 		</ReadingsHeader>
 	)
 
 	return (
-		<ReadingPageLayout
-			theme={effectiveTheme}
-			header={stickyHeader}
-			className={`relative ${!mounted ? '!bg-transparent' : ''}`}
-		>
+		<ReadingPageLayout theme={effectiveTheme} header={stickyHeader}>
 			<div ref={swipeRef as React.RefObject<HTMLDivElement>}>
-				{/* Atmospheric background glow */}
-				<div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[500px] pointer-events-none overflow-hidden">
-					<div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-amber-500/[0.06] via-amber-600/[0.03] to-transparent dark:from-amber-500/[0.08] dark:via-amber-600/[0.04] rounded-full blur-[120px]" />
-				</div>
-
-				<section className="relative pt-4 lg:pt-20 pb-4 lg:pb-8 px-6">
-					<div className="max-w-4xl mx-auto">
-						<div className="text-center">
-							{/* Decorative cross */}
-							<div className="flex items-center justify-center gap-4 mb-6">
-								<div
-									className={`h-px w-12 ${effectiveTheme === 'dark' ? 'bg-gradient-to-r from-transparent to-amber-600/40' : 'bg-gradient-to-r from-transparent to-amber-700/30'}`}
-								/>
-								<span className="text-amber-600 dark:text-amber-500 text-xl">✦</span>
-								<div
-									className={`h-px w-12 ${effectiveTheme === 'dark' ? 'bg-gradient-to-l from-transparent to-amber-600/40' : 'bg-gradient-to-l from-transparent to-amber-700/30'}`}
-								/>
-							</div>
-							<h1 className="font-serif text-4xl lg:text-5xl font-medium tracking-tight mb-3 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 dark:from-white dark:via-gray-100 dark:to-gray-300 bg-clip-text text-transparent">
-								{t('title')}
-							</h1>
-							<p className={`text-base lg:text-lg ${themeClasses.muted[effectiveTheme]}`}>
-								{t('subtitle')}
-							</p>
-						</div>
-					</div>
-				</section>
-
-				<SynaxariumHeader
-					viewMode={viewMode}
-					gregorianDate={displayDate}
-					copticDate={copticDate ?? undefined}
-					isToday={isToday}
-					onViewModeChange={handleViewModeChange}
-					onPrevious={() => navigateDate(-1)}
-					onNext={() => navigateDate(1)}
-				/>
+				{/* View toggle (day vs upcoming) + search + category filters, just below the header. */}
+				<SynaxariumHeader viewMode={viewMode} onViewModeChange={handleViewModeChange} />
 
 				<SynaxariumSearch value={searchQuery} onChange={setSearchQuery} isSearching={isSearching} />
 
@@ -133,8 +121,6 @@ function SynaxariumPageContent() {
 					<SynaxariumDayView
 						key={currentDate}
 						currentDate={currentDate}
-						isToday={isToday}
-						bilingualEntries={bilingualEntries}
 						filteredBilingualEntries={filteredBilingualEntries}
 						loading={loading}
 						selectedCategory={selectedCategory}

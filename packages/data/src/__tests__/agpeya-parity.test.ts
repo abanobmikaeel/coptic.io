@@ -30,11 +30,6 @@ import {
 import enBible from '../en/bible/books.json'
 
 const KNOWN_PROSE_GAPS = new Set([
-	'prime.litanies',
-	'terce.litanies',
-	'sext.litanies',
-	'none.litanies',
-	'vespers.litanies',
 	// The source breaks these into different paragraphs per language
 	'terce.conclusion.terce-absolution',
 	'none.conclusion.none-absolution',
@@ -52,14 +47,10 @@ const KNOWN_PROSE_GAPS = new Set([
 	'prime.conclusion.creed-introduction',
 	'prime.conclusion.creed',
 	'prime.conclusion.prime-absolution',
-	'compline.litanies',
 	'midnight.opening',
 	'midnight.closing',
-	'midnight.midnight-1.litanies',
 	'midnight.midnight-1.closing',
-	'midnight.midnight-2.litanies',
 	'midnight.midnight-2.closing',
-	'midnight.midnight-3.litanies',
 	'midnight.midnight-3.closing',
 ])
 

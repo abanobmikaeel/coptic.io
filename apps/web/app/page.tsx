@@ -60,7 +60,7 @@ export default async function Home({ searchParams }: Readonly<HomeProps>) {
 	const displayDate = parseDateString(date)
 	const gregorianDate = formatGregorianDate(displayDate, locale)
 
-	const copticDate = calendar?.dateString || 'Loading...'
+	const copticDate = calendar?.dateString || ''
 	const todayFeast = Array.isArray(celebrations) && celebrations.length > 0 ? celebrations[0] : null
 
 	const hasReadingRefs = readingRefs?.reference?.LPsalm || readingRefs?.reference?.LGospel

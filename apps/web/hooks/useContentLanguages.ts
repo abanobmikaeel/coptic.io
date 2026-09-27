@@ -3,7 +3,7 @@
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
+	getDefaultContentLanguages,
 	parseContentLanguages,
 	serializeContentLanguages,
 } from '@/i18n/content-languages'
@@ -35,7 +35,7 @@ export function useContentLanguages() {
 			setLanguagesState(parsed)
 		} else {
 			// Use defaults based on UI locale
-			setLanguagesState(defaultContentLanguages[locale] || defaultContentLanguages.en)
+			setLanguagesState(getDefaultContentLanguages(locale))
 		}
 		setIsLoaded(true)
 	}, [locale])
