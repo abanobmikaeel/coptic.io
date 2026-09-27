@@ -74,14 +74,11 @@ export type AgpeyaSection = AgpeyaProseSection | AgpeyaPsalmSection | AgpeyaGosp
 
 /**
  * A run of sections prayed as a named unit — only the midnight hour's three
- * watches. Keeping them nested in `order` rather than flattening behind heading
+ * watches. Keeping them nested in the order rather than flattening behind heading
  * sections is what lets `/api/agpeya/midnight/watch/2` stay addressable.
  */
 export interface AgpeyaOrderGroup {
 	group: string
-	name: string
-	theme?: string
-	psalmsIntro?: string
 	order: string[]
 }
 
@@ -92,10 +89,23 @@ export const isOrderGroup = (entry: AgpeyaOrderEntry): entry is AgpeyaOrderGroup
 	typeof entry !== 'string'
 
 /**
- * The stored shape of `{hour}.json`. An hour holds only the sections proper to
- * it and names the rest by id, so a prayer prayed at every hour — the opening
- * invocation, the thanksgiving — exists once in `common.json` and cannot drift
- * between hours or between languages.
+ * Every hour's sequence, shared by all languages (`agpeya/order.json`). The order
+ * is not language-specific, so it is stored once: a language cannot drift from the
+ * others, and a section added to the order must exist in every language to load.
+ */
+export type AgpeyaOrder = Record<AgpeyaHourId, AgpeyaOrderEntry[]>
+
+/** A group's text in one language: the watch's name, theme and psalms intro. */
+export interface AgpeyaGroupText {
+	name: string
+	theme?: string
+	psalmsIntro?: string
+}
+
+/**
+ * The stored shape of `{hour}.json` in one language: the hour's own text. An hour
+ * holds only the sections proper to it; the order (`order.json`) names the rest by
+ * id, so a prayer prayed at every hour exists once in `common.json`.
  */
 export interface AgpeyaHourFile {
 	id: AgpeyaHourId
@@ -107,8 +117,8 @@ export interface AgpeyaHourFile {
 	introduction?: string
 	/** "From the Psalms of our father David…"; rides as the first psalm's rubric. */
 	psalmsIntro?: string
-	/** The hour in sequence, resolved against `sections` then `common.json`. */
-	order: AgpeyaOrderEntry[]
+	/** The text of each group named in the order, by group id. */
+	groups?: Record<string, AgpeyaGroupText>
 	/** Sections prayed by this hour alone. */
 	sections: AgpeyaSection[]
 }

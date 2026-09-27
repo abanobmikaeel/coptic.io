@@ -5,94 +5,23 @@
 	"englishName": "Three Watches",
 	"traditionalTime": "12:00 AM",
 	"introduction": "رُتِّبَت في مناسبة الصلوات الثلاث لفادينا في بستان جثسيماني. وكما يقول النبي في المزمور : في نصف الليل نهضت لأشكرك على أحكام عدلك.",
-	"order": [
-		"midnight-opening",
-		"thanksgiving-prayer",
-		"psalm-50",
-		{
-			"group": "midnight-1",
+	"groups": {
+		"midnight-1": {
 			"name": "الخدمة الأولى",
 			"theme": "السهر والاستعداد",
-			"psalmsIntro": "تسبحة الخدمة الأولى من نصف الليل المبارك، أقدمها للمسيح ملكي والهي، وأرجوه أن يغفر لي خطاياي.",
-			"order": [
-				"psalm-3",
-				"psalm-6",
-				"psalm-12",
-				"psalm-69",
-				"psalm-85",
-				"psalm-90",
-				"psalm-116",
-				"psalm-117",
-				"midnight-1-psalm-118",
-				"midnight-1-gospel",
-				"gospel-conclusion",
-				"midnight-1-litany",
-				"kyrie41",
-				"holy-holy-holy",
-				"lords-prayer"
-			]
+			"psalmsIntro": "تسبحة الخدمة الأولى من نصف الليل المبارك، أقدمها للمسيح ملكي والهي، وأرجوه أن يغفر لي خطاياي."
 		},
-		{
-			"group": "midnight-2",
+		"midnight-2": {
 			"name": "الخدمة الثانية",
 			"theme": "التوبة والدموع",
-			"psalmsIntro": "تتلى مزامير صلاة الغروب ما عدا المزموران الأولان رقميّ 116 و117 كما يلي:",
-			"order": [
-				"psalm-119",
-				"psalm-120",
-				"psalm-121",
-				"psalm-122",
-				"psalm-123",
-				"psalm-124",
-				"psalm-125",
-				"psalm-126",
-				"psalm-127",
-				"psalm-128",
-				"midnight-2-gospel",
-				"gospel-conclusion",
-				"midnight-2-litany",
-				"kyrie41",
-				"holy-holy-holy",
-				"lords-prayer"
-			]
+			"psalmsIntro": "تتلى مزامير صلاة الغروب ما عدا المزموران الأولان رقميّ 116 و117 كما يلي:"
 		},
-		{
-			"group": "midnight-3",
+		"midnight-3": {
 			"name": "الخدمة الثالثة",
 			"theme": "الدينونة والرجاء",
-			"psalmsIntro": "تتلى مزامير صلاة النوم كما يلي:",
-			"order": [
-				"psalm-129",
-				"psalm-130",
-				"midnight-3-psalm-131",
-				"psalm-132",
-				"psalm-133",
-				"psalm-136",
-				"psalm-137",
-				"psalm-140",
-				"psalm-141",
-				"psalm-145",
-				"psalm-146",
-				"psalm-147",
-				"midnight-3-gospel",
-				"gospel-conclusion",
-				"midnight-3-litany"
-			]
-		},
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"midnight-gospel-2",
-		"midnight-tenouwst",
-		"creed-introduction",
-		"creed",
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"midnight-absolution",
-		"conclusion-of-every-hour",
-		"lords-prayer"
-	],
+			"psalmsIntro": "تتلى مزامير صلاة النوم كما يلي:"
+		}
+	},
 	"sections": [
 		{
 			"id": "midnight-opening",

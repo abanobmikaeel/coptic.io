@@ -1,18 +1,22 @@
+import order from './order.json'
 import { type AgpeyaHourData, type AgpeyaMidnightHour, toSlottedHour } from './slots'
 import {
 	type AgpeyaCommonFile,
 	type AgpeyaHourFile,
 	type AgpeyaHourId,
 	type AgpeyaHourService,
+	type AgpeyaOrder,
 	type AgpeyaPart,
 	type AgpeyaResolvedGroup,
 	type AgpeyaSection,
 	isOrderGroup,
 } from './types'
 
+const ORDER = order as AgpeyaOrder
+
 /**
- * Resolves an hour's `order` against its own propers first, then the shared
- * pool. Composed once per hour and cached, so callers share one fully-resolved
+ * Resolves an hour's shared order against the language's own propers first, then
+ * its shared pool. Composed once per hour and cached, so callers share one fully-resolved
  * object rather than rebuilding the psalter on every request.
  */
 export function createAgpeyaLoader(
@@ -34,13 +38,17 @@ export function createAgpeyaLoader(
 			return section
 		}
 
-		const parts: AgpeyaPart[] = file.order.map((entry) =>
+		const group = (groupId: string) => {
+			const text = file.groups?.[groupId]
+			if (!text) throw new Error(`${id}: no text for group "${groupId}"`)
+			return text
+		}
+
+		const parts: AgpeyaPart[] = ORDER[id].map((entry) =>
 			isOrderGroup(entry)
 				? ({
 						group: entry.group,
-						name: entry.name,
-						...(entry.theme ? { theme: entry.theme } : {}),
-						...(entry.psalmsIntro ? { psalmsIntro: entry.psalmsIntro } : {}),
+						...group(entry.group),
 						sections: entry.order.map(resolve),
 					} satisfies AgpeyaResolvedGroup)
 				: resolve(entry),

@@ -5,94 +5,23 @@
 	"englishName": "Three Watches",
 	"traditionalTime": "12:00 AM",
 	"introduction": "We pray the Midnight Prayer commemorating the Second Coming of our Lord and the resurrection of the dead. We watch and pray as we await the Bridegroom.",
-	"order": [
-		"midnight-opening",
-		"thanksgiving-prayer",
-		"psalm-50",
-		{
-			"group": "midnight-1",
+	"groups": {
+		"midnight-1": {
 			"name": "First Watch",
 			"theme": "Watchfulness and Vigilance",
-			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-			"order": [
-				"psalm-3",
-				"psalm-6",
-				"psalm-12",
-				"psalm-69",
-				"psalm-85",
-				"psalm-90",
-				"psalm-116",
-				"psalm-117",
-				"midnight-1-psalm-118",
-				"midnight-1-gospel",
-				"gospel-conclusion",
-				"midnight-1-litany",
-				"kyrie41",
-				"holy-holy-holy",
-				"lords-prayer"
-			]
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen."
 		},
-		{
-			"group": "midnight-2",
+		"midnight-2": {
 			"name": "Second Watch",
 			"theme": "Repentance and Tears",
-			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-			"order": [
-				"psalm-119",
-				"psalm-120",
-				"psalm-121",
-				"psalm-122",
-				"psalm-123",
-				"psalm-124",
-				"psalm-125",
-				"psalm-126",
-				"psalm-127",
-				"psalm-128",
-				"midnight-2-gospel",
-				"gospel-conclusion",
-				"midnight-2-litany",
-				"kyrie41",
-				"holy-holy-holy",
-				"lords-prayer"
-			]
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen."
 		},
-		{
-			"group": "midnight-3",
+		"midnight-3": {
 			"name": "Third Watch",
 			"theme": "Judgment and Hope",
-			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
-			"order": [
-				"psalm-129",
-				"psalm-130",
-				"midnight-3-psalm-131",
-				"psalm-132",
-				"psalm-133",
-				"psalm-136",
-				"psalm-137",
-				"psalm-140",
-				"psalm-141",
-				"psalm-145",
-				"psalm-146",
-				"psalm-147",
-				"midnight-3-gospel",
-				"gospel-conclusion",
-				"midnight-3-litany"
-			]
-		},
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"midnight-gospel-2",
-		"midnight-tenouwst",
-		"creed-introduction",
-		"creed",
-		"kyrie41",
-		"holy-holy-holy",
-		"lords-prayer",
-		"midnight-absolution",
-		"conclusion-of-every-hour",
-		"lords-prayer"
-	],
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen."
+		}
+	},
 	"sections": [
 		{
 			"id": "midnight-opening",
