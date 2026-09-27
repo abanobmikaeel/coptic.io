@@ -7,23 +7,19 @@ export interface FlatLine {
 	isNewSpeakerGroup: boolean
 	// A congregational response (the Doxa / Ke-nin) that sits between the petitions
 	// of a litany. The reader prays it in one form or the other, so the vernacular
-	// translation is `text` and the Coptic transliteration (shown beneath, prefixed
-	// "or") rides in `responseCoptic`. Styled distinctly from the petitions.
+	// translation is `text` and the Coptic script rides in `responseCoptic`, shown
+	// beneath. Styled distinctly from the petitions.
 	isResponse: boolean
 	responseCoptic?: string
 	// Verse number for scripture lines (psalm/gospel); rendered as a gutter.
 	num?: number
 }
 
-// The fixed liturgical responses that recur inside the litanies, as Coptic
-// transliterations. A transliteration line is paired with the vernacular line that
-// follows it into a single response.
+// The fixed liturgical responses that recur inside the litanies, in Coptic script.
+// A Coptic line is paired with the vernacular line that follows it into one response.
 const COPTIC_RESPONSE_PATTERNS = [
-	/^Dthoxa Patri/i,
-	/^Ke neen ke a-ee/i,
-	/^\u0630\u0648\u0643\u0635\u0627\u0628\u062a\u0631\u064a/, // ذوكصابتري (Doxa)
-	/^\u0643\u064a \u0646\u064a\u0646/, // كي نين (Ke nin)
-	/^\u0643\u064a \u0622 \u0625\u064a/, // كي آ إي (ke a ee)
+	/^\u2C86\u2C9F\u2C9D\u2C81 \u2CA0\u2C81\u2CA7\u2CA3\u2C93/, // Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ (Doxa)
+	/^\u2C95\u2C89 \u2C9B\u2CA9\u2C9B/, // ⲕⲉ ⲛⲩⲛ (Ke nin)
 ]
 
 // The vernacular translations of the same responses, when they appear on their own.
@@ -54,7 +50,7 @@ export type LiturgicalContent = string | LiturgicalLine
 // Flattens content into individual lines, propagating speaker context to following
 // plain-string lines so each line knows who is speaking even without explicit attribution.
 // A Coptic response line and the vernacular line that follows it collapse into one
-// response (translation as `text`, transliteration as `responseCoptic`).
+// response (translation as `text`, Coptic script as `responseCoptic`).
 export function flattenToLines(content: LiturgicalContent[]): FlatLine[] {
 	const texts = content.map((item) => (typeof item === 'string' ? item : item.text))
 	const result: FlatLine[] = []
@@ -64,8 +60,8 @@ export function flattenToLines(content: LiturgicalContent[]): FlatLine[] {
 		const raw = typeof item === 'string' ? item : item.text
 		const trimmed = raw.trim()
 
-		// A Coptic transliteration directly followed by its vernacular translation
-		// becomes a single bilingual response.
+		// A Coptic response directly followed by its vernacular translation becomes a
+		// single bilingual response.
 		if (isCopticResponse(trimmed) && isVernacularResponse(texts[i + 1] ?? '')) {
 			result.push({
 				text: (texts[i + 1] ?? '').trim(),

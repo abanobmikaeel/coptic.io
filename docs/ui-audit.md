@@ -347,14 +347,25 @@ only where an hour's `order` fails to reference them.
 |---|---|
 | Prime | ✅ complete (Gloria, Trisagion, Hail-to-You, Creed, both absolutions). We additionally include Kyrie+Holy, which the source's prime page omits — harmless. |
 | Terce / Sext / None / Vespers | ✅ complete |
-| **Compline** | ⚠️ **"Graciously O Lord"** (the prayer after the litanies, before the Absolution) is missing from both languages. |
-| **Midnight** | ⚠️ Missing the closing sequence after the third watch: **Kyrie 41×, Holy-Holy-Holy (incl. the "absolve, remit and forgive" lines), and the Lord's Prayer**. `midnight-closing` only holds a one-line absolution. Also possible missing final Gospel ("Absolution of the Priests"). |
+| **Compline** | ⬜ **"Graciously O Lord"** (the prayer after the litanies, before the Absolution) is still missing from both languages. |
+| **Midnight** | ✅ Closing sequence added: Kyrie 41×, Holy-Holy-Holy, the Lord's Prayer, the Midnight Gospel (Luke 2:29-32), the Tenouwst, the Creed, a second Kyrie/Holy/Lord's Prayer, the Midnight Absolution, and the Conclusion of Every Hour. |
 
 ### Notes
 - "Holy, holy, holy" is a separate prayer/`common.json` section, **not** part of the litany —
   it was removed from the litany only because the litany had a *duplicate copy* of it; the real
   section still renders in every hour where the `order` includes `holy-holy-holy`.
 - Midnight's three watches have per-watch closings (`midnight-{1,2,3}-closing`) in English that
-  Arabic lacks (tracked by the parity test's `MISSING_ARABIC`).
-- Fix path: add the missing sections to `common.json` / the hour `order` (data layer), pulling
-  English from copticchurch.net and Arabic from st-takla, then cover with the parity ratchet.
+  Arabic lacks. These are the only entries left in the parity test's `KNOWN_PROSE_GAPS`.
+- The shared concluding prayers in `common.json` (gloria, trisagion, hail-to-you, creed,
+  creed-introduction, lords-prayer, holy-holy-holy, conclusion-of-every-hour, the per-hour
+  absolutions) are now re-split so English and Arabic pair 1:1 in the reader's aligned rows.
+- The vestigial common sections no hour referenced were deleted; both `common.json` files hold
+  the same 41 sections.
+
+## 7. Open items
+
+- ⬜ Compline "Graciously O Lord" (both languages).
+- ⬜ Arabic for the three Midnight per-watch closings, or dropping the English ones.
+- ⬜ Theme/language preference sprawl (URL vs cookie vs localStorage) — unify to one mechanism.
+- ⬜ Agpeya Prime renders Arabic-only in some locales; six server pages still need
+  `getDefaultContentLanguages(locale)`.
