@@ -64,10 +64,26 @@ describe('Agpeya concluding sequence', () => {
 				const hour = getHour(hourId)
 				if (!hour || 'watches' in hour) throw new Error(`${lang} ${hourId} missing`)
 
+				// Compline carries "Graciously O Lord", then the Trisagion, the Hail to
+				// Saint Mary and the Creed before the Kyrie.
+				const expected =
+					hourId === 'compline'
+						? [
+								'compline-graciously',
+								'trisagion',
+								'hail-to-you',
+								'creed-introduction',
+								'creed',
+								'kyrie41',
+								'holy-holy-holy',
+								'compline-absolution',
+								'conclusion-of-every-hour',
+							]
+						: ['kyrie41', 'holy-holy-holy', `${hourId}-absolution`, 'conclusion-of-every-hour']
 				expect(
 					hour.conclusion?.map((s) => s.id),
 					`${lang} ${hourId}`,
-				).toEqual(['kyrie41', 'holy-holy-holy', `${hourId}-absolution`, 'conclusion-of-every-hour'])
+				).toEqual(expected)
 				expect(hour.closing, `${lang} ${hourId}`).toBeUndefined()
 			}
 		}

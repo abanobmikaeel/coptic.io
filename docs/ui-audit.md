@@ -347,7 +347,7 @@ only where an hour's `order` fails to reference them.
 |---|---|
 | Prime | ✅ complete (Gloria, Trisagion, Hail-to-You, Creed, both absolutions). We additionally include Kyrie+Holy, which the source's prime page omits — harmless. |
 | Terce / Sext / None / Vespers | ✅ complete |
-| **Compline** | ⬜ **"Graciously O Lord"** (the prayer after the litanies, before the Absolution) is still missing from both languages. |
+| **Compline** | ✅ "Graciously O Lord" added (both languages), plus the Trisagion, Hail to Saint Mary and the Creed that follow it before the Kyrie. |
 | **Midnight** | ✅ Closing sequence added: Kyrie 41×, Holy-Holy-Holy, the Lord's Prayer, the Midnight Gospel (Luke 2:29-32), the Tenouwst, the Creed, a second Kyrie/Holy/Lord's Prayer, the Midnight Absolution, and the Conclusion of Every Hour. |
 
 ### Notes
@@ -364,8 +364,21 @@ only where an hour's `order` fails to reference them.
 
 ## 7. Open items
 
-- ⬜ Compline "Graciously O Lord" (both languages).
 - ⬜ Arabic for the three Midnight per-watch closings, or dropping the English ones.
 - ⬜ Theme/language preference sprawl (URL vs cookie vs localStorage) — unify to one mechanism.
 - ⬜ Agpeya Prime renders Arabic-only in some locales; six server pages still need
   `getDefaultContentLanguages(locale)`.
+
+### Sources cross-checked
+
+Three independent sources were compared while filling the gaps:
+
+- **copticchurch.net** — English reference (and a bilingual Agpeya at `/liturgy/agpeya/`).
+- **st-takla.org** — Arabic source.
+- **agpeya.org** — a bilingual (EN/AR) Agpeya that pairs the two languages line for line,
+  which matches this app's aligned-row model.
+
+One finding worth recording: the Arabic Ke-nin response and the inline doxology use
+*different* wordings in every source. The standalone response is **«الآن وكل أوان وإلى دهر الداهرين»**
+(st-takla, agpeya.org), while an inline doxology reads **«المجد للآب والابن والروح القدس، الآن وكل
+أوان وإلى دهر الدهور»**. The data keeps both, matching the sources.

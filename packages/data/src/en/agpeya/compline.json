@@ -25,6 +25,11 @@
 		"psalm-147",
 		"compline-gospel",
 		"compline-litany",
+		"compline-graciously",
+		"trisagion",
+		"hail-to-you",
+		"creed-introduction",
+		"creed",
 		"kyrie41",
 		"holy-holy-holy",
 		"compline-absolution",
@@ -131,6 +136,23 @@
 			"title": "Absolution",
 			"content": [
 				"Lord, all our sins which we committed against You in this day, whether in deeds or in words or in thoughts or through all senses, please remit and forgive us, for the sake of Your holy name, as You are Good and Lover of mankind. God, grant us a peaceful night and a sleep free from all anxiety. And send us an angel of peace to protect us from every evil, and every affliction, and every temptation of the enemy; through the Grace, compassion and love of mankind of Your Only-Begotten Son, our Lord, God and Savior Jesus Christ, to Whom is due, with You and with the Holy Spirit, the Life-Giver Who is of one essence with You, all glory, honor and dominion, now and forever and unto the ages of all ages. Amen."
+			]
+		},
+		{
+			"id": "compline-graciously",
+			"kind": "conclusion",
+			"title": "Graciously O Lord",
+			"content": [
+				"Graciously O Lord, keep this night without sin. Blessed are You, O Lord the God of our fathers and exceedingly blessed, and Your holy name is full of glory forever. Amen.",
+				"Let Your mercies be upon us, O Lord, even as we rely on You. For the eyes of all hope in You, for You give them their food in due season.",
+				"Hear us, O God our Savior, the hope of the regions of the whole earth. And You O Lord, keep us and deliver us, from this generation and forever. Amen.",
+				"Blessed are You O Lord, teach me Your justice. Blessed are You O Lord, make me to understand Your rights. Blessed are You O Lord, enlighten me in Your righteousness.",
+				"O Lord, Your mercy is forever. Do not reject the works of Your hands. For You, O Lord, have become my refuge from generation to generation.",
+				"I asked the Lord and said, “Have mercy on me and save my soul, for I have sinned against You.” Lord, I take refuge in You, so save me and teach me to carry out Your will. For You are my God, and with You is the fountain of life. And through Your light we see the light.",
+				"Let Your mercies be for those who know You, and Your righteousness to the upright in heart.",
+				"Unto You is due blessing, unto You is due praise, unto You is due all glory. O Father, Son and Holy Spirit, existing from the beginning, now and forever and ever. Amen.",
+				"It is good to confess to the Lord, and praise Your name, O Most High to declare Your mercies by day and Your truth by night.",
+				"We ask You O Lord, hear us, have mercy on us and forgive us our sins. Amen."
 			]
 		}
 	]
