@@ -42,7 +42,9 @@ export interface ServedWatch {
 	kind: 'watch'
 	title: string
 	theme?: string
+	prayer?: string
 	psalmsIntro?: string
+	psalmsRubric?: string
 	sections: ServedLeafSection[]
 }
 
@@ -138,7 +140,9 @@ export function toServedSections(
 				kind: 'watch',
 				title: part.name,
 				...optional('theme', part.theme),
+				...optional('prayer', part.prayer),
 				...optional('psalmsIntro', part.psalmsIntro),
+				...optional('psalmsRubric', part.psalmsRubric),
 				sections: leaves(part.sections),
 			},
 		]

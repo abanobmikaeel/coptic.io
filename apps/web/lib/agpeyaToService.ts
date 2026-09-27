@@ -28,7 +28,11 @@ interface AgWatch {
 	kind: 'watch'
 	title: string
 	theme?: string
+	/** The watch's offering: "The praise of the first watch… we offer unto Christ…". */
+	prayer?: string
 	psalmsIntro?: string
+	/** Which psalms are prayed; shown on the watch's first psalm. */
+	psalmsRubric?: string
 	sections: AgLeaf[]
 }
 
@@ -119,16 +123,20 @@ export function agpeyaToService(
 		if (part.kind === 'watch') {
 			const watch = part as AgWatch
 			// The theme names the watch rather than being prayed, so it rides as the
-			// heading's rubric; the "From the Psalms…" intro is the heading's body.
+			// heading's rubric; the offering and "From the Psalms…" are its body.
 			add({
 				id: `watch-${watch.id}`,
 				type: 'prayer',
 				role: 'all',
 				title: watch.title,
 				rubric: watch.theme,
-				content: watch.psalmsIntro ? [watch.psalmsIntro] : [],
+				content: [watch.prayer, watch.psalmsIntro].filter((line): line is string => !!line),
 			})
-			for (const s of watch.sections) add(toSection(`watch-${watch.id}-${s.id}`, s))
+			const firstPsalm = watch.sections.find((s) => s.kind === 'psalm')
+			for (const s of watch.sections) {
+				const rubric = s === firstPsalm ? watch.psalmsRubric : undefined
+				add(toSection(`watch-${watch.id}-${s.id}`, s, rubric))
+			}
 			continue
 		}
 		const s = part as AgLeaf

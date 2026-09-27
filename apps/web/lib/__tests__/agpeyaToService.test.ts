@@ -119,7 +119,9 @@ const midnight: ResolvedAgpeyaHour = {
 			kind: 'watch',
 			title: 'First Watch',
 			theme: 'Watchfulness and Vigilance',
+			prayer: 'The praise of the first watch…',
 			psalmsIntro: 'From the Psalms…',
+			psalmsRubric: 'All the psalms of Vespers are prayed…',
 			sections: [
 				{
 					id: 'psalm-3',
@@ -185,8 +187,18 @@ describe('agpeyaToService — midnight', () => {
 		expect(heading).toMatchObject({
 			title: 'First Watch',
 			rubric: 'Watchfulness and Vigilance',
-			content: ['From the Psalms…'],
+			content: ['The praise of the first watch…', 'From the Psalms…'],
 		})
+	})
+
+	it('shows which psalms are prayed on the watch’s first psalm only', () => {
+		const sections = agpeyaToService(midnight, '2026-09-26', copticDate).sections
+		expect(sections.find((s) => s.id === 'watch-midnight-1-psalm-3')?.rubric).toBe(
+			'All the psalms of Vespers are prayed…',
+		)
+		expect(
+			sections.find((s) => s.id === 'watch-midnight-1-midnight-1-litany')?.rubric,
+		).toBeUndefined()
 	})
 
 	it('scopes a watch’s sections to the watch, so shared prayers stay distinct', () => {

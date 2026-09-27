@@ -316,3 +316,27 @@ describe('Litany responses', () => {
 		}
 	})
 })
+
+describe('Midnight watch headings', () => {
+	// Each watch opens with its offering and "From the Psalms…", then says which
+	// psalms are prayed; both languages carry the same parts so the rows pair.
+	it('opens every watch with the same parts in English and Arabic', () => {
+		const parts = (getHour: typeof getAgpeyaHour) =>
+			(getHour('midnight')?.parts ?? []).flatMap((p) =>
+				'group' in p
+					? [
+							{
+								group: p.group,
+								prayer: !!p.prayer,
+								psalmsIntro: !!p.psalmsIntro,
+								psalmsRubric: !!p.psalmsRubric,
+							},
+						]
+					: [],
+			)
+		const en = parts(getAgpeyaHour)
+		expect(en).toHaveLength(3)
+		expect(en.every((w) => w.prayer && w.psalmsIntro)).toBe(true)
+		expect(parts(getArabicAgpeyaHour)).toEqual(en)
+	})
+})

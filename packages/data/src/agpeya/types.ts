@@ -100,7 +100,12 @@ export type AgpeyaOrder = Record<AgpeyaHourId, AgpeyaOrderEntry[]>
 export interface AgpeyaGroupText {
 	name: string
 	theme?: string
+	/** The watch's offering: "The praise of the first watch… we offer unto Christ…". */
+	prayer?: string
+	/** "From the Psalms of our father David…". */
 	psalmsIntro?: string
+	/** Which psalms are prayed, e.g. "All the psalms of Vespers… except 116 and 117". */
+	psalmsRubric?: string
 }
 
 /**
@@ -131,11 +136,8 @@ export interface AgpeyaCommonFile {
 }
 
 /** A group with its sections resolved. */
-export interface AgpeyaResolvedGroup {
+export interface AgpeyaResolvedGroup extends AgpeyaGroupText {
 	group: string
-	name: string
-	theme?: string
-	psalmsIntro?: string
 	sections: AgpeyaSection[]
 }
 

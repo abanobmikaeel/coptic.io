@@ -9,17 +9,22 @@
 		"midnight-1": {
 			"name": "First Watch",
 			"theme": "Watchfulness and Vigilance",
+			"prayer": "The praise of the first watch of the blessed Midnight Hour, we offer unto Christ our King and our God, beseeching Him to forgive us our sins.",
 			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen."
 		},
 		"midnight-2": {
 			"name": "Second Watch",
 			"theme": "Repentance and Tears",
-			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen."
+			"prayer": "The service of the second watch of the blessed Midnight Hour, we offer unto Christ our King and our God, beseeching Him to forgive us our sins.",
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+			"psalmsRubric": "All the psalms of the eleventh hour (vespers) are prayed except psalms 116 and 117."
 		},
 		"midnight-3": {
 			"name": "Third Watch",
 			"theme": "Judgment and Hope",
-			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen."
+			"prayer": "The service of the third watch of the blessed Midnight Hour, we offer unto Christ our King and our God, beseeching Him to forgive us our sins.",
+			"psalmsIntro": "From the Psalms of our father David the prophet and king, may his blessings be upon us all. Amen.",
+			"psalmsRubric": "All the psalms of the twelfth hour (compline) are prayed."
 		}
 	},
 	"sections": [
