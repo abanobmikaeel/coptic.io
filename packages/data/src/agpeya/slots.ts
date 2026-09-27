@@ -1,10 +1,13 @@
 /**
- * The hour shape the API and reader still consume: one named field per part of
- * the rite. It is now a projection of `order`, not the storage format.
+ * The published shape of `/api/agpeya`: one named slot per part of the rite
+ * (`opening`, `psalms`, `gospelRef`, `litanies`, `conclusion`…), projected from
+ * the ordered hour that `compose` builds from the data files.
  *
- * Everything here exists to keep `/api/agpeya` byte-compatible while the data
- * moves underneath it. Once the API and `agpeyaToService` walk `parts` directly,
- * this file and the slot types go away.
+ * The data is stored as an ordered list of sections; this is the contract the
+ * API serves from it. Changing a type or a field here changes the public API
+ * response, so extend it additively. Sections that have no slot of their own
+ * (an hour's or a watch's ending) are carried in order rather than folded into
+ * slots, which is what keeps shared prayers from overwriting each other.
  */
 import type {
 	AgpeyaGospelSection,
@@ -255,7 +258,7 @@ function toWatch(group: AgpeyaResolvedGroup): AgpeyaWatch {
 	}
 }
 
-export function toLegacyHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMidnightHour {
+export function toSlottedHour(hour: AgpeyaHourService): AgpeyaHourData | AgpeyaMidnightHour {
 	if (hour.id === 'midnight') {
 		const firstGroup = hour.parts.findIndex(isResolvedGroup)
 		const lastGroup = hour.parts.length - 1 - [...hour.parts].reverse().findIndex(isResolvedGroup)

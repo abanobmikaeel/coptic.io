@@ -24,6 +24,6 @@ export const getAllAgpeyaHours = loader.getAllHours
 export const getCommonPrayer = loader.getCommonPrayer
 export const getAllCommonPrayers = loader.commonSections
 
-export { isMidnightHour } from '../../agpeya/legacy'
-export type * from '../../agpeya/legacy'
+export { isMidnightHour } from '../../agpeya/slots'
+export type * from '../../agpeya/slots'
 export type * from '../../agpeya/types'

@@ -1,4 +1,4 @@
-import { type AgpeyaHourData, type AgpeyaMidnightHour, toLegacyHour } from './legacy'
+import { type AgpeyaHourData, type AgpeyaMidnightHour, toSlottedHour } from './slots'
 import {
 	type AgpeyaCommonFile,
 	type AgpeyaHourFile,
@@ -63,12 +63,12 @@ export function createAgpeyaLoader(
 	const getHour = (id: AgpeyaHourId): AgpeyaHourService | null =>
 		hourIds.includes(id) ? compose(id) : null
 
-	// The legacy projection lives here rather than in each language entry point: the
+	// The slotted projection lives here rather than in each language entry point: the
 	// languages differ only in their text, so duplicating the accessors per language
 	// is how the two drift apart.
 	const getHourData = (id: AgpeyaHourId): AgpeyaHourData | AgpeyaMidnightHour | null => {
 		const hour = getHour(id)
-		return hour ? toLegacyHour(hour) : null
+		return hour ? toSlottedHour(hour) : null
 	}
 
 	return {

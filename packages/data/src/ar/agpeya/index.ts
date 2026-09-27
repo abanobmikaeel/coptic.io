@@ -9,7 +9,7 @@ import sext from './sext.json'
 import terce from './terce.json'
 import vespers from './vespers.json'
 
-// Types and the legacy projection are shared with the English module; only the
+// Types and the slotted projection are shared with the English module; only the
 // text differs, and the split guarantees both languages resolve the same ids.
 const files = { prime, terce, sext, none, vespers, compline, midnight } as unknown as Record<
 	AgpeyaHourId,
@@ -26,6 +26,6 @@ export const getAllAgpeyaHours = loader.getAllHours
 export const getCommonPrayer = loader.getCommonPrayer
 export const getAllCommonPrayers = loader.commonSections
 
-export { isMidnightHour } from '../../agpeya/legacy'
-export type * from '../../agpeya/legacy'
+export { isMidnightHour } from '../../agpeya/slots'
+export type * from '../../agpeya/slots'
 export type * from '../../agpeya/types'
