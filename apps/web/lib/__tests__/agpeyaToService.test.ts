@@ -100,13 +100,6 @@ describe('agpeyaToService', () => {
 			title: 'Litanies',
 		})
 	})
-
-	it('keeps only psalms and gospels when only scripture is shown (Coptic column)', () => {
-		const sections = agpeyaToService(hour, '2026-09-26', copticDate, {
-			scriptureOnly: true,
-		}).sections
-		expect(sections.map((s) => s.type)).toEqual(['psalm', 'psalm', 'psalm', 'gospel', 'gospel'])
-	})
 })
 
 const midnight: ResolvedAgpeyaHour = {

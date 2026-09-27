@@ -59,8 +59,6 @@ const FALLBACK_TITLE: Record<string, string> = {
 	closing: 'Closing Prayer',
 }
 
-const SCRIPTURE_TYPES: ReadonlySet<IncenseSection['type']> = new Set(['psalm', 'gospel'])
-
 const isScripture = (s: AgLeaf): s is AgScripture => 'verses' in s
 
 function toSection(id: string, s: AgLeaf, rubric?: string): IncenseSection | null {
@@ -103,7 +101,6 @@ export function agpeyaToService(
 	hour: ResolvedAgpeyaHour,
 	date: string,
 	copticDate: CopticDate,
-	opts: { scriptureOnly?: boolean } = {},
 ): IncenseService {
 	const sections: IncenseSection[] = []
 	// The reader addresses sections by id, and Midnight repeats shared prayers in its
@@ -156,7 +153,6 @@ export function agpeyaToService(
 		name: hour.name,
 		date,
 		copticDate,
-		// Coptic has no prayer prose, so its column carries scripture only.
-		sections: opts.scriptureOnly ? sections.filter((s) => SCRIPTURE_TYPES.has(s.type)) : sections,
+		sections,
 	}
 }
