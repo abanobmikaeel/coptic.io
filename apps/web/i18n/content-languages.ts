@@ -34,15 +34,6 @@ export const defaultContentLanguages: Record<string, ContentLanguage[]> = {
 	ar: ['ar'], // Arabic UI defaults to Arabic content
 }
 
-/**
- * Resolve the default content languages for a UI locale, sharing the exact same
- * fallback rule on the server and client so a fresh session (no cookie) never
- * renders English on the server but Arabic after hydration.
- */
-export function getDefaultContentLanguages(locale: string): ContentLanguage[] {
-	return defaultContentLanguages[locale] || defaultContentLanguages.en
-}
-
 // Cookie name for storing content language preference
 export const CONTENT_LANGUAGES_COOKIE = 'CONTENT_LANGUAGES'
 
@@ -57,6 +48,21 @@ export function parseContentLanguages(cookieValue: string | undefined): ContentL
 		.filter((lang): lang is ContentLanguage => contentLanguages.includes(lang as ContentLanguage))
 
 	return langs.length > 0 ? langs : []
+}
+
+/**
+ * The content languages to render: the saved preference, or the UI locale's
+ * defaults when none is saved. Server pages and the client hook both resolve
+ * through here so the first render and hydration agree.
+ */
+export function resolveContentLanguages(
+	cookieValue: string | undefined,
+	locale: string,
+): ContentLanguage[] {
+	const parsed = parseContentLanguages(cookieValue)
+	return parsed.length > 0
+		? parsed
+		: (defaultContentLanguages[locale] ?? defaultContentLanguages.en)
 }
 
 /**

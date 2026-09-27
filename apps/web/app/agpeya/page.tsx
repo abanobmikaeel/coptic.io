@@ -5,13 +5,13 @@ import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
+	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import { type ResolvedAgpeyaHour, agpeyaToService } from '@/lib/agpeyaToService'
 import type { CopticDate, IncenseService } from '@/lib/types'
 import { getTodayDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
+import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
 import { AgpeyaContent, AgpeyaFallback } from './AgpeyaContent'
@@ -97,11 +97,14 @@ export default async function AgpeyaPage({ searchParams }: Readonly<AgpeyaPagePr
 	const psalms = params.psalms === 'bible' ? 'bible' : 'septuagint'
 
 	const cookieStore = await cookies()
-	const contentLanguages = parseContentLanguages(cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value)
+	const contentLanguages = resolveContentLanguages(
+		cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value,
+		await getLocale(),
+	)
 	const available = await fetchAvailableTranslations()
-	const selected = (
-		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
-	).filter((l): l is AgpeyaLang => available.includes(l as AgpeyaLang))
+	const selected = contentLanguages.filter((l): l is AgpeyaLang =>
+		available.includes(l as AgpeyaLang),
+	)
 	const ordered = orderLanguages(selected.length > 0 ? selected : ['en']) as BibleTranslation[]
 
 	const today = getTodayDateString()

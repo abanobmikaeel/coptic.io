@@ -23,8 +23,7 @@ import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
-	defaultContentLanguages,
-	parseContentLanguages,
+	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import { getSectionLabels } from '@/i18n/content-translations'
 import { getAvailableSections } from '@/lib/reading-sections'
@@ -33,6 +32,7 @@ import { getRequestToday } from '@/lib/requestToday'
 import type { ReadingsData } from '@/lib/types'
 import { formatGregorianDate, parseDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
+import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { Suspense } from 'react'
@@ -110,9 +110,7 @@ export default async function ReadingsPage({ searchParams }: Readonly<ReadingsPa
 	// Read content languages from cookie
 	const cookieStore = await cookies()
 	const contentLangCookie = cookieStore.get(CONTENT_LANGUAGES_COOKIE)?.value
-	const contentLanguages = parseContentLanguages(contentLangCookie)
-	const selectedLanguages =
-		contentLanguages.length > 0 ? contentLanguages : defaultContentLanguages.en
+	const selectedLanguages = resolveContentLanguages(contentLangCookie, await getLocale())
 
 	// Filter to only languages the API supports
 	const languagesToFetch = selectedLanguages.filter((lang) =>
