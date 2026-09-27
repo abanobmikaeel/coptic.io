@@ -12,6 +12,7 @@ interface CalendarGridProps {
 	mode: 'gregorian' | 'coptic'
 	onSelectDay: (day: number) => void
 	loading: boolean
+	skeletonCells: number
 }
 
 export function CalendarGrid({
@@ -22,6 +23,7 @@ export function CalendarGrid({
 	mode,
 	onSelectDay,
 	loading,
+	skeletonCells,
 }: Readonly<CalendarGridProps>) {
 	return (
 		<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 mb-4 shadow-sm dark:shadow-none">
@@ -39,7 +41,7 @@ export function CalendarGrid({
 			{loading ? (
 				<div className="grid grid-cols-7 gap-3">
 					{/* Skeleton cells for loading state */}
-					{Array.from({ length: 35 }, (_, i) => (
+					{Array.from({ length: skeletonCells }, (_, i) => (
 						<div
 							key={`skeleton-${i}`}
 							className="aspect-square rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse min-h-[60px]"
@@ -58,11 +60,16 @@ export function CalendarGrid({
 						const colors = getFastColors(
 							dayData.fasting.isFasting ? dayData.fasting.description : null,
 						)
+						const dayTitle =
+							dayData.fasting.isFasting && dayData.fasting.description
+								? `${dayData.gregorianDate} — ${dayData.fasting.description}`
+								: dayData.gregorianDate
 
 						return (
 							<button
 								type="button"
 								key={dayNum}
+								title={dayTitle}
 								onClick={() => onSelectDay(dayNum)}
 								className={`
 									aspect-square flex flex-col items-center justify-center rounded-xl relative

@@ -24,7 +24,7 @@ export const MonthYearSelector = memo(function MonthYearSelector({
 	baseYear,
 }: MonthYearSelectorProps) {
 	const selectClass =
-		'text-xl font-bold text-gray-900 dark:text-white bg-transparent border-none cursor-pointer hover:text-amber-600 dark:hover:text-amber-500 transition-colors focus:outline-none focus:ring-0 appearance-none'
+		'text-lg sm:text-xl font-bold text-gray-900 dark:text-white bg-transparent border-none cursor-pointer hover:text-amber-600 dark:hover:text-amber-500 transition-colors focus:outline-none focus:ring-0 appearance-none'
 
 	if (!features.copticCalendarMode || mode === 'gregorian') {
 		return (

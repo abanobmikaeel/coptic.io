@@ -1,4 +1,10 @@
+import { getCalendarGridCellCount } from '@/lib/utils'
+
 export default function CalendarLoading() {
+	// Match the skeleton height to the month the page initially loads (the current month).
+	const now = new Date()
+	const skeletonCells = getCalendarGridCellCount(now.getFullYear(), now.getMonth() + 1)
+
 	return (
 		<main className="min-h-screen relative">
 			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none">
@@ -30,7 +36,7 @@ export default function CalendarLoading() {
 							))}
 						</div>
 						<div className="grid grid-cols-7 gap-3">
-							{Array.from({ length: 35 }).map((_, i) => (
+							{Array.from({ length: skeletonCells }).map((_, i) => (
 								<div
 									key={i}
 									className="aspect-square bg-gray-100 dark:bg-gray-800/50 rounded-xl animate-pulse"

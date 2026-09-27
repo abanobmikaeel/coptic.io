@@ -242,8 +242,8 @@
 		"synaxariumDescription": "Daily commemorations and martyrologies"
 	},
 	"calendar": {
-		"title": "Fasting Calendar",
-		"subtitle": "View fasting periods throughout the year",
+		"title": "Coptic Calendar",
+		"subtitle": "Fasting periods, Coptic dates, and daily readings throughout the year",
 		"today": "Today",
 		"previousMonth": "Previous month",
 		"nextMonth": "Next month"

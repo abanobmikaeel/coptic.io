@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-	title: 'Fasting Calendar',
+	title: 'Coptic Calendar',
 	description:
-		'View the Coptic Orthodox fasting calendar with all fasting periods throughout the year including Great Lent, Apostles Fast, and more.',
+		'Browse the Coptic Orthodox calendar: fasting periods, Coptic dates, and daily readings throughout the year.',
 	openGraph: {
-		title: 'Fasting Calendar | Coptic Calendar',
+		title: 'Coptic Calendar',
 		description:
-			'View the Coptic Orthodox fasting calendar with all fasting periods throughout the year.',
+			'Browse the Coptic Orthodox calendar: fasting periods, Coptic dates, and daily readings throughout the year.',
 	},
 }
 

@@ -11,6 +11,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { features } from '@/config'
 import { getCalendarMonth } from '@/lib/api'
 import type { CalendarMonth } from '@/lib/types'
+import { getCalendarGridCellCount } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -24,11 +25,7 @@ export default function CalendarPage() {
 	const [selectedDay, setSelectedDay] = useState(() => new Date().getDate())
 
 	const loading =
-		calendarData === null ||
-		Boolean(
-			calendarData.days[0]?.gregorianDate &&
-				!calendarData.days[0].gregorianDate.startsWith(`${year}-${String(month).padStart(2, '0')}`),
-		)
+		calendarData === null || calendarData.year !== year || calendarData.month !== month
 
 	useEffect(() => {
 		let cancelled = false
@@ -77,6 +74,7 @@ export default function CalendarPage() {
 		() => Array.from({ length: firstDayOfMonth }, (_, i) => i),
 		[firstDayOfMonth],
 	)
+	const skeletonCells = useMemo(() => getCalendarGridCellCount(year, month), [year, month])
 	const days = useMemo(() => calendarData?.days ?? [], [calendarData?.days])
 	const selectedDayData =
 		selectedDay > 0 && selectedDay <= days.length ? days[selectedDay - 1] : null
@@ -116,25 +114,25 @@ export default function CalendarPage() {
 						/>
 					)}
 
-					<div className="flex items-center justify-between mb-6">
+					<div className="flex items-center justify-between gap-2 mb-6">
 						<button
 							type="button"
 							onClick={() => navigateMonth(-1)}
 							aria-label={t('previousMonth')}
-							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+							className="shrink-0 p-1.5 sm:p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						>
 							<ChevronLeftIcon />
 						</button>
 
-						<div className="flex items-center gap-3">
+						<div className="flex items-center gap-1 sm:gap-3 min-w-0">
 							<button
 								type="button"
 								onClick={goToToday}
-								className="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-700 hover:bg-amber-600 text-white shadow-sm hover:shadow transition-all"
+								className="shrink-0 px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm font-semibold rounded-lg bg-amber-700 hover:bg-amber-600 text-white shadow-sm hover:shadow transition-all"
 							>
 								{t('today')}
 							</button>
-							<span className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-2" />
+							<span className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1 sm:mx-2" />
 							<MonthYearSelector
 								mode={mode}
 								month={month}
@@ -156,7 +154,7 @@ export default function CalendarPage() {
 							type="button"
 							onClick={() => navigateMonth(1)}
 							aria-label={t('nextMonth')}
-							className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+							className="shrink-0 p-1.5 sm:p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 						>
 							<ChevronRightIcon />
 						</button>
@@ -170,11 +168,14 @@ export default function CalendarPage() {
 						mode={mode}
 						onSelectDay={setSelectedDay}
 						loading={loading}
+						skeletonCells={skeletonCells}
 					/>
 
-					{selectedDayData && (
-						<SelectedDayDetails dayData={selectedDayData} onClose={() => setSelectedDay(0)} />
-					)}
+					<div aria-live="polite">
+						{selectedDayData && (
+							<SelectedDayDetails dayData={selectedDayData} onClose={() => setSelectedDay(0)} />
+						)}
+					</div>
 
 					<FastingLegend visibleFasts={visibleFasts} />
 				</div>

@@ -81,7 +81,17 @@ export const FAST_COLORS = {
 
 export type FastColorKey = keyof typeof FAST_COLORS
 
+/**
+ * Map a fast to its presentation colours.
+ *
+ * The keys are the canonical English `description` values returned by the API
+ * (`getCalendarMonth` does not localize). If descriptions ever become
+ * localized, this lookup needs a stable fast identifier instead of matching on
+ * the display string, or every non-English description falls through to the
+ * default colour.
+ */
 export const getFastColors = (description: string | null) => {
-	if (!description) return null
-	return FAST_COLORS[description as FastColorKey] || FAST_COLORS.default
+	const normalized = description?.trim()
+	if (!normalized) return null
+	return FAST_COLORS[normalized as FastColorKey] || FAST_COLORS.default
 }
