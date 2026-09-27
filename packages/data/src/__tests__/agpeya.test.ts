@@ -237,3 +237,37 @@ describe('Midnight ending', () => {
 		}
 	})
 })
+
+describe('Gospel conclusion', () => {
+	const hours = { en: getEnglishAgpeyaHourData, ar: getArabicAgpeyaHourData } as const
+	const DAY_HOURS = ['prime', 'terce', 'sext', 'none', 'vespers', 'compline'] as const
+
+	// agpeya.org and copticchurch.net follow every hour's (and every watch's) gospel with
+	// "Glory be to God forever. Amen." and "We worship You, O Christ… for You have come".
+	it('follows every gospel with the gospel conclusion, in both languages', () => {
+		for (const [lang, getHour] of Object.entries(hours)) {
+			for (const hourId of DAY_HOURS) {
+				const hour = getHour(hourId)
+				if (!hour || isMidnightHour(hour)) throw new Error(`${lang} ${hourId} missing`)
+				expect(hour.gospelConclusion?.content, `${lang} ${hourId}`).toHaveLength(2)
+			}
+			const midnight = getHour('midnight')
+			if (!midnight || !isMidnightHour(midnight)) throw new Error(`${lang} midnight missing`)
+			for (const watch of midnight.watches) {
+				expect(watch.gospelConclusion?.content, `${lang} ${watch.id}`).toHaveLength(2)
+			}
+		}
+	})
+
+	// After the closing midnight Gospel (Luke 2:29-32) both sources say only the doxology.
+	it('ends the closing midnight Gospel with the doxology alone', () => {
+		for (const [lang, getHour] of Object.entries(hours)) {
+			const midnight = getHour('midnight')
+			if (!midnight || !isMidnightHour(midnight)) throw new Error(`${lang} midnight missing`)
+			const after = midnight.conclusion?.find((s) => s.id === 'midnight-tenouwst')
+			expect(after && 'content' in after && after.content, lang).toEqual([
+				lang === 'en' ? 'Glory to God forever. Amen.' : 'والمجد لله دائما. أمين.',
+			])
+		}
+	})
+})

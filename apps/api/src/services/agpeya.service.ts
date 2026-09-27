@@ -48,6 +48,7 @@ export interface ResolvedAgpeyaHour {
 	psalmsIntro?: string // "From the Psalms of our father David..."
 	psalms: ResolvedPsalm[]
 	gospel: ResolvedGospel
+	gospelConclusion?: { title?: string; content: string[] }
 	litanies: { title?: string; content: string[] }
 	lordsPrayer?: { title?: string; content: string[]; inline?: boolean }
 	thanksgivingAfter?: { title?: string; content: string[]; inline?: boolean }
@@ -64,6 +65,8 @@ export interface ResolvedAgpeyaWatch {
 	psalmsIntro?: string
 	psalms: ResolvedPsalm[]
 	gospel?: ResolvedGospel
+	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
+	gospelConclusion?: { title?: string; content: string[] }
 	litanies?: { content: string[] }
 	closing?: { content: string[]; inline?: boolean }
 	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
@@ -137,6 +140,7 @@ function resolveHour(
 		psalmsIntro: hourData.psalmsIntro,
 		psalms,
 		gospel: gospel || { reference: '', verses: [] },
+		gospelConclusion: hourData.gospelConclusion,
 		litanies: hourData.litanies,
 		lordsPrayer: hourData.lordsPrayer,
 		thanksgivingAfter: hourData.thanksgivingAfter,
@@ -167,6 +171,7 @@ function resolveWatch(
 		psalmsIntro: watch.psalmsIntro,
 		psalms,
 		gospel: gospel || undefined,
+		gospelConclusion: watch.gospelConclusion,
 		litanies: watch.litanies,
 		closing: watch.closing,
 		conclusion: resolveTail(watch.conclusion, translation),

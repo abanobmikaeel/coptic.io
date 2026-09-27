@@ -67,6 +67,8 @@ export interface AgpeyaWatch {
 	psalmRefs: AgpeyaPsalmRef[]
 	psalms?: AgpeyaPsalm[]
 	gospelRef?: AgpeyaGospelRef
+	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
+	gospelConclusion?: AgpeyaPrayerSection
 	litanies?: AgpeyaLitany
 	closing?: AgpeyaPrayerSection
 	// What the watch prays after its litanies (Kyrie, Holy Holy Holy, the Lord's
@@ -86,6 +88,8 @@ interface AgpeyaSlots {
 	gospelRef: AgpeyaGospelRef
 	/** Terce's second reading. Stored since the split; still served by nothing. */
 	gospelRef2?: AgpeyaGospelRef
+	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
+	gospelConclusion?: AgpeyaPrayerSection
 	litanies: AgpeyaLitany
 	lordsPrayer?: AgpeyaPrayerSection
 	thanksgivingAfter?: AgpeyaPrayerSection
@@ -134,6 +138,7 @@ const PROSE_SLOT: Partial<Record<AgpeyaSectionKind, keyof AgpeyaSlots>> = {
 	'hour-intro': 'hourIntro',
 	'come-let-us-worship': 'comeLetUsWorship',
 	thanksgiving: 'thanksgiving',
+	'gospel-conclusion': 'gospelConclusion',
 	litany: 'litanies',
 	'lords-prayer': 'lordsPrayer',
 	'thanksgiving-after': 'thanksgivingAfter',
@@ -252,6 +257,7 @@ function toWatch(group: AgpeyaResolvedGroup): AgpeyaWatch {
 		psalmRefs: slots.psalmRefs ?? [],
 		...(slots.psalms ? { psalms: slots.psalms } : {}),
 		...(slots.gospelRef ? { gospelRef: slots.gospelRef } : {}),
+		...(slots.gospelConclusion ? { gospelConclusion: slots.gospelConclusion } : {}),
 		...(slots.litanies ? { litanies: slots.litanies } : {}),
 		...(slots.closing ? { closing: slots.closing } : {}),
 		...(conclusion.length ? { conclusion } : {}),

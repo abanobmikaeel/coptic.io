@@ -32,3 +32,16 @@ describe('Agpeya midnight watches', () => {
 		])
 	})
 })
+
+describe('Agpeya gospel conclusion', () => {
+	it.each(['en', 'ar'] as const)('serves it after the gospel of every watch in %s', (lang) => {
+		for (const watch of midnight(lang).watches) {
+			expect(watch.gospelConclusion?.content, watch.id).toHaveLength(2)
+		}
+	})
+
+	it.each(['en', 'ar'] as const)('serves it after the daytime gospel in %s', (lang) => {
+		const terce = getAgpeyaHour('terce', lang) as { gospelConclusion?: { content: string[] } }
+		expect(terce.gospelConclusion?.content).toHaveLength(2)
+	})
+})

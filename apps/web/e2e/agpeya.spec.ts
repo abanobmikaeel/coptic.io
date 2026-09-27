@@ -132,16 +132,18 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 	}) => {
 		await openSections(page, 'midnight', 'Lord Have Mercy (41 times)')
 		for (const [index, label] of [
-			[15, 'Litanies'],
-			[16, 'Lord Have Mercy (41 times)'],
-			[17, 'Holy, Holy, Holy'],
-			[18, "The Lord's Prayer"],
-			[19, 'Second Watch'],
-			[31, 'Litanies'],
-			[32, 'Lord Have Mercy (41 times)'],
-			[33, 'Holy, Holy, Holy'],
-			[34, "The Lord's Prayer"],
-			[35, 'Third Watch'],
+			[15, 'Gospel Conclusion'],
+			[16, 'Litanies'],
+			[17, 'Lord Have Mercy (41 times)'],
+			[18, 'Holy, Holy, Holy'],
+			[19, "The Lord's Prayer"],
+			[20, 'Second Watch'],
+			[32, 'Gospel Conclusion'],
+			[33, 'Litanies'],
+			[34, 'Lord Have Mercy (41 times)'],
+			[35, 'Holy, Holy, Holy'],
+			[36, "The Lord's Prayer"],
+			[37, 'Third Watch'],
 		] as const) {
 			await expect(sectionButton(page, index, label)).toBeVisible()
 		}
@@ -150,16 +152,18 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 	test('Midnight ends with the full closing sequence after the third watch', async ({ page }) => {
 		await openSections(page, 'midnight', 'Lord Have Mercy (41 times)')
 		for (const [index, label] of [
-			[48, 'Gospel'],
-			[49, 'Litanies'],
-			[50, 'Lord Have Mercy (41 times)'],
-			[51, 'Holy, Holy, Holy'],
-			[52, "The Lord's Prayer"],
-			[53, 'Gospel'],
-			[55, 'Introduction to the Creed'],
-			[56, 'The Orthodox Creed'],
-			[60, 'Absolution (Midnight)'],
-			[61, 'Conclusion of Every Hour'],
+			[50, 'Gospel'],
+			[51, 'Gospel Conclusion'],
+			[52, 'Litanies'],
+			[53, 'Lord Have Mercy (41 times)'],
+			[54, 'Holy, Holy, Holy'],
+			[55, "The Lord's Prayer"],
+			[56, 'Gospel'],
+			[57, 'Gospel Conclusion'],
+			[58, 'Introduction to the Creed'],
+			[59, 'The Orthodox Creed'],
+			[63, 'Absolution (Midnight)'],
+			[64, 'Conclusion of Every Hour'],
 		] as const) {
 			await expect(sectionButton(page, index, label)).toBeVisible()
 		}
@@ -171,26 +175,27 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 		await openSections(page, 'compline', 'Graciously O Lord')
 		for (const [index, label] of [
 			[17, 'Gospel'],
-			[18, 'Litanies'],
-			[19, 'Graciously O Lord'],
-			[20, 'The Trisagion'],
-			[21, "The Lord's Prayer"],
-			[22, 'Hail to Saint Mary'],
-			[23, 'Introduction to the Creed'],
-			[24, 'The Orthodox Creed'],
-			[25, 'Lord Have Mercy (41 times)'],
-			[26, 'Holy, Holy, Holy'],
-			[27, "The Lord's Prayer"],
-			[28, 'Absolution'],
-			[29, 'Conclusion of Every Hour'],
-			[30, "The Lord's Prayer"],
+			[18, 'Gospel Conclusion'],
+			[19, 'Litanies'],
+			[20, 'Graciously O Lord'],
+			[21, 'The Trisagion'],
+			[22, "The Lord's Prayer"],
+			[23, 'Hail to Saint Mary'],
+			[24, 'Introduction to the Creed'],
+			[25, 'The Orthodox Creed'],
+			[26, 'Lord Have Mercy (41 times)'],
+			[27, 'Holy, Holy, Holy'],
+			[28, "The Lord's Prayer"],
+			[29, 'Absolution'],
+			[30, 'Conclusion of Every Hour'],
+			[31, "The Lord's Prayer"],
 		] as const) {
 			await expect(sectionButton(page, index, label)).toBeVisible()
 		}
 	})
 
 	test('renders the litany responses in Coptic script, not transliteration', async ({ page }) => {
-		await jumpTo(page, 'midnight', [49, 'Litanies'])
+		await jumpTo(page, 'midnight', [52, 'Litanies'])
 		const body = page.locator('body')
 		await expect(body).toContainText('Ⲇⲟⲝⲁ Ⲡⲁⲧⲣⲓ ⲕⲉ Ⲩ̀ⲓⲱ ⲕⲉ Ⲁ̀ⲅⲓⲱ Ⲡ̀ⲛⲉⲩⲙⲁⲧⲓ:')
 		await expect(body).toContainText('ⲕⲉ ⲛⲩⲛ ⲕⲉ ⲁ̀ⲓ̀ ⲕⲉ ⲓⲥ ⲧⲟⲩⲥ ⲉ̀ⲱ̀ⲛⲁⲥ ⲧⲱⲛ ⲉ̀ⲱ̀ⲛⲱⲛ. Ⲁ̀ⲙⲏⲛ.')
@@ -203,7 +208,7 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 		page,
 	}) => {
 		await context.addCookies([LANGS_2])
-		await jumpTo(page, 'midnight', [49, 'Litanies'])
+		await jumpTo(page, 'midnight', [52, 'Litanies'])
 		const body = page.locator('body')
 		// English column: the vernacular response, with the Coptic script beneath.
 		await expect(body).toContainText('Glory to the Father and the Son and the Holy Spirit.')
@@ -213,7 +218,7 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 	})
 
 	test('Compline prayers the Graciously prayer at night, not in the day form', async ({ page }) => {
-		await jumpTo(page, 'compline', [19, 'Graciously O Lord'])
+		await jumpTo(page, 'compline', [20, 'Graciously O Lord'])
 		const body = page.locator('body')
 		await expect(body).toContainText('Graciously O Lord')
 		await expect(body).toContainText('keep this night without sin')
@@ -225,7 +230,7 @@ test.describe('Agpeya closing sequences and bilingual rendering', () => {
 		page,
 	}) => {
 		await context.addCookies([LANGS_2])
-		await jumpTo(page, 'prime', [34, 'Holy, Holy, Holy'])
+		await jumpTo(page, 'prime', [35, 'Holy, Holy, Holy'])
 
 		// The Arabic "Absolve, forgive..." clause must sit in the same row as its
 		// English counterpart (the first row), not merged into the second.

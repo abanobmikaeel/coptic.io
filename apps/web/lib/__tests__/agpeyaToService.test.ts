@@ -12,6 +12,10 @@ const hour: ResolvedAgpeyaHour = {
 		{ title: 'Psalm 19', reference: 'Psalm 19', verses: [{ num: 1, text: 'May the Lord…' }] },
 	],
 	gospel: { reference: 'John 14:26-31', verses: [{ num: 26, text: 'But the Helper…' }] },
+	gospelConclusion: {
+		title: 'Gospel Conclusion',
+		content: ['Glory to God forever. Amen.', 'We worship You, O Christ…'],
+	},
 	litanies: { content: ['O Heavenly King…'] },
 	conclusion: [
 		{ id: 'kyrie41', title: 'Lord Have Mercy (41 times)', content: ['Lord have mercy.'] },
@@ -36,6 +40,12 @@ describe('agpeyaToService', () => {
 			'terce-absolution',
 			'conclusion-of-every-hour',
 		])
+	})
+
+	it('prays the gospel conclusion straight after the gospel, before the litanies', () => {
+		const ids = agpeyaToService(hour, '2026-09-26', copticDate).sections.map((s) => s.id)
+		const gospel = ids.indexOf('gospel')
+		expect(ids.slice(gospel, gospel + 3)).toEqual(['gospel', 'gospel-conclusion', 'litanies'])
 	})
 
 	it('keeps each concluding prayer titled as the data names it', () => {

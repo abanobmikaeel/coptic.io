@@ -1408,6 +1408,15 @@
 				"We confess one baptism for the remission of sins.",
 				"We look for the resurrection of the dead, and the life of the coming age. Amen."
 			]
+		},
+		"gospel-conclusion": {
+			"id": "gospel-conclusion",
+			"kind": "gospel-conclusion",
+			"title": "Gospel Conclusion",
+			"content": [
+				"Glory to God forever. Amen.",
+				"We worship You, O Christ, with Your good Father and the Holy Spirit, for You have come and saved us."
+			]
 		}
 	}
 }

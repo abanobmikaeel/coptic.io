@@ -40,6 +40,7 @@ interface AgWatch {
 	psalmsIntro?: string
 	psalms?: AgPsalm[]
 	gospel?: AgGospel
+	gospelConclusion?: AgBlock
 	litanies?: AgBlock
 	closing?: AgBlock
 	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
@@ -62,6 +63,8 @@ export interface ResolvedAgpeyaHour {
 	psalmsIntro?: string
 	psalms?: AgPsalm[]
 	gospel?: AgGospel
+	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
+	gospelConclusion?: AgBlock
 	litanies?: AgBlock
 	lordsPrayer?: AgBlock
 	thanksgivingAfter?: AgBlock
@@ -190,6 +193,14 @@ export function agpeyaToService(
 				add(blockSection(`watch-${watch.id}-opening`, 'prayer', 'Prayer', watch.opening))
 			for (const p of psalmSections(watch.psalms, `watch-${wi}-psalm`)) add(p)
 			if (watch.gospel) add(gospelSection(`watch-${watch.id}-gospel`, watch.gospel))
+			add(
+				blockSection(
+					`watch-${watch.id}-gospel-conclusion`,
+					'prayer',
+					'Gospel Conclusion',
+					watch.gospelConclusion,
+				),
+			)
 			add(blockSection(`watch-${watch.id}-litanies`, 'litany', 'Litanies', watch.litanies))
 			add(blockSection(`watch-${watch.id}-closing`, 'prayer', 'Closing', watch.closing))
 			// Each watch's own ending, prefixed so the same shared prayer in two
@@ -206,6 +217,7 @@ export function agpeyaToService(
 	} else {
 		for (const p of psalmSections(hour.psalms, 'psalm', hour.psalmsIntro)) add(p)
 		if (hour.gospel) add(gospelSection('gospel', hour.gospel))
+		add(blockSection('gospel-conclusion', 'prayer', 'Gospel Conclusion', hour.gospelConclusion))
 		add(blockSection('litanies', 'litany', 'Litanies', hour.litanies))
 		add(blockSection('lords-prayer', 'prayer', "The Lord's Prayer", hour.lordsPrayer))
 		add(blockSection('thanksgiving-after', 'prayer', 'Thanksgiving', hour.thanksgivingAfter))

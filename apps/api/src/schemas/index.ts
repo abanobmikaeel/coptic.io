@@ -114,6 +114,7 @@ const AgpeyaMidnightTailSchema = z.discriminatedUnion('kind', [
 			'litany',
 			'lords-prayer',
 			'thanksgiving-after',
+			'gospel-conclusion',
 			'closing',
 			'conclusion',
 		]),
@@ -134,6 +135,7 @@ export const AgpeyaWatchSchema = z.object({
 	opening: AgpeyaPrayerSectionSchema.optional(),
 	psalms: z.array(AgpeyaPsalmSchema),
 	gospel: AgpeyaGospelSchema.optional(),
+	gospelConclusion: AgpeyaPrayerSectionSchema.optional(),
 	litanies: AgpeyaLitanySchema.optional(),
 	closing: AgpeyaPrayerSectionSchema.optional(),
 	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
@@ -153,6 +155,7 @@ export const AgpeyaHourSchema = z.object({
 	thanksgiving: AgpeyaPrayerSectionSchema.optional(),
 	psalms: z.array(AgpeyaPsalmSchema),
 	gospel: AgpeyaGospelSchema,
+	gospelConclusion: AgpeyaPrayerSectionSchema.optional(),
 	litanies: AgpeyaLitanySchema,
 	lordsPrayer: AgpeyaPrayerSectionSchema.optional(),
 	thanksgivingAfter: AgpeyaPrayerSectionSchema.optional(),

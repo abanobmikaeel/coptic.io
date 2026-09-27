@@ -25,6 +25,7 @@
 				"psalm-117",
 				"midnight-1-psalm-118",
 				"midnight-1-gospel",
+				"gospel-conclusion",
 				"midnight-1-litany",
 				"kyrie41",
 				"holy-holy-holy",
@@ -48,6 +49,7 @@
 				"psalm-127",
 				"psalm-128",
 				"midnight-2-gospel",
+				"gospel-conclusion",
 				"midnight-2-litany",
 				"kyrie41",
 				"holy-holy-holy",
@@ -73,6 +75,7 @@
 				"psalm-146",
 				"psalm-147",
 				"midnight-3-gospel",
+				"gospel-conclusion",
 				"midnight-3-litany"
 			]
 		},
@@ -982,10 +985,9 @@
 		{
 			"id": "midnight-tenouwst",
 			"kind": "closing",
-			"title": "خاتمة الإنجيل",
+			"title": "ختام الإنجيل",
 			"content": [
-				"والمجد لله دائما. أمين.",
-				"نسجد لك أيها المسيح مع أبيك الصالح والروح القدس، لأنك أتيت وخلصتنا."
+				"والمجد لله دائما. أمين."
 			]
 		},
 		{

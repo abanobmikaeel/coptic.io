@@ -22,6 +22,7 @@ export type AgpeyaSectionKind =
 	| 'intro-psalm'
 	| 'psalm'
 	| 'gospel'
+	| 'gospel-conclusion'
 	| 'litany'
 	| 'lords-prayer'
 	| 'thanksgiving-after'
