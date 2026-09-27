@@ -2,7 +2,7 @@
 
 import type { ReadingSettings, ReadingSettingsActions } from '@/hooks/useReadingSettings'
 import type { ContentLanguage } from '@/i18n/content-languages'
-import type { ReactNode } from 'react'
+import { type ReactNode, useEffect, useRef } from 'react'
 import { LanguagePills } from './LanguagePills'
 import { SegmentedButtons } from './SegmentedButtons'
 import { SettingSection } from './SettingSection'
@@ -53,20 +53,34 @@ export function SettingsPanel({
 
 	const hasEnglish = contentLanguages.includes('en')
 
+	// Close on Escape or a press outside. "Outside" is measured against the panel's
+	// container, which also holds the button that opens it, so that button still
+	// toggles. A full-screen backdrop can't do this: the panel sits inside sticky,
+	// blurred headers, which confine a fixed-position backdrop to the header itself.
+	const panelRef = useRef<HTMLDivElement>(null)
+	useEffect(() => {
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') onClose()
+		}
+		const onPointerDown = (e: PointerEvent) => {
+			const container = panelRef.current?.parentElement
+			if (container && !container.contains(e.target as Node)) onClose()
+		}
+		document.addEventListener('keydown', onKey)
+		document.addEventListener('pointerdown', onPointerDown)
+		return () => {
+			document.removeEventListener('keydown', onKey)
+			document.removeEventListener('pointerdown', onPointerDown)
+		}
+	}, [onClose])
+
 	return (
 		<>
-			{/* Backdrop */}
-			<div
-				className="fixed inset-0 z-40"
-				onClick={onClose}
-				onKeyDown={(e) => e.key === 'Escape' && onClose()}
-				role="button"
-				tabIndex={-1}
-				aria-label="Close settings"
-			/>
-
 			{/* Panel */}
-			<div className="absolute top-full mt-3 right-0 z-50 w-80 p-5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-2xl max-h-[85vh] overflow-y-auto">
+			<div
+				ref={panelRef}
+				className="absolute top-full mt-3 end-0 z-50 w-80 p-5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-2xl max-h-[85vh] overflow-y-auto"
+			>
 				{extraSection}
 
 				{/* Theme */}
