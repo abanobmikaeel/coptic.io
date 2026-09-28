@@ -22,20 +22,30 @@ export default function CalendarPage() {
 	const [month, setMonth] = useState(() => new Date().getMonth() + 1)
 	const [mode, setMode] = useState<'gregorian' | 'coptic'>('gregorian')
 	const [calendarData, setCalendarData] = useState<CalendarMonth | null>(null)
+	// The month whose request failed (the API client returns null on any error), and a counter
+	// the retry button bumps to request it again
+	const [failedMonth, setFailedMonth] = useState<string | null>(null)
+	const [attempt, setAttempt] = useState(0)
+	const monthKey = `${year}-${month}`
+	const failed = failedMonth === monthKey
 	const [selectedDay, setSelectedDay] = useState(() => new Date().getDate())
 
 	const loading =
-		calendarData === null || calendarData.year !== year || calendarData.month !== month
+		!failed && (calendarData === null || calendarData.year !== year || calendarData.month !== month)
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: attempt re-runs the request on retry
 	useEffect(() => {
 		let cancelled = false
+		setFailedMonth(null)
 		getCalendarMonth(year, month).then((data) => {
-			if (!cancelled) setCalendarData(data)
+			if (cancelled) return
+			if (data) setCalendarData(data)
+			else setFailedMonth(`${year}-${month}`)
 		})
 		return () => {
 			cancelled = true
 		}
-	}, [year, month])
+	}, [year, month, attempt])
 
 	// Prefetch adjacent months for smoother navigation
 	useEffect(() => {
@@ -169,6 +179,8 @@ export default function CalendarPage() {
 						onSelectDay={setSelectedDay}
 						loading={loading}
 						skeletonCells={skeletonCells}
+						failed={failed}
+						onRetry={() => setAttempt((n) => n + 1)}
 					/>
 
 					<div aria-live="polite">

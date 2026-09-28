@@ -3,6 +3,8 @@
 import { features } from '@/config'
 import { WEEKDAYS, getFastColors } from '@/constants'
 import type { CalendarDay } from '@/lib/types'
+import { formatCalendarDayLabel } from '@/lib/utils'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface CalendarGridProps {
 	days: CalendarDay[]
@@ -13,6 +15,9 @@ interface CalendarGridProps {
 	onSelectDay: (day: number) => void
 	loading: boolean
 	skeletonCells: number
+	// The month failed to load; the grid offers a retry instead of a skeleton
+	failed: boolean
+	onRetry: () => void
 }
 
 export function CalendarGrid({
@@ -24,7 +29,13 @@ export function CalendarGrid({
 	onSelectDay,
 	loading,
 	skeletonCells,
+	failed,
+	onRetry,
 }: Readonly<CalendarGridProps>) {
+	const locale = useLocale()
+	const t = useTranslations('calendar')
+	const showCoptic = features.copticCalendarMode && mode === 'coptic'
+
 	return (
 		<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 mb-4 shadow-sm dark:shadow-none">
 			<div className="grid grid-cols-7 mb-2">
@@ -38,7 +49,18 @@ export function CalendarGrid({
 				))}
 			</div>
 
-			{loading ? (
+			{failed ? (
+				<div role="alert" className="py-16 flex flex-col items-center gap-4 text-center">
+					<p className="text-gray-600 dark:text-gray-400">{t('loadError')}</p>
+					<button
+						type="button"
+						onClick={onRetry}
+						className="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-700 hover:bg-amber-600 text-white"
+					>
+						{t('retry')}
+					</button>
+				</div>
+			) : loading ? (
 				<div className="grid grid-cols-7 gap-3">
 					{/* Skeleton cells for loading state */}
 					{Array.from({ length: skeletonCells }, (_, i) => (
@@ -60,16 +82,22 @@ export function CalendarGrid({
 						const colors = getFastColors(
 							dayData.fasting.isFasting ? dayData.fasting.description : null,
 						)
-						const dayTitle =
-							dayData.fasting.isFasting && dayData.fasting.description
-								? `${dayData.gregorianDate} — ${dayData.fasting.description}`
-								: dayData.gregorianDate
+						const label = formatCalendarDayLabel(
+							{
+								...dayData,
+								fastName: dayData.fasting.isFasting ? dayData.fasting.description : null,
+							},
+							locale,
+							showCoptic,
+						)
 
 						return (
 							<button
 								type="button"
 								key={dayNum}
-								title={dayTitle}
+								aria-label={label}
+								aria-current={isToday ? 'date' : undefined}
+								aria-pressed={isSelected}
 								onClick={() => onSelectDay(dayNum)}
 								className={`
 									aspect-square flex flex-col items-center justify-center rounded-xl relative
@@ -93,9 +121,7 @@ export function CalendarGrid({
 												: 'text-gray-700 dark:text-gray-300'
 									}`}
 								>
-									{!features.copticCalendarMode || mode === 'gregorian'
-										? dayNum
-										: dayData.copticDate.day}
+									{showCoptic ? dayData.copticDate.day : dayNum}
 								</span>
 								{colors && (
 									<span

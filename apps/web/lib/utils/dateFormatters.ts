@@ -81,3 +81,19 @@ export function getCalendarGridCellCount(year: number, month: number): number {
 	const daysInMonth = new Date(year, month, 0).getDate()
 	return Math.ceil((firstWeekday + daysInMonth) / 7) * 7
 }
+
+/**
+ * Accessible name for a day in the month grid, whose cell shows only a number: the full date in
+ * the reader's language, the Coptic date when the grid is numbered by it, and the fast, if any.
+ */
+export function formatCalendarDayLabel(
+	day: { gregorianDate: string; copticDate: { dateString: string }; fastName?: string | null },
+	locale: string,
+	showCoptic: boolean,
+): string {
+	const parts = [formatGregorianDate(parseDateString(day.gregorianDate), locale)]
+	if (showCoptic) parts.push(day.copticDate.dateString)
+	if (day.fastName) parts.push(day.fastName)
+	// Arabic separates clauses with its own comma
+	return parts.join(locale === 'ar' ? '، ' : ', ')
+}

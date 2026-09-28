@@ -246,7 +246,9 @@
 		"subtitle": "Fasting periods, Coptic dates, and daily readings throughout the year",
 		"today": "Today",
 		"previousMonth": "Previous month",
-		"nextMonth": "Next month"
+		"nextMonth": "Next month",
+		"loadError": "Couldn't load this month.",
+		"retry": "Try again"
 	},
 	"privacy": {
 		"title": "Privacy Policy",

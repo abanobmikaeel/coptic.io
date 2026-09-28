@@ -246,7 +246,9 @@
 		"subtitle": "Períodos de ayuno, fechas coptas y lecturas diarias durante todo el año",
 		"today": "Hoy",
 		"previousMonth": "Mes anterior",
-		"nextMonth": "Mes siguiente"
+		"nextMonth": "Mes siguiente",
+		"loadError": "No se pudo cargar este mes.",
+		"retry": "Reintentar"
 	},
 	"privacy": {
 		"title": "Política de Privacidad",
