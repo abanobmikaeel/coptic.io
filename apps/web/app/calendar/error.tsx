@@ -12,11 +12,9 @@ export default function CalendarError({
 		<main className="min-h-screen relative">
 			<section className="relative pt-20 pb-8 px-6">
 				<div className="max-w-4xl mx-auto text-center">
-					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-						Fasting Calendar
-					</h1>
+					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Coptic Calendar</h1>
 					<p className="text-gray-600 dark:text-gray-400">
-						View fasting periods throughout the year
+						Fasting periods, Coptic dates, and daily readings throughout the year
 					</p>
 				</div>
 			</section>

@@ -243,11 +243,23 @@
 		"synaxariumDescription": "Conmemoraciones diarias y martirologios"
 	},
 	"calendar": {
-		"title": "Calendario de Ayuno",
-		"subtitle": "Ver períodos de ayuno durante el año",
+		"title": "Calendario Copto",
+		"subtitle": "Períodos de ayuno, fechas coptas y lecturas diarias durante todo el año",
 		"today": "Hoy",
 		"previousMonth": "Mes anterior",
-		"nextMonth": "Mes siguiente"
+		"nextMonth": "Mes siguiente",
+		"loadError": "No se pudo cargar este mes.",
+		"retry": "Reintentar",
+		"selectMonth": "Mes",
+		"selectYear": "Año",
+		"selectCopticMonth": "Mes copto",
+		"selectCopticYear": "Año copto",
+		"calendarType": "Calendario",
+		"gregorian": "Gregoriano",
+		"coptic": "Copto",
+		"noFasting": "Sin ayuno este día",
+		"viewReadings": "Ver lecturas",
+		"closeDetails": "Cerrar detalles"
 	},
 	"privacy": {
 		"title": "Política de Privacidad",

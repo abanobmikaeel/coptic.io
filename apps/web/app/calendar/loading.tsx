@@ -30,6 +30,8 @@ export default function CalendarLoading() {
 							))}
 						</div>
 						<div className="grid grid-cols-7 gap-3">
+							{/* Static placeholder shown briefly during navigation; the page's own
+							    skeleton matches the month grid exactly once it mounts. */}
 							{Array.from({ length: 35 }).map((_, i) => (
 								<div
 									key={i}
