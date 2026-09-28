@@ -73,16 +73,6 @@ export function addDaysToDateString(dateString: string, days: number): string {
 }
 
 /**
- * Number of cells (including leading blanks) in a month calendar grid, so
- * loading skeletons match the real grid height instead of hard-coding 35.
- */
-export function getCalendarGridCellCount(year: number, month: number): number {
-	const firstWeekday = new Date(year, month - 1, 1).getDay()
-	const daysInMonth = new Date(year, month, 0).getDate()
-	return Math.ceil((firstWeekday + daysInMonth) / 7) * 7
-}
-
-/**
  * Accessible name for a day in the month grid, whose cell shows only a number: the full date in
  * the reader's language, the Coptic date when the grid is numbered by it, and the fast, if any.
  */

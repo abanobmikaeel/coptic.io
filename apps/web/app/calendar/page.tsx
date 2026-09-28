@@ -11,7 +11,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { features } from '@/config'
 import { getCalendarMonth } from '@/lib/api'
 import type { CalendarMonth } from '@/lib/types'
-import { getCalendarGridCellCount } from '@/lib/utils'
+import { getMonthGridLayout } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -79,12 +79,11 @@ export default function CalendarPage() {
 		setSelectedDay(today.getDate())
 	}
 
-	const firstDayOfMonth = useMemo(() => new Date(year, month - 1, 1).getDay(), [year, month])
-	const blanks = useMemo(
-		() => Array.from({ length: firstDayOfMonth }, (_, i) => i),
-		[firstDayOfMonth],
+	const { leadingBlanks, totalCells } = useMemo(
+		() => getMonthGridLayout(year, month),
+		[year, month],
 	)
-	const skeletonCells = useMemo(() => getCalendarGridCellCount(year, month), [year, month])
+	const blanks = useMemo(() => Array.from({ length: leadingBlanks }, (_, i) => i), [leadingBlanks])
 	const days = useMemo(() => calendarData?.days ?? [], [calendarData?.days])
 	const selectedDayData =
 		selectedDay > 0 && selectedDay <= days.length ? days[selectedDay - 1] : null
@@ -178,7 +177,7 @@ export default function CalendarPage() {
 						mode={mode}
 						onSelectDay={setSelectedDay}
 						loading={loading}
-						skeletonCells={skeletonCells}
+						skeletonCells={totalCells}
 						failed={failed}
 						onRetry={() => setAttempt((n) => n + 1)}
 					/>
