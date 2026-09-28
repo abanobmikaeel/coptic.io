@@ -1,5 +1,3 @@
-import type { ReadingsData } from './types'
-
 // Reading metadata for mobile view
 const mobileReadings = [
 	{ key: 'Pauline', short: 'Pau', label: 'Pauline' },
@@ -10,19 +8,9 @@ const mobileReadings = [
 	{ key: 'LGospel', short: 'Gos', label: 'Gospel' },
 ] as const
 
-// Reading metadata grouped by service (desktop view)
+// Reading metadata grouped by service, in the order of the liturgical day:
+// Vespers the evening before, Matins, then the Liturgy
 const readingGroups = [
-	{
-		label: 'Liturgy',
-		readings: [
-			{ key: 'Pauline', short: 'Pau', label: 'Pauline Epistle', size: 'md' as const },
-			{ key: 'Catholic', short: 'Cat', label: 'Catholic Epistle', size: 'md' as const },
-			{ key: 'Acts', short: 'Act', label: 'Acts', size: 'md' as const },
-			{ key: 'Synaxarium', short: 'Syn', label: 'Synaxarium', size: 'sm' as const },
-			{ key: 'LPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
-			{ key: 'LGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
-		],
-	},
 	{
 		label: 'Vespers',
 		readings: [
@@ -36,6 +24,17 @@ const readingGroups = [
 			{ key: 'Prophecies', short: 'Pr', label: 'Prophecies', size: 'md' as const },
 			{ key: 'MPsalm', short: 'M·Ps', label: 'Psalm', size: 'sm' as const },
 			{ key: 'MGospel', short: 'M·Go', label: 'Gospel', size: 'lg' as const },
+		],
+	},
+	{
+		label: 'Liturgy',
+		readings: [
+			{ key: 'Pauline', short: 'Pau', label: 'Pauline Epistle', size: 'md' as const },
+			{ key: 'Catholic', short: 'Cat', label: 'Catholic Epistle', size: 'md' as const },
+			{ key: 'Acts', short: 'Act', label: 'Acts', size: 'md' as const },
+			{ key: 'Synaxarium', short: 'Syn', label: 'Synaxarium', size: 'sm' as const },
+			{ key: 'LPsalm', short: 'Psm', label: 'Psalm', size: 'sm' as const },
+			{ key: 'LGospel', short: 'Gos', label: 'Gospel', size: 'lg' as const },
 		],
 	},
 	{
@@ -73,29 +72,23 @@ export interface AvailableSections {
 	mobileReadings: MobileReadingItem[]
 }
 
-function hasReadingData(readings: ReadingsData, key: string): boolean {
-	// Synaxarium uses different key in data
-	const dataKey = key
-	const data = readings[dataKey as keyof ReadingsData]
-	return data != null && Array.isArray(data) && data.length > 0
-}
-
 /**
- * Computes available reading sections based on what data exists.
- * Call this server-side to avoid client computation.
+ * Computes the reading sections to show, grouped by service. `hasReading` says whether a section
+ * has content in any selected language, so every consumer (the page, the timeline, the section
+ * menu) lists exactly the sections that render.
  */
-export function getAvailableSections(readings: ReadingsData): AvailableSections {
+export function getAvailableSections(hasReading: (key: string) => boolean): AvailableSections {
 	const groups = readingGroups
 		.map((group) => ({
 			label: group.label,
-			readings: group.readings.filter((r) => hasReadingData(readings, r.key)),
+			readings: group.readings.filter((r) => hasReading(r.key)),
 		}))
 		.filter((group) => group.readings.length > 0)
 
 	const allReadings = groups.flatMap((g) => g.readings)
 
 	const mobile = mobileReadings
-		.filter((r) => hasReadingData(readings, r.key))
+		.filter((r) => hasReading(r.key))
 		.map((r) => ({ key: r.key, short: r.short, label: r.label }))
 
 	return { groups, allReadings, mobileReadings: mobile }

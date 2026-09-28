@@ -17,7 +17,8 @@
 		"LPsalm": "Psalm",
 		"LGospel": "Gospel",
 		"EPPsalm": "Evening Psalm",
-		"EPGospel": "Evening Gospel"
+		"EPGospel": "Evening Gospel",
+		"Synaxarium": "Synaxarium"
 	},
 	"books": {
 		"Genesis": "Genesis",

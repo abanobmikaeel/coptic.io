@@ -27,7 +27,8 @@ interface DisplaySettingsProps {
 }
 
 export function DisplaySettings({ availableLanguages }: Readonly<DisplaySettingsProps>) {
-	const { settings, actions, mounted } = useReadingSettings()
+	// The pages that show this panel render their text on the server from the URL settings
+	const { settings, actions, mounted } = useReadingSettings({ refreshAfterRestore: true })
 	const { languages, setLanguages, isLoaded } = useContentLanguages()
 	const [isOpen, setIsOpen] = useState(false)
 

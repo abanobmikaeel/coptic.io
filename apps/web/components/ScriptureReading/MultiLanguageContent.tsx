@@ -1,5 +1,5 @@
 import { getBookName } from '@/i18n/content-translations'
-import { multiLangGridClass, themeClasses } from '@/lib/reading-styles'
+import { multiLangGridClass, multiLangWidthClass, themeClasses } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
 import type { ReadingTheme, ViewMode } from '../DisplaySettings'
 import type { BibleTranslation, StyleClasses } from './types'
@@ -27,9 +27,8 @@ export function MultiLanguageContent({
 	// Shared responsive grid class (always side-by-side; mobile compresses gaps).
 	const gridClass = multiLangGridClass(orderedLangs.length)
 
-	// Container width - mobile uses full width, larger screens have max-width
-	const containerWidth =
-		orderedLangs.length >= 4 ? 'max-w-full sm:max-w-[90rem]' : 'max-w-full sm:max-w-7xl'
+	// Same width as the section header, so the text lines up with it
+	const containerWidth = multiLangWidthClass(orderedLangs.length)
 
 	// Count total chapters to determine if we should show chapter headings
 	const totalChapters = firstReadings.reduce((sum, r) => sum + r.chapters.length, 0)

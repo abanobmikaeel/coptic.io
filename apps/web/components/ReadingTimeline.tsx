@@ -1,7 +1,7 @@
 'use client'
 
+import { scrollToReading, useActiveReading } from '@/hooks/useActiveReading'
 import type { AvailableSections, ReadingSize } from '@/lib/reading-sections'
-import { useCallback, useEffect, useState } from 'react'
 
 const sizeClasses: Record<ReadingSize, { normal: string; active: string }> = {
 	sm: { normal: 'w-8 h-8 text-[10px]', active: 'w-9 h-9 text-[11px]' },
@@ -15,42 +15,7 @@ interface ReadingTimelineProps {
 
 export function ReadingTimeline({ sections }: Readonly<ReadingTimelineProps>) {
 	const { groups, allReadings } = sections
-	const [activeSection, setActiveSection] = useState<string | null>(null)
-
-	useEffect(() => {
-		const handleScroll = () => {
-			const scrollY = window.scrollY
-			const viewportMiddle = scrollY + window.innerHeight / 3
-
-			let current: string | null = null
-			for (const r of allReadings) {
-				const element = document.getElementById(`reading-${r.key}`)
-				if (element) {
-					const rect = element.getBoundingClientRect()
-					const absoluteTop = rect.top + scrollY
-					if (absoluteTop <= viewportMiddle) {
-						current = r.key
-					}
-				}
-			}
-
-			setActiveSection(current)
-		}
-
-		window.addEventListener('scroll', handleScroll, { passive: true })
-		handleScroll()
-
-		return () => window.removeEventListener('scroll', handleScroll)
-	}, [allReadings])
-
-	const scrollToReading = useCallback((key: string) => {
-		const element = document.getElementById(`reading-${key}`)
-		if (element) {
-			const offset = 100
-			const top = element.getBoundingClientRect().top + window.scrollY - offset
-			window.scrollTo({ top, behavior: 'smooth' })
-		}
-	}, [])
+	const activeSection = useActiveReading(allReadings)
 
 	if (groups.length === 0) return null
 
@@ -66,7 +31,7 @@ export function ReadingTimeline({ sections }: Readonly<ReadingTimelineProps>) {
 				<div className="flex flex-col items-center gap-0 py-2 px-2 rounded-2xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg">
 					{groups.map((group, groupIdx) => (
 						<div key={group.label} className="flex flex-col items-center">
-							<span className="text-[10px] font-bold tracking-wider uppercase text-gray-400 dark:text-gray-500 mb-1.5 mt-1.5">
+							<span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 mb-1.5 mt-1.5">
 								{group.label}
 							</span>
 

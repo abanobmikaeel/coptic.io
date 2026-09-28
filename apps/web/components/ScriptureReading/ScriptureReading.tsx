@@ -1,7 +1,6 @@
 'use client'
 
-import { getServiceName } from '@/i18n/content-translations'
-import { getWidthClass, themeClasses } from '@/lib/reading-styles'
+import { getWidthClass, multiLangWidthClass, themeClasses } from '@/lib/reading-styles'
 import { useState } from 'react'
 import { MultiLanguageContent } from './MultiLanguageContent'
 import { ReadingHeader } from './ReadingHeader'
@@ -23,7 +22,6 @@ export function ScriptureReading({
 	theme = 'light',
 	width = 'normal',
 	weight = 'normal',
-	service,
 }: Readonly<ScriptureReadingProps>) {
 	const [isOpen, setIsOpen] = useState(true)
 
@@ -45,13 +43,7 @@ export function ScriptureReading({
 	// Determine header style for single language
 	const headerIsRtl = firstLang === 'ar'
 	// Mobile uses full width, larger screens use max-width constraints
-	const widthClass = isMultiLang
-		? availableLangs.length >= 4
-			? 'max-w-full sm:max-w-[90rem]' // Extra wide for 4 languages
-			: availableLangs.length >= 3
-				? 'max-w-full sm:max-w-7xl'
-				: 'max-w-full sm:max-w-6xl'
-		: getWidthClass(width)
+	const widthClass = isMultiLang ? multiLangWidthClass(availableLangs.length) : getWidthClass(width)
 
 	return (
 		<article id={id} className={`scroll-mt-24 ${isOpen ? 'mb-5 sm:mb-8' : 'mb-3'}`}>
@@ -59,7 +51,7 @@ export function ScriptureReading({
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
-				className="w-full group cursor-pointer -mx-3 sm:mx-0"
+				className="w-[calc(100%+1.5rem)] group cursor-pointer -mx-3 sm:w-full sm:mx-0"
 			>
 				<div className={`${widthClass} sm:mx-auto`}>
 					<ReadingHeader
@@ -78,13 +70,6 @@ export function ScriptureReading({
 						title={!isMultiLang ? labels[firstLang as 'en' | 'ar'] : undefined}
 						reference={
 							!isMultiLang ? getReferenceForLang(firstLang, readingsByLang[firstLang]) : undefined
-						}
-						service={
-							!isMultiLang && headerIsRtl
-								? service
-									? getServiceName(service, 'ar')
-									: undefined
-								: service
 						}
 						isOpen={isOpen}
 						theme={theme}

@@ -124,6 +124,16 @@ export function multiLangGridClass(langCount: number): string {
 	return 'grid-cols-1'
 }
 
+/**
+ * Max width of a multi-language section. A section's header and its text share it so their edges
+ * line up. Uncapped on mobile, where the text bleeds past the page padding (see `-mx-3`).
+ */
+export function multiLangWidthClass(langCount: number): string {
+	if (langCount >= 4) return 'max-w-none sm:max-w-[90rem]'
+	if (langCount === 3) return 'max-w-none sm:max-w-7xl'
+	return 'max-w-none sm:max-w-6xl'
+}
+
 // Theme classes
 // Note: 'light' theme uses dark: variants to respect system dark mode preference
 export const themeClasses = {

@@ -27,7 +27,6 @@ export interface ScriptureReadingProps {
 	theme?: ReadingTheme
 	width?: ReadingWidth
 	weight?: FontWeight
-	service?: string
 }
 
 export interface StyleClasses {
@@ -53,7 +52,6 @@ export interface ReadingHeaderProps {
 	labels?: { en: string; ar: string; es: string; cop: string }
 	references?: { en: string; ar: string; es: string; cop: string }
 	// Shared
-	service?: string
 	isOpen: boolean
 	theme: ReadingTheme
 	isRtl?: boolean

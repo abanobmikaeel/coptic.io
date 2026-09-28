@@ -33,6 +33,7 @@ export function ReadingsHeader({
 
 	return (
 		<div
+			data-sticky-header
 			className={`sticky top-14 z-30 ${themeClasses.bgTranslucent[theme]} backdrop-blur-sm border-b ${themeClasses.border[theme]}`}
 		>
 			<div className={`max-w-4xl mx-auto px-3 sm:px-6 py-3 flex items-center ${justifyClass}`}>
