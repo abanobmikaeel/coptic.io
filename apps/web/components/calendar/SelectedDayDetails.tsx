@@ -21,7 +21,7 @@ export const SelectedDayDetails = memo(function SelectedDayDetails({
 	const colors = getFastColors(dayData.fasting.isFasting ? dayData.fasting.description : null)
 
 	return (
-		<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 mb-6 shadow-sm dark:shadow-none animate-in fade-in slide-in-from-top-2 duration-200">
+		<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 mb-6 shadow-sm dark:shadow-none animate-fade-in">
 			<div className="flex items-start justify-between">
 				<div>
 					<p className="text-sm text-gray-500 dark:text-gray-400 mb-1">

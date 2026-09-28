@@ -285,3 +285,22 @@ html[lang="ar"] body {
 .animate-slide-in-left {
 	animation: slide-in-left 0.2s ease-out forwards;
 }
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.animate-fade-in {
+	animation: fade-in 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.animate-fade-in {
+		animation: none;
+	}
+}
