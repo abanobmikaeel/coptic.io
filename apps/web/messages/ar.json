@@ -248,7 +248,17 @@
 		"previousMonth": "الشهر السابق",
 		"nextMonth": "الشهر التالي",
 		"loadError": "تعذّر تحميل هذا الشهر.",
-		"retry": "إعادة المحاولة"
+		"retry": "إعادة المحاولة",
+		"selectMonth": "الشهر",
+		"selectYear": "السنة",
+		"selectCopticMonth": "الشهر القبطي",
+		"selectCopticYear": "السنة القبطية",
+		"calendarType": "التقويم",
+		"gregorian": "الميلادي",
+		"coptic": "القبطي",
+		"noFasting": "لا صوم في هذا اليوم",
+		"viewReadings": "عرض القراءات",
+		"closeDetails": "إغلاق التفاصيل"
 	},
 	"privacy": {
 		"title": "سياسة الخصوصية",

@@ -1,55 +1,55 @@
 'use client'
 
 import { features } from '@/config'
-import { COPTIC_MONTHS, GREGORIAN_MONTHS } from '@/constants'
-import { memo } from 'react'
+import { type CalendarView, monthView, yearsAround } from '@/lib/calendar-view'
+import { formatNumber, getMonthNames } from '@/lib/utils'
+import { copticToGregorian, getCopticMonthName, gregorianToCoptic } from '@coptic/core'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface MonthYearSelectorProps {
 	mode: 'gregorian' | 'coptic'
-	month: number
-	year: number
-	copticMonthInfo?: { month: number; year: number } | null
-	onMonthChange: (month: number) => void
-	onYearChange: (year: number) => void
-	baseYear: number
+	view: CalendarView
+	today: Date
+	onNavigate: (view: CalendarView) => void
 }
 
-export const MonthYearSelector = memo(function MonthYearSelector({
+const selectClass =
+	'text-lg sm:text-xl font-bold text-gray-900 dark:text-white bg-transparent border-none cursor-pointer hover:text-amber-600 dark:hover:text-amber-500 transition-colors focus:outline-none focus:ring-0 appearance-none'
+const optionClass = 'bg-white dark:bg-gray-900'
+
+export function MonthYearSelector({
 	mode,
-	month,
-	year,
-	copticMonthInfo,
-	onMonthChange,
-	onYearChange,
-	baseYear,
-}: MonthYearSelectorProps) {
-	const selectClass =
-		'text-lg sm:text-xl font-bold text-gray-900 dark:text-white bg-transparent border-none cursor-pointer hover:text-amber-600 dark:hover:text-amber-500 transition-colors focus:outline-none focus:ring-0 appearance-none'
+	view,
+	today,
+	onNavigate,
+}: Readonly<MonthYearSelectorProps>) {
+	const locale = useLocale()
+	const t = useTranslations('calendar')
 
 	if (!features.copticCalendarMode || mode === 'gregorian') {
 		return (
 			<>
 				<select
-					value={month - 1}
-					onChange={(e) => onMonthChange(Number(e.target.value) + 1)}
-					aria-label="Select month"
+					value={view.month}
+					onChange={(e) => onNavigate(monthView(view.year, Number(e.target.value), today))}
+					aria-label={t('selectMonth')}
 					className={`${selectClass} pr-1`}
 				>
-					{GREGORIAN_MONTHS.map((m, i) => (
-						<option key={m} value={i} className="bg-white dark:bg-gray-900">
-							{m}
+					{getMonthNames(locale).map((name, i) => (
+						<option key={name} value={i + 1} className={optionClass}>
+							{name}
 						</option>
 					))}
 				</select>
 				<select
-					value={year}
-					onChange={(e) => onYearChange(Number(e.target.value))}
-					aria-label="Select year"
+					value={view.year}
+					onChange={(e) => onNavigate(monthView(Number(e.target.value), view.month, today))}
+					aria-label={t('selectYear')}
 					className={selectClass}
 				>
-					{Array.from({ length: 21 }, (_, i) => baseYear - 10 + i).map((y) => (
-						<option key={y} value={y} className="bg-white dark:bg-gray-900">
-							{y}
+					{yearsAround(view.year).map((y) => (
+						<option key={y} value={y} className={optionClass}>
+							{formatNumber(y, locale)}
 						</option>
 					))}
 				</select>
@@ -57,48 +57,40 @@ export const MonthYearSelector = memo(function MonthYearSelector({
 		)
 	}
 
-	if (!copticMonthInfo) {
-		return <span className="text-xl font-bold text-gray-400 dark:text-gray-500">Loading...</span>
+	// The Coptic month of the selected day (or of the month's first day), converted by core
+	// through the Julian Day Number: Nasie is 5 or 6 days, so day offsets would drift.
+	const coptic = gregorianToCoptic(new Date(view.year, view.month - 1, view.day ?? 1))
+	const goToCoptic = (year: number, month: number) => {
+		const first = copticToGregorian({ year, month, day: 1 })
+		onNavigate({ year: first.getFullYear(), month: first.getMonth() + 1, day: first.getDate() })
 	}
 
 	return (
 		<>
 			<select
-				value={copticMonthInfo.month - 1}
-				onChange={(e) => {
-					const monthDiff = Number(e.target.value) - (copticMonthInfo.month - 1)
-					const newDate = new Date(year, month - 1, 15)
-					newDate.setDate(newDate.getDate() + monthDiff * 30)
-					onYearChange(newDate.getFullYear())
-					onMonthChange(newDate.getMonth() + 1)
-				}}
-				aria-label="Select Coptic month"
+				value={coptic.month}
+				onChange={(e) => goToCoptic(coptic.year, Number(e.target.value))}
+				aria-label={t('selectCopticMonth')}
 				className={`${selectClass} pr-1`}
 			>
-				{COPTIC_MONTHS.map((m, i) => (
-					<option key={m} value={i} className="bg-white dark:bg-gray-900">
-						{m}
+				{Array.from({ length: 13 }, (_, i) => i + 1).map((m) => (
+					<option key={m} value={m} className={optionClass}>
+						{getCopticMonthName(m, locale)}
 					</option>
 				))}
 			</select>
 			<select
-				value={copticMonthInfo.year}
-				onChange={(e) => {
-					const yearDiff = Number(e.target.value) - copticMonthInfo.year
-					const newDate = new Date(year, month - 1, 15)
-					newDate.setDate(newDate.getDate() + yearDiff * 365)
-					onYearChange(newDate.getFullYear())
-					onMonthChange(newDate.getMonth() + 1)
-				}}
-				aria-label="Select Coptic year"
+				value={coptic.year}
+				onChange={(e) => goToCoptic(Number(e.target.value), coptic.month)}
+				aria-label={t('selectCopticYear')}
 				className={selectClass}
 			>
-				{Array.from({ length: 21 }, (_, i) => copticMonthInfo.year - 10 + i).map((y) => (
-					<option key={y} value={y} className="bg-white dark:bg-gray-900">
-						{y}
+				{yearsAround(coptic.year).map((y) => (
+					<option key={y} value={y} className={optionClass}>
+						{formatNumber(y, locale)}
 					</option>
 				))}
 			</select>
 		</>
 	)
-})
+}

@@ -248,7 +248,17 @@
 		"previousMonth": "Previous month",
 		"nextMonth": "Next month",
 		"loadError": "Couldn't load this month.",
-		"retry": "Try again"
+		"retry": "Try again",
+		"selectMonth": "Month",
+		"selectYear": "Year",
+		"selectCopticMonth": "Coptic month",
+		"selectCopticYear": "Coptic year",
+		"calendarType": "Calendar",
+		"gregorian": "Gregorian",
+		"coptic": "Coptic",
+		"noFasting": "No fasting on this day",
+		"viewReadings": "View readings",
+		"closeDetails": "Close details"
 	},
 	"privacy": {
 		"title": "Privacy Policy",

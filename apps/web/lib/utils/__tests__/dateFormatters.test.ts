@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { formatCalendarDayLabel } from '../dateFormatters'
+import {
+	formatCalendarDayLabel,
+	formatNumber,
+	getMonthNames,
+	getWeekdayNames,
+} from '../dateFormatters'
 
 describe('formatCalendarDayLabel', () => {
 	const day = { gregorianDate: '2026-09-27', copticDate: { dateString: 'Tout 17, 1743' } }
@@ -24,5 +29,37 @@ describe('formatCalendarDayLabel', () => {
 		const label = formatCalendarDayLabel({ ...day, fastName: 'Nativity Fast' }, 'ar', false)
 		expect(label).toMatch(/٢٧/)
 		expect(label).toMatch(/، Nativity Fast$/)
+	})
+})
+
+describe('getWeekdayNames', () => {
+	it('starts on Sunday, as the grid does', () => {
+		expect(getWeekdayNames('en')).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])
+	})
+
+	it("names the days in the reader's language", () => {
+		expect(getWeekdayNames('ar')[0]).toBe('الأحد')
+		expect(getWeekdayNames('es')[0]).toMatch(/^dom/)
+	})
+
+	it('offers one-letter names for narrow columns', () => {
+		expect(getWeekdayNames('en', 'narrow')).toEqual(['S', 'M', 'T', 'W', 'T', 'F', 'S'])
+		expect(getWeekdayNames('ar', 'narrow')[0]).toHaveLength(1)
+	})
+})
+
+describe('getMonthNames', () => {
+	it("lists the twelve months in the reader's language", () => {
+		expect(getMonthNames('en')).toHaveLength(12)
+		expect(getMonthNames('en')[8]).toBe('September')
+		expect(getMonthNames('ar')[8]).toBe('سبتمبر')
+		expect(getMonthNames('es')[8]).toBe('septiembre')
+	})
+})
+
+describe('formatNumber', () => {
+	it('writes years without grouping, in Arabic-Indic digits for Arabic', () => {
+		expect(formatNumber(2026, 'en')).toBe('2026')
+		expect(formatNumber(2026, 'ar')).toBe('٢٠٢٦')
 	})
 })

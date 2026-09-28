@@ -50,7 +50,7 @@ test.describe('Calendar page', () => {
 		// Drive navigation via the month selector — the prev/next buttons are
 		// off-viewport on very small screens (iPhone SE). Pick a different month
 		// by index (values are numeric, so index is the value-agnostic choice).
-		const monthSelect = page.getByRole('combobox', { name: /select month/i })
+		const monthSelect = page.getByRole('combobox', { name: /^month$/i })
 		const selectedMonth = monthSelect.locator('option:checked')
 
 		const before = await selectedMonth.textContent()

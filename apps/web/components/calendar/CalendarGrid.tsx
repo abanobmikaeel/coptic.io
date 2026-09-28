@@ -1,9 +1,10 @@
 'use client'
 
 import { features } from '@/config'
-import { WEEKDAYS, getFastColors } from '@/constants'
+import { getFastColors } from '@/constants'
 import type { CalendarDay } from '@/lib/types'
-import { formatCalendarDayLabel } from '@/lib/utils'
+import { formatCalendarDayLabel, formatNumber, getWeekdayNames } from '@/lib/utils'
+import { getLiturgicalName, localizeCopticDate } from '@coptic/core'
 import { useLocale, useTranslations } from 'next-intl'
 
 interface CalendarGridProps {
@@ -35,16 +36,22 @@ export function CalendarGrid({
 	const locale = useLocale()
 	const t = useTranslations('calendar')
 	const showCoptic = features.copticCalendarMode && mode === 'coptic'
+	const weekdays = getWeekdayNames(locale)
+	// Arabic has no short weekday forms, so its full names don't fit a phone's columns: use letters
+	const phoneWeekdays = locale === 'ar' ? getWeekdayNames(locale, 'narrow') : weekdays
 
 	return (
 		<div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 mb-4 shadow-sm dark:shadow-none">
 			<div className="grid grid-cols-7 mb-2">
-				{WEEKDAYS.map((day) => (
+				{weekdays.map((day, i) => (
 					<div
 						key={day}
 						className="text-center text-sm font-medium text-gray-600 dark:text-gray-400 py-3"
 					>
-						{day}
+						<abbr title={day} className="no-underline sm:hidden">
+							{phoneWeekdays[i]}
+						</abbr>
+						<span className="hidden sm:inline">{day}</span>
 					</div>
 				))}
 			</div>
@@ -84,8 +91,12 @@ export function CalendarGrid({
 						)
 						const label = formatCalendarDayLabel(
 							{
-								...dayData,
-								fastName: dayData.fasting.isFasting ? dayData.fasting.description : null,
+								gregorianDate: dayData.gregorianDate,
+								copticDate: localizeCopticDate(dayData.copticDate, locale),
+								fastName:
+									dayData.fasting.isFasting && dayData.fasting.description
+										? getLiturgicalName(dayData.fasting.description, locale)
+										: null,
 							},
 							locale,
 							showCoptic,
@@ -121,7 +132,7 @@ export function CalendarGrid({
 												: 'text-gray-700 dark:text-gray-300'
 									}`}
 								>
-									{showCoptic ? dayData.copticDate.day : dayNum}
+									{formatNumber(showCoptic ? dayData.copticDate.day : dayNum, locale)}
 								</span>
 								{colors && (
 									<span

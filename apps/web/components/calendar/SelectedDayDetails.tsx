@@ -2,15 +2,15 @@
 
 import { ChevronRightIcon, CloseIcon } from '@/components/ui/Icons'
 import { getFastColors } from '@/constants'
+import type { CalendarDay } from '@/lib/types'
+import { formatGregorianDate, parseDateString } from '@/lib/utils'
+import { getLiturgicalName, localizeCopticDate } from '@coptic/core'
+import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { memo } from 'react'
 
 interface SelectedDayDetailsProps {
-	dayData: {
-		gregorianDate: string
-		copticDate: { dateString: string }
-		fasting: { isFasting: boolean; fastType: string | null; description: string | null }
-	}
+	dayData: CalendarDay
 	onClose: () => void
 }
 
@@ -18,6 +18,8 @@ export const SelectedDayDetails = memo(function SelectedDayDetails({
 	dayData,
 	onClose,
 }: SelectedDayDetailsProps) {
+	const locale = useLocale()
+	const t = useTranslations('calendar')
 	const colors = getFastColors(dayData.fasting.isFasting ? dayData.fasting.description : null)
 
 	return (
@@ -25,21 +27,16 @@ export const SelectedDayDetails = memo(function SelectedDayDetails({
 			<div className="flex items-start justify-between">
 				<div>
 					<p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-						{new Date(`${dayData.gregorianDate}T00:00:00`).toLocaleDateString('en-US', {
-							weekday: 'long',
-							month: 'long',
-							day: 'numeric',
-							year: 'numeric',
-						})}
+						{formatGregorianDate(parseDateString(dayData.gregorianDate), locale)}
 					</p>
 					<p className="text-xl font-semibold text-amber-600 dark:text-amber-500">
-						{dayData.copticDate.dateString}
+						{localizeCopticDate(dayData.copticDate, locale).dateString}
 					</p>
 				</div>
 				<button
 					type="button"
 					onClick={onClose}
-					aria-label="Close details"
+					aria-label={t('closeDetails')}
 					className="p-1 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 				>
 					<CloseIcon />
@@ -48,20 +45,15 @@ export const SelectedDayDetails = memo(function SelectedDayDetails({
 
 			<div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-800">
 				{colors && dayData.fasting.description ? (
-					<>
-						<div
-							className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${colors.bg} ${colors.darkBg}`}
-						>
-							<span className={`text-sm font-semibold ${colors.text} ${colors.darkText}`}>
-								{dayData.fasting.description}
-							</span>
-						</div>
-						<p className="mt-3 text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
-							{dayData.fasting.fastType}
-						</p>
-					</>
+					<div
+						className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${colors.bg} ${colors.darkBg}`}
+					>
+						<span className={`text-sm font-semibold ${colors.text} ${colors.darkText}`}>
+							{getLiturgicalName(dayData.fasting.description, locale)}
+						</span>
+					</div>
 				) : (
-					<p className="text-sm text-gray-500 dark:text-gray-400">No fasting on this day</p>
+					<p className="text-sm text-gray-500 dark:text-gray-400">{t('noFasting')}</p>
 				)}
 			</div>
 
@@ -70,7 +62,7 @@ export const SelectedDayDetails = memo(function SelectedDayDetails({
 				prefetch={false}
 				className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-amber-700 hover:bg-amber-600 text-white font-semibold rounded-lg shadow-sm hover:shadow transition-all"
 			>
-				View Readings
+				{t('viewReadings')}
 				<ChevronRightIcon className="w-4 h-4" />
 			</Link>
 		</div>

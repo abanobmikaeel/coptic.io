@@ -1,36 +1,3 @@
-export const GREGORIAN_MONTHS = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December',
-] as const
-
-export const COPTIC_MONTHS = [
-	'Tout',
-	'Baba',
-	'Hator',
-	'Kiahk',
-	'Toba',
-	'Amshir',
-	'Baramhat',
-	'Baramouda',
-	'Bashans',
-	'Paona',
-	'Epep',
-	'Mesra',
-	'Nasie',
-] as const
-
-export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
-
 export const FAST_COLORS = {
 	'Advent Fast': {
 		bg: 'bg-purple-100',

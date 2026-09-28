@@ -87,3 +87,25 @@ export function formatCalendarDayLabel(
 	// Arabic separates clauses with its own comma
 	return parts.join(locale === 'ar' ? '، ' : ', ')
 }
+
+// 1 January 2023 was a Sunday, so its first seven days give the week in grid order
+const SUNDAY = new Date(2023, 0, 1)
+
+/** Weekday names, Sunday first, in the reader's language ('narrow' is a letter, 'short' a word). */
+export function getWeekdayNames(locale: string, width: 'short' | 'narrow' = 'short'): string[] {
+	const format = new Intl.DateTimeFormat(intlLocale(locale), { weekday: width })
+	return Array.from({ length: 7 }, (_, i) =>
+		format.format(new Date(SUNDAY.getFullYear(), 0, SUNDAY.getDate() + i)),
+	)
+}
+
+/** Gregorian month names, January first, in the reader's language. */
+export function getMonthNames(locale: string): string[] {
+	const format = new Intl.DateTimeFormat(intlLocale(locale), { month: 'long' })
+	return Array.from({ length: 12 }, (_, i) => format.format(new Date(2023, i, 1)))
+}
+
+/** A whole number in the reader's digits, without grouping (years read "2026", not "2,026"). */
+export function formatNumber(value: number, locale: string): string {
+	return new Intl.NumberFormat(intlLocale(locale), { useGrouping: false }).format(value)
+}
