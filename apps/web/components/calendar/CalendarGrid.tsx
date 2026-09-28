@@ -71,7 +71,7 @@ export function CalendarGrid({
 					))}
 				</div>
 			) : (
-				<div className="grid grid-cols-7 gap-3">
+				<div className="grid grid-cols-7 gap-3 animate-in fade-in duration-300">
 					{blanks.map((i) => (
 						<div key={`blank-${i}`} className="aspect-square" />
 					))}
