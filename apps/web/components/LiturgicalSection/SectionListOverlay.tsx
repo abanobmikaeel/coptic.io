@@ -1,28 +1,37 @@
 import type { ReadingTheme } from '@/components/DisplaySettings'
 import { themeClasses } from '@/lib/reading-styles'
-import type { IncenseSection } from '@/lib/types'
 import { CheckIcon, CloseIcon, PlusIcon } from './icons'
+
+export interface SectionListItem {
+	id: string
+	title: string
+	// Marks an optional section the user added to the service.
+	optional?: boolean
+	// Heading shown above the first item of each group (e.g. the service it belongs to).
+	group?: string
+	rubric?: string
+}
 
 export interface SectionListOverlayProps {
 	// Visible sections (service flow), and the optional ones offered as "additional prayers".
-	sections: IncenseSection[]
-	optionalSections: IncenseSection[]
+	sections: SectionListItem[]
+	optionalSections?: SectionListItem[]
 	activeIndex: number
 	// Ids of optional sections the user has added.
-	extras: string[]
+	extras?: string[]
 	theme: ReadingTheme
 	onJump: (index: number) => void
-	onToggleExtra: (id: string) => void
+	onToggleExtra?: (id: string) => void
 	onClose: () => void
 }
 
 // Modal overlay listing every section (jump to any) plus the optional "additional prayers"
-// a user can fold into the service. Pure presentation — all state lives in the reader.
+// a user can fold into the service. Pure presentation — all state lives in the caller.
 export function SectionListOverlay({
 	sections,
-	optionalSections,
+	optionalSections = [],
 	activeIndex,
-	extras,
+	extras = [],
 	theme,
 	onJump,
 	onToggleExtra,
@@ -63,6 +72,11 @@ export function SectionListOverlay({
 				<ul className="py-1">
 					{sections.map((s, i) => (
 						<li key={s.id}>
+							{s.group && s.group !== sections[i - 1]?.group && (
+								<p className={`px-4 pt-3 pb-1 text-sm font-semibold ${themeClasses.muted[theme]}`}>
+									{s.group}
+								</p>
+							)}
 							<button
 								type="button"
 								onClick={() => onJump(i)}
@@ -80,9 +94,9 @@ export function SectionListOverlay({
 								<span className="text-sm">{s.title}</span>
 								{s.optional && (
 									<span
-										className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-current/20 flex-shrink-0 ${themeClasses.muted[theme]}`}
+										className={`text-[10px] px-1.5 py-0.5 rounded border border-current/20 flex-shrink-0 ${themeClasses.muted[theme]}`}
 									>
-										added
+										Added
 									</span>
 								)}
 								{i === activeIndex && (
@@ -95,9 +109,7 @@ export function SectionListOverlay({
 				{optionalSections.length > 0 && (
 					<>
 						<div className={`px-4 pt-3 pb-1 border-t ${themeClasses.border[theme]}`}>
-							<p
-								className={`text-xs font-semibold uppercase tracking-wider ${themeClasses.muted[theme]}`}
-							>
+							<p className={`text-sm font-semibold ${themeClasses.muted[theme]}`}>
 								Additional prayers
 							</p>
 							<p className={`text-xs mt-0.5 ${themeClasses.muted[theme]}`}>
@@ -111,7 +123,7 @@ export function SectionListOverlay({
 									<li key={s.id}>
 										<button
 											type="button"
-											onClick={() => onToggleExtra(s.id)}
+											onClick={() => onToggleExtra?.(s.id)}
 											aria-pressed={enabled}
 											className={`w-full text-left px-4 py-2.5 flex items-center gap-3 transition-colors ${themeClasses.text[theme]} hover:bg-current/5`}
 										>

@@ -17,7 +17,8 @@
 		"LPsalm": "Salmo",
 		"LGospel": "Evangelio",
 		"EPPsalm": "Salmo de la Oración Vespertina",
-		"EPGospel": "Evangelio de la Oración Vespertina"
+		"EPGospel": "Evangelio de la Oración Vespertina",
+		"Synaxarium": "Sinaxario"
 	},
 	"books": {
 		"Genesis": "Génesis",

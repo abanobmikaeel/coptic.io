@@ -353,3 +353,12 @@ export function GoogleIcon({ className = 'w-5 h-5' }: Readonly<IconProps>) {
 		</svg>
 	)
 }
+
+// The Coptic cross from the site logo, filled in the current text colour
+export function CopticCrossIcon({ className = 'w-4 h-4' }: Readonly<IconProps>) {
+	return (
+		<svg className={className} fill="currentColor" viewBox="-60 -39 248 248" aria-hidden="true">
+			<polygon points="63.9,-38.34 80.94,-8.52 115.02,-8.52 89.46,21.3 89.46,59.64 127.8,59.64 157.62,34.08 157.62,68.16 187.44,85.2 157.62,102.24 157.62,136.32 127.8,110.76 89.46,110.76 89.46,149.1 115.02,178.92 80.94,178.92 63.9,208.74 46.86,178.92 12.78,178.92 38.34,149.1 38.34,110.76 0,110.76 -29.82,136.32 -29.82,102.24 -59.64,85.2 -29.82,68.16 -29.82,34.08 0,59.64 38.34,59.64 38.34,21.3 12.78,-8.52 46.86,-8.52" />
+		</svg>
+	)
+}

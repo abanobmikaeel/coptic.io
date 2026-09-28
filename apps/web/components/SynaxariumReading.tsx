@@ -1,5 +1,6 @@
 'use client'
 
+import { getSectionLabels } from '@/i18n/content-translations'
 import {
 	getFontClass,
 	getLineHeightClass,
@@ -8,6 +9,7 @@ import {
 	getWidthClass,
 	getWordSpacingClass,
 	multiLangGridClass,
+	multiLangWidthClass,
 	themeClasses,
 } from '@/lib/reading-styles'
 import type { SynaxariumEntry } from '@/lib/types'
@@ -22,6 +24,7 @@ import type {
 	WordSpacing,
 } from './DisplaySettings'
 import { ReadingHeader } from './ScriptureReading/ReadingHeader'
+import { toArabicNumerals } from './ScriptureReading/utils'
 import { ChevronRightIcon } from './ui/Icons'
 
 type BibleTranslation = 'en' | 'ar' | 'es' | 'cop'
@@ -32,7 +35,6 @@ interface SynaxariumReadingProps {
 	textSize: TextSize
 	theme?: ReadingTheme
 	width?: ReadingWidth
-	service?: string
 	fontFamily?: FontFamily
 	weight?: FontWeight
 	lineSpacing?: LineSpacing
@@ -47,6 +49,12 @@ function orderLanguages(langs: BibleTranslation[]): BibleTranslation[] {
 	if (langs.includes('es')) order.push('es')
 	if (langs.includes('ar')) order.push('ar')
 	return order
+}
+
+// "4 commemorations"; Arabic uses a label form, which reads correctly for any count
+function commemorationCount(count: number, lang: BibleTranslation): string {
+	if (lang === 'ar') return `عدد التذكارات: ${toArabicNumerals(count)}`
+	return `${count} ${count === 1 ? 'commemoration' : 'commemorations'}`
 }
 
 // Merge entries from multiple languages by ID
@@ -82,7 +90,6 @@ export function SynaxariumReading({
 	textSize,
 	theme = 'light',
 	width = 'normal',
-	service,
 	fontFamily = 'serif',
 	weight = 'normal',
 	lineSpacing = 'normal',
@@ -99,15 +106,18 @@ export function SynaxariumReading({
 	// Merge entries by ID for multi-language matching
 	const mergedEntries = mergeEntriesByLang(entriesByLang, orderedLangs)
 
-	// Use first available language for count (unique entries)
-	const count = mergedEntries.length
+	// Header title and entry count per language, laid out like the scripture headers
+	const labels = getSectionLabels('Synaxarium')
+	const references = {
+		en: commemorationCount(entriesByLang.en?.length ?? 0, 'en'),
+		ar: commemorationCount(entriesByLang.ar?.length ?? 0, 'ar'),
+		es: commemorationCount(entriesByLang.es?.length ?? 0, 'es'),
+		cop: commemorationCount(entriesByLang.cop?.length ?? 0, 'cop'),
+	}
+	const firstLang = orderedLangs[0] ?? 'en'
 
 	// Width class - responsive, wider for multi-language
-	const widthClass = isMultiLang
-		? orderedLangs.length >= 3
-			? 'max-w-full sm:max-w-7xl'
-			: 'max-w-full sm:max-w-6xl'
-		: getWidthClass(width)
+	const widthClass = isMultiLang ? multiLangWidthClass(orderedLangs.length) : getWidthClass(width)
 
 	// Get style classes for a language
 	const getStyleClasses = (lang: BibleTranslation) => {
@@ -142,13 +152,16 @@ export function SynaxariumReading({
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
-				className="w-full group cursor-pointer -mx-3 sm:mx-0"
+				className="w-[calc(100%+1.5rem)] group cursor-pointer -mx-3 sm:w-full sm:mx-0"
 			>
 				<div className={`${widthClass} sm:mx-auto`}>
 					<ReadingHeader
-						title="Synaxarium"
-						reference={`${count} ${count === 1 ? 'commemoration' : 'commemorations'}`}
-						service={service}
+						orderedLangs={isMultiLang ? orderedLangs : undefined}
+						labels={labels}
+						references={references}
+						title={labels[firstLang]}
+						reference={references[firstLang]}
+						isRtl={!isMultiLang && firstLang === 'ar'}
 						isOpen={isOpen}
 						theme={theme}
 					/>

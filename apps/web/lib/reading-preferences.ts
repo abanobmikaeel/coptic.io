@@ -12,6 +12,14 @@ export type FontWeight = 'light' | 'normal' | 'bold'
 
 const STORAGE_KEY = 'coptic-reading-preferences'
 
+/**
+ * The view mode a URL `view` param selects. Verse-by-verse is the default, so an absent or
+ * unknown value means `verse`; the settings panel removes the param when you choose it.
+ */
+export function parseViewMode(value: string | null | undefined): ViewMode {
+	return value === 'continuous' ? 'continuous' : 'verse'
+}
+
 // Migration map for old invalid values that may be stored in localStorage
 const MIGRATIONS: Record<string, Record<string, string>> = {
 	spacing: { tight: 'compact' },
@@ -73,6 +81,33 @@ export function savePreferences(prefs: ReadingPreferences) {
 	} catch {
 		// Ignore storage errors
 	}
+}
+
+/**
+ * Adds stored preferences to display params the URL leaves unset. Params already in the URL win,
+ * so a shared or bookmarked link still shows what it asks for. Defaults are never written, since
+ * an absent param already means the default.
+ */
+export function withStoredPreferences(
+	params: URLSearchParams,
+	prefs: ReadingPreferences,
+	theme: ReadingTheme | undefined,
+): URLSearchParams {
+	const next = new URLSearchParams(params)
+	const fill = (key: string, value: string | null | undefined, fallback: string) => {
+		if (value && value !== fallback && !next.has(key)) next.set(key, value)
+	}
+	fill('size', prefs.size, 'md')
+	fill('view', prefs.view, 'verse')
+	fill('lang', prefs.lang, 'en')
+	fill('font', prefs.font, 'sans')
+	fill('spacing', prefs.spacing, 'normal')
+	fill('wordSpacing', prefs.wordSpacing, 'normal')
+	fill('theme', theme, 'light')
+	fill('width', prefs.width, 'normal')
+	fill('weight', prefs.weight, 'normal')
+	fill('verses', prefs.verses, 'show')
+	return next
 }
 
 export function getSystemTheme(): ReadingTheme {

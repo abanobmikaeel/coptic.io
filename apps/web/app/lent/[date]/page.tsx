@@ -7,7 +7,6 @@ import {
 	type ReadingTheme,
 	type ReadingWidth,
 	type TextSize,
-	type ViewMode,
 	type WordSpacing,
 } from '@/components/DisplaySettings'
 import { ReadingPageLayout } from '@/components/ReadingPageLayout'
@@ -17,6 +16,7 @@ import { ScriptureReading } from '@/components/ScriptureReading'
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
 import { API_BASE_URL } from '@/config'
 import type { ContentLang } from '@/i18n/content-translations'
+import { parseViewMode } from '@/lib/reading-preferences'
 import { themeClasses } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
 import type { Metadata } from 'next'
@@ -124,7 +124,7 @@ export default async function LentDayPage({ params, searchParams }: Readonly<Len
 	const sp = await searchParams
 
 	// Parse display settings from URL
-	const viewMode: ViewMode = sp.view === 'verse' ? 'verse' : 'continuous'
+	const viewMode = parseViewMode(sp.view)
 	const showVerses = sp.verses !== 'hide'
 	const textSize: TextSize = (sp.size as TextSize) || 'md'
 	const fontFamily: FontFamily = (sp.font as FontFamily) || 'sans'
@@ -292,7 +292,6 @@ export default async function LentDayPage({ params, searchParams }: Readonly<Len
 								es: entry.reference,
 								cop: entry.reference,
 							}}
-							service={undefined}
 							{...scriptureProps}
 						/>
 					))}

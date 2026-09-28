@@ -15,7 +15,9 @@ import {
 	type WordSpacing,
 	getSystemTheme,
 	loadPreferences,
+	parseViewMode,
 	savePreferences,
+	withStoredPreferences,
 } from '@/lib/reading-preferences'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -53,7 +55,7 @@ function settingsFromParams(params: URLSearchParams, isAutoTheme: boolean): Read
 	return {
 		showVerses: params.get('verses') !== 'hide',
 		textSize: (params.get('size') as TextSize) || 'md',
-		viewMode: (params.get('view') as ViewMode) || 'verse',
+		viewMode: parseViewMode(params.get('view')),
 		mode: (params.get('mode') as ReaderMode) || 'present',
 		translation: (params.get('lang') as BibleTranslation) || 'en',
 		fontFamily: (params.get('font') as FontFamily) || 'sans',
@@ -66,7 +68,19 @@ function settingsFromParams(params: URLSearchParams, isAutoTheme: boolean): Read
 	}
 }
 
-export function useReadingSettings(): {
+interface UseReadingSettingsOptions {
+	/**
+	 * Write stored preferences into the URL with a router navigation, so the server page re-renders.
+	 * Pages that render these settings on the server from the URL (Readings, Lent) need this;
+	 * client-rendered readers read them from this hook and must not navigate, which would race
+	 * their own mount-time redirects (Agpeya, Vespers).
+	 */
+	refreshAfterRestore?: boolean
+}
+
+export function useReadingSettings({
+	refreshAfterRestore = false,
+}: UseReadingSettingsOptions = {}): {
 	settings: ReadingSettings
 	actions: ReadingSettingsActions
 	mounted: boolean
@@ -91,27 +105,17 @@ export function useReadingSettings(): {
 		const isAuto = !prefs.theme || prefs.theme === 'auto'
 		setIsAutoTheme(isAuto)
 
-		// If no display settings in URL, apply stored preferences while preserving other params (like date)
-		const currentParams = searchParams.toString()
-		if (currentParams === '' || !searchParams.has('size')) {
-			const params = new URLSearchParams(searchParams.toString())
-			if (prefs.size && prefs.size !== 'md') params.set('size', prefs.size)
-			if (prefs.view && prefs.view !== 'verse') params.set('view', prefs.view)
-			if (prefs.lang && prefs.lang !== 'en') params.set('lang', prefs.lang)
-			if (prefs.font && prefs.font !== 'sans') params.set('font', prefs.font)
-			if (prefs.spacing && prefs.spacing !== 'normal') params.set('spacing', prefs.spacing)
-			if (prefs.wordSpacing && prefs.wordSpacing !== 'normal')
-				params.set('wordSpacing', prefs.wordSpacing)
-			const effectiveTheme = isAuto ? systemTheme : prefs.theme
-			if (effectiveTheme && effectiveTheme !== 'light') params.set('theme', effectiveTheme)
-			if (prefs.width && prefs.width !== 'normal') params.set('width', prefs.width)
-			if (prefs.weight && prefs.weight !== 'normal') params.set('weight', prefs.weight)
-			if (prefs.verses === 'hide') params.set('verses', 'hide')
-
-			const queryString = params.toString()
-			if (queryString) {
-				window.history.replaceState(null, '', `${pathname}?${queryString}`)
-			}
+		// Fill display params the URL leaves unset from stored preferences, keeping the rest (like date)
+		const params = withStoredPreferences(
+			searchParams,
+			prefs,
+			isAuto ? systemTheme : (prefs.theme as ReadingTheme | undefined),
+		)
+		const queryString = params.toString()
+		if (queryString !== searchParams.toString()) {
+			const url = `${pathname}?${queryString}${window.location.hash}`
+			if (refreshAfterRestore) router.replace(url, { scroll: false })
+			else window.history.replaceState(null, '', url)
 			// Store resolved settings in state so the component re-renders
 			setLocalSettings(settingsFromParams(params, isAuto))
 		}
