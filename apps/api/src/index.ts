@@ -3,7 +3,7 @@ import type { ExecutionContext } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
-import { httpUsage, recordUsage } from './analytics/record'
+import { httpUsage, kindOf, recordUsage } from './analytics/record'
 import type { Bindings } from './env'
 import { yoga } from './graphql'
 import { handleMcpRequest } from './mcp/server'
@@ -48,8 +48,11 @@ app.all('/mcp', (c) => {
 	} catch {
 		// Bun dev has no execution context.
 	}
-	return handleMcpRequest(c.req.raw, (path) =>
-		Promise.resolve(app.fetch(new Request(new URL(path, c.req.url)), c.env, executionCtx)),
+	return handleMcpRequest(
+		c.req.raw,
+		(path) =>
+			Promise.resolve(app.fetch(new Request(new URL(path, c.req.url)), c.env, executionCtx)),
+		(usage) => recordUsage(c.env?.ANALYTICS, c.req.raw, usage),
 	)
 })
 
@@ -120,7 +123,9 @@ export { app }
 
 /**
  * Record one usage event per incoming request, outside the app so that only
- * requests arriving at the Worker are counted, never calls to app.fetch itself.
+ * requests arriving at the Worker are counted, never calls to app.fetch itself:
+ * the REST calls MCP tools make in-process are not counted twice. /mcp records
+ * its own events, one per tool call and per initialize handshake.
  */
 const fetchWithUsage = async (
 	request: Request,
@@ -129,7 +134,9 @@ const fetchWithUsage = async (
 ): Promise<Response> => {
 	const started = Date.now()
 	const response = await app.fetch(request, env, executionCtx)
-	recordUsage(env.ANALYTICS, request, httpUsage(request, response.status, Date.now() - started))
+	if (kindOf(new URL(request.url).pathname) !== 'mcp') {
+		recordUsage(env.ANALYTICS, request, httpUsage(request, response.status, Date.now() - started))
+	}
 	return response
 }
 

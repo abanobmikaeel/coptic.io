@@ -16,13 +16,15 @@ export const OWN_CALLERS = [
 const isOwn = (caller: string): boolean =>
 	OWN_CALLERS.includes(caller) || caller.startsWith('origin:localhost')
 
-const { kind, route } = COLUMNS
+const { kind, route, status, mcpClient } = COLUMNS
 
 const since = (days: number) => `timestamp > NOW() - INTERVAL '${Math.trunc(days)}' DAY`
 
 export const queries = (days: number) => ({
 	byKind: `SELECT ${kind} AS kind, SUM(_sample_interval) AS requests, count(DISTINCT index1) AS callers FROM ${DATASET} WHERE ${since(days)} GROUP BY kind ORDER BY requests DESC`,
 	callers: `SELECT index1 AS caller, SUM(_sample_interval) AS requests, max(timestamp) AS lastSeen FROM ${DATASET} WHERE ${since(days)} GROUP BY caller ORDER BY requests DESC LIMIT 1000`,
+	mcpClients: `SELECT ${mcpClient} AS client, SUM(_sample_interval) AS connections FROM ${DATASET} WHERE ${since(days)} AND ${kind} = 'mcp' AND ${route} = 'initialize' GROUP BY client ORDER BY connections DESC`,
+	mcpTools: `SELECT ${route} AS tool, SUM(_sample_interval) AS calls, sumIf(_sample_interval, ${status} = 'error') AS errors FROM ${DATASET} WHERE ${since(days)} AND ${kind} = 'mcp' AND ${route} != 'initialize' GROUP BY tool ORDER BY calls DESC`,
 	routes: `SELECT ${route} AS route, SUM(_sample_interval) AS requests FROM ${DATASET} WHERE ${since(days)} AND ${kind} = 'rest' GROUP BY route ORDER BY requests DESC LIMIT 25`,
 })
 

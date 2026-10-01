@@ -19,21 +19,25 @@ export const COLUMNS = {
 	clientName: 'blob7',
 	country: 'blob8',
 	method: 'blob9',
+	mcpClient: 'blob10',
 	durationMs: 'double1',
 } as const
 
-export type Kind = 'rest' | 'graphql' | 'other'
+export type Kind = 'rest' | 'graphql' | 'mcp' | 'other'
 
 export interface Usage {
 	kind: Kind
 	route: string
 	status: string
 	durationMs: number
+	/** MCP client name and version, known on the initialize handshake only. */
+	mcpClient?: string
 }
 
 export const kindOf = (pathname: string): Kind => {
 	if (pathname.startsWith('/api/')) return 'rest'
 	if (pathname === '/graphql') return 'graphql'
+	if (pathname === '/mcp') return 'mcp'
 	return 'other'
 }
 
@@ -75,6 +79,7 @@ export const recordUsage = (
 				caller.clientName,
 				countryOf(request),
 				request.method,
+				usage.mcpClient ?? '',
 			],
 			doubles: [usage.durationMs],
 			// The index is the sampling key: sampling stays fair per caller.

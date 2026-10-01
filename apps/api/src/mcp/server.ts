@@ -1,11 +1,15 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js'
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js'
+import type { Usage } from '../analytics/record'
 import { INTERNAL_ERROR_MESSAGE } from '../utils/http'
 import { type ToolDefinition, tools } from './tools'
 
 /** Serves a REST path in-process and returns its response. */
 export type Dispatch = (path: string) => Promise<Response>
+
+/** Receives one usage event per tool call and per initialize handshake. */
+export type OnUsage = (usage: Usage) => void
 
 const INSTRUCTIONS =
 	'Coptic Orthodox Church data from coptic.io: the Coptic calendar, Katameros readings, fasts, feasts, liturgical seasons, the Synaxarium and the Agpeya. Dates are Gregorian YYYY-MM-DD. Quote liturgical and Scriptural text as returned; do not paraphrase it as the source.'
@@ -32,7 +36,7 @@ export const callTool = async (
 	return text(JSON.stringify(definition.select ? definition.select(body) : body))
 }
 
-export const createMcpServer = (dispatch: Dispatch): McpServer => {
+export const createMcpServer = (dispatch: Dispatch, onUsage: OnUsage = () => {}): McpServer => {
 	const server = new McpServer(
 		{ name: 'coptic.io', version: '1.0.0' },
 		{ instructions: INSTRUCTIONS },
@@ -46,7 +50,17 @@ export const createMcpServer = (dispatch: Dispatch): McpServer => {
 				inputSchema: definition.inputSchema,
 				annotations: { readOnlyHint: true, openWorldHint: false },
 			},
-			(args) => callTool(definition, args as Record<string, unknown>, dispatch),
+			async (args) => {
+				const started = Date.now()
+				const result = await callTool(definition, args as Record<string, unknown>, dispatch)
+				onUsage({
+					kind: 'mcp',
+					route: `tool:${definition.name}`,
+					status: result.isError ? 'error' : 'ok',
+					durationMs: Date.now() - started,
+				})
+				return result
+			},
 		)
 	}
 	return server
@@ -57,12 +71,29 @@ export const createMcpServer = (dispatch: Dispatch): McpServer => {
  * a read, so no session is kept and each request gets its own server, which is
  * what a Worker isolate can safely hold.
  */
-export const handleMcpRequest = async (request: Request, dispatch: Dispatch): Promise<Response> => {
+export const handleMcpRequest = async (
+	request: Request,
+	dispatch: Dispatch,
+	onUsage: OnUsage = () => {},
+): Promise<Response> => {
+	const started = Date.now()
 	const transport = new WebStandardStreamableHTTPServerTransport({
 		sessionIdGenerator: undefined,
 		enableJsonResponse: true,
 	})
-	const server = createMcpServer(dispatch)
+	const server = createMcpServer(dispatch, onUsage)
 	await server.connect(transport)
-	return transport.handleRequest(request)
+	const response = await transport.handleRequest(request)
+	// Stateless, so the client names itself only on the request that initializes.
+	const client = server.server.getClientVersion()
+	if (client) {
+		onUsage({
+			kind: 'mcp',
+			route: 'initialize',
+			status: String(response.status),
+			durationMs: Date.now() - started,
+			mcpClient: `${client.name}/${client.version}`,
+		})
+	}
+	return response
 }
