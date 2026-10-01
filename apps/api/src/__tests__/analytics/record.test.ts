@@ -1,3 +1,5 @@
+import { Client } from '@modelcontextprotocol/sdk/client/index.js'
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import type { ExecutionContext } from 'hono'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { COLUMNS, recordUsage } from '../../analytics/record'
@@ -41,6 +43,7 @@ describe('usage recording', () => {
 			caller: 'client:my-app',
 			uaProduct: 'curl',
 			clientName: 'my-app',
+			mcpClient: '',
 			method: 'GET',
 		})
 		expect(columns(events[0]).durationMs).toBeTypeOf('number')
@@ -54,6 +57,36 @@ describe('usage recording', () => {
 	it('tags GraphQL as its own surface', async () => {
 		await get('/graphql?query=%7B__typename%7D')
 		expect(columns(events[0])).toMatchObject({ kind: 'graphql', route: '/graphql' })
+	})
+
+	const connect = async (client: Client) =>
+		client.connect(
+			new StreamableHTTPClientTransport(new URL('http://localhost/mcp'), {
+				fetch: (input, init) => worker.fetch(new Request(input, init), env, ctx),
+			}),
+		)
+
+	it('records MCP tool calls once, not the REST calls they make in-process', async () => {
+		const client = new Client({ name: 'test-client', version: '2.1.0' })
+		await connect(client)
+		events = []
+		await client.callTool({ name: 'get_fasting', arguments: { date: '2026-03-04' } })
+		await client.callTool({ name: 'get_fasting', arguments: { date: '2026-02-30' } })
+		await client.close()
+
+		expect(events.map(columns)).toMatchObject([
+			{ kind: 'mcp', route: 'tool:get_fasting', status: 'ok' },
+			{ kind: 'mcp', route: 'tool:get_fasting', status: 'error' },
+		])
+	})
+
+	it('records the MCP client name on initialize', async () => {
+		const client = new Client({ name: 'test-client', version: '2.1.0' })
+		await connect(client)
+		await client.close()
+
+		const initialize = events.map(columns).find((e) => e.route === 'initialize')
+		expect(initialize).toMatchObject({ kind: 'mcp', status: '200', mcpClient: 'test-client/2.1.0' })
 	})
 
 	it('records nothing without the binding', async () => {
