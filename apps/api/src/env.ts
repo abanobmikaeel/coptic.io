@@ -7,8 +7,15 @@ export interface R2Bucket {
 	get(key: string): Promise<R2ObjectBody | null>
 }
 
+// Minimal Workers Analytics Engine typing, for the same reason.
+export interface AnalyticsEngineDataset {
+	writeDataPoint(event: { blobs?: string[]; doubles?: number[]; indexes?: string[] }): void
+}
+
 export type Bindings = {
 	BIBLE_BUCKET: R2Bucket
+	// Usage analytics. Bound in production only, so previews and dev record nothing.
+	ANALYTICS?: AnalyticsEngineDataset
 	// Deploy identifier (git SHA) injected at `wrangler deploy --var DATA_VERSION:<sha>`.
 	// Folded into the edge cache key so every deploy serves fresh responses instead of
 	// stale cached ones (e.g. after re-uploading Bible data to R2). Undefined in dev.

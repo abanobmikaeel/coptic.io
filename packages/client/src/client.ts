@@ -17,6 +17,11 @@ export interface CopticClientConfig {
 	language?: 'en' | 'ar' | 'cop'
 	/** Request timeout in milliseconds */
 	timeout?: number
+	/**
+	 * Your project's name, sent as the X-Client-Name header so its usage can be told
+	 * apart from other callers'. Letters, digits and . _ - only (e.g. "st-mark-app").
+	 */
+	clientName?: string
 }
 
 /**
@@ -78,6 +83,7 @@ export class CopticClient {
 	private baseUrl: string
 	private language: string
 	private timeout: number
+	private clientName?: string
 
 	/** Readings endpoint methods */
 	public readings: ReadingsEndpoint
@@ -94,6 +100,7 @@ export class CopticClient {
 		this.baseUrl = config.baseUrl ?? 'https://api.coptic.io'
 		this.language = config.language ?? 'en'
 		this.timeout = config.timeout ?? 30000
+		this.clientName = config.clientName
 
 		// Initialize endpoint classes
 		this.readings = new ReadingsEndpoint(this)
@@ -123,6 +130,7 @@ export class CopticClient {
 				signal: controller.signal,
 				headers: {
 					Accept: 'application/json',
+					...(this.clientName ? { 'X-Client-Name': this.clientName } : {}),
 				},
 			})
 
