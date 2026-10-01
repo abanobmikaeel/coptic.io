@@ -1,7 +1,9 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+import type { ExecutionContext } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
+import { httpUsage, recordUsage } from './analytics/record'
 import type { Bindings } from './env'
 import { yoga } from './graphql'
 import { cacheResponse } from './middleware/cache'
@@ -101,4 +103,19 @@ app.onError((err, c) => internalError(c, 'unhandled', err))
 // Export the app for tests
 export { app }
 
-export default { fetch: app.fetch }
+/**
+ * Record one usage event per incoming request, outside the app so that only
+ * requests arriving at the Worker are counted, never calls to app.fetch itself.
+ */
+const fetchWithUsage = async (
+	request: Request,
+	env: Bindings,
+	executionCtx: ExecutionContext,
+): Promise<Response> => {
+	const started = Date.now()
+	const response = await app.fetch(request, env, executionCtx)
+	recordUsage(env.ANALYTICS, request, httpUsage(request, response.status, Date.now() - started))
+	return response
+}
+
+export default { fetch: fetchWithUsage }

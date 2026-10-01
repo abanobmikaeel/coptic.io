@@ -20,7 +20,8 @@
 		"check": "biome check src",
 		"check:fix": "biome check --write src",
 		"typecheck": "tsc --noEmit",
-		"ci": "bun run typecheck && bun run check && bun run test"
+		"ci": "bun run typecheck && bun run check && bun run test",
+		"analytics": "bun scripts/analytics-report.ts"
 	},
 	"dependencies": {
 		"@coptic/core": "workspace:*",

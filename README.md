@@ -88,6 +88,10 @@ const fasting = await client.fasting.today()
 
 **Base URL**: `https://api.coptic.io` (or use the environment variable `API_BASE_URL`)
 
+If you build on the API, please name your project in an `X-Client-Name` header (or the
+`clientName` option of `@coptic/client`). It helps us see who relies on which endpoints. No IP
+addresses are stored; usage is counted by that name, the calling website, or the HTTP client.
+
 ### REST Endpoints
 
 | Endpoint | Description |
