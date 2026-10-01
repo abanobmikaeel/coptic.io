@@ -20,13 +20,15 @@
 		"check": "biome check src",
 		"check:fix": "biome check --write src",
 		"typecheck": "tsc --noEmit",
-		"ci": "bun run typecheck && bun run check && bun run test"
+		"ci": "bun run typecheck && bun run check && bun run test",
+		"analytics": "bun scripts/analytics-report.ts"
 	},
 	"dependencies": {
 		"@coptic/core": "workspace:*",
 		"@coptic/data": "workspace:*",
 		"@graphql-tools/schema": "^10.0.29",
 		"@hono/zod-openapi": "^1.6.3",
+		"@modelcontextprotocol/sdk": "^1.31.0",
 		"date-fns": "^4.1.0",
 		"graphql": "^16.12.0",
 		"graphql-yoga": "^5.16.2",
