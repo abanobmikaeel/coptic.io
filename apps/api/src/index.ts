@@ -1,9 +1,11 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+import type { ExecutionContext } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 
 import type { Bindings } from './env'
 import { yoga } from './graphql'
+import { handleMcpRequest } from './mcp/server'
 import { cacheResponse } from './middleware/cache'
 import { setBibleBucket } from './models/readings/bibleDataMapper'
 import agpeyaRoutes from './routes/agpeya'
@@ -34,6 +36,20 @@ app.use('*', (c, next) => {
 app.on(['GET', 'POST'], '/graphql', async (c) => {
 	const response = await yoga.fetch(c.req.raw, {})
 	return response
+})
+
+// MCP endpoint (Streamable HTTP). Tools are served by the REST routes below,
+// dispatched in-process with this request's bindings and execution context.
+app.all('/mcp', (c) => {
+	let executionCtx: ExecutionContext | undefined
+	try {
+		executionCtx = c.executionCtx
+	} catch {
+		// Bun dev has no execution context.
+	}
+	return handleMcpRequest(c.req.raw, (path) =>
+		Promise.resolve(app.fetch(new Request(new URL(path, c.req.url)), c.env, executionCtx)),
+	)
 })
 
 // API Documentation
