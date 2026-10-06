@@ -117,11 +117,24 @@ const normalizePart = (part: string): string => {
 	return fixed ? `${fixed} ${rest}` : glued
 }
 
+/** Expand "Book C:11,12" into ["Book C:11", "Book C:12"] so comma lists parse like ranges. */
+const expandCommaList = (part: string): string[] => {
+	if (!part.includes(',')) return [part]
+	const colon = part.lastIndexOf(':')
+	const space = part.lastIndexOf(' ')
+	if (colon === -1 || space === -1 || colon < space) return [part]
+	const list = part.slice(colon + 1)
+	if (!/^[\d,\-]+$/.test(list)) return [part]
+	const head = part.slice(0, colon)
+	return list.split(',').map((v) => `${head}:${v.trim()}`)
+}
+
 /** Split a slot's reference string into parts. ";" and the malformed ":"-joiner both separate. */
 const splitSlot = (value: string): string[] =>
 	value
 		.split(/;|:\s+/)
 		.map(normalizePart)
+		.flatMap(expandCommaList)
 		.filter(Boolean)
 
 const normalizeSlot = (value: string): string => splitSlot(value).join('; ')
