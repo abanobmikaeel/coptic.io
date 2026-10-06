@@ -21,6 +21,10 @@
  * Taste pass:  pnpm --filter @coptic/api select:daily-verses --force
  * Reprocesses every set (overwriting existing picks) with the current prompt.
  * Combine with --limit to sample, e.g. --force --limit 20.
+ *
+ * Targeted re-pick:  pnpm --filter @coptic/api select:daily-verses --only 9,21,-27
+ * Reprocesses just those keys (fixed ids are positive, moveable offsets negative),
+ * overwriting their existing picks and leaving everything else untouched.
  */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
@@ -451,6 +455,15 @@ async function main() {
 	const retry = process.argv.includes('--retry')
 	const force = process.argv.includes('--force')
 	const limit = Number(argValue('limit') ?? 0)
+	const onlyRaw = argValue('only')
+	const onlyKeys = onlyRaw
+		? new Set(
+				onlyRaw
+					.split(',')
+					.map((k) => k.trim())
+					.filter(Boolean),
+			)
+		: undefined
 	const sets = buildSets()
 
 	const output = loadJson<FeaturedFile>(OUT_PATH) ?? { fixed: {}, moveable: {} }
@@ -458,7 +471,13 @@ async function main() {
 	const errorsById = new Map(existingErrors.map((e) => [`${e.kind}:${e.key}`, e]))
 
 	let toProcess: ReadingSet[]
-	if (retry) {
+	if (onlyKeys) {
+		toProcess = sets.filter((s) => onlyKeys.has(s.key))
+		for (const key of onlyKeys) {
+			if (!sets.some((s) => s.key === key)) console.warn(`Unknown key: ${key}`)
+		}
+		console.log(`Only mode: reprocessing ${toProcess.length} of ${sets.length} set(s)`)
+	} else if (retry) {
 		toProcess = sets.filter((s) => errorsById.has(`${s.kind}:${s.key}`))
 		console.log(`Retry mode: ${toProcess.length} failed set(s) to reprocess`)
 	} else if (force) {
