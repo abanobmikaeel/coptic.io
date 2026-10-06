@@ -17,6 +17,10 @@
  *
  * Small test run:  pnpm --filter @coptic/api select:daily-verses --limit 5
  * Processes only the first N not-yet-done sets (add --retry to limit the retry set).
+ *
+ * Taste pass:  pnpm --filter @coptic/api select:daily-verses --force
+ * Reprocesses every set (overwriting existing picks) with the current prompt.
+ * Combine with --limit to sample, e.g. --force --limit 20.
  */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
@@ -84,15 +88,16 @@ const ERR_PATH = join(RESOURCES, 'featuredVerses.errors.json')
 
 const SYSTEM_PROMPT = `You select the "verse of the day" for a Coptic Orthodox liturgical day.
 Given the day's lectionary readings, choose ONE verse that best stands alone as a devotional verse:
-- self-contained: meaningful without the surrounding verses
-- not a connective fragment ("therefore…", "for…", "and he said…")
+- timeless truth: complete and meaningful on its own, without the surrounding passage
+- not a connective or narrative fragment ("therefore…", "for…", "and he said…", "and he healed them")
+- not a verse that mainly recounts what happened in the day's story; prefer a truth that reads well out of context
 - theologically weighty
 - well-known, beloved verses are always welcome
 - when the day lists an Occasion or Season, prefer a verse that speaks to it (a feast → the feast's theme; Lent → repentance and returning to God; the Cross → the Cross). A famous verse that also fits the day is ideal.
 Rules:
 - Choose ONLY a verse that exists inside the references listed. Never invent a reference.
 - Copy the book name EXACTLY as written ("Psalms", "2 Corinthians", "1 John").
-- Prefer the Gospel; fall back to the Psalm, Pauline, Catholic, Acts, or perhaps other readings when it carries a stronger standalone verse.
+- Consider every listed reading equally — Gospel, Psalm, Pauline, Catholic, Acts, Prophecy. Pick whichever verse stands alone best, wherever it appears.
 - Return ONLY a JSON object: {"slot":"<slot name>","reference":"<Book Chapter:Verse>"}`
 
 // ── reading sets ───────────────────────────────────────────────────────────────
@@ -431,6 +436,7 @@ const argValue = (name: string): string | undefined => {
 
 async function main() {
 	const retry = process.argv.includes('--retry')
+	const force = process.argv.includes('--force')
 	const limit = Number(argValue('limit') ?? 0)
 	const sets = buildSets()
 
@@ -442,6 +448,9 @@ async function main() {
 	if (retry) {
 		toProcess = sets.filter((s) => errorsById.has(`${s.kind}:${s.key}`))
 		console.log(`Retry mode: ${toProcess.length} failed set(s) to reprocess`)
+	} else if (force) {
+		toProcess = sets
+		console.log(`Force mode: reprocessing all ${sets.length} set(s)`)
 	} else {
 		const done = new Set([
 			...Object.keys(output.fixed).map((k) => `fixed:${k}`),
