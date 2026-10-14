@@ -8,7 +8,7 @@ import {
 	localizeCopticDate,
 	toMidnight,
 } from '@coptic/core'
-import { getReading } from '../models/readings'
+import { getReading, warmTranslation } from '../models/readings'
 import dayReadings from '../resources/dayReadings.json'
 import featuredVerses from '../resources/featuredVerses.json'
 import type { BibleTranslation } from '../types'
@@ -125,4 +125,18 @@ export const resolveDailyVerse = (
 			: {}),
 		fullDate: localizeCopticDate(gregorianToCoptic(date), translation),
 	}
+}
+
+/**
+ * Entry point for REST and GraphQL. In Workers, bible data is lazy-loaded from R2
+ * on first use per isolate, so warm the requested translation and English (the
+ * fallback) before resolving.
+ */
+export const getDailyVerse = async (
+	date: Date,
+	translation: BibleTranslation = 'en',
+): Promise<DailyVerse | null> => {
+	await warmTranslation(translation)
+	if (translation !== 'en') await warmTranslation('en')
+	return resolveDailyVerse(date, translation)
 }
