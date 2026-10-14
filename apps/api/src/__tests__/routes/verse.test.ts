@@ -1,16 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import { app } from '../../index'
+import featuredVerses from '../../resources/featuredVerses.json'
 
 describe('GET /api/verse', () => {
 	it('returns the daily verse for a fixed date', async () => {
-		const res = await app.request('/api/verse/2026-05-20')
+		const res = await app.request('/api/verse/2026-05-20') // Bashans 12, reading id 18
 		expect(res.status).toBe(200)
 
 		const json = await res.json()
-		expect(json.reference).toBe('John 10:11')
-		expect(json.readingSlot).toBe('LGospel')
-		expect(json.readingReference).toBe('John 10:1-16')
-		expect(json.verse).toMatchObject({ book: 'John', chapter: 10, verse: 11 })
+		const entry = featuredVerses.fixed['18']
+		expect(json.reference).toBe(entry.reference)
+		expect(json.readingSlot).toBe(entry.slot)
+		expect(json.readingReference).toBe(entry.reading)
+		expect(`${json.verse.book} ${json.verse.chapter}:${json.verse.verse}`).toBe(entry.reference)
 		expect(json.verse.text).toBeTruthy()
 		expect(json.fullDate.monthString).toBe('Bashans')
 	})
