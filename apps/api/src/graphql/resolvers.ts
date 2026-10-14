@@ -4,6 +4,7 @@ import { GraphQLError } from 'graphql'
 import { getByCopticDate, warmTranslation } from '../models/readings'
 import * as calendarService from '../services/calendar.service'
 import * as celebrationsService from '../services/celebrations.service'
+import { getDailyVerse } from '../services/daily-verse.service'
 import * as fastingService from '../services/fasting.service'
 import * as synaxariumService from '../services/synaxarium.service'
 import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
@@ -95,6 +96,9 @@ export const resolvers = {
 				fullDate,
 			}
 		},
+
+		dailyVerse: (_: unknown, { date, lang }: { date?: string; lang?: string }) =>
+			getDailyVerse(parseDate(date), toBibleTranslation(lang)),
 
 		// Celebrations
 		allCelebrations: () => {

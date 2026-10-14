@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
-import { warmTranslation } from '../models/readings'
-import { resolveDailyVerse } from '../services/daily-verse.service'
+import { getDailyVerse } from '../services/daily-verse.service'
 import type { BibleTranslation } from '../types'
 import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
 
@@ -26,12 +25,7 @@ verse.get('/:date?', async (c) => {
 		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
 	}
 
-	// In Workers, bible data is lazy-loaded from R2 on first use per isolate.
-	// Warm both the requested translation and English (fallback) up front.
-	await warmTranslation(translation)
-	if (translation !== 'en') await warmTranslation('en')
-
-	const result = resolveDailyVerse(parsedDate, translation)
+	const result = await getDailyVerse(parsedDate, translation)
 	if (!result) {
 		return c.json({ error: 'No verse for date' }, 404)
 	}

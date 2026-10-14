@@ -67,6 +67,26 @@ export const typeDefs = /* GraphQL */ `
 		text: String
 	}
 
+	type DailyVerseText {
+		book: String!
+		chapter: Int!
+		verse: Int!
+		text: String!
+	}
+
+	type DailyVerse {
+		verse: DailyVerseText!
+		reference: String!
+		readingSlot: String!
+		readingReference: String!
+		language: String!
+		requestedLanguage: String
+		fallback: Boolean
+		season: String
+		seasonKey: String
+		fullDate: CopticDate!
+	}
+
 	type FastingInfo {
 		isFasting: Boolean!
 		fastType: String
@@ -132,6 +152,7 @@ export const typeDefs = /* GraphQL */ `
 
 		# Readings
 		readings(date: String, detailed: Boolean, lang: String): Reading!
+		dailyVerse(date: String, lang: String): DailyVerse
 
 		# Celebrations
 		allCelebrations: [Celebration!]!
