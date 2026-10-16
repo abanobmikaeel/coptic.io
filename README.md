@@ -121,7 +121,35 @@ const fasting = await client.fasting.today()
 
 Interactive playground at `/graphql`
 
-## Publishing
+## Versioning
+
+coptic.io (the website and the API together) has one release version, following
+[Semantic Versioning](https://semver.org). It is driven by the Conventional Commit titles
+that land on `main`:
+
+| Commit | Bump |
+|--------|------|
+| `fix: …` | patch (2.0.0 → 2.0.1) |
+| `feat: …` | minor (2.0.0 → 2.1.0) |
+| `feat!: …` or a `BREAKING CHANGE:` footer | major (2.0.0 → 3.0.0) |
+| `chore`, `docs`, `test`, `ci`, `refactor`, `style` | no release on their own |
+
+The [Release workflow](.github/workflows/release.yml) keeps a release PR open that collects
+everything merged since the last release, bumps the version and updates `CHANGELOG.md`.
+Merging that PR tags `vX.Y.Z` and publishes a GitHub release. Nothing else is manual.
+
+The version lives in the root `package.json` (with `.release-please-manifest.json` as the
+record of the last release) and is copied into `apps/api` and `apps/web`. Where to see it:
+
+- **Website:** the footer shows the version and the commit Vercel built.
+- **API:** `GET /health` returns `version` and `build` (the deployed commit), and
+  `/openapi.json` carries the version in `info.version`.
+
+Squash merges use the PR title as the commit, so the PR title is what decides the bump.
+
+## Publishing npm packages
+
+`@coptic/core` and `@coptic/client` version separately from the site through Changesets:
 
 ```bash
 # Add a changeset

@@ -17,6 +17,7 @@ import HomeUpcomingSynaxarium from '@/components/HomeUpcomingSynaxarium'
 import { OfferingsGrid } from '@/components/OfferingsGrid'
 import UpcomingFastsList from '@/components/UpcomingFastsList'
 import UpcomingFeastsList from '@/components/UpcomingFeastsList'
+import { VersionTag } from '@/components/VersionTag'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { ChevronRightIcon } from '@/components/ui/Icons'
 import {
@@ -267,8 +268,9 @@ export default async function Home({ searchParams }: Readonly<HomeProps>) {
 
 			{/* Footer */}
 			<footer className="relative border-t border-gray-200 dark:border-gray-800 py-8 px-6">
-				<div className="max-w-4xl mx-auto flex items-center justify-center">
+				<div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-1">
 					<p className="text-gray-500 dark:text-gray-400 text-sm">{t('footer')}</p>
+					<VersionTag />
 				</div>
 			</footer>
 		</main>
