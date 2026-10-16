@@ -21,6 +21,12 @@ IS_WORKERS = "true"
 binding = "BIBLE_BUCKET"
 bucket_name = "coptic-io-readings"
 
+# Usage analytics (see src/analytics). Production only: not inherited by [env.preview],
+# so PR previews record nothing. The dataset is created on the first write.
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "coptic_api_requests"
+
 [observability]
 enabled = false
 head_sampling_rate = 1
