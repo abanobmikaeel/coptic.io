@@ -10,7 +10,9 @@ if (!API_URL) {
 type Check = {
 	desc: string
 	path: string
-	validate: (body: unknown) => boolean
+	// Most routes answer with JSON; the iCal feed answers with text/calendar
+	parse?: 'json' | 'text'
+	validate: (body: unknown, res: Response) => boolean
 }
 
 const checks: Check[] = [
@@ -60,17 +62,63 @@ const checks: Check[] = [
 			return Array.isArray(gospel?.verses) && gospel.verses.length > 0
 		},
 	},
+	{
+		desc: 'ical subscription feed — served as a calendar',
+		path: '/api/calendar/ical/subscribe',
+		parse: 'text',
+		validate: (b, res) => {
+			const ical = b as string
+			return (
+				res.headers.get('content-type')?.includes('text/calendar') === true &&
+				ical.startsWith('BEGIN:VCALENDAR') &&
+				ical.trimEnd().endsWith('END:VCALENDAR')
+			)
+		},
+	},
+	{
+		desc: 'ical feed — unique, slug-safe UIDs and no over-long lines',
+		path: '/api/calendar/ical/subscribe',
+		parse: 'text',
+		validate: (b) => {
+			const lines = (b as string).split('\r\n')
+
+			// RFC 5545 3.1: no content line may exceed 75 octets once folded
+			if (lines.some((l) => new TextEncoder().encode(l).length > 75)) return false
+
+			const uids = lines.filter((l) => l.startsWith('UID:')).map((l) => l.slice('UID:'.length))
+			if (uids.length === 0 || new Set(uids).size !== uids.length) return false
+
+			return uids.every((uid) => /^[a-z0-9]+(?:-[a-z0-9]+)*@coptic\.io$/.test(uid))
+		},
+	},
+	{
+		desc: 'ical feed — a season authored across many days stays one event per year',
+		path: '/api/calendar/ical/subscribe',
+		parse: 'text',
+		validate: (b) => {
+			const lines = (b as string).replace(/\r\n /g, '').split('\r\n')
+
+			// Nayrouz is authored across Tout 1-16 and once emitted 16 duplicates a year
+			const nayrouz = lines.filter((l) => l === 'SUMMARY:Coptic New Year (Nayrouz)').length
+			const years = new Set(
+				lines.filter((l) => l.startsWith('DTSTART;VALUE=DATE:')).map((l) => l.slice(-8, -4)),
+			).size
+
+			return years > 0 && nayrouz === years
+		},
+	},
 ]
 
 let failed = false
 
-for (const { desc, path, validate } of checks) {
+for (const { desc, path, parse, validate } of checks) {
 	const url = `${API_URL}${path}`
 	try {
 		const res = await fetch(url, { signal: AbortSignal.timeout(10_000) })
-		const body = await res.json()
-		if (!res.ok || !validate(body)) {
-			console.error(`FAIL [${desc}]: status=${res.status} body=${JSON.stringify(body)}`)
+		const body = parse === 'text' ? await res.text() : await res.json()
+		if (!res.ok || !validate(body, res)) {
+			const shown = typeof body === 'string' ? body.slice(0, 300) : JSON.stringify(body)
+			console.error(`FAIL [${desc}]: status=${res.status} body=${shown}`)
 			failed = true
 		} else {
 			console.log(`PASS [${desc}]`)
