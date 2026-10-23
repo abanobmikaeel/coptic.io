@@ -20,4 +20,12 @@ export type Bindings = {
 	// Folded into the edge cache key so every deploy serves fresh responses instead of
 	// stale cached ones (e.g. after re-uploading Bible data to R2). Undefined in dev.
 	DATA_VERSION?: string
+	// Subscriptions database. Absent in PR previews, where the subscription routes answer 503.
+	HYPERDRIVE?: { connectionString: string }
+	// SES credentials for subscription emails (secrets), plus optional overrides.
+	AWS_ACCESS_KEY_ID?: string
+	AWS_SECRET_ACCESS_KEY?: string
+	AWS_REGION?: string
+	SES_FROM_EMAIL?: string
+	SITE_URL?: string
 }

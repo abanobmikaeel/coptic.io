@@ -4,11 +4,5 @@
   "devCommand": "pnpm dev",
   "installCommand": "cd ../.. && pnpm install",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "crons": [
-    {
-      "path": "/api/send-daily",
-      "schedule": "0 11 * * *"
-    }
-  ]
+  "regions": ["iad1"]
 }

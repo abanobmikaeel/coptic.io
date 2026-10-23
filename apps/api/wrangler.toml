@@ -27,6 +27,15 @@ bucket_name = "coptic-io-readings"
 binding = "ANALYTICS"
 dataset = "coptic_api_requests"
 
+# Email subscriptions database. AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are secrets.
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "e397fbb1bcfe4bfd983f821e26669fa7"
+
+# Daily readings email.
+[triggers]
+crons = ["0 11 * * *"]
+
 [observability]
 enabled = false
 head_sampling_rate = 1
@@ -47,6 +56,10 @@ head_sampling_rate = 1
 # and deleting the preview deletes the domain. Bindings and `define` are not inherited.
 [env.preview]
 routes = []
+
+# Previews have no subscriptions database, so they must not send the daily email.
+[env.preview.triggers]
+crons = []
 
 [env.preview.vars]
 
