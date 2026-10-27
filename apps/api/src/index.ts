@@ -21,6 +21,7 @@ import searchRoutes from './routes/search'
 import seasonRoutes from './routes/season'
 import synaxariumRoutes from './routes/synaxarium'
 import tasbehaRoutes from './routes/tasbeha'
+import verseRoutes from './routes/verse'
 import { internalError } from './utils/http'
 
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
@@ -95,6 +96,7 @@ app.use('/api/celebrations/*', cache12h)
 app.use('/api/season/*', cache12h)
 app.use('/api/tasbeha/*', cache12h)
 app.use('/api/liturgy/*', cache12h)
+app.use('/api/verse/*', cache12h)
 
 // REST Routes
 app.route('/api/agpeya', agpeyaRoutes)
@@ -109,6 +111,7 @@ app.route('/api/synaxarium', synaxariumRoutes)
 app.route('/api/season', seasonRoutes)
 app.route('/api/tasbeha', tasbehaRoutes)
 app.route('/api/liturgy', liturgyRoutes)
+app.route('/api/verse', verseRoutes)
 
 // 404 handler
 app.notFound((c) => {
