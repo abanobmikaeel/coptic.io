@@ -1,24 +1,19 @@
 import { gregorianToCoptic, localizeCopticDate } from '@coptic/core'
 import { Hono } from 'hono'
+import { requestDate } from '../middleware/request'
 import * as calendarService from '../services/calendar.service'
-import {
-	INVALID_DATE_MESSAGE,
-	INVALID_YEAR_MESSAGE,
-	isSupportedYear,
-	parseLocalDate,
-} from '../utils/dateUtils'
+import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
+import { parseYear } from '../utils/request'
 
 const calendar = new Hono()
 
 // Get calendar month with all data (Coptic dates + fasting)
 // Returns everything needed to render a calendar month view
 calendar.get('/month/:year/:month', async (c) => {
-	const year = Number.parseInt(c.req.param('year'))
+	const year = parseYear(c.req.param('year'))
 	const month = Number.parseInt(c.req.param('month'))
 
-	if (!isSupportedYear(year)) {
-		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
-	}
+	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 	if (Number.isNaN(month) || month < 1 || month > 12) {
 		return c.json({ error: 'Invalid month. Must be between 1 and 12' }, 400)
 	}
@@ -64,12 +59,8 @@ calendar.get('/ical/subscribe', async (c) => {
 
 // Get iCal feed for a specific year
 calendar.get('/ical/:year', async (c) => {
-	const yearParam = c.req.param('year')
-	const year = Number.parseInt(yearParam)
-
-	if (!isSupportedYear(year)) {
-		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
-	}
+	const year = parseYear(c.req.param('year'))
+	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 
 	const icalContent = calendarService.getYearCalendar(year)
 
@@ -81,25 +72,10 @@ calendar.get('/ical/:year', async (c) => {
 })
 
 // Convert Gregorian date to Coptic date
-calendar.get('/:date?', async (c) => {
-	const dateParam = c.req.param('date')
-
-	// Default to today
-	let parsedDate = new Date()
-	if (dateParam) {
-		const parsed = parseLocalDate(dateParam)
-		if (!parsed) {
-			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-		}
-		parsedDate = parsed
-	} else {
-		// Wall-clock dependent; don't let the 12h edge cache serve stale "today" responses.
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
+calendar.get('/:date?', requestDate(), (c) => {
 	const langQuery = c.req.query('lang')
 	const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
-	const copticDate = localizeCopticDate(gregorianToCoptic(parsedDate), lang)
+	const copticDate = localizeCopticDate(gregorianToCoptic(c.var.date), lang)
 	return c.json(copticDate)
 })
 

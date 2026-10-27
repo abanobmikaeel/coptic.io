@@ -1,15 +1,10 @@
 import { getDaysFromEaster, getEasterDate } from '@coptic/core'
 import { loadLentDevotional } from '@coptic/data/en/lent'
 import { Hono } from 'hono'
+import { requestDate } from '../middleware/request'
 import { parseReadingString } from '../models/readings'
-import type { BibleTranslation } from '../types'
-import {
-	INVALID_DATE_MESSAGE,
-	INVALID_YEAR_MESSAGE,
-	addDays,
-	isSupportedYear,
-	parseLocalDate,
-} from '../utils/dateUtils'
+import { INVALID_YEAR_MESSAGE, addDays } from '../utils/dateUtils'
+import { WALL_CLOCK_CACHE_CONTROL, parseTranslation, parseYear } from '../utils/request'
 
 const lent = new Hono()
 
@@ -26,15 +21,9 @@ const formatDate = (date: Date): string => {
 // GET /schedule/:year? — full 49-day schedule with computed dates
 lent.get('/schedule/:year?', async (c) => {
 	const yearParam = c.req.param('year')
-	const year = yearParam ? Number.parseInt(yearParam) : new Date().getFullYear()
-
-	if (!yearParam) {
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
-	if (!isSupportedYear(year)) {
-		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
-	}
+	if (!yearParam) c.header('Cache-Control', WALL_CLOCK_CACHE_CONTROL)
+	const year = yearParam ? parseYear(yearParam) : new Date().getFullYear()
+	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 
 	const easter = getEasterDate(year)
 	const devotional = await loadLentDevotional()
@@ -54,26 +43,12 @@ lent.get('/schedule/:year?', async (c) => {
 })
 
 // GET /:date? — devotional reading for a specific date (or today)
-lent.get('/:date?', async (c) => {
-	const dateParam = c.req.param('date')
+lent.get('/:date?', requestDate(), async (c) => {
+	const { date } = c.var
 	const isDetailed = c.req.query('detailed') === 'true'
-	const langParam = c.req.query('lang')
+	const translation = parseTranslation(c.req.query('lang'))
 
-	const translation: BibleTranslation =
-		langParam === 'ar' ? 'ar' : langParam === 'es' ? 'es' : langParam === 'cop' ? 'cop' : 'en'
-
-	let parsedDate = new Date()
-	if (dateParam) {
-		const parsed = parseLocalDate(dateParam)
-		if (!parsed) {
-			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-		}
-		parsedDate = parsed
-	} else {
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
-	const offset = getDaysFromEaster(parsedDate)
+	const offset = getDaysFromEaster(date)
 	const devotional = await loadLentDevotional()
 	const entry = devotional.find((d) => d.dayOffset === offset)
 
@@ -88,7 +63,7 @@ lent.get('/:date?', async (c) => {
 
 	const result: Record<string, unknown> = {
 		...entry,
-		date: formatDate(parsedDate),
+		date: formatDate(date),
 	}
 
 	// If detailed, resolve Bible references to full text
