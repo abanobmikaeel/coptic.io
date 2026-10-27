@@ -190,6 +190,7 @@
 		"noResultsGeneric": "Intenta ajustar tu búsqueda o filtros.",
 		"readingsUnavailable": "Lecturas no disponibles",
 		"readingsUnavailableDescription": "No se pudieron cargar las lecturas para esta fecha. Por favor, intenta más tarde o selecciona otra fecha.",
+		"holyWeekReadingsUnavailable": "Las lecturas de la Semana Santa siguen las horas de la Pascua y aún no están disponibles.",
 		"noEntriesTitle": "No se encontraron {type}",
 		"noEntriesDescription": "No hay {type} para esta fecha."
 	},

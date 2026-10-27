@@ -1,4 +1,4 @@
-import { getEasterDate, toMidnight } from '@coptic/core'
+import { getDaysFromEaster, getEasterDate } from '@coptic/core'
 import { loadLentDevotional } from '@coptic/data/en/lent'
 import { Hono } from 'hono'
 import { parseReadingString } from '../models/readings'
@@ -12,16 +12,6 @@ import {
 } from '../utils/dateUtils'
 
 const lent = new Hono()
-
-/**
- * Compute the day offset from Easter for a given date.
- */
-const getDaysFromEaster = (date: Date): number => {
-	const easter = getEasterDate(date.getFullYear())
-	const dateMs = toMidnight(date)
-	const easterMs = toMidnight(easter)
-	return Math.round((dateMs - easterMs) / (1000 * 60 * 60 * 24))
-}
 
 /**
  * Format a Date as YYYY-MM-DD

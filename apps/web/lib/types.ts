@@ -128,6 +128,10 @@ export interface ReadingsData {
 	fullDate?: CopticDate
 	season?: string
 	seasonDay?: string
+	/** The lectionary cycle the readings come from (annual, sunday, greatLent, holyFifty…) */
+	cycle?: string
+	/** False when the day's cycle has no readings in the lectionary yet (Holy Week) */
+	readingsAvailable?: boolean
 	celebrations?: Celebration[] | null
 }
 

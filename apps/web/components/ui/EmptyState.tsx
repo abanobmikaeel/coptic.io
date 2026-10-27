@@ -162,16 +162,23 @@ export function NoResultsState({
 	)
 }
 
+/**
+ * `notInLectionary`: the day loaded, but its cycle (Holy Week) has no readings yet, as
+ * opposed to the readings failing to load.
+ */
 export function NoReadingsState({
 	theme = 'light',
-}: Readonly<{ theme?: 'light' | 'sepia' | 'dark' }>) {
+	notInLectionary = false,
+}: Readonly<{ theme?: 'light' | 'sepia' | 'dark'; notInLectionary?: boolean }>) {
 	const t = useTranslations('emptyStates')
 
 	return (
 		<EmptyState
 			icon={<BookIcon className="w-12 h-12" />}
 			title={t('readingsUnavailable')}
-			description={t('readingsUnavailableDescription')}
+			description={t(
+				notInLectionary ? 'holyWeekReadingsUnavailable' : 'readingsUnavailableDescription',
+			)}
 			theme={theme}
 		/>
 	)

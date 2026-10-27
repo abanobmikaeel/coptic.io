@@ -190,16 +190,18 @@ describe('Lenten Readings - Accuracy', () => {
 			const date = new Date(2026, 6, 1)
 			const result = getByCopticDate(date, false)
 
-			expect(result.season).toBeUndefined()
-			expect(result.reference).toBeDefined()
+			expect(result.cycle).toBe('annual')
+			expect(result.season).toBe("Apostles' Fast")
+			expect(result.reference?.id).toBeDefined()
 		})
 
-		it('should return fixed readings for Easter Sunday itself (offset 0)', () => {
+		it('should return the Resurrection readings for Easter Sunday itself (offset 0)', () => {
 			const date = new Date(2026, 3, 12)
 			const result = getByCopticDate(date, false)
 
-			expect(result.season).toBeUndefined()
-			expect(result.reference).toBeDefined()
+			expect(result.cycle).toBe('holyFifty')
+			expect(result.seasonDay).toBe('Feast of the Resurrection')
+			expect(result.reference?.LGospel).toBe('John 20:1-18')
 		})
 	})
 
@@ -243,12 +245,14 @@ describe('Lenten Readings - Accuracy', () => {
 			expect(result.seasonDay).toBe('Palm Sunday')
 		})
 
-		it('should return fixed reading for day after Palm Sunday (offset -6, Holy Week)', () => {
+		it('should report no readings for the day after Palm Sunday (offset -6, Holy Week)', () => {
 			const date = new Date(2025, 3, 14)
 			const result = getByCopticDate(date, false)
 
-			// Falls through to fixed readings since Holy Week isn't covered yet
-			expect(result.reference).toBeDefined()
+			// The Pascha hours are not in the lectionary yet; the fixed readings must not stand in
+			expect(result.cycle).toBe('holyWeek')
+			expect(result.readingsAvailable).toBe(false)
+			expect(result.reference).toBeUndefined()
 		})
 	})
 
@@ -373,6 +377,13 @@ describe('Lenten Readings - Accuracy', () => {
 						// Jonah's Fast range
 						if (result.seasonDay) {
 							expect(result.seasonDay).toContain("Jonah's Fast")
+						}
+					} else if (result.cycle === 'annual') {
+						// A fixed feast with proper readings (e.g. the Entrance into the Temple) wins
+						if (!result.reference && !result.LGospel) {
+							errors.push(
+								`${date.toISOString().slice(0, 10)} (offset ${offset}): no feast readings`,
+							)
 						}
 					} else if (offset >= -57 && offset <= -56) {
 						// Preparation week: has moveable readings but not a formal liturgical season
