@@ -1,4 +1,7 @@
-export type BibleTranslation = 'en' | 'ar' | 'es' | 'cop'
+/** Bible translations the API serves. Adding one here is the whole of what request parsing needs. */
+export const BIBLE_TRANSLATIONS = ['en', 'ar', 'es', 'cop'] as const
+
+export type BibleTranslation = (typeof BIBLE_TRANSLATIONS)[number]
 
 export interface BibleVerse {
 	text: string
