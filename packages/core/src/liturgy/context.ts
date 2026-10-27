@@ -5,6 +5,7 @@ import type { CopticDate } from '../types/date'
 import type { FastingInfo } from '../types/synaxarium'
 import { toMidnight } from '../utils/date'
 import { type FastingLevel, getFastingForDate, getFastingLevel } from './fasting'
+import { type FestiveSeason, getFestiveSeason } from './festive'
 import { type LiturgicalSeason, getLiturgicalSeasonForDate } from './seasons'
 
 /**
@@ -72,6 +73,8 @@ export interface LiturgicalContext {
 	dayTune: DayTune
 	/** Season of the Litany for the Nature (waters/plants/fruits) */
 	natureSeason: NatureSeason
+	/** The Lord's feast whose festive texts are prayed, or null on an ordinary day */
+	festiveSeason: FestiveSeason | null
 }
 
 /**
@@ -100,6 +103,7 @@ export const getLiturgicalContext = (
 		dayOfWeek: date.getDay(),
 		dayTune: getDayTune(date),
 		natureSeason: getNatureSeason(copticDate),
+		festiveSeason: getFestiveSeason(date),
 	}
 }
 

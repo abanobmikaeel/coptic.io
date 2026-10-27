@@ -11,6 +11,8 @@
  * See docs/CONDITIONAL-RESOLUTION.md for what these are building toward.
  */
 
+import type { FestiveSeason } from '@coptic/core'
+
 /** Who says the line. Sections prayed by everyone store a plain string instead. */
 export type ContentSpeaker = 'Priest' | 'Deacon' | 'People'
 
@@ -49,6 +51,8 @@ export interface LiturgicalCondition {
 	 * waters (Paoni 12 – Paopi 9), plants (Paopi 10 – Tobi 10), fruits (Tobi 11 – Paoni 11)
 	 */
 	season?: 'waters' | 'plants' | 'fruits'
+	/** The Lord's feast whose festive texts are prayed around it — see `getFestiveSeason`. */
+	festiveSeason?: FestiveSeason | FestiveSeason[]
 	/** Weekday(s) of the liturgical day the service belongs to (0 = Sunday … 6 = Saturday). */
 	weekday?: number | number[]
 	commemoration?: string | string[]

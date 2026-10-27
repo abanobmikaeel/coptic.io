@@ -1,4 +1,9 @@
-import type { LiturgicalContent, LiturgicalSectionRole } from '../../content/types'
+import type {
+	LiturgicalConditionalBlock,
+	LiturgicalContent,
+	LiturgicalSectionRole,
+	ResolutionMode,
+} from '../../content/types'
 import liturgyData from './liturgy.json'
 
 export type LiturgySectionType =
@@ -30,7 +35,11 @@ interface LiturgySectionBase {
 
 export interface LiturgyPrayerSection extends LiturgySectionBase {
 	type: 'prayer' | 'litany' | 'creed'
-	content: LiturgyContent[]
+	// A section has either fixed `content` or conditional `blocks` (resolved by the API).
+	content?: LiturgyContent[]
+	blocks?: LiturgicalConditionalBlock[]
+	/** How `blocks` combine. Defaults to 'all' — see docs/CONDITIONAL-RESOLUTION.md. */
+	mode?: ResolutionMode
 }
 
 // A daily epistle (Pauline / Catholic / Praxis), resolved from the Katameros at runtime.

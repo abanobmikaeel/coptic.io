@@ -1,3 +1,4 @@
+import type { FestiveSeason } from '@coptic/core'
 import type {
 	LiturgicalCondition,
 	LiturgicalConditionalBlock,
@@ -14,6 +15,7 @@ import type {
 export interface OccasionContext {
 	dayTune: string
 	season: string
+	festiveSeason: FestiveSeason | null
 	/** Weekday of the liturgical day (0 = Sunday … 6 = Saturday). */
 	weekday: number
 	commemorations: string[]
@@ -34,6 +36,10 @@ export function matchesCondition(
 	if (!when) return true
 	if (when.dayTune && when.dayTune !== ctx.dayTune) return false
 	if (when.season && when.season !== ctx.season) return false
+	if (when.festiveSeason) {
+		const wanted = Array.isArray(when.festiveSeason) ? when.festiveSeason : [when.festiveSeason]
+		if (!ctx.festiveSeason || !wanted.includes(ctx.festiveSeason)) return false
+	}
 	if (when.weekday != null) {
 		const wanted = Array.isArray(when.weekday) ? when.weekday : [when.weekday]
 		if (!wanted.includes(ctx.weekday)) return false
