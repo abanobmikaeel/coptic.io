@@ -1,31 +1,13 @@
 import { Hono } from 'hono'
+import { requestDate } from '../middleware/request'
 import { getDailyVerse } from '../services/daily-verse.service'
-import type { BibleTranslation } from '../types'
-import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
+import { parseTranslation } from '../utils/request'
 
 const verse = new Hono()
 
-const toTranslation = (lang?: string): BibleTranslation =>
-	lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : lang === 'cop' ? 'cop' : 'en'
-
 // Get the daily verse for a specific date or today
-verse.get('/:date?', async (c) => {
-	const dateParam = c.req.param('date')
-	const translation = toTranslation(c.req.query('lang'))
-
-	// Default to today
-	let parsedDate = new Date()
-	if (dateParam) {
-		const parsed = parseLocalDate(dateParam)
-		if (!parsed) {
-			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-		}
-		parsedDate = parsed
-	} else {
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
-	const result = await getDailyVerse(parsedDate, translation)
+verse.get('/:date?', requestDate(), async (c) => {
+	const result = await getDailyVerse(c.var.date, parseTranslation(c.req.query('lang')))
 	if (!result) {
 		return c.json({ error: 'No verse for date' }, 404)
 	}

@@ -1,9 +1,9 @@
 import { createRoute, z } from '@hono/zod-openapi'
-import { warmTranslation } from '../models/readings'
+import { bibleTranslation } from '../middleware/request'
 import { AgpeyaAnyHourSchema, AgpeyaWatchSchema, ErrorSchema } from '../schemas'
 import * as agpeyaService from '../services/agpeya.service'
-import type { BibleTranslation } from '../types'
-import { createApiApp } from '../utils/openapi'
+import { createApiApp, jsonResponse } from '../utils/openapi'
+import { WALL_CLOCK_CACHE_CONTROL } from '../utils/request'
 
 const app = createApiApp()
 
@@ -26,9 +26,6 @@ const hourQuery = langQuery.extend({
 	}),
 })
 
-const toTranslation = (lang?: string): BibleTranslation =>
-	lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : lang === 'cop' ? 'cop' : 'en'
-
 const toPsalmSource = (psalms?: string): agpeyaService.PsalmSource =>
 	psalms === 'bible' ? 'bible' : 'septuagint'
 
@@ -36,33 +33,26 @@ const toPsalmSource = (psalms?: string): agpeyaService.PsalmSource =>
 const getCurrentRoute = createRoute({
 	method: 'get',
 	path: '/',
+	middleware: [bibleTranslation] as const,
 	tags: ['Agpeya'],
 	summary: 'Get current Agpeya hour based on time of day',
 	description: 'Returns the Agpeya prayer hour appropriate for the current time of day.',
 	request: { query: langQuery },
 	responses: {
-		200: {
-			description: 'Current Agpeya hour',
-			content: {
-				'application/json': {
-					schema: AgpeyaAnyHourSchema,
-				},
-			},
-		},
+		200: jsonResponse(AgpeyaAnyHourSchema, 'Current Agpeya hour'),
 	},
 })
 
-app.openapi(getCurrentRoute, async (c) => {
+app.openapi(getCurrentRoute, (c) => {
 	const query = c.req.valid('query')
-	const translation = toTranslation(query.lang)
-	await warmTranslation(translation)
+	const { translation } = c.var
 	const currentHourId = agpeyaService.getCurrentHour()
 	const hour = agpeyaService.getAgpeyaHour(currentHourId, translation, toPsalmSource(query.psalms))
 	// The "current" hour is wall-clock dependent, so it must not share the 12h
 	// edge-cache TTL used by the deterministic hour routes. Cap it to 2 minutes:
 	// cheap enough to keep origin load low, short enough that the hour transition
 	// is picked up promptly.
-	c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
+	c.header('Cache-Control', WALL_CLOCK_CACHE_CONTROL)
 	// Current hour always exists since getCurrentHour returns a valid hour ID
 	return c.json(hour!, 200)
 })
@@ -71,26 +61,19 @@ app.openapi(getCurrentRoute, async (c) => {
 const listHoursRoute = createRoute({
 	method: 'get',
 	path: '/hours',
+	middleware: [bibleTranslation] as const,
 	tags: ['Agpeya'],
 	summary: 'List all Agpeya prayer hours',
 	description: 'Returns a list of all seven canonical prayer hours.',
 	request: { query: langQuery },
 	responses: {
-		200: {
-			description: 'List of all Agpeya hours',
-			content: {
-				'application/json': {
-					schema: z.array(AgpeyaAnyHourSchema),
-				},
-			},
-		},
+		200: jsonResponse(z.array(AgpeyaAnyHourSchema), 'List of all Agpeya hours'),
 	},
 })
 
-app.openapi(listHoursRoute, async (c) => {
+app.openapi(listHoursRoute, (c) => {
 	const query = c.req.valid('query')
-	const translation = toTranslation(query.lang)
-	await warmTranslation(translation)
+	const { translation } = c.var
 	const hours = agpeyaService.getAllHours(translation, toPsalmSource(query.psalms))
 	return c.json(hours, 200)
 })
@@ -99,6 +82,7 @@ app.openapi(listHoursRoute, async (c) => {
 const getMidnightWatchRoute = createRoute({
 	method: 'get',
 	path: '/midnight/watch/:watch',
+	middleware: [bibleTranslation] as const,
 	tags: ['Agpeya'],
 	summary: 'Get a specific midnight watch',
 	description: 'Returns the prayers for a specific watch of the midnight office (1, 2, or 3).',
@@ -112,29 +96,14 @@ const getMidnightWatchRoute = createRoute({
 		query: langQuery,
 	},
 	responses: {
-		200: {
-			description: 'Midnight watch data',
-			content: {
-				'application/json': {
-					schema: AgpeyaWatchSchema,
-				},
-			},
-		},
-		404: {
-			description: 'Watch not found',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(AgpeyaWatchSchema, 'Midnight watch data'),
+		404: jsonResponse(ErrorSchema, 'Watch not found'),
 	},
 })
 
-app.openapi(getMidnightWatchRoute, async (c) => {
+app.openapi(getMidnightWatchRoute, (c) => {
 	const query = c.req.valid('query')
-	const translation = toTranslation(query.lang)
-	await warmTranslation(translation)
+	const { translation } = c.var
 	const { watch: watchId } = c.req.valid('param')
 
 	const watch = agpeyaService.getMidnightWatch(
@@ -165,14 +134,7 @@ const getTranslationsRoute = createRoute({
 	description:
 		'Returns the content languages the Agpeya can render (prose languages plus scripture-only languages). Used to hide unavailable languages from the reader settings.',
 	responses: {
-		200: {
-			description: 'Available content languages',
-			content: {
-				'application/json': {
-					schema: TranslationsSchema,
-				},
-			},
-		},
+		200: jsonResponse(TranslationsSchema, 'Available content languages'),
 	},
 })
 
@@ -184,6 +146,7 @@ app.openapi(getTranslationsRoute, (c) => {
 const getHourRoute = createRoute({
 	method: 'get',
 	path: '/:hour',
+	middleware: [bibleTranslation] as const,
 	tags: ['Agpeya'],
 	summary: 'Get a specific Agpeya prayer hour',
 	description:
@@ -198,29 +161,14 @@ const getHourRoute = createRoute({
 		query: hourQuery,
 	},
 	responses: {
-		200: {
-			description: 'Agpeya hour data',
-			content: {
-				'application/json': {
-					schema: AgpeyaAnyHourSchema,
-				},
-			},
-		},
-		404: {
-			description: 'Hour not found',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(AgpeyaAnyHourSchema, 'Agpeya hour data'),
+		404: jsonResponse(ErrorSchema, 'Hour not found'),
 	},
 })
 
-app.openapi(getHourRoute, async (c) => {
+app.openapi(getHourRoute, (c) => {
 	const query = c.req.valid('query')
-	const translation = toTranslation(query.lang)
-	await warmTranslation(translation)
+	const { translation } = c.var
 	const { hour: hourId } = c.req.valid('param')
 
 	const hour = agpeyaService.getAgpeyaHour(hourId, translation, toPsalmSource(query.psalms), {

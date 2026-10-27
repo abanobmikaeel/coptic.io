@@ -1,19 +1,18 @@
-import { getLiturgicalName, gregorianToCoptic, localizeCopticDate } from '@coptic/core'
-import { localizeReference } from '@coptic/data'
+import { gregorianToCoptic } from '@coptic/core'
 import { GraphQLError } from 'graphql'
-import { getByCopticDate, warmTranslation } from '../models/readings'
 import * as calendarService from '../services/calendar.service'
 import * as celebrationsService from '../services/celebrations.service'
 import { getDailyVerse } from '../services/daily-verse.service'
 import * as fastingService from '../services/fasting.service'
+import { getReadingsForDate } from '../services/readings.service'
 import * as synaxariumService from '../services/synaxarium.service'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
 import {
 	INVALID_DATE_MESSAGE,
 	INVALID_YEAR_MESSAGE,
 	isSupportedYear,
 	parseDateInput,
 } from '../utils/dateUtils'
+import { parseTranslation } from '../utils/request'
 
 const parseDate = (date?: string): Date => {
 	try {
@@ -33,32 +32,6 @@ const assertYear = (year: number) => {
 	}
 }
 
-const READING_REFERENCE_KEYS = [
-	'Prophecies',
-	'VPsalm',
-	'VGospel',
-	'MPsalm',
-	'MGospel',
-	'Pauline',
-	'Catholic',
-	'Acts',
-	'LPsalm',
-	'LGospel',
-	'EPPsalm',
-	'EPGospel',
-] as const
-
-const localizeReferenceObject = (reference: Record<string, unknown>, lang: string) => {
-	const out: Record<string, unknown> = { ...reference }
-	for (const key of READING_REFERENCE_KEYS) {
-		if (typeof out[key] === 'string') out[key] = localizeReference(out[key] as string, lang)
-	}
-	return out
-}
-
-const toBibleTranslation = (lang?: string): 'en' | 'ar' | 'es' | 'cop' =>
-	lang === 'ar' ? 'ar' : lang === 'es' ? 'es' : lang === 'cop' ? 'cop' : 'en'
-
 export const resolvers = {
 	Query: {
 		// Calendar
@@ -73,32 +46,13 @@ export const resolvers = {
 		},
 
 		// Readings
-		readings: async (
+		readings: (
 			_: unknown,
 			{ date, detailed, lang }: { date?: string; detailed?: boolean; lang?: string },
-		) => {
-			const parsedDate = parseDate(date)
-			const translation = toBibleTranslation(lang)
-			if (detailed) await warmTranslation(translation)
-			const data = getByCopticDate(parsedDate, detailed || false, translation)
-			const celebrations = getStaticCelebrationsForDay(parsedDate)
-			const fullDate = localizeCopticDate(gregorianToCoptic(parsedDate), translation)
-
-			return {
-				...data,
-				...(data.reference
-					? { reference: localizeReferenceObject(data.reference, translation) }
-					: {}),
-				...(data.season
-					? { season: getLiturgicalName(data.season, translation), seasonKey: data.season }
-					: {}),
-				celebrations,
-				fullDate,
-			}
-		},
+		) => getReadingsForDate(parseDate(date), detailed ?? false, parseTranslation(lang)),
 
 		dailyVerse: (_: unknown, { date, lang }: { date?: string; lang?: string }) =>
-			getDailyVerse(parseDate(date), toBibleTranslation(lang)),
+			getDailyVerse(parseDate(date), parseTranslation(lang)),
 
 		// Celebrations
 		allCelebrations: () => {

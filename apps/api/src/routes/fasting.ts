@@ -1,14 +1,11 @@
 import { getLiturgicalName } from '@coptic/core'
 import { createRoute, z } from '@hono/zod-openapi'
+import { requestDate } from '../middleware/request'
 import { ErrorSchema, FastingDaySchema, FastingResponseSchema } from '../schemas'
 import * as fastingService from '../services/fasting.service'
-import {
-	INVALID_DATE_MESSAGE,
-	INVALID_YEAR_MESSAGE,
-	isSupportedYear,
-	parseDateInput,
-} from '../utils/dateUtils'
-import { createApiApp } from '../utils/openapi'
+import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
+import { createApiApp, jsonResponse } from '../utils/openapi'
+import { parseYear } from '../utils/request'
 
 const app = createApiApp()
 
@@ -20,6 +17,7 @@ const getForDateRoute = createRoute({
 	summary: 'Check if a date is a fasting day',
 	description:
 		'Returns fasting information for a specific Gregorian date. Defaults to today if no date provided.',
+	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
 			date: z.string().optional().openapi({ example: '2025-01-07' }),
@@ -29,46 +27,19 @@ const getForDateRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Fasting information',
-			content: {
-				'application/json': {
-					schema: FastingResponseSchema,
-				},
-			},
-		},
-		400: {
-			description: 'Invalid date format',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(FastingResponseSchema, 'Fasting information'),
+		400: jsonResponse(ErrorSchema, 'Invalid date format'),
 	},
 })
 
 app.openapi(getForDateRoute, (c) => {
-	const { date } = c.req.valid('param')
-	const { lang } = c.req.valid('query')
-
-	let parsedDate: Date
-	try {
-		parsedDate = parseDateInput(date)
-	} catch {
-		return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-	}
-
-	if (!date) {
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
-	const fastingInfo = fastingService.getFastingForDate(parsedDate)
+	const { lang = 'en' } = c.req.valid('query')
+	const fastingInfo = fastingService.getFastingForDate(c.var.date)
 	return c.json(
 		{
 			...fastingInfo,
 			description: fastingInfo.description
-				? getLiturgicalName(fastingInfo.description, lang ?? 'en')
+				? getLiturgicalName(fastingInfo.description, lang)
 				: fastingInfo.description,
 		},
 		200,
@@ -88,35 +59,15 @@ const getCalendarRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Fasting calendar for the year',
-			content: {
-				'application/json': {
-					schema: z.array(FastingDaySchema),
-				},
-			},
-		},
-		400: {
-			description: 'Invalid year',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(z.array(FastingDaySchema), 'Fasting calendar for the year'),
+		400: jsonResponse(ErrorSchema, 'Invalid year'),
 	},
 })
 
 app.openapi(getCalendarRoute, (c) => {
-	const { year } = c.req.valid('param')
-	const yearNum = Number.parseInt(year)
-
-	if (!isSupportedYear(yearNum)) {
-		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
-	}
-
-	const calendar = fastingService.getFastingCalendar(yearNum)
-	return c.json(calendar, 200)
+	const year = parseYear(c.req.valid('param').year)
+	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
+	return c.json(fastingService.getFastingCalendar(year), 200)
 })
 
 export default app

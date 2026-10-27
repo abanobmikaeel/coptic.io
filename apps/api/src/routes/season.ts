@@ -8,39 +8,23 @@ import {
 } from '@coptic/core'
 import { format } from 'date-fns'
 import { Hono } from 'hono'
-import {
-	INVALID_DATE_MESSAGE,
-	INVALID_YEAR_MESSAGE,
-	isSupportedYear,
-	parseLocalDate,
-} from '../utils/dateUtils'
+import { requestDate } from '../middleware/request'
+import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
+import { parseYear } from '../utils/request'
 
 const season = new Hono()
 
 // Get liturgical season for a specific date or today
-season.get('/:date?', async (c) => {
-	const dateParam = c.req.param('date')
-
-	// Default to today
-	let parsedDate = new Date()
-	if (dateParam) {
-		const parsed = parseLocalDate(dateParam)
-		if (!parsed) {
-			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-		}
-		parsedDate = parsed
-	} else {
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
+season.get('/:date?', requestDate(), (c) => {
+	const { date } = c.var
 	const langQuery = c.req.query('lang')
 	const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
-	const currentSeason = getLiturgicalSeasonForDate(parsedDate)
-	const isFasting = isInFastingPeriod(parsedDate)
+	const currentSeason = getLiturgicalSeasonForDate(date)
+	const isFasting = isInFastingPeriod(date)
 
 	if (!currentSeason) {
 		return c.json({
-			date: format(parsedDate, 'yyyy-MM-dd'),
+			date: format(date, 'yyyy-MM-dd'),
 			season: getLiturgicalName('Ordinary Time', lang),
 			description: getLiturgicalDescription(
 				'Ordinary Time',
@@ -52,7 +36,7 @@ season.get('/:date?', async (c) => {
 	}
 
 	return c.json({
-		date: format(parsedDate, 'yyyy-MM-dd'),
+		date: format(date, 'yyyy-MM-dd'),
 		season: getLiturgicalName(currentSeason.name, lang),
 		description: getLiturgicalDescription(currentSeason.name, currentSeason.description, lang),
 		startDate: format(currentSeason.startDate, 'yyyy-MM-dd'),
@@ -63,13 +47,9 @@ season.get('/:date?', async (c) => {
 })
 
 // Get all liturgical seasons for a year
-season.get('/year/:year', async (c) => {
-	const yearParam = c.req.param('year')
-	const year = Number.parseInt(yearParam)
-
-	if (!isSupportedYear(year)) {
-		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
-	}
+season.get('/year/:year', (c) => {
+	const year = parseYear(c.req.param('year'))
+	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 
 	const seasons = getAllSeasonsForYear(year)
 
@@ -87,13 +67,9 @@ season.get('/year/:year', async (c) => {
 })
 
 // Get all fasting periods for a year
-season.get('/fasting/:year', async (c) => {
-	const yearParam = c.req.param('year')
-	const year = Number.parseInt(yearParam)
-
-	if (!isSupportedYear(year)) {
-		return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
-	}
+season.get('/fasting/:year', (c) => {
+	const year = parseYear(c.req.param('year'))
+	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
 
 	const fastingPeriods = getFastingPeriodsForYear(year)
 

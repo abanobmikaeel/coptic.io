@@ -1,9 +1,10 @@
 import { getLiturgicalName } from '@coptic/core'
 import { createRoute, z } from '@hono/zod-openapi'
+import { requestDate } from '../middleware/request'
 import { CelebrationSchema, ErrorSchema, UpcomingCelebrationSchema } from '../schemas'
 import * as celebrationsService from '../services/celebrations.service'
-import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
-import { createApiApp } from '../utils/openapi'
+import { createApiApp, jsonResponse } from '../utils/openapi'
+import { WALL_CLOCK_CACHE_CONTROL } from '../utils/request'
 
 const app = createApiApp()
 
@@ -21,14 +22,7 @@ const getAllRoute = createRoute({
 	summary: 'Get all celebrations',
 	description: 'Returns all feasts, fasts, and celebrations in the Coptic calendar',
 	responses: {
-		200: {
-			description: 'List of all celebrations',
-			content: {
-				'application/json': {
-					schema: z.array(CelebrationSchema),
-				},
-			},
-		},
+		200: jsonResponse(z.array(CelebrationSchema), 'List of all celebrations'),
 	},
 })
 
@@ -45,6 +39,7 @@ const getForDateRoute = createRoute({
 	summary: 'Get celebrations for a specific date',
 	description:
 		'Returns all celebrations occurring on a specific Gregorian date. Defaults to today if no date provided.',
+	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
 			date: z.string().optional().openapi({ example: '2025-01-07' }),
@@ -54,41 +49,14 @@ const getForDateRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Celebrations for the date',
-			content: {
-				'application/json': {
-					schema: z.array(CelebrationSchema).nullable(),
-				},
-			},
-		},
-		400: {
-			description: 'Invalid date format',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(z.array(CelebrationSchema).nullable(), 'Celebrations for the date'),
+		400: jsonResponse(ErrorSchema, 'Invalid date format'),
 	},
 })
 
 app.openapi(getForDateRoute, (c) => {
-	const { date } = c.req.valid('param')
 	const { lang } = c.req.valid('query')
-
-	let parsedDate = new Date()
-	if (date) {
-		const parsed = parseLocalDate(date)
-		if (!parsed) {
-			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-		}
-		parsedDate = parsed
-	} else {
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
-	const celebrations = celebrationsService.getCelebrationsForDate(parsedDate)
+	const celebrations = celebrationsService.getCelebrationsForDate(c.var.date)
 	const localized = celebrations?.map((cel) => localizeName(cel, lang ?? 'en')) ?? celebrations
 	return c.json(localized, 200)
 })
@@ -107,21 +75,14 @@ const getUpcomingRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Upcoming celebrations',
-			content: {
-				'application/json': {
-					schema: z.array(UpcomingCelebrationSchema),
-				},
-			},
-		},
+		200: jsonResponse(z.array(UpcomingCelebrationSchema), 'Upcoming celebrations'),
 	},
 })
 
 app.openapi(getUpcomingRoute, (c) => {
 	const { days, lang } = c.req.valid('query')
 	// This response is always relative to "today", so it must not be cached for 12h.
-	c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
+	c.header('Cache-Control', WALL_CLOCK_CACHE_CONTROL)
 	const upcoming = celebrationsService.getUpcomingCelebrations(days ?? 30)
 	const localized = upcoming.map((day) => ({
 		...day,
