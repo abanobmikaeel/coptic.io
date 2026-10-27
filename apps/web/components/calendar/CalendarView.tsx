@@ -63,7 +63,7 @@ export function CalendarView() {
 	useEffect(() => {
 		let cancelled = false
 		setFailedMonth(null)
-		getCalendarMonth(year, month).then((data) => {
+		void getCalendarMonth(year, month).then((data) => {
 			if (cancelled) return
 			if (data) setCalendarData(data)
 			else setFailedMonth(`${year}-${month}`)
@@ -76,7 +76,7 @@ export function CalendarView() {
 	// Prefetch adjacent months for smoother navigation (fire and forget)
 	useEffect(() => {
 		const index = year * 12 + (month - 1)
-		for (const i of [index - 1, index + 1]) getCalendarMonth(Math.floor(i / 12), (i % 12) + 1)
+		for (const i of [index - 1, index + 1]) void getCalendarMonth(Math.floor(i / 12), (i % 12) + 1)
 	}, [year, month])
 
 	const { leadingBlanks, totalCells } = useMemo(

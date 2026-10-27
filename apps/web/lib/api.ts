@@ -13,7 +13,7 @@ async function fetchApi<T>(endpoint: string, revalidate = 3600): Promise<T | nul
 			next: { revalidate }, // Cache for 1 hour by default
 		})
 		if (!res.ok) return null
-		return res.json()
+		return await res.json()
 	} catch (error) {
 		console.error(`API error (${endpoint}):`, error)
 		return null
