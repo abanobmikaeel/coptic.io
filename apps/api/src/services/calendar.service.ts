@@ -9,9 +9,6 @@ const CACHE_TTL_MS = 24 * 60 * 60 * 1000
 const calendarCache = new Map<string, { data: string; expires: number }>()
 
 export const getCalendarMonth = (year: number, month: number): CalendarMonth => {
-	if (Number.isNaN(year) || year < 1900 || year > 2199) {
-		throw new Error('Invalid year. Must be between 1900 and 2199')
-	}
 	if (Number.isNaN(month) || month < 1 || month > 12) {
 		throw new Error('Invalid month. Must be between 1 and 12')
 	}
@@ -64,10 +61,6 @@ export const getSubscriptionCalendar = () => {
 }
 
 export const getYearCalendar = (year: number) => {
-	if (Number.isNaN(year) || year < 1900 || year > 2199) {
-		throw new Error('Invalid year. Must be between 1900 and 2199')
-	}
-
 	const cacheKey = `year-${year}`
 
 	// Check cache

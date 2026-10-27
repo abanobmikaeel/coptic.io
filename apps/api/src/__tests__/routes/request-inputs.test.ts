@@ -61,4 +61,13 @@ describe('year inputs', () => {
 		expect(res.status).toBe(400)
 		expect(await res.json()).toEqual({ error: INVALID_YEAR_MESSAGE })
 	})
+
+	// Regression: the calendar service once refused years outside 1900-2199 that the
+	// route accepted, answering 500
+	it.each(YEAR_ROUTES)('%s answers a year outside 1900-2199', async (route) => {
+		for (const year of ['1700', '2300']) {
+			const res = await app.request(route.replace('{year}', year))
+			expect(res.status, year).toBe(200)
+		}
+	})
 })
