@@ -28,13 +28,13 @@ export const CelebrationSchema = z.object({
 	celebratedOnEve: z.boolean().optional(),
 })
 
-export const SynaxariumEntrySchema = z
-	.object({
-		url: z.string().optional(),
-		name: z.string().optional(),
-		text: z.string().optional(),
-	})
-	.loose()
+export const SynaxariumEntrySchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	url: z.string(),
+	text: z.string().optional().meta({ description: 'Present when `detailed` is set' }),
+	sourceRef: z.string().optional(),
+})
 
 export const ErrorSchema = z.object({
 	error: z.string(),
@@ -232,12 +232,26 @@ export const AgpeyaMidnightHourSchema = z.object({
 export const AgpeyaAnyHourSchema = z.union([AgpeyaHourSchema, AgpeyaMidnightHourSchema])
 
 // Incense schemas — derive role enum from the data package type so they can't drift
-import type { IncenseSectionRole } from '@coptic/data/en/incense'
+import type { ContentLine, ContentSpeaker, IncenseSectionRole } from '@coptic/data/en/incense'
 const INCENSE_ROLES = ['all', 'priest', 'deacon', 'congregation'] as const satisfies [
 	IncenseSectionRole,
 	...IncenseSectionRole[],
 ]
 const IncenseSectionRoleSchema = z.enum(INCENSE_ROLES)
+
+// A prayed line, derived from the data package's ContentLine so the two cannot drift
+const SPEAKERS = ['Priest', 'Deacon', 'People'] as const satisfies [
+	ContentSpeaker,
+	...ContentSpeaker[],
+]
+const ContentLineSchema = z.object({
+	speaker: z.enum(SPEAKERS).optional(),
+	text: z.string(),
+	isRubric: z.boolean().optional(),
+	isResponse: z.boolean().optional(),
+	coptic: z.string().optional(),
+}) satisfies z.ZodType<ContentLine>
+const ContentSchema = z.array(z.union([z.string(), ContentLineSchema]))
 
 export const IncensePrayerSectionSchema = z.object({
 	id: z.string(),
@@ -248,16 +262,7 @@ export const IncensePrayerSectionSchema = z.object({
 	// Offered as an extra (Matins litanies, out-of-season nature litanies) — readers hide
 	// these by default and surface them as addable prayers.
 	optional: z.boolean().optional(),
-	content: z.array(
-		z.union([
-			z.string(),
-			z.object({
-				speaker: z.string().optional(),
-				text: z.string(),
-				isRubric: z.boolean().optional(),
-			}),
-		]),
-	),
+	content: ContentSchema,
 })
 
 export const IncensePsalmSectionSchema = z.object({
@@ -304,18 +309,9 @@ export const LiturgyPrayerSectionSchema = z.object({
 	title: z.string(),
 	// Set when a section's title falls back to another language, so the reader can
 	// label it rather than passing it off as a translation.
-	titleLanguage: z.string().optional(),
+	titleLanguage: z.enum(['en', 'ar', 'cop']).optional(),
 	rubric: z.string().optional(),
-	content: z.array(
-		z.union([
-			z.string(),
-			z.object({
-				speaker: z.string().optional(),
-				text: z.string(),
-				isRubric: z.boolean().optional(),
-			}),
-		]),
-	),
+	content: ContentSchema,
 })
 
 /** Psalm, epistle and gospel all come from the day's Katameros, so they share a shape. */
@@ -324,7 +320,7 @@ export const LiturgyReadingSectionSchema = z.object({
 	type: z.enum(['psalm', 'epistle', 'gospel']),
 	role: LiturgySectionRoleSchema,
 	title: z.string(),
-	titleLanguage: z.string().optional(),
+	titleLanguage: z.enum(['en', 'ar', 'cop']).optional(),
 	rubric: z.string().optional(),
 	reference: z.string(),
 	verses: z.array(AgpeyaVerseSchema),
@@ -464,14 +460,25 @@ const LentDevotionalSchema = z.object({
 	day: z.string(),
 	title: z.string(),
 	references: z.array(z.string()),
+	sermons: z
+		.array(
+			z.object({
+				title: z.string(),
+				preacher: z.string().optional(),
+				youtubeUrl: z.string(),
+				thumbnail: z.string().optional(),
+			}),
+		)
+		.optional(),
+	sundayHolyGospelReading: z.string().optional(),
 	date: z.string(),
 })
 
 export const LentScheduleSchema = z.object({
 	year: z.number(),
 	easterDate: z.string(),
-	lentStart: z.string().optional(),
-	lentEnd: z.string().optional(),
+	lentStart: z.string(),
+	lentEnd: z.string(),
 	days: z.array(LentDevotionalSchema),
 })
 

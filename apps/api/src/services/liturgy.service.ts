@@ -5,6 +5,7 @@ import { getLiturgyService as getCopLiturgyService } from '@coptic/data/cop/litu
 import {
 	type LiturgyContent,
 	type LiturgyEpistleSection,
+	type LiturgyLanguage,
 	type LiturgyPrayerSection,
 	type LiturgyRite,
 	type LiturgySectionRole,
@@ -20,7 +21,7 @@ export interface ResolvedLiturgyPrayerSection {
 	type: 'prayer' | 'litany' | 'creed'
 	role: LiturgySectionRole
 	title: string
-	titleLanguage?: string
+	titleLanguage?: LiturgyLanguage
 	rubric?: string
 	content: LiturgyContent[]
 }
@@ -31,7 +32,7 @@ export interface ResolvedLiturgyReadingSection {
 	type: 'psalm' | 'epistle' | 'gospel'
 	role: LiturgySectionRole
 	title: string
-	titleLanguage?: string
+	titleLanguage?: LiturgyLanguage
 	rubric?: string
 	reference: string
 	verses: BibleVerse[]

@@ -21,13 +21,13 @@ export interface DataMeta {
  */
 export interface SynaxariumEntry {
 	/** Unique identifier */
-	id?: string
+	id: string
 	/** Name of the saint or event */
 	name: string
 	/** Full text of the entry */
 	text?: string
 	/** Source URL */
-	url?: string
+	url: string
 	/** Source reference for canonical entries */
 	sourceRef?: string
 }

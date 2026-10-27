@@ -41,13 +41,16 @@ for (const route of withOptionalLastParam(getScheduleRoute)) {
 			...entry,
 			date: toDateKey(addDays(easter, entry.dayOffset)),
 		}))
+		const first = schedule[0]
+		const last = schedule.at(-1)
+		if (!first || !last) throw new Error('The Lent devotional has no days')
 
 		return c.json(
 			{
 				year,
 				easterDate: toDateKey(easter),
-				lentStart: schedule[0]?.date,
-				lentEnd: schedule[schedule.length - 1]?.date,
+				lentStart: first.date,
+				lentEnd: last.date,
 				days: schedule,
 			},
 			200,
