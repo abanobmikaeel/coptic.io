@@ -1,4 +1,3 @@
-import { getLiturgicalName } from '@coptic/core'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { CelebrationSchema, ErrorSchema, UpcomingCelebrationSchema } from '../schemas'
@@ -7,12 +6,6 @@ import { createApiApp, jsonResponse } from '../utils/openapi'
 import { WALL_CLOCK_CACHE_CONTROL } from '../utils/request'
 
 const app = createApiApp()
-
-// Localize a celebration's name for the requested language (falls back to English).
-const localizeName = <T extends { name: string }>(c: T, lang: string): T => ({
-	...c,
-	name: getLiturgicalName(c.name, lang),
-})
 
 // GET /api/celebrations
 const getAllRoute = createRoute({
@@ -56,9 +49,7 @@ const getForDateRoute = createRoute({
 
 app.openapi(getForDateRoute, (c) => {
 	const { lang } = c.req.valid('query')
-	const celebrations = celebrationsService.getCelebrationsForDate(c.var.date)
-	const localized = celebrations?.map((cel) => localizeName(cel, lang ?? 'en')) ?? celebrations
-	return c.json(localized, 200)
+	return c.json(celebrationsService.getCelebrationsForDate(c.var.date, lang), 200)
 })
 
 // GET /api/celebrations/upcoming/list
@@ -83,12 +74,7 @@ app.openapi(getUpcomingRoute, (c) => {
 	const { days, lang } = c.req.valid('query')
 	// This response is always relative to "today", so it must not be cached for 12h.
 	c.header('Cache-Control', WALL_CLOCK_CACHE_CONTROL)
-	const upcoming = celebrationsService.getUpcomingCelebrations(days ?? 30)
-	const localized = upcoming.map((day) => ({
-		...day,
-		celebrations: day.celebrations.map((cel) => localizeName(cel, lang ?? 'en')),
-	}))
-	return c.json(localized, 200)
+	return c.json(celebrationsService.getUpcomingCelebrations(days, lang), 200)
 })
 
 export default app
