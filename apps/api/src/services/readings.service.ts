@@ -2,7 +2,7 @@ import { getLiturgicalName, gregorianToCoptic, localizeCopticDate } from '@copti
 import { localizeReference } from '@coptic/data'
 import { getByCopticDate, warmTranslation } from '../models/readings'
 import type { BibleTranslation } from '../types'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import { getCelebrationsForDate } from './celebrations.service'
 
 // Reading-reference fields whose values are verse strings ("Psalms 99:6-7").
 const REFERENCE_KEYS = [
@@ -49,7 +49,7 @@ export const getReadingsForDate = async (
 		...(data.season
 			? { season: getLiturgicalName(data.season, translation), seasonKey: data.season }
 			: {}),
-		celebrations: getStaticCelebrationsForDay(date),
+		celebrations: getCelebrationsForDate(date, translation),
 		fullDate: localizeCopticDate(gregorianToCoptic(date), translation),
 	}
 }
