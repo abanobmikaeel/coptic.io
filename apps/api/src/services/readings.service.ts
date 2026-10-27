@@ -1,28 +1,12 @@
 import { getLiturgicalName, gregorianToCoptic, localizeCopticDate } from '@coptic/core'
 import { localizeReference } from '@coptic/data'
 import { getByCopticDate, warmTranslation } from '../models/readings'
-import type { BibleTranslation } from '../types'
+import { type BibleTranslation, READING_SLOTS } from '../types'
 import { getCelebrationsForDate } from './celebrations.service'
-
-// Reading-reference fields whose values are verse strings ("Psalms 99:6-7").
-const REFERENCE_KEYS = [
-	'Prophecies',
-	'VPsalm',
-	'VGospel',
-	'MPsalm',
-	'MGospel',
-	'Pauline',
-	'Catholic',
-	'Acts',
-	'LPsalm',
-	'LGospel',
-	'EPPsalm',
-	'EPGospel',
-] as const
 
 const localizeReferenceObject = (reference: Record<string, unknown>, lang: string) => {
 	const out: Record<string, unknown> = { ...reference }
-	for (const key of REFERENCE_KEYS) {
+	for (const key of READING_SLOTS) {
 		if (typeof out[key] === 'string') out[key] = localizeReference(out[key] as string, lang)
 	}
 	return out

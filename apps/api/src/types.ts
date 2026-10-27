@@ -3,6 +3,24 @@ export const BIBLE_TRANSLATIONS = ['en', 'ar', 'es', 'cop'] as const
 
 export type BibleTranslation = (typeof BIBLE_TRANSLATIONS)[number]
 
+/** The Katameros reading slots, in service order: Vespers, Matins, the Liturgy, the Evening Prayer. */
+export const READING_SLOTS = [
+	'Prophecies',
+	'VPsalm',
+	'VGospel',
+	'MPsalm',
+	'MGospel',
+	'Pauline',
+	'Catholic',
+	'Acts',
+	'LPsalm',
+	'LGospel',
+	'EPPsalm',
+	'EPGospel',
+] as const
+
+export type ReadingSlot = (typeof READING_SLOTS)[number]
+
 export interface BibleVerse {
 	text: string
 	num: number
