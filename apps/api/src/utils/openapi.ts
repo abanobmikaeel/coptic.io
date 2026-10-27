@@ -18,3 +18,9 @@ export const createApiApp = () =>
 			return undefined
 		},
 	})
+
+/** An OpenAPI response whose body is JSON matching `schema`. */
+export const jsonResponse = <T>(schema: T, description: string) => ({
+	description,
+	content: { 'application/json': { schema } },
+})
