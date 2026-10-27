@@ -2,7 +2,7 @@ import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { DailyVerseSchema, ErrorSchema } from '../schemas'
 import { getDailyVerse } from '../services/daily-verse.service'
-import { createApiApp, jsonResponse } from '../utils/openapi'
+import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
 import { parseTranslation } from '../utils/request'
 
 const app = createApiApp()
@@ -10,7 +10,7 @@ const app = createApiApp()
 // GET /api/verse/:date
 const getForDateRoute = createRoute({
 	method: 'get',
-	path: '/:date?',
+	path: '/{date}',
 	tags: ['Readings'],
 	summary: 'Get the verse of the day',
 	description:
@@ -18,7 +18,7 @@ const getForDateRoute = createRoute({
 	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
-			date: z.string().optional().openapi({ example: '2026-05-20' }),
+			date: z.string().openapi({ example: '2026-05-20' }),
 		}),
 		query: z.object({
 			lang: z.string().optional().openapi({
@@ -34,10 +34,12 @@ const getForDateRoute = createRoute({
 	},
 })
 
-app.openapi(getForDateRoute, async (c) => {
-	const result = await getDailyVerse(c.var.date, parseTranslation(c.req.valid('query').lang))
-	if (!result) return c.json({ error: 'No verse for date' }, 404)
-	return c.json(result, 200)
-})
+for (const route of withOptionalLastParam(getForDateRoute)) {
+	app.openapi(route, async (c) => {
+		const result = await getDailyVerse(c.var.date, parseTranslation(c.req.valid('query').lang))
+		if (!result) return c.json({ error: 'No verse for date' }, 404)
+		return c.json(result, 200)
+	})
+}
 
 export default app

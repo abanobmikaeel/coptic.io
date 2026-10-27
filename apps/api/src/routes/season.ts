@@ -16,7 +16,7 @@ import {
 	SeasonYearSchema,
 } from '../schemas'
 import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
-import { createApiApp, jsonResponse } from '../utils/openapi'
+import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
 import { parseYear } from '../utils/request'
 
 const app = createApiApp()
@@ -26,14 +26,14 @@ const yearParams = z.object({ year: z.string().openapi({ example: '2026' }) })
 // GET /api/season/:date
 const getForDateRoute = createRoute({
 	method: 'get',
-	path: '/:date?',
+	path: '/{date}',
 	tags: ['Season'],
 	summary: 'Get the liturgical season of a date',
 	description:
 		'Returns the liturgical season a Gregorian date falls in, or Ordinary Time outside the major seasons. Defaults to today.',
 	middleware: [requestDate()] as const,
 	request: {
-		params: z.object({ date: z.string().optional().openapi({ example: '2026-03-01' }) }),
+		params: z.object({ date: z.string().openapi({ example: '2026-03-01' }) }),
 		query: z.object({
 			lang: z.string().optional().openapi({
 				example: 'ar',
@@ -47,42 +47,44 @@ const getForDateRoute = createRoute({
 	},
 })
 
-app.openapi(getForDateRoute, (c) => {
-	const { date } = c.var
-	const langQuery = c.req.valid('query').lang
-	const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
-	const currentSeason = getLiturgicalSeasonForDate(date)
-	const isFasting = isInFastingPeriod(date)
+for (const route of withOptionalLastParam(getForDateRoute)) {
+	app.openapi(route, (c) => {
+		const { date } = c.var
+		const langQuery = c.req.valid('query').lang
+		const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
+		const currentSeason = getLiturgicalSeasonForDate(date)
+		const isFasting = isInFastingPeriod(date)
 
-	if (!currentSeason) {
+		if (!currentSeason) {
+			return c.json(
+				{
+					date: toDateKey(date),
+					season: getLiturgicalName('Ordinary Time', lang),
+					description: getLiturgicalDescription(
+						'Ordinary Time',
+						'Regular liturgical time outside major seasons',
+						lang,
+					),
+					isFasting: false,
+				},
+				200,
+			)
+		}
+
 		return c.json(
 			{
 				date: toDateKey(date),
-				season: getLiturgicalName('Ordinary Time', lang),
-				description: getLiturgicalDescription(
-					'Ordinary Time',
-					'Regular liturgical time outside major seasons',
-					lang,
-				),
-				isFasting: false,
+				season: getLiturgicalName(currentSeason.name, lang),
+				description: getLiturgicalDescription(currentSeason.name, currentSeason.description, lang),
+				startDate: toDateKey(currentSeason.startDate),
+				endDate: toDateKey(currentSeason.endDate),
+				isFasting,
+				type: currentSeason.type,
 			},
 			200,
 		)
-	}
-
-	return c.json(
-		{
-			date: toDateKey(date),
-			season: getLiturgicalName(currentSeason.name, lang),
-			description: getLiturgicalDescription(currentSeason.name, currentSeason.description, lang),
-			startDate: toDateKey(currentSeason.startDate),
-			endDate: toDateKey(currentSeason.endDate),
-			isFasting,
-			type: currentSeason.type,
-		},
-		200,
-	)
-})
+	})
+}
 
 // GET /api/season/year/:year
 const getYearRoute = createRoute({

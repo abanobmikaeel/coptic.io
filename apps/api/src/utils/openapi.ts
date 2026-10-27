@@ -1,4 +1,4 @@
-import { OpenAPIHono } from '@hono/zod-openapi'
+import { OpenAPIHono, type RouteConfig } from '@hono/zod-openapi'
 import type { Env } from 'hono'
 
 /**
@@ -25,3 +25,21 @@ export const jsonResponse = <T>(schema: T, description: string) => ({
 	description,
 	content: { 'application/json': { schema } },
 })
+
+/**
+ * OpenAPI has no optional path parameters, so a route like /readings/:date? is
+ * documented as two operations, /readings and /readings/{date}. Given the route with
+ * its final parameter, returns it without and with; register one handler for both.
+ */
+type WithoutParams<R extends RouteConfig> = Omit<R, 'request'> & {
+	request: Omit<NonNullable<R['request']>, 'params'>
+}
+
+export const withOptionalLastParam = <R extends RouteConfig>(
+	route: R,
+): readonly [WithoutParams<R>, R] => {
+	const { params: _params, ...request } = route.request ?? {}
+	const bare = { ...route, path: route.path.replace(/\/\{\w+\}$/, '') || '/', request }
+	// TypeScript cannot follow a rest destructure through a generic, hence the cast
+	return [bare as WithoutParams<R>, route]
+}

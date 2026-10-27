@@ -4,7 +4,7 @@ import { requestDate } from '../middleware/request'
 import { ErrorSchema, FastingDaySchema, FastingResponseSchema } from '../schemas'
 import * as fastingService from '../services/fasting.service'
 import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
-import { createApiApp, jsonResponse } from '../utils/openapi'
+import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
 import { parseYear } from '../utils/request'
 
 const app = createApiApp()
@@ -12,7 +12,7 @@ const app = createApiApp()
 // GET /api/fasting/:date
 const getForDateRoute = createRoute({
 	method: 'get',
-	path: '/:date?',
+	path: '/{date}',
 	tags: ['Fasting'],
 	summary: 'Check if a date is a fasting day',
 	description:
@@ -20,7 +20,7 @@ const getForDateRoute = createRoute({
 	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
-			date: z.string().optional().openapi({ example: '2025-01-07' }),
+			date: z.string().openapi({ example: '2025-01-07' }),
 		}),
 		query: z.object({
 			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
@@ -32,19 +32,21 @@ const getForDateRoute = createRoute({
 	},
 })
 
-app.openapi(getForDateRoute, (c) => {
-	const { lang = 'en' } = c.req.valid('query')
-	const fastingInfo = fastingService.getFastingForDate(c.var.date)
-	return c.json(
-		{
-			...fastingInfo,
-			description: fastingInfo.description
-				? getLiturgicalName(fastingInfo.description, lang)
-				: fastingInfo.description,
-		},
-		200,
-	)
-})
+for (const route of withOptionalLastParam(getForDateRoute)) {
+	app.openapi(route, (c) => {
+		const { lang = 'en' } = c.req.valid('query')
+		const fastingInfo = fastingService.getFastingForDate(c.var.date)
+		return c.json(
+			{
+				...fastingInfo,
+				description: fastingInfo.description
+					? getLiturgicalName(fastingInfo.description, lang)
+					: fastingInfo.description,
+			},
+			200,
+		)
+	})
+}
 
 // GET /api/fasting/calendar/:year
 const getCalendarRoute = createRoute({

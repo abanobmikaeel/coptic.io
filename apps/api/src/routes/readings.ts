@@ -2,7 +2,7 @@ import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { ErrorSchema, ReadingsResponseSchema } from '../schemas'
 import { getReadingsForDate } from '../services/readings.service'
-import { createApiApp, jsonResponse } from '../utils/openapi'
+import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
 import { parseTranslation } from '../utils/request'
 
 const app = createApiApp()
@@ -10,7 +10,7 @@ const app = createApiApp()
 // GET /api/readings/:date
 const getForDateRoute = createRoute({
 	method: 'get',
-	path: '/:date?',
+	path: '/{date}',
 	tags: ['Readings'],
 	summary: "Get the day's Katameros readings",
 	description:
@@ -18,7 +18,7 @@ const getForDateRoute = createRoute({
 	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
-			date: z.string().optional().openapi({ example: '2026-11-01' }),
+			date: z.string().openapi({ example: '2026-11-01' }),
 		}),
 		query: z.object({
 			detailed: z.string().optional().openapi({
@@ -37,12 +37,14 @@ const getForDateRoute = createRoute({
 	},
 })
 
-app.openapi(getForDateRoute, async (c) => {
-	const { detailed, lang } = c.req.valid('query')
-	return c.json(
-		await getReadingsForDate(c.var.date, detailed === 'true', parseTranslation(lang)),
-		200,
-	)
-})
+for (const route of withOptionalLastParam(getForDateRoute)) {
+	app.openapi(route, async (c) => {
+		const { detailed, lang } = c.req.valid('query')
+		return c.json(
+			await getReadingsForDate(c.var.date, detailed === 'true', parseTranslation(lang)),
+			200,
+		)
+	})
+}
 
 export default app

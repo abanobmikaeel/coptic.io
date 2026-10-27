@@ -27,7 +27,7 @@ app.openapi(getAllRoute, (c) => {
 // GET /api/celebrations/:date
 const getForDateRoute = createRoute({
 	method: 'get',
-	path: '/:date?',
+	path: '/{date}',
 	tags: ['Celebrations'],
 	summary: 'Get celebrations for a specific date',
 	description:
@@ -35,7 +35,7 @@ const getForDateRoute = createRoute({
 	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
-			date: z.string().optional().openapi({ example: '2025-01-07' }),
+			date: z.string().openapi({ example: '2025-01-07' }),
 		}),
 		query: z.object({
 			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
