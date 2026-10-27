@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { BIBLE_TRANSLATIONS, READING_SLOTS, type ReadingSlot } from '../types'
 
 // Common schemas
 export const CopticDateSchema = z.object({
@@ -340,4 +341,142 @@ export const LiturgyResponseSchema = z.object({
 	date: z.string(),
 	copticDate: CopticDateSchema,
 	sections: z.array(LiturgySectionSchema),
+})
+
+// Readings schemas
+
+const ReadingSchema = z.object({
+	bookName: z.string(),
+	chapters: z.array(
+		z.object({
+			chapterNum: z.number(),
+			verses: z.array(z.object({ num: z.number(), text: z.string() })),
+		}),
+	),
+})
+
+// One optional field per Katameros slot, all of the same shape
+const readingSlots = <T extends z.ZodType>(schema: T) =>
+	Object.fromEntries(READING_SLOTS.map((slot) => [slot, schema.optional()])) as Record<
+		ReadingSlot,
+		z.ZodOptional<T>
+	>
+
+export const ReadingsResponseSchema = z.object({
+	reference: z
+		.object({ id: z.number().optional(), ...readingSlots(z.string()) })
+		.optional()
+		.meta({ description: 'Verse references per slot, when `detailed` is not set' }),
+	...readingSlots(z.array(ReadingSchema).nullable()),
+	Synaxarium: z.array(SynaxariumEntrySchema),
+	synaxariumLanguage: z.string().optional(),
+	cycle: z.enum(['jonah', 'greatLent', 'holyWeek', 'holyFifty', 'sunday', 'annual']).meta({
+		description: 'The lectionary cycle the readings come from',
+	}),
+	readingsAvailable: z.boolean().meta({
+		description: 'False when the cycle has no readings in the lectionary yet (Holy Week)',
+	}),
+	season: z.string().optional(),
+	seasonKey: z.string().optional(),
+	seasonDay: z.string().optional().meta({ example: 'Second Sunday of Baba' }),
+	celebrations: z.array(CelebrationSchema).nullable(),
+	fullDate: CopticDateSchema,
+})
+
+export const DailyVerseSchema = z.object({
+	verse: z.object({ book: z.string(), chapter: z.number(), verse: z.number(), text: z.string() }),
+	reference: z.string().meta({ example: 'John 16:33' }),
+	readingSlot: z.string().meta({ example: 'LGospel' }),
+	readingReference: z.string().meta({ example: 'John 16:20-33' }),
+	language: z.enum(BIBLE_TRANSLATIONS),
+	requestedLanguage: z.enum(BIBLE_TRANSLATIONS).optional(),
+	fallback: z.boolean().optional(),
+	season: z.string().optional(),
+	seasonKey: z.string().optional(),
+	fullDate: CopticDateSchema,
+})
+
+// Calendar and season schemas
+
+export const CalendarMonthSchema = z.object({
+	year: z.number(),
+	month: z.number(),
+	monthName: z.string(),
+	days: z.array(
+		z.object({
+			gregorianDate: z.string(),
+			copticDate: CopticDateSchema,
+			fasting: FastingResponseSchema,
+		}),
+	),
+	copticMonths: z.array(
+		z.object({
+			month: z.number(),
+			monthString: z.string(),
+			year: z.number(),
+			startDay: z.number(),
+		}),
+	),
+})
+
+export const IcalInfoSchema = z.object({
+	webcalUrl: z.string(),
+	httpsUrl: z.string(),
+	instructions: z.object({ title: z.string(), steps: z.array(z.string()), note: z.string() }),
+})
+
+export const SeasonResponseSchema = z.object({
+	date: z.string(),
+	season: z.string(),
+	description: z.string(),
+	startDate: z.string().optional(),
+	endDate: z.string().optional(),
+	isFasting: z.boolean(),
+	type: z.string().optional(),
+})
+
+const PeriodSchema = z.object({
+	name: z.string(),
+	description: z.string(),
+	startDate: z.string(),
+	endDate: z.string(),
+	type: z.string(),
+})
+
+export const SeasonYearSchema = z.object({
+	year: z.number(),
+	seasons: z.array(PeriodSchema.extend({ isFasting: z.boolean() })),
+})
+
+export const FastingPeriodsSchema = z.object({
+	year: z.number(),
+	fastingPeriods: z.array(PeriodSchema),
+})
+
+// Lent devotional schemas
+
+const LentDevotionalSchema = z.object({
+	dayOffset: z.number().meta({ description: 'Days from Easter' }),
+	dayNumber: z.number(),
+	part: z.string(),
+	weekNumber: z.number(),
+	weekTheme: z.string(),
+	day: z.string(),
+	title: z.string(),
+	references: z.array(z.string()),
+	date: z.string(),
+})
+
+export const LentScheduleSchema = z.object({
+	year: z.number(),
+	easterDate: z.string(),
+	lentStart: z.string().optional(),
+	lentEnd: z.string().optional(),
+	days: z.array(LentDevotionalSchema),
+})
+
+export const LentDaySchema = LentDevotionalSchema.extend({
+	resolvedReferences: z
+		.array(z.object({ reference: z.string(), readings: z.array(ReadingSchema).nullable() }))
+		.optional(),
 })
