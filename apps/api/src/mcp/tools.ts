@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { BIBLE_TRANSLATIONS } from '../types'
 
 /**
  * The MCP tools exposed at /mcp. Each tool maps its arguments onto an existing
@@ -19,7 +20,7 @@ const displayLang = z
 	.optional()
 	.describe('Language of names and descriptions (default en)')
 const textLang = z
-	.enum(['en', 'ar', 'es', 'cop'])
+	.enum(BIBLE_TRANSLATIONS)
 	.optional()
 	.describe('Language of the text: en, ar, es, or cop for Coptic (default en)')
 

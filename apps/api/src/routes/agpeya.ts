@@ -2,6 +2,7 @@ import { createRoute, z } from '@hono/zod-openapi'
 import { bibleTranslation } from '../middleware/request'
 import { AgpeyaAnyHourSchema, AgpeyaWatchSchema, ErrorSchema } from '../schemas'
 import * as agpeyaService from '../services/agpeya.service'
+import { BIBLE_TRANSLATIONS } from '../types'
 import { createApiApp, jsonResponse } from '../utils/openapi'
 import { WALL_CLOCK_CACHE_CONTROL } from '../utils/request'
 
@@ -10,7 +11,7 @@ const app = createApiApp()
 const validHours = ['prime', 'terce', 'sext', 'none', 'vespers', 'compline', 'midnight'] as const
 const validWatches = ['1', '2', '3'] as const
 const langQuery = z.object({
-	lang: z.enum(['en', 'ar', 'es', 'cop']).optional().openapi({ example: 'ar' }),
+	lang: z.enum(BIBLE_TRANSLATIONS).optional().openapi({ example: 'ar' }),
 	psalms: z.enum(['septuagint', 'bible']).optional().openapi({
 		example: 'septuagint',
 		description:
@@ -122,7 +123,7 @@ app.openapi(getMidnightWatchRoute, (c) => {
 // GET /api/agpeya/translations - List content languages the Agpeya can render
 const TranslationsSchema = z
 	.object({
-		available: z.array(z.enum(['en', 'ar', 'es', 'cop'])).openapi({ example: ['en', 'ar', 'cop'] }),
+		available: z.array(z.enum(BIBLE_TRANSLATIONS)).openapi({ example: ['en', 'ar', 'cop'] }),
 	})
 	.openapi('AgpeyaTranslations')
 
