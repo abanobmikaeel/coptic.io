@@ -49,7 +49,8 @@ jobs:
   # API from this commit, so a regression in either shows up before it ships
   e2e:
     if: github.event.action != 'closed'
-    runs-on: ubuntu-latest
+    # Pinned: Playwright cannot install Chromium on ubuntu-latest (26.04) yet
+    runs-on: ubuntu-24.04
     env:
       NEXT_PUBLIC_API_URL: http://localhost:3000/api
       BASE_URL: http://localhost:3001
