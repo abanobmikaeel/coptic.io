@@ -151,6 +151,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@coptic/client':
+        specifier: workspace:*
+        version: link:../../packages/client
       '@coptic/core':
         specifier: workspace:*
         version: link:../../packages/core

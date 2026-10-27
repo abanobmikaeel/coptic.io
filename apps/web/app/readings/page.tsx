@@ -20,18 +20,18 @@ import { ServiceDivider } from '@/components/ServiceDivider'
 import { SwipeableContainer } from '@/components/SwipeableContainer'
 import { SynaxariumReading } from '@/components/SynaxariumReading'
 import { NoReadingsState } from '@/components/ui/EmptyState'
-import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
 	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import { getSectionLabels } from '@/i18n/content-translations'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import { parseViewMode } from '@/lib/reading-preferences'
 import { getAvailableSections } from '@/lib/reading-sections'
 import { themeClasses } from '@/lib/reading-styles'
 import { getRequestToday } from '@/lib/requestToday'
-import type { ReadingsData } from '@/lib/types'
+import type { Reading, ReadingsData } from '@/lib/types'
 import { formatGregorianDate, parseDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { getLocale } from 'next-intl/server'
@@ -82,22 +82,15 @@ const titleKeys: Partial<Record<ReadingSection, ReadingSection>> = {
 	EPGospel: 'LGospel',
 }
 
-async function getReadings(date: string, lang?: string): Promise<ReadingsData | null> {
-	try {
-		const params = new URLSearchParams({ detailed: 'true' })
-		if (lang && lang !== 'en') {
-			params.set('lang', lang)
-		}
-		const endpoint = `${API_BASE_URL}/readings/${date}?${params}`
-		// Short revalidation so lectionary corrections reach the page minutes after an API
-		// deploy; the API's edge cache is keyed by deploy version and needs no purge.
-		const res = await fetch(endpoint, { next: { revalidate: 300 } })
-		if (!res.ok) return null
-		return res.json()
-	} catch {
-		return null
-	}
-}
+// Short revalidation so lectionary corrections reach the page minutes after an API
+// deploy; the API's edge cache is keyed by deploy version and needs no purge.
+const getReadings = (date: string, lang?: string) =>
+	dataOrNull(
+		api.GET('/api/readings/{date}', {
+			params: { path: { date }, query: { detailed: 'true', lang } },
+			...cacheFor(300),
+		}),
+	)
 
 interface ReadingsPageProps {
 	searchParams: Promise<{
@@ -208,7 +201,7 @@ export default async function ReadingsPage({ searchParams }: Readonly<ReadingsPa
 	)
 
 	const renderSection = (key: ReadingSection) => {
-		const readingsMap: Partial<Record<BibleTranslation, ReadingsData[ReadingSection]>> = {}
+		const readingsMap: Partial<Record<BibleTranslation, Reading[]>> = {}
 		for (const lang of languagesToFetch) {
 			const data = readingsByLang[lang]?.[key]
 			if (data?.length) readingsMap[lang] = data

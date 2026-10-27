@@ -212,14 +212,13 @@ export function useSynaxarium() {
 			return
 		}
 		setIsSearching(true)
-		const lang = locale === 'ar' ? 'ar' : undefined
 		const timer = setTimeout(async () => {
-			const results = await searchSynaxarium(searchQuery, lang)
+			const results = await searchSynaxarium(searchQuery)
 			setSearchResults(results || [])
 			setIsSearching(false)
 		}, 300)
 		return () => clearTimeout(timer)
-	}, [searchQuery, locale])
+	}, [searchQuery])
 
 	// === Derived data ===
 	const showingSearch = searchQuery.trim().length > 0

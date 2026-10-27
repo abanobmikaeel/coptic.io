@@ -1,7 +1,7 @@
 'use client'
 
 import { BookIcon, ClockIcon, LoadingSpinner, PersonIcon, SearchIcon } from '@/components/ui/Icons'
-import { API_BASE_URL } from '@/config'
+import { api } from '@/lib/client'
 import { useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -9,11 +9,10 @@ import { RemoveScroll } from 'react-remove-scroll'
 import type {
 	AgpeyaSearchResult,
 	BibleSearchResult,
-	SearchResponse,
 	SearchResultItem,
 	SearchResults,
 	SynaxariumSearchResult,
-} from './useCommandPalette'
+} from './types'
 
 interface CommandPaletteContextType {
 	isOpen: boolean
@@ -103,14 +102,11 @@ function CommandPaletteModal({
 		abortControllerRef.current = controller
 
 		try {
-			const response = await fetch(
-				`${API_BASE_URL}/search?q=${encodeURIComponent(searchQuery)}&limit=5`,
-				{ signal: controller.signal },
-			)
-
-			if (!response.ok) throw new Error('Search failed')
-
-			const data: SearchResponse = await response.json()
+			const { data } = await api.GET('/api/search', {
+				params: { query: { q: searchQuery, limit: '5' } },
+				signal: controller.signal,
+			})
+			if (!data) throw new Error('Search failed')
 			setResults(data.results)
 			setSelectedIndex(0)
 		} catch (err) {

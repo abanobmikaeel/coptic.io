@@ -4,12 +4,12 @@ import {
 } from '@/components/LiturgicalServiceReader'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { orderLanguages } from '@/components/ScriptureReading/utils'
-import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
 	resolveContentLanguages,
 } from '@/i18n/content-languages'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import type { IncenseService } from '@/lib/types'
 import { toDateKey } from '@coptic/core'
 import type { Metadata } from 'next'
@@ -30,18 +30,10 @@ interface LiturgyPageProps {
 	searchParams: Promise<{ date?: string }>
 }
 
-async function fetchLiturgy(lang: LiturgyLang, date: string): Promise<IncenseService | null> {
-	try {
-		const response = await fetch(
-			`${API_BASE_URL}/liturgy/basil?${new URLSearchParams({ lang, date })}`,
-			{ next: { revalidate: 43200 } },
-		)
-		if (!response.ok) return null
-		return response.json()
-	} catch {
-		return null
-	}
-}
+const fetchLiturgy = (lang: LiturgyLang, date: string): Promise<IncenseService | null> =>
+	dataOrNull(
+		api.GET('/api/liturgy/basil', { params: { query: { lang, date } }, ...cacheFor(43200) }),
+	)
 
 export default async function LiturgyPage({ searchParams }: Readonly<LiturgyPageProps>) {
 	const { date: dateParam } = await searchParams

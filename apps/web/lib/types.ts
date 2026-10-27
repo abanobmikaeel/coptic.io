@@ -1,72 +1,27 @@
+import type { ApiResponse } from '@coptic/client'
+
 // Bible Translation Types
 export type BibleTranslation = 'en' | 'ar'
 
-// Calendar Types
-export interface CopticDate {
-	dateString: string
-	day: number
-	month: number
-	year: number
-	monthString: string
-}
+// API response types, from the API's OpenAPI spec. Regenerate them with
+// `pnpm gen:api-types` rather than editing them here.
+type Celebrations = NonNullable<ApiResponse<'/api/celebrations/{date}'>>
 
-export interface CalendarData {
-	dateString: string
-	day: number
-	month: number
-	year: number
-	monthString: string
-	copticMonthName?: string
-	copticDay?: number
-	copticYear?: number
-}
-
-export interface SeasonData {
-	season?: string
-	description?: string
-	isFasting?: boolean
-}
-
-export interface Celebration {
-	id: number
-	name: string
-	type: string
-	category: string
-	story?: string
-}
-
-export interface UpcomingCelebration {
-	date: string
-	copticDate: CopticDate
-	celebrations: Celebration[]
-}
-
-export interface FastingInfo {
-	isFasting: boolean
-	fastType: string | null
-	description: string | null
-}
-
-export interface CalendarDay {
-	gregorianDate: string
-	copticDate: CopticDate
-	fasting: FastingInfo
-}
-
-export interface CopticMonthInfo {
-	month: number
-	monthString: string
-	year: number
-	startDay: number
-}
-
-export interface CalendarMonth {
-	year: number
-	month: number
-	monthName: string
-	days: CalendarDay[]
-	copticMonths: CopticMonthInfo[]
-}
+export type CopticDate = ApiResponse<'/api/calendar/{date}'>
+export type CalendarData = CopticDate
+export type SeasonData = ApiResponse<'/api/season/{date}'>
+export type Celebration = Celebrations[number]
+export type UpcomingCelebration = ApiResponse<'/api/celebrations/upcoming/list'>[number]
+export type FastingInfo = ApiResponse<'/api/fasting/{date}'>
+export type CalendarMonth = ApiResponse<'/api/calendar/month/{year}/{month}'>
+export type CalendarDay = CalendarMonth['days'][number]
+export type CopticMonthInfo = CalendarMonth['copticMonths'][number]
+export type SynaxariumEntry = ApiResponse<'/api/synaxarium/{date}'>[number]
+export type SynaxariumSearchResult = ApiResponse<'/api/synaxarium/search/query'>[number]
+export type ReadingsData = ApiResponse<'/api/readings/{date}'>
+export type Reading = NonNullable<ReadingsData['LGospel']>[number]
+export type Chapter = Reading['chapters'][number]
+export type Verse = Chapter['verses'][number]
 
 // Subscriber Types
 export interface Subscriber {
@@ -86,67 +41,6 @@ export interface SubscriberPreferences {
 	patronSaint: string | null
 	dailyReadings: boolean
 	feastReminders: boolean
-}
-
-// Readings Types
-export interface Verse {
-	text: string
-	num: number
-}
-
-export interface Chapter {
-	chapterNum: number
-	verses: Verse[]
-}
-
-export interface Reading {
-	bookName: string
-	chapters: Chapter[]
-}
-
-export interface SynaxariumEntry {
-	id?: string
-	name: string
-	url: string
-	text?: string
-}
-
-export interface ReadingsData {
-	Prophecies?: Reading[]
-	VPsalm?: Reading[]
-	VGospel?: Reading[]
-	MPsalm?: Reading[]
-	MGospel?: Reading[]
-	Pauline?: Reading[]
-	Catholic?: Reading[]
-	Acts?: Reading[]
-	LPsalm?: Reading[]
-	LGospel?: Reading[]
-	EPPsalm?: Reading[]
-	EPGospel?: Reading[]
-	Synaxarium?: SynaxariumEntry[]
-	fullDate?: CopticDate
-	season?: string
-	seasonDay?: string
-	/** The lectionary cycle the readings come from (annual, sunday, greatLent, holyFifty…) */
-	cycle?: string
-	/** False when the day's cycle has no readings in the lectionary yet (Holy Week) */
-	readingsAvailable?: boolean
-	celebrations?: Celebration[] | null
-}
-
-// Synaxarium Search Types
-export interface SynaxariumSearchResult {
-	date: string
-	copticDate: {
-		dateString: string
-		day: number
-		monthString: string
-	}
-	entry: {
-		url?: string
-		name?: string
-	}
 }
 
 // Incense / Vespers Types

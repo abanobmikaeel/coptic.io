@@ -1,11 +1,11 @@
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { orderLanguages } from '@/components/ScriptureReading/utils'
-import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
 	resolveContentLanguages,
 } from '@/i18n/content-languages'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import {
 	type TasbehaDayId,
 	getCurrentTasbehaDay,
@@ -38,21 +38,17 @@ export async function generateMetadata({ searchParams }: TasbehaPageProps): Prom
 	}
 }
 
-async function fetchTasbeha(
+const fetchTasbeha = (
 	day: TasbehaDayId,
 	lang: TasbehaLang,
 	date: string,
-): Promise<IncenseService | null> {
-	try {
-		const response = await fetch(`${API_BASE_URL}/tasbeha/${day}?lang=${lang}&date=${date}`, {
-			next: { revalidate: 43200 },
-		})
-		if (!response.ok) return null
-		return response.json()
-	} catch {
-		return null
-	}
-}
+): Promise<IncenseService | null> =>
+	dataOrNull(
+		api.GET('/api/tasbeha/{day}', {
+			params: { path: { day }, query: { lang, date } },
+			...cacheFor(43200),
+		}),
+	)
 
 export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPageProps>) {
 	const { day: dayParam } = await searchParams
