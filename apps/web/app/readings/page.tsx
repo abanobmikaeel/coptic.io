@@ -245,8 +245,10 @@ export default async function ReadingsPage({ searchParams }: Readonly<ReadingsPa
 								<h1 className="text-sm sm:text-base font-bold truncate">
 									{readings?.fullDate?.dateString || gregorianDate}
 								</h1>
-								<p className={`text-[10px] sm:text-xs ${themeClasses.muted[theme]}`}>
-									{readings?.seasonDay || (readings?.fullDate ? gregorianDate : '')}
+								<p className={`text-[10px] sm:text-xs truncate ${themeClasses.muted[theme]}`}>
+									{[readings?.seasonDay, readings?.fullDate ? gregorianDate : '']
+										.filter(Boolean)
+										.join(' · ')}
 								</p>
 							</div>
 						</DateNavigation>
