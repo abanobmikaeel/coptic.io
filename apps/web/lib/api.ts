@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '@/config'
+import { toDateKey } from '@coptic/core'
 import type {
 	CalendarData,
 	CalendarMonth,
@@ -26,10 +27,7 @@ export const getCalendarData = (date?: string, lang?: string) =>
 	fetchApi<CalendarData>(`${date ? `/calendar/${date}` : '/calendar'}${langQuery(lang)}`)
 
 export const getTodayCelebrations = (date?: string, lang?: string) => {
-	const d = new Date()
-	const today =
-		date ||
-		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+	const today = date || toDateKey(new Date())
 	return fetchApi<Celebration[]>(`/celebrations/${today}${langQuery(lang)}`)
 }
 
@@ -88,10 +86,7 @@ export interface ReadingReferences {
 }
 
 export const getReadingReferences = (date?: string, lang?: string) => {
-	const d = new Date()
-	const today =
-		date ||
-		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+	const today = date || toDateKey(new Date())
 	return fetchApi<ReadingReferences>(`/readings/${today}${langQuery(lang)}`)
 }
 

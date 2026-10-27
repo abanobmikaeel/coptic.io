@@ -1,4 +1,4 @@
-import { gregorianToCoptic } from '@coptic/core'
+import { gregorianToCoptic, toDateKey } from '@coptic/core'
 import { getLiturgyService as getArLiturgyService } from '@coptic/data/ar/liturgy'
 import { resolveBlocks } from '@coptic/data/content'
 import { getLiturgyService as getCopLiturgyService } from '@coptic/data/cop/liturgy'
@@ -53,9 +53,6 @@ const EPISTLE_READING = {
 	catholic: 'Catholic',
 	praxis: 'Acts',
 } as const
-
-const formatLocalDate = (d: Date) =>
-	`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 
 const serviceFor = (translation: BibleTranslation, rite: LiturgyRite) =>
 	translation === 'ar'
@@ -122,7 +119,7 @@ export function getLiturgyForDate(
 	return {
 		type: service.id,
 		name: service.name,
-		date: formatLocalDate(date),
+		date: toDateKey(date),
 		copticDate: gregorianToCoptic(date),
 		sections,
 	}

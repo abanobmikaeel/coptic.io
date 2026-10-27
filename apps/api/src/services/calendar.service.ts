@@ -1,8 +1,10 @@
 import type { CalendarDay, CalendarMonth, CopticMonthInfo } from '@coptic/core'
-import { format } from 'date-fns'
 import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
 import { getFastingForCopticDate } from './fasting.service'
 import { getMonthView } from './yearView.service'
+
+// Built once: constructing an Intl formatter per call is what made date formatting slow
+const MONTH_NAME = new Intl.DateTimeFormat('en-US', { month: 'long' })
 
 // In-memory cache for generated iCal calendars (24-hour TTL)
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000
@@ -35,7 +37,7 @@ export const getCalendarMonth = (year: number, month: number): CalendarMonth => 
 	return {
 		year,
 		month,
-		monthName: format(new Date(year, month - 1, 1), 'MMMM'),
+		monthName: MONTH_NAME.format(new Date(year, month - 1, 1)),
 		days,
 		copticMonths: Array.from(copticMonthsSeen.values()),
 	}

@@ -1,5 +1,4 @@
-import { getMoveableFeastsForYear, isInMoveableFast } from '@coptic/core'
-import { addDays } from 'date-fns'
+import { addDays, getMoveableFeastsForYear, isInMoveableFast } from '@coptic/core'
 import { describe, expect, it } from 'vitest'
 
 /**

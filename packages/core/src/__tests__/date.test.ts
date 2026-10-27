@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { getMoveableFeastsForYear, isInMoveableFast } from '../calendar/moveable'
-import { addDays, isSameDay, toMidnight } from '../utils/date'
+import { addDays, isSameDay, toDateKey, toMidnight } from '../utils/date'
 
 /**
  * Comprehensive edge case tests for date handling
@@ -380,5 +380,24 @@ describe('Date Edge Cases', () => {
 			const result = addDays(original, 0)
 			expect(result).not.toBe(original)
 		})
+	})
+})
+
+describe('toDateKey', () => {
+	it.each([
+		[new Date(2026, 0, 7), '2026-01-07'],
+		[new Date(2026, 11, 31), '2026-12-31'],
+		[new Date(2024, 1, 29), '2024-02-29'],
+		[new Date(1583, 9, 15), '1583-10-15'],
+	])('formats %s as %s', (date, key) => {
+		expect(toDateKey(date)).toBe(key)
+	})
+
+	it('uses the local day, not the UTC day', () => {
+		// Just before local midnight: toISOString() would give the next or previous day
+		// in any timezone away from UTC
+		const lateEvening = new Date(2026, 4, 20, 23, 59)
+		expect(toDateKey(lateEvening)).toBe('2026-05-20')
+		expect(toDateKey(new Date(2026, 4, 21, 0, 1))).toBe('2026-05-21')
 	})
 })

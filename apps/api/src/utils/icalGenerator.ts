@@ -1,4 +1,4 @@
-import { getAllSeasonsForYear, getMoveableFeastsForYear } from '@coptic/core'
+import { addDays, getAllSeasonsForYear, getMoveableFeastsForYear, toDateKey } from '@coptic/core'
 import { getYearView } from '../services/yearView.service'
 
 // Days already covered by a liturgical season, so the feed does not announce them twice.
@@ -13,12 +13,7 @@ const SEASON_COVERED_FASTS = new Set([
 /**
  * Format date for iCal (YYYYMMDD format)
  */
-const formatICalDate = (date: Date): string => {
-	const year = date.getFullYear()
-	const month = String(date.getMonth() + 1).padStart(2, '0')
-	const day = String(date.getDate()).padStart(2, '0')
-	return `${year}${month}${day}`
-}
+const formatICalDate = (date: Date): string => toDateKey(date).replaceAll('-', '')
 
 /**
  * Format datetime for iCal (YYYYMMDDTHHmmssZ format)
@@ -136,12 +131,6 @@ type CelebrationRun = {
 	type: string
 	start: Date
 	end: Date
-}
-
-const addDays = (date: Date, days: number): Date => {
-	const next = new Date(date)
-	next.setDate(next.getDate() + days)
-	return next
 }
 
 /**

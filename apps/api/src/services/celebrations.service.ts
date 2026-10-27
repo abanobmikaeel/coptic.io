@@ -1,10 +1,11 @@
 import {
+	addDays,
 	getLiturgicalName,
 	getMoveableFeastsForDate,
 	getMoveableFeastsForYear,
 	gregorianToCoptic,
+	toDateKey,
 } from '@coptic/core'
-import { addDays, format } from 'date-fns'
 import {
 	getStaticCelebrationsForDay,
 	staticCelebrations,
@@ -53,7 +54,7 @@ export const getUpcomingCelebrations = (days = 30, lang = 'en') => {
 
 		if (celebrationsForDay && celebrationsForDay.length > 0) {
 			upcoming.push({
-				date: format(currentDate, 'yyyy-MM-dd'),
+				date: toDateKey(currentDate),
 				copticDate: gregorianToCoptic(currentDate),
 				celebrations: celebrationsForDay,
 			})

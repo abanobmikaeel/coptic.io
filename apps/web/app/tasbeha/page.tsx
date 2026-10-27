@@ -14,6 +14,7 @@ import {
 	tasbehaPraiseLabel,
 } from '@/lib/tasbehaDays'
 import type { IncenseService } from '@/lib/types'
+import { toDateKey } from '@coptic/core'
 import type { Metadata } from 'next'
 import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
@@ -73,12 +74,7 @@ export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPage
 
 	// The date still governs the date-limited final parts of the Sunday Theotokia,
 	// independently of which day's service is being read.
-	const now = new Date()
-	const date = [
-		now.getFullYear(),
-		String(now.getMonth() + 1).padStart(2, '0'),
-		String(now.getDate()).padStart(2, '0'),
-	].join('-')
+	const date = toDateKey(new Date())
 
 	const results = await Promise.all(
 		langs.map(async (lang) => ({

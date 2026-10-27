@@ -1,6 +1,6 @@
-import { addDays, differenceInDays, format, startOfDay } from 'date-fns'
 import { bench, describe } from 'vitest'
 import {
+	addDays,
 	calculateEaster,
 	formatCopticDate,
 	getCopticDateKey,
@@ -119,37 +119,6 @@ describe('Moveable Feasts', () => {
 		for (let i = 0; i < 365; i++) {
 			isInMoveableFast(addDays(start, i))
 		}
-	})
-})
-
-describe('Comparison: date-fns operations', () => {
-	// Baseline comparisons to understand relative performance
-
-	bench('date-fns: addDays', () => {
-		addDays(testDates.normal, 30)
-	})
-
-	bench('date-fns: format (yyyy-MM-dd)', () => {
-		format(testDates.normal, 'yyyy-MM-dd')
-	})
-
-	bench('date-fns: startOfDay', () => {
-		startOfDay(testDates.normal)
-	})
-
-	bench('date-fns: differenceInDays', () => {
-		differenceInDays(testDates.yearEnd, testDates.yearStart)
-	})
-
-	bench('new Date() construction', () => {
-		new Date(2025, 5, 15)
-	})
-
-	bench('Date.getFullYear/Month/Date', () => {
-		const d = testDates.normal
-		d.getFullYear()
-		d.getMonth()
-		d.getDate()
 	})
 })
 

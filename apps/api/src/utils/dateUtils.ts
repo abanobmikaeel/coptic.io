@@ -1,23 +1,3 @@
-import { addDays as dateFnsAddDays, startOfDay } from 'date-fns'
-
-/**
- * Shared date utility functions using date-fns
- */
-
-/**
- * Add days to a date
- */
-export const addDays = (date: Date, days: number): Date => {
-	return dateFnsAddDays(date, days)
-}
-
-/**
- * Normalize date to local midnight to avoid timezone issues
- */
-export const normalizeDate = (date: Date): Date => {
-	return startOfDay(date)
-}
-
 const isLeapYear = (year: number) => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 

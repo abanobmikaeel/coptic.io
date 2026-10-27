@@ -1,4 +1,4 @@
-import { gregorianToCoptic } from '@coptic/core'
+import { gregorianToCoptic, toDateKey } from '@coptic/core'
 import { getIncenseService as getArIncenseService } from '@coptic/data/ar/incense'
 import { resolveBlocks } from '@coptic/data/content'
 import { getIncenseService as getCopIncenseService } from '@coptic/data/cop/incense'
@@ -175,13 +175,10 @@ export function getIncenseForDate(
 		},
 	)
 
-	const formatLocalDate = (d: Date) =>
-		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-
 	return {
 		type: service.id,
 		name: service.name,
-		date: formatLocalDate(date),
+		date: toDateKey(date),
 		copticDate: gregorianToCoptic(date),
 		sections,
 	}

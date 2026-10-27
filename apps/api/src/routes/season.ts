@@ -5,9 +5,9 @@ import {
 	getLiturgicalName,
 	getLiturgicalSeasonForDate,
 	isInFastingPeriod,
+	toDateKey,
 } from '@coptic/core'
 import { createRoute, z } from '@hono/zod-openapi'
-import { format } from 'date-fns'
 import { requestDate } from '../middleware/request'
 import {
 	ErrorSchema,
@@ -57,7 +57,7 @@ app.openapi(getForDateRoute, (c) => {
 	if (!currentSeason) {
 		return c.json(
 			{
-				date: format(date, 'yyyy-MM-dd'),
+				date: toDateKey(date),
 				season: getLiturgicalName('Ordinary Time', lang),
 				description: getLiturgicalDescription(
 					'Ordinary Time',
@@ -72,11 +72,11 @@ app.openapi(getForDateRoute, (c) => {
 
 	return c.json(
 		{
-			date: format(date, 'yyyy-MM-dd'),
+			date: toDateKey(date),
 			season: getLiturgicalName(currentSeason.name, lang),
 			description: getLiturgicalDescription(currentSeason.name, currentSeason.description, lang),
-			startDate: format(currentSeason.startDate, 'yyyy-MM-dd'),
-			endDate: format(currentSeason.endDate, 'yyyy-MM-dd'),
+			startDate: toDateKey(currentSeason.startDate),
+			endDate: toDateKey(currentSeason.endDate),
 			isFasting,
 			type: currentSeason.type,
 		},
@@ -110,8 +110,8 @@ app.openapi(getYearRoute, (c) => {
 			seasons: seasons.map((s) => ({
 				name: s.name,
 				description: s.description,
-				startDate: format(s.startDate, 'yyyy-MM-dd'),
-				endDate: format(s.endDate, 'yyyy-MM-dd'),
+				startDate: toDateKey(s.startDate),
+				endDate: toDateKey(s.endDate),
 				isFasting: s.isFasting,
 				type: s.type,
 			})),
@@ -146,8 +146,8 @@ app.openapi(getFastingPeriodsRoute, (c) => {
 			fastingPeriods: fastingPeriods.map((f) => ({
 				name: f.name,
 				description: f.description,
-				startDate: format(f.startDate, 'yyyy-MM-dd'),
-				endDate: format(f.endDate, 'yyyy-MM-dd'),
+				startDate: toDateKey(f.startDate),
+				endDate: toDateKey(f.endDate),
 				type: f.type,
 			})),
 		},

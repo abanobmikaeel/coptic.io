@@ -111,9 +111,6 @@ importers:
       aws4fetch:
         specifier: ^1.0.20
         version: 1.0.20
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.2.1
       graphql:
         specifier: ^16.12.0
         version: 16.14.0
@@ -243,9 +240,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.2.1
       tsx:
         specifier: ^4.19.2
         version: 4.22.4
@@ -1964,9 +1958,6 @@ packages:
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
-
-  date-fns@4.2.1:
-    resolution: {integrity: sha512-37RhSdxaG1suen6VDCza6rNrQfooyQh57HFVPwQGEq2QWliVLzPQZ8Oa017weOu+HZCnzI7N3Pf/wyoBKfEqrA==}
 
   debounce@1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
@@ -4633,8 +4624,6 @@ snapshots:
       which: 2.0.2
 
   csstype@3.2.3: {}
-
-  date-fns@4.2.1: {}
 
   debounce@1.2.1: {}
 

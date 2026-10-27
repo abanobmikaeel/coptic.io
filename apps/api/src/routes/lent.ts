@@ -1,24 +1,14 @@
-import { getDaysFromEaster, getEasterDate } from '@coptic/core'
+import { addDays, getDaysFromEaster, getEasterDate, toDateKey } from '@coptic/core'
 import { loadLentDevotional } from '@coptic/data/en/lent'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { parseReadingString, warmTranslation } from '../models/readings'
 import { ErrorSchema, LentDaySchema, LentScheduleSchema } from '../schemas'
-import { INVALID_YEAR_MESSAGE, addDays } from '../utils/dateUtils'
+import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
 import { createApiApp, jsonResponse } from '../utils/openapi'
 import { WALL_CLOCK_CACHE_CONTROL, parseTranslation, parseYear } from '../utils/request'
 
 const app = createApiApp()
-
-/**
- * Format a Date as YYYY-MM-DD
- */
-const formatDate = (date: Date): string => {
-	const y = date.getFullYear()
-	const m = String(date.getMonth() + 1).padStart(2, '0')
-	const d = String(date.getDate()).padStart(2, '0')
-	return `${y}-${m}-${d}`
-}
 
 // GET /api/lent/schedule/:year — the full 49-day schedule with computed dates
 const getScheduleRoute = createRoute({
@@ -48,13 +38,13 @@ app.openapi(getScheduleRoute, async (c) => {
 
 	const schedule = devotional.map((entry) => ({
 		...entry,
-		date: formatDate(addDays(easter, entry.dayOffset)),
+		date: toDateKey(addDays(easter, entry.dayOffset)),
 	}))
 
 	return c.json(
 		{
 			year,
-			easterDate: formatDate(easter),
+			easterDate: toDateKey(easter),
 			lentStart: schedule[0]?.date,
 			lentEnd: schedule[schedule.length - 1]?.date,
 			days: schedule,
@@ -108,7 +98,7 @@ app.openapi(getForDateRoute, async (c) => {
 		)
 	}
 
-	const result = { ...entry, date: formatDate(date) }
+	const result = { ...entry, date: toDateKey(date) }
 	if (detailed !== 'true') return c.json(result, 200)
 
 	// In Workers, bible data is lazy-loaded from R2 on first use per isolate.

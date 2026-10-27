@@ -29,3 +29,13 @@ export const isSameDay = (a: Date, b: Date): boolean => {
 		a.getDate() === b.getDate()
 	)
 }
+
+const pad2 = (n: number) => (n < 10 ? `0${n}` : `${n}`)
+
+/**
+ * A date's local calendar day as YYYY-MM-DD. Never use toISOString() for this: it gives
+ * the UTC day, which is a day off in timezones east or west of UTC. Hand-rolled because
+ * this runs for every day of a year view; see __benchmarks__/dateKey.bench.ts.
+ */
+export const toDateKey = (date: Date): string =>
+	`${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`

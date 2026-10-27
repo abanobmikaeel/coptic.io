@@ -1,3 +1,5 @@
+import { toDateKey } from '@coptic/core'
+
 // Render Arabic with Arabic-Indic digits so dates match the Coptic date styling.
 const intlLocale = (locale: string) => (locale === 'ar' ? 'ar-u-nu-arab' : locale)
 
@@ -47,8 +49,7 @@ export function formatMonthYear(date: Date, locale = 'en'): string {
  * depending on the user's timezone.
  */
 export function getTodayDateString(): string {
-	const d = new Date()
-	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+	return toDateKey(new Date())
 }
 
 /**
@@ -63,13 +64,11 @@ export function parseDateString(dateString: string): Date {
 export function getAdjacentDate(dateString: string | undefined, offset: number): string {
 	const date = dateString ? parseDateString(dateString) : new Date()
 	date.setDate(date.getDate() + offset)
-	return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+	return toDateKey(date)
 }
 
 export function addDaysToDateString(dateString: string, days: number): string {
-	const d = new Date(`${dateString}T00:00:00`)
-	d.setDate(d.getDate() + days)
-	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+	return getAdjacentDate(dateString, days)
 }
 
 /**

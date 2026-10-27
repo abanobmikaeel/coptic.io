@@ -1,6 +1,6 @@
-import { parse } from 'date-fns'
 import { describe, expect, it } from 'vitest'
 import { getFastingCalendar, getFastingForDate } from '../../services/fasting.service'
+import { parseLocalDate } from '../../utils/dateUtils'
 
 describe('Fasting Service', () => {
 	describe('getFastingForDate', () => {
@@ -194,8 +194,8 @@ describe('Fasting Service', () => {
 			const calendar = getFastingCalendar(2025)
 
 			calendar.forEach((day) => {
-				const date = parse(day.date, 'yyyy-MM-dd', new Date())
-				expect(date.getFullYear()).toBe(2025)
+				const date = parseLocalDate(day.date)
+				expect(date?.getFullYear()).toBe(2025)
 			})
 		})
 

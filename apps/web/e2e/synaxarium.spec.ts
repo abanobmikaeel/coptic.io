@@ -1,3 +1,4 @@
+import { toDateKey } from '@coptic/core'
 import { type Page, expect, test } from '@playwright/test'
 
 // Opens the upcoming view and waits for its entries, which only render after hydration.
@@ -52,7 +53,7 @@ test.describe('Synaxarium and Readings date consistency', () => {
 
 		// Get today's date for comparison
 		const today = new Date()
-		const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+		const todayStr = toDateKey(today)
 
 		// Navigate forward one day
 		const nextButton = page.getByRole('link', { name: /next day/i })
@@ -91,7 +92,7 @@ test.describe('Synaxarium and Readings date consistency', () => {
 		// Navigate directly to a specific future date via URL
 		const futureDate = new Date()
 		futureDate.setDate(futureDate.getDate() + 5)
-		const dateStr = `${futureDate.getFullYear()}-${String(futureDate.getMonth() + 1).padStart(2, '0')}-${String(futureDate.getDate()).padStart(2, '0')}`
+		const dateStr = toDateKey(futureDate)
 
 		await page.goto(`/synaxarium?date=${dateStr}`)
 		await page.waitForLoadState('networkidle')
@@ -460,7 +461,7 @@ test.describe('Synaxarium header navigation', () => {
 		// Navigate to a future date
 		const futureDate = new Date()
 		futureDate.setDate(futureDate.getDate() + 5)
-		const dateStr = `${futureDate.getFullYear()}-${String(futureDate.getMonth() + 1).padStart(2, '0')}-${String(futureDate.getDate()).padStart(2, '0')}`
+		const dateStr = toDateKey(futureDate)
 
 		await page.goto(`/synaxarium?date=${dateStr}`)
 		await page.waitForLoadState('networkidle')
@@ -537,7 +538,7 @@ test.describe('Synaxarium URL params', () => {
 		// Calculate a date that's definitely not today (10 days from now)
 		const futureDate = new Date()
 		futureDate.setDate(futureDate.getDate() + 10)
-		const dateStr = `${futureDate.getFullYear()}-${String(futureDate.getMonth() + 1).padStart(2, '0')}-${String(futureDate.getDate()).padStart(2, '0')}`
+		const dateStr = toDateKey(futureDate)
 
 		// Navigate to that specific date
 		await page.goto(`/synaxarium?date=${dateStr}`)
