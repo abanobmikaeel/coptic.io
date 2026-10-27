@@ -1,54 +1,53 @@
 /**
- * @coptic/client - API client for the Coptic.io API
+ * @coptic/client - a typed client for the Coptic.io API
  *
- * A lightweight, typed client for interacting with the Coptic.io API.
+ * Paths, parameters and responses are typed from the API's OpenAPI spec
+ * (schema.gen.ts, regenerated with `pnpm gen:api-types`), so the client cannot drift
+ * from the API it calls.
  *
  * @example
  * ```typescript
- * import { CopticClient } from '@coptic/client'
+ * import { createCopticClient } from '@coptic/client'
  *
- * const client = new CopticClient()
+ * const client = createCopticClient({ clientName: 'st-mark-app' })
  *
- * // Get today's readings
- * const readings = await client.readings.today()
+ * // Today's readings, in Arabic
+ * const { data } = await client.GET('/api/readings', { params: { query: { lang: 'ar' } } })
  *
- * // Get synaxarium entries
- * const synaxarium = await client.synaxarium.today()
- *
- * // Check fasting
- * const fasting = await client.fasting.today()
- * console.log(fasting.isFasting ? 'Fasting day' : 'Non-fasting day')
+ * // A day's fasting
+ * const fasting = await client.GET('/api/fasting/{date}', { params: { path: { date: '2026-04-10' } } })
  * ```
  *
  * @packageDocumentation
  */
+import createClient, { type ClientOptions } from 'openapi-fetch'
+import type { paths } from './schema.gen'
 
-export {
-	CopticClient,
-	CopticApiError,
-	type CopticClientConfig,
-	type ReadingsOptions,
-	type SynaxariumOptions,
-	type CalendarOptions,
-} from './client'
+export type { components, paths } from './schema.gen'
 
-// Re-export core types for convenience
-export type {
-	CopticDate,
-	GregorianDate,
-	DualDate,
-	BibleVerse,
-	BibleChapter,
-	BibleBook,
-	Reading,
-	DailyReadings,
-	Feast,
-	FeastType,
-	CelebrationCategory,
-	Celebration,
-	SynaxariumEntry,
-	FastingInfo,
-	CalendarDay,
-	CalendarMonth,
-	LiturgicalSeason,
-} from '@coptic/core'
+export const DEFAULT_BASE_URL = 'https://api.coptic.io'
+
+export type CopticClientOptions = ClientOptions & {
+	/**
+	 * Your project's name, sent as the X-Client-Name header so its usage can be told
+	 * apart from other callers'. Letters, digits and . _ - only (e.g. "st-mark-app").
+	 */
+	clientName?: string
+}
+
+/** A client for the API at `baseUrl` (default https://api.coptic.io). */
+export const createCopticClient = ({ clientName, headers, ...options }: CopticClientOptions = {}) =>
+	createClient<paths>({
+		baseUrl: DEFAULT_BASE_URL,
+		...options,
+		headers: { ...headers, ...(clientName ? { 'X-Client-Name': clientName } : {}) },
+	})
+
+export type CopticClient = ReturnType<typeof createCopticClient>
+
+/** The JSON body a GET path answers with on success, e.g. ApiResponse<'/api/readings/{date}'>. */
+export type ApiResponse<P extends keyof paths> = paths[P] extends {
+	get: { responses: { 200: { content: { 'application/json': infer Body } } } }
+}
+	? Body
+	: never

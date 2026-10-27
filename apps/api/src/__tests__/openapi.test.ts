@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { app } from '../index'
 
@@ -23,5 +25,13 @@ describe('OpenAPI spec', () => {
 	it('templates every path parameter as {name}', async () => {
 		const spec = await getSpec()
 		expect(Object.keys(spec.paths).filter((path) => /[:?]/.test(path))).toEqual([])
+	})
+
+	// @coptic/client types its requests from this file; a stale copy lets them drift
+	it('matches the spec committed for @coptic/client', async () => {
+		const committed = JSON.parse(
+			readFileSync(join(import.meta.dirname, '../../../../packages/client/openapi.json'), 'utf8'),
+		)
+		expect(committed, 'Run `pnpm gen:api-types` and commit the result').toEqual(await getSpec())
 	})
 })

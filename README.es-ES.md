@@ -72,19 +72,21 @@ const context = getLiturgicalContext(new Date())
 ### @coptic/client
 
 ```typescript
-import { CopticClient } from '@coptic/client'
+import { createCopticClient } from '@coptic/client'
 
-const client = new CopticClient()
+const client = createCopticClient()
 
 // Obtener lecturas de hoy
-const readings = await client.readings.today()
+const readings = await client.GET('/api/readings')
 
 // Obtener sinaxario
-const synaxarium = await client.synaxarium.today()
+const synaxarium = await client.GET('/api/synaxarium')
 
 // Verificar ayuno
-const fasting = await client.fasting.today()
+const fasting = await client.GET('/api/fasting')
 ```
+
+Las rutas, los parámetros y las respuestas se tipan a partir de la especificación OpenAPI de la API.
 
 ## Referencia de la API
 
