@@ -1,12 +1,15 @@
 'use client'
 
 import { getFastColors } from '@/constants'
+import { getLiturgicalName } from '@coptic/core'
+import { useLocale } from 'next-intl'
 
 interface FastingLegendProps {
 	visibleFasts: Set<string>
 }
 
 export function FastingLegend({ visibleFasts }: Readonly<FastingLegendProps>) {
+	const locale = useLocale()
 	if (visibleFasts.size === 0) return null
 
 	return (
@@ -21,7 +24,9 @@ export function FastingLegend({ visibleFasts }: Readonly<FastingLegendProps>) {
 						>
 							{colors.icon}
 						</div>
-						<span className="text-base text-gray-700 dark:text-gray-300 font-medium">{fast}</span>
+						<span className="text-base text-gray-700 dark:text-gray-300 font-medium">
+							{getLiturgicalName(fast, locale)}
+						</span>
 					</div>
 				)
 			})}

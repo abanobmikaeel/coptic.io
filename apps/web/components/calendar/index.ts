@@ -1,5 +1,7 @@
 export { CalendarGrid } from './CalendarGrid'
+export { CalendarHeader } from './CalendarHeader'
 export { CalendarModeToggle } from './CalendarModeToggle'
+export { CalendarView } from './CalendarView'
 export { FastingLegend } from './FastingLegend'
 export { MonthYearSelector } from './MonthYearSelector'
 export { SelectedDayDetails } from './SelectedDayDetails'
