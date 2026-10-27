@@ -1,12 +1,10 @@
 import {
 	type CopticDate,
-	MS_PER_DAY,
-	getEasterDate,
+	getDaysFromEaster,
 	getLiturgicalName,
 	getLiturgicalSeasonForDate,
 	gregorianToCoptic,
 	localizeCopticDate,
-	toMidnight,
 } from '@coptic/core'
 import { getReading, warmTranslation } from '../models/readings'
 import dayReadings from '../resources/dayReadings.json'
@@ -39,14 +37,11 @@ export type DailyVerse = {
 	fullDate: CopticDate
 }
 
-const getDaysFromEaster = (date: Date): number => {
-	const easter = getEasterDate(date.getFullYear())
-	return Math.round((toMidnight(date) - toMidnight(easter)) / MS_PER_DAY)
-}
-
 /**
  * Resolve the featured verse entry for a date: moveable (Lent/Jonah) wins, then
- * the fixed lectionary id. Mirrors the precedence in the readings model.
+ * the fixed lectionary id. Verses have not been selected for the Sunday and Holy
+ * Fifty readings yet, so on those days this still reads the fixed lectionary id
+ * rather than following getReadingCycle.
  */
 const findFeaturedEntry = (date: Date): FeaturedEntry | null => {
 	const moveable = featured.moveable[String(getDaysFromEaster(date))]

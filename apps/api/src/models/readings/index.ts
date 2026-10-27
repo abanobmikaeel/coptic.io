@@ -1,13 +1,15 @@
 import {
+	type ReadingCycle,
+	type ReadingCycleName,
 	type SynaxariumEntry,
-	getEasterDate,
 	getLiturgicalSeasonForDate,
-	gregorianToCoptic,
-	toMidnight,
+	getReadingCycle,
 } from '@coptic/core'
 import dayReadings from '../../resources/dayReadings.json'
+import holyFiftyReadings from '../../resources/holyFiftyReadings.json'
 import jonahReadings from '../../resources/jonahReadings.json'
 import lentReadings from '../../resources/lentReadings.json'
+import sundayReadings from '../../resources/sundayReadings.json'
 import uniqueReadings from '../../resources/uniqueReadings.json'
 import { getSynaxariumForDate } from '../../services/synaxarium.service'
 import type { BibleTranslation, Reading } from '../../types'
@@ -112,8 +114,8 @@ export const transformReading = (record: ReadingRecord, translation: BibleTransl
 	}
 }
 
-// Raw verse-reference strings returned in non-detailed mode. Fixed days carry an
-// `id`; moveable (Lent/Jonah) days don't, so both fields are optional.
+// Raw verse-reference strings returned in non-detailed mode. Annual days carry the
+// lectionary `id`; the seasonal and Sunday cycles don't, so both fields are optional.
 type ReadingReference = {
 	id?: number
 	Prophecies?: string
@@ -146,116 +148,55 @@ type ReadingResponse = {
 	LGospel?: Reading[] | null
 	EPPsalm?: Reading[] | null
 	EPGospel?: Reading[] | null
+	/** The lectionary cycle the day's readings come from */
+	cycle: ReadingCycleName
+	/** False when the day's cycle has no readings in the lectionary yet (Holy Week) */
+	readingsAvailable: boolean
 	season?: string
 	seasonDay?: string
 }
 
-// Type for lentReadings.json entries (covers Lent, Jonah's Fast, and other moveable readings)
-type LentReadingEntry = {
-	label: string
-	Prophecies?: string
-	VPsalm?: string
-	VGospel?: string
-	MPsalm?: string
-	MGospel?: string
-	Pauline?: string
-	Catholic?: string
-	Acts?: string
-	LPsalm?: string
-	LGospel?: string
-	EPPsalm?: string
-	EPGospel?: string
-}
+// A seasonal or Sunday entry: a reading record plus the day's name in its cycle
+type CycleReadingEntry = Omit<ReadingRecord, 'Day'> & { label: string }
 
-// Cast the imported JSON to typed records and merge into a single lookup
-const lentReadingsMap = lentReadings as Record<string, LentReadingEntry>
-const jonahReadingsMap = jonahReadings as Record<string, LentReadingEntry>
-const moveableReadingsMap: Record<string, LentReadingEntry> = {
-	...jonahReadingsMap,
-	...lentReadingsMap,
+// Jonah's Fast, Great Lent and the Holy Fifty are keyed by days from Easter; they never overlap
+const byDaysFromEaster: Record<string, CycleReadingEntry> = {
+	...(jonahReadings as Record<string, CycleReadingEntry>),
+	...(lentReadings as Record<string, CycleReadingEntry>),
+	...(holyFiftyReadings as Record<string, CycleReadingEntry>),
 }
+const bySunday = sundayReadings as Record<string, CycleReadingEntry>
+
+type CycleEntry = { record: ReadingReference; label?: string }
 
 /**
- * Compute the day offset from Easter for a given date.
- * Returns negative numbers for days before Easter, positive for after.
+ * The lectionary entry for a reading cycle, or null when the cycle has none yet: Holy
+ * Week, whose readings follow the Pascha hours.
  */
-const getDaysFromEaster = (date: Date): number => {
-	const easter = getEasterDate(date.getFullYear())
-	const dateMs = toMidnight(date)
-	const easterMs = toMidnight(easter)
-	return Math.round((dateMs - easterMs) / (1000 * 60 * 60 * 24))
-}
-
-/**
- * Try to get Lenten readings for a date.
- * Returns the readings if the date falls during Great Lent, null otherwise.
- */
-const getLentReading = (date: Date): LentReadingEntry | null => {
-	const offset = getDaysFromEaster(date)
-	return moveableReadingsMap[String(offset)] ?? null
-}
-
-const buildLentResponse = (
-	lentReading: LentReadingEntry,
-	synaxarium: SynaxariumEntry[],
-	date: Date,
-	isDetailed?: boolean,
-	translation: BibleTranslation = 'en',
-	synaxariumLanguage = 'en',
-): ReadingResponse => {
-	const season = getLiturgicalSeasonForDate(date)
-	if (!isDetailed) {
-		const { label, ...reference } = lentReading
-		return {
-			reference,
-			Synaxarium: synaxarium,
-			synaxariumLanguage,
-			season: season?.name,
-			seasonDay: lentReading.label,
+const getCycleEntry = (cycle: ReadingCycle): CycleEntry | null => {
+	switch (cycle.cycle) {
+		case 'holyWeek':
+			return null
+		case 'annual': {
+			const readingID = dayReadings[cycle.month - 1]?.readings[cycle.day - 1]
+			const reading = readingID ? readingsById.get(readingID) : undefined
+			if (!reading) throw new Error(`No annual reading for Coptic ${cycle.month}/${cycle.day}`)
+			const { Day, ...record } = reading
+			return { record }
+		}
+		case 'sunday': {
+			const entry = bySunday[`${cycle.month}:${cycle.sunday}`]
+			if (!entry) throw new Error(`No reading for Sunday ${cycle.sunday} of month ${cycle.month}`)
+			const { label, ...record } = entry
+			return { record, label }
+		}
+		default: {
+			const entry = byDaysFromEaster[String(cycle.daysFromEaster)]
+			if (!entry) throw new Error(`No ${cycle.cycle} reading at Easter ${cycle.daysFromEaster}`)
+			const { label, ...record } = entry
+			return { record, label }
 		}
 	}
-	return {
-		...transformReading(lentReading, translation),
-		Synaxarium: synaxarium,
-		synaxariumLanguage,
-		season: season?.name,
-		seasonDay: lentReading.label,
-	}
-}
-
-const buildFixedResponse = (
-	gregorianDate: Date,
-	synaxarium: SynaxariumEntry[],
-	isDetailed?: boolean,
-	translation: BibleTranslation = 'en',
-	synaxariumLanguage = 'en',
-): ReadingResponse => {
-	const copticDate = gregorianToCoptic(gregorianDate)
-	const monthFound = dayReadings[copticDate.month - 1]
-	if (!monthFound) {
-		throw new Error(`Month not found: ${copticDate.month}`)
-	}
-
-	const dayIndex = Number(copticDate.day) - 1
-	const readingID = monthFound?.readings[dayIndex]
-	if (!readingID) {
-		throw new Error(`No reading found for day: ${copticDate.day}`)
-	}
-
-	const reading = readingsById.get(readingID)
-	if (!reading) {
-		throw new Error(`Reading not found for ID: ${readingID}`)
-	}
-
-	if (!isDetailed) {
-		const { Day, ...rest } = reading
-		return {
-			reference: rest as Omit<(typeof uniqueReadings)[number], 'Day'>,
-			Synaxarium: synaxarium,
-			synaxariumLanguage,
-		}
-	}
-	return { ...transformReading(reading, translation), Synaxarium: synaxarium, synaxariumLanguage }
 }
 
 // Re-export so route handlers can call warmTranslation before detailed lookups in Workers.
@@ -272,24 +213,25 @@ export const getByCopticDate = (
 
 	// Synaxarium is only available in English and Arabic. Label the fallback explicitly
 	// so clients know when they received English content for a Spanish/Coptic request.
-	const synaxariumLang: 'en' | 'ar' = translation === 'ar' ? 'ar' : 'en'
-	const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, synaxariumLang)
+	const synaxariumLanguage: 'en' | 'ar' = translation === 'ar' ? 'ar' : 'en'
+	const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, synaxariumLanguage)
 	if (!synaxarium) {
 		throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
 	}
 
-	// Moveable readings (Lent, Jonah's Fast, etc.) override fixed ones
-	const lentReading = getLentReading(gregorianDate)
-	if (lentReading) {
-		return buildLentResponse(
-			lentReading,
-			synaxarium,
-			gregorianDate,
-			isDetailed,
-			translation,
-			synaxariumLang,
-		)
+	const cycle = getReadingCycle(gregorianDate)
+	const entry = getCycleEntry(cycle)
+	const season = getLiturgicalSeasonForDate(gregorianDate)?.name
+	const response: ReadingResponse = {
+		Synaxarium: synaxarium,
+		synaxariumLanguage,
+		cycle: cycle.cycle,
+		readingsAvailable: entry !== null,
+		...(season ? { season } : {}),
+		...(entry?.label ? { seasonDay: entry.label } : {}),
 	}
 
-	return buildFixedResponse(gregorianDate, synaxarium, isDetailed, translation, synaxariumLang)
+	if (!entry) return response
+	if (!isDetailed) return { ...response, reference: entry.record }
+	return { ...response, ...transformReading(entry.record, translation) }
 }

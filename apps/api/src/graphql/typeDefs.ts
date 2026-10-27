@@ -39,6 +39,9 @@ export const typeDefs = /* GraphQL */ `
 		celebrations: [Celebration]
 		season: String
 		seasonKey: String
+		seasonDay: String
+		cycle: String!
+		readingsAvailable: Boolean!
 		fullDate: CopticDate!
 	}
 

@@ -89,7 +89,8 @@ async function getReadings(date: string, lang?: string): Promise<ReadingsData | 
 			params.set('lang', lang)
 		}
 		const endpoint = `${API_BASE_URL}/readings/${date}?${params}`
-		// Readings don't change - cache for 1 hour
+		// Short revalidation so lectionary corrections reach the page minutes after an API
+		// deploy; the API's edge cache is keyed by deploy version and needs no purge.
 		const res = await fetch(endpoint, { next: { revalidate: 300 } })
 		if (!res.ok) return null
 		return res.json()
@@ -244,8 +245,10 @@ export default async function ReadingsPage({ searchParams }: Readonly<ReadingsPa
 								<h1 className="text-sm sm:text-base font-bold truncate">
 									{readings?.fullDate?.dateString || gregorianDate}
 								</h1>
-								<p className={`text-[10px] sm:text-xs ${themeClasses.muted[theme]}`}>
-									{readings?.seasonDay || (readings?.fullDate ? gregorianDate : '')}
+								<p className={`text-[10px] sm:text-xs truncate ${themeClasses.muted[theme]}`}>
+									{[readings?.seasonDay, readings?.fullDate ? gregorianDate : '']
+										.filter(Boolean)
+										.join(' · ')}
 								</p>
 							</div>
 						</DateNavigation>
@@ -280,6 +283,9 @@ export default async function ReadingsPage({ searchParams }: Readonly<ReadingsPa
 						basePath="/readings"
 						className="px-3 sm:px-6 xl:px-28 pt-4 pb-32 lg:pb-24"
 					>
+						{readings.readingsAvailable === false && (
+							<NoReadingsState theme={theme} notInLectionary />
+						)}
 						{sections.groups.map((group) => (
 							<Fragment key={group.label}>
 								<ServiceDivider

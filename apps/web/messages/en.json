@@ -190,6 +190,7 @@
 		"noResultsGeneric": "Try adjusting your search or filters.",
 		"readingsUnavailable": "Readings unavailable",
 		"readingsUnavailableDescription": "Unable to load readings for this date. Please try again later or select a different date.",
+		"holyWeekReadingsUnavailable": "The Holy Week readings follow the hours of the Pascha and are not available yet.",
 		"noEntriesTitle": "No {type} found",
 		"noEntriesDescription": "There are no {type} for this date."
 	},

@@ -1,16 +1,11 @@
 import { gregorianToCoptic } from '../calendar/conversion'
-import { getEasterDate } from '../calendar/pascha'
-import { MS_PER_DAY, toMidnight } from '../utils/date'
+import { getDaysFromEaster } from '../calendar/pascha'
 
 /**
  * A Lord's feast whose festive texts — the seasonal verse of the Trisagion, the feast's
  * Gospel Response — are prayed for a period around it, not only on the day.
  */
 export type FestiveSeason = 'nativity' | 'theophany' | 'cross' | 'resurrection' | 'ascension'
-
-/** Days from Easter Sunday (day 0) to the date. Rounded: a DST change makes a day 23h or 25h. */
-const daysFromEaster = (date: Date): number =>
-	Math.round((toMidnight(date) - toMidnight(getEasterDate(date.getFullYear()))) / MS_PER_DAY)
 
 /**
  * Get the festive season a date falls in, or null on an ordinary day.
@@ -27,7 +22,7 @@ const daysFromEaster = (date: Date): number =>
  * a rite of their own.
  */
 export const getFestiveSeason = (date: Date): FestiveSeason | null => {
-	const fromEaster = daysFromEaster(date)
+	const fromEaster = getDaysFromEaster(date)
 	if (fromEaster >= 0 && fromEaster <= 38) return 'resurrection'
 	if (fromEaster >= 39 && fromEaster <= 49) return 'ascension'
 

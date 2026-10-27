@@ -4,6 +4,7 @@
  * The Coptic Orthodox Church follows the Julian calendar for calculating
  * Easter, which is the same as the Eastern Orthodox calculation.
  */
+import { MS_PER_DAY, toMidnight } from '../utils/date'
 import { jdToGregorian, julianToJD } from './conversion'
 
 export interface EasterDate {
@@ -56,6 +57,13 @@ export const getEasterDate = (gregorianYear: number): Date => {
 	const easter = calculateEaster(gregorianYear)
 	return new Date(easter.year, easter.month - 1, easter.day)
 }
+
+/**
+ * Days from that year's Easter Sunday (day 0) to the date: negative before, positive after.
+ * Rounded, because a DST change makes a day 23 or 25 hours long.
+ */
+export const getDaysFromEaster = (date: Date): number =>
+	Math.round((toMidnight(date) - toMidnight(getEasterDate(date.getFullYear()))) / MS_PER_DAY)
 
 /**
  * Check if a given date is Easter Sunday

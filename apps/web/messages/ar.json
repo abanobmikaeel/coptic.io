@@ -190,6 +190,7 @@
 		"noResultsGeneric": "جرّب تعديل البحث أو معايير التصفية.",
 		"readingsUnavailable": "القراءات غير متوفرة",
 		"readingsUnavailableDescription": "تعذر تحميل القراءات لهذا التاريخ. يرجى المحاولة لاحقًا أو اختيار تاريخ آخر.",
+		"holyWeekReadingsUnavailable": "قراءات أسبوع الآلام تتبع سواعي البصخة، وهي غير متوفرة بعد.",
 		"noEntriesTitle": "لا توجد {type}",
 		"noEntriesDescription": "لا توجد {type} لهذا التاريخ."
 	},
