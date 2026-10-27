@@ -125,6 +125,19 @@ addresses are stored; usage is counted by that name, the calling website, or the
 
 Interactive playground at `/graphql`
 
+### MCP
+
+The API is also a remote [Model Context Protocol](https://modelcontextprotocol.io) server at
+`https://api.coptic.io/mcp` (Streamable HTTP, no authentication). Its read-only tools cover the
+Coptic date, readings, fasting, seasons, feasts, the Synaxarium, the Agpeya and search.
+
+- **Claude (web and desktop)**: Settings → Connectors → Add custom connector, and enter the URL.
+- **Claude Code**: `claude mcp add --transport http coptic https://api.coptic.io/mcp`
+- **ChatGPT**: with developer mode on, Settings → Connectors → Create, and enter the URL.
+
+To try it locally, run the API and point the
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) at `http://localhost:3000/mcp`.
+
 ## Publishing
 
 ```bash

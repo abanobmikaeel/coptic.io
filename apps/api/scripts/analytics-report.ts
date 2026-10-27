@@ -1,5 +1,5 @@
 /**
- * Print API usage from the Analytics Engine dataset.
+ * Print API and MCP usage from the Analytics Engine dataset.
  *
  *   CLOUDFLARE_API_TOKEN=... bun scripts/analytics-report.ts [days]
  *
@@ -36,9 +36,11 @@ const sql = async <T>(query: string): Promise<T[]> => {
 }
 
 const q = queries(days)
-const [byKind, callers, routes] = await Promise.all([
+const [byKind, callers, mcpClients, mcpTools, routes] = await Promise.all([
 	sql(q.byKind),
 	sql<CallerRow>(q.callers),
+	sql(q.mcpClients),
+	sql(q.mcpTools),
 	sql(q.routes),
 ])
 const summary = summarizeCallers(callers)
@@ -53,5 +55,9 @@ console.log('\nRequests by surface')
 console.table(byKind)
 console.log('Top callers')
 console.table(summary.external.slice(0, 25))
+console.log('MCP clients (connections)')
+console.table(mcpClients)
+console.log('MCP tools')
+console.table(mcpTools)
 console.log('Top REST routes')
 console.table(routes)
