@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { copticToGregorian } from '../calendar/conversion'
 import { getLiturgicalContext } from '../liturgy/context'
-import { getFestalSeason } from '../liturgy/festal'
+import { getFestiveSeason } from '../liturgy/festive'
 
 const local = (y: number, m: number, d: number) => new Date(y, m - 1, d)
 const coptic = (year: number, month: number, day: number) => copticToGregorian({ year, month, day })
 
-describe('getFestalSeason', () => {
+describe('getFestiveSeason', () => {
 	// Pascha 2026 is April 12: day 39 (the Ascension) is May 21, day 49 (Pentecost) May 31.
 	it.each([
 		[local(2026, 4, 11), null], // Bright Saturday, the eve
@@ -16,15 +16,15 @@ describe('getFestalSeason', () => {
 		[local(2026, 5, 31), 'ascension'], // Pentecost keeps the Ascension's verse
 		[local(2026, 6, 1), null],
 	])('follows Pascha through the Holy Fifty: %s', (date, expected) => {
-		expect(getFestalSeason(date)).toBe(expected)
+		expect(getFestiveSeason(date)).toBe(expected)
 	})
 
 	it('follows Pascha in a year it falls in May', () => {
 		// Pascha 2024 is May 5.
-		expect(getFestalSeason(local(2024, 5, 5))).toBe('resurrection')
-		expect(getFestalSeason(local(2024, 6, 13))).toBe('ascension')
-		expect(getFestalSeason(local(2024, 6, 23))).toBe('ascension')
-		expect(getFestalSeason(local(2024, 6, 24))).toBeNull()
+		expect(getFestiveSeason(local(2024, 5, 5))).toBe('resurrection')
+		expect(getFestiveSeason(local(2024, 6, 13))).toBe('ascension')
+		expect(getFestiveSeason(local(2024, 6, 23))).toBe('ascension')
+		expect(getFestiveSeason(local(2024, 6, 24))).toBeNull()
 	})
 
 	it.each([
@@ -44,23 +44,23 @@ describe('getFestalSeason', () => {
 		[7, 11, null],
 	])('keys the fixed seasons off the Coptic date: month %i day %i', (month, day, expected) => {
 		for (const year of [1742, 1743, 1744]) {
-			expect(getFestalSeason(coptic(year, month, day))).toBe(expected)
+			expect(getFestiveSeason(coptic(year, month, day))).toBe(expected)
 		}
 	})
 
 	it('lands on the expected Gregorian days in 2026', () => {
-		expect(getFestalSeason(local(2026, 1, 7))).toBe('nativity')
-		expect(getFestalSeason(local(2026, 1, 19))).toBe('theophany')
-		expect(getFestalSeason(local(2026, 9, 27))).toBe('cross')
-		expect(getFestalSeason(local(2026, 3, 19))).toBe('cross')
+		expect(getFestiveSeason(local(2026, 1, 7))).toBe('nativity')
+		expect(getFestiveSeason(local(2026, 1, 19))).toBe('theophany')
+		expect(getFestiveSeason(local(2026, 9, 27))).toBe('cross')
+		expect(getFestiveSeason(local(2026, 3, 19))).toBe('cross')
 	})
 
 	it('is null on an ordinary day', () => {
-		expect(getFestalSeason(local(2026, 10, 26))).toBeNull()
+		expect(getFestiveSeason(local(2026, 10, 26))).toBeNull()
 	})
 
 	it('is part of the liturgical context', () => {
-		expect(getLiturgicalContext(local(2026, 4, 12)).festalSeason).toBe('resurrection')
-		expect(getLiturgicalContext(local(2026, 10, 26)).festalSeason).toBeNull()
+		expect(getLiturgicalContext(local(2026, 4, 12)).festiveSeason).toBe('resurrection')
+		expect(getLiturgicalContext(local(2026, 10, 26)).festiveSeason).toBeNull()
 	})
 })

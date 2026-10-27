@@ -3,17 +3,17 @@ import { getEasterDate } from '../calendar/pascha'
 import { MS_PER_DAY, toMidnight } from '../utils/date'
 
 /**
- * A Lord's feast whose festal texts — the seasonal verse of the Trisagion, the feast's
+ * A Lord's feast whose festive texts — the seasonal verse of the Trisagion, the feast's
  * Gospel Response — are prayed for a period around it, not only on the day.
  */
-export type FestalSeason = 'nativity' | 'theophany' | 'cross' | 'resurrection' | 'ascension'
+export type FestiveSeason = 'nativity' | 'theophany' | 'cross' | 'resurrection' | 'ascension'
 
 /** Days from Easter Sunday (day 0) to the date. Rounded: a DST change makes a day 23h or 25h. */
 const daysFromEaster = (date: Date): number =>
 	Math.round((toMidnight(date) - toMidnight(getEasterDate(date.getFullYear()))) / MS_PER_DAY)
 
 /**
- * Get the festal season a date falls in, or null on an ordinary day.
+ * Get the festive season a date falls in, or null on an ordinary day.
  *
  * - Resurrection: the Feast of the Resurrection to the 39th day (Easter + 0…38)
  * - Ascension:    the 40th day to Pentecost, the 50th (Easter + 39…49)
@@ -23,10 +23,10 @@ const daysFromEaster = (date: Date): number =>
  *
  * The fixed seasons are keyed off the Coptic date, so they follow the Coptic calendar's
  * drift against the Gregorian one. Coptic months are numbered Tout=1 … Nasie=13
- * (Kiahk=4, Tobi=5, Paremhat=7). Holy Week is not a festal season: its services are
+ * (Kiahk=4, Tobi=5, Paremhat=7). Holy Week is not a festive season: its services are
  * a rite of their own.
  */
-export const getFestalSeason = (date: Date): FestalSeason | null => {
+export const getFestiveSeason = (date: Date): FestiveSeason | null => {
 	const fromEaster = daysFromEaster(date)
 	if (fromEaster >= 0 && fromEaster <= 38) return 'resurrection'
 	if (fromEaster >= 39 && fromEaster <= 49) return 'ascension'

@@ -55,11 +55,11 @@ damaged; a full run would overwrite good text with them. See *Source regressions
 | Thanksgiving after Communion | [view/2597](https://tasbeha.org/hymn_library/view/2597) |
 | Prayer of Submission to the Father | [view/2598](https://tasbeha.org/hymn_library/view/2598) |
 
-## Festal variants
+## Festive variants
 
 The Trisagion and the Gospel Response are first-match (`mode: 'one'`) sections: the
 blocks below are tried in order, and the annual text above is the default. Seasons come
-from `getFestalSeason` in `@coptic/core`; feast keys are the day's celebrations as
+from `getFestiveSeason` in `@coptic/core`; feast keys are the day's celebrations as
 `apps/api/src/services/occasion.ts` names them.
 
 | Section | When | Page |
@@ -79,10 +79,10 @@ from `getFestalSeason` in `@coptic/core`; feast keys are the day's celebrations 
 
 How the pages are composed, so the result stays traceable to the source:
 
-- **Trisagion.** The festal pages carry only the verse that changes, prayed thrice; from
+- **Trisagion.** The festive pages carry only the verse that changes, prayed thrice; from
   the Doxa on, the importer appends the annual hymn from view/1836. The Nativity page
   writes the verse out three times; the importer collapses it to one line marked
-  "(3)", as the other festal pages write it.
+  "(3)", as the other festive pages write it.
 - **Gospel Response.** The two closing doxology stanzas ("This is He who is worthy of
   glory…", "For blessed be the Father…") are common to every feast, and several pages
   abbreviate them or leave a language blank. An incomplete copy, matched by its Coptic
@@ -90,7 +90,7 @@ How the pages are composed, so the result stays traceable to the source:
   Pages that omit a stanza entirely are left as the source gives them: the Cross page
   carries only its own stanza, and the Resurrection and Pentecost pages end at "This is
   He…".
-- The Cross has no festal Trisagion page, so the annual one is kept at the Cross.
+- The Cross has no festive Trisagion page, so the annual one is kept at the Cross.
 
 ## Derived sections
 

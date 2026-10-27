@@ -603,16 +603,16 @@ function trimToMarker(items: ContentItem[], marker: RegExp): ContentItem[] {
 	return start < 0 ? [] : items.slice(start)
 }
 
-// ── Festal variants ───────────────────────────────────────────────────────────
+// ── Festive variants ───────────────────────────────────────────────────────────
 
 /**
  * Sections that change with the occasion, each resolved first-match: the variant
  * pages in the order the resolver tries them — a feast inside a season before the
  * season itself — and the annual page (from MAPPINGS) as the default.
  *
- * Seasons are computed by `getFestalSeason` in @coptic/core; feast keys are the day's
+ * Seasons are computed by `getFestiveSeason` in @coptic/core; feast keys are the day's
  * celebrations as the API names them (see apps/api/src/services/occasion.ts).
- * The Cross has no festal Trisagion page in the source, so the annual one is kept.
+ * The Cross has no festive Trisagion page in the source, so the annual one is kept.
  */
 interface Variant {
 	when: LiturgicalCondition
@@ -621,25 +621,25 @@ interface Variant {
 
 const VARIANTS: Record<string, Variant[]> = {
 	trisagion: [
-		{ when: { festalSeason: 'nativity' }, page: 1428 },
-		{ when: { festalSeason: 'theophany' }, page: 1634 },
-		{ when: { festalSeason: 'resurrection' }, page: 1011 },
-		{ when: { festalSeason: 'ascension' }, page: 1030 },
+		{ when: { festiveSeason: 'nativity' }, page: 1428 },
+		{ when: { festiveSeason: 'theophany' }, page: 1634 },
+		{ when: { festiveSeason: 'resurrection' }, page: 1011 },
+		{ when: { festiveSeason: 'ascension' }, page: 1030 },
 	],
 	'gospel-response': [
 		{ when: { feast: 'circumcision-feast' }, page: 669 },
 		{ when: { feast: 'wedding-of-cana-of-galilee-feast' }, page: 1651 },
 		{ when: { feast: 'pentecost' }, page: 415 },
-		{ when: { festalSeason: 'nativity' }, page: 89 },
-		{ when: { festalSeason: 'theophany' }, page: 117 },
-		{ when: { festalSeason: 'cross' }, page: 165 },
-		{ when: { festalSeason: 'resurrection' }, page: 376 },
-		{ when: { festalSeason: 'ascension' }, page: 404 },
+		{ when: { festiveSeason: 'nativity' }, page: 89 },
+		{ when: { festiveSeason: 'theophany' }, page: 117 },
+		{ when: { festiveSeason: 'cross' }, page: 165 },
+		{ when: { festiveSeason: 'resurrection' }, page: 376 },
+		{ when: { festiveSeason: 'ascension' }, page: 404 },
 	],
 }
 
 /**
- * The festal Trisagion pages carry only the verse that changes; from the Doxa on, the
+ * The festive Trisagion pages carry only the verse that changes; from the Doxa on, the
  * hymn is the annual one. Where a page writes the verse out three times rather than
  * marking it "(3)", the repeats are collapsed into the marker the other pages use.
  */

@@ -202,7 +202,7 @@ describe('liturgy liturgical invariants', () => {
 		}
 	})
 
-	it('sings the festal Trisagion verse thrice, in place of the three annual verses', () => {
+	it('sings the festive Trisagion verse thrice, in place of the three annual verses', () => {
 		const verse: Record<string, Record<Lang, RegExp>> = {
 			nativity: { en: /born of the Virgin/, ar: /ولد من العذراء/, cop: /ⲅⲉⲛⲛⲉⲑⲏⲥ/ },
 			theophany: { en: /baptized in the Jordan/, ar: /إعتمد في الأردن/, cop: /ⲃⲁⲡⲧⲓⲥⲧⲏⲥ/ },
@@ -212,17 +212,17 @@ describe('liturgy liturgical invariants', () => {
 		for (const lang of LANGS) {
 			const blocks = section(lang, 'trisagion')?.blocks ?? []
 			for (const [season, pattern] of Object.entries(verse)) {
-				const block = blocks.find((b) => b.when?.festalSeason === season)
+				const block = blocks.find((b) => b.when?.festiveSeason === season)
 				const first = text(block?.content[0] ?? '')
 				expect(first, `${lang}/${season}`).toMatch(pattern[lang])
 				expect(first, `${lang}/${season}`).toMatch(/\((3|ⲅ̅|ثلاث مرات)\)|\[Three Times\]$/)
-				// The festal form continues with the annual hymn from the Doxa on.
+				// The festive form continues with the annual hymn from the Doxa on.
 				expect(block?.content.slice(1)).toEqual(blocks.at(-1)?.content.slice(3))
 			}
 		}
 	})
 
-	it('completes the abbreviated stanzas of the festal pages instead of printing an ellipsis', () => {
+	it('completes the abbreviated stanzas of the festive pages instead of printing an ellipsis', () => {
 		for (const lang of LANGS) {
 			for (const s of services[lang].sections.filter((x) => x.blocks)) {
 				for (const line of allLines(s)) {

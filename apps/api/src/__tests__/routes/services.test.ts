@@ -114,7 +114,7 @@ describe('GET /api/liturgy/basil', () => {
 	})
 })
 
-describe('GET /api/liturgy/basil — festal texts', () => {
+describe('GET /api/liturgy/basil — festive texts', () => {
 	const firstLine = async (date: string, id: string, lang = 'en') =>
 		section(await get<Service>(`/api/liturgy/basil?date=${date}&lang=${lang}`), id)?.content?.[0]
 
@@ -130,7 +130,7 @@ describe('GET /api/liturgy/basil — festal texts', () => {
 		['2026-01-19', /baptized in the Jordan/, /^This is the Lamb of God/], // Theophany
 		['2026-04-12', /who rose from the dead, have mercy/, /^Moreover He was placed in the tomb/], // Pascha
 		['2026-05-21', /ascended into the heavens.*\(3\)$/, /^Sing to the Lord a new song/], // Ascension
-	])('prays the festal forms on %s', async (date, trisagion, response) => {
+	])('prays the festive forms on %s', async (date, trisagion, response) => {
 		expect(await firstLine(date, 'trisagion')).toMatch(trisagion)
 		expect(await firstLine(date, 'gospel-response')).toMatch(response)
 	})
@@ -147,7 +147,7 @@ describe('GET /api/liturgy/basil — festal texts', () => {
 		},
 	)
 
-	it('keeps the annual Trisagion at the Cross, which has no festal one', async () => {
+	it('keeps the annual Trisagion at the Cross, which has no festive one', async () => {
 		expect(await firstLine('2026-09-27', 'trisagion')).toMatch(
 			/born of the Virgin, have mercy upon us\.$/,
 		)
@@ -157,7 +157,7 @@ describe('GET /api/liturgy/basil — festal texts', () => {
 	it.each([
 		['ar', /الذي قام من الأموات، إرحمنا/, /وأيضاً وُضع في القبر/],
 		['cop', /ⲁ̀ⲛⲁⲥⲧⲁⲥ ⲉⲕ ⲧⲱⲛ ⲛⲉⲕⲣⲱⲛ:/, /^Ⲗⲟⲓⲡⲟⲛ ⲁⲩⲭⲁϥ/],
-	])('resolves the same festal forms in %s', async (lang, trisagion, response) => {
+	])('resolves the same festive forms in %s', async (lang, trisagion, response) => {
 		expect(await firstLine('2026-04-12', 'trisagion', lang)).toMatch(trisagion)
 		expect(await firstLine('2026-04-12', 'gospel-response', lang)).toMatch(response)
 	})

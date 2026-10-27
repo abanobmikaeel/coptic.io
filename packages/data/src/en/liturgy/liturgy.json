@@ -341,7 +341,7 @@
         "blocks": [
           {
             "when": {
-              "festalSeason": "nativity"
+              "festiveSeason": "nativity"
             },
             "content": [
               "Holy God, holy Mighty, holy Immortal, who was born of the Virgin, have mercy upon us. (3)",
@@ -353,7 +353,7 @@
           },
           {
             "when": {
-              "festalSeason": "theophany"
+              "festiveSeason": "theophany"
             },
             "content": [
               "Holy God, holy Mighty, holy Immortal, who was baptized in the Jordan, have mercy upon us. [Three Times]",
@@ -365,7 +365,7 @@
           },
           {
             "when": {
-              "festalSeason": "resurrection"
+              "festiveSeason": "resurrection"
             },
             "content": [
               "Holy God, holy Mighty, holy Immortal, who rose from the dead, have mercy upon us. (3)",
@@ -377,7 +377,7 @@
           },
           {
             "when": {
-              "festalSeason": "ascension"
+              "festiveSeason": "ascension"
             },
             "content": [
               "Holy God, holy Mighty, holy Immortal, who rose from the dead and ascended into the heavens, have mercy upon us. (3)",
@@ -506,7 +506,7 @@
           },
           {
             "when": {
-              "festalSeason": "nativity"
+              "festiveSeason": "nativity"
             },
             "content": [
               "A star appeared in the East, and the wise men followed it, until it let them to Bethlehem, and they worshiped the King of ages.",
@@ -518,7 +518,7 @@
           },
           {
             "when": {
-              "festalSeason": "theophany"
+              "festiveSeason": "theophany"
             },
             "content": [
               "This is the Lamb of God, who carries the sin of the world, who brought a horn of salvation, in order to save His people.",
@@ -529,7 +529,7 @@
           },
           {
             "when": {
-              "festalSeason": "cross"
+              "festiveSeason": "cross"
             },
             "content": [
               "For greatly honored, is the sign of the Cross, of Jesus Christ the King, our true God."
@@ -537,7 +537,7 @@
           },
           {
             "when": {
-              "festalSeason": "resurrection"
+              "festiveSeason": "resurrection"
             },
             "content": [
               "Moreover He was placed in the tomb, according to the prophetic voices, on the third day, Christ rose from the dead.",
@@ -547,7 +547,7 @@
           },
           {
             "when": {
-              "festalSeason": "ascension"
+              "festiveSeason": "ascension"
             },
             "content": [
               "Sing to the Lord a new song, speak of His glory and wonders, Christ has risen from the dead, and ascended into the heavens.",

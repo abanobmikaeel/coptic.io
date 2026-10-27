@@ -1,4 +1,4 @@
 export * from './context'
-export * from './festal'
+export * from './festive'
 export * from './seasons'
 export * from './fasting'

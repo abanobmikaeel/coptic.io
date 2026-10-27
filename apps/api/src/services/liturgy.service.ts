@@ -65,12 +65,12 @@ const serviceFor = (translation: BibleTranslation, rite: LiturgyRite) =>
 			: getEnLiturgyService(rite)
 
 /**
- * The Liturgy in prayed order, with the day's readings filled in and its festal
+ * The Liturgy in prayed order, with the day's readings filled in and its festive
  * texts resolved.
  *
  * The psalm, the three epistles and the gospel come from the Katameros rather than
  * the rite data. Sections that change with the occasion — the Trisagion and the
- * Gospel Response in a festal season — carry conditional blocks, resolved here
+ * Gospel Response in a festive season — carry conditional blocks, resolved here
  * against the day. A reading the lectionary does not carry for the day resolves to
  * an empty section rather than being dropped, so the three languages keep the same
  * section sequence and the reader can align them.

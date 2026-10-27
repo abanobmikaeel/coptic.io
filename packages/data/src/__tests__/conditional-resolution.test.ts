@@ -16,7 +16,7 @@ import { getIncenseService, getIncenseServiceTypes } from '../en/incense'
 const occasion = (over: Partial<OccasionContext> = {}): OccasionContext => ({
 	dayTune: 'adam',
 	season: 'waters',
-	festalSeason: null,
+	festiveSeason: null,
 	weekday: 0,
 	commemorations: [],
 	feasts: [],
@@ -52,32 +52,32 @@ describe('resolveBlocks — additive (all)', () => {
 	})
 })
 
-describe('festal season conditions', () => {
+describe('festive season conditions', () => {
 	const trisagion = [
-		block('risen', { festalSeason: 'resurrection' }),
-		block('risen and ascended', { festalSeason: ['ascension'] }),
+		block('risen', { festiveSeason: 'resurrection' }),
+		block('risen and ascended', { festiveSeason: ['ascension'] }),
 		block('annual'),
 	]
 
 	it('matches the season the day falls in', () => {
-		expect(resolveBlocks(trisagion, occasion({ festalSeason: 'ascension' }), 'one')).toEqual([
+		expect(resolveBlocks(trisagion, occasion({ festiveSeason: 'ascension' }), 'one')).toEqual([
 			'risen and ascended',
 		])
 	})
 
-	it('never matches on an ordinary day, which has no festal season', () => {
-		expect(resolveBlocks(trisagion, occasion({ festalSeason: null }), 'one')).toEqual(['annual'])
+	it('never matches on an ordinary day, which has no festive season', () => {
+		expect(resolveBlocks(trisagion, occasion({ festiveSeason: null }), 'one')).toEqual(['annual'])
 	})
 
 	it('lets a feast inside the season win when authored before it', () => {
 		const response = [
 			block('pentecost', { feast: 'pentecost' }),
-			block('ascension', { festalSeason: 'ascension' }),
+			block('ascension', { festiveSeason: 'ascension' }),
 			block('annual'),
 		]
-		const day50 = occasion({ festalSeason: 'ascension', feasts: ['pentecost'] })
+		const day50 = occasion({ festiveSeason: 'ascension', feasts: ['pentecost'] })
 		expect(resolveBlocks(response, day50, 'one')).toEqual(['pentecost'])
-		expect(resolveBlocks(response, occasion({ festalSeason: 'ascension' }), 'one')).toEqual([
+		expect(resolveBlocks(response, occasion({ festiveSeason: 'ascension' }), 'one')).toEqual([
 			'ascension',
 		])
 	})
@@ -149,7 +149,7 @@ describe('one-mode authoring rules', () => {
 })
 
 describe('shipped data obeys the authoring rules', () => {
-	// The Liturgy's festal sections are checked in liturgy-parity.test.ts.
+	// The Liturgy's festive sections are checked in liturgy-parity.test.ts.
 	it('every one-mode section is ordered correctly', () => {
 		for (const serviceType of getIncenseServiceTypes()) {
 			for (const section of getIncenseService(serviceType).sections) {

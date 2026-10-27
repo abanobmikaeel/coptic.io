@@ -24,7 +24,7 @@ export function buildOccasion(date: Date, selectedCommemorations: string[] = [])
 	return {
 		dayTune: liturgical.dayTune,
 		season: liturgical.natureSeason,
-		festalSeason: liturgical.festalSeason,
+		festiveSeason: liturgical.festiveSeason,
 		weekday: liturgical.dayOfWeek,
 		commemorations: [
 			...celebrations.map((c) => toCommemorationKey(c.name)),

@@ -341,7 +341,7 @@
         "blocks": [
           {
             "when": {
-              "festalSeason": "nativity"
+              "festiveSeason": "nativity"
             },
             "content": [
               "قدوس الله، قدوس القوى، قدوس الحي الذي لا يموت، الذي ولد من العذراء، ارحمنا. (3)",
@@ -353,7 +353,7 @@
           },
           {
             "when": {
-              "festalSeason": "theophany"
+              "festiveSeason": "theophany"
             },
             "content": [
               "قدوس الله، قدوس القوي، قدوس الحي الذي لا يموت، الذي إعتمد في الأردن، إرحمنا. (ثلاث مرات)",
@@ -365,7 +365,7 @@
           },
           {
             "when": {
-              "festalSeason": "resurrection"
+              "festiveSeason": "resurrection"
             },
             "content": [
               "قدوس الله، قدوس القوي، قدوس الحي الذي لا يموت، الذي قام من الأموات، إرحمنا. (3)",
@@ -377,7 +377,7 @@
           },
           {
             "when": {
-              "festalSeason": "ascension"
+              "festiveSeason": "ascension"
             },
             "content": [
               "قدوس الله، قدوس القوي، قدوس الحي الذي لا يموت، الذي قام من الأموات وصعد إلى السموات، إرحمنا. (3)",
@@ -506,7 +506,7 @@
           },
           {
             "when": {
-              "festalSeason": "nativity"
+              "festiveSeason": "nativity"
             },
             "content": [
               "نجم اشرق في المشارق، المجوس تبعوه، حتي ادخلهم بيت لحم، وسجدوا لملك الدهور.",
@@ -518,7 +518,7 @@
           },
           {
             "when": {
-              "festalSeason": "theophany"
+              "festiveSeason": "theophany"
             },
             "content": [
               "هذا هو حمل الله، حامل خطية العالم، الذي جاء بقرن خلاص، ليخلص شعبه.",
@@ -529,7 +529,7 @@
           },
           {
             "when": {
-              "festalSeason": "cross"
+              "festiveSeason": "cross"
             },
             "content": [
               "لأنها مكرمة جداً، علامة صليب، يسوع المسيح الملك، إلهنا الحقيقي."
@@ -537,7 +537,7 @@
           },
           {
             "when": {
-              "festalSeason": "resurrection"
+              "festiveSeason": "resurrection"
             },
             "content": [
               "وأيضاً وُضع في القبر، حسب الأصوات النبوية، وفي اليوم الثالث، المسيح قام من بين الأموات.",
@@ -547,7 +547,7 @@
           },
           {
             "when": {
-              "festalSeason": "ascension"
+              "festiveSeason": "ascension"
             },
             "content": [
               "سبحوا الرب تسبيحاً جديداً، تحدثوا بمجده وعجائبه، المسيح قام من بين الأموات، وصعد إلى السموات.",

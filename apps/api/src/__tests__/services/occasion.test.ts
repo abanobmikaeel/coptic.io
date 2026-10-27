@@ -16,7 +16,7 @@ describe('buildOccasion', () => {
 	it('carries the calendar facts of the day', () => {
 		// Pascha 2026 is a Sunday.
 		const easter = buildOccasion(local(2026, 4, 12))
-		expect(easter.festalSeason).toBe('resurrection')
+		expect(easter.festiveSeason).toBe('resurrection')
 		expect(easter.weekday).toBe(0)
 		expect(easter.dayTune).toBe('adam')
 	})
@@ -24,18 +24,18 @@ describe('buildOccasion', () => {
 	it('names the fixed feasts from the celebration calendar', () => {
 		// Tobi 6: the Circumcision closes the Nativity season.
 		const circumcision = buildOccasion(local(2026, 1, 14))
-		expect(circumcision.festalSeason).toBe('nativity')
+		expect(circumcision.festiveSeason).toBe('nativity')
 		expect(circumcision.feasts).toContain('circumcision-feast')
 
 		// Tobi 13: Cana closes the Theophany season.
 		const cana = buildOccasion(local(2026, 1, 21))
-		expect(cana.festalSeason).toBe('theophany')
+		expect(cana.festiveSeason).toBe('theophany')
 		expect(cana.feasts).toContain('wedding-of-cana-of-galilee-feast')
 	})
 
 	it('joins the moveable feasts, but not the moveable fasts', () => {
 		const pentecost = buildOccasion(local(2026, 5, 31))
-		expect(pentecost.festalSeason).toBe('ascension')
+		expect(pentecost.festiveSeason).toBe('ascension')
 		expect(pentecost.feasts).toContain('pentecost')
 
 		// Great Lent begins on a Monday 55 days before Pascha: a fast, not a feast.
@@ -44,7 +44,7 @@ describe('buildOccasion', () => {
 
 	it('composes the reader’s commemorations on top of the calendar’s', () => {
 		const ordinary = buildOccasion(local(2026, 10, 26))
-		expect(ordinary.festalSeason).toBeNull()
+		expect(ordinary.festiveSeason).toBeNull()
 		const withPatron = buildOccasion(local(2026, 10, 26), ['martyrs'])
 		expect(withPatron.commemorations).toEqual([...ordinary.commemorations, 'martyrs'])
 	})
