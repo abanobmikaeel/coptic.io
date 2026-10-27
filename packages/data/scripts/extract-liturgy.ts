@@ -2,10 +2,10 @@
  * Divine Liturgy (St. Basil) data extractor.
  *
  * Pulls the liturgy texts from tasbeha.org's hymn library, where each page lays the
- * three languages out as parallel rows: <div class='row'> with three textcolumn cells
- * (English / Coptic-Unicode / Arabic). Rows are parsed as aligned triples so the three
- * languages stay structurally identical — every non-rubric line in one language has a
- * counterpart in the other two. (Same row-aligned approach as extract-incense.ts.)
+ * three languages out as parallel paragraphs (see lib/tasbeha-rows.ts). Rows are parsed
+ * as aligned triples so the three languages stay structurally identical — every
+ * non-rubric line in one language has a counterpart in the other two. (Same
+ * row-aligned approach as extract-incense.ts.)
  *
  * Structure of the emitted service:
  *   Liturgy of the Word      — thanksgiving, absolution to the son, the day's epistles
@@ -30,14 +30,20 @@
  * labels, and invented Coptic labels would be unverifiable.
  *
  * Usage:
- *   bun run scripts/extract-liturgy.ts [en|ar|cop ...]
+ *   bun run scripts/extract-liturgy.ts [en|ar|cop ...] [--only section-id,section-id]
+ *
+ * `--only` regenerates the named sections and carries every other section over from
+ * the current files. Prefer it: after tasbeha.org's 2026 relayout some pages imported
+ * here have regressed (see SOURCE.md), so a full run would overwrite good text.
  */
 
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
+import type { LiturgicalCondition } from '../src/content/types'
+import { type Lang, type Row, parseRows } from './lib/tasbeha-rows'
+
 const BASE = 'https://tasbeha.org/hymn_library/view'
 
-type Lang = 'en' | 'ar' | 'cop'
 type Speaker = 'Priest' | 'Deacon' | 'People'
 
 interface ContentLine {
@@ -472,57 +478,6 @@ const SECTIONS: SectionMeta[] = [
 	},
 ]
 
-// ── Row-aligned HTML parsing ──────────────────────────────────────────────────
-
-/** One parallel row of the source table; empty string means the cell is blank. */
-interface Row {
-	en: string
-	cop: string
-	ar: string
-}
-
-function decodeEntities(s: string): string {
-	return s
-		.replace(/&amp;/g, '&')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/&quot;/g, '"')
-		.replace(/&#39;/g, "'")
-		.replace(/&nbsp;/g, ' ')
-}
-
-function cleanCell(html: string): string {
-	const text = decodeEntities(html.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')).trim()
-	return text === '-' ? '' : text
-}
-
-const COLUMN_CLASS: Record<string, Lang> = {
-	englishtext: 'en',
-	coptictext_utf8: 'cop',
-	arabictext: 'ar',
-}
-
-function parseRows(html: string): Row[] {
-	const rows: Row[] = []
-	for (const chunk of html.split(/<div class='row'>/).slice(1)) {
-		const cells = [
-			...chunk.matchAll(
-				/<div class='col-xs-4 textcolumn (englishtext|coptictext_utf8|arabictext)'[^>]*>([\s\S]*?)<\/div>/g,
-			),
-		]
-		if (cells.length !== 3) continue
-		const row: Row = { en: '', cop: '', ar: '' }
-		for (const [, cls, body] of cells) {
-			const lang = COLUMN_CLASS[cls ?? '']
-			if (lang) row[lang] = cleanCell(body ?? '')
-		}
-		// Skip Arabic-transliteration rows ("قبطي معرب") — phonetic aid, not a fourth language
-		if (!row.en && !row.cop && /قبطي معرب|^[أا]/.test(row.ar) && rows.length > 0) continue
-		if (row.en || row.cop || row.ar) rows.push(row)
-	}
-	return rows
-}
-
 // ── Row → content lines ───────────────────────────────────────────────────────
 
 /** A row carrying staging directions rather than prayer text: present in English and
@@ -648,6 +603,107 @@ function trimToMarker(items: ContentItem[], marker: RegExp): ContentItem[] {
 	return start < 0 ? [] : items.slice(start)
 }
 
+// ── Festal variants ───────────────────────────────────────────────────────────
+
+/**
+ * Sections that change with the occasion, each resolved first-match: the variant
+ * pages in the order the resolver tries them — a feast inside a season before the
+ * season itself — and the annual page (from MAPPINGS) as the default.
+ *
+ * Seasons are computed by `getFestalSeason` in @coptic/core; feast keys are the day's
+ * celebrations as the API names them (see apps/api/src/services/occasion.ts).
+ * The Cross has no festal Trisagion page in the source, so the annual one is kept.
+ */
+interface Variant {
+	when: LiturgicalCondition
+	page: number
+}
+
+const VARIANTS: Record<string, Variant[]> = {
+	trisagion: [
+		{ when: { festalSeason: 'nativity' }, page: 1428 },
+		{ when: { festalSeason: 'theophany' }, page: 1634 },
+		{ when: { festalSeason: 'resurrection' }, page: 1011 },
+		{ when: { festalSeason: 'ascension' }, page: 1030 },
+	],
+	'gospel-response': [
+		{ when: { feast: 'circumcision-feast' }, page: 669 },
+		{ when: { feast: 'wedding-of-cana-of-galilee-feast' }, page: 1651 },
+		{ when: { feast: 'pentecost' }, page: 415 },
+		{ when: { festalSeason: 'nativity' }, page: 89 },
+		{ when: { festalSeason: 'theophany' }, page: 117 },
+		{ when: { festalSeason: 'cross' }, page: 165 },
+		{ when: { festalSeason: 'resurrection' }, page: 376 },
+		{ when: { festalSeason: 'ascension' }, page: 404 },
+	],
+}
+
+/**
+ * The festal Trisagion pages carry only the verse that changes; from the Doxa on, the
+ * hymn is the annual one. Where a page writes the verse out three times rather than
+ * marking it "(3)", the repeats are collapsed into the marker the other pages use.
+ */
+const DOXA = /^Ⲇⲟⲝⲁ/
+const THRICE: Row = { en: '(3)', cop: '(ⲅ̅)', ar: '(3)' }
+
+function composeTrisagion(variant: Row[], annual: Row[]): Row[] {
+	const verse = variant.slice(
+		0,
+		Math.max(
+			0,
+			variant.findIndex((r) => DOXA.test(r.cop)),
+		),
+	)
+	const distinct = verse.filter(
+		(row, i) => i === 0 || JSON.stringify(row) !== JSON.stringify(verse[i - 1]),
+	)
+	const repeated =
+		distinct.length < verse.length
+			? distinct.map((row) => ({
+					en: `${row.en} ${THRICE.en}`,
+					cop: `${row.cop} ${THRICE.cop}`,
+					ar: `${row.ar} ${THRICE.ar}`,
+				}))
+			: distinct
+	return [...repeated, ...annual.slice(annual.findIndex((r) => DOXA.test(r.cop)))]
+}
+
+/**
+ * The doxology stanzas that close a feast's Gospel Response are common to every feast.
+ * The source abbreviates them ("This is He ...") or leaves a language blank on several
+ * pages, so an incomplete copy is replaced with the full stanza from one page that
+ * carries it in all three languages. Stanzas are identified by their Coptic incipit.
+ */
+const COMMON_STANZAS: { incipit: RegExp; page: number }[] = [
+	{ incipit: /^Ⲫⲁⲓ ⲉ̀?ⲣⲉ ⲡⲓⲱ̀ⲟ̀?ⲩ/, page: 89 },
+	{ incipit: /^Ϫⲉ ϥ̀ⲥ̀ⲙⲁⲣⲱⲟⲩⲧ/, page: 1843 },
+]
+
+const ABBREVIATED = /(\.\.\.|…)\.?$/
+const isIncomplete = (row: Row): boolean =>
+	(['en', 'cop', 'ar'] as Lang[]).some((lang) => !row[lang] || ABBREVIATED.test(row[lang]))
+
+function completeStanzas(rows: Row[], pages: Map<number, Row[]>): Row[] {
+	return rows.map((row) => {
+		if (!isIncomplete(row)) return row
+		const stanza = COMMON_STANZAS.find((s) => s.incipit.test(row.cop))
+		if (!stanza) throw new Error(`Incomplete row with no common stanza to complete it: ${row.en}`)
+		const full = pages.get(stanza.page)?.find((r) => stanza.incipit.test(r.cop))
+		if (!full || isIncomplete(full)) throw new Error(`Page ${stanza.page} lacks a full ${row.en}`)
+		return full
+	})
+}
+
+function composeVariant(
+	sectionId: string,
+	variant: Row[],
+	pages: Map<number, Row[]>,
+	annual: Row[],
+) {
+	if (sectionId === 'trisagion') return composeTrisagion(variant, annual)
+	return completeStanzas(variant, pages)
+}
+
 // ── Fetch & assemble ──────────────────────────────────────────────────────────
 
 async function fetchPage(id: number): Promise<string> {
@@ -663,35 +719,83 @@ async function fetchPage(id: number): Promise<string> {
 	}
 }
 
-async function main() {
-	const requested = process.argv.slice(2)
-	const languages = (requested.length > 0 ? requested : ['en', 'ar', 'cop']) as Lang[]
+async function fetchRows(id: number, cache: Map<number, Row[]>): Promise<Row[]> {
+	const cached = cache.get(id)
+	if (cached) return cached
+	const rows = parseRows(await fetchPage(id))
+	if (rows.length === 0) throw new Error(`Page ${id} parsed to no rows — has the markup changed?`)
+	cache.set(id, rows)
+	await new Promise((r) => setTimeout(r, 500))
+	return rows
+}
+
+type Blocks = { when?: LiturgicalCondition; content: ContentItem[] }[]
+
+function parseArgs(argv: string[]) {
+	const onlyAt = argv.indexOf('--only')
+	const only = onlyAt >= 0 ? new Set((argv[onlyAt + 1] ?? '').split(',').filter(Boolean)) : null
+	const rest = onlyAt >= 0 ? argv.filter((_, i) => i !== onlyAt && i !== onlyAt + 1) : argv
+	const languages = (rest.length > 0 ? rest : ['en', 'ar', 'cop']) as Lang[]
 	if (languages.some((lang) => !['en', 'ar', 'cop'].includes(lang))) {
 		throw new Error('Unknown language. Expected one or more of: en, ar, cop')
 	}
+	const known = new Set(SECTIONS.map((s) => s.id))
+	for (const id of only ?? []) if (!known.has(id)) throw new Error(`Unknown section: ${id}`)
+	return { languages, only }
+}
+
+/** The Trisagion page ends with the lead-in to the Lord's Prayer, rendered as its own section. */
+function trimTrisagionTrailer(items: ContentItem[], lang: Lang) {
+	const last = items[items.length - 1]
+	if (last && TRISAGION_TRAILER[lang].test(getText(last))) items.pop()
+}
+
+async function main() {
+	const { languages, only } = parseArgs(process.argv.slice(2))
+	const wanted = (id: string) => !only || only.has(id)
 	const sections: Record<Lang, Record<string, ContentItem[]>> = { en: {}, ar: {}, cop: {} }
+	const blocks: Record<Lang, Record<string, Blocks>> = { en: {}, ar: {}, cop: {} }
+	const pages = new Map<number, Row[]>()
+
+	// The Lord's Prayer sections are derived from the Thanksgiving Prayer.
+	const derivesFrom = (id: string) =>
+		id === 'thanksgiving' && (wanted('lord-prayer-post-trisagion') || wanted('lords-prayer'))
 
 	for (const mapping of MAPPINGS) {
 		const id = mapping.sectionIds[0] as string
+		if (!wanted(id) && !derivesFrom(id)) continue
 		console.log(`Fetching ${id} (${mapping.id})...`)
-		const html = await fetchPage(mapping.id)
-		const rows = parseRows(html)
+		const rows = await fetchRows(mapping.id, pages)
 		const parsed = rowsToSection(rows, mapping.noRubrics)
 		for (const lang of ['en', 'ar', 'cop'] as Lang[]) {
 			sections[lang][id] = parsed[lang]
 		}
 		console.log(`  → ${rows.length} rows`)
-		await new Promise((r) => setTimeout(r, 500))
+	}
+
+	for (const [id, variants] of Object.entries(VARIANTS)) {
+		if (!wanted(id)) continue
+		const annualPage = MAPPINGS.find((m) => m.sectionIds.includes(id))?.id
+		const annual = annualPage ? pages.get(annualPage) : undefined
+		if (!annual) throw new Error(`No annual page for ${id}`)
+		for (const { page } of COMMON_STANZAS) await fetchRows(page, pages)
+
+		const parsedVariants = []
+		for (const variant of variants) {
+			console.log(`Fetching ${id} for ${JSON.stringify(variant.when)} (${variant.page})...`)
+			const rows = composeVariant(id, await fetchRows(variant.page, pages), pages, annual)
+			parsedVariants.push({ when: variant.when, parsed: rowsToSection(rows) })
+		}
+		for (const lang of ['en', 'ar', 'cop'] as Lang[]) {
+			blocks[lang][id] = parsedVariants.map((v) => ({ when: v.when, content: v.parsed[lang] }))
+		}
 	}
 
 	for (const lang of ['en', 'ar', 'cop'] as Lang[]) {
 		const s = sections[lang]
 
-		const trisagion = s.trisagion
-		const trisagionLast = trisagion?.[trisagion.length - 1]
-		if (trisagion && trisagionLast && TRISAGION_TRAILER[lang].test(getText(trisagionLast))) {
-			trisagion.pop()
-		}
+		if (s.trisagion) trimTrisagionTrailer(s.trisagion, lang)
+		for (const block of blocks[lang].trisagion ?? []) trimTrisagionTrailer(block.content, lang)
 
 		const lordPrayer =
 			s.thanksgiving?.filter((b) => getText(b).includes(LORD_PRAYER_MARKER[lang])) ?? []
@@ -707,7 +811,7 @@ async function main() {
 
 	console.log('\nWriting output files...')
 	for (const lang of languages) {
-		writeOutput(lang, sections[lang])
+		writeOutput(lang, sections[lang], blocks[lang], wanted)
 	}
 }
 
@@ -733,7 +837,12 @@ const NAMES: Record<Lang, { name: string; description: string }> = {
 const dataPath = (lang: Lang) =>
 	join(import.meta.dirname, '..', 'src', lang, 'liturgy', 'liturgy.json')
 
-function writeOutput(lang: Lang, sections: Record<string, ContentItem[]>) {
+function writeOutput(
+	lang: Lang,
+	sections: Record<string, ContentItem[]>,
+	blocks: Record<string, Blocks>,
+	wanted: (id: string) => boolean,
+) {
 	const convert = (items: ContentItem[]) =>
 		lang === 'cop'
 			? items.map((item) =>
@@ -743,8 +852,19 @@ function writeOutput(lang: Lang, sections: Record<string, ContentItem[]>) {
 				)
 			: items
 
+	// Sections outside --only are carried over from the current file unchanged.
+	const existing: { id: string }[] = existsSync(dataPath(lang))
+		? JSON.parse(readFileSync(dataPath(lang), 'utf-8')).basil.sections
+		: []
+
 	const outSections: unknown[] = []
 	for (const meta of SECTIONS) {
+		const kept = existing.find((s) => s.id === meta.id)
+		if (!wanted(meta.id) && kept) {
+			outSections.push(kept)
+			continue
+		}
+
 		const titleCop = meta.titleCop
 		const title =
 			lang === 'en' ? meta.title : lang === 'ar' ? meta.titleAr : (titleCop ?? meta.title)
@@ -757,8 +877,18 @@ function writeOutput(lang: Lang, sections: Record<string, ContentItem[]>) {
 			...(meta.reading ? { reading: meta.reading } : {}),
 		}
 
+		const variants = blocks[meta.id]
 		if (meta.type === 'daily-psalm' || meta.type === 'gospel' || meta.type === 'epistle') {
 			outSections.push(base) // scripture resolves from the Katameros at runtime
+		} else if (variants) {
+			outSections.push({
+				...base,
+				mode: 'one',
+				blocks: [
+					...variants.map((b) => ({ when: b.when, content: convert(b.content) })),
+					{ content: convert(sections[meta.id] ?? []) },
+				],
+			})
 		} else {
 			outSections.push({ ...base, content: convert(sections[meta.id] ?? []) })
 		}
@@ -776,15 +906,7 @@ function writeOutput(lang: Lang, sections: Record<string, ContentItem[]>) {
 	const outDir = dirname(dataPath(lang))
 	if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true })
 	writeFileSync(dataPath(lang), `${JSON.stringify(outData, null, 2)}\n`, 'utf-8')
-
-	const filled = outSections.filter(
-		(s) =>
-			Array.isArray((s as { content?: unknown[] }).content) &&
-			(s as { content: unknown[] }).content.length > 0,
-	).length
-	console.log(
-		`  ${lang.toUpperCase()}: ${filled}/${outSections.length} sections with content → ${dataPath(lang)}`,
-	)
+	console.log(`  ${lang.toUpperCase()}: ${outSections.length} sections → ${dataPath(lang)}`)
 }
 
 main().catch((err) => {

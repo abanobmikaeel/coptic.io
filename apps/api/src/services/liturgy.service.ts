@@ -1,5 +1,6 @@
 import { gregorianToCoptic } from '@coptic/core'
 import { getLiturgyService as getArLiturgyService } from '@coptic/data/ar/liturgy'
+import { resolveBlocks } from '@coptic/data/content'
 import { getLiturgyService as getCopLiturgyService } from '@coptic/data/cop/liturgy'
 import {
 	type LiturgyContent,
@@ -11,6 +12,7 @@ import {
 } from '@coptic/data/en/liturgy'
 import { getByCopticDate } from '../models/readings'
 import type { BibleTranslation, BibleVerse, CopticDate } from '../types'
+import { buildOccasion } from './occasion'
 import { flattenReadings } from './readings-format'
 
 export interface ResolvedLiturgyPrayerSection {
@@ -63,13 +65,15 @@ const serviceFor = (translation: BibleTranslation, rite: LiturgyRite) =>
 			: getEnLiturgyService(rite)
 
 /**
- * The Liturgy in prayed order, with the day's readings filled in.
+ * The Liturgy in prayed order, with the day's readings filled in and its festal
+ * texts resolved.
  *
- * The rite itself is fixed; only the psalm, the three epistles and the gospel
- * change with the date, and those come from the Katameros rather than the rite
- * data. A reading the lectionary does not carry for the day resolves to an empty
- * section rather than being dropped, so the three languages keep the same section
- * sequence and the reader can align them.
+ * The psalm, the three epistles and the gospel come from the Katameros rather than
+ * the rite data. Sections that change with the occasion — the Trisagion and the
+ * Gospel Response in a festal season — carry conditional blocks, resolved here
+ * against the day. A reading the lectionary does not carry for the day resolves to
+ * an empty section rather than being dropped, so the three languages keep the same
+ * section sequence and the reader can align them.
  */
 export function getLiturgyForDate(
 	date: Date,
@@ -78,6 +82,7 @@ export function getLiturgyForDate(
 ): ResolvedLiturgyService {
 	const service = serviceFor(translation, rite)
 	const readings = getByCopticDate(date, true, translation)
+	const occasion = buildOccasion(date)
 
 	const sections: ResolvedLiturgySection[] = service.sections.map((section) => {
 		const base = {
@@ -108,7 +113,10 @@ export function getLiturgyForDate(
 		}
 
 		const prayer = section as LiturgyPrayerSection
-		return { ...base, type: prayer.type, content: prayer.content }
+		const content = prayer.blocks
+			? resolveBlocks(prayer.blocks, occasion, prayer.mode)
+			: (prayer.content ?? [])
+		return { ...base, type: prayer.type, content }
 	})
 
 	return {

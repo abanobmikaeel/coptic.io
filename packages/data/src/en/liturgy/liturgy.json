@@ -337,14 +337,67 @@
         "type": "prayer",
         "role": "congregation",
         "title": "The Trisagion",
-        "content": [
-          "Holy God, holy Mighty, holy Immortal, who was born of the Virgin, have mercy upon us.",
-          "Holy God, holy Mighty, holy Immortal, who was crucified for us, have mercy upon us.",
-          "Holy God, holy Mighty, holy Immortal, who rose from the dead and ascended into the heavens, have mercy upon us.",
-          "Glory to the Father and to the Son and the Holy Spirit, now and forever and unto the ages of all ages. Amen.",
-          "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
-          "Lord, forgive our sins. Lord, forgive our iniquities. Lord, forgive our transgressions. Lord, be with the sick of Your people, heal them for the sake of Your holy name. Our fathers and brethren who have slept, repose their souls.",
-          "O who are alone is sinless, help us and accept our prayers. For Yours is the glory, dominion, and triple holiness. Lord have mercy. Lord have mercy. Lord bless us. Amen."
+        "mode": "one",
+        "blocks": [
+          {
+            "when": {
+              "festalSeason": "nativity"
+            },
+            "content": [
+              "Holy God, holy Mighty, holy Immortal, who was born of the Virgin, have mercy upon us. (3)",
+              "Glory to the Father and to the Son and the Holy Spirit, now and forever and unto the ages of all ages. Amen.",
+              "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
+              "Lord, forgive our sins. Lord, forgive our iniquities. Lord, forgive our transgressions. Lord, be with the sick of Your people, heal them for the sake of Your holy name. Our fathers and brethren who have slept, repose their souls.",
+              "O who are alone is sinless, help us and accept our prayers. For Yours is the glory, dominion, and triple holiness. Lord have mercy. Lord have mercy. Lord bless us. Amen."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "theophany"
+            },
+            "content": [
+              "Holy God, holy Mighty, holy Immortal, who was baptized in the Jordan, have mercy upon us. [Three Times]",
+              "Glory to the Father and to the Son and the Holy Spirit, now and forever and unto the ages of all ages. Amen.",
+              "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
+              "Lord, forgive our sins. Lord, forgive our iniquities. Lord, forgive our transgressions. Lord, be with the sick of Your people, heal them for the sake of Your holy name. Our fathers and brethren who have slept, repose their souls.",
+              "O who are alone is sinless, help us and accept our prayers. For Yours is the glory, dominion, and triple holiness. Lord have mercy. Lord have mercy. Lord bless us. Amen."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "resurrection"
+            },
+            "content": [
+              "Holy God, holy Mighty, holy Immortal, who rose from the dead, have mercy upon us. (3)",
+              "Glory to the Father and to the Son and the Holy Spirit, now and forever and unto the ages of all ages. Amen.",
+              "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
+              "Lord, forgive our sins. Lord, forgive our iniquities. Lord, forgive our transgressions. Lord, be with the sick of Your people, heal them for the sake of Your holy name. Our fathers and brethren who have slept, repose their souls.",
+              "O who are alone is sinless, help us and accept our prayers. For Yours is the glory, dominion, and triple holiness. Lord have mercy. Lord have mercy. Lord bless us. Amen."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "ascension"
+            },
+            "content": [
+              "Holy God, holy Mighty, holy Immortal, who rose from the dead and ascended into the heavens, have mercy upon us. (3)",
+              "Glory to the Father and to the Son and the Holy Spirit, now and forever and unto the ages of all ages. Amen.",
+              "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
+              "Lord, forgive our sins. Lord, forgive our iniquities. Lord, forgive our transgressions. Lord, be with the sick of Your people, heal them for the sake of Your holy name. Our fathers and brethren who have slept, repose their souls.",
+              "O who are alone is sinless, help us and accept our prayers. For Yours is the glory, dominion, and triple holiness. Lord have mercy. Lord have mercy. Lord bless us. Amen."
+            ]
+          },
+          {
+            "content": [
+              "Holy God, holy Mighty, holy Immortal, who was born of the Virgin, have mercy upon us.",
+              "Holy God, holy Mighty, holy Immortal, who was crucified for us, have mercy upon us.",
+              "Holy God, holy Mighty, holy Immortal, who rose from the dead and ascended into the heavens, have mercy upon us.",
+              "Glory to the Father and to the Son and the Holy Spirit, now and forever and unto the ages of all ages. Amen.",
+              "O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us. O Holy Trinity, have mercy upon us.",
+              "Lord, forgive our sins. Lord, forgive our iniquities. Lord, forgive our transgressions. Lord, be with the sick of Your people, heal them for the sake of Your holy name. Our fathers and brethren who have slept, repose their souls.",
+              "O who are alone is sinless, help us and accept our prayers. For Yours is the glory, dominion, and triple holiness. Lord have mercy. Lord have mercy. Lord bless us. Amen."
+            ]
+          }
         ]
       },
       {
@@ -419,11 +472,99 @@
         "type": "prayer",
         "role": "congregation",
         "title": "Gospel Response",
-        "content": [
-          "Let us worship our Savior, the good Lover of Mankind, for He had compassion on us, He has come and saved us.",
-          "Intercede on our behalf, O the Lady of us all the Theotokos, Mary the Mother of our Savior, that He may forgive us our sins.",
-          "Pray to the Lord on our behalf, O beholder of God the Evangelist, Abba Mark the Apostle, that He may forgive us our sins.",
-          "For blessed be the Father and the Son, and the Holy Spirit, the perfect Trinity, we worship Him and glorify Him."
+        "mode": "one",
+        "blocks": [
+          {
+            "when": {
+              "feast": "circumcision-feast"
+            },
+            "content": [
+              "Alleluia Alleluia Alleluia Alleluia, Jesus Christ, the Son of God, accepted unto Himself circumcision.",
+              "This is He who is worthy of glory, with His good Father, and the Holy Spirit, both now and forever.",
+              "For blessed be the Father and the Son, and the Holy Spirit, the perfect Trinity, we worship Him and glorify Him."
+            ]
+          },
+          {
+            "when": {
+              "feast": "wedding-of-cana-of-galilee-feast"
+            },
+            "content": [
+              "Alleluia alleluia, alleluia alleluia, Jesus Christ, the Son of God, blessed the water and changed it into wine.",
+              "This is He to whom the glory is due, with His Good Father and the Holy Spirit, now and forever.",
+              "Blessed be the Father and the Son and the Holy Spirit, the perfect Trinity. We worship Him and glorify Him."
+            ]
+          },
+          {
+            "when": {
+              "feast": "pentecost"
+            },
+            "content": [
+              "The Spirit of Comfort, came down upon the Apostles, on the feast of Pentecost, and they spoke in many tongues.",
+              "Alleluia (4), Christ has risen and ascended, and sent us the Paraclete.",
+              "This is He who is worthy of glory, with His good Father, and the Holy Spirit, both now and forever."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "nativity"
+            },
+            "content": [
+              "A star appeared in the East, and the wise men followed it, until it let them to Bethlehem, and they worshiped the King of ages.",
+              "The Lord of glory was called a Son, according to the words of John before he saw Him, the Eternal Word became flesh, and dwelt in us and we saw Him.",
+              "Alleluia Alleluia, Alleluia Alleluia, Jesus Christ the Son of God, was born in Bethlehem.",
+              "This is He who is worthy of glory, with His good Father, and the Holy Spirit, both now and forever.",
+              "Blessed be the Father and the Son, and the Holy Spirit, the perfect Trinity, we worship Him and glorify Him."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "theophany"
+            },
+            "content": [
+              "This is the Lamb of God, who carries the sin of the world, who brought a horn of salvation, in order to save His people.",
+              "Alleluia (4), Jesus Christ the Son of God, was baptized in the Jordan.",
+              "This is He who is worthy of glory, with His good Father, and the Holy Spirit, both now and forever.",
+              "For blessed be the Father and the Son, and the Holy Spirit, the perfect Trinity, we worship Him and glorify Him."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "cross"
+            },
+            "content": [
+              "For greatly honored, is the sign of the Cross, of Jesus Christ the King, our true God."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "resurrection"
+            },
+            "content": [
+              "Moreover He was placed in the tomb, according to the prophetic voices, on the third day, Christ rose from the dead.",
+              "Alleluia (4), Jesus Christ the King of glory, has risen from the dead.",
+              "This is He who is worthy of glory, with His good Father, and the Holy Spirit, both now and forever."
+            ]
+          },
+          {
+            "when": {
+              "festalSeason": "ascension"
+            },
+            "content": [
+              "Sing to the Lord a new song, speak of His glory and wonders, Christ has risen from the dead, and ascended into the heavens.",
+              "The Lord came to Bethany, with His holy Disciples, He raised His hands and blessed them, and ascended into the heavens.",
+              "Alleluia (4), Christ has risen from the dead, and ascended into the heavens.",
+              "This is He who is worthy of glory, with His good Father, and the Holy Spirit, both now and forever.",
+              "For blessed be the Father and the Son, and the Holy Spirit, the perfect Trinity, we worship Him and glorify Him."
+            ]
+          },
+          {
+            "content": [
+              "Let us worship our Savior, the good Lover of Mankind, for He had compassion on us, He has come and saved us.",
+              "Intercede on our behalf, O the Lady of us all the Theotokos, Mary the Mother of our Savior, that He may forgive us our sins.",
+              "Pray to the Lord on our behalf, O beholder of God the Evangelist, Abba Mark the Apostle, that He may forgive us our sins.",
+              "For blessed be the Father and the Son, and the Holy Spirit, the perfect Trinity, we worship Him and glorify Him."
+            ]
+          }
         ]
       },
       {

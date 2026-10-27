@@ -185,9 +185,15 @@ off the "default with negated condition" workaround if they use it.
 vocabulary, thread a `ServiceContext` through the API, expose it as a query
 parameter, and surface it in the reader's settings the way the saint picker is.
 
-**Stage 3 — the fraction prayers.** The first real exclusive set: thirteen blocks
-with stated selection rules, in three languages. This is the proof the model holds,
-and it is bounded — the rules are written down in the reference book.
+**Stage 3 — the fraction prayers.** Thirteen blocks with stated selection rules, in
+three languages. This is the proof the model holds, and it is bounded — the rules are
+written down in the reference book.
+
+The Liturgy's festal Trisagion and Gospel Response went first as smaller `one` sets.
+They added a `festalSeason` condition (`getFestalSeason` in `@coptic/core`), and they
+show the pattern the fractions will follow: a feast inside a season (Circumcision in
+the Nativity season, Pentecost in the Ascension's) is authored before the season and
+wins on its day. See `packages/data/src/en/liturgy/SOURCE.md`.
 
 **Stage 4 — shared hymn library.** Hymns recur across services (the Verses of
 Cymbals is prayed at both Vespers and Matins). Define each once with its blocks and

@@ -13,6 +13,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import arData from '../ar/liturgy/liturgy.json'
+import { findOneModeAuthoringErrors } from '../content'
 import copData from '../cop/liturgy/liturgy.json'
 import enData from '../en/liturgy/liturgy.json'
 
@@ -33,6 +34,8 @@ interface Section {
 	titleLanguage?: string
 	reading?: string
 	content?: Content[]
+	mode?: 'all' | 'one'
+	blocks?: { when?: Record<string, unknown>; content: Content[] }[]
 }
 
 const services: Record<Lang, { id: string; sections: Section[] }> = {
@@ -47,6 +50,10 @@ const isRubric = (c: Content): boolean => typeof c === 'object' && c.isRubric ==
 const speakers = (content: Content[]): (string | undefined)[] =>
 	content.filter((c) => !isRubric(c)).map((c) => (typeof c === 'string' ? undefined : c.speaker))
 const section = (lang: Lang, id: string) => services[lang].sections.find((s) => s.id === id)
+/** Every text a section can resolve to: its fixed content, or each conditional block's. */
+const variants = (s: Section | undefined): Content[][] =>
+	s?.blocks ? s.blocks.map((b) => b.content) : s?.content ? [s.content] : []
+const allLines = (s: Section): Content[] => variants(s).flat()
 
 describe('liturgy data cross-language parity', () => {
 	it('has identical section ids, order, and types', () => {
@@ -57,7 +64,7 @@ describe('liturgy data cross-language parity', () => {
 
 	it('stores Coptic prayer text as Unicode rather than legacy font encoding', () => {
 		for (const s of services.cop.sections) {
-			for (const item of (s.content ?? []).filter((entry) => !isRubric(entry))) {
+			for (const item of allLines(s).filter((entry) => !isRubric(entry))) {
 				expect(text(item)).toMatch(/[Ⲁ-⳿]/u)
 				expect(text(item)).not.toMatch(/(?:\/en|p\[oic|n;ok)/i)
 			}
@@ -65,39 +72,54 @@ describe('liturgy data cross-language parity', () => {
 	})
 
 	for (const enSection of services.en.sections) {
-		// Bound outside the closure: narrowing `enSection.content` does not survive
-		// into the callback, since a property could in principle change before it runs.
-		const enContent = enSection.content
-		if (!enContent) continue
+		const enVariants = variants(enSection)
+		if (enVariants.length === 0) continue
 
 		it(`${enSection.id}: speaker sequences match across languages that carry the section`, () => {
-			const en = speakers(enContent)
 			for (const lang of ['ar', 'cop'] as Lang[]) {
-				const other = section(lang, enSection.id)
-				const seq = speakers(other?.content ?? [])
-				// A language with no source text (Coptic for absolution-to-the-son) renders no
-				// column — parity is only defined between languages that both have content.
-				if (seq.length === 0) continue
+				const other = variants(section(lang, enSection.id))
+				expect(other.length, `${lang} variant count differs`).toEqual(enVariants.length)
+				enVariants.forEach((enContent, v) => {
+					const en = speakers(enContent)
+					const seq = speakers(other[v] ?? [])
+					// A language with no source text (Coptic for absolution-to-the-son) renders no
+					// column — parity is only defined between languages that both have content.
+					if (seq.length === 0) return
 
-				// Row alignment is the invariant that matters: the reader lays the languages
-				// out turn by turn, so a differing line count misaligns the columns.
-				expect(seq.length, `${lang} line count differs`).toEqual(en.length)
+					// Row alignment is the invariant that matters: the reader lays the languages
+					// out turn by turn, so a differing line count misaligns the columns.
+					expect(seq.length, `${lang} variant ${v}: line count differs`).toEqual(en.length)
 
-				// Attribution is only comparable where the source labels speakers at all.
-				// Some Coptic pages carry the text without "Ⲡⲓⲟⲩⲏⲃ"/"Ⲡⲓⲡ̀ⲣⲉⲥⲃⲩⲧⲉⲣⲟⲥ" even where
-				// the English and Arabic label it; that is a source convention, not drift,
-				// and inventing the label would be inventing rubric.
-				if (seq.every((s) => s === undefined)) continue
-				expect(seq).toEqual(en)
+					// Attribution is only comparable where the source labels speakers at all.
+					// Some Coptic pages carry the text without "Ⲡⲓⲟⲩⲏⲃ"/"Ⲡⲓⲡ̀ⲣⲉⲥⲃⲩⲧⲉⲣⲟⲥ" even where
+					// the English and Arabic label it; that is a source convention, not drift,
+					// and inventing the label would be inventing rubric.
+					if (seq.every((s) => s === undefined)) return
+					expect(seq).toEqual(en)
+				})
 			}
 		})
 	}
 
+	it('authors conditional blocks identically in every language', () => {
+		for (const enSection of services.en.sections.filter((s) => s.blocks)) {
+			const conditions = (lang: Lang) => {
+				const s = section(lang, enSection.id)
+				return { mode: s?.mode, when: s?.blocks?.map((b) => b.when ?? null) }
+			}
+			expect(conditions('ar'), enSection.id).toEqual(conditions('en'))
+			expect(conditions('cop'), enSection.id).toEqual(conditions('en'))
+		}
+	})
+
 	it('every prayer section has text in English and Arabic (a source page that parses to zero rows would write empty content silently)', () => {
 		for (const lang of ['en', 'ar'] as Lang[]) {
 			for (const s of services[lang].sections) {
-				if (!s.content) continue // scripture sections resolve at runtime
-				expect(`${lang}/${s.id}: ${s.content.length} lines`).not.toBe(`${lang}/${s.id}: 0 lines`)
+				variants(s).forEach((content, v) => {
+					expect(`${lang}/${s.id}[${v}]: ${content.length} lines`).not.toBe(
+						`${lang}/${s.id}[${v}]: 0 lines`,
+					)
+				})
 			}
 		}
 	})
@@ -105,9 +127,11 @@ describe('liturgy data cross-language parity', () => {
 	it('has no adjacent duplicate lines', () => {
 		for (const lang of LANGS) {
 			for (const s of services[lang].sections) {
-				const lines = (s.content ?? []).map(text)
-				for (let i = 1; i < lines.length; i++) {
-					expect(`${s.id}/${lang}: ${lines[i]}`).not.toBe(`${s.id}/${lang}: ${lines[i - 1]}`)
+				for (const content of variants(s)) {
+					const lines = content.map(text)
+					for (let i = 1; i < lines.length; i++) {
+						expect(`${s.id}/${lang}: ${lines[i]}`).not.toBe(`${s.id}/${lang}: ${lines[i - 1]}`)
+					}
 				}
 			}
 		}
@@ -167,6 +191,45 @@ describe('liturgy liturgical invariants', () => {
 		expect((section('en', 'absolution-to-the-son')?.content ?? []).length).toBeGreaterThan(0)
 		expect((section('ar', 'absolution-to-the-son')?.content ?? []).length).toBeGreaterThan(0)
 		expect(section('cop', 'absolution-to-the-son')?.content ?? []).toEqual([])
+	})
+
+	it('authors every first-match section with a reachable default', () => {
+		for (const lang of LANGS) {
+			for (const s of services[lang].sections.filter((x) => x.mode === 'one')) {
+				const blocks = (s.blocks ?? []) as Parameters<typeof findOneModeAuthoringErrors>[1]
+				expect(findOneModeAuthoringErrors(`${lang}/${s.id}`, blocks)).toEqual([])
+			}
+		}
+	})
+
+	it('sings the festal Trisagion verse thrice, in place of the three annual verses', () => {
+		const verse: Record<string, Record<Lang, RegExp>> = {
+			nativity: { en: /born of the Virgin/, ar: /ولد من العذراء/, cop: /ⲅⲉⲛⲛⲉⲑⲏⲥ/ },
+			theophany: { en: /baptized in the Jordan/, ar: /إعتمد في الأردن/, cop: /ⲃⲁⲡⲧⲓⲥⲧⲏⲥ/ },
+			resurrection: { en: /who rose from the dead,/, ar: /قام من الأموات،/, cop: /ⲛⲉⲕⲣⲱⲛ:/ },
+			ascension: { en: /ascended into the heavens/, ar: /وصعد إلى السموات/, cop: /ⲟⲩⲣⲁⲛⲟⲩⲥ/ },
+		}
+		for (const lang of LANGS) {
+			const blocks = section(lang, 'trisagion')?.blocks ?? []
+			for (const [season, pattern] of Object.entries(verse)) {
+				const block = blocks.find((b) => b.when?.festalSeason === season)
+				const first = text(block?.content[0] ?? '')
+				expect(first, `${lang}/${season}`).toMatch(pattern[lang])
+				expect(first, `${lang}/${season}`).toMatch(/\((3|ⲅ̅|ثلاث مرات)\)|\[Three Times\]$/)
+				// The festal form continues with the annual hymn from the Doxa on.
+				expect(block?.content.slice(1)).toEqual(blocks.at(-1)?.content.slice(3))
+			}
+		}
+	})
+
+	it('completes the abbreviated stanzas of the festal pages instead of printing an ellipsis', () => {
+		for (const lang of LANGS) {
+			for (const s of services[lang].sections.filter((x) => x.blocks)) {
+				for (const line of allLines(s)) {
+					expect(`${lang}/${s.id}: ${text(line)}`).not.toMatch(/(\.\.\.|…)\.?$/)
+				}
+			}
+		}
 	})
 
 	it('labels Coptic title fallbacks instead of silently translating', () => {

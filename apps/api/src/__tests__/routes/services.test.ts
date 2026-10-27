@@ -114,6 +114,55 @@ describe('GET /api/liturgy/basil', () => {
 	})
 })
 
+describe('GET /api/liturgy/basil — festal texts', () => {
+	const firstLine = async (date: string, id: string, lang = 'en') =>
+		section(await get<Service>(`/api/liturgy/basil?date=${date}&lang=${lang}`), id)?.content?.[0]
+
+	it('prays the annual Trisagion and Gospel Response on an ordinary day', async () => {
+		expect(await firstLine('2026-10-26', 'trisagion')).toMatch(
+			/born of the Virgin, have mercy upon us\.$/,
+		)
+		expect(await firstLine('2026-10-26', 'gospel-response')).toMatch(/^Let us worship our Savior/)
+	})
+
+	it.each([
+		['2026-01-07', /born of the Virgin.*\(3\)$/, /^A star appeared in the East/], // Nativity
+		['2026-01-19', /baptized in the Jordan/, /^This is the Lamb of God/], // Theophany
+		['2026-04-12', /who rose from the dead, have mercy/, /^Moreover He was placed in the tomb/], // Pascha
+		['2026-05-21', /ascended into the heavens.*\(3\)$/, /^Sing to the Lord a new song/], // Ascension
+	])('prays the festal forms on %s', async (date, trisagion, response) => {
+		expect(await firstLine(date, 'trisagion')).toMatch(trisagion)
+		expect(await firstLine(date, 'gospel-response')).toMatch(response)
+	})
+
+	it.each([
+		['2026-01-14', /born of the Virgin/, /accepted unto Himself circumcision/], // Circumcision
+		['2026-01-21', /baptized in the Jordan/, /changed it into wine/], // Cana of Galilee
+		['2026-05-31', /ascended into the heavens/, /^The Spirit of Comfort/], // Pentecost
+	])(
+		'lets a feast inside the season take its own Gospel Response on %s',
+		async (date, trisagion, response) => {
+			expect(await firstLine(date, 'trisagion')).toMatch(trisagion)
+			expect(await firstLine(date, 'gospel-response')).toMatch(response)
+		},
+	)
+
+	it('keeps the annual Trisagion at the Cross, which has no festal one', async () => {
+		expect(await firstLine('2026-09-27', 'trisagion')).toMatch(
+			/born of the Virgin, have mercy upon us\.$/,
+		)
+		expect(await firstLine('2026-09-27', 'gospel-response')).toMatch(/^For greatly honored/)
+	})
+
+	it.each([
+		['ar', /الذي قام من الأموات، إرحمنا/, /وأيضاً وُضع في القبر/],
+		['cop', /ⲁ̀ⲛⲁⲥⲧⲁⲥ ⲉⲕ ⲧⲱⲛ ⲛⲉⲕⲣⲱⲛ:/, /^Ⲗⲟⲓⲡⲟⲛ ⲁⲩⲭⲁϥ/],
+	])('resolves the same festal forms in %s', async (lang, trisagion, response) => {
+		expect(await firstLine('2026-04-12', 'trisagion', lang)).toMatch(trisagion)
+		expect(await firstLine('2026-04-12', 'gospel-response', lang)).toMatch(response)
+	})
+})
+
 describe('GET /api/lent', () => {
 	it('schedules Great Lent from the Monday 55 days before Easter to Palm Sunday', async () => {
 		const schedule = await get<{

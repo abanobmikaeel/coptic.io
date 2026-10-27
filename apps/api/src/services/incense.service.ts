@@ -1,6 +1,6 @@
-import { getLiturgicalContext } from '@coptic/core'
+import { gregorianToCoptic } from '@coptic/core'
 import { getIncenseService as getArIncenseService } from '@coptic/data/ar/incense'
-import { type OccasionContext, resolveBlocks } from '@coptic/data/content'
+import { resolveBlocks } from '@coptic/data/content'
 import { getIncenseService as getCopIncenseService } from '@coptic/data/cop/incense'
 import {
 	type IncenseContent,
@@ -15,16 +15,9 @@ import {
 } from '@coptic/data/en/incense'
 import { getByCopticDate } from '../models/readings'
 import type { BibleTranslation, BibleVerse, CopticDate } from '../types'
-import { getStaticCelebrationsForDay } from '../utils/calculations/getStaticCelebrations'
+import { buildOccasion } from './occasion'
 import { resolvePsalm } from './psalm-resolver'
 import { flattenReadings } from './readings-format'
-
-// Normalize a celebration name into a stable key the JSON block conditions can match.
-const toCommemorationKey = (name: string): string =>
-	name
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-|-$/g, '')
 
 export interface ResolvedPrayerSection {
 	id: string
@@ -100,23 +93,7 @@ export function getIncenseForDate(
 	const psalm = flattenReadings(readings[psalmKey] ?? [], translation)
 	const gospel = flattenReadings(readings[gospelKey] ?? [], translation)
 
-	// The day's occasion drives conditional block resolution: dayTune (calendar math) plus the
-	// commemorations/feasts of the day, taken from the existing celebration calendar — not
-	// recomputed here. e.g. every Coptic 29th → "annunciation-nativity-and-resurrection".
-	const liturgical = getLiturgicalContext(date)
-	const celebrations = getStaticCelebrationsForDay(date) ?? []
-	const occasion: OccasionContext = {
-		dayTune: liturgical.dayTune,
-		season: liturgical.natureSeason,
-		weekday: liturgical.dayOfWeek,
-		commemorations: [
-			...celebrations.map((c) => toCommemorationKey(c.name)),
-			...selectedCommemorations,
-		],
-		feasts: celebrations
-			.filter((c) => c.type.toLowerCase().includes('feast'))
-			.map((c) => toCommemorationKey(c.name)),
-	}
+	const occasion = buildOccasion(date, selectedCommemorations)
 
 	const sections: ResolvedIncenseSection[] = service.sections.flatMap(
 		(section: IncenseSectionData): ResolvedIncenseSection[] => {
@@ -205,7 +182,7 @@ export function getIncenseForDate(
 		type: service.id,
 		name: service.name,
 		date: formatLocalDate(date),
-		copticDate: liturgical.copticDate,
+		copticDate: gregorianToCoptic(date),
 		sections,
 	}
 }
