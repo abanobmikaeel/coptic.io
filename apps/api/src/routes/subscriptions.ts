@@ -250,6 +250,26 @@ type SESNotification =
 			complaint: { complainedRecipients: Array<{ emailAddress: string }> }
 	  }
 
+/** Addresses SES says to stop mailing. `kind` is a fixed label, safe to log. */
+const rejectedRecipients = (
+	notification: SESNotification,
+): { kind: 'bounce' | 'complaint'; emails: string[] } | null => {
+	switch (notification.notificationType) {
+		case 'Bounce':
+			return {
+				kind: 'bounce',
+				emails: notification.bounce.bouncedRecipients.map((r) => r.emailAddress),
+			}
+		case 'Complaint':
+			return {
+				kind: 'complaint',
+				emails: notification.complaint.complainedRecipients.map((r) => r.emailAddress),
+			}
+		default:
+			return null
+	}
+}
+
 // SES bounce/complaint notifications via SNS. Always answers 200 so SNS does not retry.
 subscriptions.post('/webhooks/ses', async (c) => {
 	try {
@@ -268,28 +288,20 @@ subscriptions.post('/webhooks/ses', async (c) => {
 			confirmUrl.searchParams.set('TopicArn', message.TopicArn)
 			confirmUrl.searchParams.set('Token', message.Token)
 			await fetch(confirmUrl.toString())
-			console.log('SNS subscription confirmed:', message.TopicArn)
+			console.log('SNS subscription confirmed')
 			return c.json({ message: 'Subscription confirmed' })
 		}
 
 		if (message.Type === 'Notification') {
-			const notification = JSON.parse(message.Message) as SESNotification
-			const emails =
-				notification.notificationType === 'Bounce'
-					? notification.bounce.bouncedRecipients.map((r) => r.emailAddress)
-					: notification.notificationType === 'Complaint'
-						? notification.complaint.complainedRecipients.map((r) => r.emailAddress)
-						: []
+			const rejected = rejectedRecipients(JSON.parse(message.Message) as SESNotification)
 
-			if (emails.length > 0) {
+			if (rejected && rejected.emails.length > 0) {
 				await withDb(c.env, async (db) => {
-					for (const email of emails) {
+					for (const email of rejected.emails) {
 						await db.query('DELETE FROM subscribers WHERE email = ?1', [email.toLowerCase()])
 					}
 				})
-				console.log(
-					`Removed ${emails.length} address(es) after SES ${notification.notificationType}`,
-				)
+				console.log(`Removed ${rejected.emails.length} address(es) after an SES ${rejected.kind}`)
 			}
 			return c.json({ message: 'Notification processed' })
 		}
