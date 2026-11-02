@@ -19,9 +19,12 @@ import liturgyRoutes from './routes/liturgy'
 import readingsRoutes from './routes/readings'
 import searchRoutes from './routes/search'
 import seasonRoutes from './routes/season'
+import subscriptionsRoutes from './routes/subscriptions'
 import synaxariumRoutes from './routes/synaxarium'
 import tasbehaRoutes from './routes/tasbeha'
 import verseRoutes from './routes/verse'
+import { sendDailyReadings } from './services/subscriptions/daily'
+import { withDb } from './services/subscriptions/db'
 import { internalError } from './utils/http'
 
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
@@ -112,6 +115,7 @@ app.route('/api/season', seasonRoutes)
 app.route('/api/tasbeha', tasbehaRoutes)
 app.route('/api/liturgy', liturgyRoutes)
 app.route('/api/verse', verseRoutes)
+app.route('/api/subscriptions', subscriptionsRoutes)
 
 // 404 handler
 app.notFound((c) => {
@@ -143,4 +147,17 @@ const fetchWithUsage = async (
 	return response
 }
 
-export default { fetch: fetchWithUsage }
+// Daily readings email (cron trigger in wrangler.toml).
+const scheduled = async (
+	_controller: unknown,
+	env: Bindings,
+	ctx: { waitUntil(promise: Promise<unknown>): void },
+) => {
+	ctx.waitUntil(
+		withDb(env, (db) =>
+			sendDailyReadings(env, db, async (path) => app.request(path, {}, env)),
+		).then((result) => console.log('Daily readings sent:', result)),
+	)
+}
+
+export default { fetch: fetchWithUsage, scheduled }

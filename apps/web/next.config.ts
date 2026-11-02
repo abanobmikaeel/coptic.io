@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
 		],
 	},
 	experimental: {
-		optimizePackageImports: ['@aws-sdk/client-ses', 'next-themes'],
+		optimizePackageImports: ['next-themes'],
 	},
 	compiler: {
 		removeConsole: process.env.NODE_ENV === 'production',
@@ -27,6 +27,15 @@ const nextConfig: NextConfig = {
 	transpilePackages: [],
 	poweredByHeader: false,
 	compress: true,
+	// Email subscriptions are served by the API. Proxy the old same-origin paths so the
+	// forms, emailed links and the SES webhook keep working unchanged.
+	async rewrites() {
+		const api = process.env.NEXT_PUBLIC_API_URL || 'https://api.coptic.io/api'
+		return ['subscribe', 'verify', 'unsubscribe', 'preferences', 'webhooks/ses'].map((path) => ({
+			source: `/api/${path}`,
+			destination: `${api}/subscriptions/${path}`,
+		}))
+	},
 	async headers() {
 		return [
 			{

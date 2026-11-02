@@ -54,3 +54,58 @@ export function welcomeEmailText(
 ): string {
 	return `${greeting}\n\nThank you for subscribing! You'll now receive:\n- Daily scripture readings from the Coptic Orthodox lectionary\n- Reminders for upcoming feast days and celebrations\n\nManage your preferences: ${preferencesUrl}\n\nUnsubscribe: ${unsubscribeUrl}`
 }
+
+export interface DailyReadingSummary {
+	title: string
+	passage: string
+}
+
+export function dailyEmailHtml(options: {
+	greeting: string
+	copticDate: string
+	readings: DailyReadingSummary[]
+	readingsUrl: string
+	preferencesUrl: string
+	unsubscribeUrl: string
+}): string {
+	const readingsList = options.readings
+		.map(
+			(r) =>
+				`<h3 style="margin: 16px 0 8px 0; color: #d97706;">${r.title}</h3><p style="margin: 0; color: #6b7280;">${r.passage}</p>`,
+		)
+		.join('')
+
+	return `
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		</head>
+		<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1f2937; max-width: 600px; margin: 0 auto; padding: 20px;">
+			<div style="text-align: center; margin-bottom: 24px;">
+				<h1 style="color: #d97706; margin: 0;">☦ Daily Readings</h1>
+				<p style="color: #6b7280; margin: 8px 0 0 0;">${options.copticDate}</p>
+			</div>
+
+			<p>${options.greeting},</p>
+			<p>Here are today's readings from the Coptic Orthodox lectionary:</p>
+
+			<div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin: 24px 0;">
+				${readingsList}
+			</div>
+
+			<p style="margin-top: 24px;">
+				<a href="${options.readingsUrl}" style="${LINK_STYLES}">Read full passages →</a>
+			</p>
+
+			<hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
+
+			<p style="${FOOTER_STYLES} text-align: center;">
+				<a href="${options.preferencesUrl}" style="color: #9ca3af;">Manage preferences</a> ·
+				<a href="${options.unsubscribeUrl}" style="color: #9ca3af;">Unsubscribe</a>
+			</p>
+		</body>
+		</html>
+	`
+}
