@@ -45,8 +45,8 @@ subscriptions.post(
 
 		const normalizedEmail = email.toLowerCase().trim()
 
-		const existing = await db.queryOne<{ verified: boolean }>(
-			'SELECT verified FROM subscribers WHERE email = $1',
+		const existing = await db.queryOne<{ verified: number }>(
+			'SELECT verified FROM subscribers WHERE email = ?1',
 			[normalizedEmail],
 		)
 		if (existing?.verified) {
@@ -54,11 +54,12 @@ subscriptions.post(
 		}
 
 		const code = generateOTP()
-		await db.query('DELETE FROM otp_codes WHERE email = $1 AND used = FALSE', [normalizedEmail])
+		await db.query('DELETE FROM otp_codes WHERE email = ?1 AND used = FALSE', [normalizedEmail])
 		// Use DB time to avoid timezone issues
 		await db.query(
-			`INSERT INTO otp_codes (email, code, expires_at) VALUES ($1, $2, NOW() + INTERVAL '10 minutes')`,
-			[normalizedEmail, code],
+			`INSERT INTO otp_codes (id, email, code, expires_at)
+       VALUES (?1, ?2, ?3, datetime('now', '+10 minutes'))`,
+			[crypto.randomUUID(), normalizedEmail, code],
 		)
 
 		await sendOTPEmail(c.env, normalizedEmail, code)
@@ -82,7 +83,7 @@ subscriptions.post(
 
 		const otp = await db.queryOne<{ id: string }>(
 			`SELECT id FROM otp_codes
-       WHERE email = $1 AND code = $2 AND used = FALSE AND expires_at > NOW()
+       WHERE email = ?1 AND code = ?2 AND used = FALSE AND expires_at > datetime('now')
        ORDER BY created_at DESC LIMIT 1`,
 			[normalizedEmail, code],
 		)
@@ -90,21 +91,28 @@ subscriptions.post(
 			return c.json({ error: 'Invalid or expired code' }, 400)
 		}
 
-		await db.query('UPDATE otp_codes SET used = TRUE WHERE id = $1', [otp.id])
+		await db.query('UPDATE otp_codes SET used = TRUE WHERE id = ?1', [otp.id])
 
 		const token = generateToken()
 		const subscriber = await db.queryOne<{ token: string }>(
-			`INSERT INTO subscribers (email, name, patron_saint, timezone, verified, token, updated_at)
-       VALUES ($1, $2, $3, $4, TRUE, $5, NOW())
+			`INSERT INTO subscribers (id, email, name, patron_saint, timezone, verified, token, updated_at)
+       VALUES (?6, ?1, ?2, ?3, ?4, TRUE, ?5, datetime('now'))
        ON CONFLICT (email) DO UPDATE SET
-         name = COALESCE($2, subscribers.name),
-         patron_saint = COALESCE($3, subscribers.patron_saint),
-         timezone = COALESCE($4, subscribers.timezone),
+         name = COALESCE(?2, subscribers.name),
+         patron_saint = COALESCE(?3, subscribers.patron_saint),
+         timezone = COALESCE(?4, subscribers.timezone),
          verified = TRUE,
-         token = $5,
-         updated_at = NOW()
+         token = ?5,
+         updated_at = datetime('now')
        RETURNING token`,
-			[normalizedEmail, subscriberName, subscriberPatronSaint, subscriberTimezone, token],
+			[
+				normalizedEmail,
+				subscriberName,
+				subscriberPatronSaint,
+				subscriberTimezone,
+				token,
+				crypto.randomUUID(),
+			],
 		)
 
 		if (subscriber) {
@@ -116,7 +124,7 @@ subscriptions.post(
 )
 
 const deleteByToken = (db: Db, token: string) =>
-	db.query<{ id: string }>('DELETE FROM subscribers WHERE token = $1 RETURNING id', [token])
+	db.query<{ id: string }>('DELETE FROM subscribers WHERE token = ?1 RETURNING id', [token])
 
 subscriptions.post(
 	'/unsubscribe',
@@ -154,8 +162,9 @@ interface PreferencesRow {
 	email: string
 	name: string | null
 	patron_saint: string | null
-	daily_readings: boolean
-	feast_reminders: boolean
+	// 0/1 from SQLite
+	daily_readings: number
+	feast_reminders: number
 }
 
 const subscriberToken = (c: Context<Env>): string | undefined =>
@@ -171,7 +180,7 @@ subscriptions.get(
 
 		const subscriber = await db.queryOne<PreferencesRow>(
 			`SELECT email, name, patron_saint, daily_readings, feast_reminders
-       FROM subscribers WHERE token = $1 AND verified = TRUE`,
+       FROM subscribers WHERE token = ?1 AND verified = TRUE`,
 			[token],
 		)
 		if (!subscriber) {
@@ -182,8 +191,8 @@ subscriptions.get(
 			email: subscriber.email,
 			name: subscriber.name,
 			patronSaint: subscriber.patron_saint,
-			dailyReadings: subscriber.daily_readings,
-			feastReminders: subscriber.feast_reminders,
+			dailyReadings: Boolean(subscriber.daily_readings),
+			feastReminders: Boolean(subscriber.feast_reminders),
 		})
 	}),
 )
@@ -207,8 +216,8 @@ subscriptions.put(
 
 		const updated = await db.queryOne<PreferencesRow>(
 			`UPDATE subscribers
-       SET name = $1, patron_saint = $2, daily_readings = $3, feast_reminders = $4, updated_at = NOW()
-       WHERE token = $5 AND verified = TRUE
+       SET name = ?1, patron_saint = ?2, daily_readings = ?3, feast_reminders = ?4, updated_at = datetime('now')
+       WHERE token = ?5 AND verified = TRUE
        RETURNING email, name, patron_saint, daily_readings, feast_reminders`,
 			[subscriberName, subscriberPatronSaint, dailyReadings, feastReminders, token],
 		)
@@ -220,8 +229,8 @@ subscriptions.put(
 			message: 'Preferences updated successfully',
 			name: updated.name,
 			patronSaint: updated.patron_saint,
-			dailyReadings: updated.daily_readings,
-			feastReminders: updated.feast_reminders,
+			dailyReadings: Boolean(updated.daily_readings),
+			feastReminders: Boolean(updated.feast_reminders),
 		})
 	}),
 )
@@ -275,7 +284,7 @@ subscriptions.post('/webhooks/ses', async (c) => {
 			if (emails.length > 0) {
 				await withDb(c.env, async (db) => {
 					for (const email of emails) {
-						await db.query('DELETE FROM subscribers WHERE email = $1', [email.toLowerCase()])
+						await db.query('DELETE FROM subscribers WHERE email = ?1', [email.toLowerCase()])
 					}
 				})
 				console.log(

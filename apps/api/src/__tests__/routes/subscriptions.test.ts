@@ -15,8 +15,8 @@ vi.mock('../../services/subscriptions/db', async (importOriginal) => {
 	return {
 		...actual,
 		withDb: vi.fn(
-			async (env: { HYPERDRIVE?: unknown } | undefined, fn: (d: typeof db) => unknown) => {
-				if (env && !env.HYPERDRIVE) throw new actual.DatabaseUnavailableError()
+			async (env: { SUBSCRIPTIONS_DB?: unknown } | undefined, fn: (d: typeof db) => unknown) => {
+				if (env && !env.SUBSCRIPTIONS_DB) throw new actual.DatabaseUnavailableError()
 				return fn(db)
 			},
 		),
@@ -66,8 +66,8 @@ describe('POST /api/subscriptions/subscribe', () => {
 		const insert = db.query.mock.calls.find(([sql]) =>
 			String(sql).startsWith('INSERT INTO otp_codes'),
 		)
-		expect(insert?.[1]?.[0]).toBe('someone@example.com')
-		const code = insert?.[1]?.[1]
+		expect(insert?.[1]?.[1]).toBe('someone@example.com')
+		const code = insert?.[1]?.[2]
 		expect(code).toMatch(/^\d{6}$/)
 		expect(email.sendOTPEmail).toHaveBeenCalledWith(undefined, 'someone@example.com', code)
 	})
@@ -102,7 +102,7 @@ describe('POST /api/subscriptions/verify', () => {
 		expect(res.status).toBe(200)
 		const body = (await res.json()) as { token: string }
 		expect(body.token).toMatch(/^[A-Za-z0-9]{32}$/)
-		expect(db.query).toHaveBeenCalledWith('UPDATE otp_codes SET used = TRUE WHERE id = $1', [
+		expect(db.query).toHaveBeenCalledWith('UPDATE otp_codes SET used = TRUE WHERE id = ?1', [
 			'otp-1',
 		])
 		expect(email.sendWelcomeEmail).toHaveBeenCalledWith(undefined, 'Mina', 'a@b.co', body.token)
@@ -124,7 +124,7 @@ describe('/api/subscriptions/unsubscribe', () => {
 		db.query.mockResolvedValueOnce([{ id: 's-1' }])
 		const res = await app.request('/api/subscriptions/unsubscribe', json({ token: 'abc' }))
 		expect(res.status).toBe(200)
-		expect(db.query).toHaveBeenCalledWith('DELETE FROM subscribers WHERE token = $1 RETURNING id', [
+		expect(db.query).toHaveBeenCalledWith('DELETE FROM subscribers WHERE token = ?1 RETURNING id', [
 			'abc',
 		])
 	})
@@ -178,7 +178,7 @@ describe('POST /api/subscriptions/webhooks/ses', () => {
 			}),
 		)
 		expect(res.status).toBe(200)
-		expect(db.query).toHaveBeenCalledWith('DELETE FROM subscribers WHERE email = $1', [
+		expect(db.query).toHaveBeenCalledWith('DELETE FROM subscribers WHERE email = ?1', [
 			'gone@example.com',
 		])
 	})

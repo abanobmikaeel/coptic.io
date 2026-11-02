@@ -28,9 +28,11 @@ binding = "ANALYTICS"
 dataset = "coptic_api_requests"
 
 # Email subscriptions database. AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are secrets.
-[[hyperdrive]]
-binding = "HYPERDRIVE"
-id = "e397fbb1bcfe4bfd983f821e26669fa7"
+[[d1_databases]]
+binding = "SUBSCRIPTIONS_DB"
+database_name = "coptic-subscriptions"
+database_id = "26d44062-68d3-40c4-be8d-ffa9cca2ca4b"
+migrations_dir = "migrations"
 
 # Daily readings email.
 [triggers]

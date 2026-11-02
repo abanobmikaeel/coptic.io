@@ -123,9 +123,6 @@ importers:
       hono:
         specifier: ^4.13.8
         version: 4.13.8
-      pg:
-        specifier: ^8.21.0
-        version: 8.21.0
       zod:
         specifier: ^4.1.12
         version: 4.4.3
@@ -136,9 +133,6 @@ importers:
       '@types/node':
         specifier: ^22.10.5
         version: 22.19.19
-      '@types/pg':
-        specifier: ^8.20.0
-        version: 8.20.0
       '@vitest/coverage-v8':
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
