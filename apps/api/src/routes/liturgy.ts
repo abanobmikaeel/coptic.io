@@ -1,10 +1,8 @@
 import { createRoute, z } from '@hono/zod-openapi'
-import { warmTranslation } from '../models/readings'
+import { bibleTranslation, requestDate } from '../middleware/request'
 import { ErrorSchema, LiturgyResponseSchema } from '../schemas'
 import { getLiturgyForDate } from '../services/liturgy.service'
-import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
-import { INTERNAL_ERROR_MESSAGE } from '../utils/http'
-import { createApiApp } from '../utils/openapi'
+import { createApiApp, jsonResponse } from '../utils/openapi'
 
 const app = createApiApp()
 
@@ -15,6 +13,7 @@ const getBasilRoute = createRoute({
 	summary: 'The Divine Liturgy of St. Basil',
 	description:
 		"Returns the Liturgy of St. Basil in prayed order, with the psalm, the Pauline, Catholic and Praxis epistles and the gospel resolved from the day's Katameros. Defaults to today.",
+	middleware: [requestDate('query'), bibleTranslation] as const,
 	request: {
 		query: z.object({
 			date: z.string().optional().openapi({ example: '2026-06-01' }),
@@ -22,50 +21,15 @@ const getBasilRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: "The Liturgy with the day's readings resolved",
-			content: { 'application/json': { schema: LiturgyResponseSchema } },
-		},
-		400: {
-			description: 'Invalid date, or no readings available for it',
-			content: { 'application/json': { schema: ErrorSchema } },
-		},
-		500: {
-			description: 'Internal server error',
-			content: { 'application/json': { schema: ErrorSchema } },
-		},
+		200: jsonResponse(LiturgyResponseSchema, "The Liturgy with the day's readings resolved"),
+		400: jsonResponse(ErrorSchema, 'Invalid date'),
+		500: jsonResponse(ErrorSchema, 'Internal server error'),
 	},
 })
 
-app.openapi(getBasilRoute, async (c) => {
-	const { date: dateParam, lang } = c.req.valid('query')
-	const translation = lang ?? 'en'
-
-	await warmTranslation(translation)
-
-	let date = new Date()
-	if (dateParam) {
-		const parsed = parseLocalDate(dateParam)
-		if (!parsed) {
-			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-		}
-		date = parsed
-	} else {
-		// Wall-clock dependent; don't let the 12h edge cache serve a stale "today".
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
-	try {
-		return c.json(getLiturgyForDate(date, 'basil', translation), 200)
-	} catch (error) {
-		const message = error instanceof Error ? error.message : String(error)
-		// Known data-not-found errors are client-facing 400s; everything else is ours.
-		if (/(not found|no reading|no synaxarium|month not found)/i.test(message)) {
-			return c.json({ error: 'No readings available for this date' }, 400)
-		}
-		console.error('Error in liturgy:', error)
-		return c.json({ error: INTERNAL_ERROR_MESSAGE }, 500)
-	}
+app.openapi(getBasilRoute, (c) => {
+	const { lang = 'en' } = c.req.valid('query')
+	return c.json(getLiturgyForDate(c.var.date, 'basil', lang), 200)
 })
 
 export default app

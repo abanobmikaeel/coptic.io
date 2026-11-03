@@ -58,34 +58,45 @@ describe('Calendar Service', () => {
 			expect(result).toContain('2025')
 		})
 
-		it('should throw error for year below 1900', () => {
-			expect(() => getYearCalendar(1899)).toThrow('Invalid year. Must be between 1900 and 2199')
+		// The calendar maths holds for any year; which years a request may ask for is
+		// checked at the API edge (parseYear), not here.
+		it.each([1700, 1900, 2199, 2300])('generates the calendar for %i', (year) => {
+			const result = getYearCalendar(year)
+
+			expect(result).toContain('BEGIN:VCALENDAR')
+			expect(result).toContain(String(year))
 		})
 
-		it('should throw error for year above 2199', () => {
-			expect(() => getYearCalendar(2200)).toThrow('Invalid year. Must be between 1900 and 2199')
+		it('should have matching BEGIN/END VCALENDAR tags', () => {
+			const result = getSubscriptionCalendar()
+
+			const beginCount = (result.match(/BEGIN:VCALENDAR/g) || []).length
+			const endCount = (result.match(/END:VCALENDAR/g) || []).length
+
+			expect(beginCount).toBe(1)
+			expect(endCount).toBe(1)
 		})
 
-		it('should throw error for NaN year', () => {
-			expect(() => getYearCalendar(Number.NaN)).toThrow(
-				'Invalid year. Must be between 1900 and 2199',
-			)
-		})
+		it('should have matching BEGIN/END VEVENT tags', () => {
+			const result = getSubscriptionCalendar()
 
-		it('should accept year 1900', () => {
-			const result = getYearCalendar(1900)
+			const beginCount = (result.match(/BEGIN:VEVENT/g) || []).length
+			const endCount = (result.match(/END:VEVENT/g) || []).length
+
+			expect(beginCount).toBeGreaterThan(0)
+			expect(beginCount).toBe(endCount)
+		})
+	})
+
+	describe('getYearCalendar', () => {
+		it('should generate iCal for a specific year', () => {
+			const result = getYearCalendar(2025)
 
 			expect(result).toBeTruthy()
 			expect(result).toContain('BEGIN:VCALENDAR')
-			expect(result).toContain('1900')
-		})
-
-		it('should accept year 2199', () => {
-			const result = getYearCalendar(2199)
-
-			expect(result).toBeTruthy()
-			expect(result).toContain('BEGIN:VCALENDAR')
-			expect(result).toContain('2199')
+			expect(result).toContain('END:VCALENDAR')
+			expect(result).toContain('VERSION:2.0')
+			expect(result).toContain('2025')
 		})
 
 		it('should have matching BEGIN/END VCALENDAR tags', () => {
