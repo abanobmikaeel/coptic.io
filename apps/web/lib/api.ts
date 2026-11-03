@@ -34,7 +34,7 @@ export const getUpcomingCelebrations = (days = 60, lang?: string) =>
 export const getCalendarMonth = (year: number, month: number) =>
 	dataOrNull(
 		api.GET('/api/calendar/month/{year}/{month}', {
-			params: { path: { year: String(year), month: String(month) } },
+			params: { path: { year: String(year), month } },
 			...HOUR,
 		}),
 	)

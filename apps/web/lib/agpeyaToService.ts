@@ -1,4 +1,5 @@
-import type { CopticDate, IncenseContentLine, IncenseSection, IncenseService, Verse } from './types'
+import type { components } from '@coptic/client'
+import type { CopticDate, IncenseSection, IncenseService } from './types'
 
 /**
  * Adapts an Agpeya hour from /api/agpeya into the IncenseService shape the shared
@@ -7,44 +8,16 @@ import type { CopticDate, IncenseContentLine, IncenseSection, IncenseService, Ve
  * watch becomes a heading followed by its own sections.
  */
 
-interface AgProse {
-	id: string
-	kind: string
-	title?: string
-	rubric?: string
-	content: (string | IncenseContentLine)[]
-}
-interface AgScripture {
-	id: string
-	kind: 'psalm' | 'intro-psalm' | 'gospel'
-	title?: string
-	reference: string
-	rubric?: string
-	verses: Verse[]
-}
-type AgLeaf = AgProse | AgScripture
-interface AgWatch {
-	id: string
-	kind: 'watch'
-	title: string
-	theme?: string
-	/** The watch's offering: "The praise of the first watch… we offer unto Christ…". */
-	prayer?: string
-	psalmsIntro?: string
-	/** Which psalms are prayed; shown on the watch's first psalm. */
-	psalmsRubric?: string
-	sections: AgLeaf[]
-}
+type Schemas = components['schemas']
+type AgSection = Schemas['AgpeyaSections'][number]
+type AgLeaf = Schemas['AgpeyaLeafEntry']
+type AgScripture = Extract<AgLeaf, { verses: unknown }>
 
-export interface ResolvedAgpeyaHour {
-	id: string
-	name: string
-	/** Why the hour is prayed; shown as the opening's rubric. */
-	introduction?: string
-	/** "From the Psalms of our father David…"; shown on the hour's first psalm. */
-	psalmsIntro?: string
-	sections: (AgLeaf | AgWatch)[]
-}
+/** The parts of an hour from /api/agpeya/{hour}?include=sections that the adapter reads. */
+export type ResolvedAgpeyaHour = Pick<
+	Schemas['AgpeyaHour'],
+	'id' | 'name' | 'introduction' | 'psalmsIntro'
+> & { sections: AgSection[] }
 
 // Untitled sections are named by what they are.
 const FALLBACK_TITLE: Record<string, string> = {
@@ -118,7 +91,7 @@ export function agpeyaToService(
 	let psalmsSeen = false
 	for (const part of hour.sections) {
 		if (part.kind === 'watch') {
-			const watch = part as AgWatch
+			const watch = part
 			// The theme names the watch rather than being prayed, so it rides as the
 			// heading's rubric; the offering and "From the Psalms…" are its body.
 			add({
@@ -136,7 +109,7 @@ export function agpeyaToService(
 			}
 			continue
 		}
-		const s = part as AgLeaf
+		const s = part
 		let rubric: string | undefined
 		if (s.kind === 'opening' && !openingSeen) {
 			openingSeen = true
