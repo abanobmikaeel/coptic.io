@@ -2331,16 +2331,16 @@ export interface components {
             title: string;
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
-        AgpeyaVerse: {
+        Verse: {
             num: number;
             text: string;
         };
         AgpeyaGospel: {
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         AgpeyaLitany: {
             title?: string;
@@ -2349,7 +2349,7 @@ export interface components {
         /** @description The whole hour in prayed order. */
         AgpeyaSections: ({
             title?: string;
-            content: components["schemas"]["AgpeyaLine"][];
+            content: components["schemas"]["Content"];
             inline?: boolean;
             id: string;
             /** @enum {string} */
@@ -2366,10 +2366,11 @@ export interface components {
             psalmsRubric?: string;
             sections: components["schemas"]["AgpeyaLeafEntry"][];
         })[];
-        AgpeyaLine: string | {
-            text: string;
+        Content: (string | components["schemas"]["ContentLine"])[];
+        ContentLine: {
             /** @enum {string} */
             speaker?: "Priest" | "Deacon" | "People";
+            text: string;
             isRubric?: boolean;
             isResponse?: boolean;
             coptic?: string;
@@ -2377,7 +2378,7 @@ export interface components {
         AgpeyaScriptureEntry: {
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
             id: string;
             /** @enum {string} */
             kind: "psalm" | "intro-psalm" | "gospel";
@@ -2385,7 +2386,7 @@ export interface components {
         };
         AgpeyaLeafEntry: {
             title?: string;
-            content: components["schemas"]["AgpeyaLine"][];
+            content: components["schemas"]["Content"];
             inline?: boolean;
             id: string;
             /** @enum {string} */
@@ -2423,7 +2424,7 @@ export interface components {
         AgpeyaMidnightTail: components["schemas"]["AgpeyaProseEntry"] | {
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
             id: string;
             /** @enum {string} */
             kind: "gospel";
@@ -2469,43 +2470,34 @@ export interface components {
         IncensePsalmSection: {
             id: string;
             /** @enum {string} */
-            type: "psalm";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "psalm";
             rubric?: string;
             reference: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         IncenseGospelSection: {
             id: string;
             /** @enum {string} */
-            type: "gospel";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "gospel";
             reference: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         IncensePrayerSection: {
             id: string;
             /** @enum {string} */
-            type: "prayer" | "litany" | "creed";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "prayer" | "litany" | "creed";
             rubric?: string;
             optional?: boolean;
             content: components["schemas"]["Content"];
-        };
-        Content: (string | components["schemas"]["ContentLine"])[];
-        ContentLine: {
-            /** @enum {string} */
-            speaker?: "Priest" | "Deacon" | "People";
-            text: string;
-            isRubric?: boolean;
-            isResponse?: boolean;
-            coptic?: string;
         };
         ReadingsResponse: {
             /** @description Verse references per slot, when `detailed` is not set */
@@ -2556,10 +2548,7 @@ export interface components {
             bookName: string;
             chapters: {
                 chapterNum: number;
-                verses: {
-                    num: number;
-                    text: string;
-                }[];
+                verses: components["schemas"]["Verse"][];
             }[];
         };
         SynaxariumEntry: {
@@ -2770,23 +2759,23 @@ export interface components {
         LiturgyReadingSection: {
             id: string;
             /** @enum {string} */
-            type: "psalm" | "epistle" | "gospel";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "psalm" | "epistle" | "gospel";
             /** @enum {string} */
             titleLanguage?: "en" | "ar" | "cop";
             rubric?: string;
             reference: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         LiturgyPrayerSection: {
             id: string;
             /** @enum {string} */
-            type: "prayer" | "litany" | "creed";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "prayer" | "litany" | "creed";
             /** @enum {string} */
             titleLanguage?: "en" | "ar" | "cop";
             rubric?: string;

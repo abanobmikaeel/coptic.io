@@ -3,6 +3,7 @@ import {
 	getTasbehaService as getArabicTasbeha,
 	getTasbehaServiceForWeekday as getArabicTasbehaForWeekday,
 } from '@coptic/data/ar/tasbeha'
+import type { ServiceLanguage } from '@coptic/data/content'
 import {
 	getTasbehaService as getCopticTasbeha,
 	getTasbehaServiceForWeekday as getCopticTasbehaForWeekday,
@@ -14,15 +15,13 @@ import {
 import type { TasbehaServiceData, TasbehaServiceId } from '@coptic/data/en/tasbeha'
 import type { TasbehaResponse } from '../schemas'
 
-export type TasbehaTranslation = 'en' | 'ar' | 'cop'
-
-const byId: Record<TasbehaTranslation, (id?: TasbehaServiceId) => TasbehaServiceData> = {
+const byId: Record<ServiceLanguage, (id?: TasbehaServiceId) => TasbehaServiceData> = {
 	en: getEnglishTasbeha,
 	ar: getArabicTasbeha,
 	cop: getCopticTasbeha,
 }
 
-const byWeekday: Record<TasbehaTranslation, (weekday: number) => TasbehaServiceData> = {
+const byWeekday: Record<ServiceLanguage, (weekday: number) => TasbehaServiceData> = {
 	en: getEnglishTasbehaForWeekday,
 	ar: getArabicTasbehaForWeekday,
 	cop: getCopticTasbehaForWeekday,
@@ -58,21 +57,21 @@ function resolve(service: TasbehaServiceData, date: Date): TasbehaResponse {
 /** The service prayed on `date`'s day of the week. */
 export function getTasbehaForDate(
 	date: Date = new Date(),
-	translation: TasbehaTranslation = 'en',
+	translation: ServiceLanguage = 'en',
 ): TasbehaResponse {
 	return resolve(byWeekday[translation](date.getDay()), date)
 }
 
 export function getTasbehaById(
 	id: TasbehaServiceId,
-	translation: TasbehaTranslation = 'en',
+	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
 ): TasbehaResponse {
 	return resolve(byId[translation](id), date)
 }
 
 export function getSundayTasbeha(
-	translation: TasbehaTranslation = 'en',
+	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
 ): TasbehaResponse {
 	return getTasbehaById('sunday-midnight-praises', translation, date)

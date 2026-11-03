@@ -1,3 +1,4 @@
+import { SERVICE_LANGUAGES } from '@coptic/data/content'
 import { createRoute, z } from '@hono/zod-openapi'
 import { bibleTranslation, requestDate } from '../middleware/request'
 import { ErrorSchema, LiturgyResponseSchema } from '../schemas'
@@ -17,7 +18,7 @@ const getBasilRoute = createRoute({
 	request: {
 		query: z.object({
 			date: z.string().optional().openapi({ example: '2026-06-01' }),
-			lang: z.enum(['en', 'ar', 'cop']).optional().openapi({ example: 'en' }),
+			lang: z.enum(SERVICE_LANGUAGES).optional().openapi({ example: 'en' }),
 		}),
 	},
 	responses: {

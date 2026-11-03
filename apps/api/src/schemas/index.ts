@@ -1,3 +1,9 @@
+import {
+	CONTENT_SPEAKERS,
+	type ContentLine,
+	SECTION_ROLES,
+	SERVICE_LANGUAGES,
+} from '@coptic/data/content'
 import type { TasbehaServiceId } from '@coptic/data/en/tasbeha'
 import { z } from 'zod'
 import { BIBLE_TRANSLATIONS, READING_SLOTS, type ReadingSlot } from '../types'
@@ -12,6 +18,30 @@ export const CopticDateSchema = z
 		monthString: z.string(),
 	})
 	.meta({ id: 'CopticDate' })
+
+export const VerseSchema = z
+	.object({
+		num: z.number(),
+		text: z.string(),
+	})
+	.meta({ id: 'Verse' })
+
+// A prayed line: plain text, or a line attributed to a speaker. A congregational
+// response carries its Coptic form beside the translation.
+const ContentLineSchema = z
+	.object({
+		speaker: z.enum(CONTENT_SPEAKERS).optional(),
+		text: z.string(),
+		isRubric: z.boolean().optional(),
+		isResponse: z.boolean().optional(),
+		coptic: z.string().optional(),
+	})
+	.meta({ id: 'ContentLine' }) satisfies z.ZodType<ContentLine>
+const ContentSchema = z.array(z.union([z.string(), ContentLineSchema])).meta({ id: 'Content' })
+
+// Fields every Incense and Liturgy section carries, and the two a Scripture section adds
+const sectionFields = { id: z.string(), role: z.enum(SECTION_ROLES), title: z.string() }
+const scriptureFields = { reference: z.string(), verses: z.array(VerseSchema) }
 
 export const CelebrationSchema = z
 	.object({
@@ -91,19 +121,12 @@ export const SynaxariumSearchResultSchema = z
 	.meta({ id: 'SynaxariumSearchResult' })
 
 // Agpeya schemas - new structured format with watches support
-export const AgpeyaVerseSchema = z
-	.object({
-		num: z.number(),
-		text: z.string(),
-	})
-	.meta({ id: 'AgpeyaVerse' })
-
 export const AgpeyaPsalmSchema = z
 	.object({
 		title: z.string(),
 		reference: z.string(),
 		rubric: z.string().optional(),
-		verses: z.array(AgpeyaVerseSchema),
+		verses: z.array(VerseSchema),
 	})
 	.meta({ id: 'AgpeyaPsalm' })
 
@@ -111,7 +134,7 @@ export const AgpeyaGospelSchema = z
 	.object({
 		reference: z.string(),
 		rubric: z.string().optional(),
-		verses: z.array(AgpeyaVerseSchema),
+		verses: z.array(VerseSchema),
 	})
 	.meta({ id: 'AgpeyaGospel' })
 
@@ -169,26 +192,8 @@ const AgpeyaScriptureEntrySchema = AgpeyaGospelSchema.extend({
 	title: z.string().optional(),
 }).meta({ id: 'AgpeyaScriptureEntry' })
 
-// A line in `sections`: plain text, or an attributed line; a litany response carries
-// its Coptic form beside the translation.
-const AgpeyaLineSchema = z
-	.union([
-		z.string(),
-		z.object({
-			text: z.string(),
-			speaker: z.enum(['Priest', 'Deacon', 'People']).optional(),
-			isRubric: z.boolean().optional(),
-			isResponse: z.boolean().optional(),
-			coptic: z.string().optional(),
-		}),
-	])
-	.meta({ id: 'AgpeyaLine' })
-
 const AgpeyaLeafEntrySchema = z
-	.union([
-		AgpeyaProseEntrySchema.extend({ content: z.array(AgpeyaLineSchema) }),
-		AgpeyaScriptureEntrySchema,
-	])
+	.union([AgpeyaProseEntrySchema.extend({ content: ContentSchema }), AgpeyaScriptureEntrySchema])
 	.meta({ id: 'AgpeyaLeafEntry' })
 
 // The hour in prayed order: prose carries `content`, scripture carries `verses`, and a
@@ -288,36 +293,12 @@ export const AgpeyaAnyHourSchema = z
 	.union([AgpeyaHourSchema, AgpeyaMidnightHourSchema])
 	.meta({ id: 'AgpeyaAnyHour' })
 
-// Incense schemas — derive role enum from the data package type so they can't drift
-import type { ContentLine, ContentSpeaker, IncenseSectionRole } from '@coptic/data/en/incense'
-const INCENSE_ROLES = ['all', 'priest', 'deacon', 'congregation'] as const satisfies [
-	IncenseSectionRole,
-	...IncenseSectionRole[],
-]
-const IncenseSectionRoleSchema = z.enum(INCENSE_ROLES)
-
-// A prayed line, derived from the data package's ContentLine so the two cannot drift
-const SPEAKERS = ['Priest', 'Deacon', 'People'] as const satisfies [
-	ContentSpeaker,
-	...ContentSpeaker[],
-]
-const ContentLineSchema = z
-	.object({
-		speaker: z.enum(SPEAKERS).optional(),
-		text: z.string(),
-		isRubric: z.boolean().optional(),
-		isResponse: z.boolean().optional(),
-		coptic: z.string().optional(),
-	})
-	.meta({ id: 'ContentLine' }) satisfies z.ZodType<ContentLine>
-const ContentSchema = z.array(z.union([z.string(), ContentLineSchema])).meta({ id: 'Content' })
+// Incense schemas
 
 export const IncensePrayerSectionSchema = z
 	.object({
-		id: z.string(),
+		...sectionFields,
 		type: z.enum(['prayer', 'litany', 'creed']),
-		role: IncenseSectionRoleSchema,
-		title: z.string(),
 		rubric: z.string().optional(),
 		// Offered as an extra (Matins litanies, out-of-season nature litanies) — readers hide
 		// these by default and surface them as addable prayers.
@@ -328,24 +309,18 @@ export const IncensePrayerSectionSchema = z
 
 export const IncensePsalmSectionSchema = z
 	.object({
-		id: z.string(),
+		...sectionFields,
 		type: z.literal('psalm'),
-		role: IncenseSectionRoleSchema,
-		title: z.string(),
 		rubric: z.string().optional(),
-		reference: z.string(),
-		verses: z.array(AgpeyaVerseSchema),
+		...scriptureFields,
 	})
 	.meta({ id: 'IncensePsalmSection' })
 
 export const IncenseGospelSectionSchema = z
 	.object({
-		id: z.string(),
+		...sectionFields,
 		type: z.literal('gospel'),
-		role: IncenseSectionRoleSchema,
-		title: z.string(),
-		reference: z.string(),
-		verses: z.array(AgpeyaVerseSchema),
+		...scriptureFields,
 	})
 	.meta({ id: 'IncenseGospelSection' })
 
@@ -369,17 +344,13 @@ export type IncenseResponse = z.infer<typeof IncenseResponseSchema>
 
 // ── Liturgy ──────────────────────────────────────────────────────────────────
 
-export const LiturgySectionRoleSchema = z.enum(['all', 'priest', 'deacon', 'congregation'])
-
 export const LiturgyPrayerSectionSchema = z
 	.object({
-		id: z.string(),
+		...sectionFields,
 		type: z.enum(['prayer', 'litany', 'creed']),
-		role: LiturgySectionRoleSchema,
-		title: z.string(),
 		// Set when a section's title falls back to another language, so the reader can
 		// label it rather than passing it off as a translation.
-		titleLanguage: z.enum(['en', 'ar', 'cop']).optional(),
+		titleLanguage: z.enum(SERVICE_LANGUAGES).optional(),
 		rubric: z.string().optional(),
 		content: ContentSchema,
 	})
@@ -388,14 +359,11 @@ export const LiturgyPrayerSectionSchema = z
 /** Psalm, epistle and gospel all come from the day's Katameros, so they share a shape. */
 export const LiturgyReadingSectionSchema = z
 	.object({
-		id: z.string(),
+		...sectionFields,
 		type: z.enum(['psalm', 'epistle', 'gospel']),
-		role: LiturgySectionRoleSchema,
-		title: z.string(),
-		titleLanguage: z.enum(['en', 'ar', 'cop']).optional(),
+		titleLanguage: z.enum(SERVICE_LANGUAGES).optional(),
 		rubric: z.string().optional(),
-		reference: z.string(),
-		verses: z.array(AgpeyaVerseSchema),
+		...scriptureFields,
 	})
 	.meta({ id: 'LiturgyReadingSection' })
 
@@ -425,7 +393,7 @@ const ReadingSchema = z
 		chapters: z.array(
 			z.object({
 				chapterNum: z.number(),
-				verses: z.array(z.object({ num: z.number(), text: z.string() })),
+				verses: z.array(VerseSchema),
 			}),
 		),
 	})
@@ -656,7 +624,7 @@ export const TasbehaResponseSchema = z
 					'conclusion',
 				]),
 				title: z.string(),
-				titleLanguage: z.enum(['en', 'ar', 'cop']).optional(),
+				titleLanguage: z.enum(SERVICE_LANGUAGES).optional(),
 				content: z.array(z.string()),
 				source: TasbehaSourceSchema,
 			}),

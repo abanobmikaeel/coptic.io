@@ -3,6 +3,7 @@ import type {
 	LiturgicalContent,
 	LiturgicalSectionRole,
 	ResolutionMode,
+	ServiceLanguage,
 } from '../../content/types'
 import liturgyData from './liturgy.json'
 
@@ -15,7 +16,7 @@ export type LiturgySectionType =
 	| 'epistle'
 export type LiturgySectionRole = LiturgicalSectionRole
 export type LiturgyRite = 'basil'
-export type LiturgyLanguage = 'en' | 'ar' | 'cop'
+export type LiturgyLanguage = ServiceLanguage
 
 export type { ContentLine, ContentSpeaker } from '../../content/types'
 

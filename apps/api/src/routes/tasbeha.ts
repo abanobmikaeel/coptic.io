@@ -1,3 +1,4 @@
+import { SERVICE_LANGUAGES } from '@coptic/data/content'
 import type { TasbehaServiceId } from '@coptic/data/en/tasbeha'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
@@ -24,7 +25,7 @@ const DAY_NAMES = Object.keys(SERVICE_BY_DAY) as [
 	...Array<keyof typeof SERVICE_BY_DAY>,
 ]
 
-const langQuery = z.enum(['en', 'ar', 'cop']).optional().openapi({ example: 'cop' })
+const langQuery = z.enum(SERVICE_LANGUAGES).optional().openapi({ example: 'cop' })
 const dateQuery = z.string().optional().openapi({
 	example: '2026-07-27',
 	description: 'Liturgical date in YYYY-MM-DD format. Defaults to today.',

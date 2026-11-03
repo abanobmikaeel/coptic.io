@@ -13,6 +13,7 @@ export type {
 	LiturgicalSectionRole,
 	ResolutionMode,
 } from './types'
+export { CONTENT_SPEAKERS, SECTION_ROLES, SERVICE_LANGUAGES, type ServiceLanguage } from './types'
 export {
 	type OccasionContext,
 	findOneModeAuthoringErrors,

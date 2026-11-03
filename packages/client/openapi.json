@@ -160,7 +160,7 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
@@ -170,7 +170,7 @@
 					"verses"
 				]
 			},
-			"AgpeyaVerse": {
+			"Verse": {
 				"type": "object",
 				"properties": {
 					"num": {
@@ -197,7 +197,7 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
@@ -234,10 +234,7 @@
 									"type": "string"
 								},
 								"content": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AgpeyaLine"
-									}
+									"$ref": "#/components/schemas/Content"
 								},
 								"inline": {
 									"type": "boolean"
@@ -318,39 +315,45 @@
 				},
 				"description": "The whole hour in prayed order."
 			},
-			"AgpeyaLine": {
-				"anyOf": [
-					{
+			"Content": {
+				"type": "array",
+				"items": {
+					"anyOf": [
+						{
+							"type": "string"
+						},
+						{
+							"$ref": "#/components/schemas/ContentLine"
+						}
+					]
+				}
+			},
+			"ContentLine": {
+				"type": "object",
+				"properties": {
+					"speaker": {
+						"type": "string",
+						"enum": [
+							"Priest",
+							"Deacon",
+							"People"
+						]
+					},
+					"text": {
 						"type": "string"
 					},
-					{
-						"type": "object",
-						"properties": {
-							"text": {
-								"type": "string"
-							},
-							"speaker": {
-								"type": "string",
-								"enum": [
-									"Priest",
-									"Deacon",
-									"People"
-								]
-							},
-							"isRubric": {
-								"type": "boolean"
-							},
-							"isResponse": {
-								"type": "boolean"
-							},
-							"coptic": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"text"
-						]
+					"isRubric": {
+						"type": "boolean"
+					},
+					"isResponse": {
+						"type": "boolean"
+					},
+					"coptic": {
+						"type": "string"
 					}
+				},
+				"required": [
+					"text"
 				]
 			},
 			"AgpeyaScriptureEntry": {
@@ -365,7 +368,7 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					},
 					"id": {
@@ -399,10 +402,7 @@
 								"type": "string"
 							},
 							"content": {
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/AgpeyaLine"
-								}
+								"$ref": "#/components/schemas/Content"
 							},
 							"inline": {
 								"type": "boolean"
@@ -565,7 +565,7 @@
 							"verses": {
 								"type": "array",
 								"items": {
-									"$ref": "#/components/schemas/AgpeyaVerse"
+									"$ref": "#/components/schemas/Verse"
 								}
 							},
 							"id": {
@@ -745,12 +745,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"psalm"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -762,6 +756,12 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"psalm"
+						]
 					},
 					"rubric": {
 						"type": "string"
@@ -772,15 +772,15 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"reference",
 					"verses"
 				]
@@ -791,12 +791,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"gospel"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -809,21 +803,27 @@
 					"title": {
 						"type": "string"
 					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"gospel"
+						]
+					},
 					"reference": {
 						"type": "string"
 					},
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"reference",
 					"verses"
 				]
@@ -834,14 +834,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"prayer",
-							"litany",
-							"creed"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -853,6 +845,14 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"prayer",
+							"litany",
+							"creed"
+						]
 					},
 					"rubric": {
 						"type": "string"
@@ -866,51 +866,10 @@
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"content"
-				]
-			},
-			"Content": {
-				"type": "array",
-				"items": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"$ref": "#/components/schemas/ContentLine"
-						}
-					]
-				}
-			},
-			"ContentLine": {
-				"type": "object",
-				"properties": {
-					"speaker": {
-						"type": "string",
-						"enum": [
-							"Priest",
-							"Deacon",
-							"People"
-						]
-					},
-					"text": {
-						"type": "string"
-					},
-					"isRubric": {
-						"type": "boolean"
-					},
-					"isResponse": {
-						"type": "boolean"
-					},
-					"coptic": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"text"
 				]
 			},
 			"ReadingsResponse": {
@@ -1116,19 +1075,7 @@
 								"verses": {
 									"type": "array",
 									"items": {
-										"type": "object",
-										"properties": {
-											"num": {
-												"type": "number"
-											},
-											"text": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"num",
-											"text"
-										]
+										"$ref": "#/components/schemas/Verse"
 									}
 								}
 							},
@@ -1975,14 +1922,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"psalm",
-							"epistle",
-							"gospel"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -1994,6 +1933,14 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"psalm",
+							"epistle",
+							"gospel"
+						]
 					},
 					"titleLanguage": {
 						"type": "string",
@@ -2012,15 +1959,15 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"reference",
 					"verses"
 				]
@@ -2030,14 +1977,6 @@
 				"properties": {
 					"id": {
 						"type": "string"
-					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"prayer",
-							"litany",
-							"creed"
-						]
 					},
 					"role": {
 						"type": "string",
@@ -2050,6 +1989,14 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"prayer",
+							"litany",
+							"creed"
+						]
 					},
 					"titleLanguage": {
 						"type": "string",
@@ -2068,9 +2015,9 @@
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"content"
 				]
 			},

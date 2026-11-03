@@ -1,3 +1,4 @@
+import { SERVICE_LANGUAGES } from '@coptic/data/content'
 import { createRoute, z } from '@hono/zod-openapi'
 import { bibleTranslation, requestDate } from '../middleware/request'
 import { ErrorSchema, IncenseResponseSchema } from '../schemas'
@@ -34,7 +35,7 @@ const incenseRoute = (serviceType: keyof typeof SERVICES) =>
 					example: '2026-06-01',
 					description: 'Date in YYYY-MM-DD format. Defaults to today.',
 				}),
-				lang: z.enum(['en', 'ar', 'cop']).optional().openapi({
+				lang: z.enum(SERVICE_LANGUAGES).optional().openapi({
 					example: 'en',
 					description: 'Language for Bible verses and liturgical text. Defaults to en.',
 				}),
