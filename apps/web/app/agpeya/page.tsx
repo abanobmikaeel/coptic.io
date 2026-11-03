@@ -1,13 +1,13 @@
 import type { AgpeyaHour } from '@/components/AgpeyaHourSelector'
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { orderLanguages } from '@/components/ScriptureReading/utils'
-import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
 	resolveContentLanguages,
 } from '@/i18n/content-languages'
 import { type ResolvedAgpeyaHour, agpeyaToService } from '@/lib/agpeyaToService'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import type { CopticDate, IncenseService } from '@/lib/types'
 import { getTodayDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
@@ -36,51 +36,37 @@ const AGPEYA_LANGS = ['en', 'ar', 'es'] as const satisfies ContentLanguage[]
 type AgpeyaLang = (typeof AGPEYA_LANGS)[number]
 
 async function fetchHour(
-	hour: string,
+	hour: AgpeyaHour,
 	lang: AgpeyaLang,
 	psalms: 'septuagint' | 'bible',
 ): Promise<ResolvedAgpeyaHour | null> {
-	try {
-		const query = `lang=${lang}&psalms=${psalms}&include=sections`
-		const res = await fetch(`${API_BASE_URL}/agpeya/${hour}?${query}`, {
-			next: { revalidate: 43200 },
-		})
-		if (!res.ok) return null
-		return res.json()
-	} catch {
-		return null
-	}
+	const data = await dataOrNull(
+		api.GET('/api/agpeya/{hour}', {
+			params: { path: { hour }, query: { lang, psalms, include: 'sections' } },
+			...cacheFor(43200),
+		}),
+	)
+	// include=sections makes the API send `sections`; its schema marks them optional
+	return data?.sections ? { ...data, sections: data.sections } : null
 }
 
 // Content languages the Agpeya can actually render. Falls back to all candidates
 // if the endpoint is unreachable, so an outage never hides every language.
 async function fetchAvailableTranslations(): Promise<AgpeyaLang[]> {
-	try {
-		const res = await fetch(`${API_BASE_URL}/agpeya/translations`, {
-			next: { revalidate: 43200 },
-		})
-		if (!res.ok) return [...AGPEYA_LANGS]
-		const data = (await res.json()) as { available?: string[] }
-		const available = (data.available ?? []).filter((l): l is AgpeyaLang =>
-			AGPEYA_LANGS.includes(l as AgpeyaLang),
-		)
-		return available.length > 0 ? available : [...AGPEYA_LANGS]
-	} catch {
-		return [...AGPEYA_LANGS]
-	}
+	const data = await dataOrNull(api.GET('/api/agpeya/translations', cacheFor(43200)))
+	const available = (data?.available ?? []).filter((l): l is AgpeyaLang =>
+		AGPEYA_LANGS.includes(l as AgpeyaLang),
+	)
+	return available.length > 0 ? available : [...AGPEYA_LANGS]
 }
 
-async function fetchCopticDate(date: string, lang: string): Promise<CopticDate | null> {
-	try {
-		const res = await fetch(`${API_BASE_URL}/calendar/${date}?lang=${lang}`, {
-			next: { revalidate: 43200 },
-		})
-		if (!res.ok) return null
-		return res.json()
-	} catch {
-		return null
-	}
-}
+const fetchCopticDate = (date: string, lang: string): Promise<CopticDate | null> =>
+	dataOrNull(
+		api.GET('/api/calendar/{date}', {
+			params: { path: { date }, query: { lang } },
+			...cacheFor(43200),
+		}),
+	)
 
 interface AgpeyaPageProps {
 	searchParams: Promise<{ hour?: string; psalms?: string }>

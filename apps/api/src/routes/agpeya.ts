@@ -82,7 +82,7 @@ app.openapi(listHoursRoute, (c) => {
 // GET /api/agpeya/midnight/watch/:watch - Get a specific midnight watch
 const getMidnightWatchRoute = createRoute({
 	method: 'get',
-	path: '/midnight/watch/:watch',
+	path: '/midnight/watch/{watch}',
 	middleware: [bibleTranslation] as const,
 	tags: ['Agpeya'],
 	summary: 'Get a specific midnight watch',
@@ -146,7 +146,7 @@ app.openapi(getTranslationsRoute, (c) => {
 // GET /api/agpeya/:hour - Get specific hour
 const getHourRoute = createRoute({
 	method: 'get',
-	path: '/:hour',
+	path: '/{hour}',
 	middleware: [bibleTranslation] as const,
 	tags: ['Agpeya'],
 	summary: 'Get a specific Agpeya prayer hour',

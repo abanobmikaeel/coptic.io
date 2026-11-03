@@ -1,7 +1,7 @@
 'use client'
 
 import { SettingSection } from '@/components/settings'
-import { API_BASE_URL } from '@/config'
+import { api, dataOrNull } from '@/lib/client'
 import { INCENSE_COMMEMORATIONS_COOKIE, commemorationLabel } from '@/lib/commemorations'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -20,12 +20,9 @@ export function CommemorationPicker({ selected }: Readonly<CommemorationPickerPr
 
 	useEffect(() => {
 		let cancelled = false
-		fetch(`${API_BASE_URL}/incense/commemorations`)
-			.then((r) => (r.ok ? r.json() : { commemorations: [] }))
-			.then((d) => {
-				if (!cancelled) setOptions(d.commemorations ?? [])
-			})
-			.catch(() => {})
+		void dataOrNull(api.GET('/api/incense/commemorations')).then((d) => {
+			if (!cancelled) setOptions(d?.commemorations ?? [])
+		})
 		return () => {
 			cancelled = true
 		}

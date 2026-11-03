@@ -1,99 +1,94 @@
-import { API_BASE_URL } from '@/config'
-import type {
-	CalendarData,
-	CalendarMonth,
-	Celebration,
-	FastingInfo,
-	UpcomingCelebration,
-} from './types'
+import { toDateKey } from '@coptic/core'
+import { api, cacheFor, dataOrNull } from './client'
 
-async function fetchApi<T>(endpoint: string, revalidate = 3600): Promise<T | null> {
-	try {
-		const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-			next: { revalidate }, // Cache for 1 hour by default
-		})
-		if (!res.ok) return null
-		return await res.json()
-	} catch (error) {
-		console.error(`API error (${endpoint}):`, error)
-		return null
-	}
-}
+// Cache for 1 hour by default
+const HOUR = cacheFor(3600)
 
-const langQuery = (lang?: string) => (lang && lang !== 'en' ? `?lang=${lang}` : '')
+type DisplayLang = 'en' | 'ar' | 'es'
+const displayLang = (lang?: string): DisplayLang | undefined =>
+	lang === 'ar' || lang === 'es' ? lang : undefined
 
 export const getCalendarData = (date?: string, lang?: string) =>
-	fetchApi<CalendarData>(`${date ? `/calendar/${date}` : '/calendar'}${langQuery(lang)}`)
+	dataOrNull(
+		date
+			? api.GET('/api/calendar/{date}', { params: { path: { date }, query: { lang } }, ...HOUR })
+			: api.GET('/api/calendar', { params: { query: { lang } }, ...HOUR }),
+	)
 
-export const getTodayCelebrations = (date?: string, lang?: string) => {
-	const d = new Date()
-	const today =
-		date ||
-		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-	return fetchApi<Celebration[]>(`/celebrations/${today}${langQuery(lang)}`)
-}
+export const getTodayCelebrations = (date?: string, lang?: string) =>
+	dataOrNull(
+		api.GET('/api/celebrations/{date}', {
+			params: { path: { date: date || toDateKey(new Date()) }, query: { lang: displayLang(lang) } },
+			...HOUR,
+		}),
+	)
 
 export const getUpcomingCelebrations = (days = 60, lang?: string) =>
-	fetchApi<UpcomingCelebration[]>(
-		`/celebrations/upcoming/list?days=${days}${lang && lang !== 'en' ? `&lang=${lang}` : ''}`,
+	dataOrNull(
+		api.GET('/api/celebrations/upcoming/list', {
+			params: { query: { days, lang: displayLang(lang) } },
+			...HOUR,
+		}),
 	)
 
 export const getCalendarMonth = (year: number, month: number) =>
-	fetchApi<CalendarMonth>(`/calendar/month/${year}/${month}`)
+	dataOrNull(
+		api.GET('/api/calendar/month/{year}/{month}', {
+			params: { path: { year: String(year), month: String(month) } },
+			...HOUR,
+		}),
+	)
 
 // Synaxarium
-import type { SynaxariumEntry, SynaxariumSearchResult } from './types'
 
-export const searchSynaxarium = (query: string, lang?: string) =>
-	fetchApi<SynaxariumSearchResult[]>(
-		`/synaxarium/search/query?q=${encodeURIComponent(query)}${lang ? `&lang=${lang}` : ''}`,
+export const searchSynaxarium = (query: string) =>
+	dataOrNull(api.GET('/api/synaxarium/search/query', { params: { query: { q: query } }, ...HOUR }))
+
+const synaxariumLang = (lang?: string) => (lang === 'ar' ? 'ar' : lang === 'en' ? 'en' : undefined)
+
+export const getSynaxariumByDate = (date: string, detailed = true, lang?: string) =>
+	dataOrNull(
+		api.GET('/api/synaxarium/{date}', {
+			params: {
+				path: { date },
+				query: { detailed: detailed ? 'true' : undefined, lang: synaxariumLang(lang) },
+			},
+			...HOUR,
+		}),
 	)
 
-export const getSynaxariumByDate = (date: string, detailed = true, lang?: string) => {
-	const params = new URLSearchParams()
-	if (detailed) params.set('detailed', 'true')
-	if (lang) params.set('lang', lang)
-	const query = params.toString()
-	return fetchApi<SynaxariumEntry[]>(`/synaxarium/${date}${query ? `?${query}` : ''}`)
-}
-
-export const getSynaxariumByCopticDate = (copticDate: string, detailed = true, lang?: string) => {
-	const params = new URLSearchParams()
-	if (detailed) params.set('detailed', 'true')
-	if (lang) params.set('lang', lang)
-	const query = params.toString()
-	return fetchApi<SynaxariumEntry[]>(
-		`/synaxarium/coptic/${encodeURIComponent(copticDate)}${query ? `?${query}` : ''}`,
+export const getSynaxariumByCopticDate = (copticDate: string, detailed = true, lang?: string) =>
+	dataOrNull(
+		api.GET('/api/synaxarium/coptic/{copticDate}', {
+			params: {
+				path: { copticDate },
+				query: { detailed: detailed ? 'true' : undefined, lang: synaxariumLang(lang) },
+			},
+			...HOUR,
+		}),
 	)
-}
 
 // Get calendar data for a specific date (includes Coptic date)
 export const getCalendarDate = (date: string) =>
-	fetchApi<{ dateString: string; day: number; month: number; monthString: string }>(
-		`/calendar/${date}`,
-	)
+	dataOrNull(api.GET('/api/calendar/{date}', { params: { path: { date } }, ...HOUR }))
 
 // Reading references (non-detailed endpoint)
-export interface ReadingReferences {
-	reference?: {
-		LPsalm?: string
-		LGospel?: string
-	}
-	/** Localized season name (depends on lang). */
-	season?: string
-	/** Canonical English season identity — branch on this, not `season`. */
-	seasonKey?: string
-	seasonDay?: string
-	Synaxarium?: string
-}
+export const getReadingReferences = (date?: string, lang?: string) =>
+	dataOrNull(
+		api.GET('/api/readings/{date}', {
+			params: { path: { date: date || toDateKey(new Date()) }, query: { lang } },
+			...HOUR,
+		}),
+	)
 
-export const getReadingReferences = (date?: string, lang?: string) => {
-	const d = new Date()
-	const today =
-		date ||
-		`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-	return fetchApi<ReadingReferences>(`/readings/${today}${langQuery(lang)}`)
-}
+export type ReadingReferences = NonNullable<Awaited<ReturnType<typeof getReadingReferences>>>
 
 export const getFastingForDate = (date?: string, lang?: string) =>
-	fetchApi<FastingInfo>(`${date ? `/fasting/${date}` : '/fasting'}${langQuery(lang)}`)
+	dataOrNull(
+		date
+			? api.GET('/api/fasting/{date}', {
+					params: { path: { date }, query: { lang: displayLang(lang) } },
+					...HOUR,
+				})
+			: api.GET('/api/fasting', { params: { query: { lang: displayLang(lang) } }, ...HOUR }),
+	)

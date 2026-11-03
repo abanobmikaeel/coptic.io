@@ -2,14 +2,14 @@ import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { ErrorSchema, SynaxariumEntrySchema, SynaxariumSearchResultSchema } from '../schemas'
 import * as synaxariumService from '../services/synaxarium.service'
-import { createApiApp, jsonResponse } from '../utils/openapi'
+import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
 
 const app = createApiApp()
 
 // GET /api/synaxarium/:date
 const getForDateRoute = createRoute({
 	method: 'get',
-	path: '/:date?',
+	path: '/{date}',
 	tags: ['Synaxarium'],
 	summary: 'Get Synaxarium entries for a specific date',
 	description:
@@ -17,7 +17,7 @@ const getForDateRoute = createRoute({
 	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
-			date: z.string().optional().openapi({ example: '2025-01-15' }),
+			date: z.string().openapi({ example: '2025-01-15' }),
 		}),
 		query: z.object({
 			detailed: z.string().optional().openapi({ example: 'true' }),
@@ -31,21 +31,23 @@ const getForDateRoute = createRoute({
 	},
 })
 
-app.openapi(getForDateRoute, (c) => {
-	const { detailed, lang } = c.req.valid('query')
-	const synaxarium = synaxariumService.getSynaxariumForDate(c.var.date, detailed === 'true', lang)
+for (const route of withOptionalLastParam(getForDateRoute)) {
+	app.openapi(route, (c) => {
+		const { detailed, lang } = c.req.valid('query')
+		const synaxarium = synaxariumService.getSynaxariumForDate(c.var.date, detailed === 'true', lang)
 
-	if (!synaxarium) {
-		return c.json({ error: 'No synaxarium found for this date' }, 404)
-	}
+		if (!synaxarium) {
+			return c.json({ error: 'No synaxarium found for this date' }, 404)
+		}
 
-	return c.json(synaxarium, 200)
-})
+		return c.json(synaxarium, 200)
+	})
+}
 
 // GET /api/synaxarium/coptic/:copticDate
 const getForCopticDateRoute = createRoute({
 	method: 'get',
-	path: '/coptic/:copticDate',
+	path: '/coptic/{copticDate}',
 	tags: ['Synaxarium'],
 	summary: 'Get Synaxarium entries for a Coptic date',
 	description: 'Returns all saint commemorations for a specific Coptic date (e.g., "7 Hator")',

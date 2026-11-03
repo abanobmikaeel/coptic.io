@@ -20,6 +20,7 @@
     "ci": "bun run typecheck && bun run check && bun run test:unit && bun run build"
   },
   "dependencies": {
+    "@coptic/client": "workspace:*",
     "@coptic/core": "workspace:*",
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^2.0.0",

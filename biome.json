@@ -15,7 +15,8 @@
 			".next",
 			"next-env.d.ts",
 			"coverage",
-			"*.json"
+			"*.json",
+			"*.gen.ts"
 		]
 	},
 	"formatter": {

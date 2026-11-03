@@ -9,7 +9,11 @@ import {
 import type { ViewMode } from '@/components/synaxarium/SynaxariumHeader'
 import { getCalendarDate, getSynaxariumByDate, searchSynaxarium } from '@/lib/api'
 import type { SynaxariumEntry, SynaxariumSearchResult } from '@/lib/types'
-import { formatGregorianDate, getTodayDateString } from '@/lib/utils/dateFormatters'
+import {
+	addDaysToDateString,
+	formatGregorianDate,
+	getTodayDateString,
+} from '@/lib/utils/dateFormatters'
 import { useLocale } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -121,10 +125,7 @@ export function useSynaxarium() {
 	// === Actions ===
 	const navigateDate = useCallback(
 		(days: number) => {
-			const d = new Date(`${currentDate}T00:00:00`)
-			d.setDate(d.getDate() + days)
-			const newDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-			updateUrl({ date: newDate })
+			updateUrl({ date: addDaysToDateString(currentDate, days) })
 		},
 		[currentDate, updateUrl],
 	)
@@ -211,14 +212,13 @@ export function useSynaxarium() {
 			return
 		}
 		setIsSearching(true)
-		const lang = locale === 'ar' ? 'ar' : undefined
 		const timer = setTimeout(async () => {
-			const results = await searchSynaxarium(searchQuery, lang)
+			const results = await searchSynaxarium(searchQuery)
 			setSearchResults(results || [])
 			setIsSearching(false)
 		}, 300)
 		return () => clearTimeout(timer)
-	}, [searchQuery, locale])
+	}, [searchQuery])
 
 	// === Derived data ===
 	const showingSearch = searchQuery.trim().length > 0

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/config'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import { getTodayDateString } from '@/lib/utils'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -14,37 +14,9 @@ export const metadata: Metadata = {
 	},
 }
 
-interface ScheduleDay {
-	dayOffset: number
-	dayNumber: number
-	part: string
-	weekNumber: number
-	weekTheme: string
-	day: string
-	title: string
-	references: string[]
-	date: string
-	sermons?: { title: string; youtubeUrl: string }[]
-	sundayHolyGospelReading?: string
-}
+const getSchedule = () => dataOrNull(api.GET('/api/lent/schedule', cacheFor(3600)))
 
-interface ScheduleResponse {
-	year: number
-	easterDate: string
-	lentStart: string
-	lentEnd: string
-	days: ScheduleDay[]
-}
-
-async function getSchedule(): Promise<ScheduleResponse | null> {
-	try {
-		const res = await fetch(`${API_BASE_URL}/lent/schedule`, { next: { revalidate: 3600 } })
-		if (!res.ok) return null
-		return res.json()
-	} catch {
-		return null
-	}
-}
+type ScheduleDay = NonNullable<Awaited<ReturnType<typeof getSchedule>>>['days'][number]
 
 export default async function LentPage() {
 	const schedule = await getSchedule()

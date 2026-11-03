@@ -14,8 +14,8 @@ import { ReadingProgress } from '@/components/ReadingProgress'
 import { ReadingsHeader } from '@/components/ReadingsHeader'
 import { ScriptureReading } from '@/components/ScriptureReading'
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/ui/Icons'
-import { API_BASE_URL } from '@/config'
 import type { ContentLang } from '@/i18n/content-translations'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import { parseViewMode } from '@/lib/reading-preferences'
 import { themeClasses } from '@/lib/reading-styles'
 import type { Reading } from '@/lib/types'
@@ -26,69 +26,21 @@ import { LentSwipeContainer } from './LentSwipeContainer'
 
 type BibleTranslation = 'en' | 'ar'
 
-interface Sermon {
-	title: string
-	preacher?: string
-	youtubeUrl: string
-	thumbnail?: string
-}
+const getDevotional = (date: string, lang?: string) =>
+	dataOrNull(
+		api.GET('/api/lent/{date}', {
+			params: { path: { date }, query: { detailed: 'true', lang } },
+			...cacheFor(3600),
+		}),
+	)
 
-interface ResolvedReference {
-	reference: string
-	readings: Reading[] | null
-}
-
-interface DevotionalResponse {
-	dayOffset: number
-	dayNumber: number
-	part: string
-	weekNumber: number
-	weekTheme: string
-	day: string
-	title: string
-	references: string[]
-	date: string
-	sermons?: Sermon[]
-	sundayHolyGospelReading?: string
-	resolvedReferences?: ResolvedReference[]
-}
-
-interface ScheduleDay {
-	dayNumber: number
-	date: string
-	title: string
-}
-
-interface ScheduleResponse {
-	days: ScheduleDay[]
-}
-
-async function getDevotional(date: string, lang?: string): Promise<DevotionalResponse | null> {
-	try {
-		const params = new URLSearchParams({ detailed: 'true' })
-		if (lang && lang !== 'en') params.set('lang', lang)
-		const res = await fetch(`${API_BASE_URL}/lent/${date}?${params}`, {
-			next: { revalidate: 3600 },
-		})
-		if (!res.ok) return null
-		return res.json()
-	} catch {
-		return null
-	}
-}
-
-async function getSchedule(date: string): Promise<ScheduleResponse | null> {
-	try {
-		const year = date.split('-')[0]
-		const res = await fetch(`${API_BASE_URL}/lent/schedule/${year}`, {
-			next: { revalidate: 3600 },
-		})
-		if (!res.ok) return null
-		return res.json()
-	} catch {
-		return null
-	}
-}
+const getSchedule = (date: string) =>
+	dataOrNull(
+		api.GET('/api/lent/schedule/{year}', {
+			params: { path: { year: date.split('-')[0] } },
+			...cacheFor(3600),
+		}),
+	)
 
 export async function generateMetadata({
 	params,

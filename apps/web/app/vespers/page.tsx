@@ -1,11 +1,11 @@
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { orderLanguages } from '@/components/ScriptureReading/utils'
-import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
 	resolveContentLanguages,
 } from '@/i18n/content-languages'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import { INCENSE_COMMEMORATIONS_COOKIE, parseCommemorations } from '@/lib/commemorations'
 import type { IncenseService } from '@/lib/types'
 import { getTodayDateString } from '@/lib/utils'
@@ -18,23 +18,17 @@ import { VespersContent, VespersFallback } from './VespersContent'
 const INCENSE_LANGS = ['en', 'ar', 'cop'] as const satisfies ContentLanguage[]
 type IncenseLang = (typeof INCENSE_LANGS)[number]
 
-async function fetchIncenseService(
+const fetchIncenseService = (
 	date: string,
 	lang: IncenseLang,
 	commemorations: string,
-): Promise<IncenseService | null> {
-	try {
-		const query = new URLSearchParams({ date, lang })
-		if (commemorations) query.set('commemorations', commemorations)
-		const res = await fetch(`${API_BASE_URL}/incense/evening?${query}`, {
-			next: { revalidate: 43200 },
-		})
-		if (!res.ok) return null
-		return res.json()
-	} catch {
-		return null
-	}
-}
+): Promise<IncenseService | null> =>
+	dataOrNull(
+		api.GET('/api/incense/evening', {
+			params: { query: { date, lang, commemorations: commemorations || undefined } },
+			...cacheFor(43200),
+		}),
+	)
 
 interface VespersPageProps {
 	searchParams: Promise<{ date?: string }>

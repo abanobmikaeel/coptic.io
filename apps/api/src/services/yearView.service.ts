@@ -1,4 +1,4 @@
-import { type CopticDate, gregorianToCoptic, isInMoveableFast } from '@coptic/core'
+import { type CopticDate, gregorianToCoptic, isInMoveableFast, toDateKey } from '@coptic/core'
 import {
 	type Celebration,
 	getStaticCelebrationsForCopticDay,
@@ -23,9 +23,6 @@ type YearView = {
 // No TTL needed — calendar data is deterministic for a given year
 const yearViewCache = new Map<number, YearView>()
 
-const formatDate = (d: Date) =>
-	`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-
 const buildYearView = (year: number): YearView => {
 	const days: DayEntry[] = []
 	const byMonth: DayEntry[][] = Array.from({ length: 13 }, () => [])
@@ -36,7 +33,7 @@ const buildYearView = (year: number): YearView => {
 		const copticDate = gregorianToCoptic(current)
 		const month = current.getMonth() + 1
 		const entry: DayEntry = {
-			gregorianDate: formatDate(current),
+			gregorianDate: toDateKey(current),
 			date: new Date(current), // snapshot before mutation
 			month,
 			copticDate,

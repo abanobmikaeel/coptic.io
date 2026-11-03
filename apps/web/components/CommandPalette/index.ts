@@ -1,4 +1,3 @@
-export { CommandPalette, useCommandPalette } from './CommandPalette'
 export { CommandPaletteProvider, useCommandPaletteContext } from './CommandPaletteProvider'
 export type {
 	SearchResults,
@@ -7,4 +6,4 @@ export type {
 	SynaxariumSearchResult,
 	AgpeyaSearchResult,
 	SearchResultItem,
-} from './useCommandPalette'
+} from './types'

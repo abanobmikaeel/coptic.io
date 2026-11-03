@@ -4,7 +4,7 @@ import { requestDate } from '../middleware/request'
 import { CalendarMonthSchema, CopticDateSchema, ErrorSchema, IcalInfoSchema } from '../schemas'
 import * as calendarService from '../services/calendar.service'
 import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
-import { createApiApp, jsonResponse } from '../utils/openapi'
+import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
 import { parseYear } from '../utils/request'
 
 const app = createApiApp()
@@ -133,13 +133,13 @@ app.openapi(getIcalYearRoute, (c) => {
 // GET /api/calendar/:date — convert a Gregorian date to the Coptic calendar
 const getForDateRoute = createRoute({
 	method: 'get',
-	path: '/:date?',
+	path: '/{date}',
 	tags: ['Calendar'],
 	summary: 'Convert a date to the Coptic calendar',
 	description: 'Returns the Coptic date of a Gregorian date. Defaults to today.',
 	middleware: [requestDate()] as const,
 	request: {
-		params: z.object({ date: z.string().optional().openapi({ example: '2026-09-11' }) }),
+		params: z.object({ date: z.string().openapi({ example: '2026-09-11' }) }),
 		query: z.object({
 			lang: z.string().optional().openapi({
 				example: 'ar',
@@ -153,10 +153,12 @@ const getForDateRoute = createRoute({
 	},
 })
 
-app.openapi(getForDateRoute, (c) => {
-	const langQuery = c.req.valid('query').lang
-	const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
-	return c.json(localizeCopticDate(gregorianToCoptic(c.var.date), lang), 200)
-})
+for (const route of withOptionalLastParam(getForDateRoute)) {
+	app.openapi(route, (c) => {
+		const langQuery = c.req.valid('query').lang
+		const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
+		return c.json(localizeCopticDate(gregorianToCoptic(c.var.date), lang), 200)
+	})
+}
 
 export default app

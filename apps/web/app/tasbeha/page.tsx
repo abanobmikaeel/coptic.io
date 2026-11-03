@@ -1,11 +1,11 @@
 import type { BibleTranslation } from '@/components/ScriptureReading/types'
 import { orderLanguages } from '@/components/ScriptureReading/utils'
-import { API_BASE_URL } from '@/config'
 import {
 	CONTENT_LANGUAGES_COOKIE,
 	type ContentLanguage,
 	resolveContentLanguages,
 } from '@/i18n/content-languages'
+import { api, cacheFor, dataOrNull } from '@/lib/client'
 import {
 	type TasbehaDayId,
 	getCurrentTasbehaDay,
@@ -14,6 +14,7 @@ import {
 	tasbehaPraiseLabel,
 } from '@/lib/tasbehaDays'
 import type { IncenseService } from '@/lib/types'
+import { toDateKey } from '@coptic/core'
 import type { Metadata } from 'next'
 import { getLocale } from 'next-intl/server'
 import { cookies } from 'next/headers'
@@ -37,21 +38,17 @@ export async function generateMetadata({ searchParams }: TasbehaPageProps): Prom
 	}
 }
 
-async function fetchTasbeha(
+const fetchTasbeha = (
 	day: TasbehaDayId,
 	lang: TasbehaLang,
 	date: string,
-): Promise<IncenseService | null> {
-	try {
-		const response = await fetch(`${API_BASE_URL}/tasbeha/${day}?lang=${lang}&date=${date}`, {
-			next: { revalidate: 43200 },
-		})
-		if (!response.ok) return null
-		return response.json()
-	} catch {
-		return null
-	}
-}
+): Promise<IncenseService | null> =>
+	dataOrNull(
+		api.GET('/api/tasbeha/{day}', {
+			params: { path: { day }, query: { lang, date } },
+			...cacheFor(43200),
+		}),
+	)
 
 export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPageProps>) {
 	const { day: dayParam } = await searchParams
@@ -73,12 +70,7 @@ export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPage
 
 	// The date still governs the date-limited final parts of the Sunday Theotokia,
 	// independently of which day's service is being read.
-	const now = new Date()
-	const date = [
-		now.getFullYear(),
-		String(now.getMonth() + 1).padStart(2, '0'),
-		String(now.getDate()).padStart(2, '0'),
-	].join('-')
+	const date = toDateKey(new Date())
 
 	const results = await Promise.all(
 		langs.map(async (lang) => ({
