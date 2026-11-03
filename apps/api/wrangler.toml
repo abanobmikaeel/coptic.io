@@ -27,7 +27,8 @@ bucket_name = "coptic-io-readings"
 binding = "ANALYTICS"
 dataset = "coptic_api_requests"
 
-# Email subscriptions database. AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are secrets.
+# Email subscriptions database. AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and
+# SES_SNS_TOPIC_ARNS (topics allowed to call the SES webhook) are secrets.
 [[d1_databases]]
 binding = "SUBSCRIPTIONS_DB"
 database_name = "coptic-subscriptions"

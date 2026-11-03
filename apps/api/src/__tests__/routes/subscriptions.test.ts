@@ -22,6 +22,11 @@ vi.mock('../../services/subscriptions/db', async (importOriginal) => {
 		),
 	}
 })
+const sns = vi.hoisted(() => ({ verifySnsMessage: vi.fn() }))
+vi.mock('../../services/subscriptions/sns', async (importOriginal) => ({
+	...(await importOriginal<typeof import('../../services/subscriptions/sns')>()),
+	...sns,
+}))
 vi.mock('../../services/subscriptions/email', async (importOriginal) => ({
 	...(await importOriginal<typeof import('../../services/subscriptions/email')>()),
 	...email,
@@ -39,6 +44,7 @@ beforeEach(() => {
 	vi.clearAllMocks()
 	db.query.mockResolvedValue([])
 	db.queryOne.mockResolvedValue(null)
+	sns.verifySnsMessage.mockResolvedValue(true)
 })
 
 describe('POST /api/subscriptions/subscribe', () => {
@@ -181,6 +187,25 @@ describe('POST /api/subscriptions/webhooks/ses', () => {
 		expect(db.query).toHaveBeenCalledWith('DELETE FROM subscribers WHERE email = ?1', [
 			'gone@example.com',
 		])
+	})
+
+	it('refuses a request that fails the SNS signature check and deletes nothing', async () => {
+		sns.verifySnsMessage.mockResolvedValueOnce(false)
+		const res = await app.request(
+			'/api/subscriptions/webhooks/ses',
+			json({
+				Type: 'Notification',
+				TopicArn: 'arn:aws:sns:us-east-1:1:ses',
+				Message: JSON.stringify({
+					notificationType: 'Bounce',
+					bounce: { bouncedRecipients: [{ emailAddress: 'victim@example.com' }] },
+				}),
+			}),
+			{ SES_SNS_TOPIC_ARNS: 'arn:a, arn:b', SUBSCRIPTIONS_DB: {} },
+		)
+		expect(res.status).toBe(403)
+		expect(sns.verifySnsMessage.mock.lastCall?.[1]).toEqual(['arn:a', 'arn:b'])
+		expect(db.query).not.toHaveBeenCalled()
 	})
 
 	it('still answers 200 on a malformed body so SNS does not retry', async () => {

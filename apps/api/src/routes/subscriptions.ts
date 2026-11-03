@@ -2,6 +2,7 @@ import { type Context, Hono } from 'hono'
 import type { Bindings } from '../env'
 import { DatabaseUnavailableError, type Db, withDb } from '../services/subscriptions/db'
 import { sendOTPEmail, sendWelcomeEmail, siteUrl } from '../services/subscriptions/email'
+import { type SNSMessage, verifySnsMessage } from '../services/subscriptions/sns'
 import { generateOTP, generateToken, isValidEmail } from '../services/subscriptions/tokens'
 
 // Email sign-up, verification and preference management. The web app proxies its
@@ -235,13 +236,12 @@ subscriptions.put(
 	}),
 )
 
-interface SNSMessage {
-	Type: string
-	Token?: string
-	TopicArn: string
-	Message: string
-	SubscribeURL?: string
-}
+// The SNS topics SES publishes our bounces and complaints to (a secret, comma-separated).
+const sesTopicArns = (env?: Bindings): string[] =>
+	(env?.SES_SNS_TOPIC_ARNS ?? '')
+		.split(',')
+		.map((arn) => arn.trim())
+		.filter(Boolean)
 
 type SESNotification =
 	| { notificationType: 'Bounce'; bounce: { bouncedRecipients: Array<{ emailAddress: string }> } }
@@ -270,10 +270,16 @@ const rejectedRecipients = (
 	}
 }
 
-// SES bounce/complaint notifications via SNS. Always answers 200 so SNS does not retry.
+// SES bounce/complaint notifications via SNS. Requests without a valid SNS signature from
+// one of our topics get 403; everything else answers 200 so SNS does not retry.
 subscriptions.post('/webhooks/ses', async (c) => {
 	try {
-		const message = JSON.parse(await c.req.text()) as SNSMessage
+		const body = JSON.parse(await c.req.text()) as Partial<SNSMessage>
+		if (!(await verifySnsMessage(body, sesTopicArns(c.env)))) {
+			console.warn('Rejected an SES webhook request that failed the SNS signature check')
+			return c.json({ error: 'Invalid signature' }, 403)
+		}
+		const message = body as SNSMessage
 
 		if (message.Type === 'SubscriptionConfirmation' && message.SubscribeURL) {
 			if (!message.Token || !message.TopicArn) {

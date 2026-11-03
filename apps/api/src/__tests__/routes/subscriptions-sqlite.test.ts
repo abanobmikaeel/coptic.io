@@ -11,6 +11,11 @@ const email = vi.hoisted(() => ({
 	sendWelcomeEmail: vi.fn(),
 	sendEmail: vi.fn(),
 }))
+// Signature checks have their own tests; here every webhook request counts as genuine.
+vi.mock('../../services/subscriptions/sns', async (importOriginal) => ({
+	...(await importOriginal<typeof import('../../services/subscriptions/sns')>()),
+	verifySnsMessage: async () => true,
+}))
 vi.mock('../../services/subscriptions/email', async (importOriginal) => ({
 	...(await importOriginal<typeof import('../../services/subscriptions/email')>()),
 	...email,
