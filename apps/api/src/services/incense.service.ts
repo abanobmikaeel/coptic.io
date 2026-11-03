@@ -1,4 +1,4 @@
-import { gregorianToCoptic, toDateKey } from '@coptic/core'
+import { type CopticDate, gregorianToCoptic, toDateKey } from '@coptic/core'
 import { getIncenseService as getArIncenseService } from '@coptic/data/ar/incense'
 import { resolveBlocks } from '@coptic/data/content'
 import { getIncenseService as getCopIncenseService } from '@coptic/data/cop/incense'
@@ -14,7 +14,7 @@ import {
 	getIncenseService as getEnIncenseService,
 } from '@coptic/data/en/incense'
 import { getByCopticDate } from '../models/readings'
-import type { BibleTranslation, BibleVerse, CopticDate } from '../types'
+import type { BibleTranslation, BibleVerse } from '../types'
 import { buildOccasion } from './occasion'
 import { resolvePsalm } from './psalm-resolver'
 import { flattenReadings } from './readings-format'
