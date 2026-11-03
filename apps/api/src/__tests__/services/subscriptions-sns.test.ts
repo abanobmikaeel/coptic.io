@@ -91,20 +91,23 @@ describe('stringToSign', () => {
 })
 
 describe('trustedCertUrl', () => {
-	it('rebuilds HTTPS SNS certificate URLs and rejects anything else', () => {
-		expect(trustedCertUrl(CERT_URL)).toBe(CERT_URL)
+	it('accepts only certificates on the SNS host of the topic’s region', () => {
+		expect(trustedCertUrl(CERT_URL, TOPIC)).toBe(CERT_URL)
 		for (const url of [
 			CERT_URL.replace('https:', 'http:'),
+			CERT_URL.replace('us-east-1', 'eu-west-1'),
 			'https://sns.us-east-1.amazonaws.com.evil.example/SimpleNotificationService-abc.pem',
 			'https://evil.example/sns.us-east-1.amazonaws.com/SimpleNotificationService-abc.pem',
 			'https://user@sns.us-east-1.amazonaws.com/SimpleNotificationService-abc.pem',
 			`${CERT_URL}?x=1`,
 			'https://sns.us-east-1.amazonaws.com/other.pem',
+			'https://sns.us-east-1.amazonaws.com/sub/SimpleNotificationService-abc.pem',
 			'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-abc.txt',
 			'not a url',
 		]) {
-			expect(trustedCertUrl(url)).toBeNull()
+			expect(trustedCertUrl(url, TOPIC)).toBeNull()
 		}
+		expect(trustedCertUrl(CERT_URL, 'not-an-arn')).toBeNull()
 	})
 })
 

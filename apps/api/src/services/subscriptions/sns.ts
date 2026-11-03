@@ -54,16 +54,19 @@ export const stringToSign = (message: SNSMessage, fields: Array<keyof SNSMessage
 		.map((field) => `${field}\n${message[field]}\n`)
 		.join('')
 
-const SNS_CERT_URL =
-	/^https:\/\/sns\.([a-z0-9-]+)\.amazonaws\.com\/(SimpleNotificationService-[0-9a-f]+\.pem)$/
+const CERT_FILE = /^SimpleNotificationService-[0-9a-f]+\.pem$/
 
 /**
- * The signing certificate URL, rebuilt from its region and file name, or null when it is
- * not an SNS certificate on HTTPS. Only the rebuilt URL is ever fetched.
+ * The signing certificate URL, or null when `value` is not a certificate on the SNS host
+ * of `topicArn`'s region. The host comes from our own configured topic, never from the
+ * request; only the file name is taken from `value`.
  */
-export const trustedCertUrl = (value: string): string | null => {
-	const match = SNS_CERT_URL.exec(value)
-	return match ? `https://sns.${match[1]}.amazonaws.com/${match[2]}` : null
+export const trustedCertUrl = (value: string, topicArn: string): string | null => {
+	const region = topicArn.split(':')[3] ?? ''
+	if (!/^[a-z0-9-]+$/.test(region)) return null
+	const origin = `https://sns.${region}.amazonaws.com/`
+	const file = value.startsWith(origin) ? value.slice(origin.length) : ''
+	return CERT_FILE.test(file) ? origin + file : null
 }
 
 const base64ToBytes = (base64: string): Uint8Array<ArrayBuffer> =>
@@ -139,10 +142,11 @@ export async function verifySnsMessage(
 ): Promise<boolean> {
 	const fields = message.Type ? SIGNED_FIELDS[message.Type] : undefined
 	const hash = message.SignatureVersion ? HASHES[message.SignatureVersion] : undefined
-	if (!fields || !hash || !message.TopicArn || !allowedTopics.includes(message.TopicArn)) {
+	const topic = allowedTopics.find((arn) => arn === message.TopicArn)
+	if (!fields || !hash || !topic) {
 		return false
 	}
-	const certUrl = message.SigningCertURL ? trustedCertUrl(message.SigningCertURL) : null
+	const certUrl = message.SigningCertURL ? trustedCertUrl(message.SigningCertURL, topic) : null
 	if (!message.Signature || !certUrl) {
 		return false
 	}
