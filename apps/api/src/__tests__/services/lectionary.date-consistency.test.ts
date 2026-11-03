@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getByCopticDate } from '../../models/readings'
+import { getByCopticDate } from '../../services/lectionary.service'
 
 describe('readings date consistency', () => {
 	it('should not return Day field in reference object', async () => {

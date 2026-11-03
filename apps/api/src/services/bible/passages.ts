@@ -1,11 +1,12 @@
-import { range } from '../../../src/utils'
 import type { BibleTranslation, BibleVerse, Reading } from '../../types'
+import { range } from '../../utils'
 import {
-	getBook,
-	getChapterAndOrVerse,
-	getChapterByBookName,
-	getVerseByBookChapter,
-} from './bibleDataMapper'
+	multiChapterRange,
+	oneChapterPattern,
+	oneVersePattern,
+	verseRangePattern,
+} from '../../utils/regexPatterns'
+import { getBook, getChapterAndOrVerse, getChapterByBookName, getVerseByBookChapter } from './data'
 
 export const getSingleVerse = (verseString: string, translation: BibleTranslation = 'en') => {
 	const verseArr = splitAtIndex(
@@ -154,4 +155,39 @@ export const splitAtIndex = (
 		startingVerseNum: Number(startingVerseNum),
 		endVerseNum: Number(endVerseNum),
 	}
+}
+
+/**
+ *
+ * @param verseString 'a string for indexing a bible verse '
+ * @returns null if bad format
+ */
+export const getReading = (
+	verseString: string,
+	translation: BibleTranslation = 'en',
+): Reading | null => {
+	switch (true) {
+		// Check multi-chapter range first (more specific pattern)
+		case multiChapterRange.test(verseString):
+			return getMultiChapterRange(verseString, translation)
+		case verseRangePattern.test(verseString):
+			return getVerseRange(verseString, translation)
+		case oneVersePattern.test(verseString):
+			return getSingleVerse(verseString, translation)
+		case oneChapterPattern.test(verseString):
+			return getSingleChapter(verseString, translation)
+		default:
+			return null
+	}
+}
+
+// TODO: add ability to combine verses that have same bookName + chapter #
+export const parseReadingString = (
+	verseString?: string,
+	translation: BibleTranslation = 'en',
+): Reading[] | null => {
+	if (!verseString) return null
+	const parts = verseString.split(';')
+	const readings = parts.map((v) => getReading(v, translation)).filter(Boolean) as Reading[]
+	return readings.length > 0 ? readings : null
 }

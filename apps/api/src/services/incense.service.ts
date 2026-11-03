@@ -13,8 +13,8 @@ import {
 	type IncenseServiceType,
 	getIncenseService as getEnIncenseService,
 } from '@coptic/data/en/incense'
-import { getByCopticDate } from '../models/readings'
 import type { BibleTranslation, BibleVerse } from '../types'
+import { getByCopticDate } from './lectionary.service'
 import { buildOccasion } from './occasion'
 import { resolvePsalm } from './psalm-resolver'
 import { flattenReadings } from './readings-format'

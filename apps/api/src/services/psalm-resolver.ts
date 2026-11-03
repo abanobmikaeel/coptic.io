@@ -10,8 +10,8 @@
  * - Psalms 147-150: Same (approximately)
  */
 
-import { getChapterByBookName } from '../models/readings/bibleDataMapper'
 import type { BibleTranslation, BibleVerse } from '../types'
+import { getChapterByBookName } from './bible/data'
 
 export interface PsalmReference {
 	psalmNumber: number // LXX numbering

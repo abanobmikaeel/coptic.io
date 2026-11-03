@@ -6,10 +6,11 @@ import {
 	gregorianToCoptic,
 	localizeCopticDate,
 } from '@coptic/core'
-import { getReading, warmTranslation } from '../models/readings'
 import dayReadings from '../resources/dayReadings.json'
 import featuredVerses from '../resources/featuredVerses.json'
 import type { BibleTranslation } from '../types'
+import { warmTranslation } from './bible/data'
+import { getReading } from './bible/passages'
 
 type FeaturedEntry = { slot: string; reference: string; reading: string }
 type FeaturedFile = {

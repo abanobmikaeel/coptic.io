@@ -7,8 +7,8 @@
  */
 
 import { type AgpeyaHourId, getAllAgpeyaHours, isMidnightHour } from '@coptic/data/en/agpeya'
-import { getRawBible, warmTranslation } from '../../models/readings/bibleDataMapper'
 import type { BibleBook, BibleType } from '../../types'
+import { getRawBible, warmTranslation } from '../bible/data'
 import { searchSynaxarium as searchSynaxariumService } from '../synaxarium.service'
 import type {
 	AgpeyaSearchResult,

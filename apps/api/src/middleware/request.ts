@@ -1,5 +1,5 @@
 import { createMiddleware } from 'hono/factory'
-import { warmTranslation } from '../models/readings'
+import { warmTranslation } from '../services/bible/data'
 import type { BibleTranslation } from '../types'
 import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
 import { WALL_CLOCK_CACHE_CONTROL, parseTranslation } from '../utils/request'

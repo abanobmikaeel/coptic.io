@@ -1,8 +1,9 @@
 import { getLiturgicalName, gregorianToCoptic, localizeCopticDate } from '@coptic/core'
 import { localizeReference } from '@coptic/data'
-import { getByCopticDate, warmTranslation } from '../models/readings'
 import { type BibleTranslation, READING_SLOTS } from '../types'
+import { warmTranslation } from './bible/data'
 import { getCelebrationsForDate } from './celebrations.service'
+import { getByCopticDate } from './lectionary.service'
 
 const localizeReferenceObject = (reference: Record<string, unknown>, lang: string) => {
 	const out: Record<string, unknown> = { ...reference }

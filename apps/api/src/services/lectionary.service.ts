@@ -5,67 +5,21 @@ import {
 	getLiturgicalSeasonForDate,
 	getReadingCycle,
 } from '@coptic/core'
-import dayReadings from '../../resources/dayReadings.json'
-import holyFiftyReadings from '../../resources/holyFiftyReadings.json'
-import jonahReadings from '../../resources/jonahReadings.json'
-import lentReadings from '../../resources/lentReadings.json'
-import sundayReadings from '../../resources/sundayReadings.json'
-import uniqueReadings from '../../resources/uniqueReadings.json'
-import { getSynaxariumForDate } from '../../services/synaxarium.service'
-import type { BibleTranslation, Reading } from '../../types'
-import {
-	multiChapterRange,
-	oneChapterPattern,
-	oneVersePattern,
-	verseRangePattern,
-} from '../../utils/regexPatterns'
-import {
-	getMultiChapterRange,
-	getSingleChapter,
-	getSingleVerse,
-	getVerseRange,
-} from './verseTextTransformer'
+import dayReadings from '../resources/dayReadings.json'
+import holyFiftyReadings from '../resources/holyFiftyReadings.json'
+import jonahReadings from '../resources/jonahReadings.json'
+import lentReadings from '../resources/lentReadings.json'
+import sundayReadings from '../resources/sundayReadings.json'
+import uniqueReadings from '../resources/uniqueReadings.json'
+import type { BibleTranslation, Reading } from '../types'
+import { parseReadingString } from './bible/passages'
+import { getSynaxariumForDate } from './synaxarium.service'
 
 // Build indexed Map at module load for O(1) lookup by reading ID
 const readingsById = new Map<number, (typeof uniqueReadings)[number]>()
 for (const reading of uniqueReadings) {
 	readingsById.set(reading.id, reading)
 }
-/**
- *
- * @param verseString 'a string for indexing a bible verse '
- * @returns null if bad format
- */
-export const getReading = (
-	verseString: string,
-	translation: BibleTranslation = 'en',
-): Reading | null => {
-	switch (true) {
-		// Check multi-chapter range first (more specific pattern)
-		case multiChapterRange.test(verseString):
-			return getMultiChapterRange(verseString, translation)
-		case verseRangePattern.test(verseString):
-			return getVerseRange(verseString, translation)
-		case oneVersePattern.test(verseString):
-			return getSingleVerse(verseString, translation)
-		case oneChapterPattern.test(verseString):
-			return getSingleChapter(verseString, translation)
-		default:
-			return null
-	}
-}
-
-// TODO: add ability to combine verses that have same bookName + chapter #
-export const parseReadingString = (
-	verseString?: string,
-	translation: BibleTranslation = 'en',
-): Reading[] | null => {
-	if (!verseString) return null
-	const parts = verseString.split(';')
-	const readings = parts.map((v) => getReading(v, translation)).filter(Boolean) as Reading[]
-	return readings.length > 0 ? readings : null
-}
-
 type ReadingRecord = {
 	Day?: string
 	Prophecies?: string
@@ -198,9 +152,6 @@ const getCycleEntry = (cycle: ReadingCycle): CycleEntry | null => {
 		}
 	}
 }
-
-// Re-export so route handlers can call warmTranslation before detailed lookups in Workers.
-export { warmTranslation } from './bibleDataMapper'
 
 export const getByCopticDate = (
 	gregorianDate: Date,
