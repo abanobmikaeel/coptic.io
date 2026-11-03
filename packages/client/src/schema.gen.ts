@@ -536,7 +536,7 @@ export interface paths {
                 path: {
                     year: string;
                     /** @description Gregorian month, 1–12 */
-                    month: string;
+                    month: number;
                 };
                 cookie?: never;
             };
