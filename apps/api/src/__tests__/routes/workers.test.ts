@@ -21,10 +21,10 @@ const bucket = {
 }
 const executionCtx = { waitUntil: () => {}, passThroughOnException: () => {}, props: {} }
 
-const requestInFreshIsolate = async (path: string) => {
+const requestInFreshIsolate = async (path: string, init: RequestInit = {}) => {
 	vi.resetModules()
 	const { app } = await import('../../index')
-	return app.request(path, {}, { BIBLE_BUCKET: bucket }, executionCtx)
+	return app.request(path, init, { BIBLE_BUCKET: bucket }, executionCtx)
 }
 
 // Every route that prints scripture, in a translation other than English
@@ -47,6 +47,35 @@ describe('scripture routes in a fresh Workers isolate', () => {
 		const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
 		const res = await requestInFreshIsolate(path)
 		expect(res.status, JSON.stringify(errors.mock.calls[0]?.[1]?.message)).toBe(200)
+		errors.mockRestore()
+	})
+})
+
+// Every GraphQL query that prints scripture, in a translation other than English
+const SCRIPTURE_QUERIES = [
+	'readings(date: "2026-11-01", detailed: true, lang: "ar") { LGospel { bookName } }',
+	'dailyVerse(date: "2026-05-20", lang: "ar") { reference }',
+	'lentDay(date: "2026-03-02", detailed: true, lang: "ar") { resolvedReferences { reference } }',
+	'agpeyaHour(hour: prime, lang: ar) { psalms { reference } }',
+	'currentAgpeyaHour(lang: ar) { id }',
+	'agpeyaHours(lang: ar) { id }',
+	'agpeyaWatch(watch: 1, lang: ar) { psalms { reference } }',
+	'incense(time: evening, date: "2026-06-01", lang: ar) { name }',
+	'incense(time: morning, date: "2026-06-01", lang: ar) { name }',
+	'liturgy(date: "2026-06-01", lang: ar) { name }',
+	'search(query: "John 3:16") { totalCount }',
+]
+
+describe('scripture GraphQL queries in a fresh Workers isolate', () => {
+	it.each(SCRIPTURE_QUERIES)('%s loads its translation before reading it', async (query) => {
+		const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
+		const res = await requestInFreshIsolate('/graphql', {
+			method: 'POST',
+			headers: { 'content-type': 'application/json' },
+			body: JSON.stringify({ query: `{ ${query} }` }),
+		})
+		const body = (await res.json()) as { errors?: { message: string }[] }
+		expect(body.errors, JSON.stringify(errors.mock.calls[0])).toBeUndefined()
 		errors.mockRestore()
 	})
 })

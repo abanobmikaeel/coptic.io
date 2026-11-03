@@ -1,10 +1,7 @@
-import { addDays, getDaysFromEaster, getEasterDate, toDateKey } from '@coptic/core'
-import { loadLentDevotional } from '@coptic/data/en/lent'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { ErrorSchema, LentDaySchema, LentScheduleSchema } from '../schemas'
-import { warmTranslation } from '../services/bible/data'
-import { parseReadingString } from '../services/bible/passages'
+import { getLentDay, getLentSchedule } from '../services/lent.service'
 import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
 import { WALL_CLOCK_CACHE_CONTROL, parseTranslation, yearParam } from '../utils/request'
 
@@ -34,27 +31,7 @@ for (const route of withOptionalLastParam(getScheduleRoute)) {
 		// The year was validated when present; the bare route reads the current year
 		const year = requested ? Number.parseInt(requested, 10) : new Date().getFullYear()
 
-		const easter = getEasterDate(year)
-		const devotional = await loadLentDevotional()
-
-		const schedule = devotional.map((entry) => ({
-			...entry,
-			date: toDateKey(addDays(easter, entry.dayOffset)),
-		}))
-		const first = schedule[0]
-		const last = schedule.at(-1)
-		if (!first || !last) throw new Error('The Lent devotional has no days')
-
-		return c.json(
-			{
-				year,
-				easterDate: toDateKey(easter),
-				lentStart: first.date,
-				lentEnd: last.date,
-				days: schedule,
-			},
-			200,
-		)
+		return c.json(await getLentSchedule(year), 200)
 	})
 }
 
@@ -88,14 +65,9 @@ const getForDateRoute = createRoute({
 
 for (const route of withOptionalLastParam(getForDateRoute)) {
 	app.openapi(route, async (c) => {
-		const { date } = c.var
 		const { detailed, lang } = c.req.valid('query')
-
-		const offset = getDaysFromEaster(date)
-		const devotional = await loadLentDevotional()
-		const entry = devotional.find((d) => d.dayOffset === offset)
-
-		if (!entry) {
+		const day = await getLentDay(c.var.date, detailed === 'true', parseTranslation(lang))
+		if (!day) {
 			return c.json(
 				{
 					error: 'No devotional reading found for this date. Date may not fall within Great Lent.',
@@ -103,17 +75,7 @@ for (const route of withOptionalLastParam(getForDateRoute)) {
 				404,
 			)
 		}
-
-		const result = { ...entry, date: toDateKey(date) }
-		if (detailed !== 'true') return c.json(result, 200)
-
-		// In Workers, bible data is lazy-loaded from R2 on first use per isolate.
-		const translation = parseTranslation(lang)
-		await warmTranslation(translation)
-		const resolvedReferences = entry.references
-			.filter((ref) => ref !== '(TBD)')
-			.map((reference) => ({ reference, readings: parseReadingString(reference, translation) }))
-		return c.json({ ...result, resolvedReferences }, 200)
+		return c.json(day, 200)
 	})
 }
 

@@ -3,7 +3,8 @@ import { app } from '../../index'
 
 /**
  * Every GraphQL query must answer exactly what its REST route answers. GraphQL sends
- * null where REST omits a field, so nulls are dropped on both sides; a field REST
+ * null where REST omits a field, so nulls are dropped on both sides, and REST's
+ * plain-string lines are read as GraphQL's { text } lines. A field REST
  * serves that the query does not select fails the comparison, which is what keeps
  * the hand-written schema in step with REST.
  */
@@ -23,13 +24,18 @@ const rest = async (path: string) => {
 	return res.json()
 }
 
-const dropNulls = (value: unknown): unknown => {
-	if (Array.isArray(value)) return value.map(dropNulls)
+// Drops nulls, and writes a plain-string prayed line as GraphQL types it: { text }
+const normalize = (value: unknown, key = ''): unknown => {
+	if (Array.isArray(value)) {
+		return value.map((item) =>
+			key === 'content' && typeof item === 'string' ? { text: item } : normalize(item),
+		)
+	}
 	if (value && typeof value === 'object') {
 		return Object.fromEntries(
 			Object.entries(value)
 				.filter(([, v]) => v !== null)
-				.map(([k, v]) => [k, dropNulls(v)]),
+				.map(([k, v]) => [k, normalize(v, k)]),
 		)
 	}
 	return value
@@ -38,7 +44,7 @@ const dropNulls = (value: unknown): unknown => {
 const expectParity = async (query: string, field: string, path: string) => {
 	const [{ data, errors }, expected] = await Promise.all([gql(`{ ${query} }`), rest(path)])
 	expect(errors).toBeUndefined()
-	expect(dropNulls(data?.[field])).toEqual(dropNulls(expected))
+	expect(normalize(data?.[field])).toEqual(normalize(expected))
 }
 
 const COPTIC_DATE = 'dateString day month year monthString'
@@ -63,6 +69,35 @@ const READINGS = `reference { id ${SLOTS.join(' ')} }
 	${SLOTS.map((slot) => `${slot} { ${READING_DETAIL} }`).join(' ')}
 	Synaxarium { ${SYNAXARIUM} } synaxariumLanguage celebrations { ${CELEBRATION} }
 	season seasonKey seasonDay cycle readingsAvailable fullDate { ${COPTIC_DATE} }`
+
+const VERSE = 'num text'
+const LINE = 'text speaker isRubric isResponse coptic'
+const PRAYER = `title content { ${LINE} } inline`
+const PSALM = `title reference rubric verses { ${VERSE} }`
+const GOSPEL = `reference rubric verses { ${VERSE} }`
+const PART_FIELDS = `id kind title rubric inline content { ${LINE} } reference verses { ${VERSE} }
+	theme prayer psalmsIntro psalmsRubric`
+const PART = `${PART_FIELDS} sections { ${PART_FIELDS} }`
+const WATCH = `id name theme opening { ${PRAYER} } psalmsIntro psalms { ${PSALM} } gospel { ${GOSPEL} }
+	gospelConclusion { ${PRAYER} } litanies { ${PRAYER} } closing { ${PRAYER} } conclusion { ${PART} }`
+const HOUR = `id name englishName traditionalTime introduction opening { ${PRAYER} }
+	hourIntro { ${PRAYER} } comeLetUsWorship { ${PRAYER} } thanksgiving { ${PRAYER} }
+	introductoryPsalm { ${PSALM} } psalmsIntro psalms { ${PSALM} } gospel { ${GOSPEL} }
+	gospelConclusion { ${PRAYER} } litanies { ${PRAYER} } lordsPrayer { ${PRAYER} }
+	thanksgivingAfter { ${PRAYER} } closing { ${PRAYER} } conclusion { ${PART} }
+	watches { ${WATCH} } sections { ${PART} }`
+const SERVICE = `type name date copticDate { ${COPTIC_DATE} } sections { id type role title titleLanguage
+	rubric optional content { ${LINE} } reference verses { ${VERSE} } }`
+const TASBEHA = `type id name description status rite { cycle dayTune weekdays }
+	sections { id type role kind title titleLanguage content { ${LINE} }
+	source { name url pageId accessedAt corroboratingUrls } }`
+const PERIOD = 'name description startDate endDate type isFasting'
+const LENT_DAY = `dayOffset dayNumber part weekNumber weekTheme day title references
+	sermons { title preacher youtubeUrl thumbnail } sundayHolyGospelReading date
+	resolvedReferences { reference readings { ${READING_DETAIL} } }`
+const SEARCH = `results { bible { type book chapter verse text url score }
+	synaxarium { type name date copticDate summary url score }
+	agpeya { type id name englishName traditionalTime url score } } query totalCount`
 
 describe('GraphQL matches REST', () => {
 	describe('calendar', () => {
@@ -166,6 +201,167 @@ describe('GraphQL matches REST', () => {
 				'/api/synaxarium/search/query?q=Mark',
 			))
 	})
+	describe('season', () => {
+		// Inside Great Lent and in Ordinary Time
+		it.each([
+			['2026-03-01', 'en'],
+			['2026-03-01', 'ar'],
+			['2026-09-20', 'es'],
+		])('season for %s in %s', (date, lang) =>
+			expectParity(
+				`season(date: "${date}", lang: "${lang}") { date season description startDate endDate isFasting type }`,
+				'season',
+				`/api/season/${date}?lang=${lang}`,
+			),
+		)
+
+		it('seasonsForYear', () =>
+			expectParity(
+				`seasonsForYear(year: 2026) { year seasons { ${PERIOD} } }`,
+				'seasonsForYear',
+				'/api/season/year/2026',
+			))
+
+		it('fastingPeriods', () =>
+			expectParity(
+				`fastingPeriods(year: 2026) { year fastingPeriods { ${PERIOD} } }`,
+				'fastingPeriods',
+				'/api/season/fasting/2026',
+			))
+	})
+
+	describe('lent', () => {
+		it('lentSchedule', () =>
+			expectParity(
+				`lentSchedule(year: 2026) { year easterDate lentStart lentEnd days { ${LENT_DAY} } }`,
+				'lentSchedule',
+				'/api/lent/schedule/2026',
+			))
+
+		it.each(['en', 'ar'])('detailed lentDay in %s', (lang) =>
+			expectParity(
+				`lentDay(date: "2026-03-02", detailed: true, lang: "${lang}") { ${LENT_DAY} }`,
+				'lentDay',
+				`/api/lent/2026-03-02?detailed=true&lang=${lang}`,
+			),
+		)
+
+		it('lentDay is null where REST answers 404', async () => {
+			const [{ data, errors }, res] = await Promise.all([
+				gql('{ lentDay(date: "2026-09-20") { date } }'),
+				app.request('/api/lent/2026-09-20'),
+			])
+			expect(errors).toBeUndefined()
+			expect(data?.lentDay).toBeNull()
+			expect(res.status).toBe(404)
+		})
+	})
+
+	describe('search', () => {
+		it.each([
+			['search(query: "John 3:16")', '/api/search?q=John%203:16'],
+			[
+				'search(query: "Mark", limit: 10, categories: [synaxarium, agpeya])',
+				'/api/search?q=Mark&limit=10&categories=synaxarium,agpeya',
+			],
+		])('%s', (call, path) => expectParity(`${call} { ${SEARCH} }`, 'search', path))
+	})
+
+	describe('agpeya', () => {
+		it.each([
+			['prime', 'en', 'septuagint'],
+			['prime', 'ar', 'septuagint'],
+			['sext', 'es', 'bible'],
+			['midnight', 'en', 'septuagint'],
+			['midnight', 'ar', 'septuagint'],
+		])('agpeyaHour %s in %s from the %s psalter', (hour, lang, psalms) =>
+			expectParity(
+				`agpeyaHour(hour: ${hour}, lang: ${lang}, psalms: ${psalms}, includeSections: true) { ${HOUR} }`,
+				'agpeyaHour',
+				`/api/agpeya/${hour}?lang=${lang}&psalms=${psalms}&include=sections`,
+			),
+		)
+
+		it('agpeyaHours', () =>
+			expectParity(`agpeyaHours(lang: ar) { ${HOUR} }`, 'agpeyaHours', '/api/agpeya/hours?lang=ar'))
+
+		it('currentAgpeyaHour', () =>
+			expectParity(`currentAgpeyaHour { ${HOUR} }`, 'currentAgpeyaHour', '/api/agpeya'))
+
+		it.each([
+			[1, 'en'],
+			[2, 'ar'],
+		])('agpeyaWatch %s in %s', (watch, lang) =>
+			expectParity(
+				`agpeyaWatch(watch: ${watch}, lang: ${lang}) { ${WATCH} }`,
+				'agpeyaWatch',
+				`/api/agpeya/midnight/watch/${watch}?lang=${lang}`,
+			),
+		)
+
+		it('agpeyaTranslations', async () => {
+			const [{ data }, expected] = await Promise.all([
+				gql('{ agpeyaTranslations }'),
+				rest('/api/agpeya/translations'),
+			])
+			expect(data?.agpeyaTranslations).toEqual(expected.available)
+		})
+	})
+
+	describe('incense and the Liturgy', () => {
+		it.each([
+			['evening', 'en', ''],
+			['evening', 'ar', 'martyrs,saint-mary'],
+			['morning', 'cop', ''],
+		])('incense %s in %s with [%s]', (time, lang, commemorations) =>
+			expectParity(
+				`incense(time: ${time}, date: "2026-06-01", lang: ${lang},
+					commemorations: ${JSON.stringify(commemorations ? commemorations.split(',') : [])}) { ${SERVICE} }`,
+				'incense',
+				`/api/incense/${time}?date=2026-06-01&lang=${lang}${commemorations ? `&commemorations=${commemorations}` : ''}`,
+			),
+		)
+
+		it('incenseCommemorations', async () => {
+			const [{ data }, expected] = await Promise.all([
+				gql('{ incenseCommemorations }'),
+				rest('/api/incense/commemorations'),
+			])
+			expect(data?.incenseCommemorations).toEqual(expected.commemorations)
+		})
+
+		it.each(['en', 'ar', 'cop'])('liturgy in %s', (lang) =>
+			expectParity(
+				`liturgy(date: "2026-06-01", lang: ${lang}) { ${SERVICE} }`,
+				'liturgy',
+				`/api/liturgy/basil?date=2026-06-01&lang=${lang}`,
+			),
+		)
+	})
+
+	describe('tasbeha', () => {
+		it.each(['en', 'ar', 'cop'])('tasbeha in %s', (lang) =>
+			expectParity(
+				`tasbeha(date: "2026-07-27", lang: ${lang}) { ${TASBEHA} }`,
+				'tasbeha',
+				`/api/tasbeha?date=2026-07-27&lang=${lang}`,
+			),
+		)
+
+		it('sundayTasbeha', () =>
+			expectParity(
+				`sundayTasbeha(date: "2026-07-26", lang: ar) { ${TASBEHA} }`,
+				'sundayTasbeha',
+				'/api/tasbeha/sunday?date=2026-07-26&lang=ar',
+			))
+
+		it('tasbehaForDay', () =>
+			expectParity(
+				`tasbehaForDay(day: saturday, date: "2026-07-25") { ${TASBEHA} }`,
+				'tasbehaForDay',
+				'/api/tasbeha/saturday?date=2026-07-25',
+			))
+	})
 })
 
 describe('GraphQL rejects what REST rejects', () => {
@@ -173,6 +369,9 @@ describe('GraphQL rejects what REST rejects', () => {
 		['celebrationsForDate(lang: fr) { name }', 'lang'],
 		['calendarMonth(year: 2026, month: 13) { month }', 'month'],
 		['upcomingCelebrations(days: 0) { date }', 'days'],
+		['search(query: "John", limit: 51) { query }', 'limit'],
+		['agpeyaWatch(watch: 4) { id }', 'watch'],
+		['incense(time: evening, lang: es) { name }', 'lang'],
 	])('%s', async (query) => {
 		const { errors } = await gql(`{ ${query} }`)
 		expect(errors?.length).toBeGreaterThan(0)

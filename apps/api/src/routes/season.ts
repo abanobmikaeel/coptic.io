@@ -1,12 +1,3 @@
-import {
-	getAllSeasonsForYear,
-	getFastingPeriodsForYear,
-	getLiturgicalDescription,
-	getLiturgicalName,
-	getLiturgicalSeasonForDate,
-	isInFastingPeriod,
-	toDateKey,
-} from '@coptic/core'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import {
@@ -15,8 +6,9 @@ import {
 	SeasonResponseSchema,
 	SeasonYearSchema,
 } from '../schemas'
+import { getFastingPeriods, getSeasonForDate, getSeasonsForYear } from '../services/season.service'
 import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
-import { yearParam } from '../utils/request'
+import { parseCalendarLanguage, yearParam } from '../utils/request'
 
 const app = createApiApp()
 
@@ -47,42 +39,9 @@ const getForDateRoute = createRoute({
 })
 
 for (const route of withOptionalLastParam(getForDateRoute)) {
-	app.openapi(route, (c) => {
-		const { date } = c.var
-		const langQuery = c.req.valid('query').lang
-		const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
-		const currentSeason = getLiturgicalSeasonForDate(date)
-		const isFasting = isInFastingPeriod(date)
-
-		if (!currentSeason) {
-			return c.json(
-				{
-					date: toDateKey(date),
-					season: getLiturgicalName('Ordinary Time', lang),
-					description: getLiturgicalDescription(
-						'Ordinary Time',
-						'Regular liturgical time outside major seasons',
-						lang,
-					),
-					isFasting: false,
-				},
-				200,
-			)
-		}
-
-		return c.json(
-			{
-				date: toDateKey(date),
-				season: getLiturgicalName(currentSeason.name, lang),
-				description: getLiturgicalDescription(currentSeason.name, currentSeason.description, lang),
-				startDate: toDateKey(currentSeason.startDate),
-				endDate: toDateKey(currentSeason.endDate),
-				isFasting,
-				type: currentSeason.type,
-			},
-			200,
-		)
-	})
+	app.openapi(route, (c) =>
+		c.json(getSeasonForDate(c.var.date, parseCalendarLanguage(c.req.valid('query').lang)), 200),
+	)
 }
 
 // GET /api/season/year/:year
@@ -99,26 +58,7 @@ const getYearRoute = createRoute({
 	},
 })
 
-app.openapi(getYearRoute, (c) => {
-	const { year } = c.req.valid('param')
-
-	const seasons = getAllSeasonsForYear(year)
-
-	return c.json(
-		{
-			year,
-			seasons: seasons.map((s) => ({
-				name: s.name,
-				description: s.description,
-				startDate: toDateKey(s.startDate),
-				endDate: toDateKey(s.endDate),
-				isFasting: s.isFasting,
-				type: s.type,
-			})),
-		},
-		200,
-	)
-})
+app.openapi(getYearRoute, (c) => c.json(getSeasonsForYear(c.req.valid('param').year), 200))
 
 // GET /api/season/fasting/:year
 const getFastingPeriodsRoute = createRoute({
@@ -134,24 +74,8 @@ const getFastingPeriodsRoute = createRoute({
 	},
 })
 
-app.openapi(getFastingPeriodsRoute, (c) => {
-	const { year } = c.req.valid('param')
-
-	const fastingPeriods = getFastingPeriodsForYear(year)
-
-	return c.json(
-		{
-			year,
-			fastingPeriods: fastingPeriods.map((f) => ({
-				name: f.name,
-				description: f.description,
-				startDate: toDateKey(f.startDate),
-				endDate: toDateKey(f.endDate),
-				type: f.type,
-			})),
-		},
-		200,
-	)
-})
+app.openapi(getFastingPeriodsRoute, (c) =>
+	c.json(getFastingPeriods(c.req.valid('param').year), 200),
+)
 
 export default app
