@@ -4,17 +4,17 @@ import featuredVerses from '../../resources/featuredVerses.json'
 
 describe('GET /api/verse', () => {
 	it('returns the daily verse for a fixed date', async () => {
-		const res = await app.request('/api/verse/2026-05-20') // Bashans 12, reading id 18
+		const res = await app.request('/api/verse/2026-10-27') // Baba 17, reading id 54
 		expect(res.status).toBe(200)
 
 		const json = await res.json()
-		const entry = featuredVerses.fixed['18']
+		const entry = featuredVerses.fixed['54']
 		expect(json.reference).toBe(entry.reference)
 		expect(json.readingSlot).toBe(entry.slot)
 		expect(json.readingReference).toBe(entry.reading)
 		expect(`${json.verse.book} ${json.verse.chapter}:${json.verse.verse}`).toBe(entry.reference)
 		expect(json.verse.text).toBeTruthy()
-		expect(json.fullDate.monthString).toBe('Bashans')
+		expect(json.fullDate.monthString).toBe('Baba')
 	})
 
 	it('returns the verse in the requested translation', async () => {
