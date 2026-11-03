@@ -2,9 +2,9 @@ import { X509Certificate } from 'node:crypto'
 import { describe, expect, it, vi } from 'vitest'
 import {
 	type SNSMessage,
-	isTrustedCertUrl,
 	spkiFromCertificate,
 	stringToSign,
+	trustedCertUrl,
 	verifySnsMessage,
 } from '../../services/subscriptions/sns'
 
@@ -90,14 +90,21 @@ describe('stringToSign', () => {
 	})
 })
 
-describe('isTrustedCertUrl', () => {
-	it('accepts only HTTPS .pem URLs on an SNS regional host', () => {
-		expect(isTrustedCertUrl(CERT_URL)).toBe(true)
-		expect(isTrustedCertUrl(CERT_URL.replace('https:', 'http:'))).toBe(false)
-		expect(isTrustedCertUrl('https://sns.us-east-1.amazonaws.com.evil.example/a.pem')).toBe(false)
-		expect(isTrustedCertUrl('https://evil.example/sns.us-east-1.amazonaws.com/a.pem')).toBe(false)
-		expect(isTrustedCertUrl('https://sns.us-east-1.amazonaws.com/a.txt')).toBe(false)
-		expect(isTrustedCertUrl('not a url')).toBe(false)
+describe('trustedCertUrl', () => {
+	it('rebuilds HTTPS SNS certificate URLs and rejects anything else', () => {
+		expect(trustedCertUrl(CERT_URL)).toBe(CERT_URL)
+		for (const url of [
+			CERT_URL.replace('https:', 'http:'),
+			'https://sns.us-east-1.amazonaws.com.evil.example/SimpleNotificationService-abc.pem',
+			'https://evil.example/sns.us-east-1.amazonaws.com/SimpleNotificationService-abc.pem',
+			'https://user@sns.us-east-1.amazonaws.com/SimpleNotificationService-abc.pem',
+			`${CERT_URL}?x=1`,
+			'https://sns.us-east-1.amazonaws.com/other.pem',
+			'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-abc.txt',
+			'not a url',
+		]) {
+			expect(trustedCertUrl(url)).toBeNull()
+		}
 	})
 })
 

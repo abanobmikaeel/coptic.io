@@ -54,22 +54,20 @@ export const stringToSign = (message: SNSMessage, fields: Array<keyof SNSMessage
 		.map((field) => `${field}\n${message[field]}\n`)
 		.join('')
 
-/** Signing certificates must come from SNS itself over HTTPS. */
-export const isTrustedCertUrl = (value: string): boolean => {
-	try {
-		const url = new URL(value)
-		return (
-			url.protocol === 'https:' &&
-			/^sns\.[a-z0-9-]+\.amazonaws\.com$/.test(url.hostname) &&
-			url.pathname.endsWith('.pem')
-		)
-	} catch {
-		return false
-	}
+const SNS_CERT_URL =
+	/^https:\/\/sns\.([a-z0-9-]+)\.amazonaws\.com\/(SimpleNotificationService-[0-9a-f]+\.pem)$/
+
+/**
+ * The signing certificate URL, rebuilt from its region and file name, or null when it is
+ * not an SNS certificate on HTTPS. Only the rebuilt URL is ever fetched.
+ */
+export const trustedCertUrl = (value: string): string | null => {
+	const match = SNS_CERT_URL.exec(value)
+	return match ? `https://sns.${match[1]}.amazonaws.com/${match[2]}` : null
 }
 
 const base64ToBytes = (base64: string): Uint8Array<ArrayBuffer> =>
-	Uint8Array.from(atob(base64), (char) => char.charCodeAt(0))
+	Uint8Array.from(atob(base64), (char) => char.codePointAt(0) ?? 0)
 
 /** Reads one DER element at `offset`: where its content starts and where it ends. */
 const readElement = (der: Uint8Array, offset: number) => {
@@ -144,7 +142,8 @@ export async function verifySnsMessage(
 	if (!fields || !hash || !message.TopicArn || !allowedTopics.includes(message.TopicArn)) {
 		return false
 	}
-	if (!message.Signature || !message.SigningCertURL || !isTrustedCertUrl(message.SigningCertURL)) {
+	const certUrl = message.SigningCertURL ? trustedCertUrl(message.SigningCertURL) : null
+	if (!message.Signature || !certUrl) {
 		return false
 	}
 	if (fields.some((field) => field !== 'Subject' && typeof message[field] !== 'string')) {
@@ -152,7 +151,7 @@ export async function verifySnsMessage(
 	}
 
 	try {
-		const key = await loadKey(message.SigningCertURL, hash)
+		const key = await loadKey(certUrl, hash)
 		return await crypto.subtle.verify(
 			'RSASSA-PKCS1-v1_5',
 			key,
