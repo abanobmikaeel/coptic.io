@@ -1,4 +1,5 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+import type { Env } from 'hono'
 
 /**
  * Create an OpenAPIHono app with a consistent validation-error envelope.
@@ -6,8 +7,8 @@ import { OpenAPIHono } from '@hono/zod-openapi'
  * which differs from the `{ error: string }` envelope used by hand-written
  * route errors and leaks schema internals to clients.
  */
-export const createApiApp = () =>
-	new OpenAPIHono({
+export const createApiApp = <E extends Env = Env>() =>
+	new OpenAPIHono<E>({
 		defaultHook: (result, c) => {
 			if (!result.success) {
 				const message = result.error.issues

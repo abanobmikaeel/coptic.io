@@ -1,8 +1,12 @@
-import { type Context, Hono } from 'hono'
+import { createRoute, z } from '@hono/zod-openapi'
+import type { Context } from 'hono'
 import type { Bindings } from '../env'
+import { ErrorSchema } from '../schemas'
 import { DatabaseUnavailableError, type Db, withDb } from '../services/subscriptions/db'
 import { sendOTPEmail, sendWelcomeEmail, siteUrl } from '../services/subscriptions/email'
+import { type SNSMessage, verifySnsMessage } from '../services/subscriptions/sns'
 import { generateOTP, generateToken, isValidEmail } from '../services/subscriptions/tokens'
+import { createApiApp, jsonResponse } from '../utils/openapi'
 
 // Email sign-up, verification and preference management. The web app proxies its
 // /api/{subscribe,verify,unsubscribe,preferences,webhooks/ses} paths here.
@@ -11,7 +15,13 @@ const DEFAULT_TIMEZONE = 'America/New_York'
 
 type Env = { Bindings: Bindings }
 
-const subscriptions = new Hono<Env>()
+const subscriptions = createApiApp<Env>()
+
+// Only the GET routes are in the OpenAPI spec: they are the links in emails. The rest
+// are form and webhook endpoints used by coptic.io itself.
+const TokenQuerySchema = z.object({
+	token: z.string().optional().openapi({ description: 'Subscriber token from an email link' }),
+})
 
 /** Runs a handler with a request-scoped DB connection; maps a missing DB to 503. */
 const handle =
@@ -143,7 +153,18 @@ subscriptions.post(
 )
 
 // One-click unsubscribe links in emails land here and redirect back to the site.
-subscriptions.get('/unsubscribe', async (c) => {
+const unsubscribeLinkRoute = createRoute({
+	method: 'get',
+	path: '/unsubscribe',
+	tags: ['Subscriptions'],
+	summary: 'Unsubscribe from a link in an email',
+	description:
+		'Removes the subscriber that owns the token, then redirects to coptic.io with `unsubscribed` set to `true`, `not_found` or `error`.',
+	request: { query: TokenQuerySchema },
+	responses: { 302: { description: 'Redirect to coptic.io with the outcome' } },
+})
+
+subscriptions.openapi(unsubscribeLinkRoute, async (c) => {
 	const home = new URL('/', siteUrl(c.env))
 	const token = c.req.query('token')
 	if (!token) return c.redirect(home.toString())
@@ -170,32 +191,73 @@ interface PreferencesRow {
 const subscriberToken = (c: Context<Env>): string | undefined =>
 	c.req.query('token') || c.req.header('x-subscriber-token')
 
-subscriptions.get(
-	'/preferences',
-	handle('get preferences', async (c, db) => {
-		const token = subscriberToken(c)
-		if (!token) {
-			return c.json({ error: 'Token is required' }, 400)
-		}
+const PreferencesSchema = z
+	.object({
+		email: z.string(),
+		name: z.string().nullable(),
+		patronSaint: z.string().nullable(),
+		dailyReadings: z.boolean(),
+		feastReminders: z.boolean(),
+	})
+	.openapi('SubscriptionPreferences')
 
-		const subscriber = await db.queryOne<PreferencesRow>(
-			`SELECT email, name, patron_saint, daily_readings, feast_reminders
-       FROM subscribers WHERE token = ?1 AND verified = TRUE`,
-			[token],
+const getPreferencesRoute = createRoute({
+	method: 'get',
+	path: '/preferences',
+	tags: ['Subscriptions'],
+	summary: "Get a subscriber's email preferences",
+	description:
+		'Returns the preferences of the verified subscriber that owns the token, passed as the `token` query parameter or the `x-subscriber-token` header.',
+	request: {
+		query: TokenQuerySchema,
+		headers: z.object({ 'x-subscriber-token': z.string().optional() }),
+	},
+	responses: {
+		200: jsonResponse(PreferencesSchema, 'The subscriber’s preferences'),
+		400: jsonResponse(ErrorSchema, 'No token given'),
+		404: jsonResponse(ErrorSchema, 'No verified subscriber has this token'),
+		500: jsonResponse(ErrorSchema, 'Unexpected error'),
+		503: jsonResponse(ErrorSchema, 'Subscriptions are unavailable'),
+	},
+})
+
+// Written out rather than through `handle` so each response matches the spec's types.
+subscriptions.openapi(getPreferencesRoute, async (c) => {
+	const token = subscriberToken(c)
+	if (!token) {
+		return c.json({ error: 'Token is required' }, 400)
+	}
+
+	try {
+		const subscriber = await withDb(c.env, (db) =>
+			db.queryOne<PreferencesRow>(
+				`SELECT email, name, patron_saint, daily_readings, feast_reminders
+         FROM subscribers WHERE token = ?1 AND verified = TRUE`,
+				[token],
+			),
 		)
 		if (!subscriber) {
 			return c.json({ error: 'Invalid token or subscriber not found' }, 404)
 		}
 
-		return c.json({
-			email: subscriber.email,
-			name: subscriber.name,
-			patronSaint: subscriber.patron_saint,
-			dailyReadings: Boolean(subscriber.daily_readings),
-			feastReminders: Boolean(subscriber.feast_reminders),
-		})
-	}),
-)
+		return c.json(
+			{
+				email: subscriber.email,
+				name: subscriber.name,
+				patronSaint: subscriber.patron_saint,
+				dailyReadings: Boolean(subscriber.daily_readings),
+				feastReminders: Boolean(subscriber.feast_reminders),
+			},
+			200,
+		)
+	} catch (error) {
+		if (error instanceof DatabaseUnavailableError) {
+			return c.json({ error: 'Subscriptions are temporarily unavailable' }, 503)
+		}
+		console.error('Error in subscriptions/get preferences:', error)
+		return c.json({ error: 'Failed to get preferences' }, 500)
+	}
+})
 
 subscriptions.put(
 	'/preferences',
@@ -235,13 +297,12 @@ subscriptions.put(
 	}),
 )
 
-interface SNSMessage {
-	Type: string
-	Token?: string
-	TopicArn: string
-	Message: string
-	SubscribeURL?: string
-}
+// The SNS topics SES publishes our bounces and complaints to (a secret, comma-separated).
+const sesTopicArns = (env?: Bindings): string[] =>
+	(env?.SES_SNS_TOPIC_ARNS ?? '')
+		.split(',')
+		.map((arn) => arn.trim())
+		.filter(Boolean)
 
 type SESNotification =
 	| { notificationType: 'Bounce'; bounce: { bouncedRecipients: Array<{ emailAddress: string }> } }
@@ -270,10 +331,16 @@ const rejectedRecipients = (
 	}
 }
 
-// SES bounce/complaint notifications via SNS. Always answers 200 so SNS does not retry.
+// SES bounce/complaint notifications via SNS. Requests without a valid SNS signature from
+// one of our topics get 403; everything else answers 200 so SNS does not retry.
 subscriptions.post('/webhooks/ses', async (c) => {
 	try {
-		const message = JSON.parse(await c.req.text()) as SNSMessage
+		const body = JSON.parse(await c.req.text()) as Partial<SNSMessage>
+		if (!(await verifySnsMessage(body, sesTopicArns(c.env)))) {
+			console.warn('Rejected an SES webhook request that failed the SNS signature check')
+			return c.json({ error: 'Invalid signature' }, 403)
+		}
+		const message = body as SNSMessage
 
 		if (message.Type === 'SubscriptionConfirmation' && message.SubscribeURL) {
 			if (!message.Token || !message.TopicArn) {

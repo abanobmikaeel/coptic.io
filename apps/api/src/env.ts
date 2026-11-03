@@ -38,4 +38,6 @@ export type Bindings = {
 	AWS_REGION?: string
 	SES_FROM_EMAIL?: string
 	SITE_URL?: string
+	// SNS topic ARNs allowed to call the SES webhook, comma-separated (secret).
+	SES_SNS_TOPIC_ARNS?: string
 }
