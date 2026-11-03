@@ -1,4 +1,17 @@
 export const typeDefs = /* GraphQL */ `
+	"Languages the calendar, celebrations and fasting are named in"
+	enum CalendarLanguage {
+		en
+		ar
+		es
+	}
+
+	"Languages the Synaxarium is published in"
+	enum SynaxariumLanguage {
+		en
+		ar
+	}
+
 	type CopticDate {
 		dateString: String!
 		day: Int!
@@ -18,22 +31,27 @@ export const typeDefs = /* GraphQL */ `
 	}
 
 	type SynaxariumEntry {
-		url: String!
+		id: String!
 		name: String!
+		url: String!
 		text: String
+		sourceRef: String
 	}
 
 	type Reading {
 		reference: ReadingReference
-		VPsalm: [ReadingDetail]
-		VGospel: [ReadingDetail]
-		MPsalm: [ReadingDetail]
-		MGospel: [ReadingDetail]
-		Pauline: [ReadingDetail]
-		Catholic: [ReadingDetail]
-		Acts: [ReadingDetail]
-		LPsalm: [ReadingDetail]
-		LGospel: [ReadingDetail]
+		Prophecies: [ReadingDetail!]
+		VPsalm: [ReadingDetail!]
+		VGospel: [ReadingDetail!]
+		MPsalm: [ReadingDetail!]
+		MGospel: [ReadingDetail!]
+		Pauline: [ReadingDetail!]
+		Catholic: [ReadingDetail!]
+		Acts: [ReadingDetail!]
+		LPsalm: [ReadingDetail!]
+		LGospel: [ReadingDetail!]
+		EPPsalm: [ReadingDetail!]
+		EPGospel: [ReadingDetail!]
 		Synaxarium: [SynaxariumEntry!]!
 		synaxariumLanguage: String
 		celebrations: [Celebration]
@@ -46,7 +64,8 @@ export const typeDefs = /* GraphQL */ `
 	}
 
 	type ReadingReference {
-		Day: String
+		id: Int
+		Prophecies: String
 		VPsalm: String
 		VGospel: String
 		MPsalm: String
@@ -56,18 +75,23 @@ export const typeDefs = /* GraphQL */ `
 		Acts: String
 		LPsalm: String
 		LGospel: String
-		id: Int
+		EPPsalm: String
+		EPGospel: String
 	}
 
 	type ReadingDetail {
-		bookName: String
-		chapter: Int
-		verses: [Verse]
+		bookName: String!
+		chapters: [ReadingChapter!]!
+	}
+
+	type ReadingChapter {
+		chapterNum: Int!
+		verses: [Verse!]!
 	}
 
 	type Verse {
-		verseNumber: Int
-		text: String
+		num: Int!
+		text: String!
 	}
 
 	type DailyVerseText {
@@ -115,10 +139,15 @@ export const typeDefs = /* GraphQL */ `
 		monthString: String!
 	}
 
+	type SynaxariumSearchEntry {
+		url: String
+		name: String
+	}
+
 	type SynaxariumSearchResult {
 		date: String!
 		copticDate: SynaxariumSearchCopticDate!
-		entry: SynaxariumEntry!
+		entry: SynaxariumSearchEntry!
 	}
 
 	type CalendarDayFasting {
@@ -150,7 +179,7 @@ export const typeDefs = /* GraphQL */ `
 
 	type Query {
 		# Calendar
-		copticDate(date: String): CopticDate!
+		copticDate(date: String, lang: String): CopticDate!
 		calendarMonth(year: Int!, month: Int!): CalendarMonth!
 
 		# Readings
@@ -159,15 +188,15 @@ export const typeDefs = /* GraphQL */ `
 
 		# Celebrations
 		allCelebrations: [Celebration!]!
-		celebrationsForDate(date: String): [Celebration]
-		upcomingCelebrations(days: Int): [UpcomingCelebration!]!
+		celebrationsForDate(date: String, lang: CalendarLanguage): [Celebration!]!
+		upcomingCelebrations(days: Int, lang: CalendarLanguage): [UpcomingCelebration!]!
 
 		# Fasting
-		fastingForDate(date: String): FastingInfo!
+		fastingForDate(date: String, lang: CalendarLanguage): FastingInfo!
 		fastingCalendar(year: Int!): [FastingDay!]!
 
 		# Synaxarium
-		synaxariumForDate(date: String, detailed: Boolean): [SynaxariumEntry!]
+		synaxariumForDate(date: String, detailed: Boolean, lang: SynaxariumLanguage): [SynaxariumEntry!]
 		searchSynaxarium(query: String!, limit: Int): [SynaxariumSearchResult!]!
 	}
 `

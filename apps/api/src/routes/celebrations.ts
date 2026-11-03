@@ -3,7 +3,7 @@ import { requestDate } from '../middleware/request'
 import { CelebrationSchema, ErrorSchema, UpcomingCelebrationSchema } from '../schemas'
 import * as celebrationsService from '../services/celebrations.service'
 import { createApiApp, jsonResponse } from '../utils/openapi'
-import { WALL_CLOCK_CACHE_CONTROL } from '../utils/request'
+import { CALENDAR_LANGUAGES, WALL_CLOCK_CACHE_CONTROL } from '../utils/request'
 
 const app = createApiApp()
 
@@ -38,7 +38,7 @@ const getForDateRoute = createRoute({
 			date: z.string().openapi({ example: '2025-01-07' }),
 		}),
 		query: z.object({
-			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
+			lang: z.enum(CALENDAR_LANGUAGES).optional().openapi({ example: 'ar' }),
 		}),
 	},
 	responses: {
@@ -62,7 +62,7 @@ const getUpcomingRoute = createRoute({
 	request: {
 		query: z.object({
 			days: z.coerce.number().min(1).max(365).optional().openapi({ example: 30 }),
-			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
+			lang: z.enum(CALENDAR_LANGUAGES).optional().openapi({ example: 'ar' }),
 		}),
 	},
 	responses: {

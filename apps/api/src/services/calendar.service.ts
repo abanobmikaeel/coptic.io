@@ -1,4 +1,11 @@
-import type { CalendarDay, CalendarMonth, CopticMonthInfo } from '@coptic/core'
+import {
+	type CalendarDay,
+	type CalendarMonth,
+	type CopticDate,
+	type CopticMonthInfo,
+	gregorianToCoptic,
+	localizeCopticDate,
+} from '@coptic/core'
 import { generateMultiYearCalendar, generateYearCalendar } from '../utils/icalGenerator'
 import { getFastingForCopticDate } from './fasting.service'
 import { getMonthView } from './yearView.service'
@@ -9,6 +16,10 @@ const MONTH_NAME = new Intl.DateTimeFormat('en-US', { month: 'long' })
 // In-memory cache for generated iCal calendars (24-hour TTL)
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000
 const calendarCache = new Map<string, { data: string; expires: number }>()
+
+/** The Coptic date of a Gregorian date, with its month name in `lang`. */
+export const getCopticDate = (date: Date, lang = 'en'): CopticDate =>
+	localizeCopticDate(gregorianToCoptic(date), lang)
 
 export const getCalendarMonth = (year: number, month: number): CalendarMonth => {
 	if (Number.isNaN(month) || month < 1 || month > 12) {

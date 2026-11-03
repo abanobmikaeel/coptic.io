@@ -1,6 +1,7 @@
 import {
 	type CopticDate,
 	getFastingForDate as coreGetFastingForDate,
+	getLiturgicalName,
 	gregorianToCoptic,
 } from '@coptic/core'
 import { getStaticCelebrationsForCopticDay } from '../utils/calculations/getStaticCelebrations'
@@ -20,12 +21,13 @@ export const getFastingForCopticDate = (date: Date, copticDate: CopticDate): Fas
 	return coreGetFastingForDate(date, staticCelebrations ?? undefined)
 }
 
-/**
- * Get fasting info for a Gregorian date (convenience wrapper)
- */
-export const getFastingForDate = (date: Date): FastingResult => {
-	const copticDate = gregorianToCoptic(date)
-	return getFastingForCopticDate(date, copticDate)
+/** Fasting info for a Gregorian date, with the fast's name in `lang`. */
+export const getFastingForDate = (date: Date, lang = 'en'): FastingResult => {
+	const fasting = getFastingForCopticDate(date, gregorianToCoptic(date))
+	return {
+		...fasting,
+		description: fasting.description ? getLiturgicalName(fasting.description, lang) : null,
+	}
 }
 
 export const getFastingCalendar = (year: number) => {

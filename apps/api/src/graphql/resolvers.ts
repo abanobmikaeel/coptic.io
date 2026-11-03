@@ -1,4 +1,3 @@
-import { gregorianToCoptic } from '@coptic/core'
 import { GraphQLError } from 'graphql'
 import * as calendarService from '../services/calendar.service'
 import * as celebrationsService from '../services/celebrations.service'
@@ -12,36 +11,37 @@ import {
 	isSupportedYear,
 	parseDateInput,
 } from '../utils/dateUtils'
-import { parseTranslation } from '../utils/request'
+import { type CalendarLanguage, parseCalendarLanguage, parseTranslation } from '../utils/request'
+
+const badInput = (message: string) =>
+	new GraphQLError(message, { extensions: { code: 'BAD_USER_INPUT' } })
 
 const parseDate = (date?: string): Date => {
 	try {
 		return parseDateInput(date)
 	} catch {
-		throw new GraphQLError(INVALID_DATE_MESSAGE, {
-			extensions: { code: 'BAD_USER_INPUT' },
-		})
+		throw badInput(INVALID_DATE_MESSAGE)
 	}
 }
 
 const assertYear = (year: number) => {
-	if (!isSupportedYear(year)) {
-		throw new GraphQLError(INVALID_YEAR_MESSAGE, {
-			extensions: { code: 'BAD_USER_INPUT' },
-		})
-	}
+	if (!isSupportedYear(year)) throw badInput(INVALID_YEAR_MESSAGE)
 }
+
+const MONTH_MESSAGE = 'Invalid month. Must be between 1 and 12'
+const DAYS_MESSAGE = 'Days must be between 1 and 365'
+
+type Lang<L> = { lang?: L }
 
 export const resolvers = {
 	Query: {
 		// Calendar
-		copticDate: (_: unknown, { date }: { date?: string }) => {
-			const parsedDate = parseDate(date)
-			return gregorianToCoptic(parsedDate)
-		},
+		copticDate: (_: unknown, { date, lang }: { date?: string; lang?: string }) =>
+			calendarService.getCopticDate(parseDate(date), parseCalendarLanguage(lang)),
 
 		calendarMonth: (_: unknown, { year, month }: { year: number; month: number }) => {
 			assertYear(year)
+			if (!Number.isInteger(month) || month < 1 || month > 12) throw badInput(MONTH_MESSAGE)
 			return calendarService.getCalendarMonth(year, month)
 		},
 
@@ -55,24 +55,22 @@ export const resolvers = {
 			getDailyVerse(parseDate(date), parseTranslation(lang)),
 
 		// Celebrations
-		allCelebrations: () => {
-			return celebrationsService.getAllCelebrations()
-		},
+		allCelebrations: () => celebrationsService.getAllCelebrations(),
 
-		celebrationsForDate: (_: unknown, { date }: { date?: string }) => {
-			const parsedDate = parseDate(date)
-			return celebrationsService.getCelebrationsForDate(parsedDate)
-		},
+		celebrationsForDate: (_: unknown, { date, lang }: { date?: string } & Lang<CalendarLanguage>) =>
+			celebrationsService.getCelebrationsForDate(parseDate(date), lang),
 
-		upcomingCelebrations: (_: unknown, { days }: { days?: number }) => {
-			return celebrationsService.getUpcomingCelebrations(days ?? 30)
+		upcomingCelebrations: (
+			_: unknown,
+			{ days, lang }: { days?: number } & Lang<CalendarLanguage>,
+		) => {
+			if (days !== undefined && (days < 1 || days > 365)) throw badInput(DAYS_MESSAGE)
+			return celebrationsService.getUpcomingCelebrations(days, lang)
 		},
 
 		// Fasting
-		fastingForDate: (_: unknown, { date }: { date?: string }) => {
-			const parsedDate = parseDate(date)
-			return fastingService.getFastingForDate(parsedDate)
-		},
+		fastingForDate: (_: unknown, { date, lang }: { date?: string } & Lang<CalendarLanguage>) =>
+			fastingService.getFastingForDate(parseDate(date), lang),
 
 		fastingCalendar: (_: unknown, { year }: { year: number }) => {
 			assertYear(year)
@@ -80,13 +78,12 @@ export const resolvers = {
 		},
 
 		// Synaxarium
-		synaxariumForDate: (_: unknown, { date, detailed }: { date?: string; detailed?: boolean }) => {
-			const parsedDate = parseDate(date)
-			return synaxariumService.getSynaxariumForDate(parsedDate, detailed || false)
-		},
+		synaxariumForDate: (
+			_: unknown,
+			{ date, detailed, lang }: { date?: string; detailed?: boolean } & Lang<'en' | 'ar'>,
+		) => synaxariumService.getSynaxariumForDate(parseDate(date), detailed ?? false, lang),
 
-		searchSynaxarium: (_: unknown, { query, limit }: { query: string; limit?: number }) => {
-			return synaxariumService.searchSynaxarium(query, limit ?? 50)
-		},
+		searchSynaxarium: (_: unknown, { query, limit }: { query: string; limit?: number }) =>
+			synaxariumService.searchSynaxarium(query, limit ?? 50),
 	},
 }
