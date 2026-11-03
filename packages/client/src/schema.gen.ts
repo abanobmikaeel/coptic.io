@@ -34,306 +34,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: string;
-                            name: string;
-                            englishName: string;
-                            traditionalTime: string;
-                            introduction?: string;
-                            opening: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            hourIntro?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            comeLetUsWorship?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            thanksgiving?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            psalms: {
-                                title: string;
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            }[];
-                            gospel: {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            };
-                            gospelConclusion?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            litanies: {
-                                title?: string;
-                                content: string[];
-                            };
-                            lordsPrayer?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            thanksgivingAfter?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            closing?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            conclusion?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                                id: string;
-                            }[];
-                            /** @description The whole hour in prayed order. */
-                            sections?: ({
-                                title?: string;
-                                content: (string | {
-                                    text: string;
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "psalm" | "intro-psalm" | "gospel";
-                                title?: string;
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                kind: "watch";
-                                title: string;
-                                theme?: string;
-                                prayer?: string;
-                                psalmsIntro?: string;
-                                psalmsRubric?: string;
-                                sections: ({
-                                    title?: string;
-                                    content: (string | {
-                                        text: string;
-                                        /** @enum {string} */
-                                        speaker?: "Priest" | "Deacon" | "People";
-                                        isRubric?: boolean;
-                                        isResponse?: boolean;
-                                        coptic?: string;
-                                    })[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "psalm" | "intro-psalm" | "gospel";
-                                    title?: string;
-                                })[];
-                            })[];
-                        } | {
-                            /** @enum {string} */
-                            id: "midnight";
-                            name: string;
-                            englishName: string;
-                            traditionalTime: string;
-                            introduction?: string;
-                            opening: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            watches: {
-                                id: string;
-                                name: string;
-                                theme: string;
-                                opening?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                psalms: {
-                                    title: string;
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                                gospel?: {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                };
-                                gospelConclusion?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                litanies?: {
-                                    title?: string;
-                                    content: string[];
-                                };
-                                closing?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                conclusion?: ({
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "gospel";
-                                    title?: string;
-                                })[];
-                            }[];
-                            closing?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            conclusion?: ({
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "gospel";
-                                title?: string;
-                            })[];
-                            /** @description The whole hour in prayed order. */
-                            sections?: ({
-                                title?: string;
-                                content: (string | {
-                                    text: string;
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "psalm" | "intro-psalm" | "gospel";
-                                title?: string;
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                kind: "watch";
-                                title: string;
-                                theme?: string;
-                                prayer?: string;
-                                psalmsIntro?: string;
-                                psalmsRubric?: string;
-                                sections: ({
-                                    title?: string;
-                                    content: (string | {
-                                        text: string;
-                                        /** @enum {string} */
-                                        speaker?: "Priest" | "Deacon" | "People";
-                                        isRubric?: boolean;
-                                        isResponse?: boolean;
-                                        coptic?: string;
-                                    })[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "psalm" | "intro-psalm" | "gospel";
-                                    title?: string;
-                                })[];
-                            })[];
-                        };
+                        "application/json": components["schemas"]["AgpeyaAnyHour"];
                     };
                 };
             };
@@ -376,306 +77,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": ({
-                            id: string;
-                            name: string;
-                            englishName: string;
-                            traditionalTime: string;
-                            introduction?: string;
-                            opening: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            hourIntro?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            comeLetUsWorship?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            thanksgiving?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            psalms: {
-                                title: string;
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            }[];
-                            gospel: {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            };
-                            gospelConclusion?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            litanies: {
-                                title?: string;
-                                content: string[];
-                            };
-                            lordsPrayer?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            thanksgivingAfter?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            closing?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            conclusion?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                                id: string;
-                            }[];
-                            /** @description The whole hour in prayed order. */
-                            sections?: ({
-                                title?: string;
-                                content: (string | {
-                                    text: string;
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "psalm" | "intro-psalm" | "gospel";
-                                title?: string;
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                kind: "watch";
-                                title: string;
-                                theme?: string;
-                                prayer?: string;
-                                psalmsIntro?: string;
-                                psalmsRubric?: string;
-                                sections: ({
-                                    title?: string;
-                                    content: (string | {
-                                        text: string;
-                                        /** @enum {string} */
-                                        speaker?: "Priest" | "Deacon" | "People";
-                                        isRubric?: boolean;
-                                        isResponse?: boolean;
-                                        coptic?: string;
-                                    })[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "psalm" | "intro-psalm" | "gospel";
-                                    title?: string;
-                                })[];
-                            })[];
-                        } | {
-                            /** @enum {string} */
-                            id: "midnight";
-                            name: string;
-                            englishName: string;
-                            traditionalTime: string;
-                            introduction?: string;
-                            opening: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            watches: {
-                                id: string;
-                                name: string;
-                                theme: string;
-                                opening?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                psalms: {
-                                    title: string;
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                                gospel?: {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                };
-                                gospelConclusion?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                litanies?: {
-                                    title?: string;
-                                    content: string[];
-                                };
-                                closing?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                conclusion?: ({
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "gospel";
-                                    title?: string;
-                                })[];
-                            }[];
-                            closing?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            conclusion?: ({
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "gospel";
-                                title?: string;
-                            })[];
-                            /** @description The whole hour in prayed order. */
-                            sections?: ({
-                                title?: string;
-                                content: (string | {
-                                    text: string;
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "psalm" | "intro-psalm" | "gospel";
-                                title?: string;
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                kind: "watch";
-                                title: string;
-                                theme?: string;
-                                prayer?: string;
-                                psalmsIntro?: string;
-                                psalmsRubric?: string;
-                                sections: ({
-                                    title?: string;
-                                    content: (string | {
-                                        text: string;
-                                        /** @enum {string} */
-                                        speaker?: "Priest" | "Deacon" | "People";
-                                        isRubric?: boolean;
-                                        isResponse?: boolean;
-                                        coptic?: string;
-                                    })[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "psalm" | "intro-psalm" | "gospel";
-                                    title?: string;
-                                })[];
-                            })[];
-                        })[];
+                        "application/json": components["schemas"]["AgpeyaAnyHour"][];
                     };
                 };
             };
@@ -721,67 +123,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: string;
-                            name: string;
-                            theme: string;
-                            opening?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            psalms: {
-                                title: string;
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            }[];
-                            gospel?: {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            };
-                            gospelConclusion?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            litanies?: {
-                                title?: string;
-                                content: string[];
-                            };
-                            closing?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            conclusion?: ({
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "gospel";
-                                title?: string;
-                            })[];
-                        };
+                        "application/json": components["schemas"]["AgpeyaWatch"];
                     };
                 };
                 /** @description Watch not found */
@@ -790,9 +132,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -879,306 +219,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: string;
-                            name: string;
-                            englishName: string;
-                            traditionalTime: string;
-                            introduction?: string;
-                            opening: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            hourIntro?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            comeLetUsWorship?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            thanksgiving?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            psalms: {
-                                title: string;
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            }[];
-                            gospel: {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            };
-                            gospelConclusion?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            litanies: {
-                                title?: string;
-                                content: string[];
-                            };
-                            lordsPrayer?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            thanksgivingAfter?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            closing?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            conclusion?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                                id: string;
-                            }[];
-                            /** @description The whole hour in prayed order. */
-                            sections?: ({
-                                title?: string;
-                                content: (string | {
-                                    text: string;
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "psalm" | "intro-psalm" | "gospel";
-                                title?: string;
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                kind: "watch";
-                                title: string;
-                                theme?: string;
-                                prayer?: string;
-                                psalmsIntro?: string;
-                                psalmsRubric?: string;
-                                sections: ({
-                                    title?: string;
-                                    content: (string | {
-                                        text: string;
-                                        /** @enum {string} */
-                                        speaker?: "Priest" | "Deacon" | "People";
-                                        isRubric?: boolean;
-                                        isResponse?: boolean;
-                                        coptic?: string;
-                                    })[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "psalm" | "intro-psalm" | "gospel";
-                                    title?: string;
-                                })[];
-                            })[];
-                        } | {
-                            /** @enum {string} */
-                            id: "midnight";
-                            name: string;
-                            englishName: string;
-                            traditionalTime: string;
-                            introduction?: string;
-                            opening: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            watches: {
-                                id: string;
-                                name: string;
-                                theme: string;
-                                opening?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                psalms: {
-                                    title: string;
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                                gospel?: {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                };
-                                gospelConclusion?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                litanies?: {
-                                    title?: string;
-                                    content: string[];
-                                };
-                                closing?: {
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                };
-                                conclusion?: ({
-                                    title?: string;
-                                    content: string[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "gospel";
-                                    title?: string;
-                                })[];
-                            }[];
-                            closing?: {
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                            };
-                            conclusion?: ({
-                                title?: string;
-                                content: string[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "gospel";
-                                title?: string;
-                            })[];
-                            /** @description The whole hour in prayed order. */
-                            sections?: ({
-                                title?: string;
-                                content: (string | {
-                                    text: string;
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                                inline?: boolean;
-                                id: string;
-                                /** @enum {string} */
-                                kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                rubric?: string;
-                            } | {
-                                reference: string;
-                                rubric?: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                                id: string;
-                                /** @enum {string} */
-                                kind: "psalm" | "intro-psalm" | "gospel";
-                                title?: string;
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                kind: "watch";
-                                title: string;
-                                theme?: string;
-                                prayer?: string;
-                                psalmsIntro?: string;
-                                psalmsRubric?: string;
-                                sections: ({
-                                    title?: string;
-                                    content: (string | {
-                                        text: string;
-                                        /** @enum {string} */
-                                        speaker?: "Priest" | "Deacon" | "People";
-                                        isRubric?: boolean;
-                                        isResponse?: boolean;
-                                        coptic?: string;
-                                    })[];
-                                    inline?: boolean;
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
-                                    rubric?: string;
-                                } | {
-                                    reference: string;
-                                    rubric?: string;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                    id: string;
-                                    /** @enum {string} */
-                                    kind: "psalm" | "intro-psalm" | "gospel";
-                                    title?: string;
-                                })[];
-                            })[];
-                        };
+                        "application/json": components["schemas"]["AgpeyaAnyHour"];
                     };
                 };
                 /** @description Hour not found */
@@ -1187,9 +228,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1235,61 +274,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            type: string;
-                            name: string;
-                            date: string;
-                            copticDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                            sections: ({
-                                id: string;
-                                /** @enum {string} */
-                                type: "psalm";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                rubric?: string;
-                                reference: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                type: "gospel";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                reference: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                type: "prayer" | "litany" | "creed";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                rubric?: string;
-                                optional?: boolean;
-                                content: (string | {
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    text: string;
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                            })[];
-                        };
+                        "application/json": components["schemas"]["IncenseResponse"];
                     };
                 };
                 /** @description Invalid date */
@@ -1298,9 +283,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description Internal server error */
@@ -1309,9 +292,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1357,61 +338,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            type: string;
-                            name: string;
-                            date: string;
-                            copticDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                            sections: ({
-                                id: string;
-                                /** @enum {string} */
-                                type: "psalm";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                rubric?: string;
-                                reference: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                type: "gospel";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                reference: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                type: "prayer" | "litany" | "creed";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                rubric?: string;
-                                optional?: boolean;
-                                content: (string | {
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    text: string;
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                            })[];
-                        };
+                        "application/json": components["schemas"]["IncenseResponse"];
                     };
                 };
                 /** @description Invalid date */
@@ -1420,9 +347,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description Internal server error */
@@ -1431,9 +356,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1518,188 +441,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @description Verse references per slot, when `detailed` is not set */
-                            reference?: {
-                                id?: number;
-                                Prophecies?: string;
-                                VPsalm?: string;
-                                VGospel?: string;
-                                MPsalm?: string;
-                                MGospel?: string;
-                                Pauline?: string;
-                                Catholic?: string;
-                                Acts?: string;
-                                LPsalm?: string;
-                                LGospel?: string;
-                                EPPsalm?: string;
-                                EPGospel?: string;
-                            };
-                            Prophecies?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            VPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            VGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            MPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            MGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Pauline?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Catholic?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Acts?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            LPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            LGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            EPPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            EPGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Synaxarium: {
-                                id: string;
-                                name: string;
-                                url: string;
-                                /** @description Present when `detailed` is set */
-                                text?: string;
-                                sourceRef?: string;
-                            }[];
-                            synaxariumLanguage?: string;
-                            /**
-                             * @description The lectionary cycle the readings come from
-                             * @enum {string}
-                             */
-                            cycle: "jonah" | "greatLent" | "holyWeek" | "holyFifty" | "sunday" | "annual";
-                            /** @description False when the cycle has no readings in the lectionary yet (Holy Week) */
-                            readingsAvailable: boolean;
-                            season?: string;
-                            seasonKey?: string;
-                            /** @example Second Sunday of Baba */
-                            seasonDay?: string;
-                            celebrations: {
-                                id: number;
-                                name: string;
-                                /**
-                                 * @deprecated
-                                 * @description Kept for existing clients; use `category`. Values are inconsistent: most fixed feasts are 'feast', the Annunciation is 'lordlyFeast', moveable feasts are 'majorFeast' or 'minorFeast'.
-                                 */
-                                type: string;
-                                /**
-                                 * @description majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.
-                                 * @enum {string}
-                                 */
-                                category: "majorFeast" | "minorFeast" | "otherFeast" | "fast" | "commemoration";
-                                isMoveable?: boolean;
-                                month?: string;
-                                celebratedOnEve?: boolean;
-                            }[] | null;
-                            fullDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                        };
+                        "application/json": components["schemas"]["ReadingsResponse"];
                     };
                 };
                 /** @description Invalid date */
@@ -1708,9 +450,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1756,188 +496,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @description Verse references per slot, when `detailed` is not set */
-                            reference?: {
-                                id?: number;
-                                Prophecies?: string;
-                                VPsalm?: string;
-                                VGospel?: string;
-                                MPsalm?: string;
-                                MGospel?: string;
-                                Pauline?: string;
-                                Catholic?: string;
-                                Acts?: string;
-                                LPsalm?: string;
-                                LGospel?: string;
-                                EPPsalm?: string;
-                                EPGospel?: string;
-                            };
-                            Prophecies?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            VPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            VGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            MPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            MGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Pauline?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Catholic?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Acts?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            LPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            LGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            EPPsalm?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            EPGospel?: {
-                                bookName: string;
-                                chapters: {
-                                    chapterNum: number;
-                                    verses: {
-                                        num: number;
-                                        text: string;
-                                    }[];
-                                }[];
-                            }[] | null;
-                            Synaxarium: {
-                                id: string;
-                                name: string;
-                                url: string;
-                                /** @description Present when `detailed` is set */
-                                text?: string;
-                                sourceRef?: string;
-                            }[];
-                            synaxariumLanguage?: string;
-                            /**
-                             * @description The lectionary cycle the readings come from
-                             * @enum {string}
-                             */
-                            cycle: "jonah" | "greatLent" | "holyWeek" | "holyFifty" | "sunday" | "annual";
-                            /** @description False when the cycle has no readings in the lectionary yet (Holy Week) */
-                            readingsAvailable: boolean;
-                            season?: string;
-                            seasonKey?: string;
-                            /** @example Second Sunday of Baba */
-                            seasonDay?: string;
-                            celebrations: {
-                                id: number;
-                                name: string;
-                                /**
-                                 * @deprecated
-                                 * @description Kept for existing clients; use `category`. Values are inconsistent: most fixed feasts are 'feast', the Annunciation is 'lordlyFeast', moveable feasts are 'majorFeast' or 'minorFeast'.
-                                 */
-                                type: string;
-                                /**
-                                 * @description majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.
-                                 * @enum {string}
-                                 */
-                                category: "majorFeast" | "minorFeast" | "otherFeast" | "fast" | "commemoration";
-                                isMoveable?: boolean;
-                                month?: string;
-                                celebratedOnEve?: boolean;
-                            }[] | null;
-                            fullDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                        };
+                        "application/json": components["schemas"]["ReadingsResponse"];
                     };
                 };
                 /** @description Invalid date */
@@ -1946,9 +505,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1991,32 +548,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            year: number;
-                            month: number;
-                            monthName: string;
-                            days: {
-                                gregorianDate: string;
-                                copticDate: {
-                                    dateString: string;
-                                    day: number;
-                                    month: number;
-                                    year: number;
-                                    monthString: string;
-                                };
-                                fasting: {
-                                    isFasting: boolean;
-                                    fastType: string | null;
-                                    description: string | null;
-                                };
-                            }[];
-                            copticMonths: {
-                                month: number;
-                                monthString: string;
-                                year: number;
-                                startDay: number;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["CalendarMonth"];
                     };
                 };
                 /** @description Invalid year or month */
@@ -2025,9 +557,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2066,15 +596,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            webcalUrl: string;
-                            httpsUrl: string;
-                            instructions: {
-                                title: string;
-                                steps: string[];
-                                note: string;
-                            };
-                        };
+                        "application/json": components["schemas"]["IcalInfo"];
                     };
                 };
             };
@@ -2163,9 +685,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2207,13 +727,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            dateString: string;
-                            day: number;
-                            month: number;
-                            year: number;
-                            monthString: string;
-                        };
+                        "application/json": components["schemas"]["CopticDate"];
                     };
                 };
                 /** @description Invalid date */
@@ -2222,9 +736,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2268,13 +780,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            dateString: string;
-                            day: number;
-                            month: number;
-                            year: number;
-                            monthString: string;
-                        };
+                        "application/json": components["schemas"]["CopticDate"];
                     };
                 };
                 /** @description Invalid date */
@@ -2283,9 +789,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2324,23 +828,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: number;
-                            name: string;
-                            /**
-                             * @deprecated
-                             * @description Kept for existing clients; use `category`. Values are inconsistent: most fixed feasts are 'feast', the Annunciation is 'lordlyFeast', moveable feasts are 'majorFeast' or 'minorFeast'.
-                             */
-                            type: string;
-                            /**
-                             * @description majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.
-                             * @enum {string}
-                             */
-                            category: "majorFeast" | "minorFeast" | "otherFeast" | "fast" | "commemoration";
-                            isMoveable?: boolean;
-                            month?: string;
-                            celebratedOnEve?: boolean;
-                        }[];
+                        "application/json": components["schemas"]["Celebration"][];
                     };
                 };
             };
@@ -2383,23 +871,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: number;
-                            name: string;
-                            /**
-                             * @deprecated
-                             * @description Kept for existing clients; use `category`. Values are inconsistent: most fixed feasts are 'feast', the Annunciation is 'lordlyFeast', moveable feasts are 'majorFeast' or 'minorFeast'.
-                             */
-                            type: string;
-                            /**
-                             * @description majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.
-                             * @enum {string}
-                             */
-                            category: "majorFeast" | "minorFeast" | "otherFeast" | "fast" | "commemoration";
-                            isMoveable?: boolean;
-                            month?: string;
-                            celebratedOnEve?: boolean;
-                        }[] | null;
+                        "application/json": components["schemas"]["Celebration"][] | null;
                     };
                 };
                 /** @description Invalid date format */
@@ -2408,9 +880,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2452,33 +922,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            date: string;
-                            copticDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                            celebrations: {
-                                id: number;
-                                name: string;
-                                /**
-                                 * @deprecated
-                                 * @description Kept for existing clients; use `category`. Values are inconsistent: most fixed feasts are 'feast', the Annunciation is 'lordlyFeast', moveable feasts are 'majorFeast' or 'minorFeast'.
-                                 */
-                                type: string;
-                                /**
-                                 * @description majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.
-                                 * @enum {string}
-                                 */
-                                category: "majorFeast" | "minorFeast" | "otherFeast" | "fast" | "commemoration";
-                                isMoveable?: boolean;
-                                month?: string;
-                                celebratedOnEve?: boolean;
-                            }[];
-                        }[];
+                        "application/json": components["schemas"]["UpcomingCelebration"][];
                     };
                 };
             };
@@ -2519,11 +963,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            isFasting: boolean;
-                            fastType: string | null;
-                            description: string | null;
-                        };
+                        "application/json": components["schemas"]["FastingResponse"];
                     };
                 };
                 /** @description Invalid date format */
@@ -2532,9 +972,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2577,11 +1015,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            isFasting: boolean;
-                            fastType: string | null;
-                            description: string | null;
-                        };
+                        "application/json": components["schemas"]["FastingResponse"];
                     };
                 };
                 /** @description Invalid date format */
@@ -2590,9 +1024,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2633,18 +1065,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            date: string;
-                            copticDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                            fastType: string;
-                            description: string;
-                        }[];
+                        "application/json": components["schemas"]["FastingDay"][];
                     };
                 };
                 /** @description Invalid year */
@@ -2653,9 +1074,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2694,31 +1113,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            year: number;
-                            easterDate: string;
-                            lentStart: string;
-                            lentEnd: string;
-                            days: {
-                                /** @description Days from Easter */
-                                dayOffset: number;
-                                dayNumber: number;
-                                part: string;
-                                weekNumber: number;
-                                weekTheme: string;
-                                day: string;
-                                title: string;
-                                references: string[];
-                                sermons?: {
-                                    title: string;
-                                    preacher?: string;
-                                    youtubeUrl: string;
-                                    thumbnail?: string;
-                                }[];
-                                sundayHolyGospelReading?: string;
-                                date: string;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["LentSchedule"];
                     };
                 };
                 /** @description Invalid year */
@@ -2727,9 +1122,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2770,31 +1163,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            year: number;
-                            easterDate: string;
-                            lentStart: string;
-                            lentEnd: string;
-                            days: {
-                                /** @description Days from Easter */
-                                dayOffset: number;
-                                dayNumber: number;
-                                part: string;
-                                weekNumber: number;
-                                weekTheme: string;
-                                day: string;
-                                title: string;
-                                references: string[];
-                                sermons?: {
-                                    title: string;
-                                    preacher?: string;
-                                    youtubeUrl: string;
-                                    thumbnail?: string;
-                                }[];
-                                sundayHolyGospelReading?: string;
-                                date: string;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["LentSchedule"];
                     };
                 };
                 /** @description Invalid year */
@@ -2803,9 +1172,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2849,38 +1216,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @description Days from Easter */
-                            dayOffset: number;
-                            dayNumber: number;
-                            part: string;
-                            weekNumber: number;
-                            weekTheme: string;
-                            day: string;
-                            title: string;
-                            references: string[];
-                            sermons?: {
-                                title: string;
-                                preacher?: string;
-                                youtubeUrl: string;
-                                thumbnail?: string;
-                            }[];
-                            sundayHolyGospelReading?: string;
-                            date: string;
-                            resolvedReferences?: {
-                                reference: string;
-                                readings: {
-                                    bookName: string;
-                                    chapters: {
-                                        chapterNum: number;
-                                        verses: {
-                                            num: number;
-                                            text: string;
-                                        }[];
-                                    }[];
-                                }[] | null;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["LentDay"];
                     };
                 };
                 /** @description Invalid date */
@@ -2889,9 +1225,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description The date is not in Great Lent */
@@ -2900,9 +1234,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2948,38 +1280,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @description Days from Easter */
-                            dayOffset: number;
-                            dayNumber: number;
-                            part: string;
-                            weekNumber: number;
-                            weekTheme: string;
-                            day: string;
-                            title: string;
-                            references: string[];
-                            sermons?: {
-                                title: string;
-                                preacher?: string;
-                                youtubeUrl: string;
-                                thumbnail?: string;
-                            }[];
-                            sundayHolyGospelReading?: string;
-                            date: string;
-                            resolvedReferences?: {
-                                reference: string;
-                                readings: {
-                                    bookName: string;
-                                    chapters: {
-                                        chapterNum: number;
-                                        verses: {
-                                            num: number;
-                                            text: string;
-                                        }[];
-                                    }[];
-                                }[] | null;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["LentDay"];
                     };
                 };
                 /** @description Invalid date */
@@ -2988,9 +1289,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description The date is not in Great Lent */
@@ -2999,9 +1298,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3091,9 +1388,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3135,14 +1430,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: string;
-                            name: string;
-                            url: string;
-                            /** @description Present when `detailed` is set */
-                            text?: string;
-                            sourceRef?: string;
-                        }[];
+                        "application/json": components["schemas"]["SynaxariumEntry"][];
                     };
                 };
                 /** @description Invalid date format */
@@ -3151,9 +1439,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description No synaxarium found for date */
@@ -3162,9 +1448,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3208,14 +1492,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: string;
-                            name: string;
-                            url: string;
-                            /** @description Present when `detailed` is set */
-                            text?: string;
-                            sourceRef?: string;
-                        }[];
+                        "application/json": components["schemas"]["SynaxariumEntry"][];
                     };
                 };
                 /** @description Invalid date format */
@@ -3224,9 +1501,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description No synaxarium found for date */
@@ -3235,9 +1510,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3281,14 +1554,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            id: string;
-                            name: string;
-                            url: string;
-                            /** @description Present when `detailed` is set */
-                            text?: string;
-                            sourceRef?: string;
-                        }[];
+                        "application/json": components["schemas"]["SynaxariumEntry"][];
                     };
                 };
                 /** @description No synaxarium found for Coptic date */
@@ -3297,9 +1563,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3340,18 +1604,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            date: string;
-                            copticDate: {
-                                dateString: string;
-                                day: number;
-                                monthString: string;
-                            };
-                            entry: {
-                                url?: string;
-                                name?: string;
-                            };
-                        }[];
+                        "application/json": components["schemas"]["SynaxariumSearchResult"][];
                     };
                 };
                 /** @description Missing search query */
@@ -3360,9 +1613,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3404,15 +1655,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            date: string;
-                            season: string;
-                            description: string;
-                            startDate?: string;
-                            endDate?: string;
-                            isFasting: boolean;
-                            type?: string;
-                        };
+                        "application/json": components["schemas"]["SeasonResponse"];
                     };
                 };
                 /** @description Invalid date */
@@ -3421,9 +1664,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3467,15 +1708,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            date: string;
-                            season: string;
-                            description: string;
-                            startDate?: string;
-                            endDate?: string;
-                            isFasting: boolean;
-                            type?: string;
-                        };
+                        "application/json": components["schemas"]["SeasonResponse"];
                     };
                 };
                 /** @description Invalid date */
@@ -3484,9 +1717,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3527,17 +1758,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            year: number;
-                            seasons: {
-                                name: string;
-                                description: string;
-                                startDate: string;
-                                endDate: string;
-                                type: string;
-                                isFasting: boolean;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["SeasonYear"];
                     };
                 };
                 /** @description Invalid year */
@@ -3546,9 +1767,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3589,16 +1808,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            year: number;
-                            fastingPeriods: {
-                                name: string;
-                                description: string;
-                                startDate: string;
-                                endDate: string;
-                                type: string;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["FastingPeriods"];
                     };
                 };
                 /** @description Invalid year */
@@ -3607,9 +1817,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3815,52 +2023,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            type: string;
-                            name: string;
-                            date: string;
-                            copticDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                            sections: ({
-                                id: string;
-                                /** @enum {string} */
-                                type: "psalm" | "epistle" | "gospel";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                /** @enum {string} */
-                                titleLanguage?: "en" | "ar" | "cop";
-                                rubric?: string;
-                                reference: string;
-                                verses: {
-                                    num: number;
-                                    text: string;
-                                }[];
-                            } | {
-                                id: string;
-                                /** @enum {string} */
-                                type: "prayer" | "litany" | "creed";
-                                /** @enum {string} */
-                                role: "all" | "priest" | "deacon" | "congregation";
-                                title: string;
-                                /** @enum {string} */
-                                titleLanguage?: "en" | "ar" | "cop";
-                                rubric?: string;
-                                content: (string | {
-                                    /** @enum {string} */
-                                    speaker?: "Priest" | "Deacon" | "People";
-                                    text: string;
-                                    isRubric?: boolean;
-                                    isResponse?: boolean;
-                                    coptic?: string;
-                                })[];
-                            })[];
-                        };
+                        "application/json": components["schemas"]["LiturgyResponse"];
                     };
                 };
                 /** @description Invalid date */
@@ -3869,9 +2032,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description Internal server error */
@@ -3880,9 +2041,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -3924,34 +2083,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            verse: {
-                                book: string;
-                                chapter: number;
-                                verse: number;
-                                text: string;
-                            };
-                            /** @example John 16:33 */
-                            reference: string;
-                            /** @example LGospel */
-                            readingSlot: string;
-                            /** @example John 16:20-33 */
-                            readingReference: string;
-                            /** @enum {string} */
-                            language: "en" | "ar" | "es" | "cop";
-                            /** @enum {string} */
-                            requestedLanguage?: "en" | "ar" | "es" | "cop";
-                            fallback?: boolean;
-                            season?: string;
-                            seasonKey?: string;
-                            fullDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                        };
+                        "application/json": components["schemas"]["DailyVerse"];
                     };
                 };
                 /** @description Invalid date */
@@ -3960,9 +2092,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description No verse for the date */
@@ -3971,9 +2101,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -4017,34 +2145,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            verse: {
-                                book: string;
-                                chapter: number;
-                                verse: number;
-                                text: string;
-                            };
-                            /** @example John 16:33 */
-                            reference: string;
-                            /** @example LGospel */
-                            readingSlot: string;
-                            /** @example John 16:20-33 */
-                            readingReference: string;
-                            /** @enum {string} */
-                            language: "en" | "ar" | "es" | "cop";
-                            /** @enum {string} */
-                            requestedLanguage?: "en" | "ar" | "es" | "cop";
-                            fallback?: boolean;
-                            season?: string;
-                            seasonKey?: string;
-                            fullDate: {
-                                dateString: string;
-                                day: number;
-                                month: number;
-                                year: number;
-                                monthString: string;
-                            };
-                        };
+                        "application/json": components["schemas"]["DailyVerse"];
                     };
                 };
                 /** @description Invalid date */
@@ -4053,9 +2154,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description No verse for the date */
@@ -4064,9 +2163,127 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/subscriptions/unsubscribe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Unsubscribe from a link in an email
+         * @description Removes the subscriber that owns the token, then redirects to coptic.io with `unsubscribed` set to `true`, `not_found` or `error`.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Subscriber token from an email link */
+                    token?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Redirect to coptic.io with the outcome */
+                302: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/subscriptions/preferences": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a subscriber's email preferences
+         * @description Returns the preferences of the verified subscriber that owns the token, passed as the `token` query parameter or the `x-subscriber-token` header.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Subscriber token from an email link */
+                    token?: string;
+                };
+                header?: {
+                    "x-subscriber-token"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The subscriber’s preferences */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SubscriptionPreferences"];
+                    };
+                };
+                /** @description No token given */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description No verified subscriber has this token */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Unexpected error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Subscriptions are unavailable */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -4083,6 +2300,148 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AgpeyaAnyHour: components["schemas"]["AgpeyaHour"] | components["schemas"]["AgpeyaMidnightHour"];
+        AgpeyaHour: {
+            id: string;
+            name: string;
+            englishName: string;
+            traditionalTime: string;
+            introduction?: string;
+            opening: components["schemas"]["AgpeyaPrayerSection"];
+            hourIntro?: components["schemas"]["AgpeyaPrayerSection"];
+            comeLetUsWorship?: components["schemas"]["AgpeyaPrayerSection"];
+            thanksgiving?: components["schemas"]["AgpeyaPrayerSection"];
+            psalms: components["schemas"]["AgpeyaPsalm"][];
+            gospel: components["schemas"]["AgpeyaGospel"];
+            gospelConclusion?: components["schemas"]["AgpeyaPrayerSection"];
+            litanies: components["schemas"]["AgpeyaLitany"];
+            lordsPrayer?: components["schemas"]["AgpeyaPrayerSection"];
+            thanksgivingAfter?: components["schemas"]["AgpeyaPrayerSection"];
+            closing?: components["schemas"]["AgpeyaPrayerSection"];
+            conclusion?: {
+                title?: string;
+                content: string[];
+                inline?: boolean;
+                id: string;
+            }[];
+            sections?: components["schemas"]["AgpeyaSections"];
+        };
+        AgpeyaPrayerSection: {
+            title?: string;
+            content: string[];
+            inline?: boolean;
+        };
+        AgpeyaPsalm: {
+            title: string;
+            reference: string;
+            rubric?: string;
+            verses: components["schemas"]["AgpeyaVerse"][];
+        };
+        AgpeyaVerse: {
+            num: number;
+            text: string;
+        };
+        AgpeyaGospel: {
+            reference: string;
+            rubric?: string;
+            verses: components["schemas"]["AgpeyaVerse"][];
+        };
+        AgpeyaLitany: {
+            title?: string;
+            content: string[];
+        };
+        /** @description The whole hour in prayed order. */
+        AgpeyaSections: ({
+            title?: string;
+            content: components["schemas"]["AgpeyaLine"][];
+            inline?: boolean;
+            id: string;
+            /** @enum {string} */
+            kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
+            rubric?: string;
+        } | components["schemas"]["AgpeyaScriptureEntry"] | {
+            id: string;
+            /** @enum {string} */
+            kind: "watch";
+            title: string;
+            theme?: string;
+            prayer?: string;
+            psalmsIntro?: string;
+            psalmsRubric?: string;
+            sections: components["schemas"]["AgpeyaLeafEntry"][];
+        })[];
+        AgpeyaLine: string | {
+            text: string;
+            /** @enum {string} */
+            speaker?: "Priest" | "Deacon" | "People";
+            isRubric?: boolean;
+            isResponse?: boolean;
+            coptic?: string;
+        };
+        AgpeyaScriptureEntry: {
+            reference: string;
+            rubric?: string;
+            verses: components["schemas"]["AgpeyaVerse"][];
+            id: string;
+            /** @enum {string} */
+            kind: "psalm" | "intro-psalm" | "gospel";
+            title?: string;
+        };
+        AgpeyaLeafEntry: {
+            title?: string;
+            content: components["schemas"]["AgpeyaLine"][];
+            inline?: boolean;
+            id: string;
+            /** @enum {string} */
+            kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
+            rubric?: string;
+        } | components["schemas"]["AgpeyaScriptureEntry"];
+        AgpeyaMidnightHour: {
+            /** @enum {string} */
+            id: "midnight";
+            name: string;
+            englishName: string;
+            traditionalTime: string;
+            introduction?: string;
+            opening: components["schemas"]["AgpeyaPrayerSection"];
+            watches: components["schemas"]["AgpeyaWatch"][];
+            closing?: components["schemas"]["AgpeyaPrayerSection"];
+            conclusion?: components["schemas"]["AgpeyaMidnightTail"][];
+            sections?: components["schemas"]["AgpeyaSections"];
+        };
+        AgpeyaWatch: {
+            id: string;
+            name: string;
+            theme: string;
+            opening?: components["schemas"]["AgpeyaPrayerSection"];
+            psalms: components["schemas"]["AgpeyaPsalm"][];
+            gospel?: components["schemas"]["AgpeyaGospel"];
+            gospelConclusion?: components["schemas"]["AgpeyaPrayerSection"];
+            litanies?: components["schemas"]["AgpeyaLitany"];
+            closing?: components["schemas"]["AgpeyaPrayerSection"];
+            conclusion?: components["schemas"]["AgpeyaMidnightTail"][];
+        };
+        AgpeyaMidnightTail: components["schemas"]["AgpeyaProseEntry"] | {
+            reference: string;
+            rubric?: string;
+            verses: components["schemas"]["AgpeyaVerse"][];
+            id: string;
+            /** @enum {string} */
+            kind: "gospel";
+            title?: string;
+        };
+        AgpeyaProseEntry: {
+            title?: string;
+            content: string[];
+            inline?: boolean;
+            id: string;
+            /** @enum {string} */
+            kind: "opening" | "hour-intro" | "come-let-us-worship" | "thanksgiving" | "litany" | "lords-prayer" | "thanksgiving-after" | "gospel-conclusion" | "closing" | "conclusion";
+            rubric?: string;
+        };
+        Error: {
+            error: string;
+        };
         AgpeyaTranslations: {
             /**
              * @example [
@@ -4092,6 +2451,275 @@ export interface components {
              *     ]
              */
             available: ("en" | "ar" | "es" | "cop")[];
+        };
+        IncenseResponse: {
+            type: string;
+            name: string;
+            date: string;
+            copticDate: components["schemas"]["CopticDate"];
+            sections: components["schemas"]["IncenseSection"][];
+        };
+        CopticDate: {
+            dateString: string;
+            day: number;
+            month: number;
+            year: number;
+            monthString: string;
+        };
+        IncenseSection: components["schemas"]["IncensePsalmSection"] | components["schemas"]["IncenseGospelSection"] | components["schemas"]["IncensePrayerSection"];
+        IncensePsalmSection: {
+            id: string;
+            /** @enum {string} */
+            type: "psalm";
+            /** @enum {string} */
+            role: "all" | "priest" | "deacon" | "congregation";
+            title: string;
+            rubric?: string;
+            reference: string;
+            verses: components["schemas"]["AgpeyaVerse"][];
+        };
+        IncenseGospelSection: {
+            id: string;
+            /** @enum {string} */
+            type: "gospel";
+            /** @enum {string} */
+            role: "all" | "priest" | "deacon" | "congregation";
+            title: string;
+            reference: string;
+            verses: components["schemas"]["AgpeyaVerse"][];
+        };
+        IncensePrayerSection: {
+            id: string;
+            /** @enum {string} */
+            type: "prayer" | "litany" | "creed";
+            /** @enum {string} */
+            role: "all" | "priest" | "deacon" | "congregation";
+            title: string;
+            rubric?: string;
+            optional?: boolean;
+            content: components["schemas"]["Content"];
+        };
+        Content: (string | components["schemas"]["ContentLine"])[];
+        ContentLine: {
+            /** @enum {string} */
+            speaker?: "Priest" | "Deacon" | "People";
+            text: string;
+            isRubric?: boolean;
+            isResponse?: boolean;
+            coptic?: string;
+        };
+        ReadingsResponse: {
+            /** @description Verse references per slot, when `detailed` is not set */
+            reference?: {
+                id?: number;
+                Prophecies?: string;
+                VPsalm?: string;
+                VGospel?: string;
+                MPsalm?: string;
+                MGospel?: string;
+                Pauline?: string;
+                Catholic?: string;
+                Acts?: string;
+                LPsalm?: string;
+                LGospel?: string;
+                EPPsalm?: string;
+                EPGospel?: string;
+            };
+            Prophecies?: components["schemas"]["Reading"][] | null;
+            VPsalm?: components["schemas"]["Reading"][] | null;
+            VGospel?: components["schemas"]["Reading"][] | null;
+            MPsalm?: components["schemas"]["Reading"][] | null;
+            MGospel?: components["schemas"]["Reading"][] | null;
+            Pauline?: components["schemas"]["Reading"][] | null;
+            Catholic?: components["schemas"]["Reading"][] | null;
+            Acts?: components["schemas"]["Reading"][] | null;
+            LPsalm?: components["schemas"]["Reading"][] | null;
+            LGospel?: components["schemas"]["Reading"][] | null;
+            EPPsalm?: components["schemas"]["Reading"][] | null;
+            EPGospel?: components["schemas"]["Reading"][] | null;
+            Synaxarium: components["schemas"]["SynaxariumEntry"][];
+            synaxariumLanguage?: string;
+            /**
+             * @description The lectionary cycle the readings come from
+             * @enum {string}
+             */
+            cycle: "jonah" | "greatLent" | "holyWeek" | "holyFifty" | "sunday" | "annual";
+            /** @description False when the cycle has no readings in the lectionary yet (Holy Week) */
+            readingsAvailable: boolean;
+            season?: string;
+            seasonKey?: string;
+            /** @example Second Sunday of Baba */
+            seasonDay?: string;
+            celebrations: components["schemas"]["Celebration"][] | null;
+            fullDate: components["schemas"]["CopticDate"];
+        };
+        Reading: {
+            bookName: string;
+            chapters: {
+                chapterNum: number;
+                verses: {
+                    num: number;
+                    text: string;
+                }[];
+            }[];
+        };
+        SynaxariumEntry: {
+            id: string;
+            name: string;
+            url: string;
+            /** @description Present when `detailed` is set */
+            text?: string;
+            sourceRef?: string;
+        };
+        Celebration: {
+            id: number;
+            name: string;
+            /**
+             * @deprecated
+             * @description Kept for existing clients; use `category`. Values are inconsistent: most fixed feasts are 'feast', the Annunciation is 'lordlyFeast', moveable feasts are 'majorFeast' or 'minorFeast'.
+             */
+            type: string;
+            /**
+             * @description majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.
+             * @enum {string}
+             */
+            category: "majorFeast" | "minorFeast" | "otherFeast" | "fast" | "commemoration";
+            isMoveable?: boolean;
+            month?: string;
+            celebratedOnEve?: boolean;
+        };
+        CalendarMonth: {
+            year: number;
+            month: number;
+            monthName: string;
+            days: {
+                gregorianDate: string;
+                copticDate: components["schemas"]["CopticDate"];
+                fasting: components["schemas"]["FastingResponse"];
+            }[];
+            copticMonths: {
+                month: number;
+                monthString: string;
+                year: number;
+                startDay: number;
+            }[];
+        };
+        FastingResponse: {
+            isFasting: boolean;
+            fastType: string | null;
+            description: string | null;
+        };
+        IcalInfo: {
+            webcalUrl: string;
+            httpsUrl: string;
+            instructions: {
+                title: string;
+                steps: string[];
+                note: string;
+            };
+        };
+        UpcomingCelebration: {
+            date: string;
+            copticDate: components["schemas"]["CopticDate"];
+            celebrations: components["schemas"]["Celebration"][];
+        };
+        FastingDay: {
+            date: string;
+            copticDate: components["schemas"]["CopticDate"];
+            fastType: string;
+            description: string;
+        };
+        LentSchedule: {
+            year: number;
+            easterDate: string;
+            lentStart: string;
+            lentEnd: string;
+            days: components["schemas"]["LentDevotional"][];
+        };
+        LentDevotional: {
+            /** @description Days from Easter */
+            dayOffset: number;
+            dayNumber: number;
+            part: string;
+            weekNumber: number;
+            weekTheme: string;
+            day: string;
+            title: string;
+            references: string[];
+            sermons?: {
+                title: string;
+                preacher?: string;
+                youtubeUrl: string;
+                thumbnail?: string;
+            }[];
+            sundayHolyGospelReading?: string;
+            date: string;
+        };
+        LentDay: {
+            /** @description Days from Easter */
+            dayOffset: number;
+            dayNumber: number;
+            part: string;
+            weekNumber: number;
+            weekTheme: string;
+            day: string;
+            title: string;
+            references: string[];
+            sermons?: {
+                title: string;
+                preacher?: string;
+                youtubeUrl: string;
+                thumbnail?: string;
+            }[];
+            sundayHolyGospelReading?: string;
+            date: string;
+            resolvedReferences?: {
+                reference: string;
+                readings: components["schemas"]["Reading"][] | null;
+            }[];
+        };
+        SynaxariumSearchResult: {
+            date: string;
+            copticDate: {
+                dateString: string;
+                day: number;
+                monthString: string;
+            };
+            entry: {
+                url?: string;
+                name?: string;
+            };
+        };
+        SeasonResponse: {
+            date: string;
+            season: string;
+            description: string;
+            startDate?: string;
+            endDate?: string;
+            isFasting: boolean;
+            type?: string;
+        };
+        SeasonYear: {
+            year: number;
+            seasons: {
+                name: string;
+                description: string;
+                startDate: string;
+                endDate: string;
+                type: string;
+                isFasting: boolean;
+            }[];
+        };
+        FastingPeriods: {
+            year: number;
+            fastingPeriods: components["schemas"]["Period"][];
+        };
+        Period: {
+            name: string;
+            description: string;
+            startDate: string;
+            endDate: string;
+            type: string;
         };
         TasbehaService: {
             /** @enum {string} */
@@ -4131,6 +2759,68 @@ export interface components {
                     corroboratingUrls?: string[];
                 };
             }[];
+        };
+        LiturgyResponse: {
+            type: string;
+            name: string;
+            date: string;
+            copticDate: components["schemas"]["CopticDate"];
+            sections: components["schemas"]["LiturgySection"][];
+        };
+        LiturgySection: components["schemas"]["LiturgyReadingSection"] | components["schemas"]["LiturgyPrayerSection"];
+        LiturgyReadingSection: {
+            id: string;
+            /** @enum {string} */
+            type: "psalm" | "epistle" | "gospel";
+            /** @enum {string} */
+            role: "all" | "priest" | "deacon" | "congregation";
+            title: string;
+            /** @enum {string} */
+            titleLanguage?: "en" | "ar" | "cop";
+            rubric?: string;
+            reference: string;
+            verses: components["schemas"]["AgpeyaVerse"][];
+        };
+        LiturgyPrayerSection: {
+            id: string;
+            /** @enum {string} */
+            type: "prayer" | "litany" | "creed";
+            /** @enum {string} */
+            role: "all" | "priest" | "deacon" | "congregation";
+            title: string;
+            /** @enum {string} */
+            titleLanguage?: "en" | "ar" | "cop";
+            rubric?: string;
+            content: components["schemas"]["Content"];
+        };
+        DailyVerse: {
+            verse: {
+                book: string;
+                chapter: number;
+                verse: number;
+                text: string;
+            };
+            /** @example John 16:33 */
+            reference: string;
+            /** @example LGospel */
+            readingSlot: string;
+            /** @example John 16:20-33 */
+            readingReference: string;
+            /** @enum {string} */
+            language: "en" | "ar" | "es" | "cop";
+            /** @enum {string} */
+            requestedLanguage?: "en" | "ar" | "es" | "cop";
+            fallback?: boolean;
+            season?: string;
+            seasonKey?: string;
+            fullDate: components["schemas"]["CopticDate"];
+        };
+        SubscriptionPreferences: {
+            email: string;
+            name: string | null;
+            patronSaint: string | null;
+            dailyReadings: boolean;
+            feastReminders: boolean;
         };
     };
     responses: never;
