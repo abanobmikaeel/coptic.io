@@ -1,4 +1,5 @@
-import type { BibleTranslation, BibleVerse, Reading } from '../../types'
+import type { Reading } from '../../schemas'
+import type { BibleTranslation, BibleVerse } from '../../types'
 import { range } from '../../utils'
 import {
 	multiChapterRange,

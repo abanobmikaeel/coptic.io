@@ -6,102 +6,21 @@ import {
 import {
 	type AgpeyaHourData,
 	type AgpeyaHourId,
-	type AgpeyaMidnightHour,
+	type AgpeyaMidnightHour as AgpeyaMidnightHourData,
 	type AgpeyaMidnightTailSection,
-	type AgpeyaWatch,
+	type AgpeyaWatch as AgpeyaWatchData,
 	type MidnightWatchId,
 	getAgpeyaHourData as getEnAgpeyaHourData,
 	getAgpeyaHourIds as getEnAgpeyaHourIds,
 	getAgpeyaHour as getEnAgpeyaHourParts,
 	isMidnightHour,
 } from '@coptic/data/en/agpeya'
+import type { AgpeyaHour, AgpeyaMidnightHour, AgpeyaMidnightTail, AgpeyaWatch } from '../schemas'
 import type { BibleTranslation } from '../types'
-import { type PsalmSource, type ServedSection, toServedSections } from './agpeya-sections'
-import {
-	type ResolvedGospel,
-	type ResolvedPsalm,
-	resolveAgpeyaGospel,
-	resolveAgpeyaPsalms,
-} from './psalm-resolver'
+import { type PsalmSource, toServedSections } from './agpeya-sections'
+import { type ResolvedPsalm, resolveAgpeyaGospel, resolveAgpeyaPsalms } from './psalm-resolver'
 
-export type {
-	AgpeyaHourId,
-	AgpeyaVerse,
-	AgpeyaPsalm,
-	AgpeyaPrayerSection,
-	AgpeyaLitany,
-	AgpeyaMidnightHour,
-	AgpeyaWatch,
-	MidnightWatchId,
-} from '@coptic/data/en/agpeya'
-
-// Resolved hour with populated psalms and gospel (returned to frontend)
-export interface ResolvedAgpeyaHour {
-	id: string
-	name: string
-	englishName: string
-	traditionalTime: string
-	introduction?: string
-	opening: { title?: string; content: string[]; inline?: boolean }
-	hourIntro?: { title?: string; content: string[]; inline?: boolean }
-	comeLetUsWorship?: { title?: string; content: string[]; inline?: boolean }
-	thanksgiving?: { title?: string; content: string[]; inline?: boolean }
-	introductoryPsalm?: ResolvedPsalm // Psalm 50 (51)
-	psalmsIntro?: string // "From the Psalms of our father David..."
-	psalms: ResolvedPsalm[]
-	gospel: ResolvedGospel
-	gospelConclusion?: { title?: string; content: string[] }
-	litanies: { title?: string; content: string[] }
-	lordsPrayer?: { title?: string; content: string[]; inline?: boolean }
-	thanksgivingAfter?: { title?: string; content: string[]; inline?: boolean }
-	closing?: { title?: string; content: string[]; inline?: boolean }
-	conclusion?: { id: string; title?: string; content: string[]; inline?: boolean }[]
-	/** The whole hour in prayed order, when requested with `include=sections`. */
-	sections?: ServedSection[]
-}
-
-// Resolved watch with populated psalms and gospel
-export interface ResolvedAgpeyaWatch {
-	id: string
-	name: string
-	theme: string
-	opening?: { content: string[]; inline?: boolean }
-	psalmsIntro?: string
-	psalms: ResolvedPsalm[]
-	gospel?: ResolvedGospel
-	// "Glory be to God forever" and "We worship You, O Christ…", after the gospel.
-	gospelConclusion?: { title?: string; content: string[] }
-	litanies?: { content: string[] }
-	closing?: { content: string[]; inline?: boolean }
-	// Prayed after the litanies: Kyrie, Holy Holy Holy, the Lord's Prayer.
-	conclusion?: MidnightTailSection[]
-}
-
-// Resolved midnight hour with watches
-export interface ResolvedMidnightHour {
-	id: 'midnight'
-	name: string
-	englishName: string
-	traditionalTime: string
-	introduction?: string
-	opening: { content: string[]; inline?: boolean }
-	thanksgiving?: { title?: string; content: string[]; inline?: boolean }
-	introductoryPsalm?: ResolvedPsalm // Psalm 50 (51)
-	watches: ResolvedAgpeyaWatch[]
-	closing?: { content: string[]; inline?: boolean }
-	// The shared ending prayed after the third watch, in order. Prose sections carry
-	// `content`; the midnight Gospel carries a resolved `reference`/`verses`.
-	conclusion?: MidnightTailSection[]
-	/** The whole hour in prayed order, each watch as a group; see ResolvedAgpeyaHour. */
-	sections?: ServedSection[]
-}
-
-// A section in midnight's ending tail: a prose prayer, or the midnight Gospel with
-// its text resolved in the requested translation.
-export type MidnightTailSection =
-	| Exclude<AgpeyaMidnightTailSection, { kind: 'gospel' }>
-	| ({ id: string; kind: 'gospel'; title?: string } & ResolvedGospel)
-
+export type { MidnightWatchId } from '@coptic/data/en/agpeya'
 export type { PsalmSource }
 
 /**
@@ -111,7 +30,7 @@ function resolveHour(
 	hourData: AgpeyaHourData,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
-): Omit<ResolvedAgpeyaHour, 'sections'> {
+): Omit<AgpeyaHour, 'sections'> {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = hourData.introductoryPsalm
 		? resolveAgpeyaPsalms([hourData.introductoryPsalm], translation)[0]
@@ -151,10 +70,10 @@ function resolveHour(
  * Resolve a single watch's psalm and gospel references
  */
 function resolveWatch(
-	watch: AgpeyaWatch,
+	watch: AgpeyaWatchData,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
-): ResolvedAgpeyaWatch {
+): AgpeyaWatch {
 	const psalms =
 		psalmSource === 'septuagint' && watch.psalms?.length
 			? (watch.psalms as unknown as ResolvedPsalm[])
@@ -182,8 +101,8 @@ function resolveWatch(
 function resolveTail(
 	sections: AgpeyaMidnightTailSection[] | undefined,
 	translation: BibleTranslation,
-): MidnightTailSection[] | undefined {
-	return sections?.flatMap((section): MidnightTailSection[] => {
+): AgpeyaMidnightTail[] | undefined {
+	return sections?.flatMap((section): AgpeyaMidnightTail[] => {
 		if (section.kind !== 'gospel') return [section]
 		const gospel = resolveAgpeyaGospel(section, translation)
 		return gospel ? [{ id: section.id, kind: 'gospel', title: section.title, ...gospel }] : []
@@ -194,10 +113,10 @@ function resolveTail(
  * Resolve midnight hour with all watches
  */
 function resolveMidnightHour(
-	midnightData: AgpeyaMidnightHour,
+	midnightData: AgpeyaMidnightHourData,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
-): Omit<ResolvedMidnightHour, 'sections'> {
+): Omit<AgpeyaMidnightHour, 'sections'> {
 	// Resolve introductory psalm (Psalm 50/51)
 	const introductoryPsalm = midnightData.introductoryPsalm
 		? resolveAgpeyaPsalms([midnightData.introductoryPsalm], translation)[0]
@@ -237,7 +156,7 @@ export function getAgpeyaHour(
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
 	{ sections: withSections = false }: { sections?: boolean } = {},
-): ResolvedAgpeyaHour | ResolvedMidnightHour | null {
+): AgpeyaHour | AgpeyaMidnightHour | null {
 	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
 	const hourData = getData(hourId)
 	if (!hourData) return null
@@ -260,9 +179,9 @@ export function getMidnightWatch(
 	watchId: MidnightWatchId,
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
-): ResolvedAgpeyaWatch | null {
+): AgpeyaWatch | null {
 	const getData = translation === 'ar' ? getArAgpeyaHourData : getEnAgpeyaHourData
-	const midnightData = getData('midnight') as AgpeyaMidnightHour
+	const midnightData = getData('midnight') as AgpeyaMidnightHourData
 	if (!midnightData) return null
 
 	const watchIndex = parseInt(watchId, 10) - 1
@@ -278,10 +197,10 @@ export function getMidnightWatch(
 export function getAllHours(
 	translation: BibleTranslation = 'en',
 	psalmSource: PsalmSource = 'septuagint',
-): (ResolvedAgpeyaHour | ResolvedMidnightHour)[] {
+): (AgpeyaHour | AgpeyaMidnightHour)[] {
 	const getIds = translation === 'ar' ? getArAgpeyaHourIds : getEnAgpeyaHourIds
 	const hourIds = getIds()
-	const resolved: (ResolvedAgpeyaHour | ResolvedMidnightHour)[] = []
+	const resolved: (AgpeyaHour | AgpeyaMidnightHour)[] = []
 
 	for (const hourId of hourIds) {
 		const hour = getAgpeyaHour(hourId, translation, psalmSource)

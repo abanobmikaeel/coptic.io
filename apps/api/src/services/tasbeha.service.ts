@@ -11,41 +11,10 @@ import {
 	getTasbehaService as getEnglishTasbeha,
 	getTasbehaServiceForWeekday as getEnglishTasbehaForWeekday,
 } from '@coptic/data/en/tasbeha'
-import type {
-	TasbehaCycle,
-	TasbehaDayTune,
-	TasbehaSectionKind,
-	TasbehaServiceData,
-	TasbehaServiceId,
-	TasbehaSource,
-} from '@coptic/data/en/tasbeha'
+import type { TasbehaServiceData, TasbehaServiceId } from '@coptic/data/en/tasbeha'
+import type { TasbehaResponse } from '../schemas'
 
 export type TasbehaTranslation = 'en' | 'ar' | 'cop'
-
-export interface ResolvedTasbehaSection {
-	id: string
-	type: 'prayer'
-	role: 'all'
-	kind: TasbehaSectionKind
-	title: string
-	titleLanguage?: TasbehaTranslation
-	content: string[]
-	source: TasbehaSource
-}
-
-export interface ResolvedTasbehaService {
-	type: 'tasbeha'
-	id: TasbehaServiceId
-	name: string
-	description: string
-	status: 'complete'
-	rite: {
-		cycle: TasbehaCycle
-		dayTune: TasbehaDayTune
-		weekdays: number[]
-	}
-	sections: ResolvedTasbehaSection[]
-}
 
 const byId: Record<TasbehaTranslation, (id?: TasbehaServiceId) => TasbehaServiceData> = {
 	en: getEnglishTasbeha,
@@ -61,7 +30,7 @@ const byWeekday: Record<TasbehaTranslation, (weekday: number) => TasbehaServiceD
 
 // Parts 16–18 of the Sunday Theotokia are the only date-limited sections in the
 // corpus; every other section is fixed for its day.
-function resolve(service: TasbehaServiceData, date: Date): ResolvedTasbehaService {
+function resolve(service: TasbehaServiceData, date: Date): TasbehaResponse {
 	const includeLateTheotokia = includesLateSundayTheotokiaParts(date)
 	return {
 		type: 'tasbeha',
@@ -90,7 +59,7 @@ function resolve(service: TasbehaServiceData, date: Date): ResolvedTasbehaServic
 export function getTasbehaForDate(
 	date: Date = new Date(),
 	translation: TasbehaTranslation = 'en',
-): ResolvedTasbehaService {
+): TasbehaResponse {
 	return resolve(byWeekday[translation](date.getDay()), date)
 }
 
@@ -98,13 +67,13 @@ export function getTasbehaById(
 	id: TasbehaServiceId,
 	translation: TasbehaTranslation = 'en',
 	date: Date = new Date(),
-): ResolvedTasbehaService {
+): TasbehaResponse {
 	return resolve(byId[translation](id), date)
 }
 
 export function getSundayTasbeha(
 	translation: TasbehaTranslation = 'en',
 	date: Date = new Date(),
-): ResolvedTasbehaService {
+): TasbehaResponse {
 	return getTasbehaById('sunday-midnight-praises', translation, date)
 }

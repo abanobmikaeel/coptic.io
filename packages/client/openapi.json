@@ -53,6 +53,12 @@
 					"thanksgiving": {
 						"$ref": "#/components/schemas/AgpeyaPrayerSection"
 					},
+					"introductoryPsalm": {
+						"$ref": "#/components/schemas/AgpeyaPsalm"
+					},
+					"psalmsIntro": {
+						"type": "string"
+					},
 					"psalms": {
 						"type": "array",
 						"items": {
@@ -458,6 +464,12 @@
 					"opening": {
 						"$ref": "#/components/schemas/AgpeyaPrayerSection"
 					},
+					"thanksgiving": {
+						"$ref": "#/components/schemas/AgpeyaPrayerSection"
+					},
+					"introductoryPsalm": {
+						"$ref": "#/components/schemas/AgpeyaPsalm"
+					},
 					"watches": {
 						"type": "array",
 						"items": {
@@ -500,6 +512,9 @@
 					},
 					"opening": {
 						"$ref": "#/components/schemas/AgpeyaPrayerSection"
+					},
+					"psalmsIntro": {
+						"type": "string"
 					},
 					"psalms": {
 						"type": "array",
@@ -2087,14 +2102,17 @@
 					},
 					"reference": {
 						"type": "string",
+						"description": "The featured verse as a citation",
 						"example": "John 16:33"
 					},
 					"readingSlot": {
 						"type": "string",
+						"description": "The reading slot the verse came from",
 						"example": "LGospel"
 					},
 					"readingReference": {
 						"type": "string",
+						"description": "The full reading the verse was chosen from",
 						"example": "John 16:20-33"
 					},
 					"language": {
@@ -2104,7 +2122,8 @@
 							"ar",
 							"es",
 							"cop"
-						]
+						],
+						"description": "The language the verse text is actually in"
 					},
 					"requestedLanguage": {
 						"type": "string",
@@ -2113,7 +2132,8 @@
 							"ar",
 							"es",
 							"cop"
-						]
+						],
+						"description": "Present when the requested translation had no text and English was used"
 					},
 					"fallback": {
 						"type": "boolean"
@@ -4216,15 +4236,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"error"
-									]
+									"$ref": "#/components/schemas/Error"
 								}
 							}
 						}
@@ -4282,15 +4294,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"error"
-									]
+									"$ref": "#/components/schemas/Error"
 								}
 							}
 						}
@@ -4366,15 +4370,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"error"
-									]
+									"$ref": "#/components/schemas/Error"
 								}
 							}
 						}

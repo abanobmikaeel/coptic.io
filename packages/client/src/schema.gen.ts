@@ -1869,9 +1869,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1923,9 +1921,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1979,9 +1975,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2311,6 +2305,8 @@ export interface components {
             hourIntro?: components["schemas"]["AgpeyaPrayerSection"];
             comeLetUsWorship?: components["schemas"]["AgpeyaPrayerSection"];
             thanksgiving?: components["schemas"]["AgpeyaPrayerSection"];
+            introductoryPsalm?: components["schemas"]["AgpeyaPsalm"];
+            psalmsIntro?: string;
             psalms: components["schemas"]["AgpeyaPsalm"][];
             gospel: components["schemas"]["AgpeyaGospel"];
             gospelConclusion?: components["schemas"]["AgpeyaPrayerSection"];
@@ -2404,6 +2400,8 @@ export interface components {
             traditionalTime: string;
             introduction?: string;
             opening: components["schemas"]["AgpeyaPrayerSection"];
+            thanksgiving?: components["schemas"]["AgpeyaPrayerSection"];
+            introductoryPsalm?: components["schemas"]["AgpeyaPsalm"];
             watches: components["schemas"]["AgpeyaWatch"][];
             closing?: components["schemas"]["AgpeyaPrayerSection"];
             conclusion?: components["schemas"]["AgpeyaMidnightTail"][];
@@ -2414,6 +2412,7 @@ export interface components {
             name: string;
             theme: string;
             opening?: components["schemas"]["AgpeyaPrayerSection"];
+            psalmsIntro?: string;
             psalms: components["schemas"]["AgpeyaPsalm"][];
             gospel?: components["schemas"]["AgpeyaGospel"];
             gospelConclusion?: components["schemas"]["AgpeyaPrayerSection"];
@@ -2800,15 +2799,30 @@ export interface components {
                 verse: number;
                 text: string;
             };
-            /** @example John 16:33 */
+            /**
+             * @description The featured verse as a citation
+             * @example John 16:33
+             */
             reference: string;
-            /** @example LGospel */
+            /**
+             * @description The reading slot the verse came from
+             * @example LGospel
+             */
             readingSlot: string;
-            /** @example John 16:20-33 */
+            /**
+             * @description The full reading the verse was chosen from
+             * @example John 16:20-33
+             */
             readingReference: string;
-            /** @enum {string} */
+            /**
+             * @description The language the verse text is actually in
+             * @enum {string}
+             */
             language: "en" | "ar" | "es" | "cop";
-            /** @enum {string} */
+            /**
+             * @description Present when the requested translation had no text and English was used
+             * @enum {string}
+             */
             requestedLanguage?: "en" | "ar" | "es" | "cop";
             fallback?: boolean;
             season?: string;

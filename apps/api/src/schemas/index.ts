@@ -1,3 +1,4 @@
+import type { TasbehaServiceId } from '@coptic/data/en/tasbeha'
 import { z } from 'zod'
 import { BIBLE_TRANSLATIONS, READING_SLOTS, type ReadingSlot } from '../types'
 
@@ -160,6 +161,8 @@ const AgpeyaMidnightTailSchema = z
 	])
 	.meta({ id: 'AgpeyaMidnightTail' })
 
+export type AgpeyaMidnightTail = z.infer<typeof AgpeyaMidnightTailSchema>
+
 const AgpeyaScriptureEntrySchema = AgpeyaGospelSchema.extend({
 	id: z.string(),
 	kind: z.enum(['psalm', 'intro-psalm', 'gospel']),
@@ -209,6 +212,8 @@ const AgpeyaSectionsSchema = z
 	.describe('The whole hour in prayed order.')
 	.meta({ id: 'AgpeyaSections' })
 
+export type AgpeyaSection = z.infer<typeof AgpeyaSectionsSchema>[number]
+
 // Watch schema for midnight prayers
 export const AgpeyaWatchSchema = z
 	.object({
@@ -216,6 +221,7 @@ export const AgpeyaWatchSchema = z
 		name: z.string(),
 		theme: z.string(),
 		opening: AgpeyaPrayerSectionSchema.optional(),
+		psalmsIntro: z.string().optional(),
 		psalms: z.array(AgpeyaPsalmSchema),
 		gospel: AgpeyaGospelSchema.optional(),
 		gospelConclusion: AgpeyaPrayerSectionSchema.optional(),
@@ -225,6 +231,8 @@ export const AgpeyaWatchSchema = z
 		conclusion: z.array(AgpeyaMidnightTailSchema).optional(),
 	})
 	.meta({ id: 'AgpeyaWatch' })
+
+export type AgpeyaWatch = z.infer<typeof AgpeyaWatchSchema>
 
 // Standard hour schema (non-midnight)
 export const AgpeyaHourSchema = z
@@ -238,6 +246,8 @@ export const AgpeyaHourSchema = z
 		hourIntro: AgpeyaPrayerSectionSchema.optional(),
 		comeLetUsWorship: AgpeyaPrayerSectionSchema.optional(),
 		thanksgiving: AgpeyaPrayerSectionSchema.optional(),
+		introductoryPsalm: AgpeyaPsalmSchema.optional(), // Psalm 50 (51)
+		psalmsIntro: z.string().optional(),
 		psalms: z.array(AgpeyaPsalmSchema),
 		gospel: AgpeyaGospelSchema,
 		gospelConclusion: AgpeyaPrayerSectionSchema.optional(),
@@ -250,6 +260,8 @@ export const AgpeyaHourSchema = z
 	})
 	.meta({ id: 'AgpeyaHour' })
 
+export type AgpeyaHour = z.infer<typeof AgpeyaHourSchema>
+
 // Midnight hour schema with watches
 export const AgpeyaMidnightHourSchema = z
 	.object({
@@ -259,6 +271,8 @@ export const AgpeyaMidnightHourSchema = z
 		traditionalTime: z.string(),
 		introduction: z.string().optional(),
 		opening: AgpeyaPrayerSectionSchema,
+		thanksgiving: AgpeyaPrayerSectionSchema.optional(),
+		introductoryPsalm: AgpeyaPsalmSchema.optional(), // Psalm 50 (51)
 		watches: z.array(AgpeyaWatchSchema),
 		closing: AgpeyaPrayerSectionSchema.optional(),
 		// The ending tail: prose prayers and the midnight Gospel, in order.
@@ -266,6 +280,8 @@ export const AgpeyaMidnightHourSchema = z
 		sections: AgpeyaSectionsSchema.optional(),
 	})
 	.meta({ id: 'AgpeyaMidnightHour' })
+
+export type AgpeyaMidnightHour = z.infer<typeof AgpeyaMidnightHourSchema>
 
 // Union schema for any hour type
 export const AgpeyaAnyHourSchema = z
@@ -337,6 +353,8 @@ export const IncenseSectionSchema = z
 	.union([IncensePsalmSectionSchema, IncenseGospelSectionSchema, IncensePrayerSectionSchema])
 	.meta({ id: 'IncenseSection' })
 
+export type IncenseSection = z.infer<typeof IncenseSectionSchema>
+
 export const IncenseResponseSchema = z
 	.object({
 		type: z.string(),
@@ -346,6 +364,8 @@ export const IncenseResponseSchema = z
 		sections: z.array(IncenseSectionSchema),
 	})
 	.meta({ id: 'IncenseResponse' })
+
+export type IncenseResponse = z.infer<typeof IncenseResponseSchema>
 
 // ── Liturgy ──────────────────────────────────────────────────────────────────
 
@@ -383,6 +403,8 @@ export const LiturgySectionSchema = z
 	.union([LiturgyReadingSectionSchema, LiturgyPrayerSectionSchema])
 	.meta({ id: 'LiturgySection' })
 
+export type LiturgySection = z.infer<typeof LiturgySectionSchema>
+
 export const LiturgyResponseSchema = z
 	.object({
 		type: z.string(),
@@ -392,6 +414,8 @@ export const LiturgyResponseSchema = z
 		sections: z.array(LiturgySectionSchema),
 	})
 	.meta({ id: 'LiturgyResponse' })
+
+export type LiturgyResponse = z.infer<typeof LiturgyResponseSchema>
 
 // Readings schemas
 
@@ -406,6 +430,8 @@ const ReadingSchema = z
 		),
 	})
 	.meta({ id: 'Reading' })
+
+export type Reading = z.infer<typeof ReadingSchema>
 
 // One optional field per Katameros slot, all of the same shape
 const readingSlots = <T extends z.ZodType>(schema: T) =>
@@ -437,20 +463,35 @@ export const ReadingsResponseSchema = z
 	})
 	.meta({ id: 'ReadingsResponse' })
 
+export type ReadingsResponse = z.infer<typeof ReadingsResponseSchema>
+
 export const DailyVerseSchema = z
 	.object({
 		verse: z.object({ book: z.string(), chapter: z.number(), verse: z.number(), text: z.string() }),
-		reference: z.string().meta({ example: 'John 16:33' }),
-		readingSlot: z.string().meta({ example: 'LGospel' }),
-		readingReference: z.string().meta({ example: 'John 16:20-33' }),
-		language: z.enum(BIBLE_TRANSLATIONS),
-		requestedLanguage: z.enum(BIBLE_TRANSLATIONS).optional(),
+		reference: z
+			.string()
+			.meta({ description: 'The featured verse as a citation', example: 'John 16:33' }),
+		readingSlot: z
+			.string()
+			.meta({ description: 'The reading slot the verse came from', example: 'LGospel' }),
+		readingReference: z.string().meta({
+			description: 'The full reading the verse was chosen from',
+			example: 'John 16:20-33',
+		}),
+		language: z
+			.enum(BIBLE_TRANSLATIONS)
+			.meta({ description: 'The language the verse text is actually in' }),
+		requestedLanguage: z.enum(BIBLE_TRANSLATIONS).optional().meta({
+			description: 'Present when the requested translation had no text and English was used',
+		}),
 		fallback: z.boolean().optional(),
 		season: z.string().optional(),
 		seasonKey: z.string().optional(),
 		fullDate: CopticDateSchema,
 	})
 	.meta({ id: 'DailyVerse' })
+
+export type DailyVerse = z.infer<typeof DailyVerseSchema>
 
 // Calendar and season schemas
 
@@ -563,3 +604,108 @@ export const LentDaySchema = LentDevotionalSchema.extend({
 		.array(z.object({ reference: z.string(), readings: z.array(ReadingSchema).nullable() }))
 		.optional(),
 }).meta({ id: 'LentDay' })
+
+// Tasbeha schemas
+
+const TASBEHA_SERVICE_IDS = [
+	'sunday-midnight-praises',
+	'monday-midnight-praises',
+	'tuesday-midnight-praises',
+	'wednesday-midnight-praises',
+	'thursday-midnight-praises',
+	'friday-midnight-praises',
+	'saturday-vespers-praises',
+] as const satisfies readonly TasbehaServiceId[]
+
+const TasbehaSourceSchema = z.object({
+	name: z.literal('Tasbeha.org'),
+	url: z.string().url(),
+	pageId: z.number().int(),
+	accessedAt: z.string(),
+	corroboratingUrls: z.array(z.string().url()).optional(),
+})
+
+export const TasbehaResponseSchema = z
+	.object({
+		type: z.literal('tasbeha'),
+		id: z.enum(TASBEHA_SERVICE_IDS),
+		name: z.string(),
+		description: z.string(),
+		status: z.literal('complete'),
+		rite: z.object({
+			cycle: z.enum(['annual', 'kiahk', 'great-lent', 'holy-fifty', 'feast']),
+			dayTune: z.enum(['adam', 'watos']),
+			weekdays: z.array(z.number().int().min(0).max(6)),
+		}),
+		sections: z.array(
+			z.object({
+				id: z.string(),
+				type: z.literal('prayer'),
+				role: z.literal('all'),
+				kind: z.enum([
+					'opening',
+					'canticle',
+					'lobsh',
+					'psali',
+					'commemoration',
+					'doxology',
+					'theotokia',
+					'gospel',
+					'difnar',
+					'litany',
+					'conclusion',
+				]),
+				title: z.string(),
+				titleLanguage: z.enum(['en', 'ar', 'cop']).optional(),
+				content: z.array(z.string()),
+				source: TasbehaSourceSchema,
+			}),
+		),
+	})
+	.meta({ id: 'TasbehaService' })
+
+export type TasbehaResponse = z.infer<typeof TasbehaResponseSchema>
+
+// Unified search schemas
+
+const SearchBibleResultSchema = z.object({
+	type: z.enum(['verse', 'reference']),
+	book: z.string(),
+	chapter: z.number(),
+	verse: z.number().optional(),
+	text: z.string(),
+	url: z.string(),
+	score: z.number().optional(),
+})
+
+const SearchSynaxariumResultSchema = z.object({
+	type: z.enum(['saint', 'feast']),
+	name: z.string(),
+	date: z.string(),
+	copticDate: z.string(),
+	summary: z.string().optional(),
+	url: z.string(),
+	score: z.number().optional(),
+})
+
+const SearchAgpeyaResultSchema = z.object({
+	type: z.enum(['hour', 'prayer']),
+	id: z.string(),
+	name: z.string(),
+	englishName: z.string(),
+	traditionalTime: z.string().optional(),
+	url: z.string(),
+	score: z.number().optional(),
+})
+
+export const SearchResponseSchema = z.object({
+	results: z.object({
+		bible: z.array(SearchBibleResultSchema),
+		synaxarium: z.array(SearchSynaxariumResultSchema),
+		agpeya: z.array(SearchAgpeyaResultSchema),
+	}),
+	query: z.string(),
+	totalCount: z.number(),
+})
+
+export type SearchResponse = z.infer<typeof SearchResponseSchema>

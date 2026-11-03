@@ -1,14 +1,18 @@
 import { getLiturgicalName, gregorianToCoptic, localizeCopticDate } from '@coptic/core'
 import { localizeReference } from '@coptic/data'
+import type { ReadingsResponse } from '../schemas'
 import { type BibleTranslation, READING_SLOTS } from '../types'
 import { warmTranslation } from './bible/data'
 import { getCelebrationsForDate } from './celebrations.service'
 import { getByCopticDate } from './lectionary.service'
 
-const localizeReferenceObject = (reference: Record<string, unknown>, lang: string) => {
-	const out: Record<string, unknown> = { ...reference }
-	for (const key of READING_SLOTS) {
-		if (typeof out[key] === 'string') out[key] = localizeReference(out[key] as string, lang)
+type ReadingReference = NonNullable<ReadingsResponse['reference']>
+
+const localizeReferenceObject = (reference: ReadingReference, lang: string): ReadingReference => {
+	const out = { ...reference }
+	for (const slot of READING_SLOTS) {
+		const citation = out[slot]
+		if (citation) out[slot] = localizeReference(citation, lang)
 	}
 	return out
 }
@@ -23,7 +27,7 @@ export const getReadingsForDate = async (
 	date: Date,
 	isDetailed: boolean,
 	translation: BibleTranslation,
-) => {
+): Promise<ReadingsResponse> => {
 	// In Workers, bible data is lazy-loaded from R2 on first use per isolate.
 	if (isDetailed) await warmTranslation(translation)
 	const data = getByCopticDate(date, isDetailed, translation)

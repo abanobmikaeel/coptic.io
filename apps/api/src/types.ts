@@ -39,11 +39,3 @@ export interface BibleBook {
 export interface BibleType {
 	books: BibleBook[]
 }
-
-export interface Reading {
-	bookName: string
-	chapters: {
-		chapterNum: number
-		verses: BibleVerse[]
-	}[]
-}

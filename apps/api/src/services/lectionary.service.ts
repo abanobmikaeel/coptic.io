@@ -1,17 +1,12 @@
-import {
-	type ReadingCycle,
-	type ReadingCycleName,
-	type SynaxariumEntry,
-	getLiturgicalSeasonForDate,
-	getReadingCycle,
-} from '@coptic/core'
+import { type ReadingCycle, getLiturgicalSeasonForDate, getReadingCycle } from '@coptic/core'
 import dayReadings from '../resources/dayReadings.json'
 import holyFiftyReadings from '../resources/holyFiftyReadings.json'
 import jonahReadings from '../resources/jonahReadings.json'
 import lentReadings from '../resources/lentReadings.json'
 import sundayReadings from '../resources/sundayReadings.json'
 import uniqueReadings from '../resources/uniqueReadings.json'
-import type { BibleTranslation, Reading } from '../types'
+import type { Reading, ReadingsResponse } from '../schemas'
+import { type BibleTranslation, READING_SLOTS, type ReadingSlot } from '../types'
 import { parseReadingString } from './bible/passages'
 import { getSynaxariumForDate } from './synaxarium.service'
 
@@ -20,98 +15,23 @@ const readingsById = new Map<number, (typeof uniqueReadings)[number]>()
 for (const reading of uniqueReadings) {
 	readingsById.set(reading.id, reading)
 }
-type ReadingRecord = {
-	Day?: string
-	Prophecies?: string
-	VPsalm?: string
-	VGospel?: string
-	MPsalm?: string
-	MGospel?: string
-	Pauline?: string
-	Catholic?: string
-	Acts?: string
-	LPsalm?: string
-	LGospel?: string
-	EPPsalm?: string
-	EPGospel?: string
-}
+// A lectionary entry: a verse reference per Katameros slot
+type ReadingRecord = Partial<Record<ReadingSlot, string>>
 
-export const transformReading = (record: ReadingRecord, translation: BibleTranslation = 'en') => {
-	const {
-		Prophecies,
-		VPsalm,
-		VGospel,
-		MPsalm,
-		MGospel,
-		Pauline,
-		Catholic,
-		Acts,
-		LPsalm,
-		LGospel,
-		EPPsalm,
-		EPGospel,
-	} = record
-
-	return {
-		Prophecies: parseReadingString(Prophecies, translation),
-		VPsalm: parseReadingString(VPsalm, translation),
-		VGospel: parseReadingString(VGospel, translation),
-		MPsalm: parseReadingString(MPsalm, translation),
-		MGospel: parseReadingString(MGospel, translation),
-		Pauline: parseReadingString(Pauline, translation),
-		Catholic: parseReadingString(Catholic, translation),
-		Acts: parseReadingString(Acts, translation),
-		LPsalm: parseReadingString(LPsalm, translation),
-		LGospel: parseReadingString(LGospel, translation),
-		EPPsalm: parseReadingString(EPPsalm, translation),
-		EPGospel: parseReadingString(EPGospel, translation),
-	}
-}
+const transformReading = (record: ReadingRecord, translation: BibleTranslation) =>
+	Object.fromEntries(
+		READING_SLOTS.map((slot) => [slot, parseReadingString(record[slot], translation)]),
+	) as Record<ReadingSlot, Reading[] | null>
 
 // Raw verse-reference strings returned in non-detailed mode. Annual days carry the
 // lectionary `id`; the seasonal and Sunday cycles don't, so both fields are optional.
-type ReadingReference = {
-	id?: number
-	Prophecies?: string
-	VPsalm?: string
-	VGospel?: string
-	MPsalm?: string
-	MGospel?: string
-	Pauline?: string
-	Catholic?: string
-	Acts?: string
-	LPsalm?: string
-	LGospel?: string
-	EPPsalm?: string
-	EPGospel?: string
-}
+type ReadingReference = NonNullable<ReadingsResponse['reference']>
 
-type ReadingResponse = {
-	reference?: ReadingReference
-	Synaxarium: SynaxariumEntry[]
-	synaxariumLanguage?: string
-	Prophecies?: Reading[] | null
-	VPsalm?: Reading[] | null
-	VGospel?: Reading[] | null
-	MPsalm?: Reading[] | null
-	MGospel?: Reading[] | null
-	Pauline?: Reading[] | null
-	Catholic?: Reading[] | null
-	Acts?: Reading[] | null
-	LPsalm?: Reading[] | null
-	LGospel?: Reading[] | null
-	EPPsalm?: Reading[] | null
-	EPGospel?: Reading[] | null
-	/** The lectionary cycle the day's readings come from */
-	cycle: ReadingCycleName
-	/** False when the day's cycle has no readings in the lectionary yet (Holy Week) */
-	readingsAvailable: boolean
-	season?: string
-	seasonDay?: string
-}
+/** The day's lectionary entry; readings.service adds the celebrations and Coptic date. */
+type LectionaryDay = Omit<ReadingsResponse, 'celebrations' | 'fullDate' | 'seasonKey'>
 
 // A seasonal or Sunday entry: a reading record plus the day's name in its cycle
-type CycleReadingEntry = Omit<ReadingRecord, 'Day'> & { label: string }
+type CycleReadingEntry = ReadingRecord & { label: string }
 
 // Jonah's Fast, Great Lent and the Holy Fifty are keyed by days from Easter; they never overlap
 const byDaysFromEaster: Record<string, CycleReadingEntry> = {
@@ -157,7 +77,7 @@ export const getByCopticDate = (
 	gregorianDate: Date,
 	isDetailed?: boolean,
 	translation: BibleTranslation = 'en',
-): ReadingResponse => {
+): LectionaryDay => {
 	if (!gregorianDate || !(gregorianDate instanceof Date)) {
 		throw new Error('Invalid gregorian date provided')
 	}
@@ -173,7 +93,7 @@ export const getByCopticDate = (
 	const cycle = getReadingCycle(gregorianDate)
 	const entry = getCycleEntry(cycle)
 	const season = getLiturgicalSeasonForDate(gregorianDate)?.name
-	const response: ReadingResponse = {
+	const response: LectionaryDay = {
 		Synaxarium: synaxarium,
 		synaxariumLanguage,
 		cycle: cycle.cycle,

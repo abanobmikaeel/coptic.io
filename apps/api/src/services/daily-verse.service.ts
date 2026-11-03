@@ -1,5 +1,4 @@
 import {
-	type CopticDate,
 	getDaysFromEaster,
 	getLiturgicalName,
 	getLiturgicalSeasonForDate,
@@ -8,6 +7,7 @@ import {
 } from '@coptic/core'
 import dayReadings from '../resources/dayReadings.json'
 import featuredVerses from '../resources/featuredVerses.json'
+import type { DailyVerse } from '../schemas'
 import type { BibleTranslation } from '../types'
 import { warmTranslation } from './bible/data'
 import { getReading } from './bible/passages'
@@ -19,24 +19,6 @@ type FeaturedFile = {
 }
 
 const featured = featuredVerses as FeaturedFile
-
-export type DailyVerse = {
-	verse: { book: string; chapter: number; verse: number; text: string }
-	/** The featured verse as a citation, e.g. "John 16:33". */
-	reference: string
-	/** Which reading slot the verse came from, e.g. "LGospel". */
-	readingSlot: string
-	/** The full reading the verse was chosen from, e.g. "John 16:20-33". */
-	readingReference: string
-	/** Language the verse text is actually in. */
-	language: BibleTranslation
-	/** Present when the requested translation had no text and English was used instead. */
-	requestedLanguage?: BibleTranslation
-	fallback?: boolean
-	season?: string
-	seasonKey?: string
-	fullDate: CopticDate
-}
 
 /**
  * Resolve the featured verse entry for a date: moveable (Lent/Jonah) wins, then
