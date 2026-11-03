@@ -1,8 +1,8 @@
 import { createRoute, z } from '@hono/zod-openapi'
+import { requestDate } from '../middleware/request'
 import { ErrorSchema, SynaxariumEntrySchema, SynaxariumSearchResultSchema } from '../schemas'
 import * as synaxariumService from '../services/synaxarium.service'
-import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
-import { createApiApp } from '../utils/openapi'
+import { createApiApp, jsonResponse } from '../utils/openapi'
 
 const app = createApiApp()
 
@@ -14,6 +14,7 @@ const getForDateRoute = createRoute({
 	summary: 'Get Synaxarium entries for a specific date',
 	description:
 		'Returns all saint commemorations and church events for a specific date. Defaults to today if no date provided.',
+	middleware: [requestDate()] as const,
 	request: {
 		params: z.object({
 			date: z.string().optional().openapi({ example: '2025-01-15' }),
@@ -24,49 +25,15 @@ const getForDateRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Synaxarium entries for the date',
-			content: {
-				'application/json': {
-					schema: z.array(SynaxariumEntrySchema),
-				},
-			},
-		},
-		400: {
-			description: 'Invalid date format',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
-		404: {
-			description: 'No synaxarium found for date',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(z.array(SynaxariumEntrySchema), 'Synaxarium entries for the date'),
+		400: jsonResponse(ErrorSchema, 'Invalid date format'),
+		404: jsonResponse(ErrorSchema, 'No synaxarium found for date'),
 	},
 })
 
 app.openapi(getForDateRoute, (c) => {
-	const { date } = c.req.valid('param')
 	const { detailed, lang } = c.req.valid('query')
-
-	let parsedDate = new Date()
-	if (date) {
-		const parsed = parseLocalDate(date)
-		if (!parsed) {
-			return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-		}
-		parsedDate = parsed
-	} else {
-		c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	}
-
-	const synaxarium = synaxariumService.getSynaxariumForDate(parsedDate, detailed === 'true', lang)
+	const synaxarium = synaxariumService.getSynaxariumForDate(c.var.date, detailed === 'true', lang)
 
 	if (!synaxarium) {
 		return c.json({ error: 'No synaxarium found for this date' }, 404)
@@ -92,22 +59,8 @@ const getForCopticDateRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Synaxarium entries for the Coptic date',
-			content: {
-				'application/json': {
-					schema: z.array(SynaxariumEntrySchema),
-				},
-			},
-		},
-		404: {
-			description: 'No synaxarium found for Coptic date',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(z.array(SynaxariumEntrySchema), 'Synaxarium entries for the Coptic date'),
+		404: jsonResponse(ErrorSchema, 'No synaxarium found for Coptic date'),
 	},
 })
 
@@ -144,22 +97,8 @@ const searchRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Search results',
-			content: {
-				'application/json': {
-					schema: z.array(SynaxariumSearchResultSchema),
-				},
-			},
-		},
-		400: {
-			description: 'Missing search query',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(z.array(SynaxariumSearchResultSchema), 'Search results'),
+		400: jsonResponse(ErrorSchema, 'Missing search query'),
 	},
 })
 

@@ -1,8 +1,8 @@
 import type { TasbehaServiceId } from '@coptic/data/en/tasbeha'
 import { createRoute, z } from '@hono/zod-openapi'
+import { requestDate } from '../middleware/request'
 import { getSundayTasbeha, getTasbehaById, getTasbehaForDate } from '../services/tasbeha.service'
-import { INVALID_DATE_MESSAGE, parseLocalDate } from '../utils/dateUtils'
-import { createApiApp } from '../utils/openapi'
+import { createApiApp, jsonResponse } from '../utils/openapi'
 
 const app = createApiApp()
 
@@ -39,10 +39,7 @@ const dateQuery = z.string().optional().openapi({
 	description: 'Liturgical date in YYYY-MM-DD format. Defaults to today.',
 })
 const errorResponse = {
-	400: {
-		description: 'Invalid date',
-		content: { 'application/json': { schema: z.object({ error: z.string() }) } },
-	},
+	400: jsonResponse(z.object({ error: z.string() }), 'Invalid date'),
 }
 
 const SourceSchema = z.object({
@@ -97,57 +94,48 @@ const TasbehaResponseSchema = z
 const getForDateRoute = createRoute({
 	method: 'get',
 	path: '/',
+	middleware: [requestDate('query')] as const,
 	tags: ['Tasbeha'],
 	summary: "Get the Psalmody for a date's day of the week",
 	description:
 		"Returns the annual Tasbeha prayed on the given date's weekday, in source-aligned English, Coptic, or Arabic. Sunday through Friday resolve to that day's Midnight Praises; Saturday resolves to the Saturday Vespers Praise.",
 	request: { query: z.object({ lang: langQuery, date: dateQuery }) },
 	responses: {
-		200: {
-			description: "The annual Psalmody for the date's weekday",
-			content: { 'application/json': { schema: TasbehaResponseSchema } },
-		},
+		200: jsonResponse(TasbehaResponseSchema, "The annual Psalmody for the date's weekday"),
 		...errorResponse,
 	},
 })
 
 app.openapi(getForDateRoute, (c) => {
-	const { lang = 'en', date: dateParam } = c.req.valid('query')
-	const date = dateParam ? parseLocalDate(dateParam) : new Date()
-	if (!date) return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-	if (!dateParam) c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	return c.json(getTasbehaForDate(date, lang), 200)
+	const { lang = 'en' } = c.req.valid('query')
+	return c.json(getTasbehaForDate(c.var.date, lang), 200)
 })
 
 const getSundayRoute = createRoute({
 	method: 'get',
 	path: '/sunday',
+	middleware: [requestDate('query')] as const,
 	tags: ['Tasbeha'],
 	summary: 'Get the annual Sunday Midnight Praises',
 	description:
 		'Returns the annual Sunday (Adam) Tasbeha corpus in source-aligned English, Coptic, or Arabic.',
 	request: { query: z.object({ lang: langQuery, date: dateQuery }) },
 	responses: {
-		200: {
-			description: 'Annual Sunday Midnight Praises',
-			content: { 'application/json': { schema: TasbehaResponseSchema } },
-		},
+		200: jsonResponse(TasbehaResponseSchema, 'Annual Sunday Midnight Praises'),
 		...errorResponse,
 	},
 })
 
 app.openapi(getSundayRoute, (c) => {
-	const { lang = 'en', date: dateParam } = c.req.valid('query')
-	const date = dateParam ? parseLocalDate(dateParam) : new Date()
-	if (!date) return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-	if (!dateParam) c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	return c.json(getSundayTasbeha(lang, date), 200)
+	const { lang = 'en' } = c.req.valid('query')
+	return c.json(getSundayTasbeha(lang, c.var.date), 200)
 })
 
 // Registered after /sunday so that path keeps its own documented entry.
 const getByDayRoute = createRoute({
 	method: 'get',
 	path: '/{day}',
+	middleware: [requestDate('query')] as const,
 	tags: ['Tasbeha'],
 	summary: 'Get the Psalmody for a named day of the week',
 	description:
@@ -162,21 +150,15 @@ const getByDayRoute = createRoute({
 		query: z.object({ lang: langQuery, date: dateQuery }),
 	},
 	responses: {
-		200: {
-			description: "The named day's annual Psalmody",
-			content: { 'application/json': { schema: TasbehaResponseSchema } },
-		},
+		200: jsonResponse(TasbehaResponseSchema, "The named day's annual Psalmody"),
 		...errorResponse,
 	},
 })
 
 app.openapi(getByDayRoute, (c) => {
 	const { day } = c.req.valid('param')
-	const { lang = 'en', date: dateParam } = c.req.valid('query')
-	const date = dateParam ? parseLocalDate(dateParam) : new Date()
-	if (!date) return c.json({ error: INVALID_DATE_MESSAGE }, 400)
-	if (!dateParam) c.header('Cache-Control', 'public, max-age=120, s-maxage=120')
-	return c.json(getTasbehaById(SERVICE_BY_DAY[day], lang, date), 200)
+	const { lang = 'en' } = c.req.valid('query')
+	return c.json(getTasbehaById(SERVICE_BY_DAY[day], lang, c.var.date), 200)
 })
 
 export default app

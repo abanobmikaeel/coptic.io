@@ -1,7 +1,7 @@
 import { createRoute, z } from '@hono/zod-openapi'
 import { ErrorSchema } from '../schemas'
 import { searchService } from '../services/search'
-import { createApiApp } from '../utils/openapi'
+import { createApiApp, jsonResponse } from '../utils/openapi'
 
 const app = createApiApp()
 
@@ -71,22 +71,8 @@ const searchRoute = createRoute({
 		}),
 	},
 	responses: {
-		200: {
-			description: 'Search results grouped by content type',
-			content: {
-				'application/json': {
-					schema: SearchResponseSchema,
-				},
-			},
-		},
-		400: {
-			description: 'Invalid request',
-			content: {
-				'application/json': {
-					schema: ErrorSchema,
-				},
-			},
-		},
+		200: jsonResponse(SearchResponseSchema, 'Search results grouped by content type'),
+		400: jsonResponse(ErrorSchema, 'Invalid request'),
 	},
 })
 
