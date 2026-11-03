@@ -1,5 +1,6 @@
-import { toDateKey } from '@coptic/core'
 import { type Page, expect, test } from '@playwright/test'
+// Imported from source: Playwright loads specs as CommonJS, which the ESM-only core build doesn't support
+import { toDateKey } from '../../../packages/core/src/utils/date'
 
 // Opens the upcoming view and waits for its entries, which only render after hydration.
 // Don't wait for `networkidle` here: Next 16.3 holds link prefetches open on this view.

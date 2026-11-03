@@ -20,7 +20,7 @@ export function CommemorationPicker({ selected }: Readonly<CommemorationPickerPr
 
 	useEffect(() => {
 		let cancelled = false
-		dataOrNull(api.GET('/api/incense/commemorations')).then((d) => {
+		void dataOrNull(api.GET('/api/incense/commemorations')).then((d) => {
 			if (!cancelled) setOptions(d?.commemorations ?? [])
 		})
 		return () => {
