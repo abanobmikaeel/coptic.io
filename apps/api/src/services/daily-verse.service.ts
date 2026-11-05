@@ -1,7 +1,7 @@
 import {
-	getDaysFromEaster,
 	getLiturgicalName,
 	getLiturgicalSeasonForDate,
+	getReadingCycle,
 	gregorianToCoptic,
 	localizeCopticDate,
 } from '@coptic/core'
@@ -14,26 +14,35 @@ import { getReading } from './bible/passages'
 
 type FeaturedEntry = { slot: string; reference: string; reading: string }
 type FeaturedFile = {
+	/** Annual readings, by lectionary reading id */
 	fixed: Record<string, FeaturedEntry>
+	/** Jonah's Fast, Great Lent and the Holy Fifty, by days from Easter */
 	moveable: Record<string, FeaturedEntry>
+	/** Sundays outside those seasons, by "month:sunday" */
+	sunday: Record<string, FeaturedEntry>
 }
 
 const featured = featuredVerses as FeaturedFile
 
 /**
- * Resolve the featured verse entry for a date: moveable (Lent/Jonah) wins, then
- * the fixed lectionary id. Verses have not been selected for the Sunday and Holy
- * Fifty readings yet, so on those days this still reads the fixed lectionary id
- * rather than following getReadingCycle.
+ * The featured verse of the readings served on a date, following the same cycle as
+ * the readings. Holy Week has none: its readings follow the Pascha hours, which the
+ * lectionary does not serve yet.
  */
 const findFeaturedEntry = (date: Date): FeaturedEntry | null => {
-	const moveable = featured.moveable[String(getDaysFromEaster(date))]
-	if (moveable) return moveable
-
-	const coptic = gregorianToCoptic(date)
-	const readingId = dayReadings[coptic.month - 1]?.readings[coptic.day - 1]
-	if (readingId === undefined) return null
-	return featured.fixed[String(readingId)] ?? null
+	const cycle = getReadingCycle(date)
+	switch (cycle.cycle) {
+		case 'holyWeek':
+			return null
+		case 'annual': {
+			const readingId = dayReadings[cycle.month - 1]?.readings[cycle.day - 1]
+			return readingId === undefined ? null : (featured.fixed[String(readingId)] ?? null)
+		}
+		case 'sunday':
+			return featured.sunday[`${cycle.month}:${cycle.sunday}`] ?? null
+		default:
+			return featured.moveable[String(cycle.daysFromEaster)] ?? null
+	}
 }
 
 /**

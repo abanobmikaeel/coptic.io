@@ -1,7 +1,10 @@
-import { gregorianToCoptic } from '@coptic/core'
+import { getReadingCycle, gregorianToCoptic } from '@coptic/core'
 import { describe, expect, it } from 'vitest'
 import dayReadings from '../../resources/dayReadings.json'
 import featuredVerses from '../../resources/featuredVerses.json'
+import holyFiftyReadings from '../../resources/holyFiftyReadings.json'
+import sundayReadings from '../../resources/sundayReadings.json'
+import { getReading } from '../../services/bible/passages'
 import { resolveDailyVerse } from '../../services/daily-verse.service'
 
 // Dates are built with local components (new Date(y, m, d)) so the day never shifts
@@ -15,7 +18,7 @@ const fixedEntryFor = (date: Date) => {
 
 describe('daily verse service', () => {
 	it('resolves the featured verse for a fixed day', () => {
-		const date = new Date(2026, 4, 20) // Bashans 12
+		const date = new Date(2026, 9, 27) // Tuesday, Baba 17
 		const entry = fixedEntryFor(date)
 		const result = resolveDailyVerse(date)
 		expect(result).not.toBeNull()
@@ -26,7 +29,7 @@ describe('daily verse service', () => {
 			entry.reference,
 		)
 		expect(result?.verse.text).toBeTruthy()
-		expect(result?.fullDate.monthString).toBe('Bashans')
+		expect(result?.fullDate.monthString).toBe('Baba')
 	})
 
 	it('prefers the moveable reading over the fixed one', () => {
@@ -39,9 +42,35 @@ describe('daily verse service', () => {
 		expect(result?.readingSlot).toBe(moveable.slot)
 	})
 
-	it('resolves a verse for every day across two decades', () => {
+	// Regression: Sundays and the Holy Fifty served their own readings but took the
+	// verse of the fixed-date weekday readings
+	it('takes a Sunday verse from the Sunday readings', () => {
+		const date = new Date(2026, 10, 1) // Sunday, Baba 22
+		const cycle = getReadingCycle(date)
+		expect(cycle.cycle).toBe('sunday')
+		const entry = featuredVerses.sunday['2:4']
+		expect(entry.reading).toBe(sundayReadings['2:4'].LGospel)
+		expect(resolveDailyVerse(date)?.reference).toBe(entry.reference)
+	})
+
+	it('takes a Holy Fifty verse from the Holy Fifty readings', () => {
+		const date = new Date(2026, 4, 20) // 38 days after Easter, Bashans 12
+		const entry = featuredVerses.moveable['38']
+		expect(entry.reading).toBe(holyFiftyReadings['38'].LGospel)
+		expect(entry.reference).not.toBe(fixedEntryFor(date).reference)
+		expect(resolveDailyVerse(date)?.reference).toBe(entry.reference)
+	})
+
+	it('has no verse in Holy Week, whose readings are not served yet', () => {
+		for (let offset = -6; offset <= -1; offset++) {
+			expect(resolveDailyVerse(new Date(2026, 3, 12 + offset))).toBeNull()
+		}
+	})
+
+	it('resolves a verse for every day outside Holy Week across two decades', () => {
 		const missing: string[] = []
 		for (let d = new Date(2020, 0, 1); d < new Date(2041, 0, 1); d.setDate(d.getDate() + 1)) {
+			if (getReadingCycle(d).cycle === 'holyWeek') continue
 			if (!resolveDailyVerse(d)) missing.push(d.toDateString())
 		}
 		expect(missing).toEqual([])
@@ -68,5 +97,34 @@ describe('daily verse service', () => {
 			expect(result.fallback).toBe(true)
 			expect(result.requestedLanguage).toBe('cop')
 		}
+	})
+})
+
+describe('featured verse data', () => {
+	const cycles = { sunday: sundayReadings, moveable: holyFiftyReadings } as const
+	const entries = [
+		...Object.entries(featuredVerses.sunday).map(([key, e]) => ['sunday', key, e] as const),
+		...Object.entries(featuredVerses.moveable)
+			.filter(([key]) => Number(key) >= 0)
+			.map(([key, e]) => ['moveable', key, e] as const),
+	]
+
+	it('covers every Sunday and Holy Fifty reading set', () => {
+		expect(Object.keys(featuredVerses.sunday).sort()).toEqual(Object.keys(sundayReadings).sort())
+		for (const key of Object.keys(holyFiftyReadings))
+			expect(featuredVerses.moveable).toHaveProperty(key)
+	})
+
+	it.each(entries)('%s %s quotes a verse of the reading it names', (cycle, key, entry) => {
+		const set = (cycles[cycle] as Record<string, Record<string, string>>)[key]
+		expect(set?.[entry.slot]).toBe(entry.reading)
+
+		const verse = getReading(entry.reference)
+		const verses = (getReading(entry.reading)?.chapters ?? []).flatMap((c) =>
+			c.verses.map((v) => `${c.chapterNum}:${v.num}`),
+		)
+		const chapter = verse?.chapters[0]
+		expect(verses).toContain(`${chapter?.chapterNum}:${chapter?.verses[0]?.num}`)
+		expect(verse?.chapters[0]?.verses).toHaveLength(1)
 	})
 })

@@ -631,6 +631,513 @@
 			"slot": "VPsalm",
 			"reference": "Psalms 118:26",
 			"reading": "Psalms 118:26-27"
+		},
+		"0": {
+			"slot": "Acts",
+			"reference": "Acts 2:32",
+			"reading": "Acts 2:22-35"
+		},
+		"1": {
+			"slot": "LGospel",
+			"reference": "Luke 24:32",
+			"reading": "Luke 24:13-35"
+		},
+		"2": {
+			"slot": "LGospel",
+			"reference": "Mark 16:15",
+			"reading": "Mark 16:9-20"
+		},
+		"3": {
+			"slot": "LGospel",
+			"reference": "John 2:19",
+			"reading": "John 2:12-25"
+		},
+		"4": {
+			"slot": "LGospel",
+			"reference": "Luke 7:14",
+			"reading": "Luke 7:11-17"
+		},
+		"5": {
+			"slot": "LGospel",
+			"reference": "Mark 16:6",
+			"reading": "Mark 16:2-8"
+		},
+		"6": {
+			"slot": "LGospel",
+			"reference": "Luke 9:35",
+			"reading": "Luke 9:28-35"
+		},
+		"7": {
+			"slot": "LGospel",
+			"reference": "John 20:29",
+			"reading": "John 20:19-31"
+		},
+		"8": {
+			"slot": "LGospel",
+			"reference": "John 3:36",
+			"reading": "John 3:31-36"
+		},
+		"9": {
+			"slot": "LGospel",
+			"reference": "John 5:24",
+			"reading": "John 5:22-24"
+		},
+		"10": {
+			"slot": "LGospel",
+			"reference": "John 5:36",
+			"reading": "John 5:31-37"
+		},
+		"11": {
+			"slot": "LGospel",
+			"reference": "John 5:39",
+			"reading": "John 5:39-47"
+		},
+		"12": {
+			"slot": "LGospel",
+			"reference": "John 6:54",
+			"reading": "John 6:54-58"
+		},
+		"13": {
+			"slot": "LGospel",
+			"reference": "John 6:14",
+			"reading": "John 6:1-14"
+		},
+		"14": {
+			"slot": "LGospel",
+			"reference": "John 6:35",
+			"reading": "John 6:35-45"
+		},
+		"15": {
+			"slot": "LGospel",
+			"reference": "John 7:39",
+			"reading": "John 7:39-42"
+		},
+		"16": {
+			"slot": "LGospel",
+			"reference": "John 8:12",
+			"reading": "John 8:12-16"
+		},
+		"17": {
+			"slot": "LGospel",
+			"reference": "John 8:24",
+			"reading": "John 8:23-26"
+		},
+		"18": {
+			"slot": "LGospel",
+			"reference": "John 8:29",
+			"reading": "John 8:28-30"
+		},
+		"19": {
+			"slot": "LGospel",
+			"reference": "John 8:32",
+			"reading": "John 8:31-39"
+		},
+		"20": {
+			"slot": "LGospel",
+			"reference": "John 6:51",
+			"reading": "John 6:47-56"
+		},
+		"21": {
+			"slot": "LGospel",
+			"reference": "John 4:14",
+			"reading": "John 4:1-42"
+		},
+		"22": {
+			"slot": "LGospel",
+			"reference": "John 8:42",
+			"reading": "John 8:39-42"
+		},
+		"23": {
+			"slot": "LGospel",
+			"reference": "John 8:51",
+			"reading": "John 8:51-55"
+		},
+		"24": {
+			"slot": "LGospel",
+			"reference": "John 7:16",
+			"reading": "John 7:14-29"
+		},
+		"25": {
+			"slot": "LGospel",
+			"reference": "John 8:58",
+			"reading": "John 8:54-59"
+		},
+		"26": {
+			"slot": "LGospel",
+			"reference": "John 10:38",
+			"reading": "John 10:34-38"
+		},
+		"27": {
+			"slot": "LGospel",
+			"reference": "John 7:24",
+			"reading": "John 7:14-24"
+		},
+		"28": {
+			"slot": "LGospel",
+			"reference": "John 12:46",
+			"reading": "John 12:35-50"
+		},
+		"29": {
+			"slot": "LGospel",
+			"reference": "John 3:30",
+			"reading": "John 3:25-30"
+		},
+		"30": {
+			"slot": "LGospel",
+			"reference": "John 12:44",
+			"reading": "John 12:44-48"
+		},
+		"31": {
+			"slot": "LGospel",
+			"reference": "John 13:17",
+			"reading": "John 13:16-20"
+		},
+		"32": {
+			"slot": "LGospel",
+			"reference": "John 17:21",
+			"reading": "John 17:18-21"
+		},
+		"33": {
+			"slot": "LGospel",
+			"reference": "John 17:24",
+			"reading": "John 17:22-26"
+		},
+		"34": {
+			"slot": "LGospel",
+			"reference": "John 14:1",
+			"reading": "John 14:1-11"
+		},
+		"35": {
+			"slot": "LGospel",
+			"reference": "John 14:6",
+			"reading": "John 14:1-11"
+		},
+		"36": {
+			"slot": "LGospel",
+			"reference": "John 16:22",
+			"reading": "John 16:15-23"
+		},
+		"37": {
+			"slot": "LGospel",
+			"reference": "John 16:24",
+			"reading": "John 16:23-33"
+		},
+		"38": {
+			"slot": "LGospel",
+			"reference": "John 17:3",
+			"reading": "John 17:1-9"
+		},
+		"39": {
+			"slot": "LGospel",
+			"reference": "Luke 24:51",
+			"reading": "Luke 24:36-53"
+		},
+		"40": {
+			"slot": "LGospel",
+			"reference": "John 14:27",
+			"reading": "John 14:26-31"
+		},
+		"41": {
+			"slot": "LGospel",
+			"reference": "John 16:20",
+			"reading": "John 16:15-23"
+		},
+		"42": {
+			"slot": "LGospel",
+			"reference": "John 16:33",
+			"reading": "John 16:23-33"
+		},
+		"43": {
+			"slot": "LGospel",
+			"reference": "John 15:5",
+			"reading": "John 15:1-8"
+		},
+		"44": {
+			"slot": "LGospel",
+			"reference": "John 15:13",
+			"reading": "John 15:9-15"
+		},
+		"45": {
+			"slot": "LGospel",
+			"reference": "John 15:12",
+			"reading": "John 15:12-16"
+		},
+		"46": {
+			"slot": "LGospel",
+			"reference": "John 15:18",
+			"reading": "John 15:17-25"
+		},
+		"47": {
+			"slot": "LGospel",
+			"reference": "John 7:38",
+			"reading": "John 7:37-39"
+		},
+		"48": {
+			"slot": "LGospel",
+			"reference": "John 17:17",
+			"reading": "John 17:14-26"
+		},
+		"49": {
+			"slot": "LGospel",
+			"reference": "John 16:13",
+			"reading": "John 15:26-16:15"
+		}
+	},
+	"sunday": {
+		"1:1": {
+			"slot": "LGospel",
+			"reference": "Luke 7:28",
+			"reading": "Luke 7:28-35"
+		},
+		"1:2": {
+			"slot": "LGospel",
+			"reference": "Luke 10:27",
+			"reading": "Luke 10:21-28"
+		},
+		"1:3": {
+			"slot": "LGospel",
+			"reference": "Luke 19:10",
+			"reading": "Luke 19:1-10"
+		},
+		"1:4": {
+			"slot": "LGospel",
+			"reference": "Luke 7:50",
+			"reading": "Luke 7:36-50"
+		},
+		"1:5": {
+			"slot": "LGospel",
+			"reference": "John 6:14",
+			"reading": "John 6:5-14"
+		},
+		"2:1": {
+			"slot": "LGospel",
+			"reference": "Mark 2:5",
+			"reading": "Mark 2:1-12"
+		},
+		"2:2": {
+			"slot": "LGospel",
+			"reference": "Luke 5:10",
+			"reading": "Luke 5:1-11"
+		},
+		"2:3": {
+			"slot": "LGospel",
+			"reference": "Matthew 12:28",
+			"reading": "Matthew 12:22-28"
+		},
+		"2:4": {
+			"slot": "LGospel",
+			"reference": "Luke 7:16",
+			"reading": "Luke 7:11-17"
+		},
+		"2:5": {
+			"slot": "LGospel",
+			"reference": "John 6:12",
+			"reading": "John 6:5-14"
+		},
+		"3:1": {
+			"slot": "LGospel",
+			"reference": "Luke 8:15",
+			"reading": "Luke 8:4-15"
+		},
+		"3:2": {
+			"slot": "LGospel",
+			"reference": "Matthew 13:8",
+			"reading": "Matthew 13:1-9"
+		},
+		"3:3": {
+			"slot": "LGospel",
+			"reference": "Luke 14:27",
+			"reading": "Luke 14:25-35"
+		},
+		"3:4": {
+			"slot": "LGospel",
+			"reference": "Mark 10:27",
+			"reading": "Mark 10:17-31"
+		},
+		"3:5": {
+			"slot": "LGospel",
+			"reference": "John 6:14",
+			"reading": "John 6:5-14"
+		},
+		"4:1": {
+			"slot": "LGospel",
+			"reference": "Luke 1:13",
+			"reading": "Luke 1:1-25"
+		},
+		"4:2": {
+			"slot": "LGospel",
+			"reference": "Luke 1:38",
+			"reading": "Luke 1:26-38"
+		},
+		"4:3": {
+			"slot": "LGospel",
+			"reference": "Luke 1:49",
+			"reading": "Luke 1:39-56"
+		},
+		"4:4": {
+			"slot": "LGospel",
+			"reference": "Luke 1:58",
+			"reading": "Luke 1:57-80"
+		},
+		"4:5": {
+			"slot": "LGospel",
+			"reference": "John 6:12",
+			"reading": "John 6:5-14"
+		},
+		"5:1": {
+			"slot": "LGospel",
+			"reference": "Matthew 2:15",
+			"reading": "Matthew 2:13-23"
+		},
+		"5:2": {
+			"slot": "LGospel",
+			"reference": "Luke 11:28",
+			"reading": "Luke 11:27-36"
+		},
+		"5:3": {
+			"slot": "LGospel",
+			"reference": "John 3:30",
+			"reading": "John 3:22-36"
+		},
+		"5:4": {
+			"slot": "LGospel",
+			"reference": "John 9:25",
+			"reading": "John 9:1-38"
+		},
+		"5:5": {
+			"slot": "LGospel",
+			"reference": "John 6:14",
+			"reading": "John 6:5-14"
+		},
+		"6:1": {
+			"slot": "LGospel",
+			"reference": "John 6:27",
+			"reading": "John 6:22-27"
+		},
+		"6:2": {
+			"slot": "LGospel",
+			"reference": "John 6:12",
+			"reading": "John 6:5-14"
+		},
+		"6:3": {
+			"slot": "LGospel",
+			"reference": "John 6:35",
+			"reading": "John 6:27-46"
+		},
+		"6:4": {
+			"slot": "LGospel",
+			"reference": "Luke 19:5",
+			"reading": "Luke 19:1-10"
+		},
+		"6:5": {
+			"slot": "LGospel",
+			"reference": "John 6:14",
+			"reading": "John 6:5-14"
+		},
+		"7:5": {
+			"slot": "LGospel",
+			"reference": "Luke 9:17",
+			"reading": "Luke 9:12-17"
+		},
+		"8:5": {
+			"slot": "LGospel",
+			"reference": "Luke 9:13",
+			"reading": "Luke 9:12-17"
+		},
+		"9:3": {
+			"slot": "LGospel",
+			"reference": "Luke 10:37",
+			"reading": "Luke 10:25-37"
+		},
+		"9:4": {
+			"slot": "LGospel",
+			"reference": "Luke 4:4",
+			"reading": "Luke 4:1-13"
+		},
+		"9:5": {
+			"slot": "LGospel",
+			"reference": "Luke 9:17",
+			"reading": "Luke 9:12-17"
+		},
+		"10:1": {
+			"slot": "LGospel",
+			"reference": "Luke 11:9",
+			"reading": "Luke 11:1-13"
+		},
+		"10:2": {
+			"slot": "LGospel",
+			"reference": "Luke 5:20",
+			"reading": "Luke 5:17-26"
+		},
+		"10:3": {
+			"slot": "LGospel",
+			"reference": "Matthew 12:33",
+			"reading": "Matthew 12:22-37"
+		},
+		"10:4": {
+			"slot": "LGospel",
+			"reference": "Luke 6:36",
+			"reading": "Luke 6:27-38"
+		},
+		"10:5": {
+			"slot": "LGospel",
+			"reference": "Luke 9:13",
+			"reading": "Luke 9:12-17"
+		},
+		"11:1": {
+			"slot": "LGospel",
+			"reference": "Luke 10:20",
+			"reading": "Luke 10:1-20"
+		},
+		"11:2": {
+			"slot": "LGospel",
+			"reference": "Matthew 18:3",
+			"reading": "Matthew 18:1-9"
+		},
+		"11:3": {
+			"slot": "LGospel",
+			"reference": "Luke 9:17",
+			"reading": "Luke 9:10-17"
+		},
+		"11:4": {
+			"slot": "LGospel",
+			"reference": "John 11:25",
+			"reading": "John 11:1-45"
+		},
+		"11:5": {
+			"slot": "LGospel",
+			"reference": "Luke 9:17",
+			"reading": "Luke 9:12-17"
+		},
+		"12:1": {
+			"slot": "LGospel",
+			"reference": "Luke 20:17",
+			"reading": "Luke 20:9-19"
+		},
+		"12:2": {
+			"slot": "LGospel",
+			"reference": "Luke 5:32",
+			"reading": "Luke 5:27-39"
+		},
+		"12:3": {
+			"slot": "LGospel",
+			"reference": "Mark 3:35",
+			"reading": "Mark 3:22-35"
+		},
+		"12:4": {
+			"slot": "LGospel",
+			"reference": "Mark 13:33",
+			"reading": "Mark 13:3-37"
+		},
+		"12:5": {
+			"slot": "LGospel",
+			"reference": "Luke 9:13",
+			"reading": "Luke 9:12-17"
+		},
+		"13:1": {
+			"slot": "LGospel",
+			"reference": "Matthew 24:13",
+			"reading": "Matthew 24:3-35"
 		}
 	}
 }
