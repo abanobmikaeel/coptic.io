@@ -187,6 +187,14 @@ export function TasbehaContent({
 					{tasbehaRiteLabel(current, isArabic, service?.rite?.cycle)}
 				</span>
 			</div>
+			{partialNotice && (
+				<span
+					title={[partialNotice, unevenNotice].filter(Boolean).join(' ')}
+					className={`shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded-full ${themeClasses.dropdownBadge[theme]}`}
+				>
+					{isArabic ? 'جزئي' : 'Partial'}
+				</span>
+			)}
 		</div>
 	)
 
