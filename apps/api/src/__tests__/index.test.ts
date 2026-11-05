@@ -117,6 +117,20 @@ describe('API Endpoints', () => {
 		})
 	})
 
+	describe('trailing slashes', () => {
+		it('should redirect to the route without the slash, keeping the query', async () => {
+			const res = await app.request('/api/agpeya/?lang=ar')
+			expect(res.status).toBe(301)
+			expect(new URL(res.headers.get('Location') ?? '').pathname).toBe('/api/agpeya')
+			expect(new URL(res.headers.get('Location') ?? '').search).toBe('?lang=ar')
+		})
+
+		it('should keep answering 404 for a path with no route', async () => {
+			const res = await app.request('/unknown-route')
+			expect(res.status).toBe(404)
+		})
+	})
+
 	describe('GET /api/synaxarium', () => {
 		it('should return synaxarium entries for specific date', async () => {
 			const res = await app.request('/api/synaxarium/2025-01-15')

@@ -2,6 +2,7 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import type { ExecutionContext } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
+import { trimTrailingSlash } from 'hono/trailing-slash'
 
 import { httpUsage, kindOf, recordUsage } from './analytics/record'
 import type { Bindings } from './env'
@@ -31,6 +32,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
 
 app.use('*', cors())
 app.use('*', logger())
+app.use('*', trimTrailingSlash())
 app.use('*', (c, next) => {
 	if (c.env?.BIBLE_BUCKET) setBibleBucket(c.env.BIBLE_BUCKET)
 	c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
