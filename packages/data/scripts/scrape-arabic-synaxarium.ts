@@ -1,12 +1,17 @@
 /**
- * Scrape Arabic Synaxarium from CopticChurch.net
+ * Scrape the Arabic Synaxarium from CopticChurch.net, one page per Coptic day:
+ * https://copticchurch.net/synaxarium/ar/{month}_{day}
  *
- * The Arabic synaxarium uses the same URL structure as English:
- * https://www.copticchurch.net/synaxarium/{month}_{day}.html?lang=ar
+ *   bun scripts/scrape-arabic-synaxarium.ts             Rewrite canonical.json
+ *   bun scripts/scrape-arabic-synaxarium.ts --only=2_13 Replace one day, keeping the rest
+ *
+ * A full run drops the `id` that links each entry to its English counterpart, so
+ * correct a single day with --only and name its ids in ENGLISH_IDS.
  */
 
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { type ScrapedEntry, parseEntries } from './lib/synaxarium-html'
 
 // Coptic months and their days
 const COPTIC_MONTHS = [
@@ -25,51 +30,15 @@ const COPTIC_MONTHS = [
 	{ name: 'Nasie', days: 6, num: 13 }, // 5 or 6 days (leap year)
 ]
 
-const BASE_URL = 'https://www.copticchurch.net/synaxarium'
+const BASE_URL = 'https://copticchurch.net/synaxarium/ar'
 
-interface SynaxariumEntry {
-	url: string
-	name: string
-	text: string
-}
+const OUTPUT_PATH = join(import.meta.dirname, '..', 'src', 'ar', 'synaxarium', 'canonical.json')
 
-function parseEntriesFromHtml(html: string, monthNum: number, day: number): SynaxariumEntry[] {
-	const entries: SynaxariumEntry[] = []
+type Synaxarium = Record<string, (ScrapedEntry & { id?: string })[]>
 
-	// Split by h3 tags which contain entry headers
-	// Pattern: <h3><A NAME='1'>1. Title </a></h3> followed by <p> content </p>
-	const entryPattern =
-		/<h3><A NAME='(\d+)'[^>]*>[\d.]*\s*([^<]+)<\/a><\/h3>([\s\S]*?)(?=<h3>|<\/div>)/gi
-
-	for (const match of html.matchAll(entryPattern)) {
-		const entryNum = match[1]
-		const name = (match[2] ?? '').trim()
-		const contentBlock = match[3] ?? ''
-
-		// Extract text from all <p> tags in this entry
-		const paragraphs: string[] = []
-		const pPattern = /<p>([^<]*(?:<[^p][^>]*>[^<]*<\/[^p][^>]*>)*[^<]*)<\/p>/gi
-		for (const pMatch of contentBlock.matchAll(pPattern)) {
-			// Clean up the text - remove inner tags and extra whitespace
-			const text = (pMatch[1] ?? '')
-				.replace(/<[^>]+>/g, '')
-				.replace(/\s+/g, ' ')
-				.trim()
-			if (text && text.length > 10) {
-				paragraphs.push(text)
-			}
-		}
-
-		if (name && paragraphs.length > 0) {
-			entries.push({
-				url: `${BASE_URL}/${monthNum}_${day}.html?lang=ar#${entryNum}`,
-				name,
-				text: paragraphs.join('\n\n'),
-			})
-		}
-	}
-
-	return entries
+/** The English entry ids of days scraped with --only, in the page's entry order. */
+const ENGLISH_IDS: Record<string, string[]> = {
+	'13 Baba': ['13-baba-the-departure-of-saint-zacharias-the-monk'],
 }
 
 // Fetch with retry
@@ -89,55 +58,89 @@ async function fetchWithRetry(url: string, retries = 3): Promise<string> {
 	throw new Error('unreachable')
 }
 
-async function scrapeDay(monthNum: number, day: number): Promise<SynaxariumEntry[]> {
-	const url = `${BASE_URL}/${monthNum}_${day}.html?lang=ar`
+async function scrapeDay(monthNum: number, day: number): Promise<ScrapedEntry[]> {
+	const url = `${BASE_URL}/${monthNum}_${day}`
 
 	try {
-		const html = await fetchWithRetry(url)
-		return parseEntriesFromHtml(html, monthNum, day)
+		return parseEntries(await fetchWithRetry(url), url)
 	} catch (err) {
 		console.error(`  Error fetching ${url}: ${err}`)
 		return []
 	}
 }
 
+const dateKeys = (): { key: string; monthNum: number; day: number }[] =>
+	COPTIC_MONTHS.flatMap((month) =>
+		Array.from({ length: month.days }, (_, i) => ({
+			key: `${i + 1} ${month.name}`,
+			monthNum: month.num,
+			day: i + 1,
+		})),
+	)
+
+const save = (synaxarium: Synaxarium) => {
+	mkdirSync(join(OUTPUT_PATH, '..'), { recursive: true })
+	writeFileSync(OUTPUT_PATH, JSON.stringify(synaxarium, null, '\t'))
+	console.log(`Saved to: ${OUTPUT_PATH}`)
+}
+
+/** Replace one day in canonical.json, leaving every other entry byte for byte. */
+async function scrapeOne(only: string) {
+	const target = dateKeys().find(({ monthNum, day }) => `${monthNum}_${day}` === only)
+	if (!target) throw new Error(`No Coptic day ${only}; expected {month}_{day}, e.g. 2_13`)
+
+	const entries = await scrapeDay(target.monthNum, target.day)
+	const ids = ENGLISH_IDS[target.key]
+	if (ids?.length !== entries.length) {
+		throw new Error(`${target.key}: ${entries.length} entries, ENGLISH_IDS has ${ids?.length ?? 0}`)
+	}
+
+	const existing = JSON.parse(readFileSync(OUTPUT_PATH, 'utf8')) as Synaxarium
+	const day = entries.map((entry, i) => ({ ...entry, id: ids[i] }))
+	const merged: Synaxarium = {}
+	for (const { key } of dateKeys()) {
+		const value = key === target.key ? day : existing[key]
+		if (value) merged[key] = value
+	}
+	save(merged)
+}
+
 async function main() {
-	const synaxarium: Record<string, SynaxariumEntry[]> = {}
+	const only = process.argv.find((arg) => arg.startsWith('--only='))?.slice('--only='.length)
+	if (only) return scrapeOne(only)
+
+	const synaxarium: Synaxarium = {}
+	const missing: string[] = []
 	let totalEntries = 0
 
 	console.log('Scraping Arabic Synaxarium from CopticChurch.net...\n')
 
-	for (const month of COPTIC_MONTHS) {
-		console.log(`\n${month.name} (${month.days} days)...`)
+	for (const { key, monthNum, day } of dateKeys()) {
+		process.stdout.write(`  ${key}... `)
 
-		for (let day = 1; day <= month.days; day++) {
-			const dateKey = `${day} ${month.name}`
-			process.stdout.write(`  Day ${day}... `)
+		const entries = await scrapeDay(monthNum, day)
 
-			const entries = await scrapeDay(month.num, day)
-
-			if (entries.length > 0) {
-				synaxarium[dateKey] = entries
-				totalEntries += entries.length
-				console.log(`${entries.length} entries`)
-			} else {
-				console.log('no entries found')
-			}
-
-			// Rate limiting - be nice to the server
-			await new Promise((r) => setTimeout(r, 300))
+		if (entries.length > 0) {
+			synaxarium[key] = entries
+			totalEntries += entries.length
+			console.log(`${entries.length} entries`)
+		} else {
+			missing.push(key)
+			console.log('no entries found')
 		}
+
+		// Rate limiting - be nice to the server
+		await new Promise((r) => setTimeout(r, 300))
 	}
 
-	// Save the data
-	const outputDir = join(import.meta.dirname, '..', 'src', 'ar', 'synaxarium')
-	mkdirSync(outputDir, { recursive: true })
-
-	const outputPath = join(outputDir, 'canonical.json')
-	writeFileSync(outputPath, JSON.stringify(synaxarium, null, '\t'))
+	// A day left out here fails every Arabic request for it, so stop before saving.
+	if (missing.length > 0) throw new Error(`No entries for: ${missing.join(', ')}`)
 
 	console.log(`\n\nDone! Scraped ${totalEntries} total entries`)
-	console.log(`Saved to: ${outputPath}`)
+	save(synaxarium)
 }
 
-main().catch(console.error)
+main().catch((err) => {
+	console.error(err)
+	process.exit(1)
+})
