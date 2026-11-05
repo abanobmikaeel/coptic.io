@@ -27,6 +27,12 @@ const PAREMHAT = 7
 const BASHANS = 9
 const NASIE = 13
 
+/** The Preparation Sunday of Great Lent, in days from Easter. */
+const LENT_PREPARATION_SUNDAY = -56
+
+/** The Sunday before Jonah's Fast, in days from Easter. */
+const JONAH_PREPARATION_SUNDAY = -70
+
 /**
  * Fixed-date feasts with readings of their own, which replace the Sunday and seasonal
  * ones (Coptic month, day). The calendar's celebration ranges cannot stand in for this:
@@ -59,6 +65,10 @@ const hasProperReadings = (month: number, day: number) =>
  * Kiahk keeps four Sundays before the Nativity. When the Paramoun (Kiahk 28) is itself a
  * Sunday, Kiahk has only three ordinary ones, so the last Sunday of Hatour reads Kiahk's
  * first Sunday and each Kiahk Sunday reads the next one. Nasie has a single Sunday.
+ *
+ * A fifth Sunday from Tout to Amshir reads the second Sunday of Amshir; from Paremhat to
+ * Mesra it has its own readings. When the Nayrouz is a Sunday it takes that Sunday's
+ * place, so the rest of Tout's Sundays each read the one before.
  */
 const sundayOf = (date: Date, month: number, day: number) => {
 	if (month === NASIE) return { month, sunday: 1 }
@@ -66,6 +76,8 @@ const sundayOf = (date: Date, month: number, day: number) => {
 	const paramounOnSunday = daysToParamoun >= 0 && (date.getDay() + daysToParamoun) % 7 === 0
 	if (paramounOnSunday && month === HATOUR && day > 23) return { month: KIAHK, sunday: 1 }
 	const sunday = Math.ceil(day / 7)
+	if (sunday === 5 && month <= AMSHIR) return { month: AMSHIR, sunday: 2 }
+	if (month === TOUT && day % 7 === 1) return { month, sunday: sunday - 1 }
 	return { month, sunday: paramounOnSunday && month === KIAHK ? sunday + 1 : sunday }
 }
 
@@ -81,8 +93,10 @@ const sundayOf = (date: Date, month: number, day: number) => {
  * 6. The Holy Fifty Days, Easter to Pentecost
  * 7. A Sunday keeping the monthly commemoration of the Annunciation, Nativity and
  *    Resurrection (the 29th, outside Tobi and Amshir): the readings of 29 Paremhat
- * 8. Any other Sunday: the Sunday of the Coptic month
- * 9. Every other day: the annual reading of its Coptic date
+ * 8. The Sunday before Jonah's Fast, when it is a fifth Sunday of Tobi: the Preparation
+ *    Sunday of Great Lent
+ * 9. Any other Sunday: the Sunday of the Coptic month
+ * 10. Every other day: the annual reading of its Coptic date
  */
 export const getReadingCycle = (date: Date): ReadingCycle => {
 	const fromEaster = getDaysFromEaster(date)
@@ -106,5 +120,7 @@ export const getReadingCycle = (date: Date): ReadingCycle => {
 	if (date.getDay() !== 0) return { cycle: 'annual', month, day }
 	if (day === 29 && month !== TOBI && month !== AMSHIR)
 		return { cycle: 'annual', month: PAREMHAT, day: 29 }
+	if (fromEaster === JONAH_PREPARATION_SUNDAY && month === TOBI && day >= 29)
+		return { cycle: 'greatLent', daysFromEaster: LENT_PREPARATION_SUNDAY }
 	return { cycle: 'sunday', ...sundayOf(date, month, day) }
 }

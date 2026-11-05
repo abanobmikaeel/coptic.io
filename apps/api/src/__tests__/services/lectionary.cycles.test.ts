@@ -143,4 +143,41 @@ describe('Lectionary coverage', () => {
 		}
 		expect(unresolved).toEqual([])
 	})
+
+	describe('fifth Sundays', () => {
+		const SECOND_OF_AMSHIR = 'Second Sunday of Amshir'
+
+		it.each([
+			['30 Tout', local(2032, 10, 10)],
+			['30 Baba', local(2025, 11, 9)],
+			['30 Tobi', local(2027, 2, 7)],
+		])('reads the second Sunday of Amshir on %s', (_, date) => {
+			const day = getByCopticDate(date)
+			expect(day.seasonDay).toBe(SECOND_OF_AMSHIR)
+			expect(day.reference?.Acts).toBe('Acts 18:9-21')
+		})
+
+		it.each([
+			['Bashans', local(2026, 6, 7)],
+			['Paona', local(2030, 7, 7)],
+			['Epep', local(2028, 8, 6)],
+			['Mesra', local(2027, 9, 5)],
+		])('reads the same fifth-Sunday readings in %s', (month, date) => {
+			const day = getByCopticDate(date)
+			expect(day.seasonDay).toBe(`Fifth Sunday of ${month}`)
+			expect(day.reference?.VPsalm).toBe('Psalms 93:3-4')
+			expect(day.reference?.LGospel).toBe('Luke 9:12-17')
+		})
+
+		it("reads the Preparation Sunday of Great Lent when it is also Jonah's", () => {
+			expect(getByCopticDate(local(2039, 2, 6)).seasonDay).toBe('Preparation Sunday of Great Lent')
+		})
+
+		it('finds readings for every Sunday through 2100', () => {
+			for (let date = local(2024, 1, 7); date.getFullYear() <= 2100; ) {
+				expect(getByCopticDate(date).readingsAvailable, date.toDateString()).toBe(true)
+				date = local(date.getFullYear(), date.getMonth() + 1, date.getDate() + 7)
+			}
+		})
+	})
 })

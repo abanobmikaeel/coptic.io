@@ -29,11 +29,55 @@ describe('getReadingCycle', () => {
 		})
 
 		it('keeps the Sunday on the 29th of Tobi, which has no monthly commemoration', () => {
-			expect(getReadingCycle(local(2033, 2, 6))).toEqual({ cycle: 'sunday', month: 5, sunday: 5 })
+			expect(getReadingCycle(local(2033, 2, 6))).toEqual({ cycle: 'sunday', month: 6, sunday: 2 })
+		})
+
+		it('reads the second Sunday of Amshir on a fifth Sunday from Tout to Amshir', () => {
+			const secondOfAmshir = { cycle: 'sunday', month: 6, sunday: 2 }
+			expect(getReadingCycle(local(2032, 10, 10))).toEqual(secondOfAmshir) // 30 Tout
+			expect(getReadingCycle(local(2025, 11, 9))).toEqual(secondOfAmshir) // 30 Baba
+			expect(getReadingCycle(local(2027, 2, 7))).toEqual(secondOfAmshir) // 30 Tobi
+		})
+
+		it('keeps the fifth Sunday of the month from Paremhat to Mesra', () => {
+			expect(getReadingCycle(local(2026, 6, 7))).toEqual({ cycle: 'sunday', month: 9, sunday: 5 })
+			expect(getReadingCycle(local(2027, 9, 5))).toEqual({ cycle: 'sunday', month: 12, sunday: 5 })
 		})
 
 		it('keeps the Sunday after the Nativity on its annual reading (Kiahk 30)', () => {
 			expect(getReadingCycle(local(2028, 1, 9))).toEqual({ cycle: 'annual', month: 4, day: 30 })
+		})
+	})
+
+	describe('Tout when the Nayrouz is a Sunday', () => {
+		// 1 Tout 1744 falls on Sunday 12 September 2027
+		it('reads the Nayrouz itself', () => {
+			expect(getReadingCycle(local(2027, 9, 12))).toEqual({ cycle: 'annual', month: 1, day: 1 })
+		})
+
+		it("moves each of Tout's Sundays back by one", () => {
+			expect(getReadingCycle(local(2027, 9, 19))).toEqual({ cycle: 'sunday', month: 1, sunday: 1 })
+			expect(getReadingCycle(local(2027, 9, 26))).toEqual({ cycle: 'sunday', month: 1, sunday: 2 })
+			expect(getReadingCycle(local(2027, 10, 3))).toEqual({ cycle: 'sunday', month: 1, sunday: 3 })
+		})
+
+		it('reads 29 Paremhat on the last Sunday', () => {
+			expect(getReadingCycle(local(2027, 10, 10))).toEqual({ cycle: 'annual', month: 7, day: 29 })
+		})
+	})
+
+	describe("the Sunday before Jonah's Fast on a fifth Sunday of Tobi", () => {
+		it('reads the Preparation Sunday of Great Lent', () => {
+			expect(getDaysFromEaster(local(2039, 2, 6))).toBe(-70)
+			expect(getReadingCycle(local(2039, 2, 6))).toEqual({
+				cycle: 'greatLent',
+				daysFromEaster: -56,
+			})
+		})
+
+		it('keeps an ordinary Sunday on that day in other years', () => {
+			expect(getDaysFromEaster(local(2026, 2, 1))).toBe(-70)
+			expect(getReadingCycle(local(2026, 2, 1))).toEqual({ cycle: 'sunday', month: 5, sunday: 4 })
 		})
 	})
 
