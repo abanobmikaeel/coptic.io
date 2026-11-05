@@ -76,3 +76,27 @@ export function getSundayTasbeha(
 ): TasbehaResponse {
 	return getTasbehaById('sunday-midnight-praises', translation, date)
 }
+
+// Saturday's Praise is a Vespers Praise, so the day names do not map onto service
+// ids by a single suffix.
+const SERVICE_BY_DAY = {
+	sunday: 'sunday-midnight-praises',
+	monday: 'monday-midnight-praises',
+	tuesday: 'tuesday-midnight-praises',
+	wednesday: 'wednesday-midnight-praises',
+	thursday: 'thursday-midnight-praises',
+	friday: 'friday-midnight-praises',
+	saturday: 'saturday-vespers-praises',
+} as const satisfies Record<string, TasbehaServiceId>
+
+export type TasbehaDay = keyof typeof SERVICE_BY_DAY
+export const TASBEHA_DAYS = Object.keys(SERVICE_BY_DAY) as [TasbehaDay, ...TasbehaDay[]]
+
+/** The Psalmody prayed on the named weekday. */
+export function getTasbehaForDay(
+	day: TasbehaDay,
+	translation: ServiceLanguage = 'en',
+	date: Date = new Date(),
+): TasbehaResponse {
+	return getTasbehaById(SERVICE_BY_DAY[day], translation, date)
+}

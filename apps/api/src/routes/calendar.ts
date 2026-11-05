@@ -1,10 +1,9 @@
-import { gregorianToCoptic, localizeCopticDate } from '@coptic/core'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { CalendarMonthSchema, CopticDateSchema, ErrorSchema, IcalInfoSchema } from '../schemas'
 import * as calendarService from '../services/calendar.service'
 import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
-import { yearParam } from '../utils/request'
+import { parseCalendarLanguage, yearParam } from '../utils/request'
 
 const app = createApiApp()
 
@@ -152,9 +151,8 @@ const getForDateRoute = createRoute({
 
 for (const route of withOptionalLastParam(getForDateRoute)) {
 	app.openapi(route, (c) => {
-		const langQuery = c.req.valid('query').lang
-		const lang = langQuery && ['en', 'ar', 'es'].includes(langQuery) ? langQuery : 'en'
-		return c.json(localizeCopticDate(gregorianToCoptic(c.var.date), lang), 200)
+		const lang = parseCalendarLanguage(c.req.valid('query').lang)
+		return c.json(calendarService.getCopticDate(c.var.date, lang), 200)
 	})
 }
 

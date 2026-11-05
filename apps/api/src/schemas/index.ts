@@ -506,6 +506,8 @@ export const SeasonResponseSchema = z
 	})
 	.meta({ id: 'SeasonResponse' })
 
+export type SeasonResponse = z.infer<typeof SeasonResponseSchema>
+
 const PeriodSchema = z
 	.object({
 		name: z.string(),
@@ -523,12 +525,16 @@ export const SeasonYearSchema = z
 	})
 	.meta({ id: 'SeasonYear' })
 
+export type SeasonYear = z.infer<typeof SeasonYearSchema>
+
 export const FastingPeriodsSchema = z
 	.object({
 		year: z.number(),
 		fastingPeriods: z.array(PeriodSchema),
 	})
 	.meta({ id: 'FastingPeriods' })
+
+export type FastingPeriods = z.infer<typeof FastingPeriodsSchema>
 
 // Lent devotional schemas
 
@@ -567,11 +573,15 @@ export const LentScheduleSchema = z
 	})
 	.meta({ id: 'LentSchedule' })
 
+export type LentSchedule = z.infer<typeof LentScheduleSchema>
+
 export const LentDaySchema = LentDevotionalSchema.extend({
 	resolvedReferences: z
 		.array(z.object({ reference: z.string(), readings: z.array(ReadingSchema).nullable() }))
 		.optional(),
 }).meta({ id: 'LentDay' })
+
+export type LentDay = z.infer<typeof LentDaySchema>
 
 // Tasbeha schemas
 

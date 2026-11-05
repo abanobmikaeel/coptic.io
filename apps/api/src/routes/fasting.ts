@@ -1,10 +1,9 @@
-import { getLiturgicalName } from '@coptic/core'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { ErrorSchema, FastingDaySchema, FastingResponseSchema } from '../schemas'
 import * as fastingService from '../services/fasting.service'
 import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
-import { yearParam } from '../utils/request'
+import { CALENDAR_LANGUAGES, yearParam } from '../utils/request'
 
 const app = createApiApp()
 
@@ -22,7 +21,7 @@ const getForDateRoute = createRoute({
 			date: z.string().openapi({ example: '2025-01-07' }),
 		}),
 		query: z.object({
-			lang: z.enum(['en', 'ar', 'es']).optional().openapi({ example: 'ar' }),
+			lang: z.enum(CALENDAR_LANGUAGES).optional().openapi({ example: 'ar' }),
 		}),
 	},
 	responses: {
@@ -33,17 +32,8 @@ const getForDateRoute = createRoute({
 
 for (const route of withOptionalLastParam(getForDateRoute)) {
 	app.openapi(route, (c) => {
-		const { lang = 'en' } = c.req.valid('query')
-		const fastingInfo = fastingService.getFastingForDate(c.var.date)
-		return c.json(
-			{
-				...fastingInfo,
-				description: fastingInfo.description
-					? getLiturgicalName(fastingInfo.description, lang)
-					: fastingInfo.description,
-			},
-			200,
-		)
+		const { lang } = c.req.valid('query')
+		return c.json(fastingService.getFastingForDate(c.var.date, lang), 200)
 	})
 }
 
