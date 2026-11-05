@@ -48,7 +48,7 @@ const expectParity = async (query: string, field: string, path: string) => {
 }
 
 const COPTIC_DATE = 'dateString day month year monthString'
-const CELEBRATION = 'id name type category periodType isMoveable month celebratedOnEve'
+const CELEBRATION = 'id name type category isMoveable month celebratedOnEve'
 const SYNAXARIUM = 'id name url text sourceRef'
 const SLOTS = [
 	'Prophecies',

@@ -84,35 +84,30 @@
 		{
 			"id": 14,
 			"name": "Entry into Egypt",
-			"periodType": "single",
 			"type": "feast",
 			"category": "minorFeast"
 		},
 		{
 			"id": 15,
 			"name": "Apostles Feast (Martyrdom of Sts. Peter and Paul)",
-			"periodType": "single",
 			"type": "feast",
 			"category": "otherFeast"
 		},
 		{
 			"id": 16,
 			"name": "St. Mary Fast",
-			"periodType": "single",
 			"type": "fast",
 			"category": "fast"
 		},
 		{
 			"id": 17,
 			"name": "Transfiguration",
-			"periodType": "single",
 			"type": "feast",
 			"category": "minorFeast"
 		},
 		{
 			"id": 18,
 			"name": "St. Mary Feast (Commemoration of Her Assumption)",
-			"periodType": "single",
 			"type": "feast",
 			"category": "otherFeast"
 		},
