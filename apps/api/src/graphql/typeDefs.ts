@@ -25,6 +25,7 @@ export const typeDefs = /* GraphQL */ `
 		name: String!
 		type: String! @deprecated(reason: "Use category")
 		category: String!
+		periodType: String @deprecated(reason: "Always single, and absent from most celebrations")
 		isMoveable: Boolean
 		month: String
 		celebratedOnEve: Boolean
