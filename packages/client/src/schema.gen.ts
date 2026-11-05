@@ -1839,7 +1839,7 @@ export interface paths {
         };
         /**
          * Get the Psalmody for a date's day of the week
-         * @description Returns the annual Tasbeha prayed on the given date's weekday, in source-aligned English, Coptic, or Arabic. Sunday through Friday resolve to that day's Midnight Praises; Saturday resolves to the Saturday Vespers Praise.
+         * @description Returns the Tasbeha prayed on the given date's weekday, in source-aligned English, Coptic, or Arabic. Sunday through Friday resolve to that day's Midnight Praises; Saturday resolves to the Saturday Vespers Praise.
          */
         get: {
             parameters: {
@@ -1854,7 +1854,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description The annual Psalmody for the date's weekday */
+                /** @description The Psalmody for the date's weekday */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1890,7 +1890,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get the annual Sunday Midnight Praises
+         * Get the Sunday Midnight Praises
          * @description Returns the annual Sunday (Adam) Tasbeha corpus in source-aligned English, Coptic, or Arabic.
          */
         get: {
@@ -1943,7 +1943,7 @@ export interface paths {
         };
         /**
          * Get the Psalmody for a named day of the week
-         * @description Returns a specific day's annual Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.
+         * @description Returns a specific day's Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.
          */
         get: {
             parameters: {
@@ -1960,7 +1960,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description The named day's annual Psalmody */
+                /** @description The named day's Psalmody */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2716,8 +2716,11 @@ export interface components {
             id: "sunday-midnight-praises" | "monday-midnight-praises" | "tuesday-midnight-praises" | "wednesday-midnight-praises" | "thursday-midnight-praises" | "friday-midnight-praises" | "saturday-vespers-praises";
             name: string;
             description: string;
-            /** @enum {string} */
-            status: "complete";
+            /**
+             * @description `partial` when the service does not hold the whole rite, as in Kiahk
+             * @enum {string}
+             */
+            status: "complete" | "partial";
             rite: {
                 /** @enum {string} */
                 cycle: "annual" | "kiahk" | "great-lent" | "holy-fifty" | "feast";
@@ -2732,11 +2735,13 @@ export interface components {
                 /** @enum {string} */
                 role: "all";
                 /** @enum {string} */
-                kind: "opening" | "canticle" | "lobsh" | "psali" | "commemoration" | "doxology" | "theotokia" | "gospel" | "difnar" | "litany" | "conclusion";
+                kind: "opening" | "canticle" | "lobsh" | "psali" | "commemoration" | "doxology" | "theotokia" | "gospel" | "difnar" | "exposition" | "litany" | "conclusion";
                 title: string;
                 /** @enum {string} */
                 titleLanguage?: "en" | "ar" | "cop";
                 content: string[];
+                /** @description True when the source has no text in this language; `content` is empty */
+                contentUnavailable?: boolean;
                 source: {
                     /** @enum {string} */
                     name: "Tasbeha.org";

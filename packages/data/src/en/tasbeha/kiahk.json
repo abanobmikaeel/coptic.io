@@ -1,0 +1,853 @@
+{
+	"language": "en",
+	"status": "partial",
+	"nameSuffix": " in Kiahk",
+	"description": "Part of the Kiahk Psalmody: the month's hymns added to the annual Psalmody. The full Kiahk rite is not available yet.",
+	"saturdayOrder": [
+		"saturday-ni-ethnos-teero",
+		"fourth-hoos",
+		"kiahk-psali-watos",
+		"kiahk-another-psali-watos",
+		"kiahk-madeha-after-psali-watos",
+		"kiahk-watos-theotokias-introduction",
+		"kiahk-saturday-theotokia-part-1",
+		"kiahk-saturday-theotokia-part-2",
+		"kiahk-saturday-theotokia-part-3",
+		"kiahk-saturday-theotokia-part-4",
+		"kiahk-saturday-theotokia-part-5",
+		"kiahk-saturday-theotokia-part-6",
+		"kiahk-saturday-theotokia-part-7",
+		"kiahk-saturday-theotokia-part-8",
+		"kiahk-saturday-theotokia-part-9",
+		"kiahk-saturday-watos-hymn",
+		"saturday-theotokia-lobsh-sherat",
+		"kiahk-exposition-introduction",
+		"exposition",
+		"watos-theotokias-conclusion"
+	],
+	"expositions": [
+		"kiahk-exposition-week-1",
+		"kiahk-exposition-week-2",
+		"kiahk-exposition-week-3",
+		"kiahk-exposition-week-4"
+	],
+	"additions": [
+		{
+			"section": "kiahk-third-hoos-adam-psali",
+			"weekdays": [
+				0
+			],
+			"before": "third-hoos"
+		},
+		{
+			"section": "kiahk-third-hoos-adam-hymn",
+			"weekdays": [
+				0
+			],
+			"before": "third-hoos"
+		},
+		{
+			"section": "kiahk-third-hoos-trinity-hymn",
+			"weekdays": [
+				0
+			],
+			"after": "third-hoos-esmo-epchois"
+		},
+		{
+			"section": "kiahk-fourth-hoos-adam-psali",
+			"weekdays": [
+				0
+			],
+			"before": "fourth-hoos"
+		},
+		{
+			"section": "kiahk-after-adam-theotokias-hymn",
+			"weekdays": [
+				0,
+				1,
+				2
+			],
+			"before": "difnar-introduction-adam"
+		},
+		{
+			"section": "kiahk-monday-adam-hymn",
+			"weekdays": [
+				1
+			],
+			"after": "monday-theotokia"
+		},
+		{
+			"section": "kiahk-wednesday-watos-hymn",
+			"weekdays": [
+				3
+			],
+			"after": "wednesday-theotokia-ti-galilia"
+		},
+		{
+			"section": "kiahk-wednesday-third-watos-hymn",
+			"weekdays": [
+				3
+			],
+			"after": "kiahk-wednesday-watos-hymn"
+		},
+		{
+			"section": "kiahk-thursday-burning-bush",
+			"weekdays": [
+				4
+			],
+			"after": "thursday-theotokia"
+		}
+	],
+	"sections": {
+		"kiahk-psali-watos": {
+			"id": "kiahk-psali-watos",
+			"title": "Psali Watos",
+			"kind": "psali",
+			"content": [
+				"Come all with happiness, come all with joy, come all with gladness, all you sons of man. All wisemen and scholars, all elders and young, all men and women, all you sons of Adam.",
+				"+ Come hear from me, for I proclaim to you, that the true God has come, and took flesh from the Virgin. + Truly she gave birth to Him, truly without blemish, truly she gave birth to the Word, with her true virginity.",
+				"Who of the wisemen, or scholars on earth, can obtain the heavenly thought, to speak of the honor of the Virgin. Seven ranks of angels, seven great hosts, seven ranks in Zion, chant to the Virgin.",
+				"+ The whole creation together, glorifies the Virgin, from where the sun rises, until its setting. + For God is the true God, God the Logos of the Father, God the Son of the Virgin, the daughter of Joachim and Anna.",
+				"Jesus Christ the name of salvation, Jesus Christ the sweet name, Jesus Christ the life-Giver, was incarnate of the Virgin. As was spoken, through Isaiah the prophet, \"Behold the Virgin will conceive, and give birth to Emmanuel.\"",
+				"+ All nations and all tribes, all nations the Orthodox people, every harbor of salvation, came forth from her. + For Moses the law giver, Melchisedek and Aaron, Mark the Apostle, take pride in the Virgin.",
+				"The Cherubim with the six wings, the Seraphim full eyes, all the ranks of angels, glorify the Virgin. Every tree of life, that paradise adorns, that all virgins adorn, is the Virgin Mary.",
+				"+ Glory be to God the Father amen, glory be to His beloved Son, glory be to the Holy Spirit, we magnify the Virgin. + The throne of the Highest, carried by the Cherubim, the light of the firmament, is the Virgin Mary.",
+				"Rejoice O my Lady the mother of my Lord, rejoice O queen the mother of the King, rejoice O true bride, who gave birth to the Bridegroom. Solomon the Son of David, Samuel the prophet, Sawerus the patriarch, glorify the Virgin.",
+				"+ Your greatness O Mary, is higher than the heavens, you will bear a Son, and His name will be Emmanuel. + Nobody can resemble you, in heaven nor on earth, I am not capable, of speaking of your honor.",
+				"He who created heaven and earth, who comes from the Father, came and dwelt in your womb, for nine full months. Hail to the fountain of living water, hail to the golden vessel, hail to the unblemished ark, in the tabernacle of testimony.",
+				"+ The adornment of all virgins, and all souls of the Orthodox, all souls bless them, O Virgin Mary. + O shining dove, O perfect grace, O rod of Aaron, that blossomed and brought forth fruit."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/101",
+				"pageId": 101,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-another-psali-watos": {
+			"id": "kiahk-another-psali-watos",
+			"title": "Another Psali Watos",
+			"kind": "psali",
+			"content": [
+				"O pure bride, the chaste Virgin, the mother of God the Word, Mary the Mother of God. Accept her prayers on our behalf, O Christ have compassion upon us, forgive us our sins, because of Mary hear us.",
+				"+ For You are a merciful God, enlighten our mind and heart, through the intercessions of this bride, Mary the mother of the long-suffering. + Praise Him and glorify Him, O Orthodox peoples saying, \"O Christ keep Your people, because of the Virgin Mary.\"",
+				"Keep and protect us, in Your compassion O Lord, through the intercessions of our lady, Mary the Mother of God. Blessed is your fruit, for You bore God for us, you are blessed O Virgin Mary, the mother of the Savior.",
+				"+ O You who is in everyone, and the life of every man, we pray to You all times saying, \"O God hear us and have mercy.\" + O One of the Trinity, our Lord Jesus Christ, who took flesh from the Virgin, Mary the Mother of God.",
+				"O Savior of everyone, O Son of God deliver us, be with us at all times, and forgive us because of the Virgin. O our Lord forgive our iniquities, and grant us wisdom, through the intercessions of the pure bride, the Saint Mary.",
+				"+ For the God of gods, Emmanuel is our God, who took flesh through you, O Mary the second tabernacle. + For to see the Lord the King, and the God of the Kingdom, took flesh of the queen, Mary who is full of glory.",
+				"We ask you O Lord our God, grant us Your salvation, through the intercessions, of the Virgin Mary. Bless Your inheritance, and accept my repentance, through the prayers and intercessions, of Mary the Mother of God.",
+				"+ Every man praises her, all people glorify her, the vessel of pure gold, Mary the daughter of the righteous. + The life of the Christians, O Mary the pride of our race, the unblemished bride, Mary the mother of the Creator.",
+				"For He is God in truth, the life-Giver of everyone, who took flesh from the true queen, Mary the Mother of the Merciful. Your purity is exalted, O beautiful dove, Mary the mother of the King of glory, our good Savior.",
+				"+ The patriarchs bless you, the prophets glorify you, we also worship You, O our Lord Jesus Christ. + We praise and glorify You, for You came and saved us, O Son of God accept us unto You, because of Mary the exaltation of the righteous.",
+				"All people praise her saying, \"Hail to you O Virgin, Mary the mother of the Word, the Son of the true God.\" The prophets and the righteous, spoke justly concerning her, that He would come and incarnate from her, the good Lover of man.",
+				"+ Jesus Christ the Son of God, co-essential with God, came and took flesh from you, O Mary the mother of our God. + That is the heavenly Jerusalem, the city of our God, for you are the second heaven, Mary the mother of our God.",
+				"Wherefore the merciful God, bound the heaven and came down, and took flesh from the bride, Mary the mother of the Compassionate. All creatures and the angels, came and honored her, the pure turtle-dove, Mary the Mother of God.",
+				"+ They spoke concerning you with honor, O city of God, for you are the new heaven, O Mary the mother God. + For David the righteous king said, \"Holy is Your sanctuary,\" that is the true queen, Mary the mother of light in truth.",
+				"For also the king said, \"The queen stood, on Your right O King,\" Mary who is full of glory. All lords of glory, spoke of you O Mary, the mother of the King of glory, Jesus Christ who is of wisdom.",
+				"+ Also we praise You, O our Savior and Sustainer, we worship You, Jesus Christ the Messiah. + We ask You O our God, we the weak sinners, forgive us our sins, because of Mary the new heaven."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/102",
+				"pageId": 102,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-madeha-after-psali-watos": {
+			"id": "kiahk-madeha-after-psali-watos",
+			"title": "A Madeha after the Psali Watos",
+			"kind": "psali",
+			"content": [],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/1422",
+				"pageId": 1422,
+				"accessedAt": "2026-11-05"
+			},
+			"contentUnavailable": true
+		},
+		"kiahk-watos-theotokias-introduction": {
+			"id": "kiahk-watos-theotokias-introduction",
+			"title": "Introduction to the Watos Theotokias",
+			"kind": "theotokia",
+			"content": [
+				"And whenever we sing, let us say tenderly, \"Our Lord Jesus Christ, have mercy upon our souls.\"",
+				"+ Glory be to the Father and the Son, and the Holy Spirit, now and forever and unto the ages of all ages, Amen."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/1419",
+				"pageId": 1419,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-1": {
+			"id": "kiahk-saturday-theotokia-part-1",
+			"title": "Saturday Theotokia, Part 1",
+			"kind": "theotokia",
+			"content": [
+				"The First Part:",
+				"O chaste and undefiled, holy in everything, who brought God for us, carried in her arms.",
+				"+ The whole creation rejoiced with you, proclaiming and saying, \"Hail to you O full of grace, the Lord is with you.\"",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/526",
+				"pageId": 526,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-2": {
+			"id": "kiahk-saturday-theotokia-part-2",
+			"title": "Saturday Theotokia, Part 2",
+			"kind": "theotokia",
+			"content": [
+				"The Second Part:",
+				"+ We are elated by your greatness, O prudent Virgin, and send unto you greetings, with Gabriel the angel.",
+				"For through your fruit, salvation came to our race, and God has reconciled with us once again, through his goodness.",
+				"+ Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/527",
+				"pageId": 527,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-3": {
+			"id": "kiahk-saturday-theotokia-part-3",
+			"title": "Saturday Theotokia, Part 3",
+			"kind": "theotokia",
+			"content": [
+				"The Third Part:",
+				"Like a bride without blemish, the Holy Spirit came upon you, and the power of the most high, overshadowed you O Mary.",
+				"+ For you have given birth, to the true Word, the Son of the ever-existing Father, who came and redeemed us from our sins.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/528",
+				"pageId": 528,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-4": {
+			"id": "kiahk-saturday-theotokia-part-4",
+			"title": "Saturday Theotokia, Part 4",
+			"kind": "theotokia",
+			"content": [
+				"The Fourth Part:",
+				"+ You are the offspring, and root of David, who has given birth for us according to the flesh, our Savior Jesus Christ.",
+				"The only begotten of the Father, before all ages, emptied Himself and took the form of a servant, from you for our salvation.",
+				"+ Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/529",
+				"pageId": 529,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-5": {
+			"id": "kiahk-saturday-theotokia-part-5",
+			"title": "Saturday Theotokia, Part 5",
+			"kind": "theotokia",
+			"content": [
+				"The Fifth Part:",
+				"You became a second heaven, on earth O Mother of God, for out of you the Sun of righteousness, shone upon us.",
+				"+ You gave birth to Him according to the prophecies, without seed or corruption, for He is the Creator, and the Word of the Father.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/530",
+				"pageId": 530,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-6": {
+			"id": "kiahk-saturday-theotokia-part-6",
+			"title": "Saturday Theotokia, Part 6",
+			"kind": "theotokia",
+			"content": [
+				"The Sixth Part:",
+				"+ The tabernacle which was called, the holy of holies, which contains the Ark, overlaid roundabout with gold.",
+				"Wherein are the tablets, of the covenant, and the golden pot, wherein the manna was hidden.",
+				"+ This is a symbol of the Son of God, who came and dwelt in Mary, the undefiled Virgin, and was incarnate from her.",
+				"She gave birth to Him unto the world, in unity without separation, for He is the King of glory, who came and saved us.",
+				"+ Paradise rejoiced, at the coming of the Lamb, the Word the Son of the ever existing Father, who came and redeemed us from our sins.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/531",
+				"pageId": 531,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-7": {
+			"id": "kiahk-saturday-theotokia-part-7",
+			"title": "Saturday Theotokia, Part 7",
+			"kind": "theotokia",
+			"content": [
+				"The Seventh Part:",
+				"+ You are called the Mother of God, the true King, and after He was born from you, miraculously you remained a virgin.",
+				"Emmanuel whom you have born, has kept you, without corruption, and your virginity remained sealed.",
+				"+ Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/533",
+				"pageId": 533,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-8": {
+			"id": "kiahk-saturday-theotokia-part-8",
+			"title": "Saturday Theotokia, Part 8",
+			"kind": "theotokia",
+			"content": [
+				"The Eighth Part:",
+				"You were likened to the ladder, which Jacob saw, rising up to heaven, with the awesome God standing above it.",
+				"+ We hail the one who did accept, the Uncircumscript in her womb, and her virginity, was sealed from all sides.",
+				"You have become our intercessor, before God our Savior, who became incarnate of you, for our salvation.",
+				"+ Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/532",
+				"pageId": 532,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-theotokia-part-9": {
+			"id": "kiahk-saturday-theotokia-part-9",
+			"title": "Saturday Theotokia, Part 9",
+			"kind": "theotokia",
+			"content": [
+				"The Ninth Part:",
+				"Behold the Lord came out of you, O blessed and perfect one, to save the world which He has created, according to His many tender mercies.",
+				"+ We praise and glorify Him, and exalt Him above all, as a good One and Lover of man, have mercy on us according to Your great mercy.",
+				"Hail to you O full of grace, hail to you who has found grace, hail to you who has given birth to Christ, the Lord is with you."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/534",
+				"pageId": 534,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-saturday-watos-hymn": {
+			"id": "kiahk-saturday-watos-hymn",
+			"title": "Saturday: Watos Hymn",
+			"kind": "theotokia",
+			"content": [
+				"I praise you, O chosen one;\nAn honored offspring, are you.\nWith the psaltery and harp,\nrighteous David praises you.",
+				"Praising you is a skill\nby which many profited,\nand by your holiness were granted\nintercession, help, and honor.",
+				"We received joy and grace\nthrough you, and acceptance.\nGod has pardoned us\nwhen He desired to dwell in you.",
+				"I offer you every day\nmy greetings O Virgin.\nAsk the Lord, our Savior,\nto bring us peacefully to the harbor.",
+				"The worshiped Lord crowned you\nwith luminous crowns,\nand chose you from David’s house.\nBy the Dwelling of the Logos—",
+				"In your womb, and was born\nto save all humans\nand restore the first man\nto his rank with honor.",
+				"The glorified King was exalted,\nfrom all hosts, He is praised,\nand by us, He is worshipped.\nWe confess at all times:",
+				"By a mystery, ineffable,\nthat scholars could not express,\nHe came and took flesh\nfrom you, O pride of brides.",
+				"Eve deceived Adam\nand gave him the serpent’s venom;\nhe obeyed and lamented,\nbared from the glory of freedom.",
+				"The Maker of mankind,\nthe Creator, was kind\nto choose you from your tribe\nand give you glory and honor.",
+				"He preferred Joachim’s daughter\nand chose you from David’s house\nfor the dwelling of the Mystery,\nthe Mighty, Living, Lord of glory.",
+				"You were likened to the Cherubim,\nabove the hosts, elevated,\nand you were greatly honored\nabove all the luminous ranks.",
+				"David the righteous said:\n“The Lord chose your beauty.”\nIn the psalms, he chanted:\n“He filled you with grace and purity.”",
+				"To your womb, He came and dwelt,\nO help of those who relent.\nWhich tongue can utter\nyour glory and honor.",
+				"The Lord chose your beauty;\nwe worship Him and glorify.\nYour Maker became your Son\nwith a great mystery.",
+				"......."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2737",
+				"pageId": 2737,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-exposition-introduction": {
+			"id": "kiahk-exposition-introduction",
+			"title": "Introduction to the Exposition",
+			"kind": "exposition",
+			"content": [
+				"We worship the good Father, and Jesus Christ the Son, and the Spirit the Paraclete, the holy and co-essential Trinity.",
+				"Hail to you O Virgin, the very and true queen, hail to the pride of our race, who gave birth to Emmanuel."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/657",
+				"pageId": 657,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-exposition-week-1": {
+			"id": "kiahk-exposition-week-1",
+			"title": "Exposition of Week 1",
+			"kind": "exposition",
+			"content": [
+				"There was in the days of Herod, the king of Judea, a certain priest named Zacharias of the division of Abijah. His wife was of the daughters of Aaron, and her name was Elizabeth.",
+				"And they were both righteous before God, walking in all the commandments and ordinances of the Lord blameless. But they had no child, because Elizabeth was barren, and they were both well advanced in years.",
+				"So it was, that while he was serving as priest before God in the order of his division, according to the custom of the priesthood, his lot fell to burn incense when he went into the temple of the Lord. And the whole multitude of the people was praying outside at the hour of incense.",
+				"Then an angel of the Lord appeared to him, standing on the right side of the altar of incense. And when Zacharias saw him, he was troubled, and fear fell upon him. But the angel said to him, \"Do not be afraid, Zacharias, for your prayer is heard; and your wife Elizabeth will bear you a son, and you shall call his name John.",
+				"And you will have joy and gladness, and many will rejoice at his birth. For he will be great in the sight of the Lord, and shall drink neither wine nor strong drink. He will also be filled with the Holy Spirit, even from his mother&#039;s womb. And he will turn many of the children of Israel to the Lord their God.",
+				"He will also go before Him in the spirit and power of Elijah, &#039;to turn the hearts of the fathers to the children,&#039; and the disobedient to the wisdom of the just, to make ready a people prepared for the Lord.\" And Zacharias said to the angel, \"How shall I know this? For I am an old man, and my wife is well advanced in years.\"",
+				"And the angel answered and said to him, \"I am Gabriel, who stands in the presence of God, and was sent to speak to you and bring you these glad tidings. But behold, you will be mute and not able to speak until the day these things take place, because you did not believe my words which will be fulfilled in their own time.\"",
+				"And the people waited for Zacharias, and marveled that he lingered so long in the temple. But when he came out, he could not speak to them; and they perceived that he had seen a vision in the temple, for he beckoned to them and remained speechless.",
+				"And so it was, as soon as the days of his service were completed, that he departed to his own house. Now after those days his wife Elizabeth conceived; and she hid herself five months, saying, \"Thus the Lord has dealt with me, in the days when He looked on me, to take away my reproach among people.\" (Luke 1:5-25)"
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/658",
+				"pageId": 658,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-exposition-week-2": {
+			"id": "kiahk-exposition-week-2",
+			"title": "Exposition of Week 2",
+			"kind": "exposition",
+			"content": [
+				"Now in the sixth month the angel Gabriel was sent by God to a city of Galilee, named Nazareth, to a virgin betrothed to a man whose name was Joseph, of the house of David.",
+				"The virgin&#039;s name was Mary. And having come in, the angel said to her, \"Rejoice, highly favored one, the Lord is with you; blessed are you among women!\" But when she saw him, she was troubled at his saying, and considered what manner of greeting this was. Then the angel said to her, \"Do not be afraid, Mary, for you have found favor with God.",
+				"And behold, you will conceive in your womb and bring forth a Son, and shall call His name Jesus. He will be great, and will be called the Son of the Highest; and the Lord God will give Him the throne of His father David. And He will reign over the house of Jacob forever, and of His kingdom there will be no end.\"",
+				"Then Mary said to the angel, \"How can this be, since I do not know a man?\" And the angel answered and said to her, \"The Holy Spirit will come upon you, and the power of the Highest will overshadow you; therefore, also, that Holy One who is to be born will be called the Son of God.",
+				"Now indeed, Elizabeth your relative has also conceived a son in her old age; and this is now the sixth month for her who was called barren. For with God nothing will be impossible.\" Then Mary said, \"Behold the maidservant of the Lord! Let it be to me according to your word.\" And the angel departed from her. (Luke 1:26-38)"
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/617",
+				"pageId": 617,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-exposition-week-3": {
+			"id": "kiahk-exposition-week-3",
+			"title": "Exposition of Week 3",
+			"kind": "exposition",
+			"content": [
+				"Now Mary arose in those days and went into the hill country with haste, to a city of Judah, and entered the house of Zacharias and greeted Elizabeth. And it happened, when Elizabeth heard the greeting of Mary,",
+				"That the babe leaped in her womb; and Elizabeth was filled with the Holy Spirit. Then she spoke out with a loud voice and said, \"Blessed are you among women, and blessed is the fruit of your womb! But why is this granted to me, that the mother of my Lord should come to me?",
+				"For indeed, as soon as the voice of your greeting sounded in my ears, the babe leaped in my womb for joy. Blessed is she who believed, for there will be a fulfillment of those things which were told her from the Lord.\" And Mary said: \"My soul magnifies the Lord, and my spirit has rejoiced in God my Savior.",
+				"For He has regarded the lowly state of His maidservant; For behold, henceforth all generations will call me blessed. For He who is mighty has done great things for me, and holy is His name. And His mercy is on those who fear Him from generation to generation.",
+				"He has shown strength with His arm; He has scattered the proud in the imagination of their hearts. He has put down the mighty from their thrones, and exalted the lowly. He has filled the hungry with good things, and the rich He has sent away empty.",
+				"He has helped His servant Israel, in remembrance of His mercy, as He spoke to our fathers, to Abraham and to his seed forever.\" And Mary remained with her about three months, and returned to her house. (Luke 1:39-56)"
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/659",
+				"pageId": 659,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-exposition-week-4": {
+			"id": "kiahk-exposition-week-4",
+			"title": "Exposition of Week 4",
+			"kind": "exposition",
+			"content": [
+				"Now Elizabeth&#039;s full time came for her to be delivered, and she brought forth a son. When her neighbors and relatives heard how the Lord had shown great mercy to her, they rejoiced with her.",
+				"So it was, on the eighth day, that they came to circumcise the child; and they would have called him by the name of his father, Zacharias. His mother answered and said, \"No; he shall be called John.\" But they said to her, \"There is no one among your relatives who is called by this name.\" So they made signs to his father--what he would have him called.",
+				"And he asked for a writing tablet, and wrote, saying, \"His name is John.\" So they all marveled. Immediately his mouth was opened and his tongue loosed, and he spoke, praising God. Then fear came on all who dwelt around them; and all these sayings were discussed throughout all the hill country of Judea.",
+				"And all those who heard them kept them in their hearts, saying, \"What kind of child will this be?\" And the hand of the Lord was with him. Now his father Zacharias was filled with the Holy Spirit, and prophesied, saying:",
+				"\"Blessed is the Lord God of Israel, for He has visited and redeemed His people, and has raised up a horn of salvation for us in the house of His servant David, as He spoke by the mouth of His holy prophets, who have been since the world began, that we should be saved from our enemies and from the hand of all who hate us, to perform the mercy promised to our fathers and to remember His holy covenant,",
+				"the oath which He swore to our father Abraham: To grant us that we, being delivered from the hand of our enemies, might serve Him without fear, in holiness and righteousness before Him all the days of our life and you, child, will be called the prophet of the Highest; For you will go before the face of the Lord to prepare His ways, to give knowledge of salvation to His people by the remission of their sins, through the tender mercy of our God, with which the Dayspring from on high has visited us; To give light to those who sit in darkness and the shadow of death, to guide our feet into the way of peace.\"",
+				"So the child grew and became strong in spirit, and was in the deserts till the day of his manifestation to Israel. (Luke 1:75-80)"
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/660",
+				"pageId": 660,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-third-hoos-adam-psali": {
+			"id": "kiahk-third-hoos-adam-psali",
+			"title": "Adam Psali on the Third Hoos",
+			"kind": "psali",
+			"content": [
+				"I thank You O God, of Israel, for You have dealt with us, according to Your great mercy. I thank You O God, of Israel, for You have sent Your Son, to save us.",
+				"+ I thank You O God, of Israel, for You were incarnate, from Saint Mary. + I thank You O God, of Israel, for You were born in Bethlehem, according to the prophecy.",
+				"I thank You O God, of Israel, for the shepherds, have seen Your glory. I thank You O God, of Israel, for You revealed to us, Your splendor.",
+				"+ I thank You O God, of Israel, for You have done miracles, and many wonders. + I thank You O God, of Israel, for the Jews conspired, against You.",
+				"I thank You O God, of Israel, for You were crucified upon, the Cross in Golgotha. I thank You O God, of Israel, for You were placed in the tomb, like those who are dead.",
+				"+ I thank You O God, of Israel, for You have risen from the dead, after three days. + I thank You O God, of Israel, for You descended into Hades, to the abyss.",
+				"I thank You O God, of Israel, for You have saved Adam, and all his race. I thank You O God, of Israel, for You have sent, Your Apostles.",
+				"+ I thank You O God, of Israel, for You ascended, into the highest heaven. + I thank You O God, of Israel, for You sat on the right, of the Pantocrator.",
+				"I thank You O God, of Israel, for You shall come and judge, all the world. I thank You O God, of Israel, grant me mercy, and forgiveness.",
+				"+ I thank You O God, of Israel, remove O Lord, all our afflictions. + I thank You O God, of Israel, I glorify Your name, and we worship You."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2729",
+				"pageId": 2729,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-third-hoos-adam-hymn": {
+			"id": "kiahk-third-hoos-adam-hymn",
+			"title": "Adam Hymn on the Third Hoos",
+			"kind": "psali",
+			"content": [
+				"I thank You O God of Jacob,\nAn awesome and able God,\nWho perfected what is written,\nIn the gates of Zion’s daughter.",
+				"Saint Matthew began,\nSpeaking in symbols about,\nThe pregnancy of the Virgin,\nIn the gates of Zion’s daughter.",
+				"+ [God] desired the city of life,\nA treasure and He found it,\nA pure virgin child,\nIn the gates of Zion’s daughter.",
+				"+ He came with His light,\nInto the field He hid it,\nThen He purchased it,\nIn the gates of Zion’s daughter.",
+				"The Lamb of God became,\nA priest serving the mysteries,\nFor He is the High Priest,\nIn the gates of Zion’s daughter.",
+				"The kingdom is symbolized,\nBy the mustard seed and yeast,\nAccording to the evangelist,\nIn the gates of Zion’s daughter.",
+				"+ Yeast in wheat,\nThe glorified Trinity,\nPurified us in Baptism,\nIn the gates of Zion’s daughter.",
+				"+ A treasure a man found,\nHe left and sold all he had,\nAnd purchased the pearl of faith,\nIn the gates of Zion’s daughter.",
+				"The knowing Creator chose,\nTo be slaughtered for Adam,\nTo save the world,\nIn the gates of Zion’s daughter.",
+				"The Devil adorned his net,\nTo catch Adam and Eve,\nHe caught them like fishes,\nIn the gates of Zion’s daughter.",
+				"+ A thief and invader,\nThe beast and false prophet,\nSeduced the Father’s sons,\nIn the gates of Zion’s daughter.",
+				"+ He captured them through sin,\nOf the wicked fruit,\nWhen they broke the command,\nIn the gates of Zion’s daughter.",
+				"In the old times,\nIt was truly written,\nAs a valid contract,\nIn the gates of Zion’s daughter.",
+				"Thorns and thistles shall be for you,\nAnd made a crown,\nThrough Adam’s fault,\nIn the gates of Zion’s daughter.",
+				"+ God’s promises were fulfilled,\nAs said in the Torah,\n“The seed of the woman comes,”\nIn the gates of Zion’s daughter.",
+				"+ A Child and able God,\nFulfilled the Economy,\nAnd killed the great serpent,\nIn the gates of Zion’s daughter.",
+				"You fulfilled Your words,\nYou are holy in Your works,\nTo tell Your deeds,\nIn the gates of Zion’s daughter.",
+				"Adam strayed and was baffled,\nWhen he ate the fruit,\nAnd was lost among the trees,\nIn the gates of Zion’s daughter.",
+				"+ His Lord desired him,\nFrom the enemy, He saved him,\nWith His Blood, redeemed him,\nIn the gates of Zion’s daughter.",
+				"+ He is faithful and pure,\nHe perfected His right hand,\nMelchizedek the elder,\nIn the gates of Zion’s daughter.",
+				"The aroma appeared and spread,\n“I planted and My Father is the farmer,\nA garden that bears goodness,”\nIn the gates of Zion’s daughter.",
+				"Paul the Apostle spoke,\nTo the Virgin and Bride,\nAbout the Church saying,\nIn the gates of Zion’s daughter.",
+				"+ “Sheep within the ranch,\nWander within the Church,\nThe meek mother,”\nIn the gates of Zion’s daughter.",
+				"+ He gave the poor,\nHis righteousness at all times,\nTo His assembled people,\nIn the gates of Zion’s daughter.",
+				"In the mystery of the Eucharist,\nThree things are needed,\nLove, hope and faith,\nIn the gates of Zion’s daughter.",
+				"In Solomon’s temple,\nTwo high pillars,\nRepentance and forgiveness,\nIn the gates of Zion’s daughter.",
+				"+ John the Evangelist,\nSaid “The mighty Father,\nSent His knowing Son,”\nIn the gates of Zion’s daughter.",
+				"+ He fulfilled the psalm,\nOur Lord was filled with light,\nHe reigns in joy,\nIn the gates of Zion’s daughter.",
+				"The honored Luke said,\nWritten in the Gospel,\n“A man had a steward,\nIn the gates of Zion’s daughter.",
+				"When he heard his deeds,\nHe called him and asked,\nTo give an account of his funds,”\nIn the gates of Zion’s daughter.",
+				"+ The Law of Israel began,\nThen the Gospel was sent,\nThe wisdom of this age,\nIn the gates of Zion’s daughter.",
+				"+ He perfected the Law,\nOf the sons of Jacob,\nAnd what was written,\nIn the gates of Zion’s daughter.",
+				"They made a copper serpent,\nIn the wilderness of punishment,\nAnd He changed it by His Cross,\nIn the gates of Zion’s daughter.",
+				"Jesus spoke on the Cross,\nTo His Mother and the beloved,\nJohn of the exalted share,\nIn the gates of Zion’s daughter.",
+				"+ He honored him with a gift,\nHe gave him a command,\nAbout the Mother of humanity,\nIn the gates of Zion’s daughter.",
+				"+ Behold a woman in water,\nPregnant manifestly,\nOf her a Child came,\nIn the gates of Zion’s daughter.",
+				"This woman fled,\nOn the wings of God’s words,\nThe New Testament and the Torah,\nIn the gates of Zion’s daughter.",
+				"She fled to the desert,\nZion, the pure one,\nTo sustain the Seed,\nIn the gates of Zion’s daughter.",
+				"+ Abdel-Masseh the hegumen,\nWrote this hymn,\nPresenting praise,\nIn the gates of Zion’s daughter.",
+				"+ For I am not counted,\nA stranger from El Sheikh Mas’oud,\nI present veneration,\nIn the gates of Zion’s daughter.\nO Lord keep our patriarch,",
+				"And his partners our bishops,\nConfirm us with their prayers,\nIn the gates of Zion’s daughter.",
+				"O Lord keep our priests,\nAnd also our deacons,\nWith the rest of the believers,\nIn the gates of Zion’s daughter."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2730",
+				"pageId": 2730,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-third-hoos-trinity-hymn": {
+			"id": "kiahk-third-hoos-trinity-hymn",
+			"title": "A Hymn for the Holy Trinity",
+			"kind": "psali",
+			"content": [
+				"(Taken from manuscripts found in the Old Cathedral in El-Azbakia, Cairo)",
+				"We worship the Holy Trinity,\nThe Father, Son, and the Holy Spirit,\nWe worship, we praise and sanctify,\nOne God, Creator of mankind.",
+				"To Him is glory and honor always,\nAlso, the reverence and the kingdom,\nEver existing before all ages,\nEverlasting and immortal.",
+				"Holy God, holy Mighty,\nHoly Immortal,\nLord of the throne, the highest King,\nWe preach the Holy Trinity.",
+				"Blessed is the Father, the Pantocrator,\nBlessed is the Son, Jesus Christ,\nBlessed is the Holy Spirit, the eternal,\nWe worship and praise Him.",
+				"The almighty and great in power,\nThe knowing, good and honored Judge,\nOne God in three hypostaseis,\nIndescribable by any human.",
+				"Of one essence and one nature,\nOne Being in His divinity,\nThe Three are one in essence,\nWithout mingling or separation.",
+				"One Being in three hypostaseis,\nWithout mingling or separation,\nThe Almighty in His kingdom,\nFilling the heavens and all therein.",
+				"A mystery above the human mind,\nIn essence, They are one God,\nBut according to Their existence,\nThree hypostaseis, one God.",
+				"The Son begotten before all ages,\nBegotten from the Father,\nIn natural birth,\nAnd the Holy Spirit proceeds from the Father.",
+				"As the sun gives rays and heat,\nThe Sun disk is the source of both,\nWithout division or separation,\nThis is natural birth.",
+				"Three equal hypostaseis,\nIn essence and divinity,\nSince the beginning of the ages,\nAnd to the eternal life.",
+				"Daniel witnessed the throne,\nUpon it, the Ancient of Days,\nOf whom came the Son of Man,\nAnd granted Him honor and dominion.",
+				"The throne appeared as lightening,\nUpon it, He sat as fire,\nHis hair, as white as snow,\nCarrying it four creatures of fire.",
+				"The four having no bodies,\nOne like a man, one like a calf,\nThe third is like a lion,\nAnd the fourth like an eagle.",
+				"A face for each being,\nWith six wings and many eyes,\nTwo wings to cover their feet,\nTwo covering their face and two to fly.",
+				"Twenty-four priests upon their seats,\nWith golden crowns bright as fire,\nIn their hands, golden censers,\nIncense rising day and night.",
+				"Surrounding the throne thousands of thousands,\nAnd myriads of myriads of archangels,\nWith choirs of thrones and dominions,\nChanting to Him with joyful voices.",
+				"Praising Him with joyful sounds,\nWith the cries of the creatures and priests,\nSaying, “Holy, holy, holy,\nO Living One, Lord of hosts.",
+				"Heaven and earth are full of,\nYour glory and Your praise,\nTo You, is honor and power,\nAnd all creatures praise you.",
+				"Alleluia … Alleluia,\nTo You, is greatness and majesty,\nTo You, is glory and power,\nTo You, is honor and kingdom."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2704",
+				"pageId": 2704,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-fourth-hoos-adam-psali": {
+			"id": "kiahk-fourth-hoos-adam-psali",
+			"title": "Another Adam Psali on the Fourth Hoos",
+			"kind": "psali",
+			"content": [
+				"Come, let us worship / the Father, and the Son, / and the Holy Spirit, / the coessential. Help us O my Lord / with Your goodness; / enlighten our minds, / and our hearts also.",
+				"For truly, / the angels / worthily / glorify You. David proclaims / and says, / “Praise the Lord / with the sound of the trumpet.”",
+				"Therefore, we praise / and glorify / Jesus Christ, / the King of glory. Seven rotating stars / bless His name / for He commanded and they / existed at all times.",
+				"Behold, the dragons, / and all the depths, / and fire and snow, / praise the King of ages. Gather with me today / O Christians / to bless our Lord, / Jesus Christ.",
+				"Jesus Christ, our God, / the Infinite One, / came for our salvation / out of His goodness. Again, sing to the Lord / a new song, / and declare His glory / and His wonders.",
+				"Moreover, O angels / who stand before Him / in the highest, / praise and glorify Him. Give us an inheritance / in Your kingdom / for the sake of the Virgin, / Mary the queen.",
+				"Who is like You, / O Lord, among the gods?! / We praise You / with Your angels. Truly, You are blessed, / O Eternal One; / chanting befits / You in Zion.",
+				"And He is praised / by the musical / organs / and the psaltery. The Unseen One / before the ages, / praise Him / with cymbals.",
+				"Rejoice O righteous / in God the Merciful, / and be glad in Him, / O upright in heart. Listen to the psalmist, / praising and saying, / “Praise Him with / timbrel and chorus.”",
+				"We worship Him / with everyone, / and bless Him / now and at all times. Behold, we proclaim / and say: / “Forgive us / O Jesus our Lord.”",
+				"God, the Good One, / the Incomprehensible, / came to the world / to save us. Holy, holy, holy, / O Christ our Master. / Hail to Mary, / the Theotokos.",
+				"All the souls, together, / praise their Creator / saying ten thousandfold, / “O God, do not be angry.” O Lord, I am Your / poor servant; / I praise You with / Your Mother the Virgin."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2712",
+				"pageId": 2712,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-after-adam-theotokias-hymn": {
+			"id": "kiahk-after-adam-theotokias-hymn",
+			"title": "Adam Hymn after the Theotokias",
+			"kind": "psali",
+			"content": [
+				"Your mercies O my God\nAre plenteous.\nYour mercies O my God\nAre countless.",
+				"The drops of rain\nAre counted in Your hands,\nAlso, the sand of the sea\nIs present before Your eyes.",
+				"How much more are my sins\nAnd my trespasses before You,\nAnd all that I have done\nAre present before You.",
+				"For the sins of my youth,\nRemember them not, O Lord.\nDo not consider my trespasses,\nBut leave them O my God.",
+				"For You desire not the death\nOf sinners but love their return.\nO God accept my prayer;\nI returned and repented.",
+				"You chose the tax-collector,\nThe adulteress, You forgave,\nAnd the thief, You remembered;\nYour mercy is endless.",
+				"I am a sinner also—\nO Lord teach me\nTo offer repentance;\nLike the adulteress, accept me.",
+				"Return us O Lord to Your salvation\nFor You are good and merciful.\nDeal with us in Your goodness\nFor You are able and generous.",
+				"If You judge by Your justice,\nWe shall find no defense.\nWe await Your goodness\nAnd plead for Your mercies.",
+				"Your mercies O my God\nAre beyond all measures.\nYour mercies O my God\nAre as the countless sand.",
+				"Your mercies O my God\nAre more than the stars,\nAnd the plants of the earth,\nAnd mountains and cities.",
+				"O King of peace\nGrant us Your peace,\nEstablish for us Your peace,\nFill us with Your Spirit.",
+				"Disperse the enemies of the Church;\nFortify her with the faith\nWith invincible barriers\nThat she may never shaken.",
+				"Emmanuel Himself\nIs now in our midst\nWith the glory of His Father\nAnd His Spirit, forever.",
+				"May He bless us all,\nAnd purify our hearts,\nAnd heal our sicknesses,\nAnd save our souls.",
+				"We worship the Father, the Son,\nAnd the Holy Spirit,\nNow and at all times\nAnd forever. Amen."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2728",
+				"pageId": 2728,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-monday-adam-hymn": {
+			"id": "kiahk-monday-adam-hymn",
+			"title": "Monday: Adam Hymn",
+			"kind": "psali",
+			"content": [
+				"Be strengthened in the faith,\nO believer of Jesus,\nAnd praise the pride of the world,\nMaria Ti-parthenos.",
+				"Begin by signing yourself,\nWith the sign of the Cross,\nAnd praise at all times,\nMaria Ti-parthenos.",
+				"+ Repent for your sins,\nHold on to the Law,\nAnd praise at all times,\nMaria Ti-parthenos.",
+				"+ Gabriel was sent,\nFrom the holy Father,\nTo announce to a Virgin,\nMaria Ti-parthenos.",
+				"When she heard she accepted,\nThe words of the angel,\nShe carried through the Spirit,\nMaria Ti-parthenos.",
+				"The salvation of the humans,\nAnd all the world,\nFrom a pure first-born,\nMaria Ti-parthenos.",
+				"+ The scholars named you,\nAnd called you righteous,\nO you who is holy,\nMaria Ti-parthenos.",
+				"+ The Lord of glory chose you,\nAs the saying of the hymnist,\nHe adorned you with His Spirit,\nMaria Ti-parthenos.",
+				"The Light adorned you,\nBy the dwelling of my Lord Jesus,\nThe One of the Trinity,\nMaria Ti-parthenos.",
+				"They have called you,\nThe pure and golden censer,\nAnd a famous tabernacle,\nMaria Ti-parthenos.",
+				"+ The Sun of Righteousness,\nYou conceived O Virgin and Bride,\nWho attained what you attained,\nMaria Ti-parthenos.",
+				"+ Hosea has spoken,\nAbout the Birth of Christ,\nHe descends as rain and dew,\nMaria Ti-parthenos.",
+				"The Pantocrator,\nThe Life-Giver of souls,\nYou carried as a human,\nMaria Ti-parthenos.",
+				"Blessed O Mother of God,\nBlessed O Mother of the Holy,\nO seed of the father David,\nMaria Ti-parthenos.",
+				"+ The Divine appeared from you,\nChrist the King of glory,\nUnited with humanity,\nMaria Ti-parthenos.",
+				"+ We trusted your Son,\nWe ask O Mother of Jesus,\nDo not abandon us,\nMaria Ti-parthenos.",
+				"Your praise is precious and sweet,\nAbove all the world,\nYour rank was exalted,\nMaria Ti-parthenos.",
+				"You exceeded the fathers,\nThe righteous and the just,\nAnd all measures,\nMaria Ti-parthenos.",
+				"+ Eternal and worshiped,\nOne who is holy,\nChose the daughter of David,\nMaria Ti-parthenos.",
+				"+ O Mother of Jesus be there,\nFor me and His people,\nWhen we hear His voice,\nMaria Ti-parthenos.",
+				"Everyone beheld,\nThe glory of Jesus,\nThrough you in the world,\nMaria Ti-parthenos.",
+				"Moses desired to see,\nThe Lord the Holy,\nHe could not bear His light,\nMaria Ti-parthenos.",
+				"+ We ask you to lead us,\nTo the Lord’s acceptance,\nTo bring us to the harbor,\nMaria Ti-parthenos.",
+				"+ You became a pure temple,\nFor my Lord’s dwelling,\nYou carried Him in your womb,\nMaria Ti-parthenos.",
+				"The Life-Giver of souls,\nDrank your milk,\nYou held Him in your hands,\nMaria Ti-parthenos.",
+				"Do not forget O Mary,\nThe Christian people,\nThrough the great Birth,\nMaria Ti-parthenos.",
+				"+ O Mary help us,\nWe ask your Son Jesus,\nTo bring us to the harbor,\nMaria Ti-parthenos.",
+				"+ My peace to the Virgin,\nThe Mother of Jesus Christ,\nThrough her Son we were saved,\nMaria Ti-parthenos.",
+				"And my peace to Mary,\nThe Theotokos, Mother of God,\nThe pride of the world,\nMaria Ti-parthenos.",
+				"And my peace to everyone,\nWho is present with us,\nMay they be saved from Hell,\nThrough the prayers of Ti-parthenos.",
+				"+ And the writer of these words,\nAsks the Mother of Jesus,\nGabriel the sinner,\nMaria Ti-parthenos.",
+				"+ He asks for your prayer,\nO pride of the creation,\nI live by your life,\nMaria Ti-parthenos.",
+				"I ask the great hero,\nThe pride of martyrs,\nTheir great leader,\nFi-ehowab Ge-or-geios.",
+				"For he is a great martyr,\nBy his prayers I am guarded,\nRemembering him is a feast,\nFi-ehowab Ge-or-geios.",
+				"+ O brothers I end my saying,\nBy praising the Virgin,\nMary the gate of forgiving,\nAnd the key of the Paradise gate."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2738",
+				"pageId": 2738,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-wednesday-watos-hymn": {
+			"id": "kiahk-wednesday-watos-hymn",
+			"title": "Wednesday: Watos Hymn",
+			"kind": "psali",
+			"content": [
+				"All the hosts of the heaven,\nAnd the angelic soldiers,\nCry out in beautiful voices,\nBlessed are you, O Virgin and Bride.",
+				"With tunes from on high,\nEveryone cries, “Let us praise,”\nThey speak with glorious tongues,\nBlessed are you, O Virgin and Bride.",
+				"+ The Father looked down and found none,\nLike you, in purity among all,\nHe sent His Son to take flesh,\nBlessed are you, O Virgin and Bride.",
+				"+ Gabriel the angel came,\nA messenger came with good tidings,\nHe preached and you accepted,\nBlessed are you, O Virgin and Bride.",
+				"He dwelt with the Spirit in you,\nMy Lord Jesus appeared from you,\nYou became the Mother of your Creator,\nBlessed are you, O Virgin and Bride.",
+				"Your Son saved Adam and his sons,\nAnd restored him to Paradise,\nAnd from the Devil freed him,\nBlessed are you, O Virgin and Bride.",
+				"+ You were called, O flower of fragrance,\nThe purified golden censer,\nAnd the holy flower,\nBlessed are you, O Virgin and Bride.",
+				"+ The Lord of glory chose your beauty,\nAs the saying of the hymnist,\nThe God of gods became your Son,\nBlessed are you, O Virgin and Bride.",
+				"Ezekiel saw in his vision,\nIn the East a door was shut,\nThe high King entered through it,\nBlessed are you, O Virgin and Bride.",
+				"A ladder seen by Jacob,\nHosts of angels, surrounding,\nWorshiping the revered King,\nBlessed are you, O Virgin and Bride.",
+				"+ Moses witnessed and prophesied,\nAnd likened you to a vineyard,\nA green bush aflame with fire,\nBlessed are you, O Virgin and Bride.",
+				"+ Hosea taught a testimony,\nAbout the Birth of Jesus,\nSaying, “He comes as rain and dew,”\nBlessed are you, O Virgin and Bride.",
+				"Daniel, in his revelation,\nSaid, “I saw a great throne,\nOn it sat the Most High King,”\nBlessed are you, O Virgin and Bride.",
+				"Moses asked to peek and see,\nAs you saw, O Mother of the Holy,\nHe could not bear the light,\nBlessed are you, O Virgin and Bride.",
+				"+ He appeared from you and fulfilled,\nThe promise of entering Paradise,\nAnd freed Adam from all ties,\nBlessed are you, O Virgin and Bride.",
+				"+ Precious and sweet is your praise,\nAs the sweet fruits of Paradise,\nWhoever tastes of it will never weary,\nBlessed are you, O Virgin and Bride.",
+				"Your praise is precious and sweet,\nAnd exalted above all ranks,\nFor you held the Creator in your lap,\nBlessed are you, O Virgin and Bride.",
+				"If one praises you at all times,\nHe will obtain his desires,\nBy the acceptance of the holy Lord,\nBlessed are you, O Virgin and Bride.",
+				"+ All my life, I only ask,\nTo be praising the Virgin,\nThat she may be my help when I depart,\nBlessed are you, O Virgin and Bride.",
+				"+ The honor of Mary, who can,\nLiken to the moon and sun,\nShe is even greater than the throne,\nBlessed are you, O Virgin and Bride.",
+				"You bore the God of glory,\nAnd surpassed all the ranks’ glory,\nYou were exalted and mighty,\nBlessed are you, O Virgin and Bride.",
+				"Who could have seen Paradise,\nWithout your Son O Mother of Light,\nOr rejoice for the rest of life,\nBlessed are you, O Virgin and Bride.",
+				"+ Who gained what you gained O Mary,\nWho can be likened to you,\nWhich tongue can actually explain,\nBlessed are you, O Virgin and Bride.",
+				"+ We ask you, O first-born Virgin,\nRemember me before my Lord Jesus,\nSo He may forgive us our sins,\nBlessed are you, O Virgin and Bride.",
+				"Your servant pleads with you,\nDo not forget me, O Mother of Christ,\nFor I ask for your protection,\nBlessed are you, O Virgin and Bride.",
+				"The gracious father our shepherd,\nAbba (...) the high priest,\nMay his prayers direct us,\nBlessed are you, O Virgin and Bride.",
+				"+ And his partners in the service,\nOur holy father(s) the bishop(s),\nHelp them O pride of humanity,\nBlessed are you, O Virgin and Bride.",
+				"+ Do not forget all our priests,\nAnd all of the Christians,\nAnd all the ranks of our Church,\nBlessed are you, O Virgin and Bride.",
+				"O the pride of the human race,\nO pearls of all the hosts and ranks,\nHelp the people of the Baptism,\nBlessed are you, O Virgin and Bride.",
+				"The sons of this church,\nThe leaders and servants alike,\nAll the seven ranks of the Church,\nBlessed are you, O Virgin and Bride.",
+				"+ The servant who wrote these rhymes,\nThe least among my Lord’s servants,\nGabriel, praising the Mother of Light,\nBlessed are you, O Virgin and Bride.",
+				"+ I end my praise and sayings,\nBy prayers to Mary the Virgin,\nThe Mother of Emmanuel,\nBlessed are you, O Virgin and Bride.",
+				"I ask of one named hero,\nThe struggle-mantled martyr,\nThe morning star, my portion,\nMy lord prince George.",
+				"With his prayers, I am always safe,\nHoping in him to enter Paradise,\nI entreat him on Judgment Day,\nBlessed are you, O Virgin and Bride."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2732",
+				"pageId": 2732,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-wednesday-third-watos-hymn": {
+			"id": "kiahk-wednesday-third-watos-hymn",
+			"title": "Wednesday: Third Watos Hymn",
+			"kind": "psali",
+			"content": [
+				"“I charge you, O daughters of Jerusalem,”\nThe Church spoke on the tongue of Solomon,\n“Where does the Beloved desire to dwell?”\nPen-soutir en-aghathos.",
+				"“Wisdom has built her house,\nShe has hewn out her seven pillars,”\nThe seven talents: man’s perfection,\nPen-soutir en-aghathos.",
+				"Solomon in the Song of Songs,\nSpoke of the Church and Baptism,\nAlso about the New Testament,\nPen-soutir en-aghathos.",
+				"A beautiful Child: His name is Wonderful,\nThe mention of His name is spikenard,\nHe was incarnate to be crucified\nPen-soutir en-aghathos.",
+				"“My love is a lily among the daughters,”\nHer countenance, glorious among the queens,\nShe is eminent among myriads,\nPen-soutir en-aghathos.",
+				"“My Beloved is an apple among the sons,”\nHis garments are scented with aloes and cassia,\nThe Church declared with understanding,\nPen-soutir en-aghathos.",
+				"You were betrothed from among the daughters,\nO betrothed of Isaac, son of Abram,\nWho will dwell in a peaceful place,\nPen-soutir en-aghathos.",
+				"The daughters of Jerusalem called you,\nThe chosen one of an honorable race,\nThe queen was gloriously crowned,\nPen-soutir en-aghathos.",
+				"In the psalm, it is written,\nFear of the Lord is the beginning of wisdom,\nRepentance is the light for sinners,\nPen-soutir en-aghathos.",
+				"The beginning of wisdom and teaching,\nAre the proverbs of Solomon,\nThe king whose throne is Jerusalem,\nPen-soutir en-aghathos.",
+				"King Solomon decorated his house,\nIn wisdom, he decorated it with colors,\nHe decorated the Church with hymns,\nPen-soutir en-aghathos.",
+				"Solomon spoke of pools in Heshbon,\nOpposite the Mountain of Zion,\nThe Church’s gate is Baptism and Myron,\nPen-soutir en-aghathos.",
+				"Solomon’s word is a hidden treasure,\nHe likened the Church to Heshbon’s pools,\nHer creed is a tower and a stronghold,\nPen-soutir en-aghathos.",
+				"Our bed is green and we are veiled,\nThe Church gathers all the beloved,\nAt the door is the voice of my Beloved,\nPen-soutir en-aghathos.",
+				"Sustain me with cakes of raisins,\nI am lovesick , your love is flames,\nMy Beloved in His fragrant garden,\nPen-soutir en-aghathos.",
+				"He witnessed and said his queens are sixty,\nAlso, the concubines are eighty,\nThe Church’s orders are numbered carefully,\nPen-soutir en-aghathos.",
+				"His crown made of precious stones,\nTo be worn by the wise Solomon,\nHe sat and judged in uprightness,\nPen-soutir en-aghathos.",
+				"The righteous attained the crown,\nOf precious stone and the priceless jewel,\nThe Faithful Witness did conquer,\nPen-soutir en-aghathos.",
+				"Your stature: as Lebanon’s cedars and palms,\nA virgin walking among the lilies,\nOf whom King Solomon spoke in the Songs,\nPen-soutir en-aghathos.",
+				"You became: a table and lampstand,\nO queen, who is chosen,\nTherefore the virgins love you,\nPen-soutir en-aghathos.",
+				"The marriage supper of the Lamb,\nHe gathered thousands and myriads,\nAll the ranks and orders,\nPen-soutir en-aghathos.",
+				"The queen prepared a beautiful crown,\nWhich Solomon wore for his coronation,\nHe sat and judged Israel,\nPen-soutir en-aghathos.",
+				"For the coronation, the queen prepared,\nA throne with precious jewels embedded,\nOn which the bridegroom did sit,\nPen-soutir en-aghathos.",
+				"Solomon wealth is of Ophir gold,\nHe prepared the throne with precious gold,\nHe gave the Proverbs and foretold,\nPen-soutir en-aghathos.",
+				"The Church, in the Songs, he explained,\nAscends from baptism in the Jordan,\nA flock going down from Gilead,\nPen-soutir en-aghathos.",
+				"Around the city, the beloved went,\nThe guards found Him on Mount Sinai,\nComing to the port, He passed them by,\nPen-soutir en-aghathos.",
+				"By night, I sought the one I love,\nSeeking my beloved, I did not find,\nThe watchmen wounded me, His bride,\nPen-soutir en-aghathos.",
+				"The prophet spoke about Him,\nHe was made a little lower than angels,\nConcerning the death of Emmanuel,\nPen-soutir en-aghathos.",
+				"David the pure prophet said,\nThe crown of joy and righteousness,\nCrowned the almighty Son of God,\nPen-soutir en-aghathos.",
+				"You are fair, my sister, my spouse,\nYour wine is from the fruit of Paradise,\nQuenches all souls who thirst,\nPen-soutir en-aghathos.",
+				"Your garments are royal amethyst,\nStudded in magnificent colors,\nWith fragrance and incense,\nPen-soutir en-aghathos.",
+				"Your name is ointment poured forth,\nWhich cannot be perceived or explored,\nYou gave Your Blood for the Covenant,\nPen-soutir en-aghathos.",
+				"The daughters beheld and blessed you,\nAn only daughter and so pure,\nThe bride of Christ, the betrothed,\nPen-soutir en-aghathos.",
+				"This is a true saying,\nSt. Paul betrothed us, a virgin,\nThe Church of Christ, the virtuous,\nPen-soutir en-aghathos.",
+				"The composer of this melody,\nAbdel-Masseh, the Hegumen,\nAbout the Song of Songs, he sings,\nPen-soutir en-aghathos.",
+				"To the Church, He brought me,\nHe fed me of His Body,\nThe root of love embraces me,\nPen-soutir en-aghathos.",
+				"To the Church, He calls you,\nOf His Body and Blood, He feeds you,\nThe root of love embraces you,\nPen-soutir en-aghathos.",
+				"Do not forget these works, O Lord,\nIn the Bible, You underscored,\n“To him who knocks, I’ll open the door,”\nPen-soutir en-aghathos.",
+				"O Lord keep our patriarch,\nAnd his partners in the service,\nOur metropolitans and bishops,\nPen-soutir en-aghathos.",
+				"O Lord keep our priests,\nAnd the assembly of our deacons,\nWith the rest of our congregation,\nPen-soutir en-aghathos."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2731",
+				"pageId": 2731,
+				"accessedAt": "2026-11-05"
+			}
+		},
+		"kiahk-thursday-burning-bush": {
+			"id": "kiahk-thursday-burning-bush",
+			"title": "Thursday: The Burning Bush",
+			"kind": "psali",
+			"content": [
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"I open my mouth and proclaim,\nAnd utter hidden mysteries,\nPraising the Mother of Light, Mary,\nBlessed is the pride of the human race.",
+				"Because of your Son we became,\nFreed from the bondage,\nAnd from Satan’s bonds we are saved,\nBlessed is the pride of the human race.",
+				"The sayings about you were fulfilled,\nAnd all the prophecies and proverbs,\nAbout the Birth of Emmanuel,\nBlessed is the pride of the human race.",
+				"Gabriel came with good tidings,\nAbout the dwelling of Logos,\nA virgin carrying her Lord,\nAnd her virginity is sealed.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"His Holy Spirit came upon you,\nAnd took from you the humanity,\nA true human you did carry,\nBlessed is the pride of the human race.",
+				"He saved Adam and his children,\nAnd cured him from the serpent’s venom,\nAnd returned his honor to him,\nBlessed is the pride of the human race.",
+				"David your father spoke of you,\nAnd prophesied about the Birth,\n“The God of gods became your Son,”\nBlessed is the pride of the human race.",
+				"You became a mother to your Maker,\nThat mankind may be saved,\nHe came and dwelt in your womb,\nAnd the seal was shut in purity.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"The Lord of glory chose your beauty,\nAnd adorned you with divinity,\nAnd took from you the humanity,\nBlessed is the pride of the human race.",
+				"A Plant sprouting without seed,\nHe appeared without watering,\nIn a pure and chosen field,\nBlessed is the pride of the human race.",
+				"The righteous fathers did call you,\nA second bodily heaven,\nThe almighty Lord dwelt in you,\nBlessed is the pride of the human race.",
+				"Ezekiel witnessed and saw,\nA sealed door in the East,\nHer Lord entered and left through it,\nAnd the door was shut in purity.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"Hosea proclaimed saying,\nAbout the Economy of the Divine,\n“He will come as rain without clouds,”\nBlessed is the pride of the human race.",
+				"Daniel has seen the throne,\nSurrounded by luminous hosts,\nUpon it sat the holy King,\nBlessed is the pride of the human race.",
+				"He came down, bowing the heavens,\nAnd took the flesh of the humans,\nWhile still in His Father’s bosom,\nBlessed is the pride of the human race.",
+				"We saw wonders and miracles,\nIn the books of the Christian Church,\nA pure Virgin carried her Lord,\nAnd her virginity is sealed.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"You are higher than all ranks,\nAnd above the heavenly hosts,\nAnd the ranks of the angels,\nBlessed is the pride of the human race.",
+				"The people’s sins, He forgives,\nOf every good gift, He gives,\nHe took our form and loved it,\nBlessed is the pride of the human race.",
+				"You are above all the world,\nAnd the ranks and the soldiers,\nAnd the righteous and just,\nBlessed is the pride of the human race.",
+				"Say, O people, “She is blessed,”\nThe Lady of us all Mary,\nBefore whom you gave birth to,\nThrough the prayers and intercessions.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"You carried the Lord of glory,\nThe Designer of humanity,\nYou resemble the Father’s throne,\nBlessed is the pride of the human race.",
+				"He took from you the humanity,\nUniting it with the divinity,\nYou held the One of the Trinity,\nBlessed is the pride of the human race.",
+				"Who obtained what you received,\nIn all the generations,\nAmong the nations and peoples,\nBlessed is the pride of the human race.",
+				"We declare, “She is blessed,”\nAnd also praise day and night,\nHim who chose her beauty,\nFor the dwelling of the Word.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"Guide me to repent, O Mary,\nTo wake from the slumber of days,\nBefore time overtakes me,\nTo rise from my laziness.",
+				"And prepare myself before traveling,\nTo work during the journey,\nHelp me please, in this vain earth,\nThrough the prayers of our Lady.",
+				"For I am lame and have little effort,\nAnd my burden is heavy,\nThe time has come to leave this world,\nAnd I have no refuge but her.",
+				"We ask her, and none other,\nEvery day and every night,\nWe hang on the tip of her dress,\nAnd her luminous vesture garments.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity.",
+				"I greet the Mother of the Light,\nMary, the help of all Christians,\nOf whom salvation was revealed,\nTo all the people of Baptism.",
+				"To protect us from all evil,\nAnd the plagues of this time,\nAnd help us in every aspect,\nAnd the Christian nations.",
+				"Everyone says, “She is blessed,”\nMorning and vespers, we ask her,\nBefore Him whom she held in her womb,\nTo intercede for everyone.",
+				"The gracious father our patriarch,\nThe pillar of the Christian faith,\nA good shepherd, confirming us,\nWith good plans and guidance.",
+				"The father of fathers who inherited,\nThe priesthood of Melchizedek,\nIn true faith and firm hope,\nAnd orthodox love.",
+				"Keeping his flock from the foxes,\nAnd all demonic snares,\nProtecting them from strange things,\nAnd all the heresies of Arius.",
+				"Shepherding his people with a tender voice,\nWith his spiritual teachings,\nO Lord, let him enjoy his priesthood,\nGive him long life and calmness.",
+				"The father, the doer of the Law,\nAnd all the commandments,\nAbba (...) the high priest,\nThe pillar of the Christian faith.",
+				"And our bishops the gracious fathers,\nHis partners in the apostolic service,\nThrough their prayers we may become,\nSons of the eternal kingdom.",
+				"For the bishop:\nAnd our bishop the gracious father,\nHis partner in the apostolic service,\nThrough his prayers we may become,\nSons of the eternal kingdom.",
+				"Confirm all of our clergy,\nHegumens and presbyters,\nAnd keep our holy Church,\nBy offering acceptable gifts.",
+				"I am Gabriel, who wrote these rhymes,\nCalled to be praising the Virgin,\nAnd entreating brave hero,\nWho is gracious to me.",
+				"Cappadocian, pride of the brave,\nA true and royal native,\nThe first among the brave,\nAnd the pride of Cappadocia.",
+				"The struggle-mantled martyr,\nA star shining at dawn,\nMy lord prince George,\nWho is of great might.",
+				"I end the words we arranged,\nIn praising the pure Virgin,\nEvery Christian who reads them,\nShe intercedes for his forgiveness.",
+				"Refrain:\nThe burning bush seen by Moses,\nThe prophet in the wilderness,\nThe fire inside it was aflame,\nBut neither consumed nor injured it.",
+				"The same with the Theotokos Mary,\nCarried the Fire of Divinity,\nNine months in her holy body,\nWithout blemishing her virginity."
+			],
+			"source": {
+				"name": "Tasbeha.org",
+				"url": "https://tasbeha.org/hymn_library/view/2720",
+				"pageId": 2720,
+				"accessedAt": "2026-11-05"
+			}
+		}
+	}
+}

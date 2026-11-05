@@ -34,7 +34,7 @@ export async function generateMetadata({ searchParams }: TasbehaPageProps): Prom
 	const praise = tasbehaPraiseLabel(info, false)
 	return {
 		title: `Tasbeha — ${info.name} ${praise}`,
-		description: `Pray the annual ${info.name} Coptic Orthodox ${praise} in English, Coptic, and Arabic.`,
+		description: `Pray the ${info.name} Coptic Orthodox ${praise} in English, Coptic, and Arabic.`,
 	}
 }
 

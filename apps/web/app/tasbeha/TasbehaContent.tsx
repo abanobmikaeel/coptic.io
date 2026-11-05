@@ -12,6 +12,8 @@ import {
 	type TasbehaDayId,
 	getCurrentTasbehaDay,
 	getTasbehaDay,
+	hasUnevenSections,
+	labelUnavailableSections,
 	tasbehaPraiseLabel,
 	tasbehaRiteLabel,
 } from '@/lib/tasbehaDays'
@@ -69,9 +71,14 @@ export function TasbehaContent({
 			? 'التسبحة متاحة حاليًا بالقبطية والعربية والإنجليزية؛ يتم عرض الإنجليزية.'
 			: 'Tasbeha is currently available in Coptic, English, and Arabic — showing English.'
 		: null
-
-	// Breadcrumb continuation — Tasbeha › Wednesday — with the rite line beneath, so
-	// the tune and whether it is a Midnight or Vespers Praise are always visible.
+	const service = Object.values(servicesByLang)[0]
+	// A partial service says what it leaves out in its description.
+	const partialNotice = service?.status === 'partial' ? service.description : null
+	const unevenNotice = hasUnevenSections(servicesByLang)
+		? isArabic
+			? 'بعض المدائح غير متوفرة بكل اللغات المختارة.'
+			: 'Some hymns are not available in every selected language.'
+		: null
 	const daySwitcher = (theme: ReadingTheme) => (
 		<div className="flex items-center gap-1.5">
 			<svg
@@ -177,7 +184,7 @@ export function TasbehaContent({
 				<span
 					className={`text-xs sm:text-sm whitespace-nowrap ${themeClasses.breadcrumbLink[theme]}`}
 				>
-					{tasbehaRiteLabel(current, isArabic)}
+					{tasbehaRiteLabel(current, isArabic, service?.rite?.cycle)}
 				</span>
 			</div>
 		</div>
@@ -187,12 +194,12 @@ export function TasbehaContent({
 		<LiturgicalServiceReader
 			title={isArabic ? 'التسبحة' : 'Tasbeha'}
 			basePath="/tasbeha"
-			servicesByLang={servicesByLang}
+			servicesByLang={labelUnavailableSections(servicesByLang, isArabic)}
 			langs={langs}
 			availableLanguages={['en', 'cop', 'ar']}
 			contentLayout="stanzas"
 			rowsPerPageByKind={{ opening: 2, canticle: 2 }}
-			notice={languageNotice ?? undefined}
+			notice={[languageNotice, partialNotice, unevenNotice].filter(Boolean).join(' ') || undefined}
 			headerCenter={daySwitcher}
 		/>
 	)

@@ -124,3 +124,18 @@ export const getReadingCycle = (date: Date): ReadingCycle => {
 		return { cycle: 'greatLent', daysFromEaster: LENT_PREPARATION_SUNDAY }
 	return { cycle: 'sunday', ...sundayOf(date, month, day) }
 }
+
+/**
+ * The week of the Kiahk Psalmody a date belongs to (1–4), or null outside it. The rite
+ * runs from the first of Kiahk until the Paramoun, so the Nativity Fast before it keeps
+ * the annual tunes. A week takes its number from the Sunday it leads to, which follows
+ * the same shift as the readings; the days before the Nativity keep the fourth.
+ */
+export const getKiahkPsalmodyWeek = (date: Date): number | null => {
+	const { month, day } = gregorianToCoptic(date)
+	if (month !== KIAHK || day >= 28) return null
+	const daysToSunday = (7 - date.getDay()) % 7
+	const sunday = new Date(date.getFullYear(), date.getMonth(), date.getDate() + daysToSunday)
+	const cycle = getReadingCycle(sunday)
+	return cycle.cycle === 'sunday' && cycle.month === KIAHK ? cycle.sunday : 4
+}

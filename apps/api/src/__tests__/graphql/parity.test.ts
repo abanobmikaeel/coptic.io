@@ -89,7 +89,7 @@ const HOUR = `id name englishName traditionalTime introduction opening { ${PRAYE
 const SERVICE = `type name date copticDate { ${COPTIC_DATE} } sections { id type role title titleLanguage
 	rubric optional content { ${LINE} } reference verses { ${VERSE} } }`
 const TASBEHA = `type id name description status rite { cycle dayTune weekdays }
-	sections { id type role kind title titleLanguage content { ${LINE} }
+	sections { id type role kind title titleLanguage contentUnavailable content { ${LINE} }
 	source { name url pageId accessedAt corroboratingUrls } }`
 const PERIOD = 'name description startDate endDate type isFasting'
 const LENT_DAY = `dayOffset dayNumber part weekNumber weekTheme day title references
@@ -354,6 +354,14 @@ describe('GraphQL matches REST', () => {
 				'sundayTasbeha',
 				'/api/tasbeha/sunday?date=2026-07-26&lang=ar',
 			))
+
+		it.each(['en', 'cop'])('tasbeha in Kiahk in %s', (lang) =>
+			expectParity(
+				`tasbeha(date: "2026-12-19", lang: ${lang}) { ${TASBEHA} }`,
+				'tasbeha',
+				`/api/tasbeha?date=2026-12-19&lang=${lang}`,
+			),
+		)
 
 		it('tasbehaForDay', () =>
 			expectParity(

@@ -1728,8 +1728,10 @@
 					"status": {
 						"type": "string",
 						"enum": [
-							"complete"
-						]
+							"complete",
+							"partial"
+						],
+						"description": "`partial` when the service does not hold the whole rite, as in Kiahk"
 					},
 					"rite": {
 						"type": "object",
@@ -1798,6 +1800,7 @@
 										"theotokia",
 										"gospel",
 										"difnar",
+										"exposition",
 										"litany",
 										"conclusion"
 									]
@@ -1818,6 +1821,10 @@
 									"items": {
 										"type": "string"
 									}
+								},
+								"contentUnavailable": {
+									"type": "boolean",
+									"description": "True when the source has no text in this language; `content` is empty"
 								},
 								"source": {
 									"type": "object",
@@ -4141,7 +4148,7 @@
 					"Tasbeha"
 				],
 				"summary": "Get the Psalmody for a date's day of the week",
-				"description": "Returns the annual Tasbeha prayed on the given date's weekday, in source-aligned English, Coptic, or Arabic. Sunday through Friday resolve to that day's Midnight Praises; Saturday resolves to the Saturday Vespers Praise.",
+				"description": "Returns the Tasbeha prayed on the given date's weekday, in source-aligned English, Coptic, or Arabic. Sunday through Friday resolve to that day's Midnight Praises; Saturday resolves to the Saturday Vespers Praise.",
 				"parameters": [
 					{
 						"schema": {
@@ -4171,7 +4178,7 @@
 				],
 				"responses": {
 					"200": {
-						"description": "The annual Psalmody for the date's weekday",
+						"description": "The Psalmody for the date's weekday",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -4198,7 +4205,7 @@
 				"tags": [
 					"Tasbeha"
 				],
-				"summary": "Get the annual Sunday Midnight Praises",
+				"summary": "Get the Sunday Midnight Praises",
 				"description": "Returns the annual Sunday (Adam) Tasbeha corpus in source-aligned English, Coptic, or Arabic.",
 				"parameters": [
 					{
@@ -4257,7 +4264,7 @@
 					"Tasbeha"
 				],
 				"summary": "Get the Psalmody for a named day of the week",
-				"description": "Returns a specific day's annual Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.",
+				"description": "Returns a specific day's Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.",
 				"parameters": [
 					{
 						"schema": {
@@ -4305,7 +4312,7 @@
 				],
 				"responses": {
 					"200": {
-						"description": "The named day's annual Psalmody",
+						"description": "The named day's Psalmody",
 						"content": {
 							"application/json": {
 								"schema": {

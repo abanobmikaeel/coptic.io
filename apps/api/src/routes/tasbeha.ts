@@ -30,10 +30,10 @@ const getForDateRoute = createRoute({
 	tags: ['Tasbeha'],
 	summary: "Get the Psalmody for a date's day of the week",
 	description:
-		"Returns the annual Tasbeha prayed on the given date's weekday, in source-aligned English, Coptic, or Arabic. Sunday through Friday resolve to that day's Midnight Praises; Saturday resolves to the Saturday Vespers Praise.",
+		"Returns the Tasbeha prayed on the given date's weekday, in source-aligned English, Coptic, or Arabic. Sunday through Friday resolve to that day's Midnight Praises; Saturday resolves to the Saturday Vespers Praise.",
 	request: { query: z.object({ lang: langQuery, date: dateQuery }) },
 	responses: {
-		200: jsonResponse(TasbehaResponseSchema, "The annual Psalmody for the date's weekday"),
+		200: jsonResponse(TasbehaResponseSchema, "The Psalmody for the date's weekday"),
 		...errorResponse,
 	},
 })
@@ -48,7 +48,7 @@ const getSundayRoute = createRoute({
 	path: '/sunday',
 	middleware: [requestDate('query')] as const,
 	tags: ['Tasbeha'],
-	summary: 'Get the annual Sunday Midnight Praises',
+	summary: 'Get the Sunday Midnight Praises',
 	description:
 		'Returns the annual Sunday (Adam) Tasbeha corpus in source-aligned English, Coptic, or Arabic.',
 	request: { query: z.object({ lang: langQuery, date: dateQuery }) },
@@ -71,7 +71,7 @@ const getByDayRoute = createRoute({
 	tags: ['Tasbeha'],
 	summary: 'Get the Psalmody for a named day of the week',
 	description:
-		"Returns a specific day's annual Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.",
+		"Returns a specific day's Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.",
 	request: {
 		params: z.object({
 			day: z.enum(TASBEHA_DAYS).openapi({
@@ -82,7 +82,7 @@ const getByDayRoute = createRoute({
 		query: z.object({ lang: langQuery, date: dateQuery }),
 	},
 	responses: {
-		200: jsonResponse(TasbehaResponseSchema, "The named day's annual Psalmody"),
+		200: jsonResponse(TasbehaResponseSchema, "The named day's Psalmody"),
 		...errorResponse,
 	},
 })

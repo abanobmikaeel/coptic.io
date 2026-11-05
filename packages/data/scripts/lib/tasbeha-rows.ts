@@ -61,11 +61,30 @@ function parseLine(html: string): Line {
 	return { ...line, cue: html.startsWith(' row sync-cue') || UNMARKED_LABEL.test(line.en) }
 }
 
+/**
+ * Hymns with no Coptic are laid out as prose: a paragraph holds an English and an Arabic
+ * column of verses separated by <br>. Verses stay on their own lines, without the slash
+ * some English columns end them with.
+ */
+function parseProseColumn(para: string, column: 'en' | 'ar'): string {
+	const html = para.match(new RegExp(`class="hp-prose-${column}[^"]*"[^>]*>([\\s\\S]*?)</div>`))
+	return (html?.[1] ?? '')
+		.split(/<br\s*\/?>/)
+		.map((verse) => text(verse).replace(/\s*\/$/, ''))
+		.filter(Boolean)
+		.join('\n')
+}
+
 export function parseRows(html: string): Row[] {
 	const start = html.indexOf('class="sync-body"')
 	if (start < 0) return []
 	const rows: Row[] = []
-	for (const para of html.slice(start).split('<div class="sync-para"').slice(1)) {
+	for (const para of html.slice(start).split('<div class="sync-para').slice(1)) {
+		if (para.startsWith(' hp-prose')) {
+			const row = { en: parseProseColumn(para, 'en'), cop: '', ar: parseProseColumn(para, 'ar') }
+			if (row.en || row.ar) rows.push(row)
+			continue
+		}
 		const lines = para.split('<div class="sync-line').slice(1).map(parseLine)
 		const row: Row = { en: '', cop: '', ar: '' }
 		for (const lang of ['en', 'cop', 'ar'] as Lang[]) {

@@ -3,6 +3,8 @@ import type { ServiceLanguage } from '../content/types'
 export type TasbehaLanguage = ServiceLanguage
 export type TasbehaCycle = 'annual' | 'kiahk' | 'great-lent' | 'holy-fifty' | 'feast'
 export type TasbehaDayTune = 'adam' | 'watos'
+/** `partial` when a service does not yet hold the whole rite. */
+export type TasbehaStatus = 'complete' | 'partial'
 
 export type TasbehaSectionKind =
 	| 'opening'
@@ -14,6 +16,7 @@ export type TasbehaSectionKind =
 	| 'theotokia'
 	| 'gospel'
 	| 'difnar'
+	| 'exposition'
 	| 'litany'
 	| 'conclusion'
 
@@ -34,6 +37,8 @@ export interface TasbehaSection {
 	content: string[]
 	source: TasbehaSource
 	availability?: 'resurrection-through-hathor'
+	/** The source has no text for this section in this language; `content` is empty. */
+	contentUnavailable?: true
 }
 
 /**
@@ -66,7 +71,7 @@ export interface TasbehaServiceData {
 	name: string
 	description: string
 	rite: TasbehaRite
-	status: 'complete'
+	status: TasbehaStatus
 	sections: TasbehaSection[]
 }
 
@@ -82,7 +87,7 @@ export interface TasbehaServiceFile {
 	name: string
 	description: string
 	rite: TasbehaRite
-	status: 'complete'
+	status: TasbehaStatus
 	/** Section ids in prayed order, resolved against `sections` then `common.json`. */
 	order: string[]
 	/** Sections prayed by this service alone. */
@@ -92,5 +97,28 @@ export interface TasbehaServiceFile {
 /** The generated shape of `common.json`: sections prayed by more than one service. */
 export interface TasbehaCommonFile {
 	language: TasbehaLanguage
+	sections: Record<string, TasbehaSection>
+}
+
+/** A Kiahk hymn added to an annual service, beside a section of that service. */
+export interface TasbehaKiahkAddition {
+	section: string
+	/** `Date.getDay()` weekdays it is prayed on. */
+	weekdays: number[]
+	before?: string
+	after?: string
+}
+
+/** The generated shape of `kiahk.json`: what Kiahk adds to the annual Psalmody. */
+export interface TasbehaKiahkFile {
+	language: TasbehaLanguage
+	status: 'partial'
+	nameSuffix: string
+	description: string
+	/** The Saturday Vespers Praises; `exposition` stands for the week's Exposition. */
+	saturdayOrder: string[]
+	/** The Exposition of each of Kiahk's four weeks, in order. */
+	expositions: string[]
+	additions: TasbehaKiahkAddition[]
 	sections: Record<string, TasbehaSection>
 }

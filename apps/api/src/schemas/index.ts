@@ -609,7 +609,9 @@ export const TasbehaResponseSchema = z
 		id: z.enum(TASBEHA_SERVICE_IDS),
 		name: z.string(),
 		description: z.string(),
-		status: z.literal('complete'),
+		status: z.enum(['complete', 'partial']).meta({
+			description: '`partial` when the service does not hold the whole rite, as in Kiahk',
+		}),
 		rite: z.object({
 			cycle: z.enum(['annual', 'kiahk', 'great-lent', 'holy-fifty', 'feast']),
 			dayTune: z.enum(['adam', 'watos']),
@@ -630,12 +632,16 @@ export const TasbehaResponseSchema = z
 					'theotokia',
 					'gospel',
 					'difnar',
+					'exposition',
 					'litany',
 					'conclusion',
 				]),
 				title: z.string(),
 				titleLanguage: z.enum(SERVICE_LANGUAGES).optional(),
 				content: z.array(z.string()),
+				contentUnavailable: z.boolean().optional().meta({
+					description: 'True when the source has no text in this language; `content` is empty',
+				}),
 				source: TasbehaSourceSchema,
 			}),
 		),

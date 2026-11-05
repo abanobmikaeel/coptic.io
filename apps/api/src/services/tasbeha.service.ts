@@ -1,14 +1,17 @@
-import { includesLateSundayTheotokiaParts } from '@coptic/core/liturgy'
+import { getKiahkPsalmodyWeek, includesLateSundayTheotokiaParts } from '@coptic/core/liturgy'
 import {
+	getKiahkTasbehaService as getArabicKiahkTasbeha,
 	getTasbehaService as getArabicTasbeha,
 	getTasbehaServiceForWeekday as getArabicTasbehaForWeekday,
 } from '@coptic/data/ar/tasbeha'
 import type { ServiceLanguage } from '@coptic/data/content'
 import {
+	getKiahkTasbehaService as getCopticKiahkTasbeha,
 	getTasbehaService as getCopticTasbeha,
 	getTasbehaServiceForWeekday as getCopticTasbehaForWeekday,
 } from '@coptic/data/cop/tasbeha'
 import {
+	getKiahkTasbehaService as getEnglishKiahkTasbeha,
 	getTasbehaService as getEnglishTasbeha,
 	getTasbehaServiceForWeekday as getEnglishTasbehaForWeekday,
 } from '@coptic/data/en/tasbeha'
@@ -25,6 +28,25 @@ const byWeekday: Record<ServiceLanguage, (weekday: number) => TasbehaServiceData
 	en: getEnglishTasbehaForWeekday,
 	ar: getArabicTasbehaForWeekday,
 	cop: getCopticTasbehaForWeekday,
+}
+
+const kiahkById: Record<
+	ServiceLanguage,
+	(id: TasbehaServiceId, week: number) => TasbehaServiceData
+> = {
+	en: getEnglishKiahkTasbeha,
+	ar: getArabicKiahkTasbeha,
+	cop: getCopticKiahkTasbeha,
+}
+
+/** The service as prayed on `date`: in Kiahk, the month's Psalmody in place of the annual. */
+function inSeason(
+	service: TasbehaServiceData,
+	date: Date,
+	translation: ServiceLanguage,
+): TasbehaServiceData {
+	const week = getKiahkPsalmodyWeek(date)
+	return week ? kiahkById[translation](service.id, week) : service
 }
 
 // Parts 16–18 of the Sunday Theotokia are the only date-limited sections in the
@@ -59,7 +81,7 @@ export function getTasbehaForDate(
 	date: Date = new Date(),
 	translation: ServiceLanguage = 'en',
 ): TasbehaResponse {
-	return resolve(byWeekday[translation](date.getDay()), date)
+	return resolve(inSeason(byWeekday[translation](date.getDay()), date, translation), date)
 }
 
 export function getTasbehaById(
@@ -67,7 +89,7 @@ export function getTasbehaById(
 	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
 ): TasbehaResponse {
-	return resolve(byId[translation](id), date)
+	return resolve(inSeason(byId[translation](id), date, translation), date)
 }
 
 export function getSundayTasbeha(

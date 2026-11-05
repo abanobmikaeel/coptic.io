@@ -161,3 +161,47 @@ describe('Tasbeha service', () => {
 		expect(badDate.status).toBe(400)
 	})
 })
+
+describe('Tasbeha in Kiahk', () => {
+	const SATURDAY_WEEK_2 = new Date(2026, 11, 19) // Kiahk 10
+	const MONDAY_IN_KIAHK = new Date(2026, 11, 14)
+
+	it('stays annual through the Nativity Fast until the first of Kiahk', () => {
+		const service = getTasbehaForDate(new Date(2026, 11, 7))
+		expect(service.rite.cycle).toBe('annual')
+		expect(service.status).toBe('complete')
+	})
+
+	it('serves the partial Kiahk Psalmody by date', () => {
+		const service = getTasbehaForDate(MONDAY_IN_KIAHK)
+		expect(service.rite.cycle).toBe('kiahk')
+		expect(service.status).toBe('partial')
+		expect(service.name).toBe('Monday Midnight Praises in Kiahk')
+		expect(service.sections.map(({ id }) => id)).toContain('kiahk-monday-adam-hymn')
+	})
+
+	it('applies to a named day too, as the reader requests it', async () => {
+		const res = await app.request('/api/tasbeha/saturday?date=2026-12-19')
+		expect(res.status).toBe(200)
+		const service = await res.json()
+		expect(service.rite.cycle).toBe('kiahk')
+		const ids = service.sections.map(({ id }: { id: string }) => id)
+		expect(ids).toContain('kiahk-exposition-week-2')
+		expect(ids).not.toContain('kiahk-exposition-week-1')
+	})
+
+	it('flags a hymn with no Coptic instead of filling it from another language', () => {
+		const service = getTasbehaForDate(MONDAY_IN_KIAHK, 'cop')
+		const hymn = service.sections.find(({ id }) => id === 'kiahk-monday-adam-hymn')
+		expect(hymn?.contentUnavailable).toBe(true)
+		expect(hymn?.content).toEqual([])
+	})
+
+	it('leaves the Arabic of the same hymn in place', () => {
+		const hymn = getTasbehaById('saturday-vespers-praises', 'ar', SATURDAY_WEEK_2).sections.find(
+			({ id }) => id === 'kiahk-saturday-watos-hymn',
+		)
+		expect(hymn?.contentUnavailable).toBeUndefined()
+		expect(hymn?.content.length).toBeGreaterThan(0)
+	})
+})

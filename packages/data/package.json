@@ -112,6 +112,7 @@
 		"build": "tsc",
 		"build:index": "tsx scripts/build-synaxarium-index.ts",
 		"import:tasbeha": "tsx scripts/import-tasbeha.ts",
+		"import:tasbeha-kiahk": "tsx scripts/import-tasbeha-kiahk.ts",
 		"upload:r2": "bun scripts/upload-bible-r2.ts",
 		"match:synaxarium": "tsx scripts/llm-match-synaxarium.ts",
 		"rematch:synaxarium": "tsx scripts/llm-rematch-synaxarium.ts",

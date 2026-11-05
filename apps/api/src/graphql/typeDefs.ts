@@ -393,6 +393,7 @@ export const typeDefs = /* GraphQL */ `
 		title: String!
 		titleLanguage: ServiceLanguage
 		content: [ContentLine!]!
+		contentUnavailable: Boolean
 		source: TasbehaSource!
 	}
 
