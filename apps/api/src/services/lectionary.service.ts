@@ -83,9 +83,11 @@ export const getByCopticDate = (
 	}
 
 	// Synaxarium is only available in English and Arabic. Label the fallback explicitly
-	// so clients know when they received English content for a Spanish/Coptic request.
-	const synaxariumLanguage: 'en' | 'ar' = translation === 'ar' ? 'ar' : 'en'
-	const synaxarium = getSynaxariumForDate(gregorianDate, isDetailed, synaxariumLanguage)
+	// so clients know when they received English content for another language's request.
+	const requested: 'en' | 'ar' = translation === 'ar' ? 'ar' : 'en'
+	const inRequested = getSynaxariumForDate(gregorianDate, isDetailed, requested)
+	const synaxariumLanguage = inRequested ? requested : 'en'
+	const synaxarium = inRequested ?? getSynaxariumForDate(gregorianDate, isDetailed, 'en')
 	if (!synaxarium) {
 		throw new Error(`Synaxarium not found for date: ${gregorianDate.toISOString()}`)
 	}
