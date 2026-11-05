@@ -117,6 +117,20 @@ describe('API Endpoints', () => {
 		})
 	})
 
+	describe('trailing slashes', () => {
+		it('should redirect to the route without the slash, keeping the query', async () => {
+			const res = await app.request('/api/agpeya/?lang=ar')
+			expect(res.status).toBe(301)
+			expect(new URL(res.headers.get('Location') ?? '').pathname).toBe('/api/agpeya')
+			expect(new URL(res.headers.get('Location') ?? '').search).toBe('?lang=ar')
+		})
+
+		it('should keep answering 404 for a path with no route', async () => {
+			const res = await app.request('/unknown-route')
+			expect(res.status).toBe(404)
+		})
+	})
+
 	// Baba 13 was missing from the Arabic Synaxarium, which failed the whole readings response.
 	describe('Arabic on Baba 13', () => {
 		it.each(['/api/readings/2026-10-23?lang=ar', '/api/readings/2027-10-24?lang=ar'])(
