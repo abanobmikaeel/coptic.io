@@ -634,7 +634,7 @@
 		},
 		"0": {
 			"slot": "LGospel",
-			"reference": "John 20:18",
+			"reference": "John 20:16",
 			"reading": "John 20:1-18"
 		},
 		"1": {
@@ -699,7 +699,7 @@
 		},
 		"13": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:14",
 			"reading": "John 6:1-14"
 		},
 		"14": {
@@ -906,7 +906,7 @@
 		},
 		"1:5": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:14",
 			"reading": "John 6:5-14"
 		},
 		"2:1": {
@@ -931,7 +931,7 @@
 		},
 		"2:5": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:12",
 			"reading": "John 6:5-14"
 		},
 		"3:1": {
@@ -956,7 +956,7 @@
 		},
 		"3:5": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:14",
 			"reading": "John 6:5-14"
 		},
 		"4:1": {
@@ -971,17 +971,17 @@
 		},
 		"4:3": {
 			"slot": "LGospel",
-			"reference": "Luke 1:46",
+			"reference": "Luke 1:49",
 			"reading": "Luke 1:39-56"
 		},
 		"4:4": {
 			"slot": "LGospel",
-			"reference": "Luke 1:68",
+			"reference": "Luke 1:58",
 			"reading": "Luke 1:57-80"
 		},
 		"4:5": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:12",
 			"reading": "John 6:5-14"
 		},
 		"5:1": {
@@ -1006,7 +1006,7 @@
 		},
 		"5:5": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:14",
 			"reading": "John 6:5-14"
 		},
 		"6:1": {
@@ -1016,7 +1016,7 @@
 		},
 		"6:2": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:12",
 			"reading": "John 6:5-14"
 		},
 		"6:3": {
@@ -1026,22 +1026,22 @@
 		},
 		"6:4": {
 			"slot": "LGospel",
-			"reference": "Luke 19:9",
+			"reference": "Luke 19:5",
 			"reading": "Luke 19:1-10"
 		},
 		"6:5": {
 			"slot": "LGospel",
-			"reference": "John 6:11",
+			"reference": "John 6:14",
 			"reading": "John 6:5-14"
 		},
 		"7:5": {
 			"slot": "LGospel",
-			"reference": "Luke 9:16",
+			"reference": "Luke 9:17",
 			"reading": "Luke 9:12-17"
 		},
 		"8:5": {
 			"slot": "LGospel",
-			"reference": "Luke 9:16",
+			"reference": "Luke 9:13",
 			"reading": "Luke 9:12-17"
 		},
 		"9:3": {
@@ -1056,7 +1056,7 @@
 		},
 		"9:5": {
 			"slot": "LGospel",
-			"reference": "Luke 9:16",
+			"reference": "Luke 9:17",
 			"reading": "Luke 9:12-17"
 		},
 		"10:1": {
@@ -1081,7 +1081,7 @@
 		},
 		"10:5": {
 			"slot": "LGospel",
-			"reference": "Luke 9:16",
+			"reference": "Luke 9:13",
 			"reading": "Luke 9:12-17"
 		},
 		"11:1": {
@@ -1106,7 +1106,7 @@
 		},
 		"11:5": {
 			"slot": "LGospel",
-			"reference": "Luke 9:16",
+			"reference": "Luke 9:17",
 			"reading": "Luke 9:12-17"
 		},
 		"12:1": {
@@ -1131,7 +1131,7 @@
 		},
 		"12:5": {
 			"slot": "LGospel",
-			"reference": "Luke 9:16",
+			"reference": "Luke 9:13",
 			"reading": "Luke 9:12-17"
 		},
 		"13:1": {
