@@ -117,6 +117,29 @@ describe('API Endpoints', () => {
 		})
 	})
 
+	// Baba 13 was missing from the Arabic Synaxarium, which failed the whole readings response.
+	describe('Arabic on Baba 13', () => {
+		it.each(['/api/readings/2026-10-23?lang=ar', '/api/readings/2027-10-24?lang=ar'])(
+			'should serve the Arabic Synaxarium at %s',
+			async (path) => {
+				const res = await app.request(path)
+				expect(res.status).toBe(200)
+
+				const json = await res.json()
+				expect(json.synaxariumLanguage).toBe('ar')
+				expect(json.Synaxarium[0].name).toMatch(/[\u0600-\u06FF]/)
+			},
+		)
+
+		it('should answer the Synaxarium route in Arabic', async () => {
+			const res = await app.request('/api/synaxarium/2026-10-23?lang=ar')
+			expect(res.status).toBe(200)
+
+			const json = await res.json()
+			expect(json[0].name).toMatch(/[\u0600-\u06FF]/)
+		})
+	})
+
 	describe('GET /api/synaxarium', () => {
 		it('should return synaxarium entries for specific date', async () => {
 			const res = await app.request('/api/synaxarium/2025-01-15')
