@@ -2572,11 +2572,6 @@ export interface components {
              * @enum {string}
              */
             category: "majorFeast" | "minorFeast" | "otherFeast" | "fast" | "commemoration";
-            /**
-             * @deprecated
-             * @description Kept for existing clients. Always 'single', and present on only five fixed celebrations.
-             */
-            periodType?: string;
             isMoveable?: boolean;
             month?: string;
             celebratedOnEve?: boolean;
