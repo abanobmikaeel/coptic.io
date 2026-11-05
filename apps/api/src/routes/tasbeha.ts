@@ -1,29 +1,16 @@
 import { SERVICE_LANGUAGES } from '@coptic/data/content'
-import type { TasbehaServiceId } from '@coptic/data/en/tasbeha'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { ErrorSchema, TasbehaResponseSchema } from '../schemas'
-import { getSundayTasbeha, getTasbehaById, getTasbehaForDate } from '../services/tasbeha.service'
+import {
+	TASBEHA_DAYS,
+	getSundayTasbeha,
+	getTasbehaForDate,
+	getTasbehaForDay,
+} from '../services/tasbeha.service'
 import { createApiApp, jsonResponse } from '../utils/openapi'
 
 const app = createApiApp()
-
-// Saturday's Praise is a Vespers Praise, so the day names do not map onto service
-// ids by a single suffix.
-const SERVICE_BY_DAY = {
-	sunday: 'sunday-midnight-praises',
-	monday: 'monday-midnight-praises',
-	tuesday: 'tuesday-midnight-praises',
-	wednesday: 'wednesday-midnight-praises',
-	thursday: 'thursday-midnight-praises',
-	friday: 'friday-midnight-praises',
-	saturday: 'saturday-vespers-praises',
-} as const satisfies Record<string, TasbehaServiceId>
-
-const DAY_NAMES = Object.keys(SERVICE_BY_DAY) as [
-	keyof typeof SERVICE_BY_DAY,
-	...Array<keyof typeof SERVICE_BY_DAY>,
-]
 
 const langQuery = z.enum(SERVICE_LANGUAGES).optional().openapi({ example: 'cop' })
 const dateQuery = z.string().optional().openapi({
@@ -87,7 +74,7 @@ const getByDayRoute = createRoute({
 		"Returns a specific day's annual Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.",
 	request: {
 		params: z.object({
-			day: z.enum(DAY_NAMES).openapi({
+			day: z.enum(TASBEHA_DAYS).openapi({
 				param: { name: 'day', in: 'path' },
 				example: 'wednesday',
 			}),
@@ -103,7 +90,7 @@ const getByDayRoute = createRoute({
 app.openapi(getByDayRoute, (c) => {
 	const { day } = c.req.valid('param')
 	const { lang = 'en' } = c.req.valid('query')
-	return c.json(getTasbehaById(SERVICE_BY_DAY[day], lang, c.var.date), 200)
+	return c.json(getTasbehaForDay(day, lang, c.var.date), 200)
 })
 
 export default app
