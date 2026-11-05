@@ -56,6 +56,11 @@ export const CelebrationSchema = z
 			description:
 				'majorFeast and minorFeast are the seven major and seven minor feasts of the Lord; otherFeast is any other feast (St. Mary, the saints, the Cross, Nayrouz); commemoration is the monthly observance of the 29th.',
 		}),
+		periodType: z.string().optional().meta({
+			deprecated: true,
+			description:
+				"Kept for existing clients. Always 'single', and present on only five fixed celebrations.",
+		}),
 		isMoveable: z.boolean().optional(),
 		month: z.string().optional(),
 		/** Celebrated from its eve (Nativity, Theophany, Resurrection) */
