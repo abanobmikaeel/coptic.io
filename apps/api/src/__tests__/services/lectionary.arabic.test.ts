@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { getByCopticDate, getReading } from '../../models/readings'
+import { getReading } from '../../services/bible/passages'
+import { getByCopticDate } from '../../services/lectionary.service'
 
 describe('Arabic Bible Translation', () => {
 	describe('getReading with Arabic translation', () => {

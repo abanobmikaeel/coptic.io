@@ -3,50 +3,16 @@ import { getLiturgyService as getArLiturgyService } from '@coptic/data/ar/liturg
 import { resolveBlocks } from '@coptic/data/content'
 import { getLiturgyService as getCopLiturgyService } from '@coptic/data/cop/liturgy'
 import {
-	type LiturgyContent,
 	type LiturgyEpistleSection,
-	type LiturgyLanguage,
 	type LiturgyPrayerSection,
 	type LiturgyRite,
-	type LiturgySectionRole,
 	getLiturgyService as getEnLiturgyService,
 } from '@coptic/data/en/liturgy'
-import { getByCopticDate } from '../models/readings'
-import type { BibleTranslation, BibleVerse, CopticDate } from '../types'
+import type { LiturgyResponse, LiturgySection } from '../schemas'
+import type { BibleTranslation } from '../types'
+import { getByCopticDate } from './lectionary.service'
 import { buildOccasion } from './occasion'
 import { flattenReadings } from './readings-format'
-
-export interface ResolvedLiturgyPrayerSection {
-	id: string
-	type: 'prayer' | 'litany' | 'creed'
-	role: LiturgySectionRole
-	title: string
-	titleLanguage?: LiturgyLanguage
-	rubric?: string
-	content: LiturgyContent[]
-}
-
-/** A section whose text comes from the day's Katameros rather than the rite. */
-export interface ResolvedLiturgyReadingSection {
-	id: string
-	type: 'psalm' | 'epistle' | 'gospel'
-	role: LiturgySectionRole
-	title: string
-	titleLanguage?: LiturgyLanguage
-	rubric?: string
-	reference: string
-	verses: BibleVerse[]
-}
-
-export type ResolvedLiturgySection = ResolvedLiturgyPrayerSection | ResolvedLiturgyReadingSection
-
-export interface ResolvedLiturgyService {
-	type: string
-	name: string
-	date: string
-	copticDate: CopticDate
-	sections: ResolvedLiturgySection[]
-}
 
 // Katameros key per epistle. "Praxis" is the Acts reading.
 const EPISTLE_READING = {
@@ -77,12 +43,12 @@ export function getLiturgyForDate(
 	date: Date,
 	rite: LiturgyRite = 'basil',
 	translation: BibleTranslation = 'en',
-): ResolvedLiturgyService {
+): LiturgyResponse {
 	const service = serviceFor(translation, rite)
 	const readings = getByCopticDate(date, true, translation)
 	const occasion = buildOccasion(date)
 
-	const sections: ResolvedLiturgySection[] = service.sections.map((section) => {
+	const sections: LiturgySection[] = service.sections.map((section) => {
 		const base = {
 			id: section.id,
 			role: section.role,

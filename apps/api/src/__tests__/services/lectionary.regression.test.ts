@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { getByCopticDate, getReading, parseReadingString } from '../../models/readings'
 import {
 	getMultiChapterRange,
+	getReading,
 	getSingleChapter,
 	getSingleVerse,
 	getVerseRange,
-} from '../../models/readings/verseTextTransformer'
+	parseReadingString,
+} from '../../services/bible/passages'
+import { getByCopticDate } from '../../services/lectionary.service'
 
 /**
  * Regression tests for readings functionality

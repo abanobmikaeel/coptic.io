@@ -10,8 +10,8 @@
  * - Psalms 147-150: Same (approximately)
  */
 
-import { getChapterByBookName } from '../models/readings/bibleDataMapper'
 import type { BibleTranslation, BibleVerse } from '../types'
+import { getChapterByBookName } from './bible/data'
 
 export interface PsalmReference {
 	psalmNumber: number // LXX numbering
@@ -204,29 +204,10 @@ export function resolveGospel(
 }
 
 /**
- * Get psalm definition for use in Agpeya data
- * This is the format stored in agpeya.json
- */
-export interface AgpeyaPsalmRef {
-	psalmNumber: number
-	title?: string
-	startVerse?: number
-	endVerse?: number
-}
-
-export interface AgpeyaGospelRef {
-	book: string
-	chapter: number
-	startVerse: number
-	endVerse: number
-	rubric?: string
-}
-
-/**
  * Resolve Agpeya psalm references to full psalm data
  */
 export function resolveAgpeyaPsalms(
-	refs: AgpeyaPsalmRef[],
+	refs: PsalmReference[],
 	translation: BibleTranslation = 'en',
 ): ResolvedPsalm[] {
 	return resolvePsalms(
@@ -244,7 +225,7 @@ export function resolveAgpeyaPsalms(
  * Resolve Agpeya gospel reference to full gospel data
  */
 export function resolveAgpeyaGospel(
-	ref: AgpeyaGospelRef,
+	ref: GospelReference,
 	translation: BibleTranslation = 'en',
 ): ResolvedGospel | null {
 	return resolveGospel(ref, translation)

@@ -1,5 +1,6 @@
 import { localizeReference } from '@coptic/data'
-import type { BibleTranslation, BibleVerse, Reading } from '../types'
+import type { Reading } from '../schemas'
+import type { BibleTranslation, BibleVerse } from '../types'
 
 /**
  * Collapse the Katameros readings for one slot into a single citation and a flat

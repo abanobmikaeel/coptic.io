@@ -5,7 +5,7 @@ import {
 	gregorianToCoptic,
 } from '@coptic/core'
 import { describe, expect, it } from 'vitest'
-import { getByCopticDate } from '../../../models/readings'
+import { getByCopticDate } from '../../../services/lectionary.service'
 import { getStaticCelebrationsForDay } from '../../../utils/calculations/getStaticCelebrations'
 
 /**

@@ -3,65 +3,22 @@ import { getIncenseService as getArIncenseService } from '@coptic/data/ar/incens
 import { resolveBlocks } from '@coptic/data/content'
 import { getIncenseService as getCopIncenseService } from '@coptic/data/cop/incense'
 import {
-	type IncenseContent,
 	type IncenseDailyPsalmSection,
 	type IncenseGospelSection,
 	type IncensePrayerSection,
 	type IncensePsalmSection,
 	type IncenseSectionData,
-	type IncenseSectionRole,
 	type IncenseServiceType,
 	getIncenseService as getEnIncenseService,
 } from '@coptic/data/en/incense'
-import { getByCopticDate } from '../models/readings'
-import type { BibleTranslation, BibleVerse, CopticDate } from '../types'
+import type { IncenseResponse, IncenseSection } from '../schemas'
+import type { BibleTranslation } from '../types'
+import { getByCopticDate } from './lectionary.service'
 import { buildOccasion } from './occasion'
 import { resolvePsalm } from './psalm-resolver'
 import { flattenReadings } from './readings-format'
 
-export interface ResolvedPrayerSection {
-	id: string
-	type: 'prayer' | 'litany' | 'creed'
-	role: IncenseSectionRole
-	title: string
-	rubric?: string
-	// Not prayed by default — offered as an extra the reader can add to the service
-	// (Matins litanies at Vespers, out-of-season nature litanies, …).
-	optional?: boolean
-	content: IncenseContent[]
-}
-
-export interface ResolvedPsalmSection {
-	id: string
-	type: 'psalm'
-	role: IncenseSectionRole
-	title: string
-	rubric?: string
-	reference: string
-	verses: BibleVerse[]
-}
-
-export interface ResolvedGospelSection {
-	id: string
-	type: 'gospel'
-	role: IncenseSectionRole
-	title: string
-	reference: string
-	verses: BibleVerse[]
-}
-
-export type ResolvedIncenseSection =
-	| ResolvedPrayerSection
-	| ResolvedPsalmSection
-	| ResolvedGospelSection
-
-export interface ResolvedIncenseService {
-	type: string
-	name: string
-	date: string
-	copticDate: CopticDate
-	sections: ResolvedIncenseSection[]
-}
+type PrayerSection = Extract<IncenseSection, { content: unknown }>
 
 // Rubric for an out-of-season nature litany offered as an optional extra, in the
 // response's content language. Coptic falls back to English: rubrics are staging
@@ -78,7 +35,7 @@ export function getIncenseForDate(
 	// Commemorations the user selected (e.g. their church's patron saint). Composed on top
 	// of the calendar's commemorations for the day.
 	selectedCommemorations: string[] = [],
-): ResolvedIncenseService {
+): IncenseResponse {
 	const service =
 		translation === 'ar'
 			? getArIncenseService(serviceType)
@@ -95,8 +52,8 @@ export function getIncenseForDate(
 
 	const occasion = buildOccasion(date, selectedCommemorations)
 
-	const sections: ResolvedIncenseSection[] = service.sections.flatMap(
-		(section: IncenseSectionData): ResolvedIncenseSection[] => {
+	const sections: IncenseSection[] = service.sections.flatMap(
+		(section: IncenseSectionData): IncenseSection[] => {
 			if (section.type === 'psalm') {
 				const s = section as IncensePsalmSection
 				const resolved = resolvePsalm(s.psalmRef, translation)
@@ -142,7 +99,7 @@ export function getIncenseForDate(
 			}
 
 			const s = section as IncensePrayerSection
-			const resolved: ResolvedPrayerSection = {
+			const resolved: PrayerSection = {
 				id: s.id,
 				type: s.type,
 				role: s.role,
@@ -160,7 +117,7 @@ export function getIncenseForDate(
 			const outOfSeason = (s.blocks ?? [])
 				.filter((b) => b.when?.season && b.when.season !== occasion.season)
 				.map(
-					(b): ResolvedPrayerSection => ({
+					(b): PrayerSection => ({
 						id: `${s.id}-${b.when?.season}`,
 						type: s.type,
 						role: s.role,

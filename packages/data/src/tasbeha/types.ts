@@ -1,4 +1,6 @@
-export type TasbehaLanguage = 'en' | 'ar' | 'cop'
+import type { ServiceLanguage } from '../content/types'
+
+export type TasbehaLanguage = ServiceLanguage
 export type TasbehaCycle = 'annual' | 'kiahk' | 'great-lent' | 'holy-fifty' | 'feast'
 export type TasbehaDayTune = 'adam' | 'watos'
 

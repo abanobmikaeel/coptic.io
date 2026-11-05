@@ -7,7 +7,8 @@ import type {
 	AgpeyaResolvedGroup,
 	AgpeyaSection,
 } from '@coptic/data/en/agpeya'
-import type { BibleTranslation, BibleVerse } from '../types'
+import type { AgpeyaSection as ServedSection } from '../schemas'
+import type { BibleTranslation } from '../types'
 import { resolveAgpeyaGospel, resolveAgpeyaPsalms } from './psalm-resolver'
 
 // Which psalm text to serve. 'septuagint' (default) prefers the psalms embedded
@@ -20,35 +21,12 @@ import { resolveAgpeyaGospel, resolveAgpeyaPsalms } from './psalm-resolver'
 // the wording of their own Bible.
 export type PsalmSource = 'septuagint' | 'bible'
 
-export type ServedProseSection = Pick<
-	AgpeyaProseSection,
-	'id' | 'kind' | 'title' | 'rubric' | 'inline' | 'content'
->
-
-export interface ServedScriptureSection {
-	id: string
-	kind: 'psalm' | 'intro-psalm' | 'gospel'
-	title?: string
-	reference: string
-	rubric?: string
-	verses: BibleVerse[]
-}
-
-export type ServedLeafSection = ServedProseSection | ServedScriptureSection
-
-/** A Midnight watch: a named run of sections. */
-export interface ServedWatch {
-	id: string
-	kind: 'watch'
-	title: string
-	theme?: string
-	prayer?: string
-	psalmsIntro?: string
-	psalmsRubric?: string
-	sections: ServedLeafSection[]
-}
-
-export type ServedSection = ServedLeafSection | ServedWatch
+// The served shapes come from the route's schema; these name its parts for the builders below.
+export type { ServedSection }
+type ServedWatch = Extract<ServedSection, { kind: 'watch' }>
+type ServedLeafSection = Exclude<ServedSection, ServedWatch>
+type ServedScriptureSection = Extract<ServedLeafSection, { verses: unknown }>
+type ServedProseSection = Exclude<ServedLeafSection, ServedScriptureSection>
 
 const optional = <K extends string, V>(key: K, value: V | undefined) =>
 	(value === undefined || value === '' ? {} : { [key]: value }) as Partial<Record<K, V>>

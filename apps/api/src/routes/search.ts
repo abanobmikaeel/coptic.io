@@ -1,50 +1,9 @@
 import { createRoute, z } from '@hono/zod-openapi'
-import { ErrorSchema } from '../schemas'
+import { ErrorSchema, SearchResponseSchema } from '../schemas'
 import { searchService } from '../services/search'
 import { createApiApp, jsonResponse } from '../utils/openapi'
 
 const app = createApiApp()
-
-// Schema for individual result types
-const BibleSearchResultSchema = z.object({
-	type: z.enum(['verse', 'reference']),
-	book: z.string(),
-	chapter: z.number(),
-	verse: z.number().optional(),
-	text: z.string(),
-	url: z.string(),
-	score: z.number().optional(),
-})
-
-const SynaxariumSearchResultSchema = z.object({
-	type: z.enum(['saint', 'feast']),
-	name: z.string(),
-	date: z.string(),
-	copticDate: z.string(),
-	summary: z.string().optional(),
-	url: z.string(),
-	score: z.number().optional(),
-})
-
-const AgpeyaSearchResultSchema = z.object({
-	type: z.enum(['hour', 'prayer']),
-	id: z.string(),
-	name: z.string(),
-	englishName: z.string(),
-	traditionalTime: z.string().optional(),
-	url: z.string(),
-	score: z.number().optional(),
-})
-
-const SearchResponseSchema = z.object({
-	results: z.object({
-		bible: z.array(BibleSearchResultSchema),
-		synaxarium: z.array(SynaxariumSearchResultSchema),
-		agpeya: z.array(AgpeyaSearchResultSchema),
-	}),
-	query: z.string(),
-	totalCount: z.number(),
-})
 
 // GET /api/search
 const searchRoute = createRoute({

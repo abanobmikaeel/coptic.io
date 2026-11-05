@@ -5,14 +5,8 @@
 declare const IS_WORKERS: boolean | undefined
 
 import type { R2Bucket } from '../../env'
-import type {
-	BibleBook,
-	BibleChapter,
-	BibleTranslation,
-	BibleType,
-	BibleVerse,
-	Reading,
-} from '../../types'
+import type { Reading } from '../../schemas'
+import type { BibleBook, BibleChapter, BibleTranslation, BibleType, BibleVerse } from '../../types'
 
 type TranslationCache = { index: TranslationIndex; raw: BibleType }
 

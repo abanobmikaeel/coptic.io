@@ -55,6 +55,20 @@ describe('date inputs', () => {
 	)
 })
 
+describe('month inputs', () => {
+	it.each(['0', '13', 'abc', '4.5'])('/api/calendar/month/2026/%s is rejected', async (month) => {
+		const res = await app.request(`/api/calendar/month/2026/${month}`)
+		expect(res.status).toBe(400)
+		expect(await res.json()).toEqual({ error: 'Invalid month. Must be between 1 and 12' })
+	})
+
+	it('answers a valid month', async () => {
+		const res = await app.request('/api/calendar/month/2026/4')
+		expect(res.status).toBe(200)
+		expect((await res.json()).month).toBe(4)
+	})
+})
+
 describe('year inputs', () => {
 	it.each(YEAR_ROUTES)('%s rejects an unsupported year', async (route) => {
 		const res = await app.request(route.replace('{year}', '1500'))

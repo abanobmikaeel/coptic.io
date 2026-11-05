@@ -15,13 +15,12 @@ import {
 	SeasonResponseSchema,
 	SeasonYearSchema,
 } from '../schemas'
-import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
 import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
-import { parseYear } from '../utils/request'
+import { yearParam } from '../utils/request'
 
 const app = createApiApp()
 
-const yearParams = z.object({ year: z.string().openapi({ example: '2026' }) })
+const yearParams = z.object({ year: yearParam })
 
 // GET /api/season/:date
 const getForDateRoute = createRoute({
@@ -101,8 +100,7 @@ const getYearRoute = createRoute({
 })
 
 app.openapi(getYearRoute, (c) => {
-	const year = parseYear(c.req.valid('param').year)
-	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
+	const { year } = c.req.valid('param')
 
 	const seasons = getAllSeasonsForYear(year)
 
@@ -137,8 +135,7 @@ const getFastingPeriodsRoute = createRoute({
 })
 
 app.openapi(getFastingPeriodsRoute, (c) => {
-	const year = parseYear(c.req.valid('param').year)
-	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
+	const { year } = c.req.valid('param')
 
 	const fastingPeriods = getFastingPeriodsForYear(year)
 

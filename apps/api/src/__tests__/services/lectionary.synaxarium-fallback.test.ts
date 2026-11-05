@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { getByCopticDate } from '../../models/readings'
+import { getByCopticDate } from '../../services/lectionary.service'
 import { getSynaxariumForDate } from '../../services/synaxarium.service'
 
 vi.mock('../../services/synaxarium.service', () => ({

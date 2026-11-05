@@ -536,7 +536,7 @@ export interface paths {
                 path: {
                     year: string;
                     /** @description Gregorian month, 1–12 */
-                    month: string;
+                    month: number;
                 };
                 cookie?: never;
             };
@@ -1869,9 +1869,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1923,9 +1921,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -1979,9 +1975,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            error: string;
-                        };
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
             };
@@ -2311,6 +2305,8 @@ export interface components {
             hourIntro?: components["schemas"]["AgpeyaPrayerSection"];
             comeLetUsWorship?: components["schemas"]["AgpeyaPrayerSection"];
             thanksgiving?: components["schemas"]["AgpeyaPrayerSection"];
+            introductoryPsalm?: components["schemas"]["AgpeyaPsalm"];
+            psalmsIntro?: string;
             psalms: components["schemas"]["AgpeyaPsalm"][];
             gospel: components["schemas"]["AgpeyaGospel"];
             gospelConclusion?: components["schemas"]["AgpeyaPrayerSection"];
@@ -2335,16 +2331,16 @@ export interface components {
             title: string;
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
-        AgpeyaVerse: {
+        Verse: {
             num: number;
             text: string;
         };
         AgpeyaGospel: {
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         AgpeyaLitany: {
             title?: string;
@@ -2353,7 +2349,7 @@ export interface components {
         /** @description The whole hour in prayed order. */
         AgpeyaSections: ({
             title?: string;
-            content: components["schemas"]["AgpeyaLine"][];
+            content: components["schemas"]["Content"];
             inline?: boolean;
             id: string;
             /** @enum {string} */
@@ -2370,10 +2366,11 @@ export interface components {
             psalmsRubric?: string;
             sections: components["schemas"]["AgpeyaLeafEntry"][];
         })[];
-        AgpeyaLine: string | {
-            text: string;
+        Content: (string | components["schemas"]["ContentLine"])[];
+        ContentLine: {
             /** @enum {string} */
             speaker?: "Priest" | "Deacon" | "People";
+            text: string;
             isRubric?: boolean;
             isResponse?: boolean;
             coptic?: string;
@@ -2381,7 +2378,7 @@ export interface components {
         AgpeyaScriptureEntry: {
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
             id: string;
             /** @enum {string} */
             kind: "psalm" | "intro-psalm" | "gospel";
@@ -2389,7 +2386,7 @@ export interface components {
         };
         AgpeyaLeafEntry: {
             title?: string;
-            content: components["schemas"]["AgpeyaLine"][];
+            content: components["schemas"]["Content"];
             inline?: boolean;
             id: string;
             /** @enum {string} */
@@ -2404,6 +2401,8 @@ export interface components {
             traditionalTime: string;
             introduction?: string;
             opening: components["schemas"]["AgpeyaPrayerSection"];
+            thanksgiving?: components["schemas"]["AgpeyaPrayerSection"];
+            introductoryPsalm?: components["schemas"]["AgpeyaPsalm"];
             watches: components["schemas"]["AgpeyaWatch"][];
             closing?: components["schemas"]["AgpeyaPrayerSection"];
             conclusion?: components["schemas"]["AgpeyaMidnightTail"][];
@@ -2414,6 +2413,7 @@ export interface components {
             name: string;
             theme: string;
             opening?: components["schemas"]["AgpeyaPrayerSection"];
+            psalmsIntro?: string;
             psalms: components["schemas"]["AgpeyaPsalm"][];
             gospel?: components["schemas"]["AgpeyaGospel"];
             gospelConclusion?: components["schemas"]["AgpeyaPrayerSection"];
@@ -2424,7 +2424,7 @@ export interface components {
         AgpeyaMidnightTail: components["schemas"]["AgpeyaProseEntry"] | {
             reference: string;
             rubric?: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
             id: string;
             /** @enum {string} */
             kind: "gospel";
@@ -2470,43 +2470,34 @@ export interface components {
         IncensePsalmSection: {
             id: string;
             /** @enum {string} */
-            type: "psalm";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "psalm";
             rubric?: string;
             reference: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         IncenseGospelSection: {
             id: string;
             /** @enum {string} */
-            type: "gospel";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "gospel";
             reference: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         IncensePrayerSection: {
             id: string;
             /** @enum {string} */
-            type: "prayer" | "litany" | "creed";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "prayer" | "litany" | "creed";
             rubric?: string;
             optional?: boolean;
             content: components["schemas"]["Content"];
-        };
-        Content: (string | components["schemas"]["ContentLine"])[];
-        ContentLine: {
-            /** @enum {string} */
-            speaker?: "Priest" | "Deacon" | "People";
-            text: string;
-            isRubric?: boolean;
-            isResponse?: boolean;
-            coptic?: string;
         };
         ReadingsResponse: {
             /** @description Verse references per slot, when `detailed` is not set */
@@ -2557,10 +2548,7 @@ export interface components {
             bookName: string;
             chapters: {
                 chapterNum: number;
-                verses: {
-                    num: number;
-                    text: string;
-                }[];
+                verses: components["schemas"]["Verse"][];
             }[];
         };
         SynaxariumEntry: {
@@ -2771,23 +2759,23 @@ export interface components {
         LiturgyReadingSection: {
             id: string;
             /** @enum {string} */
-            type: "psalm" | "epistle" | "gospel";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "psalm" | "epistle" | "gospel";
             /** @enum {string} */
             titleLanguage?: "en" | "ar" | "cop";
             rubric?: string;
             reference: string;
-            verses: components["schemas"]["AgpeyaVerse"][];
+            verses: components["schemas"]["Verse"][];
         };
         LiturgyPrayerSection: {
             id: string;
             /** @enum {string} */
-            type: "prayer" | "litany" | "creed";
-            /** @enum {string} */
             role: "all" | "priest" | "deacon" | "congregation";
             title: string;
+            /** @enum {string} */
+            type: "prayer" | "litany" | "creed";
             /** @enum {string} */
             titleLanguage?: "en" | "ar" | "cop";
             rubric?: string;
@@ -2800,15 +2788,30 @@ export interface components {
                 verse: number;
                 text: string;
             };
-            /** @example John 16:33 */
+            /**
+             * @description The featured verse as a citation
+             * @example John 16:33
+             */
             reference: string;
-            /** @example LGospel */
+            /**
+             * @description The reading slot the verse came from
+             * @example LGospel
+             */
             readingSlot: string;
-            /** @example John 16:20-33 */
+            /**
+             * @description The full reading the verse was chosen from
+             * @example John 16:20-33
+             */
             readingReference: string;
-            /** @enum {string} */
+            /**
+             * @description The language the verse text is actually in
+             * @enum {string}
+             */
             language: "en" | "ar" | "es" | "cop";
-            /** @enum {string} */
+            /**
+             * @description Present when the requested translation had no text and English was used
+             * @enum {string}
+             */
             requestedLanguage?: "en" | "ar" | "es" | "cop";
             fallback?: boolean;
             season?: string;

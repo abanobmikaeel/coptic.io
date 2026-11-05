@@ -1,20 +1,12 @@
+import { SERVICE_LANGUAGES } from '@coptic/data/content'
 import type { TasbehaServiceId } from '@coptic/data/en/tasbeha'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
+import { ErrorSchema, TasbehaResponseSchema } from '../schemas'
 import { getSundayTasbeha, getTasbehaById, getTasbehaForDate } from '../services/tasbeha.service'
 import { createApiApp, jsonResponse } from '../utils/openapi'
 
 const app = createApiApp()
-
-const SERVICE_IDS = [
-	'sunday-midnight-praises',
-	'monday-midnight-praises',
-	'tuesday-midnight-praises',
-	'wednesday-midnight-praises',
-	'thursday-midnight-praises',
-	'friday-midnight-praises',
-	'saturday-vespers-praises',
-] as const satisfies readonly TasbehaServiceId[]
 
 // Saturday's Praise is a Vespers Praise, so the day names do not map onto service
 // ids by a single suffix.
@@ -33,61 +25,14 @@ const DAY_NAMES = Object.keys(SERVICE_BY_DAY) as [
 	...Array<keyof typeof SERVICE_BY_DAY>,
 ]
 
-const langQuery = z.enum(['en', 'ar', 'cop']).optional().openapi({ example: 'cop' })
+const langQuery = z.enum(SERVICE_LANGUAGES).optional().openapi({ example: 'cop' })
 const dateQuery = z.string().optional().openapi({
 	example: '2026-07-27',
 	description: 'Liturgical date in YYYY-MM-DD format. Defaults to today.',
 })
 const errorResponse = {
-	400: jsonResponse(z.object({ error: z.string() }), 'Invalid date'),
+	400: jsonResponse(ErrorSchema, 'Invalid date'),
 }
-
-const SourceSchema = z.object({
-	name: z.literal('Tasbeha.org'),
-	url: z.string().url(),
-	pageId: z.number().int(),
-	accessedAt: z.string(),
-	corroboratingUrls: z.array(z.string().url()).optional(),
-})
-
-const TasbehaResponseSchema = z
-	.object({
-		type: z.literal('tasbeha'),
-		id: z.enum(SERVICE_IDS),
-		name: z.string(),
-		description: z.string(),
-		status: z.literal('complete'),
-		rite: z.object({
-			cycle: z.enum(['annual', 'kiahk', 'great-lent', 'holy-fifty', 'feast']),
-			dayTune: z.enum(['adam', 'watos']),
-			weekdays: z.array(z.number().int().min(0).max(6)),
-		}),
-		sections: z.array(
-			z.object({
-				id: z.string(),
-				type: z.literal('prayer'),
-				role: z.literal('all'),
-				kind: z.enum([
-					'opening',
-					'canticle',
-					'lobsh',
-					'psali',
-					'commemoration',
-					'doxology',
-					'theotokia',
-					'gospel',
-					'difnar',
-					'litany',
-					'conclusion',
-				]),
-				title: z.string(),
-				titleLanguage: z.enum(['en', 'ar', 'cop']).optional(),
-				content: z.array(z.string()),
-				source: SourceSchema,
-			}),
-		),
-	})
-	.openapi('TasbehaService')
 
 // Resolves the service for the date's day of the week: the six Midnight Praises
 // Sunday–Friday, and the Saturday Vespers Praise.

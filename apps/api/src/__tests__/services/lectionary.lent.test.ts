@@ -1,6 +1,7 @@
 import { getEasterDate } from '@coptic/core'
 import { describe, expect, it } from 'vitest'
-import { getByCopticDate, parseReadingString } from '../../models/readings'
+import { parseReadingString } from '../../services/bible/passages'
+import { getByCopticDate } from '../../services/lectionary.service'
 
 /**
  * Accuracy tests for Lenten Katameros and Jonah's Fast readings.

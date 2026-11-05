@@ -2,11 +2,12 @@ import { getAgpeyaHour as getArOrderedHour } from '@coptic/data/ar/agpeya'
 import { getAgpeyaHour as getEnOrderedHour } from '@coptic/data/en/agpeya'
 import { describe, expect, it } from 'vitest'
 import { AgpeyaHourSchema, AgpeyaMidnightHourSchema } from '../../schemas'
+import type { AgpeyaMidnightHour } from '../../schemas'
 import type { ServedSection } from '../../services/agpeya-sections'
-import { type ResolvedMidnightHour, getAgpeyaHour, getHourIds } from '../../services/agpeya.service'
+import { getAgpeyaHour, getHourIds } from '../../services/agpeya.service'
 
 const midnight = (translation: 'en' | 'ar') =>
-	getAgpeyaHour('midnight', translation) as ResolvedMidnightHour
+	getAgpeyaHour('midnight', translation) as AgpeyaMidnightHour
 
 describe('Agpeya midnight ending', () => {
 	it.each(['en', 'ar'] as const)('resolves the ending gospel text in %s', (lang) => {

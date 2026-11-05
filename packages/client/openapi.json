@@ -53,6 +53,12 @@
 					"thanksgiving": {
 						"$ref": "#/components/schemas/AgpeyaPrayerSection"
 					},
+					"introductoryPsalm": {
+						"$ref": "#/components/schemas/AgpeyaPsalm"
+					},
+					"psalmsIntro": {
+						"type": "string"
+					},
 					"psalms": {
 						"type": "array",
 						"items": {
@@ -154,7 +160,7 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
@@ -164,7 +170,7 @@
 					"verses"
 				]
 			},
-			"AgpeyaVerse": {
+			"Verse": {
 				"type": "object",
 				"properties": {
 					"num": {
@@ -191,7 +197,7 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
@@ -228,10 +234,7 @@
 									"type": "string"
 								},
 								"content": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AgpeyaLine"
-									}
+									"$ref": "#/components/schemas/Content"
 								},
 								"inline": {
 									"type": "boolean"
@@ -312,39 +315,45 @@
 				},
 				"description": "The whole hour in prayed order."
 			},
-			"AgpeyaLine": {
-				"anyOf": [
-					{
+			"Content": {
+				"type": "array",
+				"items": {
+					"anyOf": [
+						{
+							"type": "string"
+						},
+						{
+							"$ref": "#/components/schemas/ContentLine"
+						}
+					]
+				}
+			},
+			"ContentLine": {
+				"type": "object",
+				"properties": {
+					"speaker": {
+						"type": "string",
+						"enum": [
+							"Priest",
+							"Deacon",
+							"People"
+						]
+					},
+					"text": {
 						"type": "string"
 					},
-					{
-						"type": "object",
-						"properties": {
-							"text": {
-								"type": "string"
-							},
-							"speaker": {
-								"type": "string",
-								"enum": [
-									"Priest",
-									"Deacon",
-									"People"
-								]
-							},
-							"isRubric": {
-								"type": "boolean"
-							},
-							"isResponse": {
-								"type": "boolean"
-							},
-							"coptic": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"text"
-						]
+					"isRubric": {
+						"type": "boolean"
+					},
+					"isResponse": {
+						"type": "boolean"
+					},
+					"coptic": {
+						"type": "string"
 					}
+				},
+				"required": [
+					"text"
 				]
 			},
 			"AgpeyaScriptureEntry": {
@@ -359,7 +368,7 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					},
 					"id": {
@@ -393,10 +402,7 @@
 								"type": "string"
 							},
 							"content": {
-								"type": "array",
-								"items": {
-									"$ref": "#/components/schemas/AgpeyaLine"
-								}
+								"$ref": "#/components/schemas/Content"
 							},
 							"inline": {
 								"type": "boolean"
@@ -458,6 +464,12 @@
 					"opening": {
 						"$ref": "#/components/schemas/AgpeyaPrayerSection"
 					},
+					"thanksgiving": {
+						"$ref": "#/components/schemas/AgpeyaPrayerSection"
+					},
+					"introductoryPsalm": {
+						"$ref": "#/components/schemas/AgpeyaPsalm"
+					},
 					"watches": {
 						"type": "array",
 						"items": {
@@ -500,6 +512,9 @@
 					},
 					"opening": {
 						"$ref": "#/components/schemas/AgpeyaPrayerSection"
+					},
+					"psalmsIntro": {
+						"type": "string"
 					},
 					"psalms": {
 						"type": "array",
@@ -550,7 +565,7 @@
 							"verses": {
 								"type": "array",
 								"items": {
-									"$ref": "#/components/schemas/AgpeyaVerse"
+									"$ref": "#/components/schemas/Verse"
 								}
 							},
 							"id": {
@@ -730,12 +745,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"psalm"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -747,6 +756,12 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"psalm"
+						]
 					},
 					"rubric": {
 						"type": "string"
@@ -757,15 +772,15 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"reference",
 					"verses"
 				]
@@ -776,12 +791,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"gospel"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -794,21 +803,27 @@
 					"title": {
 						"type": "string"
 					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"gospel"
+						]
+					},
 					"reference": {
 						"type": "string"
 					},
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"reference",
 					"verses"
 				]
@@ -819,14 +834,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"prayer",
-							"litany",
-							"creed"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -838,6 +845,14 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"prayer",
+							"litany",
+							"creed"
+						]
 					},
 					"rubric": {
 						"type": "string"
@@ -851,51 +866,10 @@
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"content"
-				]
-			},
-			"Content": {
-				"type": "array",
-				"items": {
-					"anyOf": [
-						{
-							"type": "string"
-						},
-						{
-							"$ref": "#/components/schemas/ContentLine"
-						}
-					]
-				}
-			},
-			"ContentLine": {
-				"type": "object",
-				"properties": {
-					"speaker": {
-						"type": "string",
-						"enum": [
-							"Priest",
-							"Deacon",
-							"People"
-						]
-					},
-					"text": {
-						"type": "string"
-					},
-					"isRubric": {
-						"type": "boolean"
-					},
-					"isResponse": {
-						"type": "boolean"
-					},
-					"coptic": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"text"
 				]
 			},
 			"ReadingsResponse": {
@@ -1101,19 +1075,7 @@
 								"verses": {
 									"type": "array",
 									"items": {
-										"type": "object",
-										"properties": {
-											"num": {
-												"type": "number"
-											},
-											"text": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"num",
-											"text"
-										]
+										"$ref": "#/components/schemas/Verse"
 									}
 								}
 							},
@@ -1960,14 +1922,6 @@
 					"id": {
 						"type": "string"
 					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"psalm",
-							"epistle",
-							"gospel"
-						]
-					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -1979,6 +1933,14 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"psalm",
+							"epistle",
+							"gospel"
+						]
 					},
 					"titleLanguage": {
 						"type": "string",
@@ -1997,15 +1959,15 @@
 					"verses": {
 						"type": "array",
 						"items": {
-							"$ref": "#/components/schemas/AgpeyaVerse"
+							"$ref": "#/components/schemas/Verse"
 						}
 					}
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"reference",
 					"verses"
 				]
@@ -2015,14 +1977,6 @@
 				"properties": {
 					"id": {
 						"type": "string"
-					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"prayer",
-							"litany",
-							"creed"
-						]
 					},
 					"role": {
 						"type": "string",
@@ -2035,6 +1989,14 @@
 					},
 					"title": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"prayer",
+							"litany",
+							"creed"
+						]
 					},
 					"titleLanguage": {
 						"type": "string",
@@ -2053,9 +2015,9 @@
 				},
 				"required": [
 					"id",
-					"type",
 					"role",
 					"title",
+					"type",
 					"content"
 				]
 			},
@@ -2087,14 +2049,17 @@
 					},
 					"reference": {
 						"type": "string",
+						"description": "The featured verse as a citation",
 						"example": "John 16:33"
 					},
 					"readingSlot": {
 						"type": "string",
+						"description": "The reading slot the verse came from",
 						"example": "LGospel"
 					},
 					"readingReference": {
 						"type": "string",
+						"description": "The full reading the verse was chosen from",
 						"example": "John 16:20-33"
 					},
 					"language": {
@@ -2104,7 +2069,8 @@
 							"ar",
 							"es",
 							"cop"
-						]
+						],
+						"description": "The language the verse text is actually in"
 					},
 					"requestedLanguage": {
 						"type": "string",
@@ -2113,7 +2079,8 @@
 							"ar",
 							"es",
 							"cop"
-						]
+						],
+						"description": "Present when the requested translation had no text and English was used"
 					},
 					"fallback": {
 						"type": "boolean"
@@ -2808,8 +2775,10 @@
 					},
 					{
 						"schema": {
-							"type": "string",
-							"example": "4",
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 12,
+							"example": 4,
 							"description": "Gregorian month, 1–12"
 						},
 						"required": true,
@@ -3272,7 +3241,7 @@
 					{
 						"schema": {
 							"type": "string",
-							"example": "2025"
+							"example": "2026"
 						},
 						"required": true,
 						"name": "year",
@@ -4216,15 +4185,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"error"
-									]
+									"$ref": "#/components/schemas/Error"
 								}
 							}
 						}
@@ -4282,15 +4243,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"error"
-									]
+									"$ref": "#/components/schemas/Error"
 								}
 							}
 						}
@@ -4366,15 +4319,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"properties": {
-										"error": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"error"
-									]
+									"$ref": "#/components/schemas/Error"
 								}
 							}
 						}

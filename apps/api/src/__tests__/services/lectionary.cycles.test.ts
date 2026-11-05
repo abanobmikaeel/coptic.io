@@ -1,8 +1,9 @@
 import { getReadingCycle } from '@coptic/core'
 import { describe, expect, it } from 'vitest'
-import { getByCopticDate, parseReadingString } from '../../models/readings'
 import holyFiftyReadings from '../../resources/holyFiftyReadings.json'
 import sundayReadings from '../../resources/sundayReadings.json'
+import { parseReadingString } from '../../services/bible/passages'
+import { getByCopticDate } from '../../services/lectionary.service'
 
 type Entry = Record<string, string>
 const sundays = sundayReadings as Record<string, Entry>

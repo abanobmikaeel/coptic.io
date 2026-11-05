@@ -2,11 +2,11 @@ import { addDays, getDaysFromEaster, getEasterDate, toDateKey } from '@coptic/co
 import { loadLentDevotional } from '@coptic/data/en/lent'
 import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
-import { parseReadingString, warmTranslation } from '../models/readings'
 import { ErrorSchema, LentDaySchema, LentScheduleSchema } from '../schemas'
-import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
+import { warmTranslation } from '../services/bible/data'
+import { parseReadingString } from '../services/bible/passages'
 import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
-import { WALL_CLOCK_CACHE_CONTROL, parseTranslation, parseYear } from '../utils/request'
+import { WALL_CLOCK_CACHE_CONTROL, parseTranslation, yearParam } from '../utils/request'
 
 const app = createApiApp()
 
@@ -19,7 +19,7 @@ const getScheduleRoute = createRoute({
 	description:
 		"Returns every day of a year's Great Lent devotional with its Gregorian date. Defaults to the current year.",
 	request: {
-		params: z.object({ year: z.string().openapi({ example: '2026' }) }),
+		params: z.object({ year: yearParam }),
 	},
 	responses: {
 		200: jsonResponse(LentScheduleSchema, 'The devotional schedule'),
@@ -29,10 +29,10 @@ const getScheduleRoute = createRoute({
 
 for (const route of withOptionalLastParam(getScheduleRoute)) {
 	app.openapi(route, async (c) => {
-		const yearParam = c.req.param('year')
-		if (!yearParam) c.header('Cache-Control', WALL_CLOCK_CACHE_CONTROL)
-		const year = yearParam ? parseYear(yearParam) : new Date().getFullYear()
-		if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
+		const requested = c.req.param('year')
+		if (!requested) c.header('Cache-Control', WALL_CLOCK_CACHE_CONTROL)
+		// The year was validated when present; the bare route reads the current year
+		const year = requested ? Number.parseInt(requested, 10) : new Date().getFullYear()
 
 		const easter = getEasterDate(year)
 		const devotional = await loadLentDevotional()

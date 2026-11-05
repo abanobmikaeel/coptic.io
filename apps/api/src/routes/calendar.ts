@@ -3,11 +3,12 @@ import { createRoute, z } from '@hono/zod-openapi'
 import { requestDate } from '../middleware/request'
 import { CalendarMonthSchema, CopticDateSchema, ErrorSchema, IcalInfoSchema } from '../schemas'
 import * as calendarService from '../services/calendar.service'
-import { INVALID_YEAR_MESSAGE } from '../utils/dateUtils'
 import { createApiApp, jsonResponse, withOptionalLastParam } from '../utils/openapi'
-import { parseYear } from '../utils/request'
+import { yearParam } from '../utils/request'
 
 const app = createApiApp()
+
+const MONTH_MESSAGE = 'Invalid month. Must be between 1 and 12'
 
 const icalResponse = (description: string) => ({
 	description,
@@ -25,8 +26,13 @@ const getMonthRoute = createRoute({
 		'Returns every day of a Gregorian month with its Coptic date and fasting, and the Coptic months it spans.',
 	request: {
 		params: z.object({
-			year: z.string().openapi({ example: '2026' }),
-			month: z.string().openapi({ example: '4', description: 'Gregorian month, 1–12' }),
+			year: yearParam,
+			month: z.coerce
+				.number({ error: MONTH_MESSAGE })
+				.int({ error: MONTH_MESSAGE })
+				.min(1, { error: MONTH_MESSAGE })
+				.max(12, { error: MONTH_MESSAGE })
+				.openapi({ example: 4, description: 'Gregorian month, 1–12' }),
 		}),
 	},
 	responses: {
@@ -36,15 +42,7 @@ const getMonthRoute = createRoute({
 })
 
 app.openapi(getMonthRoute, (c) => {
-	const params = c.req.valid('param')
-	const year = parseYear(params.year)
-	const month = Number.parseInt(params.month)
-
-	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
-	if (Number.isNaN(month) || month < 1 || month > 12) {
-		return c.json({ error: 'Invalid month. Must be between 1 and 12' }, 400)
-	}
-
+	const { year, month } = c.req.valid('param')
 	return c.json(calendarService.getCalendarMonth(year, month), 200)
 })
 
@@ -112,7 +110,7 @@ const getIcalYearRoute = createRoute({
 	summary: 'Get the calendar feed for a year',
 	description: 'Returns the iCal feed of feasts and fasts in a Gregorian year.',
 	request: {
-		params: z.object({ year: z.string().openapi({ example: '2026' }) }),
+		params: z.object({ year: yearParam }),
 	},
 	responses: {
 		200: icalResponse('iCal feed for the year'),
@@ -121,8 +119,7 @@ const getIcalYearRoute = createRoute({
 })
 
 app.openapi(getIcalYearRoute, (c) => {
-	const year = parseYear(c.req.valid('param').year)
-	if (!year) return c.json({ error: INVALID_YEAR_MESSAGE }, 400)
+	const { year } = c.req.valid('param')
 
 	c.header('Content-Type', 'text/calendar; charset=utf-8')
 	c.header('Content-Disposition', `inline; filename="coptic-calendar-${year}.ics"`)

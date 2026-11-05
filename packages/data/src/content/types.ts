@@ -13,8 +13,13 @@
 
 import type { FestiveSeason } from '@coptic/core'
 
+/** The languages a liturgical service's text is published in. */
+export const SERVICE_LANGUAGES = ['en', 'ar', 'cop'] as const
+export type ServiceLanguage = (typeof SERVICE_LANGUAGES)[number]
+
 /** Who says the line. Sections prayed by everyone store a plain string instead. */
-export type ContentSpeaker = 'Priest' | 'Deacon' | 'People'
+export const CONTENT_SPEAKERS = ['Priest', 'Deacon', 'People'] as const
+export type ContentSpeaker = (typeof CONTENT_SPEAKERS)[number]
 
 export interface ContentLine {
 	speaker?: ContentSpeaker
@@ -33,7 +38,8 @@ export interface ContentLine {
 export type LiturgicalContent = string | ContentLine
 
 /** Who a section belongs to in the rite. */
-export type LiturgicalSectionRole = 'all' | 'priest' | 'deacon' | 'congregation'
+export const SECTION_ROLES = ['all', 'priest', 'deacon', 'congregation'] as const
+export type LiturgicalSectionRole = (typeof SECTION_ROLES)[number]
 
 /**
  * What a section varies by.

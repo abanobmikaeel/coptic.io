@@ -1,5 +1,6 @@
+import { z } from '@hono/zod-openapi'
 import { BIBLE_TRANSLATIONS, type BibleTranslation } from '../types'
-import { isSupportedYear } from './dateUtils'
+import { INVALID_YEAR_MESSAGE, isSupportedYear } from './dateUtils'
 
 /**
  * Cache lifetime for responses that depend on the wall clock ("today", "the current
@@ -16,3 +17,16 @@ export const parseYear = (input: string): number | null => {
 	const year = Number.parseInt(input, 10)
 	return isSupportedYear(year) ? year : null
 }
+
+/**
+ * A year path parameter as a route schema: handlers receive the number, and an
+ * unsupported year answers 400 through the app's validation hook.
+ */
+export const yearParam = z
+	.string()
+	.transform((input, ctx) => {
+		const year = parseYear(input)
+		if (year === null) ctx.addIssue({ code: 'custom', message: INVALID_YEAR_MESSAGE })
+		return year ?? z.NEVER
+	})
+	.openapi({ example: '2026' })

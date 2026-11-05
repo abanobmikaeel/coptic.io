@@ -8,49 +8,14 @@
  * - ElasticsearchService: Elasticsearch integration (future)
  */
 
-// Result types for each content category
-export interface BibleSearchResult {
-	type: 'verse' | 'reference'
-	book: string
-	chapter: number
-	verse?: number
-	text: string
-	url: string
-	score?: number
-}
+import type { SearchResponse } from '../../schemas'
 
-export interface SynaxariumSearchResult {
-	type: 'saint' | 'feast'
-	name: string
-	date: string
-	copticDate: string
-	summary?: string
-	url: string
-	score?: number
-}
-
-export interface AgpeyaSearchResult {
-	type: 'hour' | 'prayer'
-	id: string
-	name: string
-	englishName: string
-	traditionalTime?: string
-	url: string
-	score?: number
-}
-
-// Unified search response
-export interface SearchResults {
-	bible: BibleSearchResult[]
-	synaxarium: SynaxariumSearchResult[]
-	agpeya: AgpeyaSearchResult[]
-}
-
-export interface SearchResponse {
-	results: SearchResults
-	query: string
-	totalCount: number
-}
+// Result types for each content category, as the search route documents them
+export type { SearchResponse }
+export type SearchResults = SearchResponse['results']
+export type BibleSearchResult = SearchResults['bible'][number]
+export type SynaxariumSearchResult = SearchResults['synaxarium'][number]
+export type AgpeyaSearchResult = SearchResults['agpeya'][number]
 
 // Search options
 export interface SearchOptions {
