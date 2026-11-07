@@ -1,14 +1,17 @@
-import { includesLateSundayTheotokiaParts } from '@coptic/core/liturgy'
+import { getKiahkPsalmodyWeek, includesLateSundayTheotokiaParts } from '@coptic/core/liturgy'
 import {
+	getKiahkTasbehaService as getArabicKiahkTasbeha,
 	getTasbehaService as getArabicTasbeha,
 	getTasbehaServiceForWeekday as getArabicTasbehaForWeekday,
 } from '@coptic/data/ar/tasbeha'
 import type { ServiceLanguage } from '@coptic/data/content'
 import {
+	getKiahkTasbehaService as getCopticKiahkTasbeha,
 	getTasbehaService as getCopticTasbeha,
 	getTasbehaServiceForWeekday as getCopticTasbehaForWeekday,
 } from '@coptic/data/cop/tasbeha'
 import {
+	getKiahkTasbehaService as getEnglishKiahkTasbeha,
 	getTasbehaService as getEnglishTasbeha,
 	getTasbehaServiceForWeekday as getEnglishTasbehaForWeekday,
 } from '@coptic/data/en/tasbeha'
@@ -27,10 +30,34 @@ const byWeekday: Record<ServiceLanguage, (weekday: number) => TasbehaServiceData
 	cop: getCopticTasbehaForWeekday,
 }
 
+const kiahkById: Record<
+	ServiceLanguage,
+	(id: TasbehaServiceId, week: number) => TasbehaServiceData
+> = {
+	en: getEnglishKiahkTasbeha,
+	ar: getArabicKiahkTasbeha,
+	cop: getCopticKiahkTasbeha,
+}
+
+/**
+ * The service as prayed on `date`: in Kiahk, the month's Psalmody in place of the annual.
+ * A requested `kiahkWeek` serves that week of it on any date, for reading out of season.
+ */
+function inSeason(
+	service: TasbehaServiceData,
+	date: Date,
+	translation: ServiceLanguage,
+	kiahkWeek = getKiahkPsalmodyWeek(date),
+): TasbehaServiceData {
+	return kiahkWeek ? kiahkById[translation](service.id, kiahkWeek) : service
+}
+
 // Parts 16–18 of the Sunday Theotokia are the only date-limited sections in the
-// corpus; every other section is fixed for its day.
+// corpus; every other section is fixed for its day. Their season ends with Hathor, so
+// the Kiahk Psalmody never has them, whichever date it is read on.
 function resolve(service: TasbehaServiceData, date: Date): TasbehaResponse {
-	const includeLateTheotokia = includesLateSundayTheotokiaParts(date)
+	const includeLateTheotokia =
+		service.rite.cycle !== 'kiahk' && includesLateSundayTheotokiaParts(date)
 	return {
 		type: 'tasbeha',
 		id: service.id,
@@ -59,22 +86,24 @@ export function getTasbehaForDate(
 	date: Date = new Date(),
 	translation: ServiceLanguage = 'en',
 ): TasbehaResponse {
-	return resolve(byWeekday[translation](date.getDay()), date)
+	return resolve(inSeason(byWeekday[translation](date.getDay()), date, translation), date)
 }
 
 export function getTasbehaById(
 	id: TasbehaServiceId,
 	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
+	kiahkWeek?: number,
 ): TasbehaResponse {
-	return resolve(byId[translation](id), date)
+	return resolve(inSeason(byId[translation](id), date, translation, kiahkWeek), date)
 }
 
 export function getSundayTasbeha(
 	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
+	kiahkWeek?: number,
 ): TasbehaResponse {
-	return getTasbehaById('sunday-midnight-praises', translation, date)
+	return getTasbehaById('sunday-midnight-praises', translation, date, kiahkWeek)
 }
 
 // Saturday's Praise is a Vespers Praise, so the day names do not map onto service
@@ -97,6 +126,7 @@ export function getTasbehaForDay(
 	day: TasbehaDay,
 	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
+	kiahkWeek?: number,
 ): TasbehaResponse {
-	return getTasbehaById(SERVICE_BY_DAY[day], translation, date)
+	return getTasbehaById(SERVICE_BY_DAY[day], translation, date, kiahkWeek)
 }

@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { app } from '../../index'
-import { getSundayTasbeha, getTasbehaById, getTasbehaForDate } from '../../services/tasbeha.service'
+import {
+	getSundayTasbeha,
+	getTasbehaById,
+	getTasbehaForDate,
+	getTasbehaForDay,
+} from '../../services/tasbeha.service'
 
 // 2026-07-26 is a Sunday, so offsets from it walk the week in order.
 const SUNDAY = new Date(2026, 6, 26)
@@ -159,5 +164,89 @@ describe('Tasbeha service', () => {
 		])
 		expect(badDay.status).toBe(400)
 		expect(badDate.status).toBe(400)
+	})
+})
+
+describe('Tasbeha in Kiahk', () => {
+	const SATURDAY_WEEK_2 = new Date(2026, 11, 19) // Kiahk 10
+	const MONDAY_IN_KIAHK = new Date(2026, 11, 14)
+
+	it('stays annual through the Nativity Fast until the first of Kiahk', () => {
+		const service = getTasbehaForDate(new Date(2026, 11, 7))
+		expect(service.rite.cycle).toBe('annual')
+		expect(service.status).toBe('complete')
+	})
+
+	it('serves the partial Kiahk Psalmody by date', () => {
+		const service = getTasbehaForDate(MONDAY_IN_KIAHK)
+		expect(service.rite.cycle).toBe('kiahk')
+		expect(service.status).toBe('partial')
+		expect(service.name).toBe('Monday Midnight Praises in Kiahk')
+		expect(service.sections.map(({ id }) => id)).toContain('kiahk-monday-adam-hymn')
+	})
+
+	it('applies to a named day too, as the reader requests it', async () => {
+		const res = await app.request('/api/tasbeha/saturday?date=2026-12-19')
+		expect(res.status).toBe(200)
+		const service = await res.json()
+		expect(service.rite.cycle).toBe('kiahk')
+		const ids = service.sections.map(({ id }: { id: string }) => id)
+		expect(ids).toContain('kiahk-exposition-week-2')
+		expect(ids).not.toContain('kiahk-exposition-week-1')
+	})
+
+	describe('requested out of season', () => {
+		const NOVEMBER = 'date=2026-11-08' // A Sunday in Hathor
+
+		it('serves the requested week on any date', async () => {
+			const res = await app.request(`/api/tasbeha/saturday?${NOVEMBER}&kiahkWeek=3`)
+			expect(res.status).toBe(200)
+			const service = await res.json()
+			expect(service.rite.cycle).toBe('kiahk')
+			const ids = service.sections.map(({ id }: { id: string }) => id)
+			expect(ids).toContain('kiahk-exposition-week-3')
+			expect(ids).not.toContain('kiahk-exposition-week-2')
+		})
+
+		it('overrides the week the date itself falls in', () => {
+			const ids = getTasbehaForDay('saturday', 'en', SATURDAY_WEEK_2, 4).sections.map(
+				({ id }) => id,
+			)
+			expect(ids).toContain('kiahk-exposition-week-4')
+			expect(ids).not.toContain('kiahk-exposition-week-2')
+		})
+
+		// Hathor still has these parts; the Kiahk Psalmody it previews does not.
+		it('leaves out the Theotokia parts that end with Hathor', async () => {
+			const annual = await (await app.request(`/api/tasbeha/sunday?${NOVEMBER}`)).json()
+			const kiahk = await (await app.request(`/api/tasbeha/sunday?${NOVEMBER}&kiahkWeek=1`)).json()
+			const ids = ({ sections }: { sections: { id: string }[] }) => sections.map(({ id }) => id)
+			expect(ids(annual)).toContain('sunday-theotokia-part-16')
+			expect(ids(kiahk)).not.toContain('sunday-theotokia-part-16')
+		})
+
+		it('stays date-driven when no week is requested', () => {
+			expect(getTasbehaForDay('monday', 'en', new Date(2026, 10, 9)).rite.cycle).toBe('annual')
+		})
+
+		it.each(['0', '5', '1.5', 'two'])('rejects week %s', async (week) => {
+			const res = await app.request(`/api/tasbeha/monday?kiahkWeek=${week}`)
+			expect(res.status).toBe(400)
+		})
+	})
+
+	it('flags a hymn with no Coptic instead of filling it from another language', () => {
+		const service = getTasbehaForDate(MONDAY_IN_KIAHK, 'cop')
+		const hymn = service.sections.find(({ id }) => id === 'kiahk-monday-adam-hymn')
+		expect(hymn?.contentUnavailable).toBe(true)
+		expect(hymn?.content).toEqual([])
+	})
+
+	it('leaves the Arabic of the same hymn in place', () => {
+		const hymn = getTasbehaById('saturday-vespers-praises', 'ar', SATURDAY_WEEK_2).sections.find(
+			({ id }) => id === 'kiahk-saturday-watos-hymn',
+		)
+		expect(hymn?.contentUnavailable).toBeUndefined()
+		expect(hymn?.content.length).toBeGreaterThan(0)
 	})
 })

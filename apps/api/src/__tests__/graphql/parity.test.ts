@@ -89,7 +89,7 @@ const HOUR = `id name englishName traditionalTime introduction opening { ${PRAYE
 const SERVICE = `type name date copticDate { ${COPTIC_DATE} } sections { id type role title titleLanguage
 	rubric optional content { ${LINE} } reference verses { ${VERSE} } }`
 const TASBEHA = `type id name description status rite { cycle dayTune weekdays }
-	sections { id type role kind title titleLanguage content { ${LINE} }
+	sections { id type role kind title titleLanguage contentUnavailable content { ${LINE} }
 	source { name url pageId accessedAt corroboratingUrls } }`
 const PERIOD = 'name description startDate endDate type isFasting'
 const LENT_DAY = `dayOffset dayNumber part weekNumber weekTheme day title references
@@ -355,11 +355,26 @@ describe('GraphQL matches REST', () => {
 				'/api/tasbeha/sunday?date=2026-07-26&lang=ar',
 			))
 
+		it.each(['en', 'cop'])('tasbeha in Kiahk in %s', (lang) =>
+			expectParity(
+				`tasbeha(date: "2026-12-19", lang: ${lang}) { ${TASBEHA} }`,
+				'tasbeha',
+				`/api/tasbeha?date=2026-12-19&lang=${lang}`,
+			),
+		)
+
 		it('tasbehaForDay', () =>
 			expectParity(
 				`tasbehaForDay(day: saturday, date: "2026-07-25") { ${TASBEHA} }`,
 				'tasbehaForDay',
 				'/api/tasbeha/saturday?date=2026-07-25',
+			))
+
+		it('tasbehaForDay with a Kiahk week', () =>
+			expectParity(
+				`tasbehaForDay(day: saturday, date: "2026-07-25", kiahkWeek: 3) { ${TASBEHA} }`,
+				'tasbehaForDay',
+				'/api/tasbeha/saturday?date=2026-07-25&kiahkWeek=3',
 			))
 	})
 })
@@ -372,6 +387,7 @@ describe('GraphQL rejects what REST rejects', () => {
 		['search(query: "John", limit: 51) { query }', 'limit'],
 		['agpeyaWatch(watch: 4) { id }', 'watch'],
 		['incense(time: evening, lang: es) { name }', 'lang'],
+		['tasbehaForDay(day: monday, kiahkWeek: 5) { id }', 'kiahkWeek'],
 	])('%s', async (query) => {
 		const { errors } = await gql(`{ ${query} }`)
 		expect(errors?.length).toBeGreaterThan(0)

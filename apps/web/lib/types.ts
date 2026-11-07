@@ -72,6 +72,8 @@ export interface IncenseSection {
 	role: IncenseSectionRole
 	title: string
 	titleLanguage?: 'en' | 'ar' | 'cop'
+	/** The source has no text for this section in this language. */
+	contentUnavailable?: boolean
 	rubric?: string
 	// Offered as an extra (Matins litanies, out-of-season nature litanies) — hidden from
 	// the service flow by default, listed under "Additional prayers" in the section list.
@@ -89,6 +91,7 @@ export interface IncenseSection {
 		| 'theotokia'
 		| 'gospel'
 		| 'difnar'
+		| 'exposition'
 		| 'litany'
 		| 'conclusion'
 }

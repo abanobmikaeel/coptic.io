@@ -81,4 +81,17 @@ describe('parseRows', () => {
 	it('returns nothing for a page without the synced text body', () => {
 		expect(parseRows("<div class='row'>an older layout</div>")).toEqual([])
 	})
+
+	it('reads a prose paragraph with no Coptic, keeping each verse on its line', () => {
+		const rows = parseRows(
+			page(
+				`<div class="sync-para hp-prose"><div class="hp-prose-en englishtext"><p>Your mercies / <br>
+Are plenteous. /</p></div><div class="hp-prose-ar arabictext" dir="rtl" lang="ar"><p>مراحمك،<br>
+كثيرة جدا.</p></div></div>`,
+			),
+		)
+		expect(rows).toEqual([
+			{ en: 'Your mercies\nAre plenteous.', cop: '', ar: 'مراحمك،\nكثيرة جدا.' },
+		])
+	})
 })

@@ -1,3 +1,5 @@
+import type { IncenseService } from './types'
+
 // The seven services of the annual Psalmody, in the order the API exposes them at
 // /tasbeha/{day}. Sunday–Friday are Midnight Praises; Saturday is the Vespers
 // Praise, prayed on Saturday evening. Adam is prayed Sunday–Tuesday and Watos
@@ -75,6 +77,10 @@ export const getTasbehaDayForWeekday = (weekday: number): TasbehaDayInfo =>
 export const getCurrentTasbehaDay = (): TasbehaDayId =>
 	getTasbehaDayForWeekday(new Date().getDay()).id
 
+/** The Kiahk week a `?kiahkWeek=` asks for; anything else leaves the date in charge. */
+export const parseKiahkWeek = (value: unknown): number | undefined =>
+	['1', '2', '3', '4'].includes(value as string) ? Number(value) : undefined
+
 /** "Midnight Praises" / "Vespers Praise" — how the day's service is named. */
 export const tasbehaPraiseLabel = (day: TasbehaDayInfo, isArabic: boolean): string =>
 	day.praise === 'vespers'
@@ -86,9 +92,66 @@ export const tasbehaPraiseLabel = (day: TasbehaDayInfo, isArabic: boolean): stri
 			: 'Midnight Praises'
 
 /** "Annual · Wednesday (Watos)" — the rite line shown in the reader header. */
-export const tasbehaRiteLabel = (day: TasbehaDayInfo, isArabic: boolean): string => {
+export const tasbehaRiteLabel = (
+	day: TasbehaDayInfo,
+	isArabic: boolean,
+	cycle?: string,
+): string => {
 	const tune = day.tune === 'adam' ? (isArabic ? 'آدام' : 'Adam') : isArabic ? 'واطس' : 'Watos'
 	const name = isArabic ? day.nameAr : day.name
 	const vespers = day.praise === 'vespers' ? (isArabic ? ' عشية' : ' Vespers') : ''
-	return isArabic ? `سنوي · ${name}${vespers} (${tune})` : `Annual · ${name}${vespers} (${tune})`
+	const season = cycle === 'kiahk' ? ['كيهك', 'Kiahk'] : ['سنوي', 'Annual']
+	return isArabic
+		? `${season[0]} · ${name}${vespers} (${tune})`
+		: `${season[1]} · ${name}${vespers} (${tune})`
+}
+
+const UNAVAILABLE: Record<string, { en: string; ar: string }> = {
+	en: { en: 'Not available in English.', ar: 'غير متوفر بالإنجليزية.' },
+	cop: { en: 'Not available in Coptic.', ar: 'غير متوفر بالقبطية.' },
+}
+
+/**
+ * Says so in the text of a section none of the displayed languages has, which would
+ * otherwise be blank. A section another language has stays empty here: the aligner then
+ * leaves that language out of it, where a one-line label would anchor the alignment and
+ * pack the whole hymn into a single row.
+ */
+export const labelUnavailableSections = (
+	servicesByLang: Partial<Record<string, IncenseService>>,
+	isArabic: boolean,
+): Partial<Record<string, IncenseService>> => {
+	const services = Object.values(servicesByLang).filter((service) => service !== undefined)
+	const isMissingEverywhere = (id: string) =>
+		services.every((service) => service.sections.find((s) => s.id === id)?.contentUnavailable)
+
+	return Object.fromEntries(
+		Object.entries(servicesByLang).map(([lang, service]) => {
+			const label = UNAVAILABLE[lang]
+			if (!service || !label) return [lang, service]
+			const sections = service.sections.map((section) =>
+				section.contentUnavailable && isMissingEverywhere(section.id)
+					? { ...section, content: [isArabic ? label.ar : label.en] }
+					: section,
+			)
+			return [lang, { ...service, sections }]
+		}),
+	)
+}
+
+/** Whether a displayed language lacks a section that another one has. */
+export const hasUnevenSections = (
+	servicesByLang: Partial<Record<string, IncenseService>>,
+): boolean => {
+	const services = Object.values(servicesByLang).filter((service) => service !== undefined)
+	return services.some(({ sections }) =>
+		sections.some(
+			({ id, contentUnavailable }) =>
+				contentUnavailable &&
+				services.some(
+					(other) =>
+						other.sections.find((section) => section.id === id)?.contentUnavailable !== true,
+				),
+		),
+	)
 }

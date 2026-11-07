@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { getDaysFromEaster } from '../calendar/pascha'
-import { getReadingCycle } from '../liturgy/readingCycle'
+import { getKiahkPsalmodyWeek, getReadingCycle } from '../liturgy/readingCycle'
 
 const local = (y: number, m: number, d: number) => new Date(y, m - 1, d)
 
@@ -157,5 +157,35 @@ describe('getReadingCycle', () => {
 		it('returns to the Sunday cycle the Sunday after Pentecost', () => {
 			expect(getReadingCycle(local(2027, 6, 27)).cycle).toBe('sunday')
 		})
+	})
+})
+
+describe('getKiahkPsalmodyWeek', () => {
+	it('is null outside the rite, which starts at the first of Kiahk, not the Nativity Fast', () => {
+		expect(getKiahkPsalmodyWeek(local(2026, 11, 25))).toBeNull() // Hatour 16
+		expect(getKiahkPsalmodyWeek(local(2026, 12, 9))).toBeNull() // Hatour 30
+		expect(getKiahkPsalmodyWeek(local(2026, 12, 10))).toBe(1) // Kiahk 1
+	})
+
+	it('ends at the Paramoun', () => {
+		expect(getKiahkPsalmodyWeek(local(2027, 1, 5))).toBe(4) // Kiahk 27
+		expect(getKiahkPsalmodyWeek(local(2027, 1, 6))).toBeNull() // Kiahk 28
+		expect(getKiahkPsalmodyWeek(local(2027, 1, 7))).toBeNull()
+	})
+
+	it('numbers a week by the Sunday it leads to', () => {
+		expect(getKiahkPsalmodyWeek(local(2026, 12, 12))).toBe(1)
+		expect(getKiahkPsalmodyWeek(local(2026, 12, 13))).toBe(1)
+		expect(getKiahkPsalmodyWeek(local(2026, 12, 19))).toBe(2)
+		expect(getKiahkPsalmodyWeek(local(2026, 12, 26))).toBe(3)
+		expect(getKiahkPsalmodyWeek(local(2027, 1, 2))).toBe(4)
+	})
+
+	it('follows the Sunday shift when the Paramoun is a Sunday', () => {
+		// Hatour 30 reads Kiahk's first Sunday, so the month opens in the second week
+		expect(getKiahkPsalmodyWeek(local(2023, 12, 10))).toBeNull()
+		expect(getKiahkPsalmodyWeek(local(2023, 12, 16))).toBe(2)
+		expect(getKiahkPsalmodyWeek(local(2023, 12, 30))).toBe(4)
+		expect(getKiahkPsalmodyWeek(local(2024, 1, 6))).toBe(4) // Kiahk 27
 	})
 })

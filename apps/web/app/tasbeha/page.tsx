@@ -11,6 +11,7 @@ import {
 	getCurrentTasbehaDay,
 	getTasbehaDay,
 	isTasbehaDayId,
+	parseKiahkWeek,
 	tasbehaPraiseLabel,
 } from '@/lib/tasbehaDays'
 import type { IncenseService } from '@/lib/types'
@@ -25,7 +26,7 @@ const TASBEHA_LANGS = ['en', 'cop', 'ar'] as const satisfies ContentLanguage[]
 type TasbehaLang = (typeof TASBEHA_LANGS)[number]
 
 interface TasbehaPageProps {
-	searchParams: Promise<{ day?: string }>
+	searchParams: Promise<{ day?: string; kiahkWeek?: string }>
 }
 
 export async function generateMetadata({ searchParams }: TasbehaPageProps): Promise<Metadata> {
@@ -34,7 +35,7 @@ export async function generateMetadata({ searchParams }: TasbehaPageProps): Prom
 	const praise = tasbehaPraiseLabel(info, false)
 	return {
 		title: `Tasbeha — ${info.name} ${praise}`,
-		description: `Pray the annual ${info.name} Coptic Orthodox ${praise} in English, Coptic, and Arabic.`,
+		description: `Pray the ${info.name} Coptic Orthodox ${praise} in English, Coptic, and Arabic.`,
 	}
 }
 
@@ -42,16 +43,17 @@ const fetchTasbeha = (
 	day: TasbehaDayId,
 	lang: TasbehaLang,
 	date: string,
+	kiahkWeek?: number,
 ): Promise<IncenseService | null> =>
 	dataOrNull(
 		api.GET('/api/tasbeha/{day}', {
-			params: { path: { day }, query: { lang, date } },
+			params: { path: { day }, query: { lang, date, kiahkWeek } },
 			...cacheFor(43200),
 		}),
 	)
 
 export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPageProps>) {
-	const { day: dayParam } = await searchParams
+	const { day: dayParam, kiahkWeek: kiahkWeekParam } = await searchParams
 	// An unrecognised or absent ?day= falls back to the service prayed today, so
 	// /tasbeha is always the day you are actually in.
 	const hasDayParam = isTasbehaDayId(dayParam)
@@ -71,11 +73,12 @@ export default async function TasbehaPage({ searchParams }: Readonly<TasbehaPage
 	// The date still governs the date-limited final parts of the Sunday Theotokia,
 	// independently of which day's service is being read.
 	const date = toDateKey(new Date())
+	const kiahkWeek = parseKiahkWeek(kiahkWeekParam)
 
 	const results = await Promise.all(
 		langs.map(async (lang) => ({
 			lang,
-			service: await fetchTasbeha(dayId, lang as TasbehaLang, date),
+			service: await fetchTasbeha(dayId, lang as TasbehaLang, date, kiahkWeek),
 		})),
 	)
 	const servicesByLang = Object.fromEntries(
