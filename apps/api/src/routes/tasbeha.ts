@@ -9,6 +9,7 @@ import {
 	getTasbehaForDay,
 } from '../services/tasbeha.service'
 import { createApiApp, jsonResponse } from '../utils/openapi'
+import { kiahkWeekQuery } from '../utils/request'
 
 const app = createApiApp()
 
@@ -50,8 +51,8 @@ const getSundayRoute = createRoute({
 	tags: ['Tasbeha'],
 	summary: 'Get the Sunday Midnight Praises',
 	description:
-		'Returns the annual Sunday (Adam) Tasbeha corpus in source-aligned English, Coptic, or Arabic.',
-	request: { query: z.object({ lang: langQuery, date: dateQuery }) },
+		'Returns the Sunday (Adam) Tasbeha in source-aligned English, Coptic, or Arabic: annual, or the Kiahk Psalmody in its month or when `kiahkWeek` asks for it.',
+	request: { query: z.object({ lang: langQuery, date: dateQuery, kiahkWeek: kiahkWeekQuery }) },
 	responses: {
 		200: jsonResponse(TasbehaResponseSchema, 'Annual Sunday Midnight Praises'),
 		...errorResponse,
@@ -59,8 +60,8 @@ const getSundayRoute = createRoute({
 })
 
 app.openapi(getSundayRoute, (c) => {
-	const { lang = 'en' } = c.req.valid('query')
-	return c.json(getSundayTasbeha(lang, c.var.date), 200)
+	const { lang = 'en', kiahkWeek } = c.req.valid('query')
+	return c.json(getSundayTasbeha(lang, c.var.date, kiahkWeek), 200)
 })
 
 // Registered after /sunday so that path keeps its own documented entry.
@@ -71,7 +72,7 @@ const getByDayRoute = createRoute({
 	tags: ['Tasbeha'],
 	summary: 'Get the Psalmody for a named day of the week',
 	description:
-		"Returns a specific day's Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.",
+		"Returns a specific day's Psalmody regardless of today's date. The `date` query still governs Kiahk and the date-limited final parts of the Sunday Theotokia; `kiahkWeek` serves the Kiahk Psalmody on any date.",
 	request: {
 		params: z.object({
 			day: z.enum(TASBEHA_DAYS).openapi({
@@ -79,7 +80,7 @@ const getByDayRoute = createRoute({
 				example: 'wednesday',
 			}),
 		}),
-		query: z.object({ lang: langQuery, date: dateQuery }),
+		query: z.object({ lang: langQuery, date: dateQuery, kiahkWeek: kiahkWeekQuery }),
 	},
 	responses: {
 		200: jsonResponse(TasbehaResponseSchema, "The named day's Psalmody"),
@@ -89,8 +90,8 @@ const getByDayRoute = createRoute({
 
 app.openapi(getByDayRoute, (c) => {
 	const { day } = c.req.valid('param')
-	const { lang = 'en' } = c.req.valid('query')
-	return c.json(getTasbehaForDay(day, lang, c.var.date), 200)
+	const { lang = 'en', kiahkWeek } = c.req.valid('query')
+	return c.json(getTasbehaForDay(day, lang, c.var.date, kiahkWeek), 200)
 })
 
 export default app

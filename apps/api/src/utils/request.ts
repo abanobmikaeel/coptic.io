@@ -20,6 +20,12 @@ export type CalendarLanguage = (typeof CALENDAR_LANGUAGES)[number]
 export const parseCalendarLanguage = (lang?: string): CalendarLanguage =>
 	CALENDAR_LANGUAGES.find((language) => language === lang) ?? 'en'
 
+/** Asks for a week of the Kiahk Psalmody (1–4) whatever the date. */
+export const kiahkWeekQuery = z.coerce.number().int().min(1).max(4).optional().openapi({
+	example: 2,
+	description: 'Serve this week of the Kiahk Psalmody (1–4) regardless of the date.',
+})
+
 /** A year path parameter, or null when it is not a year the API answers for. */
 export const parseYear = (input: string): number | null => {
 	const year = Number.parseInt(input, 10)

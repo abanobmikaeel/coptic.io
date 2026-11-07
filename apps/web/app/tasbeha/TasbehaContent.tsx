@@ -14,6 +14,7 @@ import {
 	getTasbehaDay,
 	hasUnevenSections,
 	labelUnavailableSections,
+	parseKiahkWeek,
 	tasbehaPraiseLabel,
 	tasbehaRiteLabel,
 } from '@/lib/tasbehaDays'
@@ -21,6 +22,7 @@ import type { IncenseService } from '@/lib/types'
 import { useLocale } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import { TasbehaKiahkOption } from './TasbehaKiahkOption'
 
 export const TasbehaFallback = ServiceReaderFallback
 
@@ -50,6 +52,14 @@ export function TasbehaContent({
 		const params = new URLSearchParams(searchParams.toString())
 		params.set('day', id)
 		return `/tasbeha?${params.toString()}`
+	}
+
+	const selectKiahkWeek = (week: number | null) => {
+		const params = new URLSearchParams(searchParams.toString())
+		if (week) params.set('kiahkWeek', String(week))
+		else params.delete('kiahkWeek')
+		setOpen(false)
+		router.push(`/tasbeha?${params.toString()}`)
 	}
 
 	// The day prayed right now, marked with a dot. Set after mount so the device
@@ -159,6 +169,14 @@ export function TasbehaContent({
 								)}
 							</button>
 						))}
+						<TasbehaKiahkOption
+							theme={theme}
+							isArabic={isArabic}
+							isSaturday={dayId === 'saturday'}
+							isKiahk={service?.rite?.cycle === 'kiahk'}
+							week={parseKiahkWeek(searchParams.get('kiahkWeek'))}
+							onSelect={selectKiahkWeek}
+						/>
 					</div>
 				)}
 			</div>

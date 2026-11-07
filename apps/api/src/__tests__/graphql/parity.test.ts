@@ -369,6 +369,13 @@ describe('GraphQL matches REST', () => {
 				'tasbehaForDay',
 				'/api/tasbeha/saturday?date=2026-07-25',
 			))
+
+		it('tasbehaForDay with a Kiahk week', () =>
+			expectParity(
+				`tasbehaForDay(day: saturday, date: "2026-07-25", kiahkWeek: 3) { ${TASBEHA} }`,
+				'tasbehaForDay',
+				'/api/tasbeha/saturday?date=2026-07-25&kiahkWeek=3',
+			))
 	})
 })
 
@@ -380,6 +387,7 @@ describe('GraphQL rejects what REST rejects', () => {
 		['search(query: "John", limit: 51) { query }', 'limit'],
 		['agpeyaWatch(watch: 4) { id }', 'watch'],
 		['incense(time: evening, lang: es) { name }', 'lang'],
+		['tasbehaForDay(day: monday, kiahkWeek: 5) { id }', 'kiahkWeek'],
 	])('%s', async (query) => {
 		const { errors } = await gql(`{ ${query} }`)
 		expect(errors?.length).toBeGreaterThan(0)

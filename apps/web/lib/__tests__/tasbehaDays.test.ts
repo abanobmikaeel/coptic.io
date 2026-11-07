@@ -4,6 +4,7 @@ import {
 	getTasbehaDay,
 	hasUnevenSections,
 	labelUnavailableSections,
+	parseKiahkWeek,
 	tasbehaRiteLabel,
 } from '../tasbehaDays'
 import type { IncenseService } from '../types'
@@ -46,6 +47,16 @@ describe('hasUnevenSections', () => {
 	it('is false when the languages agree', () => {
 		expect(hasUnevenSections({ en: english })).toBe(false)
 		expect(hasUnevenSections({ cop: coptic })).toBe(false)
+	})
+})
+
+describe('parseKiahkWeek', () => {
+	it('reads the four weeks', () => {
+		expect(['1', '2', '3', '4'].map(parseKiahkWeek)).toEqual([1, 2, 3, 4])
+	})
+
+	it.each([undefined, null, '', '0', '5', '1.5', 'two', ['1']])('ignores %j', (value) => {
+		expect(parseKiahkWeek(value)).toBeUndefined()
 	})
 })
 

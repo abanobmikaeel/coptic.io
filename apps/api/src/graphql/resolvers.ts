@@ -27,7 +27,12 @@ import {
 	isSupportedYear,
 	parseDateInput,
 } from '../utils/dateUtils'
-import { type CalendarLanguage, parseCalendarLanguage, parseTranslation } from '../utils/request'
+import {
+	type CalendarLanguage,
+	kiahkWeekQuery,
+	parseCalendarLanguage,
+	parseTranslation,
+} from '../utils/request'
 
 const badInput = (message: string) =>
 	new GraphQLError(message, { extensions: { code: 'BAD_USER_INPUT' } })
@@ -44,8 +49,15 @@ const assertYear = (year: number) => {
 	if (!isSupportedYear(year)) throw badInput(INVALID_YEAR_MESSAGE)
 }
 
+const KIAHK_WEEK_MESSAGE = 'Kiahk week must be between 1 and 4'
 const MONTH_MESSAGE = 'Invalid month. Must be between 1 and 12'
 const DAYS_MESSAGE = 'Days must be between 1 and 365'
+
+const parseKiahkWeek = (input?: number): number | undefined => {
+	const week = kiahkWeekQuery.safeParse(input)
+	if (!week.success) throw badInput(KIAHK_WEEK_MESSAGE)
+	return week.data
+}
 
 type Lang<L> = { lang?: L }
 type AgpeyaArgs = Lang<BibleTranslation> & { psalms?: agpeyaService.PsalmSource }
@@ -212,8 +224,13 @@ export const resolvers = {
 
 		tasbehaForDay: (
 			_: unknown,
-			{ day, date, lang }: { day: TasbehaDay; date?: string } & Lang<ServiceLanguage>,
-		) => getTasbehaForDay(day, lang, parseDate(date)),
+			{
+				day,
+				date,
+				lang,
+				kiahkWeek,
+			}: { day: TasbehaDay; date?: string; kiahkWeek?: number } & Lang<ServiceLanguage>,
+		) => getTasbehaForDay(day, lang, parseDate(date), parseKiahkWeek(kiahkWeek)),
 	},
 
 	ContentLine: {

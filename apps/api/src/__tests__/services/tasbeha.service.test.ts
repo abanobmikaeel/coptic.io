@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { app } from '../../index'
-import { getSundayTasbeha, getTasbehaById, getTasbehaForDate } from '../../services/tasbeha.service'
+import {
+	getSundayTasbeha,
+	getTasbehaById,
+	getTasbehaForDate,
+	getTasbehaForDay,
+} from '../../services/tasbeha.service'
 
 // 2026-07-26 is a Sunday, so offsets from it walk the week in order.
 const SUNDAY = new Date(2026, 6, 26)
@@ -188,6 +193,46 @@ describe('Tasbeha in Kiahk', () => {
 		const ids = service.sections.map(({ id }: { id: string }) => id)
 		expect(ids).toContain('kiahk-exposition-week-2')
 		expect(ids).not.toContain('kiahk-exposition-week-1')
+	})
+
+	describe('requested out of season', () => {
+		const NOVEMBER = 'date=2026-11-08' // A Sunday in Hathor
+
+		it('serves the requested week on any date', async () => {
+			const res = await app.request(`/api/tasbeha/saturday?${NOVEMBER}&kiahkWeek=3`)
+			expect(res.status).toBe(200)
+			const service = await res.json()
+			expect(service.rite.cycle).toBe('kiahk')
+			const ids = service.sections.map(({ id }: { id: string }) => id)
+			expect(ids).toContain('kiahk-exposition-week-3')
+			expect(ids).not.toContain('kiahk-exposition-week-2')
+		})
+
+		it('overrides the week the date itself falls in', () => {
+			const ids = getTasbehaForDay('saturday', 'en', SATURDAY_WEEK_2, 4).sections.map(
+				({ id }) => id,
+			)
+			expect(ids).toContain('kiahk-exposition-week-4')
+			expect(ids).not.toContain('kiahk-exposition-week-2')
+		})
+
+		// Hathor still has these parts; the Kiahk Psalmody it previews does not.
+		it('leaves out the Theotokia parts that end with Hathor', async () => {
+			const annual = await (await app.request(`/api/tasbeha/sunday?${NOVEMBER}`)).json()
+			const kiahk = await (await app.request(`/api/tasbeha/sunday?${NOVEMBER}&kiahkWeek=1`)).json()
+			const ids = ({ sections }: { sections: { id: string }[] }) => sections.map(({ id }) => id)
+			expect(ids(annual)).toContain('sunday-theotokia-part-16')
+			expect(ids(kiahk)).not.toContain('sunday-theotokia-part-16')
+		})
+
+		it('stays date-driven when no week is requested', () => {
+			expect(getTasbehaForDay('monday', 'en', new Date(2026, 10, 9)).rite.cycle).toBe('annual')
+		})
+
+		it.each(['0', '5', '1.5', 'two'])('rejects week %s', async (week) => {
+			const res = await app.request(`/api/tasbeha/monday?kiahkWeek=${week}`)
+			expect(res.status).toBe(400)
+		})
 	})
 
 	it('flags a hymn with no Coptic instead of filling it from another language', () => {

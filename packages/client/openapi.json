@@ -4206,7 +4206,7 @@
 					"Tasbeha"
 				],
 				"summary": "Get the Sunday Midnight Praises",
-				"description": "Returns the annual Sunday (Adam) Tasbeha corpus in source-aligned English, Coptic, or Arabic.",
+				"description": "Returns the Sunday (Adam) Tasbeha in source-aligned English, Coptic, or Arabic: annual, or the Kiahk Psalmody in its month or when `kiahkWeek` asks for it.",
 				"parameters": [
 					{
 						"schema": {
@@ -4231,6 +4231,19 @@
 						"required": false,
 						"description": "Liturgical date in YYYY-MM-DD format. Defaults to today.",
 						"name": "date",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 4,
+							"example": 2,
+							"description": "Serve this week of the Kiahk Psalmody (1–4) regardless of the date."
+						},
+						"required": false,
+						"description": "Serve this week of the Kiahk Psalmody (1–4) regardless of the date.",
+						"name": "kiahkWeek",
 						"in": "query"
 					}
 				],
@@ -4264,7 +4277,7 @@
 					"Tasbeha"
 				],
 				"summary": "Get the Psalmody for a named day of the week",
-				"description": "Returns a specific day's Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.",
+				"description": "Returns a specific day's Psalmody regardless of today's date. The `date` query still governs Kiahk and the date-limited final parts of the Sunday Theotokia; `kiahkWeek` serves the Kiahk Psalmody on any date.",
 				"parameters": [
 					{
 						"schema": {
@@ -4307,6 +4320,19 @@
 						"required": false,
 						"description": "Liturgical date in YYYY-MM-DD format. Defaults to today.",
 						"name": "date",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 4,
+							"example": 2,
+							"description": "Serve this week of the Kiahk Psalmody (1–4) regardless of the date."
+						},
+						"required": false,
+						"description": "Serve this week of the Kiahk Psalmody (1–4) regardless of the date.",
+						"name": "kiahkWeek",
 						"in": "query"
 					}
 				],

@@ -77,6 +77,10 @@ export const getTasbehaDayForWeekday = (weekday: number): TasbehaDayInfo =>
 export const getCurrentTasbehaDay = (): TasbehaDayId =>
 	getTasbehaDayForWeekday(new Date().getDay()).id
 
+/** The Kiahk week a `?kiahkWeek=` asks for; anything else leaves the date in charge. */
+export const parseKiahkWeek = (value: unknown): number | undefined =>
+	['1', '2', '3', '4'].includes(value as string) ? Number(value) : undefined
+
 /** "Midnight Praises" / "Vespers Praise" — how the day's service is named. */
 export const tasbehaPraiseLabel = (day: TasbehaDayInfo, isArabic: boolean): string =>
 	day.praise === 'vespers'

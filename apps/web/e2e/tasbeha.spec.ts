@@ -144,6 +144,33 @@ test.describe('Tasbeha day switching', () => {
 		await expect(page.getByText('Annual · Thursday (Watos)')).toBeVisible()
 	})
 
+	test('reaches the Kiahk Psalmody and returns, keeping day and settings', async ({ page }) => {
+		await page.goto('/tasbeha?day=saturday&theme=dark')
+		await page.waitForLoadState('networkidle')
+		const openMenu = () =>
+			page
+				.getByRole('button', { name: /Saturday/ })
+				.first()
+				.click()
+
+		await openMenu()
+		await page.getByRole('button', { name: /Kiahk Psalmody/ }).click()
+		await expect(page).toHaveURL(/kiahkWeek=1/)
+		await expect(page).toHaveURL(/day=saturday/)
+		await expect(page).toHaveURL(/theme=dark/)
+		// The rite label is hidden on phones; the badge shows at every width.
+		await expect(page.getByText('Partial', { exact: true })).toBeVisible()
+		await expect(page.getByText('Kiahk · Saturday Vespers (Watos)')).toBeAttached()
+
+		await openMenu()
+		await page.getByRole('button', { name: 'Week 3' }).click()
+		await expect(page).toHaveURL(/kiahkWeek=3/)
+
+		await openMenu()
+		await page.getByRole('button', { name: 'Current season' }).click()
+		await expect(page).not.toHaveURL(/kiahkWeek/)
+	})
+
 	test('falls back to today when the day is unrecognised', async ({ page }) => {
 		await page.goto('/tasbeha?day=octoday')
 		await page.waitForLoadState('networkidle')

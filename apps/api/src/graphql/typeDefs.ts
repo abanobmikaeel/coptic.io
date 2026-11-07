@@ -566,6 +566,11 @@ export const typeDefs = /* GraphQL */ `
 		# Tasbeha
 		tasbeha(date: String, lang: ServiceLanguage): TasbehaService!
 		sundayTasbeha(date: String, lang: ServiceLanguage): TasbehaService!
-		tasbehaForDay(day: Weekday!, date: String, lang: ServiceLanguage): TasbehaService!
+		tasbehaForDay(
+			day: Weekday!
+			date: String
+			lang: ServiceLanguage
+			kiahkWeek: Int
+		): TasbehaService!
 	}
 `

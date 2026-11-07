@@ -39,20 +39,25 @@ const kiahkById: Record<
 	cop: getCopticKiahkTasbeha,
 }
 
-/** The service as prayed on `date`: in Kiahk, the month's Psalmody in place of the annual. */
+/**
+ * The service as prayed on `date`: in Kiahk, the month's Psalmody in place of the annual.
+ * A requested `kiahkWeek` serves that week of it on any date, for reading out of season.
+ */
 function inSeason(
 	service: TasbehaServiceData,
 	date: Date,
 	translation: ServiceLanguage,
+	kiahkWeek = getKiahkPsalmodyWeek(date),
 ): TasbehaServiceData {
-	const week = getKiahkPsalmodyWeek(date)
-	return week ? kiahkById[translation](service.id, week) : service
+	return kiahkWeek ? kiahkById[translation](service.id, kiahkWeek) : service
 }
 
 // Parts 16–18 of the Sunday Theotokia are the only date-limited sections in the
-// corpus; every other section is fixed for its day.
+// corpus; every other section is fixed for its day. Their season ends with Hathor, so
+// the Kiahk Psalmody never has them, whichever date it is read on.
 function resolve(service: TasbehaServiceData, date: Date): TasbehaResponse {
-	const includeLateTheotokia = includesLateSundayTheotokiaParts(date)
+	const includeLateTheotokia =
+		service.rite.cycle !== 'kiahk' && includesLateSundayTheotokiaParts(date)
 	return {
 		type: 'tasbeha',
 		id: service.id,
@@ -88,15 +93,17 @@ export function getTasbehaById(
 	id: TasbehaServiceId,
 	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
+	kiahkWeek?: number,
 ): TasbehaResponse {
-	return resolve(inSeason(byId[translation](id), date, translation), date)
+	return resolve(inSeason(byId[translation](id), date, translation, kiahkWeek), date)
 }
 
 export function getSundayTasbeha(
 	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
+	kiahkWeek?: number,
 ): TasbehaResponse {
-	return getTasbehaById('sunday-midnight-praises', translation, date)
+	return getTasbehaById('sunday-midnight-praises', translation, date, kiahkWeek)
 }
 
 // Saturday's Praise is a Vespers Praise, so the day names do not map onto service
@@ -119,6 +126,7 @@ export function getTasbehaForDay(
 	day: TasbehaDay,
 	translation: ServiceLanguage = 'en',
 	date: Date = new Date(),
+	kiahkWeek?: number,
 ): TasbehaResponse {
-	return getTasbehaById(SERVICE_BY_DAY[day], translation, date)
+	return getTasbehaById(SERVICE_BY_DAY[day], translation, date, kiahkWeek)
 }

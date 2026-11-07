@@ -1891,7 +1891,7 @@ export interface paths {
         };
         /**
          * Get the Sunday Midnight Praises
-         * @description Returns the annual Sunday (Adam) Tasbeha corpus in source-aligned English, Coptic, or Arabic.
+         * @description Returns the Sunday (Adam) Tasbeha in source-aligned English, Coptic, or Arabic: annual, or the Kiahk Psalmody in its month or when `kiahkWeek` asks for it.
          */
         get: {
             parameters: {
@@ -1899,6 +1899,8 @@ export interface paths {
                     lang?: "en" | "ar" | "cop";
                     /** @description Liturgical date in YYYY-MM-DD format. Defaults to today. */
                     date?: string;
+                    /** @description Serve this week of the Kiahk Psalmody (1–4) regardless of the date. */
+                    kiahkWeek?: number;
                 };
                 header?: never;
                 path?: never;
@@ -1943,7 +1945,7 @@ export interface paths {
         };
         /**
          * Get the Psalmody for a named day of the week
-         * @description Returns a specific day's Psalmody regardless of today's date. The `date` query still governs the date-limited final parts of the Sunday Theotokia.
+         * @description Returns a specific day's Psalmody regardless of today's date. The `date` query still governs Kiahk and the date-limited final parts of the Sunday Theotokia; `kiahkWeek` serves the Kiahk Psalmody on any date.
          */
         get: {
             parameters: {
@@ -1951,6 +1953,8 @@ export interface paths {
                     lang?: "en" | "ar" | "cop";
                     /** @description Liturgical date in YYYY-MM-DD format. Defaults to today. */
                     date?: string;
+                    /** @description Serve this week of the Kiahk Psalmody (1–4) regardless of the date. */
+                    kiahkWeek?: number;
                 };
                 header?: never;
                 path: {
